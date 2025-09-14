@@ -60,9 +60,15 @@
     <Analyzer Include="E:\Unity Editer\2022.3.57f1c2\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\GameBase\EventCenter\CustomEventArgs.cs" />
     <Compile Include="Assets\Scripts\GameBase\Singleton\SingletonMono.cs" />
+    <Compile Include="Assets\Scripts\GameBase\EventCenter\EventCenter.cs" />
     <Compile Include="Assets\Scripts\GameBase\Singleton\SingletonBase.cs" />
+    <Compile Include="Assets\Scripts\GameBase\EventCenter\EventConstName.cs" />
+    <Compile Include="Assets\Scripts\GameBase\MonoTool\MonoManager.cs" />
+    <Compile Include="Assets\Scripts\GameBase\MonoTool\MonoController.cs" />
     <Compile Include="Assets\Scripts\GameBase\Singleton\SingletonAutoMono.cs" />
+    <Compile Include="Assets\Scripts\GameBase\EventCenter\EventManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
