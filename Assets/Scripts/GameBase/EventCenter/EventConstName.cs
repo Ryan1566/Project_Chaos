@@ -16,4 +16,8 @@ public static class EventConstName
     //#region 任务系统
     //public const string DelegateQuest = nameof(DelegateQuest);//委派任务
     //#endregion
+
+    #region 加载场景
+    public const string LoadProgress = nameof(LoadProgress);//加载进度
+    #endregion
 }

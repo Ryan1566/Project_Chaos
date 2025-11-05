@@ -22,7 +22,7 @@ public class SavingEventArgs : EventArgs
 /// </summary>
 public class LoadingEventArgs : EventArgs
 {
-    //加载事件暂时不需要参数
+    public AsyncOperation a_operation;//传入的场景信息
 }
 
 /// <summary>
