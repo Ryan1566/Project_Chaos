@@ -5,8 +5,10 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
+//场景加载管理器
 public class ScenesLoadManager : SingletonBase<ScenesLoadManager>
 {
+    #region 同步加载场景
     /// <summary>
     /// 同步加载场景
     /// </summary>
@@ -17,7 +19,9 @@ public class ScenesLoadManager : SingletonBase<ScenesLoadManager>
         SceneManager.LoadScene(name);
         action();
     }
+    #endregion
 
+    #region 异步加载资源
     /// <summary>
     /// 异步加载场景
     /// </summary>
@@ -28,7 +32,12 @@ public class ScenesLoadManager : SingletonBase<ScenesLoadManager>
         MonoManager.Instance.StartCoroutine(LoadSceneAsyncFunc(name,action));
     }
 
-    //异步加载协程
+    /// <summary>
+    /// 异步加载协程
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="action"></param>
+    /// <returns></returns>
     private IEnumerator LoadSceneAsyncFunc(string name,UnityAction action)
     {
         AsyncOperation ao = SceneManager.LoadSceneAsync(name);
@@ -43,4 +52,5 @@ public class ScenesLoadManager : SingletonBase<ScenesLoadManager>
 
         action();
     }
+    #endregion
 }

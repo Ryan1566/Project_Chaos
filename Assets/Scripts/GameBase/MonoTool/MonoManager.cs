@@ -13,7 +13,7 @@ public class MonoManager : SingletonBase<MonoManager>
     {
         //保证MonoController对象的唯一性
         GameObject obj = new GameObject("MonoController");
-        obj.AddComponent<MonoController>();
+        controller = obj.AddComponent<MonoController>();
     }
 
     /// <summary>

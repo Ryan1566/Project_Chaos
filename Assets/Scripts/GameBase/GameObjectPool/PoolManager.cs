@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 //池子对象
 public class PoolData
@@ -51,18 +52,25 @@ public class PoolManager : SingletonBase<PoolManager>
     /// </summary>
     /// <param name="name">取出物品的名字</param>
     /// <returns></returns>
-    public GameObject GetObj(GameObject prefab)
+    public GameObject GetObj(string path,string name,UnityAction<GameObject> callback)
     {
         GameObject obj = null;
-        if(poolDic.ContainsKey(prefab.name) && poolDic[prefab.name].poolList.Count > 0)
+        if(poolDic.ContainsKey(name) && poolDic[name].poolList.Count > 0)
         {
-            obj = poolDic[prefab.name].GetPool();
+            //obj = poolDic[prefab.name].GetPool();
+            callback(poolDic[name].GetPool());
         }
         else
         {
-            obj = GameObject.Instantiate(prefab);
-            string tempName = prefab.name.Replace("Clone",string.Empty);
-            obj.name = tempName;
+            //string tempName = name.Replace("Clone", string.Empty);
+            ResManager.Instance.LoadAsync<GameObject>(path + name,(obj) => {
+                obj.name = name;
+                callback(obj);
+            });
+
+            //obj = GameObject.Instantiate(prefab);
+            //string tempName = prefab.name.Replace("Clone",string.Empty);
+            //obj.name = tempName;
         }
 
         return obj;

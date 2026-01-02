@@ -15,8 +15,11 @@ public class ObjPoolTest : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            GameObject cubePrefab = Resources.Load("Test/Cube") as GameObject;
-            PoolManager.Instance.GetObj(cubePrefab);
+            //GameObject cubePrefab = Resources.Load("Test/Cube") as GameObject;
+            //GameObject cubePrefab = ResManager.Instance.Load<GameObject>("Test/Cube");
+            PoolManager.Instance.GetObj("Test/","Cube",(obj) => {
+
+            });
         }
 
         //if (Input.GetMouseButton(1))
@@ -24,4 +27,10 @@ public class ObjPoolTest : MonoBehaviour
         //    PoolManager.Instance.PushObj();
         //}
     }
+
+    //private void DoSth(GameObject obj)
+    //{
+    //    //PoolManager.Instance.GetObj(obj);
+    //    //obj.transform.localScale = new Vector3(2,2,2);
+    //}
 }
