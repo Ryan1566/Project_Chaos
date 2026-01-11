@@ -7,6 +7,13 @@ using UnityEngine;
 //只要不继承Mono类，脚本名字和类名可以不用相同
 //a_xxx 的a代表args
 
+#region 输入输出
+public class  InputArgs : EventArgs
+{
+    public KeyCode keyCodeValue;
+}
+#endregion
+
 #region 保存和加载
 /// <summary>
 /// 保存事件参数

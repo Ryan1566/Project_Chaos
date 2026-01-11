@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 //触发事件的拓展类,调用时直接在类等继承于Object的代码块中调用即可
@@ -56,6 +57,18 @@ public class EventManager : SingletonBase<EventManager>
         handlerDict.Clear();
     }
 }
+
+#region 添加事件监听方式
+//EventManager.Instance.AddListener(EventConstName.DelegateQuest, DelegateQuest);
+
+//public void DelegateQuest(object sender, EventArgs e)//方法参数必须添加触发源以及事件参数
+//{ 
+        //var args = e as DelegateQuestEventArgs;//传入对应参数
+        //Questable q = args.a_questable;
+
+        //TODO
+//}
+#endregion
 
 #region 触发事件使用方式
 //this.TriggerEvent(EventConstName.LoadSetting,new LoadingSettingEventArgs//初始化时加载设置

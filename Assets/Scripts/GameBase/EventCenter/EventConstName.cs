@@ -5,6 +5,11 @@ using UnityEngine;
 //该脚本用于辅助事件中心，将硬编码的变量，如事件名字变为常量，方便编写
 public static class EventConstName
 {
+    #region 输入输出
+    public const string GetKeyUp = nameof(GetKeyUp);//按键松开事件
+    public const string GetKeyDown = nameof(GetKeyDown);//按键按下事件
+    #endregion
+
     //#region 保存和加载
     //public const string SaveGame = nameof(SaveGame);//保存游戏
     //public const string LoadGame = nameof(LoadGame);//加载游戏
