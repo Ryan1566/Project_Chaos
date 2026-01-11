@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 //输入管理器 管理所有按键输入
 public class InputManager : SingletonBase<InputManager>
 {

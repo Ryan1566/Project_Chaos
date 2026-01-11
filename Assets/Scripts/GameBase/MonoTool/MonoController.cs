@@ -4,17 +4,16 @@ using UnityEngine;
 using UnityEngine.Events;
 
 //Mono管理者 负责管理Mono的生命周期、事件以及协程
+//替所有「不继承 MonoBehaviour 的普通 C# 类」接管 Unity 的核心生命周期和协程能力
 public class MonoController : MonoBehaviour
 {
     public event UnityAction updateEvent;
 
-    // Start is called before the first frame update
     void Start()
     {
         DontDestroyOnLoad(gameObject);
     }
 
-    // Update is called once per frame
     void Update()
     {
         if(updateEvent != null)

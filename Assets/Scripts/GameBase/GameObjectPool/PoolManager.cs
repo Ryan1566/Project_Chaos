@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-//池子对象
+#region 池子对象
 public class PoolData
 {
     public GameObject fatherObj;
@@ -37,8 +37,9 @@ public class PoolData
         obj.gameObject.SetActive(false);
     }
 }
+#endregion
 
-// 对象池
+#region 对象池管理器
 public class PoolManager : SingletonBase<PoolManager>
 {
     /// <summary>
@@ -110,3 +111,4 @@ public class PoolManager : SingletonBase<PoolManager>
         poolObj = null;
     }
 }
+#endregion

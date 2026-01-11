@@ -4,6 +4,7 @@ using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.Events;
 
+//Mono管理器 用于非 Mono 脚本调用 Unity 核心生命周期 / 协程
 //提供一个MonoController对外的接口
 public class MonoManager : SingletonBase<MonoManager>
 {
