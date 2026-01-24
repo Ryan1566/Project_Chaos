@@ -1,4 +1,5 @@
-﻿ using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Security.Cryptography;
@@ -38,6 +39,7 @@ public class EventInfo : IEventInfo
 // 负责注册（监听）事件、分发（触发）事件
 // 事件支持 带参数 和 无参数 两种
 // 带参数事件使用 EventInfo<T> 数据类型
+[Obsolete("该类未进行使用，请使用EventManager",true)]
 public class EventCenter : SingletonBase<EventCenter>
 {
     // 数据结构

@@ -50,6 +50,8 @@ public class ResManager : SingletonBase<ResManager>
     private IEnumerator LoadAsyncFunc<T>(string name,UnityAction<T> callback) where T : Object
     {
         ResourceRequest res = Resources.LoadAsync<T>(name);
+        if (res.asset == null)
+            Debug.Log($"未寻找到该资源:{name}");
         yield return res;
 
         if(res.asset is GameObject)

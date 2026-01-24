@@ -17,7 +17,7 @@ public class ObjPoolTest : MonoBehaviour
         {
             //GameObject cubePrefab = Resources.Load("Test/Cube") as GameObject;
             //GameObject cubePrefab = ResManager.Instance.Load<GameObject>("Test/Cube");
-            PoolManager.Instance.GetObj("Test/","Cube",(obj) => {
+            PoolManager.Instance.GetObj(GlobalPath.res_TestPath,"Cube",(obj) => {
 
             });
         }
