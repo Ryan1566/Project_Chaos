@@ -5,7 +5,7 @@ using UnityEngine;
 //记录ui面板类型的枚举，用于辅助构建动态构建路径
 public enum PanelType
 {
-    MainPanel,//主菜单
+    MainMenuPanel,//主菜单
     SavePanel,//保存面板
     SettingPanel,//设置面板
     PausePanel,//暂停面板

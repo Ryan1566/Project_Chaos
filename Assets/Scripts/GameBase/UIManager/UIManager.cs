@@ -81,12 +81,14 @@ public class UIManager : SingletonBase<UIManager>
     {
         if (_canvas == null)
         {
-            _canvas = GameObject.FindGameObjectsWithTag("Canvas")[0].transform;
+            _canvas = GameObject.FindGameObjectsWithTag(nameof(Canvas))[0].transform;
         }
-        GameObject g = Resources.Load<GameObject>("Panel/" + panelType.ToString());
+        //GameObject g = Resources.Load<GameObject>("Panel/" + panelType.ToString());
+        GameObject g = ResManager.Instance.Load<GameObject>(GlobalPath.res_PanelPath + panelType.ToString());
 
-        string path = "Panel/" + g.gameObject.name;
-        GameObject panel = GameObject.Instantiate(Resources.Load(path)) as GameObject;//从Resources加载并实例化一个ui对象，并强制转化为GameObject对象
+        string path = GlobalPath.res_PanelPath + g.gameObject.name;
+        //GameObject panel = GameObject.Instantiate(Resources.Load(path)) as GameObject;
+        GameObject panel = ResManager.Instance.Load<GameObject>(path);//从Resources加载并实例化一个ui对象，并强制转化为GameObject对象
         PanelDic.Add(panelType, panel.GetComponent<BasePanel>());//添加加载的ui到字典中
         panel.transform.SetParent(_canvas, false);//加载的ui放置于画布下，并不以世界坐标显示
 

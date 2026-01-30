@@ -31,6 +31,12 @@ public static class GlobalPath
     /// </summary>
     [Header("音效资源路径")]
     public const string res_SoundPath = "Audio/Sound/";
+
+    /// <summary>
+    /// UI面板资源路径
+    /// </summary>
+    [Header("音效资源路径")]
+    public const string res_PanelPath = "UIPanels/";
     #endregion
 
 
