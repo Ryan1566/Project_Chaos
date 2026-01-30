@@ -81,7 +81,7 @@ public class AudioManager : SingletonBase<AudioManager>
         if (soundObj == null)
         {
             soundObj = new GameObject();
-            soundObj.name = "Sound";
+            soundObj.name = "SoundPlayer";
         }
 
         //加载成功后再添加AudioSource
@@ -110,7 +110,7 @@ public class AudioManager : SingletonBase<AudioManager>
     [Obsolete("该方法暂时未填充内容",true)]
     public void PauseSound(AudioSource source)
     {
-
+        //TODO
     }
 
     public void StopSound(AudioSource source)
