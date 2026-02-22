@@ -39,5 +39,12 @@ public static class GlobalPath
     public const string res_PanelPath = "UIPanels/";
     #endregion
 
+    #region 表配置路径
+    /// <summary>
+    /// 配置表存储路径
+    /// </summary>
+    [Header("Excel资源路径")]
+    public const string data_ExcelPath = "Excel/Game_Excel";
 
+    #endregion
 }
