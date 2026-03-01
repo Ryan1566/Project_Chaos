@@ -44,7 +44,19 @@ public static class GlobalPath
     /// 配置表存储路径
     /// </summary>
     [Header("Excel资源路径")]
-    public const string data_ExcelPath = "Excel/Game_Excel";
+    public const string data_ExcelPath = "Excel/Game_Excel/";
+
+    /// <summary>
+    /// 导出的Json路径
+    /// </summary>
+    [Header("导出的Json路径")]
+    public const string data_JsonPath = "Resources/Data/Json/";
+
+    /// <summary>
+    /// 导出的class路径
+    /// </summary>
+    [Header("导出的class路径")]
+    public const string data_ClassPath = "Scripts/Runtime/Config/ClassConfig/";
 
     #endregion
 }
