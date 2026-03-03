@@ -8,6 +8,21 @@ using System.Text;
 using UnityEditor;
 using UnityEngine;
 
+/// <summary>
+/// 导出模式枚举
+/// </summary>
+public enum ExporterMode 
+{
+    /// <summary>
+    /// 表格数据，策划配置的默认常量数据
+    /// </summary>
+    Config,
+    /// <summary>
+    /// 模型数据，服务器或者本地可以修改的数据
+    /// </summary>
+    Model,
+}
+
 //[InitializeOnLoad]
 //配置管理器，用于Excel配置表的读取和序列化，导出对应的Json和class
 public class ConfigManager
@@ -48,8 +63,8 @@ public class ConfigManager
 
                 ExcelWorksheet workSheet = workSheets[1];//只导入第一个页签
 
-                ExportJson(workSheet, Path.GetFileNameWithoutExtension(GetFileName(file.Name)));//导出Json
-                ExportClass(workSheet, Path.GetFileNameWithoutExtension(GetFileName(file.Name)));//导出类
+                ExportJson(workSheet, Path.GetFileNameWithoutExtension(GetFileName(file.Name)),ExporterMode.Config);//导出Json
+                ExportClass(workSheet, Path.GetFileNameWithoutExtension(GetFileName(file.Name)), ExporterMode.Config);//导出类
             }
 
             AssetDatabase.Refresh();
@@ -60,14 +75,50 @@ public class ConfigManager
         }
     }
 
+    /// <summary>
+    /// 导出MVP数据Model类
+    /// </summary>
+    [MenuItem("Tools/ExportExcelModels")]
+    private static void ExportModels()
+    {
+        try
+        {
+            string path = string.Format("{0}/{1}", Application.dataPath, GlobalPath.data_ExcelModelPath);
+
+            FileInfo[] files = FileUtil.LoadFiles(path);
+
+            foreach (var file in files)
+            {
+                //过滤文件
+                if (file.Extension != ".xlsx") continue;
+                ExcelPackage excelPackage = new ExcelPackage(file);
+                ExcelWorksheets worksheets = excelPackage.Workbook.Worksheets;
+                //只导表1
+                ExcelWorksheet worksheet = worksheets[1];
+
+                ExportJson(worksheet, Path.GetFileNameWithoutExtension(file.FullName), ExporterMode.Model);
+                ExportClass(worksheet, Path.GetFileNameWithoutExtension(file.FullName), ExporterMode.Model);
+
+            }
+            AssetDatabase.Refresh();
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e.ToString());
+        }
+    }
+
     //导出类
-    private static void ExportClass(ExcelWorksheet workSheet,string fileName)
+    private static void ExportClass(ExcelWorksheet workSheet,string fileName,ExporterMode mode)
     {
         string[] properties = GetProperties(workSheet);
         StringBuilder sb = new StringBuilder();
         sb.Append("using System;\t\n\n");
         sb.Append("[Serializable]\t\n");
-        sb.Append($"public class {fileName}Config\n");//类名
+        sb.Append($"public class {fileName}{mode.ToString()}");//类名
+        if (mode == ExporterMode.Model)//模型类继承模型接口
+            sb.Append(": IModel");
+        sb.Append("\n");
         sb.Append("{\n");
 
         for (int col = 1; col <= properties.Length; col++)
@@ -80,11 +131,13 @@ public class ConfigManager
         }
 
         sb.Append("}\n\n");
-        FileUtil.SaveFile(GlobalPath.data_ClassPath, string.Format("{0}Config.cs", fileName), sb.ToString());
+        FileUtil.SaveFile(mode == ExporterMode.Config ? GlobalPath.data_ClassPath : GlobalPath.data_ModelClassPath
+            , string.Format("{0}Config.cs", fileName)
+            , sb.ToString());
     }
 
     //导出Json
-    private static void ExportJson(ExcelWorksheet workSheet, string fileName)
+    private static void ExportJson(ExcelWorksheet workSheet, string fileName,ExporterMode mode)
     {
         string str = "";
         int num = 0;
@@ -110,7 +163,9 @@ public class ConfigManager
         //string json1 = JsonUtility.ToJson(fileContent); // 紧凑格式
         //str = JsonUtility.ToJson(str, true); // 带缩进的格式化格式
 
-        FileUtil.SaveFile(GlobalPath.data_JsonPath, string.Format("{0}Config.json", fileName), str);
+        FileUtil.SaveFile(mode == ExporterMode.Config ? GlobalPath.data_JsonPath : GlobalPath.data_ModelPath
+            , string.Format("{0}{1}.{2}"
+            , fileName, mode.ToString(), mode == ExporterMode.Config ? "json" : "record"), str);
     }
 
     /// <summary>

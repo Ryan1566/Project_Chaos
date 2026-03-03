@@ -43,20 +43,31 @@ public static class GlobalPath
     /// <summary>
     /// 配置表存储路径
     /// </summary>
-    [Header("Excel资源路径")]
     public const string data_ExcelPath = "Excel/Game_Excel/";
 
     /// <summary>
     /// 导出的Json路径
     /// </summary>
-    [Header("导出的Json路径")]
     public const string data_JsonPath = "Resources/Data/Json/";
 
     /// <summary>
     /// 导出的class路径
     /// </summary>
-    [Header("导出的class路径")]
     public const string data_ClassPath = "Scripts/Runtime/Config/ClassConfig/";
 
+    /// <summary>
+    /// 导出的Excel配置的Model路径
+    /// </summary>
+    public const string data_ExcelModelPath = "Data/Model/";
+
+    /// <summary>
+    /// 导出的Model存档路径
+    /// </summary>
+    public const string data_ModelPath = "Data/Records/";
+
+    /// <summary>
+    /// 导出的Model类路径
+    /// </summary>
+    public const string data_ModelClassPath = "Scripts/Runtime/MVP/Model/";
     #endregion
 }
