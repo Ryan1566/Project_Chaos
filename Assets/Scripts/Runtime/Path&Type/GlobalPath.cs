@@ -61,9 +61,14 @@ public static class GlobalPath
     public const string data_ExcelModelPath = "Data/Model/";
 
     /// <summary>
-    /// 导出的Model存档路径
+    /// 编辑器导出的存档路径
     /// </summary>
-    public const string data_ModelPath = "Data/Records/";
+    public const string data_RecordPath = "Data/Records/";
+
+    /// <summary>
+    /// 包体导出的存档路径
+    /// </summary>
+    public const string data_RecordPathInPackage = "Records/";
 
     /// <summary>
     /// 导出的Model类路径

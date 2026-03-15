@@ -8,7 +8,8 @@ public class JsonDataConfigManager : SingletonBase<JsonDataConfigManager>
 {
     public DataList<T> LoadData<T>()
     {
-        string json = Resources.Load<TextAsset>("Json/" + typeof(T).Name).text;
+        //string json = Resources.Load<TextAsset>("Json/" + typeof(T).Name).text;
+        string json = ResManager.Instance.Load<TextAsset>("Json/" + typeof(T).Name).text;
         return JsonUtility.FromJson<DataList<T>>(json);
     }
 }

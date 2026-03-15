@@ -24,7 +24,9 @@ public enum ExporterMode
 }
 
 //[InitializeOnLoad]
-//配置管理器，用于Excel配置表的读取和序列化，导出对应的Json和class
+/// <summary>
+/// 配置管理器，用于Excel配置表的读取和序列化，导出对应的Json和class
+/// </summary>
 public class ConfigManager
 {
     /// <summary>
@@ -44,10 +46,16 @@ public class ConfigManager
     /// </summary>
     private const int valueIndex = 6;
 
+    //[MenuItem("Tool/ClearExcelConfigs")]
+    private static void ClearConfigs()
+    {
+
+    }
+
     /// <summary>
     /// 导出配置
     /// </summary>
-    [MenuItem("Tool/ExportExcel")]
+    [MenuItem("Tool/ExportExcelConfigs")]
     private static void ExportConfigs()
     {
         try
@@ -63,11 +71,16 @@ public class ConfigManager
 
                 ExcelWorksheet workSheet = workSheets[1];//只导入第一个页签
 
+                if (workSheet.Dimension.End.Row == 0)//空表不处理
+                    return;
+
                 ExportJson(workSheet, Path.GetFileNameWithoutExtension(GetFileName(file.Name)),ExporterMode.Config);//导出Json
                 ExportClass(workSheet, Path.GetFileNameWithoutExtension(GetFileName(file.Name)), ExporterMode.Config);//导出类
             }
 
             AssetDatabase.Refresh();
+
+            Debug.Log($"已导出所有文件");
         }
         catch (Exception e)
         {
@@ -78,29 +91,32 @@ public class ConfigManager
     /// <summary>
     /// 导出MVP数据Model类
     /// </summary>
-    [MenuItem("Tools/ExportExcelModels")]
+    [MenuItem("Tool/ExportExcelModels")]
     private static void ExportModels()
     {
         try
         {
-            string path = string.Format("{0}/{1}", Application.dataPath, GlobalPath.data_ExcelModelPath);
-
-            FileInfo[] files = FileUtil.LoadFiles(path);
+            FileInfo[] files = FileUtil.LoadFiles(GlobalPath.data_ExcelPath);
 
             foreach (var file in files)
             {
                 //过滤文件
                 if (file.Extension != ".xlsx") continue;
                 ExcelPackage excelPackage = new ExcelPackage(file);
-                ExcelWorksheets worksheets = excelPackage.Workbook.Worksheets;
+                ExcelWorksheets workSheets = excelPackage.Workbook.Worksheets;
                 //只导表1
-                ExcelWorksheet worksheet = worksheets[1];
+                ExcelWorksheet workSheet = workSheets[1];
 
-                ExportJson(worksheet, Path.GetFileNameWithoutExtension(file.FullName), ExporterMode.Model);
-                ExportClass(worksheet, Path.GetFileNameWithoutExtension(file.FullName), ExporterMode.Model);
+                if (workSheet.Dimension.End.Row == 0)//空表不处理
+                    return;
+
+                ExportJson(workSheet, Path.GetFileNameWithoutExtension(GetFileName(file.Name)), ExporterMode.Model);
+                ExportClass(workSheet, Path.GetFileNameWithoutExtension(GetFileName(file.Name)), ExporterMode.Model);
 
             }
             AssetDatabase.Refresh();
+
+            Debug.Log($"已导出所有文件");
         }
         catch (Exception e)
         {
@@ -131,9 +147,14 @@ public class ConfigManager
         }
 
         sb.Append("}\n\n");
-        FileUtil.SaveFile(mode == ExporterMode.Config ? GlobalPath.data_ClassPath : GlobalPath.data_ModelClassPath
-            , string.Format("{0}Config.cs", fileName)
+
+        string savePath = mode == ExporterMode.Config ? GlobalPath.data_ClassPath : GlobalPath.data_ModelClassPath;
+
+        FileUtil.SaveFile(savePath
+            , string.Format("{0}{1}.cs", fileName,mode.ToString())
             , sb.ToString());
+
+        Debug.Log($"Class: 已导出对应{mode.ToString()}文件{string.Format("{0}{1}.cs", fileName, mode.ToString())}至文件夹 {savePath}");
     }
 
     //导出Json
@@ -163,9 +184,15 @@ public class ConfigManager
         //string json1 = JsonUtility.ToJson(fileContent); // 紧凑格式
         //str = JsonUtility.ToJson(str, true); // 带缩进的格式化格式
 
-        FileUtil.SaveFile(mode == ExporterMode.Config ? GlobalPath.data_JsonPath : GlobalPath.data_ModelPath
+        string savePath = mode == ExporterMode.Config ? GlobalPath.data_JsonPath : GlobalPath.data_RecordPath;
+
+        FileUtil.SaveFile(savePath
             , string.Format("{0}{1}.{2}"
             , fileName, mode.ToString(), mode == ExporterMode.Config ? "json" : "record"), str);
+
+        Debug.Log($"Json: 已导出对应{mode.ToString()}文件" +
+            $"{string.Format("{0}{1}.{2}", fileName, mode.ToString(), mode == ExporterMode.Config ? "json" : "record")}" +
+            $"至文件夹 {savePath}");
     }
 
     /// <summary>

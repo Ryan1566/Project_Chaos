@@ -5,7 +5,7 @@ using OfficeOpenXml;
 using System.IO;
 using System;
 
-public class FileUtil : MonoBehaviour
+public class FileUtil
 {
     /// <summary>
     /// 加载该路径下所有文件
