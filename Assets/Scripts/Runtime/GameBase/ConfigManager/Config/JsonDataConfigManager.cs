@@ -14,7 +14,10 @@ public class JsonDataConfigManager : SingletonBase<JsonDataConfigManager>
     }
 }
 
-//泛型基类
+/// <summary>
+/// 泛型基类 各种数据类的列表
+/// </summary>
+/// <typeparam name="T">Data类</typeparam>
 [Serializable]
 public class DataList<T>
 {

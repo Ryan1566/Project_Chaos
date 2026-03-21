@@ -10,15 +10,15 @@ using UnityEngine;
 /// </summary>
 public interface IModel
 {
-    ///// <summary>
-    ///// 模型初始化（对应Unity的Awake/Start，在Model创建时调用）
-    ///// </summary>
-    //void Init();
+    /// <summary>
+    /// 模型初始化（对应Unity的Awake/Start，在Model创建时调用）
+    /// </summary>
+    void Init();
 
-    ///// <summary>
-    ///// 模型销毁（对应Unity的OnDestroy，释放资源/取消监听）
-    ///// </summary>
-    //void Dispose();
+    /// <summary>
+    /// 模型销毁（对应Unity的OnDestroy，释放资源/取消监听）
+    /// </summary>
+    void Dispose();
 
     ///// <summary>
     ///// 数据更新通知（可选，用于Model向Presenter推送数据变化）
@@ -89,7 +89,7 @@ public class Recorder : SingletonBase<Recorder>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
-    public DataList<T> LoadData<T>() where T : IModel
+    public DataList<T> LoadData<T>()
     {
         try
         {
@@ -111,7 +111,7 @@ public class Recorder : SingletonBase<Recorder>
     /// <param name="data">文件数据</param>
     /// <param name="save">是否保存为存档</param>
     /// <exception cref="Exception"></exception>
-    public void SaveData<T>(DataList<T> data,bool save = false) where T : IModel
+    public void SaveData<T>(DataList<T> data,bool save = false)
     {
         string json = JsonUtility.ToJson(data);
         try
@@ -138,7 +138,7 @@ public class Recorder : SingletonBase<Recorder>
     /// <typeparam name="T"></typeparam>
     /// <param name="data"></param>
     /// <param name="save"></param>
-    public void CreateData<T>(T data, bool save = false) where T : IModel
+    public void CreateData<T>(T data, bool save = false)
     {
         DataList<T> dataList = LoadData<T>();
         dataList.datas.Add(data);
@@ -153,7 +153,7 @@ public class Recorder : SingletonBase<Recorder>
     /// <param name="data"></param>
     /// <param name="save"></param>
     /// <exception cref="System.Exception"></exception>
-    public void UpdateData<T>(int index, T data, bool save = false) where T : IModel
+    public void UpdateData<T>(int index, T data, bool save = false)
     {
         try
         {
@@ -174,7 +174,8 @@ public class Recorder : SingletonBase<Recorder>
     /// <param name="index"></param>
     /// <returns></returns>
     /// <exception cref="System.Exception"></exception>
-    public T ReadData<T>(int index) where T : IModel
+    //public T ReadData<T>(int index) where T : IModel
+    public T ReadData<T>(int index)
     {
         try
         {
@@ -194,7 +195,7 @@ public class Recorder : SingletonBase<Recorder>
     /// <typeparam name="T"></typeparam>
     /// <param name="data"></param>
     /// <param name="save"></param>
-    public void DeleteData<T>(T data, bool save = false) where T : IModel
+    public void DeleteData<T>(T data, bool save = false)
     {
         DataList<T> dataList = LoadData<T>();
         dataList.datas.Remove(data);
@@ -207,7 +208,7 @@ public class Recorder : SingletonBase<Recorder>
     /// <typeparam name="T"></typeparam>
     /// <param name="index"></param>
     /// <param name="save"></param>
-    public void DeleteData<T>(int index, bool save = false) where T : IModel
+    public void DeleteData<T>(int index, bool save = false)
     {
         try
         {

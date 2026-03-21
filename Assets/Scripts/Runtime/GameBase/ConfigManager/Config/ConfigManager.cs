@@ -20,7 +20,7 @@ public enum ExporterMode
     /// <summary>
     /// 模型数据，服务器或者本地可以修改的数据
     /// </summary>
-    Model,
+    Data,
 }
 
 //[InitializeOnLoad]
@@ -110,8 +110,8 @@ public class ConfigManager
                 if (workSheet.Dimension.End.Row == 0)//空表不处理
                     return;
 
-                ExportJson(workSheet, Path.GetFileNameWithoutExtension(GetFileName(file.Name)), ExporterMode.Model);
-                ExportClass(workSheet, Path.GetFileNameWithoutExtension(GetFileName(file.Name)), ExporterMode.Model);
+                ExportJson(workSheet, Path.GetFileNameWithoutExtension(GetFileName(file.Name)), ExporterMode.Data);
+                ExportClass(workSheet, Path.GetFileNameWithoutExtension(GetFileName(file.Name)), ExporterMode.Data);
 
             }
             AssetDatabase.Refresh();
@@ -131,9 +131,11 @@ public class ConfigManager
         StringBuilder sb = new StringBuilder();
         sb.Append("using System;\t\n\n");
         sb.Append("[Serializable]\t\n");
+        if (mode == ExporterMode.Data)//添加用于持久化的数据类备注
+            sb.Append($"//用于{fileName}Model类进行持久化的数据类\n");
         sb.Append($"public class {fileName}{mode.ToString()}");//类名
-        if (mode == ExporterMode.Model)//模型类继承模型接口
-            sb.Append(": IModel");
+        /*if (mode == ExporterMode.Data)//模型类继承模型接口
+            sb.Append(": IModel");*/
         sb.Append("\n");
         sb.Append("{\n");
 

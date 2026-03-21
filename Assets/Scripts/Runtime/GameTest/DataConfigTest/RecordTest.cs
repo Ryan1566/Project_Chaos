@@ -11,13 +11,13 @@ public class RecordTest : MonoBehaviour
     void Start()
     {
         //Read
-        TestTableModel model = Recorder.Instance.ReadData<TestTableModel>(0);
+        TestTableData model = Recorder.Instance.ReadData<TestTableData>(0);
         Debug.Log("∂¡»°" + model.Index);
         model.Index = 2;
 
         //Update
-        Recorder.Instance.UpdateData<TestTableModel>(0, model, true);
-        model = Recorder.Instance.ReadData<TestTableModel>(0);
+        Recorder.Instance.UpdateData<TestTableData>(0, model, true);
+        model = Recorder.Instance.ReadData<TestTableData>(0);
 
         Debug.Log("∂¡»°" + model.Index);
     }
