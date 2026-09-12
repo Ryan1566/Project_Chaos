@@ -43,7 +43,7 @@ public static class GlobalPath
     /// <summary>
     /// 配置表存储路径
     /// </summary>
-    public const string data_ExcelPath = "Excel/Game_Excel/";
+    public const string data_ExcelPath = "Excel/Chaos_excel/";
 
     /// <summary>
     /// 导出的Json路径

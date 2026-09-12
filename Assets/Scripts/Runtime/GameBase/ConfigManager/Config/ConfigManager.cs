@@ -38,13 +38,17 @@ public class ConfigManager
     /// </summary>
     private const int propertyIndex = 4;
     /// <summary>
+    /// 配置行
+    /// </summary>
+    private const int configFlag = 5;
+    /// <summary>
     /// 类型行
     /// </summary>
-    private const int typeIndex = 5;
+    private const int typeIndex = 6;
     /// <summary>
     /// 值行
     /// </summary>
-    private const int valueIndex = 6;
+    private const int valueIndex = 7;
 
     //[MenuItem("Tool/ClearExcelConfigs")]
     private static void ClearConfigs()

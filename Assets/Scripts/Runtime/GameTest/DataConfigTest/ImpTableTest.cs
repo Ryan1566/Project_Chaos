@@ -7,9 +7,14 @@ using System.IO;
 public class ImpTableTest : MonoBehaviour 
 {
     //表路径记得加后缀
-    string filePath = Application.dataPath + "/" + GlobalPath.data_ExcelPath + 
-        "/TestTable_测试表" + ".xlsx";
+    string filePath;
     FileInfo fileInfo = null;
+
+    private void Awake()
+    {
+        filePath = Application.dataPath + "/" + GlobalPath.data_ExcelPath +
+        "/TestTable_测试表" + ".xlsx";
+    }
 
     private void Start()
     {
