@@ -6,5 +6,6 @@ public class TestTableConfig
 	public uint Index;//序号
 	public string CharName;//角色名称
 	public uint Occupation;//职业
+	public uint head_icon;//头像
 }
 

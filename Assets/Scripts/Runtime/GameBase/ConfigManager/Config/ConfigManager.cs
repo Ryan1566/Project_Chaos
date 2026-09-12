@@ -32,15 +32,15 @@ public class ConfigManager
     /// <summary>
     /// 备注行
     /// </summary>
-    private const int RemarkIndex = 3;
+    private const int remarkIndex = 3;
     /// <summary>
     /// 属性行
     /// </summary>
     private const int propertyIndex = 4;
     /// <summary>
-    /// 配置行
+    /// 端配置行 判断是server还是client
     /// </summary>
-    private const int configFlag = 5;
+    private const int endIndex = 5;
     /// <summary>
     /// 类型行
     /// </summary>
@@ -56,10 +56,17 @@ public class ConfigManager
 
     }
 
+    [MenuItem("ExcelTool/ExportExcel")]
+    private static void ExportConfigsAndModels()
+    {
+        ExportConfigs();
+        ExportModels();
+    }
+
     /// <summary>
     /// 导出配置
     /// </summary>
-    [MenuItem("Tool/ExportExcelConfigs")]
+    [MenuItem("ExcelTool/ExportExcelConfigs")]
     private static void ExportConfigs()
     {
         try
@@ -84,7 +91,7 @@ public class ConfigManager
 
             AssetDatabase.Refresh();
 
-            Debug.Log($"已导出所有文件");
+            Debug.Log($"——————————————————--------------------------------------已导出所有Config文件");
         }
         catch (Exception e)
         {
@@ -95,7 +102,7 @@ public class ConfigManager
     /// <summary>
     /// 导出MVP数据Model类
     /// </summary>
-    [MenuItem("Tool/ExportExcelModels")]
+    [MenuItem("ExcelTool/ExportExcelModels")]
     private static void ExportModels()
     {
         try
@@ -120,7 +127,7 @@ public class ConfigManager
             }
             AssetDatabase.Refresh();
 
-            Debug.Log($"已导出所有文件");
+            Debug.Log($"——————————————————--------------------------------------已导出所有Model文件");
         }
         catch (Exception e)
         {
@@ -131,6 +138,7 @@ public class ConfigManager
     //导出类
     private static void ExportClass(ExcelWorksheet workSheet,string fileName,ExporterMode mode)
     {
+        string[] endflags = GetEnd(workSheet);
         string[] properties = GetProperties(workSheet);
         StringBuilder sb = new StringBuilder();
         sb.Append("using System;\t\n\n");
@@ -145,6 +153,9 @@ public class ConfigManager
 
         for (int col = 1; col <= properties.Length; col++)
         {
+            if (endflags[col - 1] == "server")
+                continue;
+
             string fieldType = GetType(workSheet, col);
             string fieldName = properties[col - 1];
             string remarkContent = GetRemark(workSheet, col);
@@ -168,19 +179,31 @@ public class ConfigManager
     {
         string str = "";
         int num = 0;
+
+        string[] endflags = GetEnd(workSheet);
         string[] properties = GetProperties(workSheet);
         for (int col = 1; col <= properties.Length; col++)
         {
+            if (endflags[col - 1] == "server")
+                continue;
+
             string[] temp = GetValues(workSheet, col);
             num = temp.Length;
             foreach (var value in temp)
             {
                 str += GetJsonK_VFromKeyAndValues
                     (
-                    properties[col - 1],Convert(GetType(workSheet, col), value)
+                    properties[col - 1], Convert(GetType(workSheet, col), value)
                     ) + ',';
             }
         }
+
+        if(str == "")
+        {
+            Debug.Log("该表无任何导出项");
+            return;
+        }
+
         //获取key:value的字符串
         str = str.Substring(0, str.Length - 1);//去除最小单位语句的最后一个","
         str = GetJsonFromJsonK_V(str, num);//组装成Json列表，并去除列表中最后一个","
@@ -220,7 +243,7 @@ public class ConfigManager
     /// <returns></returns>
     private static string GetRemark(ExcelWorksheet workSheet, int col)
     {
-        return workSheet.Cells[RemarkIndex, col].Text;
+        return workSheet.Cells[remarkIndex, col].Text;
     }
 
     /// <summary>
@@ -241,6 +264,20 @@ public class ConfigManager
             properties[col - 1] = workSheet.Cells[propertyIndex, col].Text;
         }
         return properties;
+    }
+
+    private static string[] GetEnd(ExcelWorksheet workSheet)
+    {
+        string[] end = new string[workSheet.Dimension.End.Column];
+        for (int col = 1; col <= workSheet.Dimension.End.Column; col++)
+        {
+            if (workSheet.Cells[propertyIndex, col].Text == "")
+            {
+                throw new System.Exception(string.Format("第{0}行第{1}列为空", propertyIndex, col));
+            }
+            end[col - 1] = workSheet.Cells[endIndex, col].Text;
+        }
+        return end;
     }
 
     /// <summary>
