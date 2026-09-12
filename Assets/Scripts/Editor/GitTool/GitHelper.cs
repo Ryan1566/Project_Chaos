@@ -9,7 +9,13 @@ namespace GitTool.Editor
 {
     /// <summary>
     /// git 命令执行与变更分类，供 GitToolWindow 使用。
-    /// 只做只读查询和 fast-forward 拉取，绝不执行 git clean / reset --hard。
+    /// 除 <see cref="DiscardTrackedChanges"/> 外只做只读查询与 fast-forward 拉取。
+    ///
+    /// 安全边界（不要突破）：
+    ///   · 绝不执行 git clean —— 本仓库工作区里有上千个未跟踪文件（含上百个尚未提交的
+    ///     脚本和整套美术资源），git clean 会直接把它们抹掉，且无法恢复。
+    ///   · git reset --hard 只在用户明确点了「放弃本地更改并更新」后才执行，且只作用于
+    ///     已跟踪的文件（见 DiscardTrackedChanges）。
     /// </summary>
     public static class GitHelper
     {
@@ -458,6 +464,38 @@ namespace GitTool.Editor
             }
 
             return r;
+        }
+
+        /// <summary>
+        /// 丢弃「已被 Git 跟踪」的文件的全部未提交改动（已暂存 + 未暂存），
+        /// 相当于 git reset --hard HEAD。
+        ///
+        /// 调用前必须已经拿到用户的明确确认 —— 这些改动不可恢复，本类不做任何备份。
+        /// 未跟踪的文件不在作用范围内：本方法不执行 git clean，也永远不会执行。
+        /// </summary>
+        public static GitResult DiscardTrackedChanges()
+        {
+            return Run(120000, "reset", "--hard", "HEAD");
+        }
+
+        /// <summary>
+        /// 本地领先远端的提交列表（每行 "短哈希 提交说明"）。
+        /// 这些提交 --discard 也丢不掉，只能由用户自己决定是否 reset 到远端。
+        /// </summary>
+        public static List<string> GetUnpushedCommits(string upstream)
+        {
+            var list = new List<string>();
+            if (string.IsNullOrEmpty(upstream)) return list;
+
+            GitResult r = Run(20000, "log", "--oneline", "--no-decorate", upstream + "..HEAD");
+            if (!r.Success) return list;
+
+            foreach (string line in r.StdOut.Split('\n'))
+            {
+                string s = line.TrimEnd('\r');
+                if (s.Length > 0) list.Add(s);
+            }
+            return list;
         }
     }
 }
