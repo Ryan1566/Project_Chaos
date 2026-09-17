@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using ChaosDebug;
 
 public class TestPanel : TangLaoShi.BasePanel
 {
@@ -10,7 +11,7 @@ public class TestPanel : TangLaoShi.BasePanel
     {
         GetControl<Button>("StartBtn").onClick.AddListener(() =>
         {
-            Debug.Log($"{GetControl<Button>("StartBtn").name}已点击");
+            ChaosLog.Info(LogChannel.UI, $"{GetControl<Button>("StartBtn").name}已点击");
         });
     }
 

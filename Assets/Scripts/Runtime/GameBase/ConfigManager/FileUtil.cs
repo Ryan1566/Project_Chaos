@@ -4,6 +4,7 @@ using UnityEngine;
 using OfficeOpenXml;
 using System.IO;
 using System;
+using ChaosDebug;
 
 public class FileUtil
 {
@@ -16,7 +17,7 @@ public class FileUtil
     public static FileInfo[] LoadFiles(string path)
     {
         path = string.Format("{0}/{1}",Application.dataPath,path);
-        Debug.Log("读取文件路径：" + path);
+        ChaosLog.Info(LogChannel.Config, "读取文件路径：" + path);
 
         if (Directory.Exists(path))
         {
@@ -32,7 +33,7 @@ public class FileUtil
                 files.Add(file);
             }
 
-            Debug.Log("已获取该路径下所有.xlsx类型文件:\t" + path);
+            ChaosLog.Info(LogChannel.Config, "已获取该路径下所有.xlsx类型文件:\t" + path);
             return files.ToArray();
         }
         else

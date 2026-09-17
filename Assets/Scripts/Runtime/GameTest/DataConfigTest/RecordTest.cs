@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ChaosDebug;
 
 /// <summary>
 /// 该脚本用于存档测试
@@ -12,14 +13,14 @@ public class RecordTest : MonoBehaviour
     {
         //Read
         TestTableData model = Recorder.Instance.ReadData<TestTableData>(0);
-        Debug.Log("读取" + model.Index);
+        ChaosLog.Info("读取" + model.Index);
         model.Index = 2;
 
         //Update
         Recorder.Instance.UpdateData<TestTableData>(0, model, true);
         model = Recorder.Instance.ReadData<TestTableData>(0);
 
-        Debug.Log("读取" + model.Index);
+        ChaosLog.Info("读取" + model.Index);
     }
 
     // Update is called once per frame

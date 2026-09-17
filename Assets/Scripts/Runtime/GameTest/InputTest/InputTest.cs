@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using ChaosDebug;
 
 public class InputTest : MonoBehaviour
 {
@@ -22,17 +23,17 @@ public class InputTest : MonoBehaviour
         var args = e as InputArgs;
 
         //if (args.keyCodeValue == KeyCode.Escape)
-        //    Debug.Log("已通过点击" + args.keyCodeValue + "触发事件");
+        //    ChaosLog.Info(LogChannel.Input, "已通过点击" + args.keyCodeValue + "触发事件");
         //else
-        //    Debug.Log("已通过点击" + args.keyCodeValue + "触发事件");
+        //    ChaosLog.Info(LogChannel.Input, "已通过点击" + args.keyCodeValue + "触发事件");
 
         switch (args.keyCodeValue)
         {
             case KeyCode.Escape:
-                Debug.Log("1");
+                ChaosLog.Info(LogChannel.Input, "1");
                 break;
             case KeyCode.W:
-                Debug.Log("2");
+                ChaosLog.Info(LogChannel.Input, "2");
                 break;
         }
 

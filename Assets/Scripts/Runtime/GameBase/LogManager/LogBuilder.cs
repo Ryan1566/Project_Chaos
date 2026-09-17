@@ -1,6 +1,19 @@
 ﻿using System.Diagnostics;
 using UnityEngine;
 
+// ══════════ 下面这行 【#line hidden】 是为了 Console 双击跳转，不要删 ══════════
+// Unity Console 双击一条日志时，跳转目标是【堆栈里第一个带文件路径的帧】。
+// 直接写 Debug.Log 时，那个帧就是业务代码本身，所以跳得对；
+// 而本类是包装层，真正调用 UnityEngine.Debug.Log 的帧在包装文件里 ——
+// 不加处理的话双击永远跳进本文件，跳不到业务代码。
+//   · 实测未加本指令：LogEntry.file = ChaosLog.cs（跳错）
+//   · 实测加了本指令：LogEntry.file = FileUtil.cs, line = 20 / 36（正确落到调用方）
+// #line hidden 让本文件不生成序列点，这些包装帧就报不出文件名，被 Unity 自动跳过。
+// 注意：消息正文里的「── at 文件:行号」来自 [CallerFilePath] / [CallerLineNumber]，
+// 取的是【调用方】的位置，完全不受本指令影响，依旧准确。
+// 代价：调试时无法单步进入本文件 —— 对日志工具类无所谓。
+#line hidden
+
 namespace ChaosDebug
 {
     /// <summary>
@@ -123,6 +136,7 @@ namespace ChaosDebug
         // ══════════════════ 终端方法（调用即输出，必须收尾） ══════════════════
 
         /// <summary>以 Info 级别输出。链尾不写级别时用它。仅编辑器 / 开发版保留。</summary>
+        [HideInCallstack]
         [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
         public void Emit()
         {
@@ -131,6 +145,7 @@ namespace ChaosDebug
         }
 
         /// <summary>以 Debug 级别输出（还需 ChaosLog.EnableDebug = true）。仅编辑器 / 开发版保留。</summary>
+        [HideInCallstack]
         [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
         public void Debug()
         {
@@ -139,6 +154,7 @@ namespace ChaosDebug
         }
 
         /// <summary>以 Info 级别输出。仅编辑器 / 开发版保留。</summary>
+        [HideInCallstack]
         [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
         public void Info()
         {
@@ -147,6 +163,7 @@ namespace ChaosDebug
         }
 
         /// <summary>以 Success 级别输出。仅编辑器 / 开发版保留。</summary>
+        [HideInCallstack]
         [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
         public void Success()
         {
@@ -155,6 +172,7 @@ namespace ChaosDebug
         }
 
         /// <summary>以 Warn 级别输出。正式包中依然保留。</summary>
+        [HideInCallstack]
         public void Warn()
         {
             _level = LogLevel.Warn;
@@ -162,6 +180,7 @@ namespace ChaosDebug
         }
 
         /// <summary>以 Error 级别输出。正式包中依然保留。</summary>
+        [HideInCallstack]
         public void Error()
         {
             _level = LogLevel.Error;
@@ -170,6 +189,7 @@ namespace ChaosDebug
 
         // ══════════════════ 内部 ══════════════════
 
+        [HideInCallstack]
         private void EmitCore()
         {
             ChaosLog.Emit(_level, _channel, _msg, _context, _member, _file, _line, _trace, _color);
@@ -183,3 +203,5 @@ namespace ChaosDebug
         }
     }
 }
+
+#line default

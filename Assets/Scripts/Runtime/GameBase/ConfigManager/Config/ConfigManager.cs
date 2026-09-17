@@ -7,6 +7,7 @@ using System.IO;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
+using ChaosDebug;
 
 /// <summary>
 /// 导出模式枚举
@@ -91,11 +92,11 @@ public class ConfigManager
 
             AssetDatabase.Refresh();
 
-            Debug.Log($"——————————————————--------------------------------------已导出所有Config文件");
+            ChaosLog.Info(LogChannel.Config, $"——————————————————--------------------------------------已导出所有Config文件");
         }
         catch (Exception e)
         {
-            Debug.LogError(e.ToString());
+            ChaosLog.Error(LogChannel.Config, e.ToString());
         }
     }
 
@@ -127,11 +128,11 @@ public class ConfigManager
             }
             AssetDatabase.Refresh();
 
-            Debug.Log($"——————————————————--------------------------------------已导出所有Model文件");
+            ChaosLog.Info(LogChannel.Config, $"——————————————————--------------------------------------已导出所有Model文件");
         }
         catch (Exception e)
         {
-            Debug.LogError(e.ToString());
+            ChaosLog.Error(LogChannel.Config, e.ToString());
         }
     }
 
@@ -171,7 +172,7 @@ public class ConfigManager
             , string.Format("{0}{1}.cs", fileName,mode.ToString())
             , sb.ToString());
 
-        Debug.Log($"Class: 已导出对应{mode.ToString()}文件{string.Format("{0}{1}.cs", fileName, mode.ToString())}至文件夹 {savePath}");
+        ChaosLog.Info(LogChannel.Config, $"Class: 已导出对应{mode.ToString()}文件{string.Format("{0}{1}.cs", fileName, mode.ToString())}至文件夹 {savePath}");
     }
 
     //导出Json
@@ -200,7 +201,7 @@ public class ConfigManager
 
         if(str == "")
         {
-            Debug.Log("该表无任何导出项");
+            ChaosLog.Info(LogChannel.Config, "该表无任何导出项");
             return;
         }
 
@@ -219,7 +220,7 @@ public class ConfigManager
             , string.Format("{0}{1}.{2}"
             , fileName, mode.ToString(), mode == ExporterMode.Config ? "json" : "record"), str);
 
-        Debug.Log($"Json: 已导出对应{mode.ToString()}文件" +
+        ChaosLog.Info(LogChannel.Config, $"Json: 已导出对应{mode.ToString()}文件" +
             $"{string.Format("{0}{1}.{2}", fileName, mode.ToString(), mode == ExporterMode.Config ? "json" : "record")}" +
             $"至文件夹 {savePath}");
     }

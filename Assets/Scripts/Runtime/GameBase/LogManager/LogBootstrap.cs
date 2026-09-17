@@ -46,10 +46,14 @@ namespace ChaosDebug
             Application.SetStackTraceLogType(LogType.Assert, StackTraceLogType.Full);
             Application.SetStackTraceLogType(LogType.Exception, StackTraceLogType.Full);
 
-            // 普通日志：不抓栈。
-            // 抓栈开销明显，而 Info 的量最大，全抓既拖慢运行又会把 Console 淹掉。
-            // 需要普通日志的调用链时，走 ChaosLog 的内联调用点或 WarnTrace。
-            Application.SetStackTraceLogType(LogType.Log, StackTraceLogType.None);
+            // 普通日志：只抓托管（脚本）栈，不抓原生栈。
+            // 这里千万不能设成 None —— Console 里双击一条日志跳转到源码，靠的就是这段堆栈；
+            // 设成 None 会让 Info / Debug / Success 全部失去双击跳转能力（Warn / Error 不受影响，
+            // 因为它们走上面的 Full）。项目原本是 ScriptOnly，别退回去。
+            // 选 ScriptOnly 而非 Full：双击跳转只需要托管栈，Full 还要解析原生符号，明显更慢。
+            // 性能代价可控：Info 带了 [Conditional]，正式包里已被编译期裁掉，
+            // 这条设置实际只作用于编辑器与开发版 —— 开发便利比这点开销重要。
+            Application.SetStackTraceLogType(LogType.Log, StackTraceLogType.ScriptOnly);
         }
     }
 }

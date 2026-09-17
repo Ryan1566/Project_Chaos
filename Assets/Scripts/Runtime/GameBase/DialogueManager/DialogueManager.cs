@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using ChaosDebug;
 
 /// <summary>
 /// 对话管理器 - 负责在游戏中播放对话
@@ -52,7 +53,7 @@ public class DialogueManager : SingletonMono<DialogueManager>
     {
         if (dialogueData == null || dialogueData.dialogueEntries.Count == 0)
         {
-            Debug.LogWarning("对话数据为空或没有对话条目");
+            ChaosLog.Warn(LogChannel.Dialogue, "对话数据为空或没有对话条目");
             return;
         }
 
@@ -363,7 +364,7 @@ public class DialogueManager : SingletonMono<DialogueManager>
     private void TriggerEvent(DialogueEvent evt)
     {
         OnEventTriggered?.Invoke(evt.eventName);
-        Debug.Log($"触发对话事件: {evt.eventName}, 参数: {evt.eventParam}");
+        ChaosLog.Info(LogChannel.Dialogue, $"触发对话事件: {evt.eventName}, 参数: {evt.eventParam}");
         //这里可以扩展更多事件处理逻辑
     }
 

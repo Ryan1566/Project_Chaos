@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using ChaosDebug;
 
 //Json数据读取器
 public class JsonDataManager : SingletonBase<JsonDataManager>
@@ -15,7 +16,7 @@ public class JsonDataManager : SingletonBase<JsonDataManager>
     public JsonDataList<T> LoadData<T>()
     {
         string json = ResManager.Instance.Load<TextAsset>("Data/Json/" + typeof(T).Name).text;//同步加载方案
-        Debug.Log("文件已同步解析完毕：" + typeof(T).Name);
+        ChaosLog.Info(LogChannel.Config, "文件已同步解析完毕：" + typeof(T).Name);
         return JsonUtility.FromJson<JsonDataList<T>>(json);
     }
 
@@ -31,11 +32,11 @@ public class JsonDataManager : SingletonBase<JsonDataManager>
             if (file != null && file is TextAsset textAsset)//模式匹配 如果是TextAsset则自动转换并赋值为textAsset
             {
                 result = JsonUtility.FromJson<JsonDataList<T>>(textAsset.text);
-                Debug.Log("文件已异步解析完毕：" + typeof(T).Name);
+                ChaosLog.Info(LogChannel.Config, "文件已异步解析完毕：" + typeof(T).Name);
             }
             else
             {
-                Debug.Log("解析失败，文件丢失或类型异常：" + typeof(T).Name);
+                ChaosLog.Warn(LogChannel.Config, "解析失败，文件丢失或类型异常：" + typeof(T).Name);
             }
             OnLoadCompleted(result);
         });

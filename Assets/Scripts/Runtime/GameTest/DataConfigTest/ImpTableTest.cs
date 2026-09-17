@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using OfficeOpenXml;
 using System.IO;
+using ChaosDebug;
 
 public class ImpTableTest : MonoBehaviour 
 {
@@ -19,8 +20,8 @@ public class ImpTableTest : MonoBehaviour
     private void Start()
     {
         fileInfo = new FileInfo(filePath);
-        //Debug.Log(ep.File.Name);
-        //Debug.Log(ep.Workbook.Worksheets.Count);
+        //ChaosLog.Info(LogChannel.Config, ep.File.Name);
+        //ChaosLog.Info(LogChannel.Config, ep.Workbook.Worksheets.Count.ToString());
         
         ReadFile();
     }
@@ -36,12 +37,12 @@ public class ImpTableTest : MonoBehaviour
 
             //读取某段数据
             //string s = workSheet.Cells[7,1].Value.ToString();// 获取表中 第7行第1列的值
-            //Debug.Log(s);
+            //ChaosLog.Info(LogChannel.Config, s);
 
             //读取所有数据
             for(int i = 7;i <= workSheet.Dimension.End.Row;i++)
             {
-                Debug.Log("编号" + workSheet.Cells[i, 1].Value.ToString() +
+                ChaosLog.Info(LogChannel.Config, "编号" + workSheet.Cells[i, 1].Value.ToString() +
               "角色" + workSheet.Cells[i, 2].Value.ToString() +
               "职业" + workSheet.Cells[i, 3].Value.ToString());
             }

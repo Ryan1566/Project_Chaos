@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using ChaosDebug;
 
 namespace LocalizationSystem
 {
@@ -64,7 +65,7 @@ namespace LocalizationSystem
 
             if (localizationData == null)
             {
-                Debug.LogWarning("LocalizationData is null!");
+                ChaosLog.Warn(LogChannel.Localization, "LocalizationData is null!");
                 return;
             }
 
@@ -110,7 +111,7 @@ namespace LocalizationSystem
             //更新所有本地化文本
             UpdateAllLocalizedTexts();
 
-            Debug.Log($"语言已切换为: {currentLanguage}");
+            ChaosLog.Info(LogChannel.Localization, $"语言已切换为: {currentLanguage}");
         }
 
         /// <summary>
@@ -155,7 +156,7 @@ namespace LocalizationSystem
             }
             catch (FormatException)
             {
-                Debug.LogWarning($"Format error for key: {key}, text: {text}");
+                ChaosLog.Warn(LogChannel.Localization, $"Format error for key: {key}, text: {text}");
                 return text;
             }
         }

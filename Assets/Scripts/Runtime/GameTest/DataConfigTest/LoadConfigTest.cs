@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ChaosDebug;
 
 public class LoadConfigTest : MonoBehaviour
 {
@@ -9,12 +10,12 @@ public class LoadConfigTest : MonoBehaviour
     {
         /* 同步读取配置信息
         JsonDataList<TestTableConfig> testList = JsonDataManager.Instance.LoadData<TestTableConfig>();
-        Debug.Log(testList.datas[0].Occupation);*/
+        ChaosLog.Info(LogChannel.Config, testList.datas[0].Occupation.ToString());*/
 
         //异步读取配置信息
         JsonDataManager.Instance.LoadDataAsync<TestTableConfig>((json) =>
         {
-            Debug.Log(json.datas[0].Occupation);
+            ChaosLog.Info(LogChannel.Config, json.datas[0].Occupation.ToString());
         });
     }
 }

@@ -4,6 +4,19 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using UnityEngine;
 
+// ══════════ 下面这行 【#line hidden】 是为了 Console 双击跳转，不要删 ══════════
+// Unity Console 双击一条日志时，跳转目标是【堆栈里第一个带文件路径的帧】。
+// 直接写 Debug.Log 时，那个帧就是业务代码本身，所以跳得对；
+// 而本类是包装层，真正调用 UnityEngine.Debug.Log 的帧在包装文件里 ——
+// 不加处理的话双击永远跳进本文件，跳不到业务代码。
+//   · 实测未加本指令：LogEntry.file = ChaosLog.cs（跳错）
+//   · 实测加了本指令：LogEntry.file = FileUtil.cs, line = 20 / 36（正确落到调用方）
+// #line hidden 让本文件不生成序列点，这些包装帧就报不出文件名，被 Unity 自动跳过。
+// 注意：消息正文里的「── at 文件:行号」来自 [CallerFilePath] / [CallerLineNumber]，
+// 取的是【调用方】的位置，完全不受本指令影响，依旧准确。
+// 代价：调试时无法单步进入本文件 —— 对日志工具类无所谓。
+#line hidden
+
 namespace ChaosDebug
 {
     /// <summary>
@@ -35,6 +48,13 @@ namespace ChaosDebug
     ///   ChaosLog.WarnTrace("寻路失败");                              // 告警 + 内联调用链
     ///
     /// 调用点信息由编译器经 [CallerFilePath] 等特性自动填入，调用方无需手写任何参数。
+    ///
+    /// ══════════ 硬约束：正文参数必须是 string，不要改成 object ══════════
+    /// UnityEngine.Debug.Log 收 object，所以 Debug.Log(42) 能编译；本类刻意不提供 object 重载。
+    /// 一旦提供，ChaosLog.Warn(LogChannel.UI, "xx") 会同时匹配 (LogChannel, object) 与
+    /// (object, string member) —— 前者第 1 个参数更优、后者第 2 个参数更优，编译器判不出优劣，
+    /// 直接报 CS0121 二义性错误。实测该改动一次性波及全项目 21 处调用。
+    /// 要传非字符串，请显式 .ToString() 或用 $"{value}" 插值。
     /// </summary>
     public static class ChaosLog
     {
@@ -201,6 +221,7 @@ namespace ChaosDebug
         /// 正文颜色（#RRGGBB）。传 null 表示【不加颜色标签】，正文保持 Unity 原生白 —— 这是默认情况。
         /// 注意频道前缀与级别前缀的颜色不受此参数影响，那是自动配的。
         /// </param>
+        [HideInCallstack]
         internal static void Emit(LogLevel level, LogChannel channel, string msg,
                                   UnityEngine.Object context,
                                   string member, string file, int line,
@@ -313,6 +334,7 @@ namespace ChaosDebug
         // 也不会因为有人忘了加宏而导致日志被误裁剪。
 
         /// <summary>调试细节（默认不输出，需打开 EnableDebug）。仅编辑器 / 开发版保留。</summary>
+        [HideInCallstack]
         [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
         public static void Debug(string msg,
             [CallerMemberName] string member = "", [CallerFilePath] string file = "", [CallerLineNumber] int line = 0)
@@ -321,6 +343,7 @@ namespace ChaosDebug
         }
 
         /// <summary>调试细节，指定频道。仅编辑器 / 开发版保留。</summary>
+        [HideInCallstack]
         [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
         public static void Debug(LogChannel channel, string msg,
             [CallerMemberName] string member = "", [CallerFilePath] string file = "", [CallerLineNumber] int line = 0)
@@ -329,6 +352,7 @@ namespace ChaosDebug
         }
 
         /// <summary>普通流程信息。仅编辑器 / 开发版保留。</summary>
+        [HideInCallstack]
         [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
         public static void Info(string msg,
             [CallerMemberName] string member = "", [CallerFilePath] string file = "", [CallerLineNumber] int line = 0)
@@ -337,6 +361,7 @@ namespace ChaosDebug
         }
 
         /// <summary>普通流程信息，指定频道。仅编辑器 / 开发版保留。</summary>
+        [HideInCallstack]
         [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
         public static void Info(LogChannel channel, string msg,
             [CallerMemberName] string member = "", [CallerFilePath] string file = "", [CallerLineNumber] int line = 0)
@@ -349,6 +374,7 @@ namespace ChaosDebug
         /// 在 Console 里双击该条目会直接高亮/定位到场景中的这个物体，比翻堆栈快得多。
         /// 仅编辑器 / 开发版保留。
         /// </summary>
+        [HideInCallstack]
         [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
         public static void Info(UnityEngine.Object context, string msg,
             [CallerMemberName] string member = "", [CallerFilePath] string file = "", [CallerLineNumber] int line = 0)
@@ -357,6 +383,7 @@ namespace ChaosDebug
         }
 
         /// <summary>普通流程信息，带频道与 context。仅编辑器 / 开发版保留。</summary>
+        [HideInCallstack]
         [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
         public static void Info(LogChannel channel, UnityEngine.Object context, string msg,
             [CallerMemberName] string member = "", [CallerFilePath] string file = "", [CallerLineNumber] int line = 0)
@@ -365,6 +392,7 @@ namespace ChaosDebug
         }
 
         /// <summary>成功节点（加载完成、连接成功、初始化完毕等）。仅编辑器 / 开发版保留。</summary>
+        [HideInCallstack]
         [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
         public static void Success(string msg,
             [CallerMemberName] string member = "", [CallerFilePath] string file = "", [CallerLineNumber] int line = 0)
@@ -373,6 +401,7 @@ namespace ChaosDebug
         }
 
         /// <summary>成功节点，指定频道。仅编辑器 / 开发版保留。</summary>
+        [HideInCallstack]
         [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
         public static void Success(LogChannel channel, string msg,
             [CallerMemberName] string member = "", [CallerFilePath] string file = "", [CallerLineNumber] int line = 0)
@@ -386,6 +415,7 @@ namespace ChaosDebug
         // 需要静音时用 ChaosLog.Enabled / ChaosLog.MinLevel 在运行时控制。
 
         /// <summary>告警。正式包中依然保留，可用 Enabled / MinLevel 运行时静音。</summary>
+        [HideInCallstack]
         public static void Warn(string msg,
             [CallerMemberName] string member = "", [CallerFilePath] string file = "", [CallerLineNumber] int line = 0)
         {
@@ -393,6 +423,7 @@ namespace ChaosDebug
         }
 
         /// <summary>告警，指定频道。</summary>
+        [HideInCallstack]
         public static void Warn(LogChannel channel, string msg,
             [CallerMemberName] string member = "", [CallerFilePath] string file = "", [CallerLineNumber] int line = 0)
         {
@@ -400,6 +431,7 @@ namespace ChaosDebug
         }
 
         /// <summary>告警，带 context（双击 Console 条目可定位到物体）。</summary>
+        [HideInCallstack]
         public static void Warn(UnityEngine.Object context, string msg,
             [CallerMemberName] string member = "", [CallerFilePath] string file = "", [CallerLineNumber] int line = 0)
         {
@@ -407,6 +439,7 @@ namespace ChaosDebug
         }
 
         /// <summary>告警，带频道与 context。</summary>
+        [HideInCallstack]
         public static void Warn(LogChannel channel, UnityEngine.Object context, string msg,
             [CallerMemberName] string member = "", [CallerFilePath] string file = "", [CallerLineNumber] int line = 0)
         {
@@ -418,6 +451,7 @@ namespace ChaosDebug
         /// 抓取调用链开销明显大于普通日志，所以只在需要时显式调用；
         /// 若想让所有 Warn 都带上，改 ChaosLog.TraceOnWarn = true。
         /// </summary>
+        [HideInCallstack]
         public static void WarnTrace(string msg,
             [CallerMemberName] string member = "", [CallerFilePath] string file = "", [CallerLineNumber] int line = 0)
         {
@@ -425,6 +459,7 @@ namespace ChaosDebug
         }
 
         /// <summary>告警 + 内联调用链，指定频道。</summary>
+        [HideInCallstack]
         public static void WarnTrace(LogChannel channel, string msg,
             [CallerMemberName] string member = "", [CallerFilePath] string file = "", [CallerLineNumber] int line = 0)
         {
@@ -432,6 +467,7 @@ namespace ChaosDebug
         }
 
         /// <summary>告警 + 内联调用链，带 context。</summary>
+        [HideInCallstack]
         public static void WarnTrace(UnityEngine.Object context, string msg,
             [CallerMemberName] string member = "", [CallerFilePath] string file = "", [CallerLineNumber] int line = 0)
         {
@@ -439,6 +475,7 @@ namespace ChaosDebug
         }
 
         /// <summary>错误。正式包中依然保留，可用 Enabled / MinLevel 运行时静音。</summary>
+        [HideInCallstack]
         public static void Error(string msg,
             [CallerMemberName] string member = "", [CallerFilePath] string file = "", [CallerLineNumber] int line = 0)
         {
@@ -446,6 +483,7 @@ namespace ChaosDebug
         }
 
         /// <summary>错误，指定频道。</summary>
+        [HideInCallstack]
         public static void Error(LogChannel channel, string msg,
             [CallerMemberName] string member = "", [CallerFilePath] string file = "", [CallerLineNumber] int line = 0)
         {
@@ -453,6 +491,7 @@ namespace ChaosDebug
         }
 
         /// <summary>错误，带 context（双击 Console 条目可定位到物体）。</summary>
+        [HideInCallstack]
         public static void Error(UnityEngine.Object context, string msg,
             [CallerMemberName] string member = "", [CallerFilePath] string file = "", [CallerLineNumber] int line = 0)
         {
@@ -460,6 +499,7 @@ namespace ChaosDebug
         }
 
         /// <summary>错误，带频道与 context。</summary>
+        [HideInCallstack]
         public static void Error(LogChannel channel, UnityEngine.Object context, string msg,
             [CallerMemberName] string member = "", [CallerFilePath] string file = "", [CallerLineNumber] int line = 0)
         {
@@ -467,3 +507,5 @@ namespace ChaosDebug
         }
     }
 }
+
+#line default

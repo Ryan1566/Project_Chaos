@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using ChaosDebug;
 
 //资源加载管理器
 public class ResManager : SingletonBase<ResManager>
@@ -51,7 +52,7 @@ public class ResManager : SingletonBase<ResManager>
     {
         ResourceRequest res = Resources.LoadAsync<T>(name);
         if (res.asset == null)
-            Debug.Log($"未寻找到该资源:{name}");
+            ChaosLog.Warn($"未寻找到该资源:{name}");
         yield return res;
 
         if(res.asset is GameObject)
