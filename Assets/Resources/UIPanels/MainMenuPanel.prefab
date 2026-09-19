@@ -805,6 +805,8 @@ GameObject:
   - component: {fileID: 2657519298174664229}
   - component: {fileID: 7688657272997155508}
   - component: {fileID: 1966805561138674022}
+  - component: {fileID: 9081087260488951823}
+  - component: {fileID: 1870674899042425463}
   m_Layer: 0
   m_Name: MainMenuPanel
   m_TagString: Untagged
@@ -885,6 +887,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15e9b515fd52a894b8ccde730e423ac9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!225 &9081087260488951823
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8015863683096427868}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &1870674899042425463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8015863683096427868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bd624ff433ec9c409dfb63e8afd3a4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enterType: 1
+  enterFadeAlong: 1
+  enterDuration: 0.25
+  enterDelay: 0
+  enterEase: 6
+  autoReverseExit: 1
+  exitType: 1
+  exitFadeAlong: 1
+  exitDuration: 0.2
+  exitDelay: 0
+  exitEase: 5
+  animTarget: {fileID: 0}
+  slideDistance: 200
+  scaleFromSmall: 0.85
+  scaleFromLarge: 1.15
+  blockInputDuringTransition: 1
+  staggerEnabled: 0
+  staggerRoot: {fileID: 0}
+  staggerDelay: 0.05
+  staggerInterval: 0.06
+  staggerDuration: 0.2
+  staggerType: 1
+  staggerFadeAlong: 1
+  staggerEase: 6
+  staggerSlideDistance: 40
+  staggerOnExit: 0
+  staggerExclude: []
+  updateType: 0
 --- !u!1 &9115438582367733606
 GameObject:
   m_ObjectHideFlags: 0
