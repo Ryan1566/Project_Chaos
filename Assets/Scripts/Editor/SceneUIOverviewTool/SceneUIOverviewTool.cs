@@ -18,9 +18,14 @@ namespace SceneUIOverviewTool.Editor
     /// <summary>
     /// 在 Scene 视图里把 UI 与游戏场景分开显示：Canvas 从场景区摘掉，在视图左侧单独预览。
     ///
-    /// 存在的意义：项目的 UI 是满屏尺寸的 World Space Canvas（1920x1080 @ scale 0.01，
-    /// 世界尺寸 20.53x11.55），主相机可见范围恰好也是这个尺寸。于是它在 Scene 视图里就是
-    /// 一堵和视锥严丝合缝的墙，Grid / citizen 等场景内容全被盖住，根本没法编辑场景。
+    /// 存在的意义：项目的 UI 是满屏尺寸的画布（1920x1080 @ scale 0.01，世界尺寸
+    /// 20.53x11.55），主相机可见范围恰好也是这个尺寸。于是它在 Scene 视图里就是一堵和视锥
+    /// 严丝合缝的墙，Grid / citizen 等场景内容全被盖住，根本没法编辑场景。
+    ///
+    /// 画布原本是 World Space，2026-09-24 改成 ScreenSpaceCamera + Main Camera。
+    /// 起因是 World Space 下 transform 就是运行时位置，挪一下 Canvas 就会把运行时 UI 一起
+    /// 挪出画面（提交 980dcfe 里那个 x=-27.9 就是这么来的，运行时一个 UI 都看不到）。
+    /// 现在 RectTransform 由相机驱动，编辑期怎么拖都不影响运行时排版。
     ///
     /// 为什么用 SceneVisibilityManager 而不是 cullingMask：面板预制体（Resources/UIPanels）
     /// 全部在 Default 层而非 UI 层，UIManager 运行时 SetParent 也不改 layer。按层剔除对它们
@@ -29,6 +34,11 @@ namespace SceneUIOverviewTool.Editor
     /// 为什么零污染：不改任何场景对象的位置 / 激活状态 / Layer。隐藏状态落在编辑器的
     /// Library/SceneVisibilityState.asset 里，不进版本库。Hierarchy 里会显示划掉的眼睛图标，
     /// 随时可以看出来是谁干的。
+    ///
+    /// 分离只作用于 Scene 视图，Game 视图与 Play 模式完全不受影响 —— SceneVisibilityManager
+    /// 是纯编辑器状态，实测开关工具前后 Game 视图逐像素一致。但预览面板要临时改场景对象
+    /// （激活停用面板 / 切 renderMode / 关渲染器），运行中做这些会真的干扰游戏，所以
+    /// Play 期间只保留隐藏和轮廓框，不画预览面板。
     ///
     /// 已知副作用（无法消除）：
     /// 1. 预览前会临时激活停用的面板、渲染完立刻还原，这会给场景置一个 dirty 标记。
@@ -82,8 +92,11 @@ namespace SceneUIOverviewTool.Editor
         private static readonly List<GameObject> _activated = new List<GameObject>();
         private static readonly List<Renderer> _suppressed = new List<Renderer>();
 
-        // 渲染期间被临时切到 WorldSpace 的 Overlay 画布，见 SwitchOverlayCanvases
+        // 渲染期间被临时改了渲染目标的画布，见 SwitchOverlayCanvases。
+        // 两个列表配对使用：_recameraedOriginals[i] 是 _recameraedCanvases[i] 原来的相机。
         private static readonly List<Canvas> _flippedCanvases = new List<Canvas>();
+        private static readonly List<Canvas> _recameraedCanvases = new List<Canvas>();
+        private static readonly List<Camera> _recameraedOriginals = new List<Camera>();
 
         // GetWorldCorners 的复用缓冲，避免每次 repaint 都分配
         private static readonly Vector3[] _corners = new Vector3[4];
@@ -97,7 +110,6 @@ namespace SceneUIOverviewTool.Editor
             SceneView.duringSceneGui += OnSceneGui;
             AssemblyReloadEvents.beforeAssemblyReload += CleanupPreview;
             EditorApplication.quitting += OnEditorQuitting;
-            EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
             EditorSceneManager.sceneOpened += OnSceneOpened;
 
             // 域重载后 SessionState 还在但内存里的跟踪列表没了，重建一次
@@ -113,12 +125,6 @@ namespace SceneUIOverviewTool.Editor
         {
             if (Enabled) Enabled = false;
             CleanupPreview();
-        }
-
-        // Play 模式下不接管：预览要临时 SetActive 场景对象，那是在真的改游戏状态
-        private static void OnPlayModeStateChanged(PlayModeStateChange state)
-        {
-            if (state == PlayModeStateChange.ExitingEditMode && Enabled) Enabled = false;
         }
 
         private static void OnSceneOpened(Scene scene, OpenSceneMode mode)
@@ -137,13 +143,6 @@ namespace SceneUIOverviewTool.Editor
             set
             {
                 if (SessionState.GetBool(EnabledKey, false) == value) return;
-
-                if (value && EditorApplication.isPlayingOrWillChangePlaymode)
-                {
-                    ChaosLog.Warn("[UI分离显示] Play 模式下不启用：预览需要临时激活场景对象，会干扰运行中的游戏");
-                    NotifyEnabledChanged();
-                    return;
-                }
 
                 SessionState.SetBool(EnabledKey, value);
 
@@ -179,14 +178,13 @@ namespace SceneUIOverviewTool.Editor
         private static bool ToggleEnabledValidate()
         {
             Menu.SetChecked(MenuPath, Enabled);
-            return !EditorApplication.isPlaying;
+            return true;// Play 期间也能开关：隐藏是纯 Scene 视图状态，碰不到游戏
         }
 
         // ── 场景视图回调 ──────────────────────────────────────────────
 
         private static void OnSceneGui(SceneView sv)
         {
-            if (!Enabled) return;
             if (sv == null || sv.camera == null) return;
 
             var e = Event.current;
@@ -197,17 +195,30 @@ namespace SceneUIOverviewTool.Editor
             // 所以不用 GUI.Button，改成自己在同一个矩形上做命中。
             if (e.type != EventType.Repaint)
             {
-                HandleCloseClick(sv, e);
+                if (Enabled) HandleCloseClick(sv, e);
                 return;
             }
 
-            ApplyHide();
-
+            // 轮廓框在两种状态下都画。它标的是 UI 的世界覆盖范围，跟有没有分离无关；
+            // 未分离时反而更用得着 —— 那时 UI 就是糊在场景上的一堵墙，全靠这个框才知道边界在哪。
             var roots = GetRootCanvases();
-            if (roots.Count == 0) return;
+            bool hasRoots = roots.Count > 0;
+            if (hasRoots)
+            {
+                // 世界空间的虚框要在 BeginGUI 之前画，否则会落到 GUI 坐标系里
+                DrawWorldBounds(roots);
+            }
 
-            // 世界空间的虚框要在 BeginGUI 之前画，否则会落到 GUI 坐标系里
-            DrawWorldBounds(roots);
+            if (!Enabled) return;
+
+            ApplyHide();
+            if (!hasRoots) return;
+
+            // Play 期间不画预览：预览要临时激活停用面板、切 renderMode、关渲染器，
+            // 运行时做这些会真的动到游戏对象（触发 OnEnable/OnDisable、改 Game 视图成像）。
+            // 而隐藏走的是 SceneVisibilityManager —— 纯 Scene 视图状态，运行中照常安全。
+            if (EditorApplication.isPlaying) return;
+
             DrawPreviewPanel(sv, roots);
         }
 
@@ -239,23 +250,39 @@ namespace SceneUIOverviewTool.Editor
             var svm = SceneVisibilityManager.instance;
             if (svm == null) return;
 
+            // 这个方法每个 Repaint 都会走一遍，而落盘是有代价的（两次写文件）。
+            // 只有隐藏集合真的变了才写 —— 否则 Play 期间每帧都在刷 Library。
+            bool changed = false;
+
             var roots = GetRootCanvases();
             for (int i = 0; i < roots.Count; i++)
             {
                 var canvas = roots[i];
-                if (_hiddenCanvases.Contains(canvas)) continue;
-                if (svm.IsHidden(canvas.gameObject, false)) continue;// 用户自己隐藏的，不接管
 
-                // 记下子树里原本就被隐藏的节点：还原时 Show(root, true) 会把它们一起放出来
-                foreach (var t in canvas.GetComponentsInChildren<Transform>(true))
-                    if (svm.IsHidden(t.gameObject, false)) _preHidden.Add(t.gameObject);
+                // 已经藏着的一律不动：用户自己藏的不能接管，我们藏的也不必重复操作
+                if (svm.IsHidden(canvas.gameObject, false)) continue;
+
+                // 走到这里说明它当前可见，两种情况都得藏：第一次接管，以及我们藏过、却被外部
+                // 放了出来 —— Unity 退出 Play 模式时会回滚 Scene 可见性状态，实测踩到过。
+                // 不能拿 _hiddenCanvases 里有没有当"已经藏好了"的证据，否则列表说藏着、画面露着，
+                // 这一条 continue 掉之后就再也藏不上了。
+                if (!_hiddenCanvases.Contains(canvas))
+                {
+                    // 记下子树里原本就被隐藏的节点：还原时 Show(root, true) 会把它们一起放出来
+                    foreach (var t in canvas.GetComponentsInChildren<Transform>(true))
+                        if (svm.IsHidden(t.gameObject, false)) _preHidden.Add(t.gameObject);
+
+                    _hiddenCanvases.Add(canvas);
+                }
 
                 svm.Hide(canvas.gameObject, true);
-                _hiddenCanvases.Add(canvas);
+                changed = true;
             }
 
             for (int i = _hiddenCanvases.Count - 1; i >= 0; i--)
-                if (_hiddenCanvases[i] == null) _hiddenCanvases.RemoveAt(i);
+                if (_hiddenCanvases[i] == null) { _hiddenCanvases.RemoveAt(i); changed = true; }
+
+            if (!changed) return;
 
             SaveHiddenIds();
             SaveLedger();
@@ -282,6 +309,10 @@ namespace SceneUIOverviewTool.Editor
         // SessionState 跨域重载存活，用它把跟踪列表接回来，避免隐藏状态变成孤儿
         private static void SaveHiddenIds()
         {
+            // Play 里场景对象是临时实例，InstanceID 出了 Play 就失效。存进去只会把编辑期
+            // 那套有效 id 覆盖掉，下次重载就再也认不回来 —— 而这正是这个 key 存在的意义。
+            if (EditorApplication.isPlaying) return;
+
             var sb = new StringBuilder();
             for (int i = 0; i < _hiddenCanvases.Count; i++)
             {
@@ -505,16 +536,37 @@ namespace SceneUIOverviewTool.Editor
             cam.transform.SetPositionAndRotation(center - forward * depth, Quaternion.LookRotation(forward, up));
         }
 
-        // ── Overlay 画布：渲染期间临时转 WorldSpace ────────────────────
+        // ── 画布渲染目标：渲染期间临时改掉，让预览相机渲染得到它 ──────────
+        //
+        // 两种屏幕空间画布预览相机都渲染不到，原因各不相同：
+        // · ScreenSpaceOverlay 根本不走相机渲染路径，只能先切成 WorldSpace 当一块世界平面画；
+        // · ScreenSpaceCamera 只认自己的 worldCamera，得把 worldCamera 临时换成预览相机。
+        //   后者是实测出来的：不换的话 _previewRT 恒为纯清屏色（0 个非背景像素）。
 
         private static void SwitchOverlayCanvases(List<Canvas> roots)
         {
             _flippedCanvases.Clear();
+            _recameraedCanvases.Clear();
+            _recameraedOriginals.Clear();
+
             for (int i = 0; i < roots.Count; i++)
             {
-                if (roots[i] == null || roots[i].renderMode != RenderMode.ScreenSpaceOverlay) continue;
-                roots[i].renderMode = RenderMode.WorldSpace;
-                _flippedCanvases.Add(roots[i]);
+                var c = roots[i];
+                if (c == null) continue;
+
+                if (c.renderMode == RenderMode.ScreenSpaceOverlay)
+                {
+                    c.renderMode = RenderMode.WorldSpace;
+                    _flippedCanvases.Add(c);
+                }
+                else if (c.renderMode == RenderMode.ScreenSpaceCamera && c.worldCamera != _previewCamera)
+                {
+                    // 它是按相机视野排版的，换了相机就等于按预览视野排版 ——
+                    // 成像比切成 WorldSpace 更忠实，因为排版规则本身没变。
+                    _recameraedCanvases.Add(c);
+                    _recameraedOriginals.Add(c.worldCamera);
+                    c.worldCamera = _previewCamera;
+                }
             }
         }
 
@@ -523,6 +575,11 @@ namespace SceneUIOverviewTool.Editor
             for (int i = 0; i < _flippedCanvases.Count; i++)
                 if (_flippedCanvases[i] != null) _flippedCanvases[i].renderMode = RenderMode.ScreenSpaceOverlay;
             _flippedCanvases.Clear();
+
+            for (int i = 0; i < _recameraedCanvases.Count; i++)
+                if (_recameraedCanvases[i] != null) _recameraedCanvases[i].worldCamera = _recameraedOriginals[i];
+            _recameraedCanvases.Clear();
+            _recameraedOriginals.Clear();
         }
 
         // ── 同层污染处理 ──────────────────────────────────────────────
@@ -618,6 +675,9 @@ namespace SceneUIOverviewTool.Editor
 
         private static void SaveLedger()
         {
+            // 同 SaveHiddenIds：账本记的必须是编辑期场景里的东西
+            if (EditorApplication.isPlaying) return;
+
             try
             {
                 var sb = new StringBuilder();
