@@ -139,7 +139,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &157596773
 RectTransform:
   m_ObjectHideFlags: 0
@@ -888,11 +888,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4243220672308503301, guid: f3ce9c1becf0a8b4da43fd14be7767c5, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 404.08
       objectReference: {fileID: 0}
     - target: {fileID: 4243220672308503301, guid: f3ce9c1becf0a8b4da43fd14be7767c5, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 175.24
       objectReference: {fileID: 0}
     - target: {fileID: 5058516459639841580, guid: f3ce9c1becf0a8b4da43fd14be7767c5, type: 3}
       propertyPath: m_Pivot.x
@@ -976,7 +976,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7688657272997155508, guid: f3ce9c1becf0a8b4da43fd14be7767c5, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8015863683096427868, guid: f3ce9c1becf0a8b4da43fd14be7767c5, type: 3}
       propertyPath: m_Name
@@ -984,7 +984,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8015863683096427868, guid: f3ce9c1becf0a8b4da43fd14be7767c5, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
