@@ -37,6 +37,14 @@ public static class GlobalPath
     /// </summary>
     [Header("音效资源路径")]
     public const string res_PanelPath = "UIPanels/";
+
+    /// <summary>
+    /// 输入动作表资源路径
+    /// 注意这里【没有结尾斜杠】：它是要被 ResManager.Load 直接当完整路径用的，
+    /// 拼成 "Input/ChaosInputActions" 才能加载到 Assets/Resources/Input/ChaosInputActions.inputactions。
+    /// </summary>
+    [Header("输入资源路径")]
+    public const string res_InputActionsPath = "Input/ChaosInputActions";
     #endregion
 
     #region 表配置路径

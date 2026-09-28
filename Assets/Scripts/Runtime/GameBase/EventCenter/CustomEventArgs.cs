@@ -37,7 +37,8 @@ public class LoadingEventArgs : EventArgs
 /// </summary>
 public class SavingSettingEventArgs : EventArgs
 {
-    //public SettingPanel a_settingPanel;
+    /// <summary>刚刚应用并落盘的那一份设置。</summary>
+    public SettingsData a_settings;
 }
 
 /// <summary>

@@ -13,10 +13,12 @@ public static class EventConstName
     //#region 保存和加载
     //public const string SaveGame = nameof(SaveGame);//保存游戏
     //public const string LoadGame = nameof(LoadGame);//加载游戏
-    //public const string SaveSetting = nameof(SaveSetting);//保存设置
-    //public const string LoadSetting = nameof(LoadSetting);//加载设置
-    //public const string LoadProgress = nameof(LoadProgress);//加载进度界面
     //#endregion
+
+    #region 设置事件
+    public const string SaveSetting = nameof(SaveSetting);//设置已应用并落盘
+    public const string LoadSetting = nameof(LoadSetting);//设置已读取（参数里带"是否首次运行"）
+    #endregion
 
     //#region 任务系统
     //public const string DelegateQuest = nameof(DelegateQuest);//委派任务
