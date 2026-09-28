@@ -20,7 +20,8 @@ public class InputTest : MonoBehaviour
 
     private void ShowTestUI(object sender,EventArgs e)
     {
-        var args = e as InputArgs;
+        //var args = e as InputArgs;//注释原因见下
+        if (!(e is InputArgs args)) return;   // 用 is 而不是 as，类型不对时提前返回而不是后面 NRE
 
         //if (args.keyCodeValue == KeyCode.Escape)
         //    ChaosLog.Info(LogChannel.Input, "已通过点击" + args.keyCodeValue + "触发事件");
@@ -37,5 +38,10 @@ public class InputTest : MonoBehaviour
                 break;
         }
 
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.Instance.RemoveListener(EventConstName.GetKeyDown, ShowTestUI);
     }
 }

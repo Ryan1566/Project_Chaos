@@ -34,7 +34,7 @@ public class UIPanelAnimator : MonoBehaviour
     public bool autoReverseExit = true;
 
     [Tooltip("仅当 autoReverseExit 取消勾选时生效")]
-    public PanelAnimType exitType = PanelAnimType.Fade;
+    public PanelAnimType exitType = PanelAnimType.None;
 
     public bool exitFadeAlong = true;
     [Min(0f)] public float exitDuration = 0.2f;

@@ -20,6 +20,11 @@ public class UIManager : SingletonBase<UIManager>
     {
         _canvas = FindCanvas();
 
+        //初始化时显示底图
+        GameObject baseBG = null;
+        baseBG = _canvas.Find("Base_BG").gameObject ?? null;
+        baseBG.SetActive(true);
+
 #if UNITY_EDITOR
         ValidatePanelPrefabs();
 #endif
@@ -114,7 +119,7 @@ public class UIManager : SingletonBase<UIManager>
         panelStack.Push(panel);//存入到堆栈中，成为堆栈中新的顶部对象
 
         //必须在 Show 之前：让进场面板渲染在最上层，压住正在退场的旧面板
-        //panel.transform.SetAsLastSibling();
+        panel.transform.SetAsLastSibling();
 
         panel.Show();//显示新的ui
 

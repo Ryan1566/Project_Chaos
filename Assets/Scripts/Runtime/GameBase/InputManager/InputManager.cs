@@ -46,9 +46,9 @@ public class InputManager : SingletonBase<InputManager>
                 keyCodeValue = kc
             });
         }
-        if (Input.GetKeyDown(kc))
+        if (Input.GetKeyUp(kc))
         {
-            this.TriggerEvent(EventConstName.GetKeyDown, new InputArgs
+            this.TriggerEvent(EventConstName.GetKeyUp, new InputArgs
             {
                 keyCodeValue = kc
             });
