@@ -56,9 +56,9 @@ public class KeybindBindingsPage : SettingsPageBase
     /// <summary>正在跑的重绑定协程。非空即"正在等待按键"。</summary>
     private Coroutine _rebindRoutine;
 
-    /// <summary>当前一次采集是否已收尾、以及是否成功（由 InputManager 的回调写入）。</summary>
+    /// <summary>当前一次采集是否已收尾、以及是怎么收尾的（由 InputManager 的回调写入）。</summary>
     private bool _stepFinished;
-    private bool _stepSucceeded;
+    private InputManager.RebindResult _stepResult;
 
     /// <summary>鼠标格的提示词。设备的排除规则已经保证这一格只收得到鼠标键。</summary>
     private const string MousePrompt = "请按鼠标键…";
@@ -317,11 +317,11 @@ public class KeybindBindingsPage : SettingsPageBase
             }
 
             _stepFinished = false;
-            _stepSucceeded = false;
+            _stepResult = InputManager.RebindResult.Aborted;
 
             InputManager.Instance.BeginRebind(actionName, step.BindingIndex, kind, OnStepFinished);
 
-            //等这一步收尾（成功、取消、超时都会回调，所以这里不会永久卡住）
+            //等这一步收尾（采到键、按取消键、超时都会回调，所以这里不会永久卡住）
             while (!_stepFinished) yield return null;
 
             if (row != null)
@@ -330,7 +330,16 @@ public class KeybindBindingsPage : SettingsPageBase
                 else row.SetListening(false);
             }
 
-            if (!_stepSucceeded)
+            if (_stepResult == InputManager.RebindResult.Cleared)
+            {
+                //玩家按了取消键，InputManager 已经把【整条】绑定置空了（复合绑定是头+各部分一起），
+                //剩下的段不用再采集 —— 再问一遍"右移请按键"是没道理的，他要的就是这一格空着。
+                //走到下面的 SyncOverridesToPending：置空同样是一次真实改动，不提交的话
+                //界面显示"未绑定"而存档里还是旧键，点返回再进来又变回去
+                break;
+            }
+
+            if (_stepResult != InputManager.RebindResult.Completed)
             {
                 allSucceeded = false;
                 break;
@@ -351,9 +360,9 @@ public class KeybindBindingsPage : SettingsPageBase
         _rebindRoutine = null;
     }
 
-    private void OnStepFinished(bool success)
+    private void OnStepFinished(InputManager.RebindResult result)
     {
-        _stepSucceeded = success;
+        _stepResult = result;
         _stepFinished = true;
     }
 
