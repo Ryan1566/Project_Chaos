@@ -57,6 +57,7 @@ public class ConfigManager
 
     }
 
+#if UNITY_EDITOR
     [MenuItem("ExcelTool/ExportExcel")]
     private static void ExportConfigsAndModels()
     {
@@ -135,6 +136,7 @@ public class ConfigManager
             ChaosLog.Error(LogChannel.Config, e.ToString());
         }
     }
+#endif
 
     //µ¼³öÀà
     private static void ExportClass(ExcelWorksheet workSheet,string fileName,ExporterMode mode)

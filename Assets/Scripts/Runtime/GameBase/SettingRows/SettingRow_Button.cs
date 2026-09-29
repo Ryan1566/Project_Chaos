@@ -19,9 +19,11 @@ public class SettingRow_Button : SettingRowBase
         if (_button != null) _button.onClick.AddListener(HandleClick);
     }
 
-    public void SetInteractable(bool interactable)
+    /// <summary>可点性落在按钮上。整行置灰的颜色部分由基类 SetInteractable 负责。</summary>
+    public override void SetClickable(bool clickable)
     {
-        if (_button != null) _button.interactable = interactable;
+        base.SetClickable(clickable);
+        if (_button != null) _button.interactable = clickable;
     }
 
     private void HandleClick()

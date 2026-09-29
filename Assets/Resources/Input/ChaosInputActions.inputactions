@@ -128,7 +128,7 @@
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": "KeyboardFixed",
+                    "groups": "Mouse",
                     "action": "Attack",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -173,6 +173,28 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a0000000-0000-4000-8000-00000000020e",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Mouse",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a0000000-0000-4000-8000-00000000020f",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Mouse",
                     "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false

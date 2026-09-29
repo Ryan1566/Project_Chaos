@@ -33,6 +33,13 @@ public class SettingRow_Slider : SettingRowBase
         }
     }
 
+    /// <summary>可点性落在拉条上。整行置灰的颜色部分由基类 SetInteractable 负责。</summary>
+    public override void SetClickable(bool clickable)
+    {
+        base.SetClickable(clickable);
+        if (_slider != null) _slider.interactable = clickable;
+    }
+
     /// <summary>页面在绑定时调用，设定取值域。</summary>
     public void Configure(int min, int max)
     {

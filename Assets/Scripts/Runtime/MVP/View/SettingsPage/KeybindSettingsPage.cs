@@ -1,265 +1,85 @@
-﻿using System.Collections;
-using System.Collections.Generic;
 using ChaosDebug;
 using UnityEngine;
 
 /// <summary>
-/// 按键设置页：输入设备 / 移动 攻击 跳跃 三个按键 / 鼠标反转与灵敏度 / 攻击触发方式 / 恢复默认按键。
+/// 按键设置页（一级界面）：进入"按键绑定"二级界面的入口 + 鼠标专用项 + 攻击触发方式。
 ///
-/// ══════════════════════ 这一页与其它页最大的不同 ══════════════════════
-/// 别的设置项改的只是数据（写在 Pending 里，等点「应用」）；
-/// 而按键重绑定必须【立刻写进 InputActionAsset】—— 因为按键按钮上显示的就是资产里当前的键，
-/// 不写进去玩家就看不到自己刚按的键，等于改键没有反馈。
-/// 于是这里形成了唯一的"数据与运行时短暂不一致"窗口：
-///     Pending.inputOverridesJson 记着新键（待应用），InputActionAsset 上也已经是新键。
-/// 点「应用」→ 两者一致；点「返回」→ SettingsManager.RevertEdit() 会把资产回滚到已应用的那份。
-/// 这个回滚是必需的，不能省（见 SettingsManager.RevertEdit 的注释）。
+/// ══════════ 为什么按键绑定要拆到二级界面 ══════════
+/// 改键是"低频、且需要专注"的操作：等待按键期间整页的按键行都要置灰防重入。
+/// 而设备选择（键鼠 / 手柄）与改键其实是一件事的两面（选哪一套 ↔ 改哪一套），
+/// 把它们和鼠标反转、灵敏度这些"顺手一拨"的开关堆在同一页，
+/// 玩家看不出"切设备 = 换一个编辑对象"，改键时还得在一堆无关项里找自己那一行。
+/// 拆出去之后这一页只剩三个随手可改的东西，二级界面里则能专心摆下两套按键行。
 ///
-/// ══════════════════════ 移动键为什么要分两步采集 ══════════════════════
-/// 移动是一条 1DAxis 复合绑定（A=负方向、D=正方向）。一次按键只能得到一个方向，
-/// 所以"改移动键"实际是依次采集两次：先问左移、再问右移，两次都拿到才算改完。
-/// 中途取消或超时则整条放弃 —— 只改半个方向会留下"左移是 A、右移还是个奇怪键"的残局，
-/// 比不改更糟。提示词由 InputManager.GetRebindSteps 给出。
+/// ══════════ 鼠标专用项为什么要跟着方案置灰 ══════════
+/// 水平反转 / 垂直反转 / 灵敏度 / 攻击触发方式（MouseTriggerMode）都只有鼠标（指向）才有意义，
+/// 手柄方案下改它们没有任何作用 —— 这些字段目前也还没有消费方，只在界面与存档之间往返。
+/// 选择"置灰保留可见"而不是隐藏：玩家得先看见这些项存在，
+/// 才知道"切回键鼠就能改"，隐藏掉只会让人以为设置项没了。
 ///
-/// ══════════════════════ 编辑的是"当前设备"的那条绑定 ══════════════════════
-/// 每个动作在键盘组与手柄组下各有一条可重绑定主绑定（另有打不掉的固定备用键，不参与重绑）。
-/// 选"键盘"时改的是键盘那条，选 PS/Xbox 时改的是手柄那条 ——
-/// 手柄两档改的是【同一条绑定】，区别只在按键显示名（✕○□△ 还是 A/B/X/Y）。
-/// 所以切设备后必须 RefreshAll()，否则界面上显示的还是上一个设备的键名。
+/// ══════════ 本页只处理"当前是哪一套方案" ══════════
+/// 页签（键鼠 / 手柄）与手柄型号都在二级界面里，改动写的是 SettingsData.inputDevice 与 gamepadModel；
+/// 本页的置灰刷新读的是同一个 inputDevice，因此两边天然一致，不需要额外的同步机制。
 /// </summary>
 public class KeybindSettingsPage : SettingsPageBase
 {
-    /// <summary>鼠标灵敏度取值域。需求第 2 项：1 ~ 10 的整数。</summary>
+    /// <summary>二级界面在本页同级里的节点名。必须与 SettingPanelBuilder 生成的节点名一致。</summary>
+    public const string BindingsPageName = "Page_Keybind_Bindings";
+
+    /// <summary>鼠标灵敏度取值域：1 ~ 10 的整数。</summary>
     private const int MinSensitivity = 1;
     private const int MaxSensitivity = 10;
 
-    /// <summary>本页三个按键行，重绑定期间要一起置灰（防止叠出第二个重绑定）。</summary>
-    private readonly List<SettingRow_Keybind> _keyRows = new List<SettingRow_Keybind>();
-
-    /// <summary>正在跑的重绑定协程。非空即"正在等待按键"。</summary>
-    private Coroutine _rebindRoutine;
-
-    /// <summary>当前一次重绑定里，某一步是否已完成、以及是否成功。</summary>
-    private bool _stepFinished;
-    private bool _stepSucceeded;
+    /// <summary>键鼠方案的二级界面。找不到时为 null（FindSubPage 已经报过错）。</summary>
+    private SettingsPageBase _bindingsPage;
 
     protected override void OnBind()
     {
-        BindDevice();
-        BindKeyRow(SettingIds.Move, InputManager.ActionMove);
-        BindKeyRow(SettingIds.Attack, InputManager.ActionAttack);
-        BindKeyRow(SettingIds.Jump, InputManager.ActionJump);
-        BindMouse();
-        BindTriggerMode();
-        BindButton(SettingIds.ResetAllKeybinds, ResetAllKeybinds);
-    }
+        //子页的"< 返回"由本页负责收回来：子页不该知道自己在谁的下面
+        _bindingsPage = FindSubPage(BindingsPageName);
+        if (_bindingsPage != null) _bindingsPage.OnBackRequested = CloseSubPage;
 
-    /// <summary>
-    /// 输入设备。它的 onChanged 只做一件事：整体刷新 —— 换设备等于换"当前在编辑哪条绑定"，
-    /// 三个按键行的显示与之后重绑定的目标全都要跟着换。
-    /// </summary>
-    private void BindDevice()
-    {
-        BindSelector(SettingIds.Device, SettingsLabels.Device,
-            data => data.inputDevice,
-            (data, index) => data.inputDevice = index,
-            index => RefreshAll());
-    }
+        BindButton(SettingIds.OpenBindings, OpenBindingsPage);
 
-    private void BindMouse()
-    {
-        BindToggle(SettingIds.MouseInvertX,
+        SettingRow_Toggle invertX = BindToggle(SettingIds.MouseInvertX,
             data => data.mouseInvertX,
             (data, value) => data.mouseInvertX = value);
 
-        BindToggle(SettingIds.MouseInvertY,
+        SettingRow_Toggle invertY = BindToggle(SettingIds.MouseInvertY,
             data => data.mouseInvertY,
             (data, value) => data.mouseInvertY = value);
 
-        BindSlider(SettingIds.MouseSensitivity,
+        SettingRow_Slider sensitivity = BindSlider(SettingIds.MouseSensitivity,
             data => data.mouseSensitivity,
             (data, value) => data.mouseSensitivity = value,
             MinSensitivity, MaxSensitivity);
-    }
 
-    private void BindTriggerMode()
-    {
-        BindSelector(SettingIds.AttackTrigger, SettingsLabels.TriggerMode,
+        SettingRow_Selector trigger = BindSelector(SettingIds.AttackTrigger, SettingsLabels.TriggerMode,
             data => data.attackTriggerMode,
             (data, index) => data.attackTriggerMode = index);
-    }
 
-    /// <summary>
-    /// 一行按键控件。行只抛意图，重绑定与恢复默认都在本页处理。
-    /// 回填动作单独注册：键名取决于"当前设备"，不是 Pending 里某个字段的直接映射，
-    /// 所以不能用 BindSelector 那套。
-    /// </summary>
-    private void BindKeyRow(string id, string actionName)
-    {
-        SettingRow_Keybind row = FindRow<SettingRow_Keybind>(id);
-        if (row == null) return;
-
-        row.OnRebindRequested = () => StartRebind(actionName);
-        row.OnResetRequested = () => ResetOne(actionName);
-
-        _keyRows.Add(row);
-        AddRefresher(data => row.SetKeyText(DisplayOf(actionName, data)));
-    }
-
-    private static string DisplayOf(string actionName, SettingsData data)
-    {
-        return InputManager.Instance.GetBindingDisplay(
-            actionName, InputManager.KindOf((InputDeviceType)data.inputDevice), (InputDeviceType)data.inputDevice);
-    }
-
-    // ══════════════════ 重绑定 ══════════════════
-
-    private void StartRebind(string actionName)
-    {
-        if (_rebindRoutine != null || InputManager.Instance.IsRebinding)
+        //上面四项都是鼠标专用。手柄方案下整行置灰 ——
+        //注意刷新动作要放在最后注册：它会读 Bind* 拿到的行引用，行长什么样得先确定下来
+        AddRefresher(data =>
         {
-            //正常操作路径下点不到这里（等待期间按键行是置灰的），
-            //所以走到这说明有别的入口在发重绑定请求，值得留条日志
-            ChaosLog.Warn(LogChannel.Input, "已有一次按键重绑定在进行中，忽略对 " + actionName + " 的新请求");
+            bool usable = !InputScheme.IsGamepad(data.inputDevice);
+
+            if (invertX != null) invertX.SetInteractable(usable);
+            if (invertY != null) invertY.SetInteractable(usable);
+            if (sensitivity != null) sensitivity.SetInteractable(usable);
+            if (trigger != null) trigger.SetInteractable(usable);
+        });
+    }
+
+    private void OpenBindingsPage()
+    {
+        if (_bindingsPage == null)
+        {
+            ChaosLog.Warn(LogChannel.UI,
+                "按键绑定二级界面不可用（找不到 " + BindingsPageName + "），点「更改按键绑定」不会有反应");
             return;
         }
-        _rebindRoutine = StartCoroutine(RebindRoutine(actionName));
-    }
 
-    /// <summary>
-    /// 依次采集这个动作需要采集的每一段。任一段取消/超时，整条放弃。
-    /// </summary>
-    private IEnumerator RebindRoutine(string actionName)
-    {
-        SettingsData data = SettingsManager.Instance.Pending;
-        if (data == null)
-        {
-            _rebindRoutine = null;
-            yield break;
-        }
-
-        InputDeviceType device = (InputDeviceType)data.inputDevice;
-        InputManager.BindingKind kind = InputManager.KindOf(device);
-
-        List<InputManager.RebindStep> steps = InputManager.Instance.GetRebindSteps(actionName, kind);
-        if (steps.Count == 0)
-        {
-            ChaosLog.Warn(LogChannel.Input,
-                actionName + " 在当前设备下没有可重绑定的绑定（" + kind + "），改键操作被跳过");
-            _rebindRoutine = null;
-            yield break;
-        }
-
-        SettingRow_Keybind row = FindRowFor(actionName);
-
-        //整页按键行置灰：等待按键期间玩家还能点到别的按键按钮的话，
-        //会在第一次重绑定还没收尾时发起第二次，两者互相取消，表现为"点了没反应"
-        SetKeyRowsInteractable(false);
-
-        bool allSucceeded = true;
-
-        for (int i = 0; i < steps.Count; i++)
-        {
-            InputManager.RebindStep step = steps[i];
-
-            if (row != null)
-            {
-                row.SetListening(true, string.IsNullOrEmpty(step.Label)
-                    ? null
-                    : step.Label + "：请按键…");
-            }
-
-            _stepFinished = false;
-            _stepSucceeded = false;
-
-            InputManager.Instance.BeginRebind(actionName, step.BindingIndex, kind, OnStepFinished);
-
-            //等这一步收尾（成功、取消或超时都会回调，所以这里不会永久卡住）
-            while (!_stepFinished) yield return null;
-
-            if (row != null) row.SetListening(false);
-
-            if (!_stepSucceeded)
-            {
-                allSucceeded = false;
-                break;
-            }
-        }
-
-        SetKeyRowsInteractable(true);
-
-        if (allSucceeded)
-        {
-            //重绑定是直接改在 InputActionAsset 上的，这里把结果同步进暂存区，
-            //「应用」按钮才会亮起来 —— 不同步的话玩家改完键点返回，
-            //资产已被 RevertEdit 回滚，而存档里什么都没变，看着像改键根本没用
-            SyncOverridesToPending();
-        }
-
-        RefreshAll();
-        _rebindRoutine = null;
-    }
-
-    private void OnStepFinished(bool success)
-    {
-        _stepSucceeded = success;
-        _stepFinished = true;
-    }
-
-    private SettingRow_Keybind FindRowFor(string actionName)
-    {
-        string id;
-        if (actionName == InputManager.ActionMove) id = SettingIds.Move;
-        else if (actionName == InputManager.ActionAttack) id = SettingIds.Attack;
-        else if (actionName == InputManager.ActionJump) id = SettingIds.Jump;
-        else return null;
-
-        for (int i = 0; i < _keyRows.Count; i++)
-        {
-            if (_keyRows[i].settingId == id) return _keyRows[i];
-        }
-        return null;
-    }
-
-    private void SetKeyRowsInteractable(bool interactable)
-    {
-        for (int i = 0; i < _keyRows.Count; i++)
-        {
-            _keyRows[i].SetInteractable(interactable);
-        }
-    }
-
-    // ══════════════════ 恢复默认 ══════════════════
-
-    /// <summary>恢复单个按键的默认。只动这一条，不动玩家改过的其它键。</summary>
-    private void ResetOne(string actionName)
-    {
-        SettingsData data = SettingsManager.Instance.Pending;
-        if (data == null) return;
-
-        InputManager.BindingKind kind = InputManager.KindOf((InputDeviceType)data.inputDevice);
-        if (!InputManager.Instance.ResetBinding(actionName, kind)) return;
-
-        SyncOverridesToPending();
-        RefreshAll();
-    }
-
-    /// <summary>恢复全部按键默认（本页的按钮，不等同于底部"恢复默认" —— 那只管当前分类）。</summary>
-    private void ResetAllKeybinds()
-    {
-        InputManager.Instance.ClearAllOverrides();
-        SyncOverridesToPending();
-        RefreshAll();
-        ChaosLog.Info(LogChannel.Input, "已恢复全部按键默认（待应用）");
-    }
-
-    /// <summary>把 InputActionAsset 当前的绑定覆盖同步进暂存区。</summary>
-    private static void SyncOverridesToPending()
-    {
-        SettingsData data = SettingsManager.Instance.Pending;
-        if (data == null) return;
-
-        data.inputOverridesJson = InputManager.Instance.SaveOverridesJson();
-        SettingsManager.Instance.NotifyPendingChanged();
+        ShowSubPage(_bindingsPage);
     }
 }

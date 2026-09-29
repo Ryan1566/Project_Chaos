@@ -119,6 +119,18 @@ public class SettingPanel : BasePanel
         //退场动画期间面板还活着，玩家理论上还能点到按钮，所以这里先把确认浮层收掉，
         //避免它跟着面板一起退场时留下"下次打开就带着浮层"的错觉
         HideConfirm();
+
+        //兜底：面板也可能不是从「返回」退出的（别的流程直接 PopPanel）。
+        //退场动画期间面板仍然激活、行仍然可点，这里再收一次等待中的重绑，
+        //保证"面板关掉之后不会有键被偷偷写进资产"。没有在跑时是空操作
+        CancelPendingEdit();
+    }
+
+    /// <summary>把"收掉未结束的编辑"转给当前页，由它一路传到开着的子页。</summary>
+    private void CancelPendingEdit()
+    {
+        SettingsPageBase page = _pages[_current];
+        if (page != null) page.CancelPendingEdit();
     }
 
     // ══════════════════ 查找节点 ══════════════════
@@ -259,6 +271,11 @@ public class SettingPanel : BasePanel
                 continue;
             }
 
+            //先收掉可能开着的子页：下面 SetActive(true) 会把本页点亮，
+            //如果它正停在子页上（本页是隐藏的），不收子页就会出现"一级页和二级页同屏"。
+            //对没开子页的页是空操作
+            page.CollapseSubPage();
+
             page.gameObject.SetActive(visible);
             if (!visible) continue;
 
@@ -285,6 +302,10 @@ public class SettingPanel : BasePanel
 
     private void OnApplyClicked()
     {
+        //先收掉还没结束的编辑（现在是"等玩家按键"）。不先收的话，提交之后那次重绑仍在采集输入，
+        //玩家随后按下的任意一个键都会写进一个他以为已经提交完的数据里
+        CancelPendingEdit();
+
         SettingsManager.Instance.CommitEdit();
 
         //应用后再刷一次当前页：分辨率这类设置可能会被引擎夹到实际可用的值上，
@@ -298,6 +319,10 @@ public class SettingPanel : BasePanel
 
     private void OnResetClicked()
     {
+        //同上：恢复默认会把按键覆盖整体清掉，一个还在等待中的重绑随后写下来的键
+        //会和"已恢复默认"的界面显示对不上
+        CancelPendingEdit();
+
         //只恢复当前分类，别的分类不动 —— 玩家在"画面"页点恢复默认，
         //不该把辛苦调好的按键一起清掉
         SettingsManager.Instance.ResetPendingSection((SettingCategory)_current);
@@ -310,6 +335,21 @@ public class SettingPanel : BasePanel
 
     private void OnReturnClicked()
     {
+        //两条分支都是"玩家想走"：一条回一级界面、一条要退面板。两条都不能留着
+        //一个还在等按键的重绑 —— 他按返回之后按下的第一个键会被当成改键写进资产
+        CancelPendingEdit();
+
+        //停在二级界面时，「返回」先回一级界面，而不是直接退面板 ——
+        //玩家在改键页里按返回，期望的是"回到按键设置"，不是"关掉整个设置面板"。
+        //这一级跳转不弹确认浮层：改动还在暂存区里，没被丢弃，没必要问
+        SettingsPageBase page = _pages[_current];
+        if (page != null && page.IsSubPageOpen)
+        {
+            page.CloseSubPage();
+            RefreshApplyButton();
+            return;
+        }
+
         if (SettingsManager.Instance.HasPendingChanges)
         {
             ShowConfirm();

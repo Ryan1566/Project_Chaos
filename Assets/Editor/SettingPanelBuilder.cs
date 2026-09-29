@@ -264,17 +264,9 @@ public static class SettingPanelBuilder
             le.preferredHeight = 110f;
             le.minHeight = 110f;
 
-            //选中指示物：SettingPanel 按 "Selected" 这个名字找它，切分类时 SetActive。
-            //做成一整块高亮条（而不是只改文字颜色）是为了以后接手柄导航时更显眼
-            RectTransform marker = NewRect("Selected", tab.transform);
-            Stretch(marker, -6f, -6f, -6f, -6f);
-            Image markerImg = marker.gameObject.AddComponent<Image>();
-            markerImg.sprite = _uiSprite;
-            markerImg.type = Image.Type.Sliced;
-            markerImg.color = new Color(1f, 1f, 1f, 0.85f);
-            markerImg.raycastTarget = false;
-            marker.SetAsFirstSibling();//垫在文字下面，否则会盖住分类名
-            marker.gameObject.SetActive(i == 0);
+            //选中指示物：SettingPanel 按 "Selected" 这个名字找它，切分类时 SetActive
+            GameObject marker = AddSelectedMarker(tab);
+            marker.SetActive(i == 0);//第一个分类默认是当前页
         }
     }
 
@@ -289,10 +281,15 @@ public static class SettingPanelBuilder
 
     private static void BuildPages(RectTransform contentArea)
     {
-        BuildGameplayPage(NewPage(contentArea, 0));
-        BuildKeybindPage(NewPage(contentArea, 1));
-        BuildGraphicsPage(NewPage(contentArea, 2));
-        BuildAudioPage(NewPage(contentArea, 3));
+        BuildGameplayPage(NewPage(contentArea, PageNames[0], PageTypes[0], true, 0f, out _));
+        BuildKeybindPage(NewPage(contentArea, PageNames[1], PageTypes[1], true, 0f, out _));
+        BuildGraphicsPage(NewPage(contentArea, PageNames[2], PageTypes[2], false, 0f, out _));
+        BuildAudioPage(NewPage(contentArea, PageNames[3], PageTypes[3], false, 0f, out _));
+
+        //二级界面也是 ContentArea 下的一页（与本页平级，不能嵌进 Page_Keybind 子树，
+        //理由是 FindRow / ValidateRows 会沿子树收集行，嵌进去会被父页重复收一遍）。
+        //它默认不激活，由 KeybindSettingsPage 的「更改按键绑定」按钮点亮
+        BuildKeybindBindingsPage(contentArea);
     }
 
     /// <summary>
@@ -304,12 +301,19 @@ public static class SettingPanelBuilder
     /// 行必须挂在 Content 下，才会被 VerticalLayoutGroup 排版、被 RectMask2D 裁剪、随滚轮滚动。
     /// 挂错到 Page 上照样能被 GetComponentsInChildren 找到（所以绑得上、日志不报错），
     /// 但所有行会堆在页面正中央且溢出可视区 —— 是个只看日志发现不了的错。
+    /// 页根节点从 out 参数拿：二级界面的 Header 要挂在页根上（与 Viewport 平级），
+    /// 只有它需要，所以不做成返回值。
+    ///
+    /// headerInset：给页顶留出的像素高度（二级界面放返回按钮与页签用）。
+    /// 0 表示不留 —— 四个一级分类页都是 0，行为与本参数引入前完全一致。
     /// </summary>
-    private static RectTransform NewPage(RectTransform parent, int category)
+    private static RectTransform NewPage(RectTransform parent, string nodeName, Type pageType, bool active,
+        float headerInset, out RectTransform pageRoot)
     {
-        RectTransform page = NewRect(PageNames[category], parent);
+        RectTransform page = NewRect(nodeName, parent);
+        pageRoot = page;
         Stretch(page, 0f, 0f, 0f, 0f);
-        page.gameObject.AddComponent(PageTypes[category]);
+        page.gameObject.AddComponent(pageType);
 
         ScrollRect scroll = page.gameObject.AddComponent<ScrollRect>();
         scroll.horizontal = false;
@@ -319,7 +323,7 @@ public static class SettingPanelBuilder
         scroll.inertia = false;//设置项是逐个调的，惯性滑动会让"停在某一项"变难
 
         RectTransform viewport = NewRect("Viewport", page);
-        Stretch(viewport, 0f, 0f, 0f, 0f);
+        Stretch(viewport, 0f, 0f, 0f, headerInset);
         //用 RectMask2D 而不是 Mask：Mask 要一张遮罩图，RectMask2D 只按矩形裁剪，少一个资产、少一次绘制
         viewport.gameObject.AddComponent<RectMask2D>();
         Image viewportImg = viewport.gameObject.AddComponent<Image>();
@@ -351,7 +355,7 @@ public static class SettingPanelBuilder
 
         //只有当前分类的页面默认打开，其余关掉：既避免四页叠在一起看不出来，
         //也符合 SettingPanel 的用法（它每次切页都会先 SetActive 再绑定）
-        page.gameObject.SetActive(category == (int)SettingCategory.Gameplay);
+        page.gameObject.SetActive(active);
         return content;
     }
 
@@ -385,17 +389,124 @@ public static class SettingPanelBuilder
         SliderRow(content, "Row_UiVolume", SettingIds.UiVolume, "UI 音量");
     }
 
+    /// <summary>
+    /// 按键页（一级界面）。改键与设备选择都不在这里 —— 它们搬进了二级界面
+    /// （见 BuildKeybindBindingsPage），这一页只留一个入口 + 四个顺手可改的鼠标项。
+    ///
+    /// 后面四项全是【鼠标专用】：它们的值只有鼠标（指向）才有意义，手柄方案下改了没作用，
+    /// 所以 KeybindSettingsPage 会在手柄方案下把它们整行置灰（保留可见，不是隐藏）。
+    /// </summary>
     private static void BuildKeybindPage(RectTransform content)
     {
-        SelectorRow(content, "Row_Device", SettingIds.Device, "输入设备");
-        KeybindRow(content, "Row_Move", SettingIds.Move, "移动");
-        KeybindRow(content, "Row_Attack", SettingIds.Attack, "攻击");
-        KeybindRow(content, "Row_Jump", SettingIds.Jump, "跳跃");
+        ButtonRow(content, "Row_OpenBindings", SettingIds.OpenBindings, "按键绑定", "更改按键绑定");
         ToggleRow(content, "Row_MouseInvertX", SettingIds.MouseInvertX, "鼠标水平反转");
         ToggleRow(content, "Row_MouseInvertY", SettingIds.MouseInvertY, "鼠标垂直反转");
         SliderRow(content, "Row_MouseSensitivity", SettingIds.MouseSensitivity, "鼠标灵敏度");
         SelectorRow(content, "Row_AttackTrigger", SettingIds.AttackTrigger, "攻击触发方式");
-        ButtonRow(content, "Row_ResetAllKeybinds", SettingIds.ResetAllKeybinds, "恢复所有按键默认");
+    }
+
+    // ══════════════════ 按键绑定二级界面 ══════════════════
+
+    /// <summary>Header 条的像素高度，同时也是 Viewport 的上边让位量。</summary>
+    private const float HeaderHeight = 110f;
+
+    /// <summary>
+    /// 按键绑定二级界面。页签（键鼠 / 手柄）+ 手柄型号 + 两套按键行 + 按方案恢复默认。
+    ///
+    /// ══════════ 为什么两套行都在 prefab 里 ══════════
+    /// 键鼠三行是双格（键盘格 + 鼠标格，两格共存），手柄三行是单格。
+    /// 结构与列宽都不同，所以各摆一套、按页签 SetActive 切换 ——
+    /// 比"一套行里藏半个格子"好：每套行都能按自己的列数摆整齐，
+    /// 行控件也不必知道"自己现在有没有第二格"。
+    /// VerticalLayoutGroup 会自动跳过未激活的行重排，所以不会留下空洞。
+    /// </summary>
+    private static void BuildKeybindBindingsPage(RectTransform contentArea)
+    {
+        RectTransform content = NewPage(contentArea, KeybindBindingsPage.PageNodeName,
+            typeof(KeybindBindingsPage), false, HeaderHeight, out RectTransform page);
+
+        BuildKeybindBindingsHeader(page);
+
+        //键鼠方案：每行两格
+        KeybindPairRow(content, "Row_Move_KM", SettingIds.Move, "移动");
+        KeybindPairRow(content, "Row_Attack_KM", SettingIds.Attack, "攻击");
+        KeybindPairRow(content, "Row_Jump_KM", SettingIds.Jump, "跳跃");
+
+        //手柄方案：每行一格。默认收起 —— 存档里 inputDevice 的初值是 Keyboard（键鼠方案），
+        //生成时就摆成与初值一致的样子，prefab 单看才是自洽的
+        //（运行时 RefreshAll 每次都会按当前方案重设一遍，那是纠正玩家的切换，不是这里要依赖的）
+        KeybindRow(content, "Row_Move_Pad", SettingIds.MoveGamepad, "移动").gameObject.SetActive(false);
+        KeybindRow(content, "Row_Attack_Pad", SettingIds.AttackGamepad, "攻击").gameObject.SetActive(false);
+        KeybindRow(content, "Row_Jump_Pad", SettingIds.JumpGamepad, "跳跃").gameObject.SetActive(false);
+
+        ButtonRow(content, "Row_ResetScheme", SettingIds.ResetScheme, "恢复按键默认", "恢复当前方案默认");
+    }
+
+    /// <summary>
+    /// 二级界面的顶部固定条。它是页根的直接子节点（与 Viewport 平级），
+    /// 所以【不随内容滚动】—— 页签与返回按钮在滚动时一直可见。
+    ///
+    /// 名字是硬契约：KeybindBindingsPage 按 transform.Find 一层层找，
+    /// 改名会让返回按钮与页签静默失效（它会在 Console 报错，这是特意的）。
+    /// </summary>
+    private static void BuildKeybindBindingsHeader(RectTransform page)
+    {
+        RectTransform header = NewRect("Header", page);
+        //顶部定高条：横向铺满、纵向 110px，从上边往下长
+        header.anchorMin = new Vector2(0f, 1f);
+        header.anchorMax = new Vector2(1f, 1f);
+        header.pivot = new Vector2(0.5f, 1f);
+        header.anchoredPosition = Vector2.zero;
+        header.sizeDelta = new Vector2(0f, HeaderHeight);
+
+        //文字用 "< 返回" 而不是箭头 "←"：小于号在现有的选择器 Prev 按钮上已经验证过字体里有，
+        //箭头（U+2190）没验证过，缺字会显示成方框
+        Button back = NewButton("BackButton", header, "< 返回", ButtonFont, ButtonBg);
+        SetAnchors((RectTransform)back.transform, 0f, 0.15f, 0.14f, 0.85f);
+
+        NewSchemeTab("Tab_Keyboard", header, SettingsLabels.SchemeName(0), 0.16f, 0.31f);
+        NewSchemeTab("Tab_Gamepad", header, SettingsLabels.SchemeName(1), 0.32f, 0.47f);
+
+        //手柄型号组：整组只在手柄页签下可见，由 KeybindBindingsPage 控制显隐。
+        //默认收起（与"默认方案是键鼠"一致）
+        RectTransform modelGroup = NewRect("ModelGroup", header);
+        SetAnchors(modelGroup, 0.50f, 0.15f, 0.98f, 0.85f);
+        modelGroup.gameObject.SetActive(false);
+
+        NewSchemeTab("ModelTab_PS", modelGroup, SettingsLabels.DeviceName(1), 0f, 0.49f);
+        NewSchemeTab("ModelTab_Xbox", modelGroup, SettingsLabels.DeviceName(2), 0.51f, 1f);
+    }
+
+    /// <summary>
+    /// 一个页签 / 型号按钮。与主选列表的分类按钮同一套做法
+    /// 【NewButton + 子节点 Selected 作为选中指示物，SetAsFirstSibling 垫在文字下面】，
+    /// 因为承载它的页面脚本就是这么找选中态的（见 KeybindBindingsPage.FindMarker）。
+    /// </summary>
+    private static void NewSchemeTab(string name, Transform parent, string label, float xMin, float xMax)
+    {
+        Button tab = NewButton(name, parent, label, ButtonFont, TabIdle);
+        SetAnchors((RectTransform)tab.transform, xMin, 0.15f, xMax, 0.85f);
+        AddSelectedMarker(tab);
+    }
+
+    /// <summary>
+    /// 给按钮加一层选中指示物（一整块高亮条，而不是只改文字颜色 ——
+    /// 以后接手柄导航时更显眼）。必须 SetAsFirstSibling：后加的节点会盖住按钮上的文字。
+    /// </summary>
+    private static GameObject AddSelectedMarker(Button button)
+    {
+        RectTransform marker = NewRect("Selected", button.transform);
+        Stretch(marker, -6f, -6f, -6f, -6f);
+
+        Image img = marker.gameObject.AddComponent<Image>();
+        img.sprite = _uiSprite;
+        img.type = Image.Type.Sliced;
+        img.color = new Color(1f, 1f, 1f, 0.85f);
+        img.raycastTarget = false;
+
+        marker.SetAsFirstSibling();
+        marker.gameObject.SetActive(false);
+        return marker.gameObject;
     }
 
     // ══════════════════ 行的装配 ══════════════════
@@ -533,24 +644,30 @@ public static class SettingPanelBuilder
         SetRowId(row.gameObject.AddComponent<SettingRow_Toggle>(), id);
     }
 
-    private static void ButtonRow(RectTransform content, string rowName, string id, string label)
+    /// <summary>
+    /// 按钮行。buttonText 是这个按钮上写什么 —— 它不承载值，
+    /// 所以"这一行是干什么的"全靠按钮文案说清楚（"更改按键绑定" / "恢复当前方案默认"）。
+    /// </summary>
+    private static void ButtonRow(RectTransform content, string rowName, string id, string label, string buttonText)
     {
         RectTransform row = NewRowRoot(content, rowName, id, RowHeight);
         NewLabel(row, label, 0.42f);
 
-        Button button = NewButton("Button", row, "点击", ButtonFont, ButtonBg);
+        Button button = NewButton("Button", row, buttonText, ButtonFont, ButtonBg);
         SetAnchors((RectTransform)button.transform, 0.46f, 0.12f, 0.78f, 0.88f);
 
         SetRowId(row.gameObject.AddComponent<SettingRow_Button>(), id);
     }
 
     /// <summary>
-    /// 按键行。KeyText 必须是【行的直接子节点】，不能塞进 KeyButton 里 ——
+    /// 按键行（单格）。手柄方案用这个。
+    ///
+    /// KeyText 必须是【行的直接子节点】，不能塞进 KeyButton 里 ——
     /// SettingRow_Keybind 用 transform.Find("KeyText") 找它，只查一层。
     /// 所以这里是"两个同级节点叠在同一块区域"：下面的 KeyButton 吃点击，
     /// 上面的 KeyText 只显示键名（raycastTarget 已关，不会挡住按钮）。
     /// </summary>
-    private static void KeybindRow(RectTransform content, string rowName, string id, string label)
+    private static RectTransform KeybindRow(RectTransform content, string rowName, string id, string label)
     {
         RectTransform row = NewRowRoot(content, rowName, id, RowHeight);
         NewLabel(row, label, 0.30f);
@@ -568,6 +685,49 @@ public static class SettingPanelBuilder
         SetAnchors((RectTransform)reset.transform, 0.68f, 0.12f, 0.82f, 0.88f);
 
         SetRowId(row.gameObject.AddComponent<SettingRow_Keybind>(), id);
+        return row;
+    }
+
+    /// <summary>
+    /// 按键行（双格）。键鼠方案用这个：左格键盘、右格鼠标，两格【共存同时生效】
+    /// （点鼠标左键和按 J 都能攻击），所以它们是两个平行的格子，不是"键盘或鼠标"二选一。
+    ///
+    /// 右侧是个更窄的"重置"——它只重置这一行（两格一起），
+    /// 整页的"恢复当前方案默认"是下面单独的一行按钮。
+    ///
+    /// 每一格同样是"按钮 + 与它完全重合的文字节点"两个同级节点：
+    /// 按钮吃点击、文字显示键名（SettingRow_Keybind 只查一层，名字是硬契约）。
+    /// </summary>
+    private static void KeybindPairRow(RectTransform content, string rowName, string id, string label)
+    {
+        RectTransform row = NewRowRoot(content, rowName, id, RowHeight);
+        NewLabel(row, label, 0.27f);
+
+        //左格：键盘
+        AddKeySlot(row, "KeyButton", "KeyText", 0.29f, 0.51f);
+
+        //右格：鼠标
+        AddKeySlot(row, "MouseButton", "MouseText", 0.53f, 0.75f);
+
+        Button reset = NewButton("ResetButton", row, "重置", ButtonFont, ButtonBg);
+        SetAnchors((RectTransform)reset.transform, 0.81f, 0.12f, 0.93f, 0.88f);
+
+        SetRowId(row.gameObject.AddComponent<SettingRow_Keybind>(), id);
+    }
+
+    /// <summary>
+    /// 按键格里的一对节点：吃点击的按钮 + 显示键名的文字。
+    /// 两者锚点完全相同 —— 文字在层级里更靠后，所以画在按钮上面。
+    /// </summary>
+    private static void AddKeySlot(RectTransform row, string buttonName, string textName,
+        float xMin, float xMax)
+    {
+        Button button = NewButton(buttonName, row, null, ButtonFont, ButtonBg);
+        SetAnchors((RectTransform)button.transform, xMin, 0.12f, xMax, 0.88f);
+
+        TextMeshProUGUI text = NewText(textName, row, "未绑定", ButtonFont,
+            TextAlignmentOptions.Center, TextDark);
+        SetAnchors(text.rectTransform, xMin, 0.12f, xMax, 0.88f);
     }
 
     /// <summary>给行控件填 settingId。集中在一处，避免二十来个 AddComponent 各自漏填。</summary>
@@ -699,8 +859,10 @@ public static class SettingPanelBuilder
         SaveTemplate("SettingRow_Slider", r => SliderRow(r, "SettingRow_Slider", "SettingRow_Slider", "标签"));
         SaveTemplate("SettingRow_Selector", r => SelectorRow(r, "SettingRow_Selector", "SettingRow_Selector", "标签"));
         SaveTemplate("SettingRow_Toggle", r => ToggleRow(r, "SettingRow_Toggle", "SettingRow_Toggle", "标签"));
-        SaveTemplate("SettingRow_Button", r => ButtonRow(r, "SettingRow_Button", "SettingRow_Button", "标签"));
-        SaveTemplate("SettingRow_Keybind", r => KeybindRow(r, "SettingRow_Keybind", "SettingRow_Keybind", "标签"));
+        SaveTemplate("SettingRow_Button", r => ButtonRow(r, "SettingRow_Button", "SettingRow_Button", "标签", "点击"));
+        //按键行的模板给【双格】版的：它是这个行类型的超集（单格版就是少了 MouseButton/MouseText），
+        //模板的用途是"记录这一行必须有哪些子节点"，超集才记得全
+        SaveTemplate("SettingRow_Keybind", r => KeybindPairRow(r, "SettingRow_Keybind", "SettingRow_Keybind", "标签"));
     }
 
     private static void SaveTemplate(string fileName, Action<RectTransform> build)

@@ -4,27 +4,38 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// 按键行：Label / KeyButton / KeyText / ResetButton。
+/// 按键行：Label / KeyButton / KeyText / ResetButton，另可带【第二格】MouseButton / MouseText。
+///
+/// ══════════ 两格是怎么回事 ══════════
+/// 键鼠方案的每个操作要能同时映射键盘与鼠标（点鼠标左键和按 J 都能攻击），
+/// 所以这一行有左右两格：左格 = 键盘键，右格 = 鼠标键，两格【共存、同时生效】。
+/// 手柄方案的每个操作只有一个设备，行里就不摆 MouseButton / MouseText 这两个节点，
+/// 本类用 Find(..., required: false) 去找它们，找不到就整个第二格逻辑都不参与。
 ///
 /// ══════════ 这一行不碰 InputActionAsset ══════════
-/// 行只抛两个意图（"玩家想重绑"、"玩家想恢复这一项的默认"），
+/// 行只抛三个意图（"想重绑这一格"×2、"想恢复这一行的默认"），
 /// 真正的交互式重绑定由页面转交给 InputManager 执行。
 /// 这样行不必知道 Action 名、绑定序号、设备类型这一堆输入域概念，
 /// 而输入域的逻辑也只有一处（InputManager），不会散进 UI 代码里。
 ///
-/// KeyText 是动态的：显示的键名随当前选中的"输入设备"变化（键盘显示 A/D，手柄显示 ✕/□），
-/// 所以它的文本由页面在刷新时写进来，而不是在 prefab 里写死。
+/// KeyText / MouseText 都是动态的：显示的键名随当前选中的设备变化（键盘显示 A/D，手柄显示 ✕/□），
+/// 所以它们的文本由页面在刷新时写进来，而不是在 prefab 里写死。
 /// </summary>
 public class SettingRow_Keybind : SettingRowBase
 {
-    /// <summary>玩家点了按键按钮（请求开始重绑定）。</summary>
+    /// <summary>玩家点了主格（键鼠方案的键盘格 / 手柄方案唯一的那一格）。</summary>
     public Action OnRebindRequested;
 
-    /// <summary>玩家点了这一行的小"恢复默认"。</summary>
+    /// <summary>玩家点了第二格（键鼠方案的鼠标格）。单格行上永远不会触发。</summary>
+    public Action OnSecondRebindRequested;
+
+    /// <summary>玩家点了这一行的小"恢复默认"。会同时恢复本行的两格。</summary>
     public Action OnResetRequested;
 
     private Button _keyButton;
     private TextMeshProUGUI _keyText;
+    private Button _secondButton;
+    private TextMeshProUGUI _secondText;
     private Button _resetButton;
 
     /// <summary>"正在等待按键"时按钮上显示这段文案，替代键名。</summary>
@@ -32,26 +43,41 @@ public class SettingRow_Keybind : SettingRowBase
 
     /// <summary>当前该显示的键名。等待按键时被临时顶替，退出等待后要还原回来。</summary>
     private string _keyDisplay = "";
+    private string _secondDisplay = "";
+
+    /// <summary>本行有没有第二格。手柄方案的三个行没有，那时相关的成员都是 null。</summary>
+    public bool HasSecondSlot { get { return _secondButton != null || _secondText != null; } }
 
     private void Awake()
     {
         _keyButton = Find<Button>("KeyButton");
         _keyText = Find<TextMeshProUGUI>("KeyText", false);
+        //第二格是可选的：只有键鼠方案的按键行摆了两个节点，所以 required 传 false
+        _secondButton = Find<Button>("MouseButton", false);
+        _secondText = Find<TextMeshProUGUI>("MouseText", false);
         _resetButton = Find<Button>("ResetButton", false);
 
         if (_keyButton != null) _keyButton.onClick.AddListener(HandleKeyButtonClick);
+        if (_secondButton != null) _secondButton.onClick.AddListener(HandleSecondButtonClick);
         if (_resetButton != null) _resetButton.onClick.AddListener(HandleResetClick);
     }
 
-    /// <summary>显示当前绑定（键名 / 手柄按键名）。</summary>
+    /// <summary>显示主格当前绑定（键名 / 手柄按键名）。</summary>
     public void SetKeyText(string text)
     {
         _keyDisplay = text ?? "";
         SetText(_keyText, _keyDisplay);
     }
 
+    /// <summary>显示第二格当前绑定（鼠标键名，未绑定时是"未绑定"）。单格行上是空操作。</summary>
+    public void SetSecondText(string text)
+    {
+        _secondDisplay = text ?? "";
+        SetText(_secondText, _secondDisplay);
+    }
+
     /// <summary>
-    /// 进入 / 退出"等待按键"状态。
+    /// 进入 / 退出主格的"等待按键"状态。
     /// 期间把按钮置为不可点，避免玩家连点导致叠出多个重绑定操作
     /// （Input System 同一时间只允许一个 PerformInteractiveRebinding 在跑，叠起来会互相取消）。
     ///
@@ -64,21 +90,48 @@ public class SettingRow_Keybind : SettingRowBase
         string text = _keyDisplay;
         if (listening) text = string.IsNullOrEmpty(prompt) ? ListeningPrompt : prompt;
         SetText(_keyText, text);
-
-        if (_keyButton != null) _keyButton.interactable = !listening;
-        if (_resetButton != null) _resetButton.interactable = !listening;
+        ApplyClickableState(listening);
     }
 
-    /// <summary>整行置灰（用于"绑定了手柄之外的设备"之类不该点的场合）。</summary>
-    public void SetInteractable(bool interactable)
+    /// <summary>进入 / 退出第二格（鼠标格）的"等待按键"状态。单格行上是空操作。</summary>
+    public void SetSecondListening(bool listening, string prompt = null)
     {
-        if (_keyButton != null) _keyButton.interactable = interactable;
-        if (_resetButton != null) _resetButton.interactable = interactable;
+        string text = _secondDisplay;
+        if (listening) text = string.IsNullOrEmpty(prompt) ? ListeningPrompt : prompt;
+        SetText(_secondText, text);
+        ApplyClickableState(listening);
+    }
+
+    /// <summary>可点性落在两格按钮与重置按钮上。整行置灰的颜色部分由基类 SetInteractable 负责。</summary>
+    public override void SetClickable(bool clickable)
+    {
+        base.SetClickable(clickable);
+        ApplyClickableState(false);
+    }
+
+    /// <summary>
+    /// 三个按钮的可点性只由两件事决定：本行能不能点（Clickable，置灰与临时锁都会写它）
+    /// 和"是不是正在等玩家按键"。
+    ///
+    /// 集中在一处算，是因为两个 SetXxxListening 与 SetClickable 都会改同一批按钮：
+    /// 各写一份的话，"退出等待"那条路径会把整行被置灰/被锁的状态一起点亮回来。
+    /// </summary>
+    private void ApplyClickableState(bool listening)
+    {
+        bool on = Clickable && !listening;
+        if (_keyButton != null) _keyButton.interactable = on;
+        if (_secondButton != null) _secondButton.interactable = on;
+        if (_resetButton != null) _resetButton.interactable = on;
     }
 
     private void HandleKeyButtonClick()
     {
         if (OnRebindRequested != null) OnRebindRequested();
+    }
+
+    private void HandleSecondButtonClick()
+    {
+        if (OnSecondRebindRequested != null) OnSecondRebindRequested();
     }
 
     private void HandleResetClick()

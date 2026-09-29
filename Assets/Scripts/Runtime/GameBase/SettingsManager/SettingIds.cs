@@ -25,16 +25,26 @@ public static class SettingIds
     public const string SfxVolume = "audio.sfx";
     public const string UiVolume = "audio.ui";
 
-    // ══════════════════ 按键页 ══════════════════
-    /// <summary>输入设备（键盘 / PS / Xbox）。只切显示主题与"当前在编辑哪条绑定"。</summary>
-    public const string Device = "keybind.device";
-    public const string Move = "keybind.move";
-    public const string Attack = "keybind.attack";
-    public const string Jump = "keybind.jump";
+    // ══════════════════ 按键页（一级界面）══════════════════
+    /// <summary>进入"按键绑定"二级界面的入口按钮。设备选择、改键、按方案重置都在那一页里。</summary>
+    public const string OpenBindings = "keybind.openBindings";
     public const string MouseInvertX = "keybind.mouseInvertX";
     public const string MouseInvertY = "keybind.mouseInvertY";
     public const string MouseSensitivity = "keybind.mouseSensitivity";
+    /// <summary>攻击触发方式。它属于 MouseTriggerMode，所以和上面三项一样是键鼠专用项。</summary>
     public const string AttackTrigger = "keybind.attackTrigger";
-    /// <summary>把全部按键绑定恢复成默认（不等同于底部"恢复默认"，那只管当前分类）。</summary>
-    public const string ResetAllKeybinds = "keybind.resetAll";
+
+    // ══════════════════ 按键绑定二级界面 ══════════════════
+    /// <summary>键鼠方案的三个操作行。每行【两个格子】：左格键盘、右格鼠标，两格可以同时生效。</summary>
+    public const string Move = "keybind.move";
+    public const string Attack = "keybind.attack";
+    public const string Jump = "keybind.jump";
+
+    /// <summary>手柄方案的三个操作行。每行只有一个格子（手柄按键），结构与上面三个不同。</summary>
+    public const string MoveGamepad = "keybind.move.pad";
+    public const string AttackGamepad = "keybind.attack.pad";
+    public const string JumpGamepad = "keybind.jump.pad";
+
+    /// <summary>把【当前页签那一套】的按键绑定恢复成默认：键鼠页签只清键鼠，手柄那套不动。</summary>
+    public const string ResetScheme = "keybind.resetScheme";
 }

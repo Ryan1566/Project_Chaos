@@ -18,12 +18,18 @@ using UnityEngine.InputSystem;
 /// 等以后做 UI 导航/暂停菜单时，Escape 会直接并入新系统的 UI 动作表，那时再删这段。
 ///
 /// ══════════ 绑定组的约定（与 ChaosInputActions.inputactions 强耦合）══════════
-/// 每个动作在 "Keyboard" / "Gamepad" 两组下【各只有一条主绑定】，它就是按键界面上可重绑的那一条：
-///     Move   : Keyboard = 1DAxis 复合（A/D），Gamepad = &lt;Gamepad&gt;/leftStick/x
-///     Attack : Keyboard = J，                  Gamepad = &lt;Gamepad&gt;/buttonWest
-///     Jump   : Keyboard = K，                  Gamepad = &lt;Gamepad&gt;/buttonSouth
-/// 另有 "KeyboardFixed" 组的固定备用键（方向键、鼠标左键、空格），它们【不参与重绑定】，
-/// 只作为打不掉的兜底。切"输入设备"时改的只是"当前在编辑哪一组"，不是两套资产。
+/// 每组下每个动作【只有一条主绑定】，它就是按键界面上可重绑的那一格。
+/// 键鼠方案的三个操作各有两格（键盘 + 鼠标），所以比手柄方案多用到 "Mouse" 组：
+///     Move   : Keyboard = 1DAxis 复合（A/D）          Mouse = 空（未绑定）        Gamepad = &lt;Gamepad&gt;/leftStick/x
+///     Attack : Keyboard = J                           Mouse = &lt;Mouse&gt;/leftButton  Gamepad = &lt;Gamepad&gt;/buttonWest
+///     Jump   : Keyboard = K                           Mouse = 空（未绑定）        Gamepad = &lt;Gamepad&gt;/buttonSouth
+/// 两格【同时生效】：点鼠标左键和按 J 都能触发攻击，不存在"二选一"。这就是为什么鼠标键要有自己的组，
+/// 而不是塞进 Keyboard 组当第二条绑定 —— 那样界面就没法把"键盘格"和"鼠标格"分开显示与重绑定。
+///
+/// 空路径 = 官方支持的"未绑定"态（InputBindingResolver 里 "Disabled if path is empty"），
+/// 静默不生效、不报日志，玩家点了那一格就能绑上。
+///
+/// 另有 "KeyboardFixed" 组的固定备用键（方向键、空格），它们【不参与重绑定】，只作为打不掉的兜底。
 ///
 /// ⚠ 组名比较必须按分号切分后逐项比对，不能用 Contains ——
 /// "KeyboardFixed" 的字符串里含有 "Keyboard"，用 Contains 会把备用键也当成主绑定翻出来
@@ -38,13 +44,31 @@ public class InputManager : SingletonBase<InputManager>
     public const string ActionJump = "Jump";
 
     public const string GroupKeyboard = "Keyboard";
+    /// <summary>键鼠方案里"鼠标那一格"所在的组。空路径 = 未绑定。</summary>
+    public const string GroupMouse = "Mouse";
     public const string GroupGamepad = "Gamepad";
 
-    /// <summary>玩家当前在改键盘还是手柄的绑定。</summary>
+    /// <summary>
+    /// 要编辑哪一格绑定。与"输入设备"不是一回事：
+    /// 设备（键鼠 / PS / Xbox）决定当前显示哪一套格子，而 kind 决定编辑的是其中哪一格。
+    /// 键鼠方案的每个操作有 Keyboard 与 Mouse 两格，手柄方案只有 Gamepad 一格。
+    /// </summary>
     public enum BindingKind
     {
         Keyboard = 0,
-        Gamepad = 1,
+        Mouse = 1,
+        Gamepad = 2,
+    }
+
+    /// <summary>kind → 绑定组名。取值必须与 .inputactions 里的 groups 字段逐字一致。</summary>
+    private static string GroupName(BindingKind kind)
+    {
+        switch (kind)
+        {
+            case BindingKind.Keyboard: return GroupKeyboard;
+            case BindingKind.Mouse: return GroupMouse;
+            default: return GroupGamepad;
+        }
     }
 
     /// <summary>一次重绑定要采集的一段。复合绑定（移动）会被拆成多段依次采集。</summary>
@@ -88,7 +112,8 @@ public class InputManager : SingletonBase<InputManager>
     /// <summary>把绑定组还原成设备枚举，只为了在日志里把键名翻成对应平台的显示名（PS 还是 Xbox）。</summary>
     private static InputDeviceType KindToDevice(BindingKind kind)
     {
-        return kind == BindingKind.Keyboard ? InputDeviceType.Keyboard : InputDeviceType.PlayStation;
+        //鼠标格只在日志里用到这里，而鼠标键名与平台主题无关（DescribePath 不看 device），给哪个都行
+        return kind == BindingKind.Gamepad ? InputDeviceType.PlayStation : InputDeviceType.Keyboard;
     }
 
     // ══════════════════ 初始化 ══════════════════
@@ -157,12 +182,47 @@ public class InputManager : SingletonBase<InputManager>
         }
     }
 
-    /// <summary>清掉全部绑定覆盖（"恢复所有按键默认"用）。</summary>
+    /// <summary>清掉全部绑定覆盖（底部"恢复默认"落在按键分类时用）。</summary>
     public void ClearAllOverrides()
     {
         EnsureInited();
         if (_asset == null) return;
         _asset.RemoveAllBindingOverrides();
+    }
+
+    /// <summary>
+    /// 清掉【某一格所属的那一组】的全部绑定覆盖，别的组不动。
+    /// 按键绑定二级界面的"恢复当前方案默认"就是两次调用：键鼠 = Keyboard + Mouse，手柄 = Gamepad。
+    ///
+    /// 之所以按组清而不是按动作清：玩家要的是"把这一套恢复成出厂"，逐个动作清一遍容易漏掉加了新动作的那天。
+    /// </summary>
+    public void ClearOverridesFor(BindingKind kind)
+    {
+        EnsureInited();
+        if (_asset == null) return;
+
+        string group = GroupName(kind);
+        int cleared = 0;
+
+        foreach (InputActionMap map in _asset.actionMaps)
+        {
+            foreach (InputAction action in map.actions)
+            {
+                //倒序遍历没有意义（RemoveBindingOverride 不改集合结构），正序即可，
+                //但复合绑定的 parts 必须跟着头一起清 —— 复用 RemoveOverrideWithParts 就是为了这点
+                for (int i = 0; i < action.bindings.Count; i++)
+                {
+                    InputBinding binding = action.bindings[i];
+                    if (binding.isPartOfComposite) continue;//部分归属复合头，跟着头处理
+                    if (!HasGroup(binding, group)) continue;
+
+                    RemoveOverrideWithParts(action, i);
+                    cleared++;
+                }
+            }
+        }
+
+        ChaosLog.Info(LogChannel.Input, "已恢复 " + group + " 组的按键默认（" + cleared + " 条绑定）");
     }
 
     /// <summary>把某个动作在当前设备组下的主绑定恢复默认。</summary>
@@ -212,7 +272,9 @@ public class InputManager : SingletonBase<InputManager>
     /// <summary>把一条控制路径翻成给玩家看的名字。手柄那部分按设备主题换列（PS 的 ✕○□△ 或 Xbox 的 A/B/X/Y）。</summary>
     public static string DescribePath(string path, InputDeviceType device)
     {
-        if (string.IsNullOrEmpty(path)) return "-";
+        //空路径是 Input System 认可的"这一格没绑定"（它会被直接禁用、不报错），
+        //界面上就显示成"未绑定" —— 玩家点一下那一格就能绑上
+        if (string.IsNullOrEmpty(path)) return "未绑定";
 
         if (path.StartsWith("<Gamepad>", StringComparison.OrdinalIgnoreCase)) return GamepadName(path, device);
         if (path.StartsWith("<Mouse>", StringComparison.OrdinalIgnoreCase)) return MouseName(path);
@@ -399,6 +461,38 @@ public class InputManager : SingletonBase<InputManager>
         _rebindKind = kind;
         _rebindPreviousPath = action.bindings[bindingIndex].effectivePath;
 
+        //⚠ 必须先把这条动作关掉。Input System 不允许对【启用中】的动作做重绑定 ——
+        //  PerformInteractiveRebinding 的 WithAction 会直接抛
+        //  InvalidOperationException: Cannot rebind action '...' while it is enabled。
+        //  抛出来会顺着调用方（页面的协程）飞出去，协程当场死掉、"请按键…"再也退不回来。
+        //  收尾时在 FinishRebind 里恢复启用。
+        //
+        //副作用是等待按键期间这一条动作不响应（改攻击键时点鼠标不会攻击）——
+        //正好是想要的：玩家正在菜单里做改键这件事本身。
+        action.Disable();
+
+        try
+        {
+            StartOperation(action, actionName, bindingIndex, kind, onFinished);
+        }
+        catch (Exception e)
+        {
+            //配置阶段出错时绝不能把动作留在禁用状态：那条键会一直到本次运行结束都不响应，
+            //而且界面上完全看不出来（按键格还是原来的显示）
+            action.Enable();
+            CancelCurrentOperation();
+            ChaosLog.Error(LogChannel.Input, "启动按键重绑定失败（" + actionName + "）：" + e.Message);
+            if (onFinished != null) onFinished(false);
+        }
+    }
+
+    /// <summary>
+    /// 装配并启动重绑定操作。单独拆出来是为了让 BeginRebind 能用一个 try 把它整个罩住 ——
+    /// 这一串链式调用里任何一步抛异常，都必须回到 BeginRebind 里把动作恢复启用。
+    /// </summary>
+    private void StartOperation(InputAction action, string actionName, int bindingIndex,
+        BindingKind kind, Action<bool> onFinished)
+    {
         InputActionRebindingExtensions.RebindingOperation operation = action.PerformInteractiveRebinding(bindingIndex)
             //鼠标的移动/滚轮本身就是"控制"，不排除的话玩家一动鼠标就被当成按键采走
             .WithControlsExcluding("<Pointer>/position")
@@ -412,16 +506,27 @@ public class InputManager : SingletonBase<InputManager>
             //同一个键按下时会有多次 actuation，等一下再收尾可以让"按住不放"只记一次
             .OnMatchWaitForAnother(0.1f);
 
-        //按设备组限制可采集的控制：不限制的话，给键盘绑定按个手柄键也会被接受，
-        //之后"键盘"这一行上就躺着一条手柄路径，看着是键盘键、按手柄才触发
-        if (kind == BindingKind.Keyboard)
+        //按格子限制可采集的控制：每一格只收自己那类设备。
+        //不限制的话，给键盘格按个手柄键也会被接受，之后那一格上就躺着一条手柄路径 ——
+        //看着是键盘键、按手柄才触发。三个分支是对称的：排除掉"不是本格设备"的那两类。
+        switch (kind)
         {
-            operation = operation.WithControlsExcluding("<Gamepad>/*");
-        }
-        else
-        {
-            operation = operation.WithControlsExcluding("<Keyboard>/*")
-                                 .WithControlsExcluding("<Mouse>/*");
+            case BindingKind.Keyboard:
+                operation = operation.WithControlsExcluding("<Gamepad>/*")
+                                     .WithControlsExcluding("<Mouse>/*");
+                break;
+
+            case BindingKind.Mouse:
+                //鼠标格：只收鼠标键。鼠标的移动与滚轮在上面已经排除，
+                //所以这里能采到的就是左/右/中/侧键
+                operation = operation.WithControlsExcluding("<Keyboard>/*")
+                                     .WithControlsExcluding("<Gamepad>/*");
+                break;
+
+            default://Gamepad
+                operation = operation.WithControlsExcluding("<Keyboard>/*")
+                                     .WithControlsExcluding("<Mouse>/*");
+                break;
         }
 
         _operation = operation;
@@ -439,9 +544,13 @@ public class InputManager : SingletonBase<InputManager>
             _operation = null;
         }
 
+        //恢复重绑定期间被临时关掉的那条动作（见 BeginRebind 里的 action.Disable）。
+        //放在最前面：不管成功还是取消、也不管下面会不会出意外，动作都不能留在禁用状态
+        InputAction action = FindAction(_rebindActionName);
+        if (action != null && !action.enabled) action.Enable();
+
         if (success)
         {
-            InputAction action = FindAction(_rebindActionName);
             if (action != null)
             {
                 ResolveConflict(action, _rebindBindingIndex, _rebindPreviousPath);
@@ -461,11 +570,41 @@ public class InputManager : SingletonBase<InputManager>
         if (onFinished != null) onFinished(success);
     }
 
+    /// <summary>
+    /// 取消正在进行的那一次交互式重绑定。没有在跑就返回 false。
+    ///
+    /// 面板级的「应用」「恢复默认」「返回」在"等玩家按键"期间被点到时必须调它：
+    /// 不取消的话那次重绑仍在采集设备输入，玩家按下的下一个键会被写进去 ——
+    /// 而他以为自己已经提交或离开了。
+    /// </summary>
+    public bool CancelRebind()
+    {
+        if (_operation == null) return false;
+        CancelCurrentOperation();
+        return true;
+    }
+
+    /// <summary>
+    /// 收掉当前操作。走 Cancel() 而不是 Dispose() 是关键：
+    /// Cancel() 会触发 OnCancel 回调，发起方（页面）才收得到"结束了"并把界面解锁；
+    /// Dispose() 是静默的 —— 那条路径上页面会永远停在"请按键…"的锁里，退出等待的收尾也不会跑。
+    /// </summary>
     private void CancelCurrentOperation()
     {
         if (_operation == null) return;
-        _operation.Dispose();
-        _operation = null;
+
+        InputActionRebindingExtensions.RebindingOperation op = _operation;
+        op.Cancel();
+
+        //Cancel() 只在已 Start 时才会回调（RebindingOperation.Cancel 里有 started 判断）。
+        //正常路径上不会走到这里（BeginRebind 里 Start 紧跟赋值，中间没有可以让出控制权的点），
+        //但留着这一手：真没启动过的话，上面那句等于没执行，必须自己释放，
+        //否则它继续挂着设备输入回调，下一次重绑会和它抢输入。
+        if (_operation == op)
+        {
+            op.Dispose();
+            _operation = null;
+        }
     }
 
     /// <summary>
@@ -539,7 +678,7 @@ public class InputManager : SingletonBase<InputManager>
     /// </summary>
     private static int FindBindingIndex(InputAction action, BindingKind kind)
     {
-        string group = (kind == BindingKind.Keyboard) ? GroupKeyboard : GroupGamepad;
+        string group = GroupName(kind);
 
         for (int i = 0; i < action.bindings.Count; i++)
         {

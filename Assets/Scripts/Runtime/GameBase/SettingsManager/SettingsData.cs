@@ -50,8 +50,16 @@ public class SettingsData
 
     // ══════════════════ 按键 ══════════════════
 
-    /// <summary>InputDeviceType，只影响显示与"当前编辑哪条绑定"。</summary>
+    /// <summary>InputDeviceType，只影响显示与"当前编辑哪条绑定"。Keyboard = 键鼠方案；否则 = 手柄方案 + 型号。</summary>
     public int inputDevice = (int)InputDeviceType.Keyboard;
+    /// <summary>
+    /// GamepadModel，只影响手柄按键显示哪一列（✕○□△ 还是 A/B/X/Y）。
+    ///
+    /// 为什么要单独记一份：按键页把"键鼠 / 手柄"做成了两个页签，
+    /// 玩家切到键鼠改完键再切回手柄时，上次选的 PS/Xbox 不该被重置回默认。
+    /// 换算见 InputScheme.ModelToDevice；页签状态本身不存档，由 inputDevice 推出。
+    /// </summary>
+    public int gamepadModel = (int)GamepadModel.Xbox;
     /// <summary>鼠标水平反转。⚠ 工程内还没有瞄准系统，本项目前【存了但没人读】。</summary>
     public bool mouseInvertX = false;
     /// <summary>鼠标垂直反转。同上，暂无人消费。</summary>
@@ -122,6 +130,7 @@ public class SettingsData
 
             case SettingCategory.Keybind:
                 inputDevice = d.inputDevice;
+                gamepadModel = d.gamepadModel;
                 mouseInvertX = d.mouseInvertX;
                 mouseInvertY = d.mouseInvertY;
                 mouseSensitivity = d.mouseSensitivity;

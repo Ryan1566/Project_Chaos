@@ -27,10 +27,11 @@ public class SettingRow_Toggle : SettingRowBase
         if (_toggle != null) _toggle.SetIsOnWithoutNotify(value);
     }
 
-    /// <summary>整体置灰（用于"这一项依赖另一个开关"的场合，比如以后按需禁用）。</summary>
-    public void SetInteractable(bool interactable)
+    /// <summary>可点性落在开关上。整行置灰的颜色部分由基类 SetInteractable 负责。</summary>
+    public override void SetClickable(bool clickable)
     {
-        if (_toggle != null) _toggle.interactable = interactable;
+        base.SetClickable(clickable);
+        if (_toggle != null) _toggle.interactable = clickable;
     }
 
     private void HandleToggleChanged(bool value)

@@ -35,6 +35,17 @@ public class SettingRow_Selector : SettingRowBase
         if (_nextButton != null) _nextButton.onClick.AddListener(() => Step(1));
     }
 
+    /// <summary>
+    /// 可点性落在两个箭头上。箭头本来还会因为"到头了"而单独置灰，所以这里重新走一遍 RefreshDisplay，
+    /// 由它把两个条件（行能不能点 && 是否到两头）合起来算，免得两处各写一半互相覆盖。
+    /// 整行置灰的颜色部分由基类 SetInteractable 负责。
+    /// </summary>
+    public override void SetClickable(bool clickable)
+    {
+        base.SetClickable(clickable);
+        RefreshDisplay();
+    }
+
     /// <summary>页面在绑定时调用，传入全部档位的显示文案。</summary>
     public void Configure(string[] optionDisplayTexts)
     {
@@ -86,8 +97,12 @@ public class SettingRow_Selector : SettingRowBase
             SetText(_valueText, _options[_index]);
         }
 
-        //到头的箭头置灰，比"点了没反应"更容易理解
-        if (_prevButton != null) _prevButton.interactable = (_index > 0);
-        if (_nextButton != null) _nextButton.interactable = (_options != null && _index < _options.Length - 1);
+        //到头的箭头置灰，比"点了没反应"更容易理解。
+        //还要与整行置灰的状态（Interactable）取与：行被置灰时箭头一律不可点
+        if (_prevButton != null) _prevButton.interactable = Clickable && (_index > 0);
+        if (_nextButton != null)
+        {
+            _nextButton.interactable = Clickable && (_options != null && _index < _options.Length - 1);
+        }
     }
 }

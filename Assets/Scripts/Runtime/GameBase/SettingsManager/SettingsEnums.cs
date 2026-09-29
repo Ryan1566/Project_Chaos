@@ -44,6 +44,51 @@ public enum InputDeviceType
     Xbox = 2,
 }
 
+/// <summary>
+/// 手柄型号。只影响按键显示名用哪一列（✕○□△ 还是 A/B/X/Y），不影响绑定数据。
+///
+/// 为什么要单独存一份：按键页现在把"键鼠 / 手柄"拆成了两个页签，
+/// 切到键鼠再切回手柄时，玩家上次选的 PS/Xbox 必须还在。
+/// 它由 InputDeviceType 换算而来（见 InputScheme.ModelToDevice），不是新的一套设备概念。
+/// </summary>
+public enum GamepadModel
+{
+    PlayStation = 0,
+    Xbox = 1,
+}
+
+/// <summary>
+/// 「输入方案」的换算中心：按键页的页签（键鼠 / 手柄）与手柄型号按钮
+/// 通过它读写 SettingsData 的 inputDevice 与 gamepadModel 两个字段。
+///
+/// ══════════ 两个字段的分工（唯一真源只有 inputDevice）══════════
+/// inputDevice     = 当前方案：Keyboard 表示键鼠；PlayStation / Xbox 表示手柄，且同时是显示主题。
+/// gamepadModel    = 上次选的手柄型号，只用来回答"从键鼠切回手柄时该用哪个型号"。
+/// 所以页签本身【不存档】：它是 inputDevice 推出来的，没必要再多一个字段去同步。
+/// </summary>
+public static class InputScheme
+{
+    /// <summary>当前是不是手柄方案。页签高亮、鼠标专用项的置灰都以它为准。</summary>
+    public static bool IsGamepad(int inputDevice)
+    {
+        return (InputDeviceType)inputDevice != InputDeviceType.Keyboard;
+    }
+
+    /// <summary>手柄型号序号 → 设备枚举。越界一律当 Xbox（存档脏数据不该让界面崩）。</summary>
+    public static InputDeviceType ModelToDevice(int gamepadModel)
+    {
+        return (GamepadModel)gamepadModel == GamepadModel.PlayStation
+            ? InputDeviceType.PlayStation
+            : InputDeviceType.Xbox;
+    }
+
+    /// <summary>设备枚举 → 手柄型号序号。只在 inputDevice 已经是手柄时才有意义。</summary>
+    public static int DeviceToModel(InputDeviceType device)
+    {
+        return device == InputDeviceType.PlayStation ? (int)GamepadModel.PlayStation : (int)GamepadModel.Xbox;
+    }
+}
+
 /// <summary>攻击键的触发方式。</summary>
 public enum MouseTriggerMode
 {
@@ -82,8 +127,11 @@ public static class SettingsLabels
     /// <summary>索引 = WindowModeType。</summary>
     public static readonly string[] WindowMode = { "无边框全屏", "全屏", "边框窗口" };
 
-    /// <summary>索引 = InputDeviceType。</summary>
+    /// <summary>索引 = InputDeviceType。型号按钮的文案用的就是它的 1、2 两项。</summary>
     public static readonly string[] Device = { "键盘", "PS 手柄", "Xbox 手柄" };
+
+    /// <summary>按键页二级界面的两个页签文案。索引：0 = 键鼠，1 = 手柄（不是 InputDeviceType）。</summary>
+    public static readonly string[] Scheme = { "键鼠", "手柄" };
 
     /// <summary>索引 = MouseTriggerMode。</summary>
     public static readonly string[] TriggerMode = { "点按", "长按（连发）" };
@@ -101,6 +149,7 @@ public static class SettingsLabels
     public static string CategoryName(int i) { return Get(Category, i); }
     public static string WindowModeName(int i) { return Get(WindowMode, i); }
     public static string DeviceName(int i) { return Get(Device, i); }
+    public static string SchemeName(int i) { return Get(Scheme, i); }
     public static string TriggerModeName(int i) { return Get(TriggerMode, i); }
     public static string QualityName(int i) { return Get(Quality, i); }
 

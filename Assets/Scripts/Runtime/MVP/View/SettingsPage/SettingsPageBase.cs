@@ -36,6 +36,108 @@ public abstract class SettingsPageBase : MonoBehaviour
 
     private bool _bound;
 
+    // ══════════════════════ 二级界面 ══════════════════════
+    // 一页可以再挂一个"二级界面"（子页）来放不常改、或者需要独立空间的东西，
+    // 按键页就是这么把"设备选择 + 改键"从一级页里拆出去的。
+    //
+    // ⚠ 子页必须是本页节点的【兄弟】，不能摆在本页子树里：
+    //   FindRow / ValidateRows 用 GetComponentsInChildren(true) 收集行，
+    //   嵌进来会让父页把子页的行也收进来 —— 表现是一串"这一行没有被 OnBind 绑定"的假警告，
+    //   而且 settingId 重名的行会有一半永远找不到。
+    //   所以子页挂在与 Page_X 平级的另一页节点上，由面板与本页协作控制显隐。
+
+    /// <summary>当前开着的子页；null = 停在本页。</summary>
+    private SettingsPageBase _openSubPage;
+
+    /// <summary>子页请求"回到上一级"。父页在 OnBind 里接到 CloseSubPage 即可。</summary>
+    public Action OnBackRequested;
+
+    /// <summary>本页当前是不是停在子页上。面板的底部「返回」用它决定"上一级"还是"退面板"。</summary>
+    public bool IsSubPageOpen { get { return _openSubPage != null; } }
+
+    /// <summary>在本页的兄弟节点里找子页。找不到会报错并返回 null（调用方要判空）。</summary>
+    protected SettingsPageBase FindSubPage(string nodeName)
+    {
+        Transform parent = transform.parent;
+        if (parent == null)
+        {
+            ChaosLog.Error(LogChannel.UI, GetType().Name + " 没有父节点，找不到子页 " + nodeName);
+            return null;
+        }
+
+        Transform node = parent.Find(nodeName);
+        if (node == null)
+        {
+            ChaosLog.Error(LogChannel.UI,
+                GetType().Name + " 的同级里找不到子页节点 '" + nodeName + "'。" +
+                "子页必须与各 Page_X 平级摆在 ContentArea 下，不能塞进本页子树。");
+            return null;
+        }
+
+        SettingsPageBase sub = node.GetComponent<SettingsPageBase>();
+        if (sub == null)
+        {
+            ChaosLog.Error(LogChannel.UI, nodeName + " 上没有挂 SettingsPageBase 的子类组件");
+        }
+        return sub;
+    }
+
+    /// <summary>打开子页：隐藏本页、显示子页。</summary>
+    protected void ShowSubPage(SettingsPageBase sub)
+    {
+        if (sub == null || _openSubPage == sub) return;
+
+        CollapseSubPage();
+        _openSubPage = sub;
+
+        //必须先激活再绑定：行控件的 Awake 要在 OnBind 之前跑过（理由见 EnsureBound 的注释）。
+        //EnsureBound 对已绑过的页会直接返回、不再刷新，所以后面补一次 RefreshAll
+        sub.gameObject.SetActive(true);
+        sub.EnsureBound();
+        sub.RefreshAll();
+
+        gameObject.SetActive(false);
+    }
+
+    /// <summary>收掉子页但不重新激活本页（面板切分类时用：紧接着它会自行决定本页的显隐）。</summary>
+    public void CollapseSubPage()
+    {
+        if (_openSubPage == null) return;
+        _openSubPage.gameObject.SetActive(false);
+        _openSubPage = null;
+    }
+
+    /// <summary>从子页回到本页（子页里的"返回"和面板底部的「返回」都走这里）。</summary>
+    public void CloseSubPage()
+    {
+        if (_openSubPage == null) return;
+
+        CollapseSubPage();
+        gameObject.SetActive(true);
+        RefreshAll();
+    }
+
+    /// <summary>
+    /// 让本页收掉"还没结束的编辑"，并一路传到开着的子页。
+    ///
+    /// 面板级的「应用」「恢复默认」「返回」在动手之前都要先调它。现在唯一的例子是按键页的
+    /// "等玩家按键"：点应用之后如果那次重绑还在跑，玩家随后按下的任意一个键都会写进
+    /// 一个他以为已经提交完的数据里，然后被下一次刷新覆盖掉 —— 表现为"改键自己变了"。
+    ///
+    /// 做成"先收尾再执行"而不是"拒绝执行"：玩家点应用的意思是"我要提交"，
+    /// 不该因为他恰好还停在等待状态就把整个操作吞掉。
+    /// </summary>
+    public void CancelPendingEdit()
+    {
+        OnCancelPendingEdit();
+
+        //子页开着的时候面板拿到的只是父页引用，不转发就会漏掉子页上正在进行的编辑
+        if (_openSubPage != null) _openSubPage.CancelPendingEdit();
+    }
+
+    /// <summary>子类在这里取消自己那点临时状态（默认没有）。</summary>
+    protected virtual void OnCancelPendingEdit() { }
+
     // ══════════════════════ 生命周期 ══════════════════════
 
     /// <summary>第一次显示前调用一次：建立映射、校验、回填。重复调用无副作用。</summary>
@@ -69,6 +171,11 @@ public abstract class SettingsPageBase : MonoBehaviour
         {
             _refreshers[i](data);
         }
+
+        //子页开着就一并刷新。面板的「应用」「恢复默认」只拿到当前分类页这一个引用，
+        //不转发的话子页上的键名会停在提交前的样子。
+        //只往下走一跳 —— 子页自己不会再持有另一个子页，不会递归
+        if (_openSubPage != null) _openSubPage.RefreshAll();
     }
 
     // ══════════════════════ 给子类用的绑定工具 ══════════════════════
