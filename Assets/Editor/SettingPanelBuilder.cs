@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using LocalizationSystem;
 using TMPro;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -363,11 +364,15 @@ public static class SettingPanelBuilder
 
     private static void BuildGameplayPage(RectTransform content)
     {
-        //这一页暂时没有设置项，只放一句占位说明。
+        //语言：档位文案由 GameplaySettingsPage 在运行时从 LocalizationManager 取，
+        //这里只负责摆一个选择器行，所以生成器不需要知道有哪几种语言。
+        SelectorRow(content, "Row_Language", SettingIds.Language, "语言");
+
+        //其余游戏性项还没做，留一句占位说明。
         //它不带 SettingRowBase 组件，所以 SettingsPageBase 的"摆了行却没绑"校验不会对它报警告
         RectTransform row = NewRowRoot(content, "Row_Hint", null, 170f);
         TextMeshProUGUI hint = NewText("Hint", row,
-            "游戏性设置项将在后续版本中加入\n（语言、屏幕震动、伤害数字等）",
+            "其余游戏性设置项将在后续版本中加入\n（屏幕震动、伤害数字等）",
             HintFont, TextAlignmentOptions.Center, TextMuted);
         Stretch(hint.rectTransform, 0f, 0f, 0f, 0f);
     }
@@ -535,7 +540,24 @@ public static class SettingPanelBuilder
         return row;
     }
 
-    private static void NewLabel(RectTransform row, string text, float xMax)
+    /// <summary>
+    /// 行标签。除了摆文字，还会按这一行的 settingId 给它挂上 LocalizedText。
+    ///
+    /// ══════════════ 为什么要显式传 settingId ══════════════
+    /// 不能在这里用 row.GetComponent&lt;SettingRowBase&gt;() 去读 —— 各 Row 方法是在
+    /// 【最后一步】才调 SetRowId 把行控件挂上去的，所以此刻组件还不存在。
+    /// 调用方本来就持有 id，直接传进来最省事也最不容易错。
+    ///
+    /// ══════════════ Key 为什么由 settingId 派生 ══════════════
+    /// 标签文字是生成时烘焙进 prefab 的字面量，运行时没有任何代码去设置它，
+    /// 所以不挂 LocalizedText 的话，切换语言后面板自己的文字永远不变。
+    /// 约定：ui_setting_ + settingId 去掉分类前缀。例：
+    ///   graphics.resolution  → ui_setting_resolution
+    ///   keybind.openBindings → ui_setting_openbindings
+    /// 这样加新设置项时不用再手工登记 Key；配置里缺这一条只会回退成显示 Key 本身
+    /// （见 LocalizationManager 的取词优先级），不会报错也不会空白。
+    /// </summary>
+    private static void NewLabel(RectTransform row, string text, float xMax, string settingId)
     {
         TextMeshProUGUI label = NewText("Label", row, text, LabelFont, TextAlignmentOptions.Left, TextDark);
         RectTransform rt = label.rectTransform;
@@ -543,12 +565,28 @@ public static class SettingPanelBuilder
         rt.anchorMax = new Vector2(xMax, 1f);
         rt.offsetMin = new Vector2(28f, 0f);
         rt.offsetMax = new Vector2(0f, 0f);
+
+        if (!string.IsNullOrEmpty(settingId))
+        {
+            LocalizedText lt = label.gameObject.AddComponent<LocalizedText>();
+            lt.localizationKey = MakeSettingLabelKey(settingId);
+            lt.autoUpdateOnStart = true;
+            lt.listenToLanguageChange = true;
+        }
+    }
+
+    /// <summary>settingId → 标签的本地化 Key（见 NewLabel 的注释）。</summary>
+    private static string MakeSettingLabelKey(string settingId)
+    {
+        int dot = settingId.IndexOf('.');
+        string tail = (dot >= 0 && dot + 1 < settingId.Length) ? settingId.Substring(dot + 1) : settingId;
+        return "ui_setting_" + tail.ToLowerInvariant();
     }
 
     private static void SliderRow(RectTransform content, string rowName, string id, string label)
     {
         RectTransform row = NewRowRoot(content, rowName, id, RowHeight);
-        NewLabel(row, label, 0.42f);
+        NewLabel(row, label, 0.42f, id);
 
         RectTransform sliderRt = NewRect("Slider", row);
         SetAnchors(sliderRt, 0.44f, 0.25f, 0.86f, 0.75f);
@@ -594,7 +632,7 @@ public static class SettingPanelBuilder
     private static void SelectorRow(RectTransform content, string rowName, string id, string label)
     {
         RectTransform row = NewRowRoot(content, rowName, id, RowHeight);
-        NewLabel(row, label, 0.42f);
+        NewLabel(row, label, 0.42f, id);
 
         Button prev = NewButton("Prev", row, "<", ButtonFont, ButtonBg);
         SetAnchors((RectTransform)prev.transform, 0.44f, 0.22f, 0.52f, 0.78f);
@@ -611,7 +649,7 @@ public static class SettingPanelBuilder
     private static void ToggleRow(RectTransform content, string rowName, string id, string label)
     {
         RectTransform row = NewRowRoot(content, rowName, id, RowHeight);
-        NewLabel(row, label, 0.70f);
+        NewLabel(row, label, 0.70f, id);
 
         RectTransform toggleRt = NewRect("Toggle", row);
         //靠右定尺寸摆放：用比例锚点会把它拉成扁长条，勾选框该是方的
@@ -651,7 +689,7 @@ public static class SettingPanelBuilder
     private static void ButtonRow(RectTransform content, string rowName, string id, string label, string buttonText)
     {
         RectTransform row = NewRowRoot(content, rowName, id, RowHeight);
-        NewLabel(row, label, 0.42f);
+        NewLabel(row, label, 0.42f, id);
 
         Button button = NewButton("Button", row, buttonText, ButtonFont, ButtonBg);
         SetAnchors((RectTransform)button.transform, 0.46f, 0.12f, 0.78f, 0.88f);
@@ -670,7 +708,7 @@ public static class SettingPanelBuilder
     private static RectTransform KeybindRow(RectTransform content, string rowName, string id, string label)
     {
         RectTransform row = NewRowRoot(content, rowName, id, RowHeight);
-        NewLabel(row, label, 0.30f);
+        NewLabel(row, label, 0.30f, id);
 
         //按钮不带自己的文字：键名由 KeyText 显示（它要能被页面动态改写）
         Button key = NewButton("KeyButton", row, null, ButtonFont, ButtonBg);
@@ -701,7 +739,7 @@ public static class SettingPanelBuilder
     private static void KeybindPairRow(RectTransform content, string rowName, string id, string label)
     {
         RectTransform row = NewRowRoot(content, rowName, id, RowHeight);
-        NewLabel(row, label, 0.27f);
+        NewLabel(row, label, 0.27f, id);
 
         //左格：键盘
         AddKeySlot(row, "KeyButton", "KeyText", 0.29f, 0.51f);

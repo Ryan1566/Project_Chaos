@@ -1,4 +1,6 @@
 ﻿using System;
+//LanguageType 在 LocalizationSystem 命名空间；本类在全局命名空间，所以必须显式 using
+using LocalizationSystem;
 using UnityEngine;
 
 /// <summary>
@@ -39,6 +41,14 @@ public class SettingsData
     public bool vSync = false;
     /// <summary>QualityLevelOption。</summary>
     public int qualityLevel = (int)QualityLevelOption.High;
+
+    // ══════════════════ 游戏性 ══════════════════
+
+    /// <summary>
+    /// LanguageType。默认简体中文，由「游戏性 → 语言」这一行读写。
+    /// 这里存 int 而不是枚举：与其余设置项一致，且改文案/调枚举顺序时更稳。
+    /// </summary>
+    public int language = (int)LanguageType.ChineseSimplified;
 
     // ══════════════════ 声音 ══════════════════
     // 四路音量统一 0~100 整数（UI 上是拉条，步进 1）。
@@ -139,9 +149,9 @@ public class SettingsData
                 break;
 
             case SettingCategory.Gameplay:
-                // 游戏性页目前是空的（需求里明确"后续根据游戏需求添加"），
-                // 这里留一个空分支而不是 default: 抛异常 —— 加了新分类而忘了补分支时，
-                // 应该是"恢复默认没起作用"，而不是让玩家点一下就崩。
+                //语言属于游戏性分类，恢复默认即回到默认语言。
+                //其余游戏性项（屏幕震动、伤害数字等）后续加在这里。
+                language = d.language;
                 break;
         }
     }

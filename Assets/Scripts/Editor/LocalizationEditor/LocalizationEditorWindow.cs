@@ -407,7 +407,7 @@ namespace LocalizationSystem.Editor
                 "LocalizationConfig",
                 "asset",
                 "选择保存位置",
-                "Assets/Resources/Localization");
+                "Assets/Data/Localization");
 
             if (!string.IsNullOrEmpty(path))
             {
@@ -438,7 +438,7 @@ namespace LocalizationSystem.Editor
         {
             string path = EditorUtility.OpenFilePanelWithFilters(
                 "打开本地化配置",
-                "Assets/Resources/Localization",
+                "Assets/Data/Localization",
                 new string[] { "本地化配置", "asset" });
 
             if (!string.IsNullOrEmpty(path))

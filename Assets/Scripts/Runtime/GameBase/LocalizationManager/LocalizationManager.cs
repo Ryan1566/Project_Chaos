@@ -40,14 +40,27 @@ namespace LocalizationSystem
             if (isInitialized) return;
 
             //加载保存的语言设置
-            string savedLanguage = PlayerPrefs.GetString("Localization_CurrentLanguage", defaultLanguage.ToString());
-            if (Enum.TryParse<LanguageType>(savedLanguage, out var language))
+            //语言以设置存档 settings.json 为唯一权威。
+            //优先问 SettingsManager：Entry 启动时会把设置推给它，
+            //这样不依赖 LocalizationManager.Awake 与 Entry.Awake 的先后顺序。
+            SettingsManager settings = SettingsManager.Instance;
+            if (settings != null && settings.Applied != null)
             {
-                currentLanguage = language;
+                currentLanguage = (LanguageType)settings.Applied.language;
             }
             else
             {
-                currentLanguage = defaultLanguage;
+                //SettingsManager 还没就绪（例如单独跑某个测试场景）：
+                //退回 PlayerPrefs，再退回默认语言
+                string savedLanguage = PlayerPrefs.GetString("Localization_CurrentLanguage", defaultLanguage.ToString());
+                if (Enum.TryParse<LanguageType>(savedLanguage, out var language))
+                {
+                    currentLanguage = language;
+                }
+                else
+                {
+                    currentLanguage = defaultLanguage;
+                }
             }
 
             //构建缓存
@@ -98,9 +111,8 @@ namespace LocalizationSystem
 
             currentLanguage = language;
 
-            //保存语言设置
-            PlayerPrefs.SetString("Localization_CurrentLanguage", currentLanguage.ToString());
-            PlayerPrefs.Save();
+            //这里不再写 PlayerPrefs：语言由 SettingsManager 落盘到 settings.json。
+            //两份存档各写一份迟早会对不上，所以只留一个真源，本方法只负责运行时生效。
 
             //重建缓存
             BuildCache();

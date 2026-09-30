@@ -12,6 +12,9 @@
 /// </summary>
 public static class SettingIds
 {
+    // ══════════════════ 游戏性页 ══════════════════
+    public const string Language = "gameplay.language";
+
     // ══════════════════ 画面页 ══════════════════
     public const string Resolution = "graphics.resolution";
     public const string WindowMode = "graphics.windowMode";

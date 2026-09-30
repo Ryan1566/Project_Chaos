@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using ChaosDebug;
+using LocalizationSystem;
 using UnityEngine;
 
 /// <summary>
@@ -235,13 +236,34 @@ public class SettingsManager : SingletonBase<SettingsManager>
 
     // ══════════════════ 推给引擎 ══════════════════
 
-    /// <summary>把一份设置推给引擎（分辨率、画质、音量、按键绑定）。</summary>
+    /// <summary>把一份设置推给引擎（分辨率、画质、音量、按键绑定、语言）。</summary>
     public void ApplyToRuntime(SettingsData data)
     {
         if (data == null) return;
         ApplyGraphics(data);
         ApplyAudio(data);
         ApplyInput(data);
+        ApplyLocalization(data);
+    }
+
+    /// <summary>
+    /// 把语言推给 LocalizationManager。
+    ///
+    /// 这里【刻意判空】，与相邻的 ApplyAudio / ApplyInput 直接取单例的风格不同：
+    /// 本地化是可选的系统，场景里没有 LocalizationManager 时不该阻断其它设置生效，
+    /// 只报一条 WARN 让问题看得见。
+    /// </summary>
+    private static void ApplyLocalization(SettingsData data)
+    {
+        LocalizationManager mgr = LocalizationManager.GetInstance();
+        if (mgr == null)
+        {
+            ChaosLog.Warn(LogChannel.Localization,
+                "设置里的语言未生效：场景里没有 LocalizationManager（language=" + data.language + "）");
+            return;
+        }
+
+        mgr.ChangeLanguage((LanguageType)data.language);
     }
 
     private static void ApplyGraphics(SettingsData data)

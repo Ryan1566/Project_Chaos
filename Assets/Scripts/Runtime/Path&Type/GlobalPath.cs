@@ -47,6 +47,24 @@ public static class GlobalPath
     public const string res_InputActionsPath = "Input/ChaosInputActions";
     #endregion
 
+    #region UI 预制体搜索路径
+    /// <summary>
+    /// 收集面板 TMP 文字时默认扫描的目录。
+    ///
+    /// 与上面的 res_ 路径的区别：这里是【工程内资产目录】（Assets/ 开头的完整路径），
+    /// 给编辑器工具用（AssetDatabase.FindAssets），不是 Resources.Load 的相对路径。
+    /// 所以用 ui_ 前缀单独分组，别和 res_ 混用。
+    ///
+    /// 运行时不读这个数组 —— 只有面板文字收集器用它填默认值。
+    /// 加新面板目录时往这里追加即可，工具会自动带上。
+    /// </summary>
+    public static readonly string[] ui_PanelPrefabSearchPaths =
+    {
+        "Assets/Resources/UIPanels",
+        "Assets/Prefabs/UI",
+    };
+    #endregion
+
     #region 表配置路径
     /// <summary>
     /// 配置表存储路径

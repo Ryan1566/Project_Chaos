@@ -384,6 +384,7 @@ GameObject:
   - component: {fileID: 2181862034043295324}
   - component: {fileID: 243905379602323002}
   - component: {fileID: 2619565700336389825}
+  - component: {fileID: 679356808733350936}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -507,6 +508,22 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &679356808733350936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1682814219119599575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02c924ac28120a940ae3d79a668da0bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  localizationKey: ui_setting_settingrow_slider
+  autoUpdateOnStart: 1
+  listenToLanguageChange: 1
+  formatArgs: []
 --- !u!1 &2325035640272600683
 GameObject:
   m_ObjectHideFlags: 0

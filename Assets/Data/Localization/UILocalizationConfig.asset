@@ -1,0 +1,121 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9b7ea5860df0a241b850843c86744ac, type: 3}
+  m_Name: UILocalizationConfig
+  m_EditorClassIdentifier: 
+  configName: UILocalizationConfig
+  description: "\u672C\u5730\u5316\u6587\u672C\u7FFB\u8BD1\u5168\u5C40\u6570\u636E"
+  entries:
+  - key: ui_mainmenu_title
+    description: "MainMenuPanel > Title"
+    chineseSimplified: "\u4E3B\u83DC\u5355"
+    english: "Main Menu"
+  - key: ui_mainmenu_startbtn
+    description: "MainMenuPanel > StartBtn/Text (TMP)"
+    chineseSimplified: "\u5F00\u59CB\u6E38\u620F"
+    english: "Start Game"
+  - key: ui_mainmenu_settingbtn
+    description: "MainMenuPanel > SettingBtn/Text (TMP)"
+    chineseSimplified: "\u8BBE\u7F6E"
+    english: "Settings"
+  - key: ui_mainmenu_quitbtn
+    description: "MainMenuPanel > QuitBtn/Text (TMP)"
+    chineseSimplified: "\u9000\u51FA\u6E38\u620F"
+    english: "Quit"
+  - key: ui_setting_language
+    description: "SettingRow gameplay.language"
+    chineseSimplified: "\u8BED\u8A00"
+    english: "Language"
+  - key: ui_setting_resolution
+    description: "SettingRow graphics.resolution"
+    chineseSimplified: "\u5206\u8FA8\u7387"
+    english: "Resolution"
+  - key: ui_setting_windowmode
+    description: "SettingRow graphics.windowMode"
+    chineseSimplified: "\u89C6\u7A97\u6A21\u5F0F"
+    english: "Window Mode"
+  - key: ui_setting_framerate
+    description: "SettingRow graphics.frameRate"
+    chineseSimplified: "\u5E27\u7387\u4E0A\u9650"
+    english: "Frame Rate"
+  - key: ui_setting_vsync
+    description: "SettingRow graphics.vsync"
+    chineseSimplified: "\u5782\u76F4\u540C\u6B65"
+    english: "V-Sync"
+  - key: ui_setting_quality
+    description: "SettingRow graphics.quality"
+    chineseSimplified: "\u753B\u8D28\u7B49\u7EA7\uFF08\u9884\u7559\uFF09"
+    english: "Quality"
+  - key: ui_setting_master
+    description: "SettingRow audio.master"
+    chineseSimplified: "\u5168\u5C40\u97F3\u91CF"
+    english: "Master Volume"
+  - key: ui_setting_music
+    description: "SettingRow audio.music"
+    chineseSimplified: "\u97F3\u4E50\u97F3\u91CF"
+    english: "Music Volume"
+  - key: ui_setting_sfx
+    description: "SettingRow audio.sfx"
+    chineseSimplified: "\u97F3\u6548\u97F3\u91CF"
+    english: "SFX Volume"
+  - key: ui_setting_ui
+    description: "SettingRow audio.ui"
+    chineseSimplified: "UI \u97F3\u91CF"
+    english: "UI Volume"
+  - key: ui_setting_openbindings
+    description: "SettingRow keybind.openBindings"
+    chineseSimplified: "\u6309\u952E\u7ED1\u5B9A"
+    english: "Key Bindings"
+  - key: ui_setting_mouseinvertx
+    description: "SettingRow keybind.mouseInvertX"
+    chineseSimplified: "\u9F20\u6807\u6C34\u5E73\u53CD\u8F6C"
+    english: "Invert Mouse X"
+  - key: ui_setting_mouseinverty
+    description: "SettingRow keybind.mouseInvertY"
+    chineseSimplified: "\u9F20\u6807\u5782\u76F4\u53CD\u8F6C"
+    english: "Invert Mouse Y"
+  - key: ui_setting_mousesensitivity
+    description: "SettingRow keybind.mouseSensitivity"
+    chineseSimplified: "\u9F20\u6807\u7075\u654F\u5EA6"
+    english: "Mouse Sensitivity"
+  - key: ui_setting_attacktrigger
+    description: "SettingRow keybind.attackTrigger"
+    chineseSimplified: "\u653B\u51FB\u89E6\u53D1\u65B9\u5F0F"
+    english: "Attack Trigger"
+  - key: ui_setting_move
+    description: "\u6309\u952E\u7ED1\u5B9A\u4E8C\u7EA7\u754C\u9762\uFF1A\u79FB\u52A8"
+    chineseSimplified: "\u79FB\u52A8"
+    english: "Move"
+  - key: ui_setting_move.pad
+    description: "\u6309\u952E\u7ED1\u5B9A\u4E8C\u7EA7\u754C\u9762\uFF1A\u79FB\u52A8\uFF08\u624B\u67C4\uFF09"
+    chineseSimplified: "\u79FB\u52A8"
+    english: "Move"
+  - key: ui_setting_attack
+    description: "\u6309\u952E\u7ED1\u5B9A\u4E8C\u7EA7\u754C\u9762\uFF1A\u653B\u51FB"
+    chineseSimplified: "\u653B\u51FB"
+    english: "Attack"
+  - key: ui_setting_attack.pad
+    description: "\u6309\u952E\u7ED1\u5B9A\u4E8C\u7EA7\u754C\u9762\uFF1A\u653B\u51FB\uFF08\u624B\u67C4\uFF09"
+    chineseSimplified: "\u653B\u51FB"
+    english: "Attack"
+  - key: ui_setting_jump
+    description: "\u6309\u952E\u7ED1\u5B9A\u4E8C\u7EA7\u754C\u9762\uFF1A\u8DF3\u8DC3"
+    chineseSimplified: "\u8DF3\u8DC3"
+    english: "Jump"
+  - key: ui_setting_jump.pad
+    description: "\u6309\u952E\u7ED1\u5B9A\u4E8C\u7EA7\u754C\u9762\uFF1A\u8DF3\u8DC3\uFF08\u624B\u67C4\uFF09"
+    chineseSimplified: "\u8DF3\u8DC3"
+    english: "Jump"
+  - key: ui_setting_resetscheme
+    description: "\u6309\u952E\u7ED1\u5B9A\u4E8C\u7EA7\u754C\u9762\uFF1A\u6062\u590D\u5F53\u524D\u65B9\u6848\u9ED8\u8BA4"
+    chineseSimplified: "\u6062\u590D\u6309\u5F53\u524D\u65B9\u6848\u9ED8\u8BA4"
+    english: "Reset This Scheme"
