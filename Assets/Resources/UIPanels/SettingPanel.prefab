@@ -477,6 +477,7 @@ GameObject:
   - component: {fileID: 229739952516395105}
   - component: {fileID: 3623696376830095676}
   - component: {fileID: 5835356942908514110}
+  - component: {fileID: 1944661232605265141}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -616,6 +617,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &1944661232605265141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 232820230236213314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &403574059940945354
 GameObject:
   m_ObjectHideFlags: 0
@@ -628,6 +643,7 @@ GameObject:
   - component: {fileID: 7173213711378298795}
   - component: {fileID: 4690827315004117746}
   - component: {fileID: 321680993042612066}
+  - component: {fileID: 4837128653894962142}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -767,6 +783,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &4837128653894962142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 403574059940945354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &463682072070101341
 GameObject:
   m_ObjectHideFlags: 0
@@ -779,6 +809,7 @@ GameObject:
   - component: {fileID: 6509421987667298473}
   - component: {fileID: 8183353999234489468}
   - component: {fileID: 684006886055331493}
+  - component: {fileID: 5326122707186026428}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -918,6 +949,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &5326122707186026428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 463682072070101341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &737149569681177546
 GameObject:
   m_ObjectHideFlags: 0
@@ -1058,6 +1103,7 @@ GameObject:
   - component: {fileID: 1861805408653154236}
   - component: {fileID: 2431789746469441544}
   - component: {fileID: 5508647497672968819}
+  - component: {fileID: 6437687545545508220}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -1197,6 +1243,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &6437687545545508220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 795580788660018695}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &832560875657222252
 GameObject:
   m_ObjectHideFlags: 0
@@ -1406,6 +1466,7 @@ GameObject:
   - component: {fileID: 7140614326646599329}
   - component: {fileID: 1980575802259264183}
   - component: {fileID: 9200010679231400266}
+  - component: {fileID: 5335595584847589727}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -1545,6 +1606,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &5335595584847589727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1057210714247537444}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &1072322597605135713
 GameObject:
   m_ObjectHideFlags: 0
@@ -1648,6 +1723,7 @@ GameObject:
   - component: {fileID: 2554889892623265348}
   - component: {fileID: 3397514435070704309}
   - component: {fileID: 4071770325989143891}
+  - component: {fileID: 4228149328211030859}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -1787,6 +1863,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &4228149328211030859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1104179452495361662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &1176255920026095031
 GameObject:
   m_ObjectHideFlags: 0
@@ -2034,6 +2124,7 @@ GameObject:
   - component: {fileID: 3957533640283331821}
   - component: {fileID: 7873368582587523363}
   - component: {fileID: 2811503885839720346}
+  - component: {fileID: 9108986096371533949}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -2173,6 +2264,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &9108986096371533949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1224863516700068988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &1243289753746768044
 GameObject:
   m_ObjectHideFlags: 0
@@ -2185,6 +2290,7 @@ GameObject:
   - component: {fileID: 2038963646382197095}
   - component: {fileID: 7416497841649862631}
   - component: {fileID: 1710358442179168147}
+  - component: {fileID: 4520799290922974072}
   m_Layer: 0
   m_Name: ValueText
   m_TagString: Untagged
@@ -2324,6 +2430,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &4520799290922974072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1243289753746768044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &1250057453682009594
 GameObject:
   m_ObjectHideFlags: 0
@@ -2336,6 +2456,7 @@ GameObject:
   - component: {fileID: 5932982078036829185}
   - component: {fileID: 6116086713983285223}
   - component: {fileID: 1854802216265638101}
+  - component: {fileID: 6457343605747733683}
   m_Layer: 0
   m_Name: ValueText
   m_TagString: Untagged
@@ -2475,6 +2596,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &6457343605747733683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1250057453682009594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &1325527183774955988
 GameObject:
   m_ObjectHideFlags: 0
@@ -2569,6 +2704,7 @@ GameObject:
   - component: {fileID: 6390627217138817676}
   - component: {fileID: 5536279919444766287}
   - component: {fileID: 5712466425080673900}
+  - component: {fileID: 3542240898650071569}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -2708,6 +2844,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &3542240898650071569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1370685858427199931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &1411434507713374178
 GameObject:
   m_ObjectHideFlags: 0
@@ -3234,6 +3384,7 @@ GameObject:
   - component: {fileID: 1230820133423652688}
   - component: {fileID: 2632562869941080575}
   - component: {fileID: 4618530151086469375}
+  - component: {fileID: 4809242103439525370}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -3373,6 +3524,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &4809242103439525370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1581689466338025143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &1597013728886433543
 GameObject:
   m_ObjectHideFlags: 0
@@ -3622,6 +3787,7 @@ GameObject:
   - component: {fileID: 8197478058215463393}
   - component: {fileID: 4970468107248623116}
   - component: {fileID: 8400102971822799876}
+  - component: {fileID: 641066798166702624}
   m_Layer: 0
   m_Name: Hint
   m_TagString: Untagged
@@ -3761,6 +3927,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &641066798166702624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1629559524110226406}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &1665851033218327682
 GameObject:
   m_ObjectHideFlags: 0
@@ -3894,6 +4074,7 @@ GameObject:
   - component: {fileID: 5551443717481076368}
   - component: {fileID: 8062577322714124426}
   - component: {fileID: 1651086549860904483}
+  - component: {fileID: 1073872448277113454}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -4033,6 +4214,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &1073872448277113454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1721683350259018503}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &1766733111245109343
 GameObject:
   m_ObjectHideFlags: 0
@@ -4241,6 +4436,7 @@ GameObject:
   - component: {fileID: 9210546772238660020}
   - component: {fileID: 1868312072024444032}
   - component: {fileID: 3049617169481847815}
+  - component: {fileID: 1725785489851507336}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -4380,6 +4576,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &1725785489851507336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1841860100611144090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &1874781121474251054
 GameObject:
   m_ObjectHideFlags: 0
@@ -4392,6 +4602,7 @@ GameObject:
   - component: {fileID: 1758200007978419724}
   - component: {fileID: 5172263386181264051}
   - component: {fileID: 8166814754197808767}
+  - component: {fileID: 1117532674957785746}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -4531,6 +4742,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &1117532674957785746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1874781121474251054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &1964502618474995800
 GameObject:
   m_ObjectHideFlags: 0
@@ -4777,6 +5002,7 @@ GameObject:
   - component: {fileID: 2432072087515081532}
   - component: {fileID: 4701678727419968037}
   - component: {fileID: 8766196099009327019}
+  - component: {fileID: 4793565010556985331}
   m_Layer: 0
   m_Name: Option_0
   m_TagString: Untagged
@@ -4916,6 +5142,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &4793565010556985331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2010007345663632485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &2017777623474770740
 GameObject:
   m_ObjectHideFlags: 0
@@ -5099,6 +5339,7 @@ GameObject:
   - component: {fileID: 6436225852417589057}
   - component: {fileID: 2704650570982816631}
   - component: {fileID: 391043297507542805}
+  - component: {fileID: 5823737498828056132}
   m_Layer: 0
   m_Name: Option_1
   m_TagString: Untagged
@@ -5238,6 +5479,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &5823737498828056132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2045123252615781624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &2104496801726764233
 GameObject:
   m_ObjectHideFlags: 0
@@ -5329,6 +5584,7 @@ GameObject:
   - component: {fileID: 3151353540784547893}
   - component: {fileID: 3100268490350814065}
   - component: {fileID: 7973080312924159980}
+  - component: {fileID: 7660367842258682090}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -5468,6 +5724,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &7660367842258682090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2137844169304145732}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &2169870526449404894
 GameObject:
   m_ObjectHideFlags: 0
@@ -5480,6 +5750,7 @@ GameObject:
   - component: {fileID: 2043651609267994529}
   - component: {fileID: 6628633073715588363}
   - component: {fileID: 4067875778464222124}
+  - component: {fileID: 5533829236884020762}
   m_Layer: 0
   m_Name: ConfirmText
   m_TagString: Untagged
@@ -5619,6 +5890,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &5533829236884020762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2169870526449404894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &2183251352698551985
 GameObject:
   m_ObjectHideFlags: 0
@@ -5864,6 +6149,7 @@ GameObject:
   - component: {fileID: 366004036389449710}
   - component: {fileID: 2388257580130717530}
   - component: {fileID: 111626156118664129}
+  - component: {fileID: 6020273842064779649}
   m_Layer: 0
   m_Name: ValueText
   m_TagString: Untagged
@@ -6003,6 +6289,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &6020273842064779649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2254412907108136210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &2395519598517122216
 GameObject:
   m_ObjectHideFlags: 0
@@ -6221,6 +6521,7 @@ GameObject:
   - component: {fileID: 8840716844986392505}
   - component: {fileID: 134788249989673896}
   - component: {fileID: 1858973220148016716}
+  - component: {fileID: 9007659644985268290}
   m_Layer: 0
   m_Name: Title
   m_TagString: Untagged
@@ -6374,6 +6675,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &9007659644985268290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2399168244238618468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &2416591653142192399
 GameObject:
   m_ObjectHideFlags: 0
@@ -6386,6 +6701,7 @@ GameObject:
   - component: {fileID: 1763615753899912118}
   - component: {fileID: 4653816517508144112}
   - component: {fileID: 7151569722597198863}
+  - component: {fileID: 2263242206935119499}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -6525,6 +6841,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &2263242206935119499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2416591653142192399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &2503165001405842482
 GameObject:
   m_ObjectHideFlags: 0
@@ -6698,6 +7028,7 @@ GameObject:
   - component: {fileID: 8995855710846208923}
   - component: {fileID: 9079792914635196075}
   - component: {fileID: 2145355306788898875}
+  - component: {fileID: 8895315991530104265}
   m_Layer: 0
   m_Name: ValueText
   m_TagString: Untagged
@@ -6837,6 +7168,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &8895315991530104265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2614393374567900081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &2654692275399930808
 GameObject:
   m_ObjectHideFlags: 0
@@ -6849,6 +7194,7 @@ GameObject:
   - component: {fileID: 494409739296091673}
   - component: {fileID: 6287872323386916703}
   - component: {fileID: 2395251919212808886}
+  - component: {fileID: 860381579094552349}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -6988,6 +7334,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &860381579094552349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2654692275399930808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &2714073308928300538
 GameObject:
   m_ObjectHideFlags: 0
@@ -7242,6 +7602,7 @@ GameObject:
   - component: {fileID: 6257895000176771584}
   - component: {fileID: 8037012250925510372}
   - component: {fileID: 9059037941880052855}
+  - component: {fileID: 3380996828875046105}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -7381,6 +7742,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &3380996828875046105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2810524117033722290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &2821368449331113284
 GameObject:
   m_ObjectHideFlags: 0
@@ -7393,6 +7768,7 @@ GameObject:
   - component: {fileID: 6241185088694692191}
   - component: {fileID: 8104761303086590844}
   - component: {fileID: 7262696294280612955}
+  - component: {fileID: 6869598895579362167}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -7532,6 +7908,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &6869598895579362167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2821368449331113284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &2887683057676483496
 GameObject:
   m_ObjectHideFlags: 0
@@ -7544,6 +7934,7 @@ GameObject:
   - component: {fileID: 2628490893646105750}
   - component: {fileID: 5846500641909384766}
   - component: {fileID: 6142296732750485076}
+  - component: {fileID: 6841223488795099893}
   m_Layer: 0
   m_Name: Option_1
   m_TagString: Untagged
@@ -7683,6 +8074,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &6841223488795099893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2887683057676483496}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &2914987167962412764
 GameObject:
   m_ObjectHideFlags: 0
@@ -7775,6 +8180,7 @@ GameObject:
   - component: {fileID: 2770433413115317407}
   - component: {fileID: 896222511342735680}
   - component: {fileID: 2233306946090619873}
+  - component: {fileID: 8667450666861682062}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -7914,6 +8320,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &8667450666861682062
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2951555335955468507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &2982775268494194396
 GameObject:
   m_ObjectHideFlags: 0
@@ -8107,6 +8527,7 @@ GameObject:
   - component: {fileID: 2644341126569433623}
   - component: {fileID: 5890524149113512368}
   - component: {fileID: 2151793014607891017}
+  - component: {fileID: 2875459404221157794}
   m_Layer: 0
   m_Name: ValueText
   m_TagString: Untagged
@@ -8246,6 +8667,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &2875459404221157794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3053389797174049819}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &3066260648813695756
 GameObject:
   m_ObjectHideFlags: 0
@@ -8333,6 +8768,7 @@ GameObject:
   - component: {fileID: 8197151828440892976}
   - component: {fileID: 3252803757046257673}
   - component: {fileID: 1044804989059447587}
+  - component: {fileID: 2006291473996544536}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -8472,6 +8908,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &2006291473996544536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3135133622332450824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &3137919868263545652
 GameObject:
   m_ObjectHideFlags: 0
@@ -8696,6 +9146,7 @@ GameObject:
   - component: {fileID: 3144079456711009587}
   - component: {fileID: 7031259593476194434}
   - component: {fileID: 625836739640076647}
+  - component: {fileID: 4193271785153631101}
   m_Layer: 0
   m_Name: Option_4
   m_TagString: Untagged
@@ -8835,6 +9286,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &4193271785153631101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3314414212065573984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &3348052075034636487
 GameObject:
   m_ObjectHideFlags: 0
@@ -8968,6 +9433,7 @@ GameObject:
   - component: {fileID: 6712895213056230917}
   - component: {fileID: 5563729496618282563}
   - component: {fileID: 5335814607287823223}
+  - component: {fileID: 6661443426137749779}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -9107,6 +9573,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &6661443426137749779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3401808582455773576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &3440783201719938231
 GameObject:
   m_ObjectHideFlags: 0
@@ -9445,6 +9925,7 @@ GameObject:
   - component: {fileID: 8312408609092954351}
   - component: {fileID: 9184123238782224372}
   - component: {fileID: 4192545491899927379}
+  - component: {fileID: 3299995709163628892}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -9584,6 +10065,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &3299995709163628892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3526511357510941665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &3535056205529433495
 GameObject:
   m_ObjectHideFlags: 0
@@ -10147,6 +10642,7 @@ GameObject:
   - component: {fileID: 6110340542287902584}
   - component: {fileID: 124471842606505975}
   - component: {fileID: 986644901833110966}
+  - component: {fileID: 1085727997857107019}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -10286,6 +10782,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &1085727997857107019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3752873442846807116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &3756860501226448729
 GameObject:
   m_ObjectHideFlags: 0
@@ -10830,6 +11340,7 @@ GameObject:
   - component: {fileID: 4415303208716122378}
   - component: {fileID: 4301114852720551891}
   - component: {fileID: 1850639353338581625}
+  - component: {fileID: 882530349401112145}
   m_Layer: 0
   m_Name: Option_0
   m_TagString: Untagged
@@ -10969,6 +11480,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &882530349401112145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4115355346007335648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &4224656659176389522
 GameObject:
   m_ObjectHideFlags: 0
@@ -11183,6 +11708,7 @@ GameObject:
   - component: {fileID: 3278653837851942972}
   - component: {fileID: 8785227582678724488}
   - component: {fileID: 1574092276358905106}
+  - component: {fileID: 6544635540312229670}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -11322,6 +11848,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &6544635540312229670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4300977294062591569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &4340270857355968337
 GameObject:
   m_ObjectHideFlags: 0
@@ -11334,6 +11874,7 @@ GameObject:
   - component: {fileID: 8330732189866314204}
   - component: {fileID: 5267181748450753381}
   - component: {fileID: 6972567464669061968}
+  - component: {fileID: 3526055033202858972}
   m_Layer: 0
   m_Name: Option_3
   m_TagString: Untagged
@@ -11473,6 +12014,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &3526055033202858972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4340270857355968337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &4429154615472155405
 GameObject:
   m_ObjectHideFlags: 0
@@ -11485,6 +12040,7 @@ GameObject:
   - component: {fileID: 714418013851663061}
   - component: {fileID: 6402624619033374842}
   - component: {fileID: 5111459989601945053}
+  - component: {fileID: 3930029419613060279}
   m_Layer: 0
   m_Name: Option_0
   m_TagString: Untagged
@@ -11624,6 +12180,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &3930029419613060279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4429154615472155405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &4483483231959549187
 GameObject:
   m_ObjectHideFlags: 0
@@ -11858,6 +12428,7 @@ GameObject:
   - component: {fileID: 6314566353880542021}
   - component: {fileID: 8246852995303122288}
   - component: {fileID: 6509171857500345757}
+  - component: {fileID: 7601778762199814189}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -11997,6 +12568,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &7601778762199814189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4599960770863351925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &4623901497908785723
 GameObject:
   m_ObjectHideFlags: 0
@@ -12009,6 +12594,7 @@ GameObject:
   - component: {fileID: 7390444382281968321}
   - component: {fileID: 4828551236354272623}
   - component: {fileID: 2435558487788815824}
+  - component: {fileID: 6623084681656196613}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -12148,6 +12734,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &6623084681656196613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4623901497908785723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &4650094176056483621
 GameObject:
   m_ObjectHideFlags: 0
@@ -12418,6 +13018,7 @@ GameObject:
   - component: {fileID: 4458072311768606053}
   - component: {fileID: 3690205881566343033}
   - component: {fileID: 5857216019576129134}
+  - component: {fileID: 5910274032601998266}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -12557,6 +13158,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &5910274032601998266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4758912603235685662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &4793138034343781535
 GameObject:
   m_ObjectHideFlags: 0
@@ -12644,6 +13259,7 @@ GameObject:
   - component: {fileID: 389242340890429028}
   - component: {fileID: 577275446924143191}
   - component: {fileID: 7839751538018745447}
+  - component: {fileID: 392575086486296184}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -12783,6 +13399,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &392575086486296184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4821314534202412284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &4861189906016158637
 GameObject:
   m_ObjectHideFlags: 0
@@ -12795,6 +13425,7 @@ GameObject:
   - component: {fileID: 7841986883693060121}
   - component: {fileID: 2139362011080631300}
   - component: {fileID: 4817479896187083995}
+  - component: {fileID: 3745057336915252613}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -12934,6 +13565,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &3745057336915252613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4861189906016158637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &4908185335924591673
 GameObject:
   m_ObjectHideFlags: 0
@@ -12946,6 +13591,7 @@ GameObject:
   - component: {fileID: 7563931819380261384}
   - component: {fileID: 7314310004867015325}
   - component: {fileID: 8836946998350923303}
+  - component: {fileID: 4637861590175942210}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -13085,6 +13731,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &4637861590175942210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4908185335924591673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &4914840855907809745
 GameObject:
   m_ObjectHideFlags: 0
@@ -13418,6 +14078,7 @@ GameObject:
   - component: {fileID: 5781256346652322610}
   - component: {fileID: 7927592390390187035}
   - component: {fileID: 7915572688264086492}
+  - component: {fileID: 8770554777619077589}
   m_Layer: 0
   m_Name: ValueText
   m_TagString: Untagged
@@ -13557,6 +14218,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &8770554777619077589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5020887408447621795}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &5033712135135156325
 GameObject:
   m_ObjectHideFlags: 0
@@ -14012,6 +14687,7 @@ GameObject:
   - component: {fileID: 3234860739994605280}
   - component: {fileID: 1017851309052942114}
   - component: {fileID: 7380787869117125133}
+  - component: {fileID: 37936306449638125}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -14151,6 +14827,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &37936306449638125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5175556264876308046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &5245483923371201956
 GameObject:
   m_ObjectHideFlags: 0
@@ -14163,6 +14853,7 @@ GameObject:
   - component: {fileID: 5584037839754259946}
   - component: {fileID: 6404529706837662158}
   - component: {fileID: 5753493562966289605}
+  - component: {fileID: 944171170348101611}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -14302,6 +14993,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &944171170348101611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5245483923371201956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &5270321482124763673
 GameObject:
   m_ObjectHideFlags: 0
@@ -14435,6 +15140,7 @@ GameObject:
   - component: {fileID: 1787226970092881630}
   - component: {fileID: 4049086008637429960}
   - component: {fileID: 7918564746304916346}
+  - component: {fileID: 4936149252753451384}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -14574,6 +15280,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &4936149252753451384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5274712266674982556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &5330532596476471625
 GameObject:
   m_ObjectHideFlags: 0
@@ -14849,6 +15569,7 @@ GameObject:
   - component: {fileID: 5746049338967807208}
   - component: {fileID: 5290801283521616080}
   - component: {fileID: 8572256578064835538}
+  - component: {fileID: 6034985105556235126}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -14988,6 +15709,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &6034985105556235126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5419844187253897672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &5448183457717562260
 GameObject:
   m_ObjectHideFlags: 0
@@ -15121,6 +15856,7 @@ GameObject:
   - component: {fileID: 8759565527678755735}
   - component: {fileID: 528883466683684043}
   - component: {fileID: 1114934537961083245}
+  - component: {fileID: 2974178461132917617}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -15260,6 +15996,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &2974178461132917617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5569961827142196185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &5633892773093645882
 GameObject:
   m_ObjectHideFlags: 0
@@ -15272,6 +16022,7 @@ GameObject:
   - component: {fileID: 5965621700864435193}
   - component: {fileID: 41919843723629628}
   - component: {fileID: 3552416141732149075}
+  - component: {fileID: 7753707856693528479}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -15411,6 +16162,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &7753707856693528479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5633892773093645882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &5711419467092613602
 GameObject:
   m_ObjectHideFlags: 0
@@ -15423,6 +16188,7 @@ GameObject:
   - component: {fileID: 6158055106399247483}
   - component: {fileID: 1510878164257278852}
   - component: {fileID: 868699031686360596}
+  - component: {fileID: 583365619333973643}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -15562,6 +16328,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &583365619333973643
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5711419467092613602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &5728212611503742434
 GameObject:
   m_ObjectHideFlags: 0
@@ -15574,6 +16354,7 @@ GameObject:
   - component: {fileID: 1389371520959950159}
   - component: {fileID: 545676325329431079}
   - component: {fileID: 6796690360140482959}
+  - component: {fileID: 7386956704561996466}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -15713,6 +16494,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &7386956704561996466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5728212611503742434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &5863141972515747196
 GameObject:
   m_ObjectHideFlags: 0
@@ -16025,6 +16820,7 @@ GameObject:
   - component: {fileID: 8570254100101093257}
   - component: {fileID: 4493165286983942244}
   - component: {fileID: 3102369891701896804}
+  - component: {fileID: 5036730431507904905}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -16164,6 +16960,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &5036730431507904905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5985663914598202293}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &6025328837051891571
 GameObject:
   m_ObjectHideFlags: 0
@@ -16538,6 +17348,7 @@ GameObject:
   - component: {fileID: 7944597449304196653}
   - component: {fileID: 420000160663758786}
   - component: {fileID: 6114643223334475269}
+  - component: {fileID: 1533412064980944811}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -16677,6 +17488,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &1533412064980944811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6162804516634869209}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &6183339569702420263
 GameObject:
   m_ObjectHideFlags: 0
@@ -17000,6 +17825,7 @@ GameObject:
   - component: {fileID: 8233720184026641898}
   - component: {fileID: 7229039657404239742}
   - component: {fileID: 8955842889206159215}
+  - component: {fileID: 5435880475396829474}
   m_Layer: 0
   m_Name: Option_2
   m_TagString: Untagged
@@ -17139,6 +17965,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &5435880475396829474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6194610190124696082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &6208193673483960056
 GameObject:
   m_ObjectHideFlags: 0
@@ -17151,6 +17991,7 @@ GameObject:
   - component: {fileID: 1354991672680101984}
   - component: {fileID: 1815947961238557413}
   - component: {fileID: 6171614018025106988}
+  - component: {fileID: 889089736374515831}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -17290,6 +18131,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &889089736374515831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6208193673483960056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &6265404058026721248
 GameObject:
   m_ObjectHideFlags: 0
@@ -17578,6 +18433,7 @@ GameObject:
   - component: {fileID: 6544967120382468099}
   - component: {fileID: 8853268884340085042}
   - component: {fileID: 3537234349970750463}
+  - component: {fileID: 4481353787742956270}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -17717,6 +18573,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &4481353787742956270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6472077286058800676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &6483101937077870285
 GameObject:
   m_ObjectHideFlags: 0
@@ -18209,6 +19079,7 @@ GameObject:
   - component: {fileID: 3754790761821002927}
   - component: {fileID: 1619790569082127181}
   - component: {fileID: 2435121180951367293}
+  - component: {fileID: 2072504643217930700}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -18348,6 +19219,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &2072504643217930700
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6732744575942170936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &6786466220186834163
 GameObject:
   m_ObjectHideFlags: 0
@@ -18818,6 +19703,7 @@ GameObject:
   - component: {fileID: 4287676673727880823}
   - component: {fileID: 4729839416147050323}
   - component: {fileID: 1742938950118897706}
+  - component: {fileID: 6728478137256746254}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -18957,6 +19843,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &6728478137256746254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6870344229139224415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &6939403704327417812
 GameObject:
   m_ObjectHideFlags: 0
@@ -19188,6 +20088,7 @@ GameObject:
   - component: {fileID: 3071954160738999742}
   - component: {fileID: 463485787718812695}
   - component: {fileID: 7194812068667373276}
+  - component: {fileID: 3002203544649885259}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -19327,6 +20228,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &3002203544649885259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7022727558661925267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &7030007529050513150
 GameObject:
   m_ObjectHideFlags: 0
@@ -19460,6 +20375,7 @@ GameObject:
   - component: {fileID: 3713253290793000376}
   - component: {fileID: 1292454997952082100}
   - component: {fileID: 7198884221997427543}
+  - component: {fileID: 8209764436690389965}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -19599,6 +20515,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &8209764436690389965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7071099534957587010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &7082168314798387480
 GameObject:
   m_ObjectHideFlags: 0
@@ -19611,6 +20541,7 @@ GameObject:
   - component: {fileID: 6850910690800088434}
   - component: {fileID: 7140192732878536685}
   - component: {fileID: 742522670531372913}
+  - component: {fileID: 3447638962108589122}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -19750,6 +20681,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &3447638962108589122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7082168314798387480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &7184873181365688662
 GameObject:
   m_ObjectHideFlags: 0
@@ -20351,6 +21296,7 @@ GameObject:
   - component: {fileID: 7944707887213131066}
   - component: {fileID: 8571259640620373079}
   - component: {fileID: 7519081645761749055}
+  - component: {fileID: 5302425204964825440}
   m_Layer: 0
   m_Name: Option_2
   m_TagString: Untagged
@@ -20490,6 +21436,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &5302425204964825440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7469925402848234011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &7474867807565982945
 GameObject:
   m_ObjectHideFlags: 0
@@ -20502,6 +21462,7 @@ GameObject:
   - component: {fileID: 7268921186160726807}
   - component: {fileID: 5418017776994059175}
   - component: {fileID: 5856807687620229976}
+  - component: {fileID: 4976576235370562174}
   m_Layer: 0
   m_Name: ValueText
   m_TagString: Untagged
@@ -20641,6 +21602,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &4976576235370562174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7474867807565982945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &7489998373687274623
 GameObject:
   m_ObjectHideFlags: 0
@@ -20917,6 +21892,7 @@ GameObject:
   - component: {fileID: 1473230116762815623}
   - component: {fileID: 5104966902447604111}
   - component: {fileID: 2403169809380773037}
+  - component: {fileID: 7605427219244949321}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -21056,6 +22032,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &7605427219244949321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7551996922124326304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &7571387251621384125
 GameObject:
   m_ObjectHideFlags: 0
@@ -21068,6 +22058,7 @@ GameObject:
   - component: {fileID: 3931738793926347602}
   - component: {fileID: 5358821438560841917}
   - component: {fileID: 8084527739390985898}
+  - component: {fileID: 4691438286480236910}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -21207,6 +22198,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &4691438286480236910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7571387251621384125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &7619692198941430341
 GameObject:
   m_ObjectHideFlags: 0
@@ -21219,6 +22224,7 @@ GameObject:
   - component: {fileID: 2173467305745098565}
   - component: {fileID: 7072425888686449344}
   - component: {fileID: 626980144806953922}
+  - component: {fileID: 6874101383576340950}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -21358,6 +22364,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &6874101383576340950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7619692198941430341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &7641250728072518867
 GameObject:
   m_ObjectHideFlags: 0
@@ -21604,6 +22624,7 @@ GameObject:
   - component: {fileID: 8525681125347796021}
   - component: {fileID: 1689691373732879727}
   - component: {fileID: 7178786864198289107}
+  - component: {fileID: 5905734715779439035}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -21743,6 +22764,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &5905734715779439035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7741830220451674996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &7759277815177828322
 GameObject:
   m_ObjectHideFlags: 0
@@ -21986,6 +23021,7 @@ GameObject:
   - component: {fileID: 1056171496137988240}
   - component: {fileID: 7899092596031707871}
   - component: {fileID: 2752969018126596338}
+  - component: {fileID: 3756121365533191113}
   m_Layer: 0
   m_Name: Option_1
   m_TagString: Untagged
@@ -22125,6 +23161,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &3756121365533191113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7928080702044662462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &7939045416826088664
 GameObject:
   m_ObjectHideFlags: 0
@@ -22334,6 +23384,7 @@ GameObject:
   - component: {fileID: 686990009483774924}
   - component: {fileID: 4842926478536319077}
   - component: {fileID: 7410636290371461836}
+  - component: {fileID: 8136724499247297133}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -22473,6 +23524,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &8136724499247297133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7994852079500856399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &8010429352347764541
 GameObject:
   m_ObjectHideFlags: 0
@@ -22485,6 +23550,7 @@ GameObject:
   - component: {fileID: 2831468746606553833}
   - component: {fileID: 7811364942849975395}
   - component: {fileID: 656042255525610716}
+  - component: {fileID: 1114219959370461262}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -22624,6 +23690,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &1114219959370461262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8010429352347764541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &8015863683096427868
 GameObject:
   m_ObjectHideFlags: 0
@@ -22783,6 +23863,7 @@ GameObject:
   - component: {fileID: 7325140438918460563}
   - component: {fileID: 2051566446728400406}
   - component: {fileID: 7950142307006764283}
+  - component: {fileID: 6639348754860262019}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -22922,6 +24003,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &6639348754860262019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8024448121609699298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &8030097233681470424
 GameObject:
   m_ObjectHideFlags: 0
@@ -23086,6 +24181,7 @@ GameObject:
   - component: {fileID: 4864612237256626810}
   - component: {fileID: 5744363722925589663}
   - component: {fileID: 3049819588770972979}
+  - component: {fileID: 3965920567839046869}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -23225,6 +24321,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &3965920567839046869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8037895700574427196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &8139098250652510907
 GameObject:
   m_ObjectHideFlags: 0
@@ -23492,6 +24602,7 @@ GameObject:
   - component: {fileID: 684209717502309400}
   - component: {fileID: 4939871017024871813}
   - component: {fileID: 714639078523041253}
+  - component: {fileID: 4005371691640597766}
   m_Layer: 0
   m_Name: Option_1
   m_TagString: Untagged
@@ -23631,6 +24742,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &4005371691640597766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8186852842777085079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &8190813770938174256
 GameObject:
   m_ObjectHideFlags: 0
@@ -23794,6 +24919,7 @@ GameObject:
   - component: {fileID: 8453198481841147278}
   - component: {fileID: 6423161796134748094}
   - component: {fileID: 4820456586254678358}
+  - component: {fileID: 2449566906456051156}
   m_Layer: 0
   m_Name: Option_2
   m_TagString: Untagged
@@ -23933,6 +25059,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &2449566906456051156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8304486741209059147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &8413637216928648136
 GameObject:
   m_ObjectHideFlags: 0
@@ -24398,6 +25538,7 @@ GameObject:
   - component: {fileID: 4712392469575584963}
   - component: {fileID: 161610512702914799}
   - component: {fileID: 6779345978397388138}
+  - component: {fileID: 6619958644203245162}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -24537,6 +25678,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &6619958644203245162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8592269501037887411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &8592964671727008818
 GameObject:
   m_ObjectHideFlags: 0
@@ -24629,6 +25784,7 @@ GameObject:
   - component: {fileID: 3862291783036219093}
   - component: {fileID: 911139913566790609}
   - component: {fileID: 8168282843075716879}
+  - component: {fileID: 4230832203674796089}
   m_Layer: 0
   m_Name: Option_0
   m_TagString: Untagged
@@ -24768,6 +25924,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &4230832203674796089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8620687969016013580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &8701124066549297727
 GameObject:
   m_ObjectHideFlags: 0
@@ -24900,6 +26070,7 @@ GameObject:
   - component: {fileID: 6735192059744521699}
   - component: {fileID: 122825596163074791}
   - component: {fileID: 67325058479673251}
+  - component: {fileID: 1851451172122983581}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -25039,6 +26210,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &1851451172122983581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8709489636848051161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &8957466192553389340
 GameObject:
   m_ObjectHideFlags: 0
@@ -25480,6 +26665,7 @@ GameObject:
   - component: {fileID: 9172288202236794730}
   - component: {fileID: 5812784488915320486}
   - component: {fileID: 5967090004850372170}
+  - component: {fileID: 7104141173593827433}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -25619,6 +26805,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &7104141173593827433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9097364078412612891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &9123108927444969089
 GameObject:
   m_ObjectHideFlags: 0

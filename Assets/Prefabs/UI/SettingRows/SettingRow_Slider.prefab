@@ -385,6 +385,7 @@ GameObject:
   - component: {fileID: 243905379602323002}
   - component: {fileID: 2619565700336389825}
   - component: {fileID: 679356808733350936}
+  - component: {fileID: 8758027090186128202}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -524,6 +525,20 @@ MonoBehaviour:
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []
+--- !u!114 &8758027090186128202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1682814219119599575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad0755be298cd4eb16305423c16fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 5ff49b46c4a4436418611b54a7ceabcc, type: 2}
+  applyOnLanguageChange: 1
 --- !u!1 &2325035640272600683
 GameObject:
   m_ObjectHideFlags: 0
