@@ -294,7 +294,7 @@ public class InputManager : SingletonBase<InputManager>
         if (action == null) return "-";
 
         int index = FindBindingIndex(action, kind);
-        if (index < 0) return "未绑定";
+        if (index < 0) return "-";
 
         if (action.bindings[index].isComposite)
         {
@@ -310,7 +310,7 @@ public class InputManager : SingletonBase<InputManager>
 
             //整条复合都被置空（玩家在采集过程中按了取消键，见 ApplyEmptyOverride）时，
             //逐段拼会显示成"未绑定 / 未绑定"，读起来像是两个坏掉的格子。这里收成一句
-            if (parts.Count > 0 && !anyBound) return "未绑定";
+            if (parts.Count > 0 && !anyBound) return "-";
 
             return parts.Count > 0 ? string.Join(" / ", parts.ToArray()) : "-";
         }
@@ -323,7 +323,7 @@ public class InputManager : SingletonBase<InputManager>
     {
         //空路径是 Input System 认可的"这一格没绑定"（它会被直接禁用、不报错），
         //界面上就显示成"未绑定" —— 玩家点一下那一格就能绑上
-        if (string.IsNullOrEmpty(path)) return "未绑定";
+        if (string.IsNullOrEmpty(path)) return "-";
 
         if (path.StartsWith("<Gamepad>", StringComparison.OrdinalIgnoreCase)) return GamepadName(path, device);
         if (path.StartsWith("<Mouse>", StringComparison.OrdinalIgnoreCase)) return MouseName(path);

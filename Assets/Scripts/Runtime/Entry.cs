@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Entry : MonoBehaviour
 {
-    private void Awake()
+    private void Start()
     {
         UIManager.Instance.OnInit();
 

@@ -33,6 +33,7 @@ public class GameplaySettingsPage : SettingsPageBase
     ///
     /// 用 GetAllLanguages() 而不是硬编码列表：它只返回枚举里【启用】的语言
     /// （注释掉的语言不会出现），所以启用新语言时这里不用改。
+    /// 但是记得要改SettingPanel预制体，这块是写死了的
     /// 顺序与 LanguageType 的枚举值一致，所以下标 == 枚举值 == SettingsData.language。
     /// </summary>
     private static string[] GetLanguageOptions()

@@ -56,6 +56,9 @@ public static class SettingKeys
     {
         "ui_setting_contentarea_page_gameplay_viewport_content_row_language_options_option_0",
         "ui_setting_contentarea_page_gameplay_viewport_content_row_language_options_option_1",
+        "ui_setting_contentarea_page_gameplay_viewport_content_row_language_options_option_2",
+        "ui_setting_contentarea_page_gameplay_viewport_content_row_language_options_option_3",
+        "ui_setting_contentarea_page_gameplay_viewport_content_row_language_options_option_4",
     };
 
     /// <summary>

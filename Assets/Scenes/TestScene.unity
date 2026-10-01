@@ -2295,7 +2295,6 @@ GameObject:
   - component: {fileID: 741465422}
   - component: {fileID: 741465424}
   - component: {fileID: 741465423}
-  - component: {fileID: 741465425}
   - component: {fileID: 741465426}
   m_Layer: 5
   m_Name: Text (TMP)
@@ -2420,22 +2419,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 741465421}
   m_CullTransparentMesh: 1
---- !u!114 &741465425
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 741465421}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02c924ac28120a940ae3d79a668da0bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  localizationKey: ui_testscene_uitestbtn
-  autoUpdateOnStart: 1
-  listenToLanguageChange: 1
-  formatArgs: []
 --- !u!114 &741465426
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4178,8 +4161,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0adeac71a1b305d4392343043e5f504e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  localizationData: {fileID: 11400000, guid: 88a4179f718a5e548811c55ff1c16fbf, type: 2}
-  defaultLanguage: 0
+  localizationData: {fileID: 11400000, guid: e97f8d6565eb62d4d9db073c24ce6127, type: 2}
+  defaultLanguage: 2
   OnLanguageChanged:
     m_PersistentCalls:
       m_Calls: []

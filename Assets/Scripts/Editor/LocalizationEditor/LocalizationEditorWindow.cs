@@ -26,6 +26,7 @@ namespace LocalizationSystem.Editor
         private readonly LanguageType[] commonLanguages = new LanguageType[]
         {
             LanguageType.ChineseSimplified,
+            LanguageType.ChineseTraditional,
             LanguageType.English,
             LanguageType.Japanese,
             LanguageType.Korean
@@ -511,7 +512,10 @@ namespace LocalizationSystem.Editor
                 $"清空条目 '{entry.key}' 的全部译文？\n（Key 与描述会保留）", "清空")) return;
 
             entry.chineseSimplified = "";
+            entry.chineseTraditional = "";
             entry.english = "";
+            entry.japanese = "";
+            entry.korean = "";
             EditorUtility.SetDirty(currentData);
         }
 
@@ -551,7 +555,10 @@ namespace LocalizationSystem.Editor
             foreach (var entry in currentData.entries)
             {
                 bool isComplete = !string.IsNullOrEmpty(entry.chineseSimplified) &&
-                                 !string.IsNullOrEmpty(entry.english);
+                                 !string.IsNullOrEmpty(entry.chineseTraditional) &&
+                                 !string.IsNullOrEmpty(entry.english) &&
+                                 !string.IsNullOrEmpty(entry.japanese) &&
+                                 !string.IsNullOrEmpty(entry.korean);
                 if (isComplete) count++;
             }
             return count;
@@ -674,8 +681,8 @@ namespace LocalizationSystem.Editor
         {
             string path = EditorUtility.SaveFilePanel(
                 "导出CSV",
-                "",
-                $"{currentData.configName}_Export.csv",
+                @"D:\Unity Projects\Project_Chaos\Assets\Excel\Chaos_localization_excel\",
+                $"{currentData.name}_Export.csv",
                 "csv");
 
             if (string.IsNullOrEmpty(path)) return;
@@ -731,7 +738,7 @@ namespace LocalizationSystem.Editor
         {
             string path = EditorUtility.OpenFilePanelWithFilters(
                 "导入CSV",
-                "",
+                @"D:\Unity Projects\Project_Chaos\Assets\Excel\Chaos_localization_excel\",
                 new string[] { "CSV文件", "csv" });
 
             if (string.IsNullOrEmpty(path)) return;
