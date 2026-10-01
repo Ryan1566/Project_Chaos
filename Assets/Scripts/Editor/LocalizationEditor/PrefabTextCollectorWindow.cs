@@ -123,6 +123,27 @@ namespace LocalizationSystem.Editor
             {
                 _targetConfig = AssetDatabase.LoadAssetAtPath<LocalizationData>(last);
             }
+
+            // ══════════════ 记的那条失效了就退回默认目标 ══════════════
+            // 配置资产被改名/拆分之后，EditorPrefs 里存的是一条已经不存在的路径 ——
+            // 这时窗口会以"空目标"打开，而用户看到的只是"按钮都是灰的"，完全想不到是路径过期。
+            // 所以这里主动兜一层，默认取 GlobalPath.ui_LocalizationConfigPaths 的第一项。
+            if (_targetConfig == null)
+            {
+                string[] defaults = GlobalPath.ui_LocalizationConfigPaths;
+                if (defaults != null)
+                {
+                    for (int i = 0; i < defaults.Length; i++)
+                    {
+                        _targetConfig = AssetDatabase.LoadAssetAtPath<LocalizationData>(defaults[i]);
+                        if (_targetConfig != null)
+                        {
+                            EditorPrefs.SetString(TargetConfigKey, defaults[i]);
+                            break;
+                        }
+                    }
+                }
+            }
         }
 
         private void ResetSearchPathsToDefault()
@@ -154,20 +175,51 @@ namespace LocalizationSystem.Editor
         private void DrawPathsSection()
         {
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-            EditorGUILayout.LabelField("搜索路径（扫描这些目录下的所有预制体）", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("搜索路径（目录，或直接指定某个 .prefab / .unity）", EditorStyles.boldLabel);
 
             int removeAt = -1;
             for (int i = 0; i < _searchPaths.Count; i++)
             {
                 EditorGUILayout.BeginHorizontal();
-                _searchPaths[i] = EditorGUILayout.TextField(_searchPaths[i]);
+
+                //路径既可以是目录也可以是具体资产，用 ObjectField 而不是文本框：
+                //拖进来就不会有"手打路径打错 → 扫描静默跳过"这种问题。
+                EditorGUI.BeginChangeCheck();
+                string typed = EditorGUILayout.TextField(_searchPaths[i]);
+                //ObjectField 里只放"当前路径指向的那个资产"（目录会显示为 DefaultAsset），
+                //非 Assets 下的路径它显示不出来，但文本框仍然生效 —— 两条输入方式并存
+                UnityEngine.Object current = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(_searchPaths[i]);
+                var picked = (UnityEngine.Object)EditorGUILayout.ObjectField(current, typeof(UnityEngine.Object), false, GUILayout.Width(56f));
+                if (EditorGUI.EndChangeCheck())
+                {
+                    if (picked != current)
+                    {
+                        string assetPath = picked != null ? AssetDatabase.GetAssetPath(picked) : string.Empty;
+                        if (!string.IsNullOrEmpty(assetPath)) _searchPaths[i] = assetPath;
+                    }
+                    else
+                    {
+                        _searchPaths[i] = typed;
+                    }
+                }
+
                 if (GUILayout.Button("移除", GUILayout.Width(52f))) removeAt = i;
                 EditorGUILayout.EndHorizontal();
             }
             if (removeAt >= 0) _searchPaths.RemoveAt(removeAt);
 
             EditorGUILayout.BeginHorizontal();
-            if (GUILayout.Button("+ 添加路径", GUILayout.Width(100f))) _searchPaths.Add("Assets/");
+            if (GUILayout.Button("+ 添加目录", GUILayout.Width(90f))) _searchPaths.Add("Assets/");
+            //把当前选中的资产加进来：在 Project 里点几下就能凑出要扫的目标，不用手打路径
+            using (new EditorGUI.DisabledScope(Selection.activeObject == null
+                || string.IsNullOrEmpty(AssetDatabase.GetAssetPath(Selection.activeObject))))
+            {
+                if (GUILayout.Button("+ 添加选中的资产", GUILayout.Width(130f)))
+                {
+                    string sel = AssetDatabase.GetAssetPath(Selection.activeObject);
+                    if (!string.IsNullOrEmpty(sel) && !_searchPaths.Contains(sel)) _searchPaths.Add(sel);
+                }
+            }
             if (GUILayout.Button("恢复 GlobalPath 默认", GUILayout.Width(160f))) ResetSearchPathsToDefault();
             EditorGUILayout.EndHorizontal();
 
@@ -204,8 +256,20 @@ namespace LocalizationSystem.Editor
 
             if (_targetConfig == null)
             {
-                EditorGUILayout.HelpBox("请指定一个 LocalizationData 资产（例如 Data/Localization/UILocalizationConfig.asset）。",
-                    MessageType.Warning);
+                //提示里给出"该填什么"，而不是只抱怨"没填"。默认目标来自 GlobalPath，
+                //所以这里列出的是真正会被自动选中的那几个
+                string hint = "请指定一个 LocalizationData 资产。默认目标（GlobalPath.ui_LocalizationConfigPaths）：";
+                string[] defaults = GlobalPath.ui_LocalizationConfigPaths;
+                if (defaults != null && defaults.Length > 0) hint += "\n· " + string.Join("\n· ", defaults);
+                else hint += "\n（GlobalPath 里没有配置默认路径，请手动指定）";
+
+                EditorGUILayout.HelpBox(hint, MessageType.Warning);
+            }
+            else
+            {
+                //多张配置表并存时，明确写出"这次导入会写进哪一张" —— 写错表很难发现
+                EditorGUILayout.LabelField("本次操作写入：" + AssetDatabase.GetAssetPath(_targetConfig),
+                    EditorStyles.miniLabel);
             }
             EditorGUILayout.EndVertical();
         }
@@ -290,10 +354,9 @@ namespace LocalizationSystem.Editor
 
             //状态标记
             string badge;
-            MessageType type;
-            if (item.KeyDuplicated) { badge = "Key 重复"; type = MessageType.Error; }
-            else if (item.AlreadyInConfig) { badge = "已存在"; type = MessageType.None; }
-            else { badge = "新增"; type = MessageType.None; }
+            if (item.KeyDuplicated) badge = "Key 重复";
+            else if (item.AlreadyInConfig) badge = "已存在";
+            else badge = "新增";
 
             Color old = GUI.color;
             if (item.KeyDuplicated) GUI.color = new Color(1f, 0.5f, 0.5f);
@@ -306,7 +369,43 @@ namespace LocalizationSystem.Editor
                 EditorGUILayout.LabelField("原文含首尾空白", EditorStyles.miniLabel, GUILayout.Width(100f));
             }
 
+            //单条清除：勾选一大堆时，要精准干掉某一条不必去改勾选状态。
+            //做成"只勾这一条→走同一套清除逻辑→还原勾选"，是为了让单条与批量走完全相同的代码路径，
+            //否则两条路径的删除规则（配置去重、场景保存、重复组件清理）迟早会走岔
+            GUI.color = new Color(1f, 0.72f, 0.72f);
+            if (GUILayout.Button("清除", EditorStyles.miniButton, GUILayout.Width(44f)))
+            {
+                ClearSingleItem(item);
+            }
+            GUI.color = old;
+
             EditorGUILayout.EndHorizontal();
+        }
+
+        /// <summary>
+        /// 只清除某一行的条目：从配置删条目 + 摘掉该物体上的 LocalizedText。
+        /// 实现是"临时把勾选改成只有它"，复用 ClearSelectedItems 的整套规则。
+        /// </summary>
+        private void ClearSingleItem(TextItem item)
+        {
+            if (_targetConfig == null) return;
+
+            var keep = new List<string>();
+            for (int g = 0; g < _groups.Count; g++)
+            {
+                for (int i = 0; i < _groups[g].Items.Count; i++)
+                {
+                    if (_groups[g].Items[i].Selected) keep.Add(MakeItemId(_groups[g].Items[i]));
+                }
+            }
+            SetSelectionAll(false);
+            item.Selected = true;
+
+            //清除走的是"勾选项"那套逻辑（会弹一次确认框、并重扫保留勾选）
+            ClearSelectedItems();
+
+            //还原原先的勾选（被清掉的那条在重扫后已不在配置里，不必也不该被选中）
+            RestoreSelection(keep);
         }
 
         /// <summary>
@@ -346,12 +445,25 @@ namespace LocalizationSystem.Editor
         {
             EditorGUILayout.BeginHorizontal();
 
-            if (GUILayout.Button("扫描", GUILayout.Height(30f))) Scan();
+            if (GUILayout.Button("扫描", GUILayout.Height(30f))) RescanPreservingSelection();
 
             using (new EditorGUI.DisabledScope(_targetConfig == null || !_scanned))
             {
                 if (GUILayout.Button("导入到配置", GUILayout.Height(30f))) ImportToConfig();
                 if (GUILayout.Button("写入 LocalizedText 组件", GUILayout.Height(30f))) WriteComponents();
+            }
+
+            // 清除：把勾选条目从配置里删掉，并摘掉物体上的 LocalizedText。
+            // 与"写入"刚好相反，放在同一行末尾、并用红底标示它是破坏性操作
+            using (new EditorGUI.DisabledScope(_targetConfig == null || !_scanned || CountSelected() == 0))
+            {
+                Color old = GUI.backgroundColor;
+                GUI.backgroundColor = new Color(1f, 0.72f, 0.72f);
+                if (GUILayout.Button("清除勾选项（配置 + 组件）", GUILayout.Height(30f), GUILayout.Width(210f)))
+                {
+                    ClearSelectedItems();
+                }
+                GUI.backgroundColor = old;
             }
 
             EditorGUILayout.EndHorizontal();
@@ -370,18 +482,48 @@ namespace LocalizationSystem.Editor
             {
                 string path = _searchPaths[p];
                 if (string.IsNullOrEmpty(path)) continue;
-                if (!AssetDatabase.IsValidFolder(path))
-                {
-                    ChaosLog.Warn(LogChannel.Localization, "扫描路径不存在，已跳过：" + path);
-                    continue;
-                }
+                if (path.EndsWith("/")) path = path.TrimEnd('/');
 
-                string[] guids = AssetDatabase.FindAssets("t:Prefab", new[] { path });
-                for (int i = 0; i < guids.Length; i++)
+                // ══════════════ 三种路径 ══════════════
+                // 目录       → 扫描目录下所有预制体
+                // .prefab    → 只扫这一个（从一个具体预制体入手时最省事，不用为了它单开一个目录）
+                // .unity     → 当场景扫（走 ScanScene，会 Additive 打开再关掉）
+                if (AssetDatabase.IsValidFolder(path))
                 {
-                    string prefabPath = AssetDatabase.GUIDToAssetPath(guids[i]);
-                    PrefabGroup group = ScanPrefab(prefabPath);
+                    string[] guids = AssetDatabase.FindAssets("t:Prefab", new[] { path });
+                    for (int i = 0; i < guids.Length; i++)
+                    {
+                        string prefabPath = AssetDatabase.GUIDToAssetPath(guids[i]);
+                        PrefabGroup group = ScanPrefab(prefabPath);
+                        if (group != null && group.Items.Count > 0) _groups.Add(group);
+                    }
+                }
+                else if (path.EndsWith(".prefab", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (AssetDatabase.LoadAssetAtPath<GameObject>(path) == null)
+                    {
+                        ChaosLog.Warn(LogChannel.Localization, "预制体路径无效，已跳过：" + path);
+                        continue;
+                    }
+                    PrefabGroup group = ScanPrefab(path);
                     if (group != null && group.Items.Count > 0) _groups.Add(group);
+                }
+                else if (path.EndsWith(".unity", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (Application.isPlaying)
+                    {
+                        ChaosLog.Warn(LogChannel.Localization, "正在播放模式，无法扫描场景，已跳过：" + path);
+                    }
+                    else
+                    {
+                        PrefabGroup group = ScanScene(path);
+                        if (group != null && group.Items.Count > 0) _groups.Add(group);
+                    }
+                }
+                else
+                {
+                    ChaosLog.Warn(LogChannel.Localization,
+                        "扫描路径既不是目录，也不是 .prefab/.unity，已跳过：" + path);
                 }
             }
 
@@ -801,8 +943,7 @@ namespace LocalizationSystem.Editor
         /// </summary>
         public int ScanAndSelectForTest(string sourcePath, Func<TextItem, bool> predicate)
         {
-            _groups.Clear();
-            Scan();
+            RescanPreservingSelection();
             for (int g = 0; g < _groups.Count; g++)
             {
                 if (!string.Equals(_groups[g].Path, sourcePath, StringComparison.Ordinal)) continue;
@@ -826,6 +967,18 @@ namespace LocalizationSystem.Editor
         public void WriteComponentsForTest()
         {
             WriteComponents();
+        }
+
+        /// <summary>无对话框版本的清除（静默模式下 ClearSelectedItems 不弹确认框）。</summary>
+        public void ClearSelectedForTest()
+        {
+            ClearSelectedItems();
+        }
+
+        /// <summary>当前勾选条数（验证脚本断言"操作后勾选还在不在"要用）。</summary>
+        public int CountSelectedForTest()
+        {
+            return CountSelected();
         }
 
         /// <summary>
@@ -1033,7 +1186,9 @@ namespace LocalizationSystem.Editor
 
             ChaosLog.Info(LogChannel.Localization, "面板文字导入完成：" + msg.Replace("\n", " "));
 
-            //重新算一遍「已存在」，让界面状态和配置对齐
+            // ══════════════ 勾选保持不动 ══════════════
+            // 这里【不清空勾选】：用户常常要连着做"导入 → 回写组件"两步，
+            // 中间被清掉就得重新勾一遍。只重算「已存在」标记，让状态列跟着配置更新。
             RefreshConfigStatus();
         }
 
@@ -1045,9 +1200,76 @@ namespace LocalizationSystem.Editor
                 {
                     TextItem it = _groups[g].Items[i];
                     it.AlreadyInConfig = IsAlreadyInConfig(it);
-                    if (it.AlreadyInConfig) it.Selected = false;
                 }
             }
+        }
+
+        // ══════════════════ 勾选状态的保留 ══════════════════
+        //
+        // ══════════════ 为什么需要"先记下来再恢复" ══════════════
+        // 好几个操作（导入、回写、清除）结束后都要重扫或重算状态，而重扫是【重建整个列表】：
+        // 旧的对象连同它们的 Selected 一起被丢掉，界面上表现为"点完按钮，勾选全没了"。
+        // 用户往往要连着做几步（导入 → 回写 → 再挑几条处理），每次都重新勾一遍非常烦。
+        //
+        // 所以这些操作统一走这个模式：操作前用 GetSelectedPaths 记下勾选，
+        // 操作后调 RestoreSelection 按路径还原。用路径而不是索引，是因为重扫后条目顺序可能变。
+        private List<string> GetSelectedPaths()
+        {
+            var list = new List<string>();
+            for (int g = 0; g < _groups.Count; g++)
+            {
+                for (int i = 0; i < _groups[g].Items.Count; i++)
+                {
+                    if (_groups[g].Items[i].Selected) list.Add(MakeItemId(_groups[g].Items[i]));
+                }
+            }
+            return list;
+        }
+
+        private void RestoreSelection(List<string> ids)
+        {
+            if (ids == null || ids.Count == 0) return;
+            var set = new HashSet<string>(ids);
+            for (int g = 0; g < _groups.Count; g++)
+            {
+                for (int i = 0; i < _groups[g].Items.Count; i++)
+                {
+                    if (set.Contains(MakeItemId(_groups[g].Items[i]))) _groups[g].Items[i].Selected = true;
+                }
+            }
+        }
+
+        /// <summary>条目的唯一标识：来源路径 + 层级路径。同一个物体在两个来源里出现的可能不存在，但这样最稳。</summary>
+        private static string MakeItemId(TextItem it)
+        {
+            return it.PrefabPath + "|" + it.ObjectPath;
+        }
+
+        /// <summary>
+        /// 重扫一遍并尽力保留勾选。
+        ///
+        /// 注意 Scan 会重建列表，所以【调用方传进来的 TextItem 引用在调用后就失效了】，
+        /// 需要继续用某条目的属性时必须重新按路径取。这也是这里只接受 id 列表的原因。
+        /// </summary>
+        private void RescanPreservingSelection()
+        {
+            List<string> selected = GetSelectedPaths();
+            Scan();
+            RestoreSelection(selected);
+        }
+
+        /// <summary>当前勾选条数（界面按钮的禁用判断要用）。</summary>
+        private int CountSelected()
+        {
+            int n = 0;
+            for (int g = 0; g < _groups.Count; g++)
+            {
+                for (int i = 0; i < _groups[g].Items.Count; i++)
+                {
+                    if (_groups[g].Items[i].Selected) n++;
+                }
+            }
+            return n;
         }
 
         // ══════════════════ 写入 LocalizedText 组件 ══════════════════
@@ -1145,6 +1367,227 @@ namespace LocalizationSystem.Editor
             Notify("写入 LocalizedText 组件", msg);
 
             ChaosLog.Info(LogChannel.Localization, "面板文字组件写入完成：" + msg.Replace("\n", " "));
+
+            //勾选保持不动，只把状态列重算一遍（组件刚被写过，Key 可能与配置不再一致）
+            RefreshConfigStatus();
+        }
+
+        // ══════════════════ 清除勾选项 ══════════════════
+
+        /// <summary>
+        /// 把勾选的条目【双向撤掉】：从本地化配置里删掉对应条目，并摘掉物体上的 LocalizedText 组件。
+        ///
+        /// ══════════════ 为什么两件事必须一起做 ══════════════
+        /// 只删配置：物体上的 LocalizedText 还在，切语言时它会去查一个不存在的 Key，
+        /// 而 LocalizationManager 找不到条目时是【把 Key 本身当文本返回】——
+        /// 界面上就会出现 `ui_setting_bottombar_returnbtn_label` 这种字符串，比不本地化更糟。
+        /// 只摘组件：配置里留一堆没有控件引用的孤儿条目，越攒越多。
+        ///
+        /// ══════════════ 摘组件为什么不用删节点 ══════════════
+        /// 只移除组件，不动层级与文字。物体上的 TMP 文字保持原样，
+        /// 所以撤掉之后界面退回显示预制体里烘焙的中文原文 —— 这是"未接本地化"的正常状态。
+        ///
+        /// ══════════════ 破坏性操作，会先确认 ══════════════
+        /// 删的是配置条目（可能已经翻译好几种语言），所以默认要确认。
+        /// SilentMode 下（脚本驱动）跳过确认，由调用方自己把关。
+        /// </summary>
+        private void ClearSelectedItems()
+        {
+            if (_targetConfig == null) return;
+
+            var picked = new List<TextItem>();
+            for (int g = 0; g < _groups.Count; g++)
+            {
+                for (int i = 0; i < _groups[g].Items.Count; i++)
+                {
+                    if (_groups[g].Items[i].Selected) picked.Add(_groups[g].Items[i]);
+                }
+            }
+            if (picked.Count == 0)
+            {
+                Notify("清除勾选项", "没有勾选任何条目。");
+                return;
+            }
+
+            if (!SilentMode)
+            {
+                bool ok = EditorUtility.DisplayDialog("确认清除",
+                    "将清除勾选的 " + picked.Count + " 条：\n" +
+                    "· 从配置 " + _targetConfig.name + " 里删除对应条目\n" +
+                    "· 并摘掉物体上的 LocalizedText 组件\n\n" +
+                    "此操作不可撤销（删除的译文无法恢复）。",
+                    "清除", "取消");
+                if (!ok) return;
+            }
+
+            // ══════════════ 先按来源归组，一个资产只开关一次 ══════════════
+            var byAsset = new Dictionary<string, List<TextItem>>();
+            for (int i = 0; i < picked.Count; i++)
+            {
+                List<TextItem> list;
+                if (!byAsset.TryGetValue(picked[i].PrefabPath, out list))
+                {
+                    list = new List<TextItem>();
+                    byAsset[picked[i].PrefabPath] = list;
+                }
+                list.Add(picked[i]);
+            }
+
+            // ══════════════ 配置条目：先把该删的 Key 收齐，再统一删 ══════════════
+            // 不能边遍历条目边删：删完索引就错位了。而且"某些条目被多个控件共用"是正常的
+            // （比如多行共用一个"重置"），所以按 Key 去重后一次删干净。
+            var keysToRemove = new HashSet<string>();
+            for (int i = 0; i < picked.Count; i++)
+            {
+                if (!string.IsNullOrEmpty(picked[i].Key)) keysToRemove.Add(picked[i].Key);
+            }
+
+            int removedEntries = 0;
+            for (int i = _targetConfig.entries.Count - 1; i >= 0; i--)
+            {
+                LocalizationEntry e = _targetConfig.entries[i];
+                if (e != null && keysToRemove.Contains(e.key))
+                {
+                    _targetConfig.entries.RemoveAt(i);
+                    removedEntries++;
+                }
+            }
+            EditorUtility.SetDirty(_targetConfig);
+
+            int removedComponents = 0, missing = 0;
+            var dirtyScenes = new List<UnityEngine.SceneManagement.Scene>();
+
+            AssetDatabase.StartAssetEditing();
+            try
+            {
+                foreach (KeyValuePair<string, List<TextItem>> kv in byAsset)
+                {
+                    if (IsScenePath(kv.Key))
+                    {
+                        RemoveLocalizedTextInScene(kv.Key, kv.Value, dirtyScenes, ref removedComponents, ref missing);
+                    }
+                    else
+                    {
+                        RemoveLocalizedTextInPrefab(kv.Key, kv.Value, ref removedComponents, ref missing);
+                    }
+                }
+            }
+            finally
+            {
+                AssetDatabase.StopAssetEditing();
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
+            }
+
+            for (int i = 0; i < dirtyScenes.Count; i++)
+            {
+                try { EditorSceneManager.SaveScene(dirtyScenes[i]); }
+                catch (Exception e) { ChaosLog.Error(LogChannel.Localization, "保存场景失败：" + e.Message); }
+            }
+
+            string msg = "删除配置条目 " + removedEntries + " 条，移除 LocalizedText 组件 " + removedComponents + " 个。";
+            if (missing > 0) msg += "\n\n有 " + missing + " 条没找到对应物体或组件，已跳过。";
+            msg += "\n\n这些控件已回到\"未接本地化\"状态，界面会显示预制体里烘焙的中文原文。";
+            Notify("清除勾选项", msg);
+
+            ChaosLog.Info(LogChannel.Localization, "清除完成：" + msg.Replace("\n", " "));
+
+            // ══════════════ 重扫并保留勾选 ══════════════
+            // 必须重扫：条目没了 → AlreadyInConfig 变了、Key 建议值也会变（组件已被摘掉）。
+            // 保留勾选是为了让用户能接着操作同一批条目（比如误删了想重新导入）。
+            RescanPreservingSelection();
+            RefreshConfigStatus();
+        }
+
+        /// <summary>在预制体里摘掉 LocalizedText 组件。</summary>
+        private void RemoveLocalizedTextInPrefab(string prefabPath, List<TextItem> items,
+            ref int removedComponents, ref int missing)
+        {
+            GameObject root = null;
+            try
+            {
+                root = PrefabUtility.LoadPrefabContents(prefabPath);
+                if (root == null) { missing += items.Count; return; }
+
+                bool dirty = false;
+                for (int i = 0; i < items.Count; i++)
+                {
+                    Transform target = root.transform.Find(items[i].ObjectPath);
+                    if (target == null) { missing++; continue; }
+
+                    int n = RemoveLocalizedText(target);
+                    if (n == 0) { missing++; continue; }
+                    removedComponents += n;
+                    dirty = true;
+                }
+
+                if (dirty) PrefabUtility.SaveAsPrefabAsset(root, prefabPath);
+            }
+            finally
+            {
+                if (root != null) PrefabUtility.UnloadPrefabContents(root);
+            }
+        }
+
+        /// <summary>在场景里摘掉 LocalizedText 组件。与 WriteSceneItems 同一套"改完自己存"的约定。</summary>
+        private void RemoveLocalizedTextInScene(string scenePath, List<TextItem> items,
+            List<UnityEngine.SceneManagement.Scene> dirtyScenes, ref int removedComponents, ref int missing)
+        {
+            if (Application.isPlaying)
+            {
+                ChaosLog.Warn(LogChannel.Localization, "正在播放模式，跳过场景清除：" + scenePath);
+                missing += items.Count;
+                return;
+            }
+
+            UnityEngine.SceneManagement.Scene scene =
+                UnityEngine.SceneManagement.SceneManager.GetSceneByPath(scenePath);
+            if (!scene.IsValid() || !scene.isLoaded)
+            {
+                try
+                {
+                    scene = EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Additive);
+                }
+                catch (Exception e)
+                {
+                    ChaosLog.Error(LogChannel.Localization, "打开场景失败，跳过清除 " + scenePath + "：" + e.Message);
+                    missing += items.Count;
+                    return;
+                }
+            }
+
+            GameObject[] roots = scene.GetRootGameObjects();
+            bool dirty = false;
+            for (int i = 0; i < items.Count; i++)
+            {
+                Transform target = FindInSceneRoots(roots, items[i].ObjectPath);
+                if (target == null) { missing++; continue; }
+
+                int n = RemoveLocalizedText(target);
+                if (n == 0) { missing++; continue; }
+                removedComponents += n;
+                dirty = true;
+            }
+
+            if (dirty && !dirtyScenes.Contains(scene))
+            {
+                EditorSceneManager.MarkSceneDirty(scene);
+                dirtyScenes.Add(scene);
+            }
+        }
+
+        /// <summary>
+        /// 摘掉一个物体上的全部 LocalizedText，返回摘掉的个数。
+        ///
+        /// 用 DestroyImmediate 而不是 Destroy：这里是编辑器、且不在播放中，
+        /// Destroy 会把销毁推迟到帧末，紧接着的 SaveAsPrefabAsset 会把还没销毁的组件一起存下去。
+        /// 允许"摘多个"是为了顺手清掉历史上误挂出来的重复组件。
+        /// </summary>
+        private static int RemoveLocalizedText(Transform target)
+        {
+            LocalizedText[] all = target.GetComponents<LocalizedText>();
+            for (int i = 0; i < all.Length; i++) UnityEngine.Object.DestroyImmediate(all[i], true);
+            return all.Length;
         }
 
         /// <summary>场景资产的扩展名判定 —— 与预制体分派用。</summary>

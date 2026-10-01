@@ -10,10 +10,10 @@ namespace LocalizationSystem
     public enum LanguageType
     {
         ChineseSimplified,//简体中文
-        //ChineseTraditional,//繁体中文
+        ChineseTraditional,//繁体中文
         English,//英语
-        //Japanese,//日语
-        //Korean,//韩语
+        Japanese,//日语
+        Korean,//韩语
         //French,//法语
         //German,//德语
         //Spanish,//西班牙语
@@ -41,10 +41,10 @@ namespace LocalizationSystem
 
         //各语言文本
         public string chineseSimplified;
-        //public string chineseTraditional;
+        public string chineseTraditional;
         public string english;
-        //public string japanese;
-        //public string korean;
+        public string japanese;
+        public string korean;
         //public string french;
         //public string german;
         //public string spanish;
@@ -67,10 +67,10 @@ namespace LocalizationSystem
             return language switch
             {
                 LanguageType.ChineseSimplified => chineseSimplified,
-                //LanguageType.ChineseTraditional => chineseTraditional,
+                LanguageType.ChineseTraditional => chineseTraditional,
                 LanguageType.English => english,
-                //LanguageType.Japanese => japanese,
-                //LanguageType.Korean => korean,
+                LanguageType.Japanese => japanese,
+                LanguageType.Korean => korean,
                 //LanguageType.French => french,
                 //LanguageType.German => german,
                 //LanguageType.Spanish => spanish,
@@ -98,18 +98,18 @@ namespace LocalizationSystem
                 case LanguageType.ChineseSimplified:
                     chineseSimplified = text;
                     break;
-                //case LanguageType.ChineseTraditional:
-                //    chineseTraditional = text;
-                //    break;
+                case LanguageType.ChineseTraditional:
+                    chineseTraditional = text;
+                    break;
                 case LanguageType.English:
                     english = text;
                     break;
-                //case LanguageType.Japanese:
-                //    japanese = text;
-                //    break;
-                //case LanguageType.Korean:
-                //    korean = text;
-                //    break;
+                case LanguageType.Japanese:
+                    japanese = text;
+                    break;
+                case LanguageType.Korean:
+                    korean = text;
+                    break;
                 //case LanguageType.French:
                 //    french = text;
                 //    break;

@@ -27,11 +27,40 @@ namespace LocalizationSystem.Editor
         {
             LanguageType.ChineseSimplified,
             LanguageType.English,
-            //LanguageType.Japanese,
-            //LanguageType.Korean
+            LanguageType.Japanese,
+            LanguageType.Korean
         };
 
         private const string EDITOR_PREFS_KEY = "LocalizationEditor_LastFile";
+        private const string LEFT_WIDTH_KEY = "LocalizationEditor_LeftWidth";
+
+        /// <summary>
+        /// 左栏宽度。以前是写死的 350，配置项一长就被截断，而且没法调。
+        /// 现在可以拖中间的分隔条改，并记进 EditorPrefs 下次打开还是这个宽度。
+        /// </summary>
+        private float leftWidth = 420f;
+        private const float MinLeftWidth = 260f;
+        private const float MaxLeftWidth = 900f;
+        private bool draggingSplitter = false;
+
+        /// <summary>
+        /// 静默模式：跳过"确认清空"这类模态对话框。
+        ///
+        /// ══════════════ 为什么需要它 ══════════════
+        /// EditorUtility.DisplayDialog 会阻塞 Unity 主线程直到有人点掉。
+        /// 用脚本/自动化驱动这个窗口时没人去点，主线程就被永久卡住，连编辑器桥接都会失去响应。
+        /// 与 PrefabTextCollectorWindow.SilentMode 是同一个理由、同一个约定。
+        ///
+        /// 默认 false：正常手工使用仍然要看确认框（清空是不可撤销的，必须拦一道）。
+        /// </summary>
+        public static bool SilentMode = false;
+
+        /// <summary>统一的确认出口：静默模式下直接当作"用户点了确认"。</summary>
+        private static bool Confirm(string title, string message, string ok)
+        {
+            if (SilentMode) return true;
+            return EditorUtility.DisplayDialog(title, message, ok, "取消");
+        }
         private GUIStyle headerStyle;
         private GUIStyle subHeaderStyle;
         private GUIStyle boxStyle;
@@ -57,6 +86,10 @@ namespace LocalizationSystem.Editor
             {
                 showLanguageFields[i] = true;
             }
+
+            //上次拖到的宽度：没存过就按窗口宽度的三分之一给一个比原来 350 宽松的默认值
+            leftWidth = Mathf.Clamp(
+                EditorPrefs.GetFloat(LEFT_WIDTH_KEY, 420f), MinLeftWidth, MaxLeftWidth);
         }
 
         private void InitStyles()
@@ -84,17 +117,21 @@ namespace LocalizationSystem.Editor
         {
             InitStyles();
 
+            // ══════════════ 窗口变窄时按比例收一收左栏 ══════════════
+            // 不夹的话：用户把左栏拖到 900、再把窗口缩窄，分隔条就被推出可视区，
+            // 于是再也拖不回来（只能去删 EditorPrefs）。这里保证左栏最多占八成宽，
+            // 右栏与分隔条永远留得住。只影响这一次显示，不写 EditorPrefs ——
+            // 窗口拉回去之后用户原来设的宽度会自己回来。
+            float displayWidth = Mathf.Min(leftWidth, Mathf.Max(MinLeftWidth, position.width * 0.8f));
+
             EditorGUILayout.BeginHorizontal();
 
-            //左侧面板
-            EditorGUILayout.BeginVertical(GUILayout.Width(350));
-            DrawLeftPanel();
+            //左侧面板（宽度可拖）
+            EditorGUILayout.BeginVertical(GUILayout.Width(displayWidth));
+            DrawLeftPanel(displayWidth);
             EditorGUILayout.EndVertical();
 
-            //分隔线
-            EditorGUILayout.BeginVertical(GUILayout.Width(2));
-            GUILayout.Box("", GUILayout.Width(2), GUILayout.ExpandHeight(true));
-            EditorGUILayout.EndVertical();
+            DrawSplitter();
 
             //右侧面板
             EditorGUILayout.BeginVertical();
@@ -105,9 +142,66 @@ namespace LocalizationSystem.Editor
         }
 
         /// <summary>
+        /// 左栏与右栏之间那条可拖动的分隔条。
+        ///
+        /// ══════════════ 为什么要手写 ══════════════
+        /// EditorGUILayout 没有内置分隔条。这里用 GUILayoutUtility.GetRect 占位 +
+        /// EditorGUIUtility.AddCursorRect 的办法：只占一条 6px 的竖条，
+        /// 拖动时按 delta.x 改左栏宽度。
+        ///
+        /// ══════════════ 两个容易踩的点 ══════════════
+        /// 1) 鼠标形状必须每帧重新注册（AddCursorRect 只在当前事件里有效）；
+        /// 2) 宽度必须夹在上下限之间 —— 拖到 0 之后分隔条本身也一起没了，
+        ///    用户就再也拖不回来，只能删 EditorPrefs。
+        /// </summary>
+        /// <summary>
+        /// 按一次拖动的位移量改左栏宽度并落盘。
+        /// 从 DrawSplitter 里抽出来是为了它能被单独调用（GUI 事件在编辑器脚本里造不出来，
+        /// 不抽出来这段夹取逻辑就只能靠肉眼验证）。
+        /// </summary>
+        private void ApplySplitterDrag(float deltaX)
+        {
+            leftWidth = Mathf.Clamp(leftWidth + deltaX, MinLeftWidth, MaxLeftWidth);
+            EditorPrefs.SetFloat(LEFT_WIDTH_KEY, leftWidth);
+            Repaint();
+        }
+
+        private void DrawSplitter()
+        {
+            Rect r = GUILayoutUtility.GetRect(6f, 6f, GUILayout.Width(6f), GUILayout.ExpandHeight(true));
+            EditorGUIUtility.AddCursorRect(r, MouseCursor.ResizeHorizontal);
+
+            if (Event.current.type == EventType.MouseDown && r.Contains(Event.current.mousePosition))
+            {
+                draggingSplitter = true;
+                Event.current.Use();
+            }
+            if (draggingSplitter)
+            {
+                if (Event.current.type == EventType.MouseDrag)
+                {
+                    ApplySplitterDrag(Event.current.delta.x);
+                    Event.current.Use();
+                }
+                else if (Event.current.type == EventType.MouseUp)
+                {
+                    draggingSplitter = false;
+                    EditorPrefs.SetFloat(LEFT_WIDTH_KEY, leftWidth);
+                    Event.current.Use();
+                }
+            }
+
+            //拖动时高亮：不然"这里能拖"只能靠猜
+            Color old = GUI.color;
+            GUI.color = draggingSplitter ? new Color(0.4f, 0.7f, 1f, 1f) : new Color(0.5f, 0.5f, 0.5f, 0.6f);
+            GUI.Box(r, "");
+            GUI.color = old;
+        }
+
+        /// <summary>
         /// 绘制左侧面板
         /// </summary>
-        private void DrawLeftPanel()
+        private void DrawLeftPanel(float columnWidth)
         {
             //文件操作区域
             EditorGUILayout.BeginVertical(boxStyle);
@@ -125,10 +219,23 @@ namespace LocalizationSystem.Editor
             }
             EditorGUILayout.EndHorizontal();
 
-            if (currentData != null && GUILayout.Button("保存", GUILayout.Height(25)))
+            EditorGUILayout.BeginHorizontal();
+            using (new EditorGUI.DisabledScope(currentData == null))
             {
-                SaveData();
+                if (GUILayout.Button("保存", GUILayout.Height(25)))
+                {
+                    SaveData();
+                }
+                //清空是不可撤销的破坏性操作（可能删掉已经翻好的所有语言），所以用红底 + 二次确认
+                Color oldBg = GUI.backgroundColor;
+                GUI.backgroundColor = new Color(1f, 0.72f, 0.72f);
+                if (GUILayout.Button("清空全部条目", GUILayout.Height(25), GUILayout.Width(120)))
+                {
+                    ClearAllEntries();
+                }
+                GUI.backgroundColor = oldBg;
             }
+            EditorGUILayout.EndHorizontal();
             EditorGUILayout.EndVertical();
 
             if (currentData == null) return;
@@ -191,10 +298,16 @@ namespace LocalizationSystem.Editor
                 {
                     previewText = "[空]";
                 }
-                else if (previewText.Length > 25)
-                {
-                    previewText = previewText.Substring(0, 25) + "...";
-                }
+
+                // ══════════════ 两行都要截断 ══════════════
+                // 以前只截译文，Key 不截 —— 而本项目的 Key 动辄五六十个字符
+                // （ui_setting_contentarea_page_graphics_viewport_content_row_windowmode_options_option_0），
+                // 于是按钮被撑得很宽、或者译文那一行被挤到看不见。
+                // 截断长度按当前左栏宽度算：栏宽了就能多看到一些，不用改代码。
+                int maxChars = Mathf.Max(12, (int)(columnWidth / 7.2f));
+                string shownKey = entry.key;
+                if (shownKey.Length > maxChars) shownKey = shownKey.Substring(0, maxChars) + "...";
+                if (previewText.Length > maxChars) previewText = previewText.Substring(0, maxChars) + "...";
 
                 //搜索过滤
                 if (!string.IsNullOrEmpty(searchFilter))
@@ -209,7 +322,7 @@ namespace LocalizationSystem.Editor
                 GUI.backgroundColor = (i == selectedEntryIndex) ? new Color(0.5f, 0.8f, 1f) : Color.white;
 
                 //显示条目按钮
-                string buttonText = $"{entry.key}\n{previewText}";
+                string buttonText = $"{shownKey}\n{previewText}";
                 if (GUILayout.Button(buttonText, GUILayout.Height(45)))
                 {
                     selectedEntryIndex = i;
@@ -314,6 +427,15 @@ namespace LocalizationSystem.Editor
             //语言显示设置
             EditorGUILayout.BeginHorizontal();
             showAllLanguages = EditorGUILayout.Toggle("显示所有语言:", showAllLanguages);
+
+            GUILayout.FlexibleSpace();
+            Color oldBg = GUI.backgroundColor;
+            GUI.backgroundColor = new Color(1f, 0.85f, 0.7f);
+            if (GUILayout.Button("清空该条译文", GUILayout.Width(110)))
+            {
+                ClearEntryText(entry);
+            }
+            GUI.backgroundColor = oldBg;
             EditorGUILayout.EndHorizontal();
 
             GUILayout.Space(10);
@@ -372,6 +494,52 @@ namespace LocalizationSystem.Editor
 
             EditorGUILayout.EndVertical();
             GUILayout.Space(5);
+        }
+
+        /// <summary>
+        /// 清空某一个条目的全部译文（Key 与描述保留）。
+        ///
+        /// ══════════════ 为什么保留 Key ══════════════
+        /// Key 是界面与配置之间的合同：清掉它，已经被 LocalizedText 引用的控件就会查不到条目，
+        /// 而查不到时 LocalizationManager 会把 Key 本身当文本显示出来，界面会变成一串标识符。
+        /// 所以这里只清译文，给"重新翻一遍这条"用。
+        /// </summary>
+        private void ClearEntryText(LocalizationEntry entry)
+        {
+            if (entry == null) return;
+            if (!Confirm("确认清空",
+                $"清空条目 '{entry.key}' 的全部译文？\n（Key 与描述会保留）", "清空")) return;
+
+            entry.chineseSimplified = "";
+            entry.english = "";
+            EditorUtility.SetDirty(currentData);
+        }
+
+        /// <summary>
+        /// 清空配置里的【全部条目】。
+        ///
+        /// ══════════════ 为什么必须二次确认 ══════════════
+        /// 这一步会删掉所有已翻好的译文，而且 Unity 的撤销栈对这种"批量改 ScriptableObject 列表"
+        /// 不生效（Ctrl+Z 找不回来）。返回按钮拿不到撤销，就只能靠事先确认。
+        /// </summary>
+        private void ClearAllEntries()
+        {
+            if (currentData == null) return;
+            int n = currentData.entries.Count;
+            if (n == 0)
+            {
+                if (!SilentMode) EditorUtility.DisplayDialog("清空全部", "当前没有任何条目。", "确定");
+                return;
+            }
+
+            if (!Confirm("确认清空全部",
+                $"将删除【全部 {n} 条】条目，包括所有语言的译文。\n\n此操作不可撤销，确定继续？",
+                "清空全部")) return;
+
+            currentData.entries.Clear();
+            selectedEntryIndex = -1;
+            EditorUtility.SetDirty(currentData);
+            AssetDatabase.SaveAssets();
         }
 
         /// <summary>
@@ -517,8 +685,9 @@ namespace LocalizationSystem.Editor
                 using (StreamWriter writer = new StreamWriter(path, false, System.Text.Encoding.UTF8))
                 {
                     //写入表头
-                    writer.WriteLine("Key,Description,ChineseSimplified,ChineseTraditional,English,Japanese,Korean," +
-                        "French,German,Spanish,Russian,Portuguese,Italian,Arabic,Thai,Vietnamese,Turkish,Polish,Dutch,Indonesian");
+                    writer.WriteLine("Key,Description,ChineseSimplified,ChineseTraditional,English,Japanese,Korean");
+                        //+
+                        //"French,German,Spanish,Russian,Portuguese,Italian,Arabic,Thai,Vietnamese,Turkish,Polish,Dutch,Indonesian");
 
                     //写入数据
                     foreach (var entry in currentData.entries)
@@ -526,10 +695,10 @@ namespace LocalizationSystem.Editor
                         writer.WriteLine($"\"{EscapeCSV(entry.key)}\"," +
                             $"\"{EscapeCSV(entry.description)}\"," +
                             $"\"{EscapeCSV(entry.chineseSimplified)}\"," +
-                            //$"\"{EscapeCSV(entry.chineseTraditional)}\"," +
-                            $"\"{EscapeCSV(entry.english)}\","
-                            //$"\"{EscapeCSV(entry.japanese)}\"," +
-                            //$"\"{EscapeCSV(entry.korean)}\"," +
+                            $"\"{EscapeCSV(entry.chineseTraditional)}\"," +
+                            $"\"{EscapeCSV(entry.english)}\"," +
+                            $"\"{EscapeCSV(entry.japanese)}\"," +
+                            $"\"{EscapeCSV(entry.korean)}\"," 
                             //$"\"{EscapeCSV(entry.french)}\"," +
                             //$"\"{EscapeCSV(entry.german)}\"," +
                             //$"\"{EscapeCSV(entry.spanish)}\"," +
@@ -608,10 +777,10 @@ namespace LocalizationSystem.Editor
                             var existingEntry = currentData.GetEntry(key);
                             existingEntry.description = values[1];
                             existingEntry.chineseSimplified = values[2];
-                            //if (values.Length > 3) existingEntry.chineseTraditional = values[3];
+                            if (values.Length > 3) existingEntry.chineseTraditional = values[3];
                             if (values.Length > 4) existingEntry.english = values[4];
-                            //if (values.Length > 5) existingEntry.japanese = values[5];
-                            //if (values.Length > 6) existingEntry.korean = values[6];
+                            if (values.Length > 5) existingEntry.japanese = values[5];
+                            if (values.Length > 6) existingEntry.korean = values[6];
                             //if (values.Length > 7) existingEntry.french = values[7];
                             //if (values.Length > 8) existingEntry.german = values[8];
                             //if (values.Length > 9) existingEntry.spanish = values[9];
@@ -635,10 +804,10 @@ namespace LocalizationSystem.Editor
                                 description = values[1],
                                 chineseSimplified = values[2]
                             };
-                            //if (values.Length > 3) newEntry.chineseTraditional = values[3];
+                            if (values.Length > 3) newEntry.chineseTraditional = values[3];
                             if (values.Length > 4) newEntry.english = values[4];
-                            //if (values.Length > 5) newEntry.japanese = values[5];
-                            //if (values.Length > 6) newEntry.korean = values[6];
+                            if (values.Length > 5) newEntry.japanese = values[5];
+                            if (values.Length > 6) newEntry.korean = values[6];
                             //if (values.Length > 7) newEntry.french = values[7];
                             //if (values.Length > 8) newEntry.german = values[8];
                             //if (values.Length > 9) newEntry.spanish = values[9];

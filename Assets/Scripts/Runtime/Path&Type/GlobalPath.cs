@@ -64,6 +64,23 @@ public static class GlobalPath
     };
     #endregion
 
+    /// <summary>
+    /// 本地化配置资产的默认清单，第一个是【默认写入目标】。
+    ///
+    /// ══════════════ 为什么要有这个常量 ══════════════
+    /// 收集器窗口的目标配置原本只靠 EditorPrefs 记住，第一次打开是空的；
+    /// 而配置资产一旦改名或拆分（本项目就从单表拆成了主菜单 / 设置两张），
+    /// EditorPrefs 里那条旧路径就成了死路径 —— 窗口打开时目标为空，却没有任何提示。
+    /// 把清单放在这里，改名时改一处，所有本地化工具自动跟上。
+    ///
+    /// 运行时不读它 —— 运行时读的是场景里 LocalizationManager.localizationData。
+    /// </summary>
+    public static readonly string[] ui_LocalizationConfigPaths =
+    {
+        "Assets/Data/Localization/MainMenuLocalizationConfig.asset",
+        "Assets/Data/Localization/SettingLocalizationConfig.asset",
+    };
+
     #region 表配置路径
     /// <summary>
     /// 配置表存储路径

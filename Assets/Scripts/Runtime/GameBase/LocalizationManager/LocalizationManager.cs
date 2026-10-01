@@ -213,10 +213,10 @@ namespace LocalizationSystem
             return language switch
             {
                 LanguageType.ChineseSimplified => "简体中文",
-                //LanguageType.ChineseTraditional => "繁體中文",
+                LanguageType.ChineseTraditional => "繁體中文",
                 LanguageType.English => "English",
-                //LanguageType.Japanese => "日本語",
-                //LanguageType.Korean => "???",
+                LanguageType.Japanese => "日本語",
+                LanguageType.Korean => "xxx",
                 //LanguageType.French => "Fran?ais",
                 //LanguageType.German => "Deutsch",
                 //LanguageType.Spanish => "Espa?ol",

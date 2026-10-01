@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3551697044100535878}
   - component: {fileID: 8840716844986392505}
   - component: {fileID: 134788249989673896}
-  - component: {fileID: 3325866483107186109}
+  - component: {fileID: 3594349625848947596}
   m_Layer: 0
   m_Name: Title
   m_TagString: Untagged
@@ -150,7 +150,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 2
---- !u!114 &3325866483107186109
+--- !u!114 &3594349625848947596
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -299,7 +299,7 @@ GameObject:
   - component: {fileID: 2119650597753183341}
   - component: {fileID: 493496834726174412}
   - component: {fileID: 3169123393851126587}
-  - component: {fileID: 1387548813643783720}
+  - component: {fileID: 3873127762985489081}
   m_Layer: 0
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -437,7 +437,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
   m_VerticalFit: 0
---- !u!114 &1387548813643783720
+--- !u!114 &3873127762985489081
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -586,7 +586,7 @@ GameObject:
   - component: {fileID: 8952793698106283851}
   - component: {fileID: 7209780650102655278}
   - component: {fileID: 6534661062191423449}
-  - component: {fileID: 32902153933655883}
+  - component: {fileID: 2216027919031221617}
   m_Layer: 0
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -724,7 +724,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
   m_VerticalFit: 0
---- !u!114 &32902153933655883
+--- !u!114 &2216027919031221617
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -752,7 +752,7 @@ GameObject:
   - component: {fileID: 5891784216914644479}
   - component: {fileID: 8419747693965278143}
   - component: {fileID: 3751166247981536706}
-  - component: {fileID: 1109612613736357876}
+  - component: {fileID: 7060870508003373621}
   m_Layer: 0
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -890,7 +890,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
   m_VerticalFit: 0
---- !u!114 &1109612613736357876
+--- !u!114 &7060870508003373621
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
