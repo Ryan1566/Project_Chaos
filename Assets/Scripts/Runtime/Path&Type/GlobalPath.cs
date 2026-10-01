@@ -61,7 +61,6 @@ public static class GlobalPath
     public static readonly string[] ui_PanelPrefabSearchPaths =
     {
         "Assets/Resources/UIPanels",
-        "Assets/Prefabs/UI",
     };
     #endregion
 

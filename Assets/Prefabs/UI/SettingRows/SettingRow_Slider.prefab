@@ -520,7 +520,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02c924ac28120a940ae3d79a668da0bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  localizationKey: ui_setting_settingrow_slider
+  localizationKey: 
   autoUpdateOnStart: 1
   listenToLanguageChange: 1
   formatArgs: []

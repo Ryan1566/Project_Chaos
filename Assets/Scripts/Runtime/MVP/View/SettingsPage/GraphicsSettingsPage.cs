@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using ChaosDebug;
 using UnityEngine;
 
@@ -23,7 +23,11 @@ public class GraphicsSettingsPage : SettingsPageBase
 {
     /// <summary>帧率档位。数值即 fps，与 FrameRateOption 一一对应。</summary>
     private static readonly int[] FrameRateValues = { 30, 40, 60 };
-    private static readonly string[] FrameRateTexts = { "30 帧", "40 帧", "60 帧" };
+    /// <summary>
+    /// 帧率档位文案。不带"帧"字：纯数字在任何语言下都读得懂，
+    /// 带单位反而要为此建三条本地化条目、还得在每种语言里重新拼一遍单位。
+    /// </summary>
+    private static readonly string[] FrameRateTexts = { "30", "40", "60" };
 
     /// <summary>当前显示器可用的分辨率档位（按显示器能力过滤过，从低到高）。</summary>
     private List<ResolutionOption> _options;
@@ -78,6 +82,8 @@ public class GraphicsSettingsPage : SettingsPageBase
 
     private void BindWindowMode()
     {
+        //预摆档位形态（SettingKeys 里登记了 Key）：档位文案与生成器共用
+        //SettingsLabels.WindowMode 这一张表，顺序即 WindowModeType，所以下标可以直接当字段值用
         BindSelector(SettingIds.WindowMode, SettingsLabels.WindowMode,
             data => data.windowMode,
             (data, index) => data.windowMode = index);

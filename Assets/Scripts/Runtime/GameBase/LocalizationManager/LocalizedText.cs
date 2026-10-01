@@ -31,6 +31,37 @@ namespace LocalizationSystem
             textComponent = GetComponent<TextMeshProUGUI>();
         }
 
+        /// <summary>
+        /// 上一次真正写进界面的语言。
+        ///
+        /// ══════════════ 为什么需要它 ══════════════
+        /// LocalizedText 过去只在 Start 里取一次词、并顺手订阅语言切换。
+        /// 但【未激活的节点不会跑 Start】—— 面板里大量选择器档位默认是 SetActive(false) 的，
+        /// 于是它们既不订阅、也没取过词。等到被点亮显示时：
+        ///   · 若此刻语言已经切过，它显示的是 prefab 里烘焙的中文原文；
+        ///   · 而且它始终没订阅，之后再切语言也不会跟。
+        /// 现象是"同一行的档位，有的翻译了有的没翻译"，从界面完全看不出原因。
+        ///
+        /// 现在 OnEnable 也走一次取词，并用这个字段判断"语言没变就不重复写"，
+        /// 于是先隐藏后显示的节点也能拿到正确语言，且不会每次显示都白刷一遍文本。
+        /// </summary>
+        private LanguageType renderedLanguage = (LanguageType)(-1);
+
+        /// <summary>
+        /// 每次被激活都确认一次文本，让"创建时未激活、之后才显示"的节点也能取到正确语言。
+        /// 语言没变时直接返回，不会造成多余的文本重排。
+        /// </summary>
+        private void OnEnable()
+        {
+            if (textComponent == null) textComponent = GetComponent<TextMeshProUGUI>();
+            if (string.IsNullOrEmpty(localizationKey)) return;
+
+            LocalizationManager mgr = LocalizationManager.GetInstance();
+            if (mgr == null) return;
+            if (renderedLanguage == mgr.CurrentLanguage) return;
+            UpdateText();
+        }
+
         private void Start()
         {
             if (autoUpdateOnStart)
@@ -84,6 +115,7 @@ namespace LocalizationSystem
             }
 
             textComponent.text = text;
+            renderedLanguage = LocalizationManager.GetInstance().CurrentLanguage;
         }
 
         /// <summary>

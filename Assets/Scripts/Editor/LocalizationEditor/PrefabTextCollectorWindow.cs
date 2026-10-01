@@ -4,6 +4,7 @@ using System.Text;
 using ChaosDebug;
 using TMPro;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 namespace LocalizationSystem.Editor
@@ -32,26 +33,35 @@ namespace LocalizationSystem.Editor
     {
         // ══════════════════ 数据 ══════════════════
 
-        /// <summary>一条「预制体里的文字」。</summary>
-        private class TextItem
+        /// <summary>这条文字来自哪里。决定「写入 LocalizedText」时怎么定位对象。</summary>
+        public enum TextSource
         {
-            public string PrefabPath;      // Assets/... 完整路径
-            public string PrefabName;      // 文件名（不含扩展名）
-            public string ObjectPath;      // 相对预制体根的层级路径
+            Prefab,
+            Scene,
+        }
+
+        /// <summary>一条「预制体里的文字」。</summary>
+        public class TextItem
+        {
+            public string PrefabPath;      // 预制体或场景的 Assets/... 完整路径
+            public string PrefabName;      // 显示名（含来源标记）
+            public string ObjectPath;      // 相对根节点的层级路径
             public string Text;            // Trim 之后的文字
             public bool HadWhitespace;     // 原文有首尾空白（导入时会提示）
             public string Key;             // 当前 Key（可在窗口里改）
             public bool Selected;
             public bool AlreadyInConfig;   // 目标配置里已有同 Key 或同中文的条目
             public bool KeyDuplicated;     // 本次结果里 Key 撞了
+            public TextSource SourceKind;  // 预制体 / 场景
         }
 
-        /// <summary>按预制体分组，便于折叠查看。</summary>
+        /// <summary>按来源分组（预制体或场景），便于折叠查看。</summary>
         private class PrefabGroup
         {
             public string Path;
             public string Name;
             public bool Foldout = true;
+            public TextSource SourceKind = TextSource.Prefab;
             public readonly List<TextItem> Items = new List<TextItem>();
         }
 
@@ -60,6 +70,12 @@ namespace LocalizationSystem.Editor
         private LocalizationData _targetConfig;
         private Vector2 _scroll;
         private bool _scanned;
+
+        /// <summary>
+        /// 是否连场景一起扫。默认开：场景里的硬编码文案最容易漏，
+        /// 而漏掉时没有任何提示 —— 打开默认值让它自然被发现。
+        /// </summary>
+        private bool _scanScenes = true;
 
         private const string TargetConfigKey = "PrefabTextCollector_TargetConfig";
 
@@ -154,6 +170,17 @@ namespace LocalizationSystem.Editor
             if (GUILayout.Button("+ 添加路径", GUILayout.Width(100f))) _searchPaths.Add("Assets/");
             if (GUILayout.Button("恢复 GlobalPath 默认", GUILayout.Width(160f))) ResetSearchPathsToDefault();
             EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.Space(2f);
+            _scanScenes = EditorGUILayout.ToggleLeft(
+                "同时扫描场景（全工程 t:Scene；场景实例化的预制体文字会被跳过，避免重复）", _scanScenes);
+            if (_scanScenes)
+            {
+                EditorGUILayout.LabelField(
+                    "场景会用 Additive 方式打开后再关闭，不动你当前打开的场景；" +
+                    "当前场景有未保存改动时会跳过场景扫描。",
+                    EditorStyles.miniLabel);
+            }
 
             EditorGUILayout.LabelField(
                 "默认值来自 GlobalPath.ui_PanelPrefabSearchPaths；窗口里的增删只在本次会话有效。",
@@ -358,6 +385,44 @@ namespace LocalizationSystem.Editor
                 }
             }
 
+            // ══════════════ 场景 ══════════════
+            // 场景不按搜索路径找（那两条是 UI 目录），而是全工程找 —— 文案散落在哪个场景都可能。
+            //
+            // 这里再判一次 Application.isPlaying（ScanScene 里也判了）：
+            // OpenScene 在播放模式下必然抛异常，在最外层拦掉能保证【整个扫描】不会因此中断，
+            // 而不是靠每个场景各自 catch 一遍。
+            if (_scanScenes && Application.isPlaying)
+            {
+                ChaosLog.Warn(LogChannel.Localization,
+                    "正在播放模式，已跳过场景扫描（Unity 的 OpenScene 在播放时不可用）。预制体部分照常扫描。");
+            }
+            else if (_scanScenes)
+            {
+                if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().isDirty)
+                {
+                    ChaosLog.Warn(LogChannel.Localization,
+                        "当前场景有未保存改动，已跳过场景扫描以免打断你。请先保存场景再扫。");
+                }
+                else
+                {
+                    string[] sceneGuids = AssetDatabase.FindAssets("t:Scene", new[] { "Assets" });
+                    for (int i = 0; i < sceneGuids.Length; i++)
+                    {
+                        string scenePath = AssetDatabase.GUIDToAssetPath(sceneGuids[i]);
+
+                        // 跳过第三方插件自带的示例场景（Spine 示例就有 30 个）——
+                        // 它们不是本项目的文案，扫进来只会淹没结果。
+                        if (scenePath.StartsWith("Assets/Plugins/", StringComparison.OrdinalIgnoreCase))
+                        {
+                            continue;
+                        }
+
+                        PrefabGroup group = ScanScene(scenePath);
+                        if (group != null && group.Items.Count > 0) _groups.Add(group);
+                    }
+                }
+            }
+
             _groups.Sort((a, b) => string.CompareOrdinal(a.Name, b.Name));
 
             //统计 Key 撞车（跨预制体也算，因为导入的是同一份配置）
@@ -396,6 +461,12 @@ namespace LocalizationSystem.Editor
                 root = PrefabUtility.LoadPrefabContents(prefabPath);
                 if (root == null) return null;
 
+                // 只收 UGUI 文本（TextMeshProUGUI），不收世界空间文字。
+                //
+                // LocalizedText 上有 [RequireComponent(typeof(TextMeshProUGUI))]：
+                // 世界空间的 TextMeshPro 挂不上它 —— 硬挂会被 Unity 偷偷补一个
+                // 不渲染的 TextMeshProUGUI，本地化就此静默失效。
+                // 既然收进来也写不了，就不收：列表里的每一条都是能真正本地化的。
                 TextMeshProUGUI[] texts = root.GetComponentsInChildren<TextMeshProUGUI>(true);
                 if (texts == null || texts.Length == 0) return null;
 
@@ -403,11 +474,12 @@ namespace LocalizationSystem.Editor
                 {
                     Path = prefabPath,
                     Name = System.IO.Path.GetFileNameWithoutExtension(prefabPath),
+                    SourceKind = TextSource.Prefab,
                 };
 
                 for (int i = 0; i < texts.Length; i++)
                 {
-                    TextMeshProUGUI t = texts[i];
+                    TMP_Text t = texts[i];
                     if (t == null) continue;
 
                     string raw = t.text;
@@ -423,7 +495,7 @@ namespace LocalizationSystem.Editor
                         ObjectPath = BuildObjectPath(root.transform, t.transform),
                         Text = trimmed,
                         HadWhitespace = raw.Length != trimmed.Length,
-                        Key = BuildKey(group.Name, BuildObjectPath(root.transform, t.transform)),
+                        Key = SuggestKey(group.Name, t),
                     };
                     item.AlreadyInConfig = IsAlreadyInConfig(item);
                     group.Items.Add(item);
@@ -442,6 +514,128 @@ namespace LocalizationSystem.Editor
             }
         }
 
+        /// <summary>
+        /// 扫描一个场景里的全部 TMP 文字。
+        ///
+        /// ══════════════ 为什么必须管场景 ══════════════
+        /// 面板预制体只是文案的一半。场景里经常有直接摆在层级里的文字
+        /// （标题、测试面板、开场提示），它们不在任何预制体里 ——
+        /// 只扫预制体会漏掉，而且漏得毫无提示。Project_Chaos 的 TestScene 就是例子。
+        ///
+        /// ══════════════ 用 Additive 打开，不动当前场景 ══════════════
+        /// 这样不会把你正在编辑的场景挤掉。代价是打开时会跑一次场景加载，
+        /// 而且如果【当前场景有未保存改动】，Unity 可能拦一道 —— 由调用方事先检查并提示。
+        ///
+        /// 遍历含未激活对象（includeInactive: true）：未激活的页签/弹窗里的文案一样要本地化。
+        /// </summary>
+        private PrefabGroup ScanScene(string scenePath)
+        {
+            // EditorSceneManager.OpenScene 在播放模式下会直接抛异常，而异常信息很晦涩。
+            // 这里提前挡住并给出可执行的原因 —— 否则表现是"场景扫描静默没结果"，极难排查。
+            if (Application.isPlaying)
+            {
+                ChaosLog.Warn(LogChannel.Localization,
+                    "正在播放模式，无法扫描场景（Unity 的 OpenScene 在播放时不可用）。请先停止播放。已跳过：" + scenePath);
+                return null;
+            }
+
+            // 已经打开的场景不要再 Additive 开一份：
+            // 一是没必要，二是关掉它可能触发 "Unloading the last loaded scene is not supported" 警告。
+            // 直接用已打开的那份遍历即可。
+            UnityEngine.SceneManagement.Scene already =
+                UnityEngine.SceneManagement.SceneManager.GetSceneByPath(scenePath);
+            bool openedByUs = !already.IsValid() || !already.isLoaded;
+
+            UnityEngine.SceneManagement.Scene scene = openedByUs
+                ? EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Additive)
+                : already;
+            try
+            {
+                var texts = new List<TextMeshProUGUI>();
+                GameObject[] roots = scene.GetRootGameObjects();
+                for (int i = 0; i < roots.Length; i++)
+                {
+                    if (roots[i] == null) continue;
+                    texts.AddRange(roots[i].GetComponentsInChildren<TextMeshProUGUI>(true));
+                }
+                if (texts.Count == 0) return null;
+
+                // 场景实例化的预制体，其文字属于那个预制体 —— 跳过，避免与预制体扫描重复
+                var prefabInstances = new List<Transform>();
+                for (int i = 0; i < roots.Length; i++)
+                {
+                    if (roots[i] == null) continue;
+                    Transform[] all = roots[i].GetComponentsInChildren<Transform>(true);
+                    for (int j = 0; j < all.Length; j++)
+                    {
+                        if (all[j] != null && PrefabUtility.GetPrefabInstanceStatus(all[j].gameObject)
+                            == PrefabInstanceStatus.Connected)
+                        {
+                            prefabInstances.Add(all[j]);
+                        }
+                    }
+                }
+
+                var group = new PrefabGroup
+                {
+                    Path = scenePath,
+                    Name = System.IO.Path.GetFileNameWithoutExtension(scenePath) + " (场景)",
+                    SourceKind = TextSource.Scene,
+                };
+
+                for (int i = 0; i < texts.Count; i++)
+                {
+                    TMP_Text t = texts[i];
+                    if (t == null) continue;
+
+                    string raw = t.text;
+                    if (string.IsNullOrEmpty(raw)) continue;
+                    string trimmed = raw.Trim();
+                    if (trimmed.Length == 0) continue;
+
+                    // 落在预制体实例里的跳过（那部分归预制体管）
+                    bool inPrefab = false;
+                    for (int k = 0; k < prefabInstances.Count; k++)
+                    {
+                        if (prefabInstances[k] != null && t.transform.IsChildOf(prefabInstances[k]))
+                        {
+                            inPrefab = true;
+                            break;
+                        }
+                    }
+                    if (inPrefab) continue;
+
+                    string objectPath = BuildObjectPath(null, t.transform);
+                    var item = new TextItem
+                    {
+                        PrefabPath = scenePath,
+                        PrefabName = group.Name,
+                        ObjectPath = objectPath,
+                        Text = trimmed,
+                        HadWhitespace = raw.Length != trimmed.Length,
+                        Key = SuggestKey(System.IO.Path.GetFileNameWithoutExtension(scenePath), t),
+                        SourceKind = TextSource.Scene,
+                    };
+                    item.AlreadyInConfig = IsAlreadyInConfig(item);
+                    group.Items.Add(item);
+                }
+                return group;
+            }
+            catch (Exception e)
+            {
+                ChaosLog.Error(LogChannel.Localization, "扫描场景失败 " + scenePath + "：" + e.Message);
+                return null;
+            }
+            finally
+            {
+                //只关【我们自己开的】那份；本来就打开的场景不能替用户关掉。
+                if (openedByUs && scene.IsValid() && scene.isLoaded)
+                {
+                    EditorSceneManager.CloseScene(scene, true);
+                }
+            }
+        }
+
         /// <summary>拼出相对预制体根的层级路径；根节点本身不出现在路径里。</summary>
         private static string BuildObjectPath(Transform root, Transform target)
         {
@@ -454,6 +648,70 @@ namespace LocalizationSystem.Editor
             }
             parts.Reverse();
             return string.Join("/", parts.ToArray());
+        }
+
+        /// <summary>
+        /// 给一个 TMP 文本建议一个 Key。优先级（从高到低）：
+        ///
+        /// ① 对象上【已经有的】Key（LocalizedText.localizationKey 非空）
+        ///    —— 尊重既有分配。这条保证了重新扫描不会把人工改过的 Key 冲掉。
+        /// ② 同一行有 settingId 时，由它派生（ui_setting_ + 去分类前缀）
+        ///    —— 设置行标签沿用这套约定，配置里的 Key 因此不用重建。
+        /// ③ 否则用完整层级路径净化（ui_ + 预制体短名 + 路径）
+        ///
+        /// ══════════════ 为什么 settingId 只作为第 ② 档 ══════════════
+        /// 它是"设置系统内部的行标识"，本来不该当本地化合同。但已有配置是按它建的，
+        /// 所以这里【只读不改】地沿用，而不是把它当唯一来源 —— 没有 settingId 的对象
+        /// （主选列表按钮、页签、底部按钮、场景里的文字）走 ① 或 ③，一样能覆盖。
+        ///
+        /// 注意 ① 让本方法对"生成器只挂空组件"的新产物同样有效：
+        /// 空 Key → 落到 ② → 派生出与旧约定一致的 Key。
+        /// </summary>
+        private static string SuggestKey(string assetShortName, TMP_Text text)
+        {
+            // ① 已有 Key
+            LocalizedText existing = text.GetComponent<LocalizedText>();
+            if (existing != null && !string.IsNullOrEmpty(existing.localizationKey))
+            {
+                return existing.localizationKey;
+            }
+
+            // ② 所在行的 settingId —— 但【只认行的直接子节点 Label】
+            //
+            // 为什么必须限定 Label：一行里有多个文本。以选择器行为例，
+            // 除 Label 外还有 Prev/Next 的 "<" ">" 和 ValueText（运行时显示数值）。
+            // 不加限定的话它们都会命中同一个 settingId、算出同一个 Key ——
+            // 结果是 ValueText 的 "0" 也去抢 ui_setting_*，既错又污染配置。
+            // 只有 Label 才是"这一行的标题"，才该用行的语义 Key。
+            //
+            // ⚠ 光判名字不够：Prev/Label、Next/Label、Button/Label、ResetButton/Label
+            // 也叫 "Label"，它们是【行以下第二层】的子控件，不是行标题。
+            // 只按名字判会让它们全部命中 GetComponentInParent 找到的同一个 row，
+            // 于是 "<" ">" "重置" 全都拿到 ui_setting_resolution 这种行 Key ——
+            // 和 ValueText 是同一类错误，只是藏在更深一层。
+            // 所以这里要求【直接父节点就是那一行】（SettingRowBase 的 Find 也只用直接子节点，
+            // 行模板的子节点命名约定见 SettingRowBase 的注释）。
+            if (string.Equals(text.transform.name, "Label", StringComparison.Ordinal))
+            {
+                Transform parent = text.transform.parent;
+                SettingRowBase row = parent != null ? parent.GetComponent<SettingRowBase>() : null;
+                if (row != null && !string.IsNullOrEmpty(row.settingId))
+                {
+                    return MakeSettingLabelKey(row.settingId);
+                }
+            }
+
+            // ③ 完整层级路径（用整个场景做根，路径才完整）
+            Transform root = text.transform.root;
+            return BuildKey(assetShortName, BuildObjectPath(root, text.transform));
+        }
+
+        /// <summary>settingId → 标签 Key。与生成器此前的派生规则保持一致，配置无需重建。</summary>
+        private static string MakeSettingLabelKey(string settingId)
+        {
+            int dot = settingId.IndexOf('.');
+            string tail = (dot >= 0 && dot + 1 < settingId.Length) ? settingId.Substring(dot + 1) : settingId;
+            return "ui_setting_" + tail.ToLowerInvariant();
         }
 
         /// <summary>
@@ -526,6 +784,177 @@ namespace LocalizationSystem.Editor
         // ══════════════════ 导入配置 ══════════════════
 
         private void ImportToConfig()
+        {
+            ImportToConfigInternal();
+        }
+
+        // ══════════════════ 供自动化 / MCP 驱动的入口 ══════════════════
+        //
+        // 窗口的正常用法是人点按钮。但"扫描 → 导入 → 回写"这套流程必须能被脚本驱动，
+        // 否则没法做回归验证 —— 一百多条靠手点也验证不了。
+        // 下面几个方法就是那套流程的无对话框版本，配合 PrefabTextCollectorWindow.SilentMode = true 使用。
+        // 故意不设成 private：验证脚本要用。
+
+        /// <summary>
+        /// 跑一次完整扫描，然后把某个来源路径下的条目按 predicate 勾选。
+        /// 返回该来源的条目总数（找不到这个来源返回 -1）。
+        /// </summary>
+        public int ScanAndSelectForTest(string sourcePath, Func<TextItem, bool> predicate)
+        {
+            _groups.Clear();
+            Scan();
+            for (int g = 0; g < _groups.Count; g++)
+            {
+                if (!string.Equals(_groups[g].Path, sourcePath, StringComparison.Ordinal)) continue;
+                for (int i = 0; i < _groups[g].Items.Count; i++)
+                {
+                    TextItem it = _groups[g].Items[i];
+                    it.Selected = predicate == null || predicate(it);
+                }
+                return _groups[g].Items.Count;
+            }
+            return -1;
+        }
+
+        /// <summary>无对话框版本的导入。</summary>
+        public void ImportToConfigForTest()
+        {
+            ImportToConfigInternal();
+        }
+
+        /// <summary>无对话框版本的回写。</summary>
+        public void WriteComponentsForTest()
+        {
+            WriteComponents();
+        }
+
+        /// <summary>
+        /// 给这个实例指定本地化配置。
+        ///
+        /// 窗口正常使用时目标配置存在 EditorPrefs 里、由 OnEnable 读回来；脚本驱动的实例
+        /// 没有这一段生命周期，所以必须能显式指定 —— 否则 _targetConfig 是 null，
+        /// 导入会静默什么也不做。
+        /// </summary>
+        public void SetTargetConfigForTest(string configPath)
+        {
+            _targetConfig = AssetDatabase.LoadAssetAtPath<LocalizationData>(configPath);
+        }
+
+        /// <summary>取当前扫描结果里某个来源的条目（供验证脚本断言）。</summary>
+        public List<TextItem> GetItemsForTest(string sourcePath)
+        {
+            for (int g = 0; g < _groups.Count; g++)
+            {
+                if (string.Equals(_groups[g].Path, sourcePath, StringComparison.Ordinal)) return _groups[g].Items;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// 诊断用：探测某个场景路径在【扫描结果】与【直接按路径查找】两条路下各能定位到几个物体。
+        /// 两者数字不一致就说明定位逻辑有分歧（例如场景其实由多个根节点组成）。只读，不改任何东西。
+        /// </summary>
+        public static string ProbeSceneLookupForTest(string scenePath)
+        {
+            var sb = new StringBuilder();
+
+            var w = CreateInstance<PrefabTextCollectorWindow>();
+            try
+            {
+                int total = w.ScanAndSelectForTest(scenePath, null);
+                if (total < 0) return "扫描结果里没有这个来源：" + scenePath;
+                List<TextItem> items = w.GetItemsForTest(scenePath);
+
+                UnityEngine.SceneManagement.Scene scene =
+                    UnityEngine.SceneManagement.SceneManager.GetSceneByPath(scenePath);
+                bool loaded = scene.IsValid() && scene.isLoaded;
+                GameObject[] roots = loaded ? scene.GetRootGameObjects() : null;
+                sb.Append("场景已加载=").Append(loaded)
+                  .Append("，根节点数=").Append(roots == null ? -1 : roots.Length).Append('\n');
+                if (roots != null)
+                {
+                    for (int i = 0; i < roots.Length; i++)
+                    {
+                        if (roots[i] != null) sb.Append("  根：").Append(roots[i].name).Append('\n');
+                    }
+                }
+
+                for (int i = 0; i < items.Count; i++)
+                {
+                    TextItem it = items[i];
+                    Transform t = roots == null ? null : FindInSceneRoots(roots, it.ObjectPath);
+                    sb.Append(t == null ? "查不到  " : "查得到  ").Append(it.ObjectPath).Append('\n');
+                }
+            }
+            finally
+            {
+                DestroyImmediate(w);
+            }
+            return sb.ToString();
+        }
+
+        /// <summary>只勾选这些层级路径的条目 —— 给验证用，避免把上百条一次性写成资产。</summary>
+        public static Func<TextItem, bool> OnlyForTest(params string[] objectPaths)
+        {
+            var set = new HashSet<string>(objectPaths);
+            return it => it != null && set.Contains(it.ObjectPath);
+        }
+
+        /// <summary>
+        /// 一次性跑完「扫描 → 导入 → 回写」，全程无对话框。给 MCP / 批处理调用。
+        ///
+        /// ══════════════ 为什么要"再选一次" ══════════════
+        /// ImportToConfigInternal 结尾会调 RefreshConfigStatus，把这时已经进配置的条目全部取消勾选
+        /// —— 界面上的正常行为（导入完就不该再勾着）。但自动化流程紧接着还要回写组件，
+        /// 所以这里导入后必须按同一个 predicate 重新勾选，否则回写会以"没勾选任何条目"提前返回。
+        ///
+        /// 返回值是给人看的诊断文本，不是给程序解析的。
+        /// </summary>
+        public static string RunPipelineForTest(string scenePath, Func<TextItem, bool> predicate,
+            bool writeComponents, string configPath)
+        {
+            var sb = new StringBuilder();
+            var w = CreateInstance<PrefabTextCollectorWindow>();
+            w._targetConfig = AssetDatabase.LoadAssetAtPath<LocalizationData>(configPath);
+            if (w._targetConfig == null) return "配置没找到：" + configPath;
+
+            bool oldSilent = SilentMode;
+            SilentMode = true;
+            try
+            {
+                int total = w.ScanAndSelectForTest(scenePath, predicate);
+                if (total < 0) return "扫描结果里没有这个来源：" + scenePath;
+
+                List<TextItem> items = w.GetItemsForTest(scenePath);
+                for (int i = 0; i < items.Count; i++)
+                {
+                    TextItem it = items[i];
+                    sb.Append(it.Selected ? "[选中] " : "[    ] ").Append(it.ObjectPath)
+                      .Append("  →  ").Append(it.Key)
+                      .Append("  (dup=").Append(it.KeyDuplicated)
+                      .Append(", inConfig=").Append(it.AlreadyInConfig).Append(")\n");
+                }
+
+                w.ImportToConfigForTest();
+                sb.Append("导入完成\n");
+
+                if (writeComponents)
+                {
+                    //导入后勾选状态被清掉了，重新按同一条件选一次
+                    w.ScanAndSelectForTest(scenePath, predicate);
+                    w.WriteComponentsForTest();
+                    sb.Append("回写完成\n");
+                }
+            }
+            finally
+            {
+                SilentMode = oldSilent;
+                DestroyImmediate(w);
+            }
+            return sb.ToString();
+        }
+
+        private void ImportToConfigInternal()
         {
             if (_targetConfig == null) return;
 
@@ -623,6 +1052,24 @@ namespace LocalizationSystem.Editor
 
         // ══════════════════ 写入 LocalizedText 组件 ══════════════════
 
+        /// <summary>
+        /// 把勾选条目的 Key 写进对应物体上的 LocalizedText 组件（没有就加一个）。
+        ///
+        /// ══════════════ 两种来源，两套写法 ══════════════
+        /// 预制体和场景的改法不同，这是本方法唯一复杂的地方：
+        ///   · 【预制体】走 LoadPrefabContents 隔离场景 → 改 → SaveAsPrefabAsset 存回。
+        ///   · 【场景】直接改【已加载的那个场景实例】→ MarkSceneDirty → SaveScene。
+        ///     不能对场景做 LoadPrefabContents（那不是预制体），也不能用 write 类工具直接改
+        ///     .unity 文本 —— Unity 内存里的版本会在下次保存时覆盖磁盘，改动静默丢失。
+        ///
+        /// ══════════════ 场景改完必须自己存 ══════════════
+        /// MarkSceneDirty 只是打脏标记，不落盘。用户下次直接关编辑器时如果选了"不保存"，
+        /// 这次的写入就白做了。所以这里改完立刻 SaveScene。
+        ///
+        /// 只有"我们自己 Additive 打开的场景"或"用户本来就打开的场景"会被处理：
+        /// 扫描阶段（ScanScene）打开的场景在扫描结束时就关掉了，所以这里通常是【重新打开】
+        /// 或直接命中用户本来就开着的那个场景。两种情况下改完都由本方法负责落盘。
+        /// </summary>
         private void WriteComponents()
         {
             var picked = new List<TextItem>();
@@ -639,60 +1086,34 @@ namespace LocalizationSystem.Editor
                 return;
             }
 
-            //按预制体归组：一个预制体只开关一次，否则隔离场景会被反复创建
-            var byPrefab = new Dictionary<string, List<TextItem>>();
+            //按来源路径归组：一个预制体只开关一次，否则隔离场景会被反复创建
+            var byAsset = new Dictionary<string, List<TextItem>>();
             for (int i = 0; i < picked.Count; i++)
             {
                 List<TextItem> list;
-                if (!byPrefab.TryGetValue(picked[i].PrefabPath, out list))
+                if (!byAsset.TryGetValue(picked[i].PrefabPath, out list))
                 {
                     list = new List<TextItem>();
-                    byPrefab[picked[i].PrefabPath] = list;
+                    byAsset[picked[i].PrefabPath] = list;
                 }
                 list.Add(picked[i]);
             }
 
             int addedCount = 0, updatedCount = 0, missingCount = 0;
+            var dirtyScenes = new List<UnityEngine.SceneManagement.Scene>();
 
             AssetDatabase.StartAssetEditing();//批量改预制体期间暂停导入，快很多
             try
             {
-                foreach (KeyValuePair<string, List<TextItem>> kv in byPrefab)
+                foreach (KeyValuePair<string, List<TextItem>> kv in byAsset)
                 {
-                    GameObject root = null;
-                    try
+                    if (IsScenePath(kv.Key))
                     {
-                        root = PrefabUtility.LoadPrefabContents(kv.Key);
-                        if (root == null) { missingCount += kv.Value.Count; continue; }
-
-                        bool dirty = false;
-                        for (int i = 0; i < kv.Value.Count; i++)
-                        {
-                            TextItem it = kv.Value[i];
-                            Transform target = root.transform.Find(it.ObjectPath);
-                            if (target == null) { missingCount++; continue; }
-
-                            LocalizedText lt = target.GetComponent<LocalizedText>();
-                            if (lt == null)
-                            {
-                                lt = target.gameObject.AddComponent<LocalizedText>();
-                                addedCount++;
-                            }
-                            else
-                            {
-                                updatedCount++;
-                            }
-                            lt.localizationKey = it.Key;
-                            lt.autoUpdateOnStart = true;
-                            lt.listenToLanguageChange = true;
-                            dirty = true;
-                        }
-
-                        if (dirty) PrefabUtility.SaveAsPrefabAsset(root, kv.Key);
+                        WriteSceneItems(kv.Key, kv.Value, dirtyScenes, ref addedCount, ref updatedCount, ref missingCount);
                     }
-                    finally
+                    else
                     {
-                        if (root != null) PrefabUtility.UnloadPrefabContents(root);
+                        WritePrefabItems(kv.Key, kv.Value, ref addedCount, ref updatedCount, ref missingCount);
                     }
                 }
             }
@@ -703,11 +1124,206 @@ namespace LocalizationSystem.Editor
                 AssetDatabase.Refresh();
             }
 
+            // 场景落盘放在 StartAssetEditing 之外：SaveScene 会自己触发一轮导入，
+            // 夹在批量编辑里容易被忽略掉。
+            for (int i = 0; i < dirtyScenes.Count; i++)
+            {
+                try
+                {
+                    EditorSceneManager.SaveScene(dirtyScenes[i]);
+                    ChaosLog.Info(LogChannel.Localization, "已保存场景：" + dirtyScenes[i].path);
+                }
+                catch (Exception e)
+                {
+                    ChaosLog.Error(LogChannel.Localization, "保存场景失败：" + e.Message);
+                }
+            }
+
             string msg = "新增组件 " + addedCount + " 个，更新 Key " + updatedCount + " 个。";
+            if (dirtyScenes.Count > 0) msg += "\n\n已保存 " + dirtyScenes.Count + " 个场景。";
             if (missingCount > 0) msg += "\n\n有 " + missingCount + " 条没找到对应物体（层级路径可能已变），已跳过。";
             Notify("写入 LocalizedText 组件", msg);
 
             ChaosLog.Info(LogChannel.Localization, "面板文字组件写入完成：" + msg.Replace("\n", " "));
+        }
+
+        /// <summary>场景资产的扩展名判定 —— 与预制体分派用。</summary>
+        private static bool IsScenePath(string path)
+        {
+            return !string.IsNullOrEmpty(path)
+                   && path.EndsWith(".unity", StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>写一个预制体。隔离场景保证不会误改到场景里的实例。</summary>
+        private void WritePrefabItems(string prefabPath, List<TextItem> items,
+            ref int addedCount, ref int updatedCount, ref int missingCount)
+        {
+            GameObject root = null;
+            try
+            {
+                root = PrefabUtility.LoadPrefabContents(prefabPath);
+                if (root == null) { missingCount += items.Count; return; }
+
+                bool dirty = false;
+                for (int i = 0; i < items.Count; i++)
+                {
+                    TextItem it = items[i];
+                    if (string.IsNullOrEmpty(it.Key)) { missingCount++; continue; }
+
+                    Transform target = root.transform.Find(it.ObjectPath);
+                    if (target == null) { missingCount++; continue; }
+
+                    int r = ApplyLocalizedText(target, it.Key);
+                    if (r == ResultMissing) missingCount++;
+                    else if (r == ResultAdded) { addedCount++; dirty = true; }
+                    else { updatedCount++; dirty = true; }
+                }
+
+                if (dirty) PrefabUtility.SaveAsPrefabAsset(root, prefabPath);
+            }
+            finally
+            {
+                if (root != null) PrefabUtility.UnloadPrefabContents(root);
+            }
+        }
+
+        /// <summary>
+        /// 写一个场景。定位用的是【已加载的场景实例】，所以：
+        ///   · 用户本来就打开着这个场景 → 直接改它（最理想，改完看得见）；
+        ///   · 没打开 → 这里 Additive 打开一次。
+        /// 扫描阶段虽然也 Additive 打开过，但 ScanScene 结束时就关掉了，所以通常走第二种。
+        ///
+        /// ⚠ 改完【不关】这个场景：关掉会顺带丢掉用户的场景视图状态（相机、折叠），
+        /// 而且用户可能正想看看写进去的结果。代价是它会一直留在 Hierarchy 里，
+        /// 由用户自己决定何时关。这一点写在这里，免得以后有人以为是漏了 CloseScene。
+        ///
+        /// 不碰预制体实例：扫描阶段已经把它们排除在外了，这里再挡一道，
+        /// 免得手动改了组的数据导致误改预制体（那会变成 Prefab Override，问题很难查）。
+        /// </summary>
+        private void WriteSceneItems(string scenePath, List<TextItem> items, List<UnityEngine.SceneManagement.Scene> dirtyScenes,
+            ref int addedCount, ref int updatedCount, ref int missingCount)
+        {
+            if (Application.isPlaying)
+            {
+                ChaosLog.Warn(LogChannel.Localization,
+                    "正在播放模式，跳过场景写入（改的是运行时副本，不会保存）：" + scenePath);
+                missingCount += items.Count;
+                return;
+            }
+
+            UnityEngine.SceneManagement.Scene scene =
+                UnityEngine.SceneManagement.SceneManager.GetSceneByPath(scenePath);
+            if (!scene.IsValid() || !scene.isLoaded)
+            {
+                try
+                {
+                    scene = EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Additive);
+                }
+                catch (Exception e)
+                {
+                    ChaosLog.Error(LogChannel.Localization, "打开场景失败，跳过写入 " + scenePath + "：" + e.Message);
+                    missingCount += items.Count;
+                    return;
+                }
+            }
+
+            GameObject[] roots = scene.GetRootGameObjects();
+            bool dirty = false;
+
+            for (int i = 0; i < items.Count; i++)
+            {
+                TextItem it = items[i];
+                if (string.IsNullOrEmpty(it.Key)) { missingCount++; continue; }
+
+                Transform target = FindInSceneRoots(roots, it.ObjectPath);
+                if (target == null) { missingCount++; continue; }
+
+                if (PrefabUtility.GetPrefabInstanceStatus(target.gameObject) != PrefabInstanceStatus.NotAPrefab)
+                {
+                    ChaosLog.Warn(LogChannel.Localization,
+                        "跳过预制体实例内的物体（应由预制体自己本地化）：" + it.ObjectPath);
+                    missingCount++;
+                    continue;
+                }
+
+                int r = ApplyLocalizedText(target, it.Key);
+                if (r == ResultMissing) missingCount++;
+                else if (r == ResultAdded) { addedCount++; dirty = true; }
+                else { updatedCount++; dirty = true; }
+            }
+
+            if (dirty && !dirtyScenes.Contains(scene))
+            {
+                EditorSceneManager.MarkSceneDirty(scene);
+                dirtyScenes.Add(scene);
+            }
+        }
+
+        /// <summary>在场景的根节点列表里按层级路径找物体；路径为空表示根节点自身。</summary>
+        private static Transform FindInSceneRoots(GameObject[] roots, string objectPath)
+        {
+            if (roots == null || roots.Length == 0) return null;
+
+            if (string.IsNullOrEmpty(objectPath)) return roots[0] != null ? roots[0].transform : null;
+
+            int slash = objectPath.IndexOf('/');
+            string head = slash < 0 ? objectPath : objectPath.Substring(0, slash);
+            string tail = slash < 0 ? string.Empty : objectPath.Substring(slash + 1);
+
+            for (int i = 0; i < roots.Length; i++)
+            {
+                if (roots[i] == null || !string.Equals(roots[i].name, head, StringComparison.Ordinal)) continue;
+                if (tail.Length == 0) return roots[i].transform;
+
+                Transform found = roots[i].transform.Find(tail);
+                if (found != null) return found;
+            }
+            return null;
+        }
+
+        private const int ResultMissing = 0;
+        private const int ResultAdded = 1;
+        private const int ResultUpdated = 2;
+
+        /// <summary>
+        /// 给一个物体挂上/更新 LocalizedText。返回 Result* 之一。
+        ///
+        /// ══════════════ 为什么必须挡掉非 UGUI 文本 ══════════════
+        /// LocalizedText 上有 [RequireComponent(typeof(TextMeshProUGUI))]。
+        /// 对着【世界空间文字】（TextMeshPro 而不是 TextMeshProUGUI）调 AddComponent 时，
+        /// Unity 会自动再补一个 TextMeshProUGUI 上去，而这个组件是不会被渲染的：
+        /// 结果是物体上多了一个隐形的文字组件，LocalizedText 又只认它、不认原来那个 ——
+        /// 看起来"本地化完全没生效"，而且报错都没有。所以这里直接拒绝，并让调用方计入 skipped。
+        /// </summary>
+        private static int ApplyLocalizedText(Transform target, string key)
+        {
+            if (target.GetComponent<TMP_Text>() == null) return ResultMissing;
+            if (target.GetComponent<TextMeshProUGUI>() == null) return ResultMissing;
+
+            // ══════════════ 先清掉重复的 LocalizedText ══════════════
+            // 同一个物体上挂两个 LocalizedText 是有害且【极难发现】的：
+            //   · GetComponent 只返回第一个，于是"写进去的那个"与"运行时实际用的那个"可能不是同一个；
+            //   · UnityEvent 的序列化绑定也可能落到另一个上。
+            // 现象是"收集器报告写入成功，界面却始终不翻译"，而 Inspector 上两个组件长得一模一样。
+            // 这个坑真实发生过一次（生成器的 NewText 与 NewLabel 各挂了一个），
+            // 所以这里主动收敛成一个，宁可多花一次遍历，也不要再出一次这种哑巴故障。
+            LocalizedText[] all = target.GetComponents<LocalizedText>();
+            if (all.Length > 1)
+            {
+                ChaosLog.Warn(LogChannel.Localization,
+                    target.name + " 上挂了 " + all.Length + " 个 LocalizedText，已清理多余的（保留第一个）。" +
+                    "重复挂载通常来自生成器脚本 —— 请检查它是否在两个地方都 AddComponent。");
+                for (int i = 1; i < all.Length; i++) UnityEngine.Object.DestroyImmediate(all[i], true);
+            }
+            LocalizedText lt = all.Length > 0 ? all[0] : null;
+
+            int result = lt == null ? ResultAdded : ResultUpdated;
+            if (lt == null) lt = target.gameObject.AddComponent<LocalizedText>();
+
+            lt.localizationKey = key;
+            lt.autoUpdateOnStart = true;
+            lt.listenToLanguageChange = true;
+            return result;
         }
     }
 }

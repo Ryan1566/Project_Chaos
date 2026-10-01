@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using ChaosDebug;
+using LocalizationSystem;
 using UnityEngine;
 
 /// <summary>
@@ -216,6 +217,11 @@ public abstract class SettingsPageBase : MonoBehaviour
     /// <summary>
     /// 左右箭头选择行。displayTexts 是各档的文案，getIndex/setIndex 在"序号"与"字段值"之间换算
     /// —— 换算交给子类是因为只有它知道自己那套档位表长什么样（分辨率是动态过滤出来的，帧率是 30/40/60）。
+    ///
+    /// ══════════════ 两种形态自动分流 ══════════════
+    /// 这个 settingId 在 SettingKeys 里有预摆档位的 Key 清单（视窗模式/画质/触发方式/语言）
+    /// 就走预摆形态，否则走运行时写文字的形态。分流【只在这一处】判断，
+    /// 各地页面不需要知道自己的行是哪种形态 —— 否则五个页面里会散落五份同样的判断。
     /// </summary>
     protected SettingRow_Selector BindSelector(string id, string[] displayTexts,
         Func<SettingsData, int> getIndex, Action<SettingsData, int> setIndex,
@@ -224,7 +230,24 @@ public abstract class SettingsPageBase : MonoBehaviour
         SettingRow_Selector row = FindRow<SettingRow_Selector>(id);
         if (row == null) return null;
 
-        row.Configure(displayTexts);
+        string[] optionKeys = SettingKeys.ForSetting(id);
+        if (optionKeys != null)
+        {
+            //两张表必须同序同长：对不上时档位会显示隔壁那一档，而且不会有任何报错 ——
+            //这种"看起来能用但内容错了"的问题最难查，所以在绑定期就吼一声
+            if (displayTexts != null && optionKeys.Length != displayTexts.Length)
+            {
+                ChaosLog.Error(LogChannel.UI,
+                    "设置项 " + id + " 的预摆档位 Key 有 " + optionKeys.Length +
+                    " 个，而档位文案表有 " + displayTexts.Length + " 个，两张表顺序已经对不上了。");
+            }
+            row.ConfigureOptions(optionKeys);
+        }
+        else
+        {
+            row.Configure(displayTexts);
+        }
+
         row.OnValueChanged = index =>
         {
             SettingsData data = SettingsManager.Instance.Pending;
