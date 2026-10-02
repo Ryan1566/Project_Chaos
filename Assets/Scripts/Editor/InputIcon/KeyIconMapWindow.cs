@@ -126,12 +126,6 @@ namespace InputIcon.Editor
                 EditorStyles.miniLabel);
             EditorGUILayout.EndHorizontal();
 
-            EditorGUILayout.BeginHorizontal();
-            _map.hideKeyFrameWhenIconShown = EditorGUILayout.ToggleLeft(
-                "显示图标时隐藏键格的白色底（图标自带键帽外形，叠起来是双层边框）",
-                _map.hideKeyFrameWhenIconShown, GUILayout.Width(420f));
-            EditorGUILayout.EndHorizontal();
-
             if (EditorGUI.EndChangeCheck())
             {
                 EditorUtility.SetDirty(_map);

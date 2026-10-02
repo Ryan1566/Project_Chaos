@@ -316,7 +316,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   text: {fileID: 429884953266432805}
   icon: {fileID: 1751665030624739301}
-  frameImage: {fileID: 0}
 --- !u!1 &1203698702006613481
 GameObject:
   m_ObjectHideFlags: 0
@@ -733,7 +732,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   text: {fileID: 7960714474343881351}
   icon: {fileID: 6640929157561729258}
-  frameImage: {fileID: 0}
 --- !u!1 &5798032811261636116
 GameObject:
   m_ObjectHideFlags: 0

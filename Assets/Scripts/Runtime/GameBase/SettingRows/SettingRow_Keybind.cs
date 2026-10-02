@@ -28,7 +28,8 @@ using UnityEngine.UI;
 ///
 /// 契约（页面也要照这个来）：
 ///   · 图标由页面按输入域算好传进来（SetKeyDisplay），行【不查】图标映射表；
-///   · 显示图标时行会把键格的白色底（KeyButton.image）交给图标格去隐藏 —— 图标自带键帽外形；
+///   · 行【不碰】键格的底图（KeyButton / MouseButton 上的 Image）—— 那正是 Button 接收点击的
+///     Graphic，把它关掉这一格就彻底点不动了（理由见 KeyIconText 的类注释）；
 ///   · "等待按键"期间强制显示提示词文字，退出时按记下的键名 + 图标还原。
 /// </summary>
 public class SettingRow_Keybind : SettingRowBase
@@ -51,7 +52,8 @@ public class SettingRow_Keybind : SettingRowBase
     private Button _resetButton;
 
     /// <summary>"正在等待按键"时按钮上显示这段文案，替代键名。</summary>
-    private const string ListeningPrompt = "请按键…";
+    //private const string ListeningPrompt = "请按键…";
+    private const string ListeningPrompt = "--";
 
     /// <summary>当前该显示的键名。等待按键时被临时顶替，退出等待后要还原回来。</summary>
     private string _keyDisplay = "";
@@ -89,12 +91,10 @@ public class SettingRow_Keybind : SettingRowBase
 
         _resetButton = Find<Button>("ResetButton", false);
 
-        //把键格的白色底注入给图标格：显示图标时要把它关掉（图标自带键帽，叠起来是双层边框）。
-        //这件事由行来做而不是让图标格自己去父子树上找 —— 行本来就是按约定名找 KeyButton 的那一方，
-        //而页签上的图标格【不该】隐藏底图（页签底图是圆角条，不是键帽）
-        if (_keyIconText != null && _keyButton != null) _keyIconText.frameImage = _keyButton.image;
-        if (_secondIconText != null && _secondButton != null) _secondIconText.frameImage = _secondButton.image;
-
+        //⚠ 这里【不要】去动 _keyButton.image / _secondButton.image（比如"显示图标时把白色底图关掉"）。
+        //那是这两个 Button 接收点击的 Graphic：Image.enabled = false 会让 OnDisable 把它从
+        //GraphicRegistry 注销，GraphicRaycaster 再也找不到它 —— 症状是图标显示正常但点不动，
+        //且不报任何错。详见 KeyIconText 的类注释与实测记录。
         if (_keyButton != null) _keyButton.onClick.AddListener(HandleKeyButtonClick);
         if (_secondButton != null) _secondButton.onClick.AddListener(HandleSecondButtonClick);
         if (_resetButton != null) _resetButton.onClick.AddListener(HandleResetClick);

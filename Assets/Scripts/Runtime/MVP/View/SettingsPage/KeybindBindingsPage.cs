@@ -88,7 +88,8 @@ public class KeybindBindingsPage : SettingsPageBase
     private InputManager.RebindResult _stepResult;
 
     /// <summary>鼠标格的提示词。设备的排除规则已经保证这一格只收得到鼠标键。</summary>
-    private const string MousePrompt = "请按鼠标键…";
+    //private const string MousePrompt = "请按鼠标键…";
+    private const string MousePrompt = "--";
 
     protected override void OnBind()
     {
@@ -396,7 +397,7 @@ public class KeybindBindingsPage : SettingsPageBase
             InputManager.RebindStep step = steps[i];
             string prompt = string.IsNullOrEmpty(step.Label)
                 ? (kind == InputManager.BindingKind.Mouse ? MousePrompt : null)
-                : step.Label + "：请按键…";
+                : "--";
 
             if (row != null)
             {

@@ -8,16 +8,19 @@ using UnityEngine.UI;
 public class MainMenuPanel : BasePanel
 {
     private Button _startBtn;
+    private Button _updateBtn;
     private Button _settingBtn;
     private Button _quitBtn;
 
     private void Awake()
     {
-        _startBtn = transform.Find("StartBtn").GetComponent<Button>();
-        _settingBtn = transform.Find("SettingBtn").GetComponent<Button>();
-        _quitBtn = transform.Find("QuitBtn").GetComponent<Button>();
+        _startBtn = transform.GetChild(1).Find("StartBtn").GetComponent<Button>();
+        _updateBtn = transform.GetChild(1).Find("UpdateBtn").GetComponent<Button>();
+        _settingBtn = transform.GetChild(1).Find("SettingBtn").GetComponent<Button>();
+        _quitBtn = transform.GetChild(1).Find("QuitBtn").GetComponent<Button>();
 
         _startBtn.onClick.AddListener(StartGame);
+        _startBtn.onClick.AddListener(UpdateEnter);
         _settingBtn.onClick.AddListener(SettingEnter);
         _quitBtn.onClick.AddListener(QuitGame);
     }
@@ -38,6 +41,14 @@ public class MainMenuPanel : BasePanel
     void StartGame()
     {
         ChaosLog.Info("点击开始游戏按钮");
+    }
+
+    /// <summary>
+    /// 更新公告
+    /// </summary>
+    void UpdateEnter()
+    {
+        ChaosLog.Info("点击更新公告按钮");
     }
 
     ///设置按钮

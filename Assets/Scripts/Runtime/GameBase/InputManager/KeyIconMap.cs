@@ -89,8 +89,13 @@ public class KeyIconMap : ScriptableObject
     [Tooltip("图标染色。库里的图都是白色线条（为深色界面画的），而设置面板是浅底深字，不染色就看不见。白 × 色 = 色，所以这个值直接就是图标在界面上的颜色")]
     public Color tint = new Color(0.1f, 0.1f, 0.1f, 1f);
 
-    [Tooltip("显示图标时隐藏键格的白色底。图标自带键帽外形，再叠一层白底键帽会变成双层边框")]
-    public bool hideKeyFrameWhenIconShown = true;
+    // ══════════════════ 曾经有过、已经删掉的开关 ══════════════════
+    // 这里原来有一个 hideKeyFrameWhenIconShown（显示图标时隐藏键格的白色底图），
+    // 想法是"图标自带键帽外形，再叠一层白底键帽会变成双层边框"。
+    // 它实现成 KeyButton.image.enabled = false —— 而那正是 Button 接收点击的 Graphic：
+    // 关掉之后 OnDisable 把它从 GraphicRegistry 注销，整个键格再也收不到射线，
+    // 表现为"图标显示正常但点不动"，且不报错。
+    // 结论：这个开关不该存在（底图必须一直 enabled）。详见 KeyIconText 的类注释。
 
     // ══════════════════ 页签图标 ══════════════════
     // 页签（键鼠 / 手柄）的文案是溢出最严重的一处：英文 "Keyboard & Mouse" 有 16 个字符，

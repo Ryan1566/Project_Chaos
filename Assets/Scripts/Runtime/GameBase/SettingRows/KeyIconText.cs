@@ -12,11 +12,26 @@ using UnityEngine.UI;
 /// 本组件就是那个开关。取图标、判断有没有图标，都在外面做（KeyIconMap + InputManager），
 /// 本组件只负责"给我一个 sprite，我把它显示出来"。
 ///
-/// ══════════════════ 为什么同时要控制底图（frameImage）══════════════════
-/// 键格本身有一层白色底（KeyButton 上的 9-slice 键帽），而库里的图标【自带键帽外形】。
-/// 两个键帽叠在一起会变成双层边框，所以显示图标时要把白底关掉。
-/// 这个白底归行控件管（它按约定名找 KeyButton / MouseButton），所以由它注入 ——
-/// 本组件不去父子树上瞎猜"哪个 Image 是底图"，那种猜法在页签上就会猜错（页签的底图正该留着）。
+/// ══════════════════ 它【不】碰键格的底图 ══════════════════
+/// 这里曾经做过一件事：显示图标时把键格的白色底图（KeyButton 上的 Image）关掉，
+/// 免得"键帽图标"叠在"白底键格"上变成双层边框。**那是个 bug，已经删掉了。**
+///
+/// 原因：`Button` 自己【不做】射线检测，它能收到点击靠的是身上那个 `Graphic`（就是这张底图）。
+/// `Image.enabled = false` 会让 `OnDisable` 把该 Graphic 从 `GraphicRegistry` 注销，
+/// `GraphicRaycaster` 从此找不到它 —— 界面上的表现是"图标显示得好好的，但点不动"，
+/// 而且**不会有任何报错**。实测（真射线）：关掉之后在键格中心打一条射线，
+/// 命中的是面板底板，`GetEventHandler&lt;IPointerClickHandler&gt;` 返回 null。
+///
+/// 也不能改成"底图留着、只设成全透明"：这些按钮是 `ColorTint` 过渡、`targetGraphic`
+/// 正是这张底图，鼠标一悬停 `Selectable` 就把颜色写回不透明，白底又冒出来。
+///
+/// 所以结论是——**底图必须一直 enabled，本组件连碰都不碰它**。
+/// 而那本来也不是个问题：库里这些图标本身就是键帽外形，放在白色键格里正好像一颗按键，
+/// 这原本就是按键行该有的样子。
+///
+/// ⚠ 由此得到的验证纪律：要判断"按钮能不能点"，必须走【真实射线】
+/// （`EventSystem.RaycastAll`）或真的派发一次点击事件。直接调用 `Button.onClick.Invoke()`
+/// 会绕开整套射线与事件系统，把"组件被禁用导致收不到事件"这类问题全部漏掉。
 ///
 /// ══════════════════ 为什么所有引用都懒解析 ══════════════════
 /// 手柄那三行在 prefab 里是【激活时全关着】的，它们的 Awake 要等切到"手柄"页签才跑。
@@ -31,9 +46,6 @@ public class KeyIconText : MonoBehaviour
 
     [Tooltip("图标。留空则自动取子节点 'Icon' 上的 Image")]
     public Image icon;
-
-    [Tooltip("显示图标时要隐藏的底图（键格的白色键帽底）。由 SettingRow_Keybind 注入；页签上没有底图可隐藏，留空即可")]
-    public Image frameImage;
 
     private Color _iconColor = Color.white;
     private bool _dimmed;
@@ -74,12 +86,15 @@ public class KeyIconText : MonoBehaviour
     }
 
     /// <summary>
-    /// 设置这一格显示什么。sprite 为 null（或禁用）时显示文字。
+    /// 设置这一格显示什么。sprite 为 null 时显示文字。
     ///
     /// 显示图标时【依然把文字写进 TMP】，只是把它 enabled 关掉。这不是浪费：
     ///   · 排查时能一眼看到"这一格本来是哪个键名"；
     ///   · SettingRowBase 的置灰逻辑是按 TMP 收集颜色的，文字为空会丢掉原始色；
     ///   · 图标丢了（资产被删）时能立刻回退，不需要重新走一遍输入域。
+    ///
+    /// ⚠ 这里只切【本组件自己管的那两个 Graphic】（文字与图标）。
+    /// 键格的底图不是它的职责 —— 关掉它会让按钮收不到点击，理由见类注释。
     /// </summary>
     public void SetDisplay(string displayText, Sprite sprite, Color iconColor)
     {
@@ -94,18 +109,7 @@ public class KeyIconText : MonoBehaviour
             text.enabled = !_showIcon;
         }
 
-        if (icon != null)
-        {
-            icon.sprite = sprite;
-            icon.enabled = _showIcon;
-            if (_showIcon) icon.color = _dimmed ? SettingRowBase.DisabledColor(_iconColor) : _iconColor;
-        }
-
-        //底图只在"有图标"时让位。没有图标时它必须回来 —— 否则那一格看起来会像没有键帽的空框
-        if (frameImage != null && ShouldHideFrame())
-        {
-            frameImage.enabled = !_showIcon;
-        }
+        ApplyIcon(sprite);
     }
 
     /// <summary>
@@ -125,15 +129,17 @@ public class KeyIconText : MonoBehaviour
 
         if (text != null) text.enabled = !_showIcon;
 
-        if (icon != null)
-        {
-            icon.sprite = sprite;
-            icon.enabled = _showIcon;
-            if (_showIcon) icon.color = _dimmed ? SettingRowBase.DisabledColor(_iconColor) : _iconColor;
-        }
+        ApplyIcon(sprite);
+    }
 
-        //页签的底图是圆角条、不是键帽，本来就不该隐藏；frameImage 没人注入时这段自然不参与
-        if (frameImage != null && ShouldHideFrame()) frameImage.enabled = !_showIcon;
+    /// <summary>图标那一半的显隐与染色。两个入口共用，免得只改一处、另一处漏掉置灰。</summary>
+    private void ApplyIcon(Sprite sprite)
+    {
+        if (icon == null) return;
+
+        icon.sprite = sprite;
+        icon.enabled = _showIcon;
+        if (_showIcon) icon.color = _dimmed ? SettingRowBase.DisabledColor(_iconColor) : _iconColor;
     }
 
     /// <summary>整行被置灰时同步调暗图标。文字那一半由 SettingRowBase 负责，这里只补图标。</summary>
@@ -146,15 +152,5 @@ public class KeyIconText : MonoBehaviour
         {
             icon.color = dimmed ? SettingRowBase.DisabledColor(_iconColor) : _iconColor;
         }
-    }
-
-    /// <summary>
-    /// 底图藏不藏。开关放在映射表上（那是"美术口径"，改一次全局生效），
-    /// 表不在时按 true 处理：库里的图都自带键帽，藏底图是更常见的正确选择。
-    /// </summary>
-    private static bool ShouldHideFrame()
-    {
-        KeyIconMap map = KeyIconMap.Active;
-        return map == null || map.hideKeyFrameWhenIconShown;
     }
 }
