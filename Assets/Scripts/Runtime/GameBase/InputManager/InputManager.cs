@@ -20,16 +20,25 @@ using UnityEngine.InputSystem;
 /// ══════════ 绑定组的约定（与 ChaosInputActions.inputactions 强耦合）══════════
 /// 每组下每个动作【只有一条主绑定】，它就是按键界面上可重绑的那一格。
 /// 键鼠方案的三个操作各有两格（键盘 + 鼠标），所以比手柄方案多用到 "Mouse" 组：
-///     Move   : Keyboard = 1DAxis 复合（A/D）          Mouse = 空（未绑定）        Gamepad = &lt;Gamepad&gt;/leftStick/x
-///     Attack : Keyboard = J                           Mouse = &lt;Mouse&gt;/leftButton  Gamepad = &lt;Gamepad&gt;/buttonWest
-///     Jump   : Keyboard = K                           Mouse = 空（未绑定）        Gamepad = &lt;Gamepad&gt;/buttonSouth
+///     Move   : Keyboard = 1DAxis 复合（A/D）      Mouse = 1DAxis 复合（两段都空）Gamepad = &lt;Gamepad&gt;/leftStick/x
+///     Attack : Keyboard = J                       Mouse = &lt;Mouse&gt;/leftButton  Gamepad = &lt;Gamepad&gt;/buttonWest
+///     Jump   : Keyboard = K                       Mouse = 无                  Gamepad = &lt;Gamepad&gt;/buttonSouth
 /// 两格【同时生效】：点鼠标左键和按 J 都能触发攻击，不存在"二选一"。这就是为什么鼠标键要有自己的组，
 /// 而不是塞进 Keyboard 组当第二条绑定 —— 那样界面就没法把"键盘格"和"鼠标格"分开显示与重绑定。
 ///
-/// 空路径 = 官方支持的"未绑定"态（InputBindingResolver 里 "Disabled if path is empty"），
-/// 静默不生效、不报日志，玩家点了那一格就能绑上。
+/// ══════════ 为什么 Move 的两个组都是 1DAxis 复合 ══════════
+/// 移动在键鼠方案里是有【方向】的：一条复合绑定含 negative（左）与 positive（右）两段，
+/// 界面上它被拆成"左移""右移"两行，每行只认自己那一段（见 SettingIds.MoveLeft）。
+/// 两个组都摆成同构，拆出来的两行才各自都有"键盘格 + 鼠标格"可填 ——
+/// 只把 Keyboard 组做成复合的话，右移那行的鼠标格就没有对应绑定可编辑了。
+/// 鼠标组的两段默认都是空路径（未绑定），玩家想用鼠标改方向时点那一格即可。
 ///
-/// 另有 "KeyboardFixed" 组的固定备用键（方向键、空格），它们【不参与重绑定】，只作为打不掉的兜底。
+/// ⚠ 游戏里【没有任何动作】的键盘兜底方向键了（KeyboardFixed 组现在只剩跳跃的空格）。
+///
+/// 空路径 = 官方支持的"未绑定"态（InputBindingResolver 里 "Disabled if path is empty"），
+/// 静默不生效、不报日志，玩家点了那一格就能绑上。复合绑定的空段同理：两段都空时这条复合什么也不产生。
+///
+/// 另有 "KeyboardFixed" 组的固定备用键（空格），它【不参与重绑定】，只作为打不掉的兜底。
 ///
 /// ⚠ 组名比较必须按分号切分后逐项比对，不能用 Contains ——
 /// "KeyboardFixed" 的字符串里含有 "Keyboard"，用 Contains 会把备用键也当成主绑定翻出来
@@ -268,6 +277,18 @@ public class InputManager : SingletonBase<InputManager>
     /// <summary>把某个动作在当前设备组下的主绑定恢复默认。</summary>
     public bool ResetBinding(string actionName, BindingKind kind)
     {
+        return ResetBinding(actionName, kind, null);
+    }
+
+    /// <summary>
+    /// 把某个动作在当前设备组下的主绑定恢复默认。
+    ///
+    /// partName 非空时【只复位那一段】。拆行之后这一条是必须的：
+    /// 玩家点的是"左移"那一行的重置按钮，而 RemoveOverrideWithParts 会把整条复合
+    /// （左移 + 右移）一起清掉 —— 那是"顺手毁掉另一格"，与按钮上写的意思不符。
+    /// </summary>
+    public bool ResetBinding(string actionName, BindingKind kind, string partName)
+    {
         InputAction action = FindAction(actionName);
         if (action == null) return false;
 
@@ -276,6 +297,20 @@ public class InputManager : SingletonBase<InputManager>
         {
             ChaosLog.Warn(LogChannel.Input, actionName + " 在 " + kind + " 组下没有主绑定，无法恢复默认");
             return false;
+        }
+
+        if (!string.IsNullOrEmpty(partName))
+        {
+            int part = FindPartIndex(action, index, partName);
+            if (part < 0)
+            {
+                ChaosLog.Warn(LogChannel.Input,
+                    actionName + "(" + kind + ") 里没有名为 '" + partName + "' 的复合分段，无法恢复默认");
+                return false;
+            }
+
+            InputActionRebindingExtensions.RemoveBindingOverride(action, part);
+            return true;
         }
 
         RemoveOverrideWithParts(action, index);
@@ -316,6 +351,139 @@ public class InputManager : SingletonBase<InputManager>
         }
 
         return DescribePath(action.bindings[index].effectivePath, device);
+    }
+
+    /// <summary>一格的显示内容：一句文字 + 一张图标（没有对应图标时 Icon 为 null）。</summary>
+    public struct BindingVisual
+    {
+        /// <summary>给玩家看的键名。没有图标时就是它显示在格子里。</summary>
+        public string Text;
+        /// <summary>该控制对应的图标。null = 没配图标，调用方应回退显示 Text。</summary>
+        public Sprite Icon;
+        /// <summary>图标颜色。彩色面键（PS/Xbox 的 _color 变体）为白色，其余为映射表的统一色。</summary>
+        public Color IconColor;
+    }
+
+    /// <summary>
+    /// 取一格该显示的文字与图标。
+    ///
+    /// partName 非空 = 只看复合绑定的那一段（拆行之后每一行恰好对应一段，见 SettingIds.MoveLeft）；
+    /// partName 为空 = 沿用老语义（整条绑定，复合绑定把各段拼成 "A / D"）。
+    ///
+    /// ══════════════ 为什么文字与图标必须从同一个方法出来 ══════════════
+    /// 图标查表用的键（ControlKey）是从【同一条控制路径】算出来的。让两处各自解析一遍，
+    /// 迟早会出现"文字显示对了、图标却查不到"这种两边单看都对、合起来错的现象。
+    /// 所以这里只解析一次路径，两个结果一起返回。
+    /// </summary>
+    public BindingVisual GetBindingVisual(string actionName, BindingKind kind, InputDeviceType device, string partName = null)
+    {
+        var visual = new BindingVisual { IconColor = Color.white };
+
+        string path;
+        if (!string.IsNullOrEmpty(partName))
+        {
+            //拆行后的行：只描述这一段自己，不再把兄弟段拼进来
+            path = GetBindingPath(actionName, kind, partName);
+            visual.Text = DescribePath(path, device);
+        }
+        else
+        {
+            visual.Text = GetBindingDisplay(actionName, kind, device);
+            //复合绑定没有"一条控制路径"（复合头的 path 是类型名），这时不给图标 ——
+            //一格上并排放着 A 与 D，配哪一张图都是错的
+            path = GetBindingPath(actionName, kind, null);
+        }
+
+        KeyIconMap map = KeyIconMap.Active;
+        if (map != null && !string.IsNullOrEmpty(path))
+        {
+            string key = ControlKey(path);
+            InputDeviceType family = IconFamily(path, device);
+            visual.Icon = map.GetIcon(key, family);
+            visual.IconColor = map.GetIconColor(key, family);
+        }
+
+        return visual;
+    }
+
+    /// <summary>
+    /// 取一条绑定的控制路径（effectivePath = 玩家的覆盖 ?? 资产里的默认）。
+    ///
+    /// partName 非空 → 取复合绑定里名为 partName 的那一段（negative / positive / up…）；
+    /// partName 为空 → 取该组的主绑定，但【复合绑定返回 null】。
+    ///
+    /// ⚠ 复合头返回 null 而不是它的 path：复合头的 path 是复合类型名（"1DAxis"），
+    /// 不是控制路径。把它当路径会解析出一个根本不存在的"控制"，图标与日志都会错。
+    /// </summary>
+    public string GetBindingPath(string actionName, BindingKind kind, string partName = null)
+    {
+        InputAction action = FindAction(actionName);
+        if (action == null) return null;
+
+        int root = FindBindingIndex(action, kind);
+        if (root < 0) return null;
+
+        if (!string.IsNullOrEmpty(partName))
+        {
+            int part = FindPartIndex(action, root, partName);
+            if (part < 0)
+            {
+                ChaosLog.Warn(LogChannel.Input,
+                    actionName + "(" + kind + ") 里没有名为 '" + partName + "' 的复合分段");
+                return "";
+            }
+            return action.bindings[part].effectivePath;
+        }
+
+        return action.bindings[root].isComposite ? null : action.bindings[root].effectivePath;
+    }
+
+    /// <summary>
+    /// 复合绑定里某个分段（negative / positive / up…）的绑定序号；不是复合或找不到该段时返回 -1。
+    /// 名字比对不区分大小写：.inputactions 里写的是小写（negative），代码里可能写成 Negative。
+    /// </summary>
+    private static int FindPartIndex(InputAction action, int rootIndex, string partName)
+    {
+        if (action == null || string.IsNullOrEmpty(partName)) return -1;
+        if (rootIndex < 0 || rootIndex >= action.bindings.Count) return -1;
+        if (!action.bindings[rootIndex].isComposite) return -1;
+
+        for (int i = rootIndex + 1; i < action.bindings.Count && action.bindings[i].isPartOfComposite; i++)
+        {
+            if (string.Equals(action.bindings[i].name, partName, StringComparison.OrdinalIgnoreCase)) return i;
+        }
+        return -1;
+    }
+
+    /// <summary>
+    /// 一条控制路径的【归一化查表键】：图标映射表就是按它查的。
+    ///
+    /// 规则刻意与 DescribePath 自己的分派保持一致：
+    ///   手柄 → 设备之后的那一整段（buttonSouth、leftStick/x、dpad/up）——
+    ///          摇杆与方向键是两段式，只取末段会把 leftStick/x 与 rightStick/x 撞成同一个键；
+    ///   其余 → 末段（space、leftbutton、escape…）。
+    ///
+    /// 归一化只在这里定义一次：显示与图标若各写一套，迟早会出现"文字对了图标却查不到"。
+    /// </summary>
+    public static string ControlKey(string path)
+    {
+        if (string.IsNullOrEmpty(path)) return "";
+        if (path.StartsWith("<Gamepad>", StringComparison.OrdinalIgnoreCase))
+        {
+            return RelativePath(path).ToLowerInvariant();
+        }
+        return LastSegment(path).ToLowerInvariant();
+    }
+
+    /// <summary>
+    /// 一条控制路径属于哪个图标显示主题：键鼠路径固定是 Keyboard（鼠标键名不分手柄型号），
+    /// 手柄路径跟着当前型号走（同一个 buttonSouth，PS 显示 ✕、Xbox 显示 A）。
+    /// </summary>
+    public static InputDeviceType IconFamily(string path, InputDeviceType device)
+    {
+        if (string.IsNullOrEmpty(path)) return device;
+        if (path.StartsWith("<Gamepad>", StringComparison.OrdinalIgnoreCase)) return device;
+        return InputDeviceType.Keyboard;
     }
 
     /// <summary>把一条控制路径翻成给玩家看的名字。手柄那部分按设备主题换列（PS 的 ✕○□△ 或 Xbox 的 A/B/X/Y）。</summary>
@@ -436,6 +604,21 @@ public class InputManager : SingletonBase<InputManager>
     /// </summary>
     public List<RebindStep> GetRebindSteps(string actionName, BindingKind kind)
     {
+        return GetRebindSteps(actionName, kind, null);
+    }
+
+    /// <summary>
+    /// 列出某个动作在当前设备下要依次采集的段。partName 非空时【只返回那一段】。
+    ///
+    /// 拆行之后必须走这一条：界面上"左移"和"右移"已经是两行了，各自只该问一次。
+    /// 仍按老逻辑把左右都问一遍的话，玩家在"右移"那一行上会被问到"左移"，
+    /// 而那一格的显示早就在另一行上了 —— 改完还看不出自己改的是哪一个。
+    ///
+    /// 只采集一段时 Label 传 null（不需要提示词）：方向由【行标题】表达，
+    /// 那时再在格子里写"左移：请按键…"是把同一件事说两遍。
+    /// </summary>
+    public List<RebindStep> GetRebindSteps(string actionName, BindingKind kind, string partName)
+    {
         List<RebindStep> steps = new List<RebindStep>();
 
         InputAction action = FindAction(actionName);
@@ -445,6 +628,20 @@ public class InputManager : SingletonBase<InputManager>
         if (index < 0)
         {
             ChaosLog.Warn(LogChannel.Input, actionName + " 在 " + kind + " 组下没有可重绑定的主绑定");
+            return steps;
+        }
+
+        if (!string.IsNullOrEmpty(partName))
+        {
+            int part = FindPartIndex(action, index, partName);
+            if (part < 0)
+            {
+                ChaosLog.Warn(LogChannel.Input,
+                    actionName + "(" + kind + ") 里没有名为 '" + partName + "' 的复合分段，改键被跳过");
+                return steps;
+            }
+
+            steps.Add(new RebindStep { Label = null, BindingIndex = part });
             return steps;
         }
 
@@ -686,10 +883,22 @@ public class InputManager : SingletonBase<InputManager>
     /// 也正因为空字符串不是 null，InputBinding.hasOverrides 为真，它能被写进 settings.json
     /// （FromBinding 存的是 `overridePath ?? "null"`，回读时 `!= "null"` 就还原成空覆盖），
     /// 重启之后仍然是未绑定 —— 用 null 就丢了，会悄悄弹回默认键。
+    ///
+    /// ══════════════ 作用域：单段还是整条复合 ══════════════
+    /// 传进来的是【复合绑定里的一段】时，只置空这一段。拆行之后"左移""右移"是两行两格，
+    /// 在"左移"格里按取消键却把"右移"也一起抹掉，那是丢玩家的配置，不是"取消"的意思。
+    /// 只有传进来的是复合头时才按"整条置空"处理 —— 那条路径留给还没拆行的复合绑定。
     /// </summary>
     private static void ApplyEmptyOverride(InputAction action, int bindingIndex)
     {
         if (action == null) return;
+
+        //拆行之后的常规路径：传进来的就是某一段（negative / positive）。只清它自己
+        if (action.bindings[bindingIndex].isPartOfComposite)
+        {
+            action.ApplyBindingOverride(bindingIndex, string.Empty);
+            return;
+        }
 
         int root = BindingRootIndex(action, bindingIndex);
 

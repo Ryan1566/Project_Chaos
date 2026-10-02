@@ -38,8 +38,23 @@ public static class SettingIds
     public const string AttackTrigger = "keybind.attackTrigger";
 
     // ══════════════════ 按键绑定二级界面 ══════════════════
-    /// <summary>键鼠方案的三个操作行。每行【两个格子】：左格键盘、右格鼠标，两格可以同时生效。</summary>
-    public const string Move = "keybind.move";
+    /// <summary>
+    /// 键鼠方案的四个操作行。每行【两个格子】：左格键盘、右格鼠标，两格可以同时生效。
+    ///
+    /// ══════════════ 为什么"移动"占两行 ══════════════
+    /// 移动在输入资产里是一条 1DAxis 复合绑定（negative = 左、positive = 右），
+    /// 两个方向的键本来就躺在同一条绑定里。挤在一行显示时界面会把两段拼成 "A / D"，
+    /// 玩家只看到一个格子，改键也得"一次改两个方向"（重绑定会把两段依次问一遍）。
+    /// 拆成左移 / 右移两行之后，每个方向各有自己的一格，能单独改、单独重置、单独置空。
+    ///
+    /// 这是一条【通用规则】而不是移动的特例：凡是一条复合绑定里含多个方向/分段的行，
+    /// 都按段拆成多行显示。做法见 skill: unity-split-composite-keybindings。
+    ///
+    /// 手柄的移动不拆：它是 &lt;Gamepad&gt;/leftStick/x 单轴绑定，没有 negative/positive 段，
+    /// 拆开也没有格可填。
+    /// </summary>
+    public const string MoveLeft = "keybind.moveLeft";
+    public const string MoveRight = "keybind.moveRight";
     public const string Attack = "keybind.attack";
     public const string Jump = "keybind.jump";
 

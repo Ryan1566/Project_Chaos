@@ -45,6 +45,18 @@ public static class GlobalPath
     /// </summary>
     [Header("输入资源路径")]
     public const string res_InputActionsPath = "Input/ChaosInputActions";
+
+    /// <summary>
+    /// 按键图标映射表资源路径。
+    /// 和输入动作表一样【没有结尾斜杠】：它是要被 Resources.Load 直接当完整路径用的，
+    /// 拼成 "Data/Input/KeyIconMap" 才能加载到 Assets/Resources/Data/Input/KeyIconMap.asset。
+    ///
+    /// 【注意】必须放在 Resources 下：LanguageFontMap 就是因为在 Assets/Data 下，
+    /// 运行时根本查不到、只能靠组件在 Inspector 上持有引用。而图标映射表的使用方是
+    /// InputManager（它没有组件可以挂引用），所以只有"放进 Resources"这一条路可走。
+    /// </summary>
+    [Header("输入资源路径")]
+    public const string res_KeyIconMapPath = "Data/Input/KeyIconMap";
     #endregion
 
     #region UI 预制体搜索路径
@@ -77,9 +89,23 @@ public static class GlobalPath
     /// </summary>
     public static readonly string[] ui_LocalizationConfigPaths =
     {
-        "Assets/Data/Localization/MainMenuLocalizationConfig.asset",
-        "Assets/Data/Localization/SettingLocalizationConfig.asset",
+        "Assets/Data/Localization/Sub_LD/MainMenuLocalizationConfig.asset",
+        "Assets/Data/Localization/Sub_LD/SettingLocalizationConfig.asset",
     };
+
+    /// <summary>
+    /// 收集器【默认写入目标】的那张配置资产。
+    ///
+    /// ══════════════ 为什么不复用上面数组的第一项 ══════════════
+    /// ui_LocalizationConfigPaths 回答的是"有哪几张子配置"，它的第一项是主菜单那张。
+    /// 而收集器扫的面板绝大多数属于设置面板，默认指向主菜单配置会把设置页的 Key
+    /// 写进别人的表里 —— 与"给个能用的默认值"的初衷正好相反。所以默认值单独给一个常量。
+    ///
+    /// 改这里 = 改"跑收集器时默认写哪张表"。子配置写完还要跑
+    /// Tools/本地化/合并子配置，把它并进运行期真正读的那一张（ChaosLocalizationConfig）。
+    /// </summary>
+    public const string ui_DefaultLocalizationConfigPath =
+        "Assets/Data/Localization/Sub_LD/SettingLocalizationConfig.asset";
 
     #region 表配置路径
     /// <summary>

@@ -127,7 +127,23 @@ namespace LocalizationSystem.Editor
             // ══════════════ 记的那条失效了就退回默认目标 ══════════════
             // 配置资产被改名/拆分之后，EditorPrefs 里存的是一条已经不存在的路径 ——
             // 这时窗口会以"空目标"打开，而用户看到的只是"按钮都是灰的"，完全想不到是路径过期。
-            // 所以这里主动兜一层，默认取 GlobalPath.ui_LocalizationConfigPaths 的第一项。
+            //
+            // ⚠ 默认目标单独用一个常量，不能用下面数组的第一项：
+            // 那张清单回答的是"有哪几张子配置"，第一项是【主菜单】那张；
+            // 而收集器扫的面板绝大多数属于设置面板 —— 默认指向主菜单配置会把设置页的 Key
+            // 写进别人的表里，且写的时候不报错。
+            if (_targetConfig == null)
+            {
+                _targetConfig = AssetDatabase.LoadAssetAtPath<LocalizationData>(
+                    GlobalPath.ui_DefaultLocalizationConfigPath);
+                if (_targetConfig != null)
+                {
+                    EditorPrefs.SetString(TargetConfigKey, GlobalPath.ui_DefaultLocalizationConfigPath);
+                }
+            }
+
+            // 默认目标自己也不在（目录被搬过 / 名字改了）：再退回清单里第一张真能加载的，
+            // 至少不让窗口开着却是空目标
             if (_targetConfig == null)
             {
                 string[] defaults = GlobalPath.ui_LocalizationConfigPaths;
@@ -258,7 +274,9 @@ namespace LocalizationSystem.Editor
             {
                 //提示里给出"该填什么"，而不是只抱怨"没填"。默认目标来自 GlobalPath，
                 //所以这里列出的是真正会被自动选中的那几个
-                string hint = "请指定一个 LocalizationData 资产。默认目标（GlobalPath.ui_LocalizationConfigPaths）：";
+                string hint = "请指定一个 LocalizationData 资产。\n默认目标（GlobalPath.ui_DefaultLocalizationConfigPath）：\n· "
+                    + GlobalPath.ui_DefaultLocalizationConfigPath
+                    + "\n兜底清单（GlobalPath.ui_LocalizationConfigPaths）：";
                 string[] defaults = GlobalPath.ui_LocalizationConfigPaths;
                 if (defaults != null && defaults.Length > 0) hint += "\n· " + string.Join("\n· ", defaults);
                 else hint += "\n（GlobalPath 里没有配置默认路径，请手动指定）";

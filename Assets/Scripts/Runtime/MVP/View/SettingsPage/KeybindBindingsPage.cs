@@ -15,9 +15,25 @@ using UnityEngine.UI;
 ///
 /// ══════════ 键鼠方案的行有两个格子 ══════════
 /// 键鼠方案的每个操作要能【同时】绑键盘和鼠标（点鼠标左键和按 J 都能攻击），
-/// 所以键鼠三行都是双格（KeyButton 键盘格 + MouseButton 鼠标格），手柄三行是单格。
+/// 所以键鼠行都是双格（KeyButton 键盘格 + MouseButton 鼠标格），手柄三行是单格。
 /// 两套行是两个独立的节点集合，按页签 SetActive 切换，而不是一套行里藏半个格子 ——
 /// 这样每套行都能按自己的列宽摆整齐，行控件也保持"只管自己那几个子节点"的单一职责。
+///
+/// ══════════ 一条复合绑定拆成多行 ══════════
+/// 键鼠的"移动"在资产里是一条 1DAxis 复合绑定（negative = 左、positive = 右）。
+/// 挤在一行显示时界面会把两段拼成 "A / D"：玩家只看到一个格子，改键还得"一次改两个方向"。
+/// 所以它被拆成【左移】【右移】两行，每行只认自己那一段（partName），
+/// 改键也只采集那一段。判断依据与做法是通用的：凡是"一条复合绑定含多个方向"的行都这么拆 ——
+/// 见 skill: unity-split-composite-keybindings。
+///
+/// 手柄的移动不拆：它是 &lt;Gamepad&gt;/leftStick/x 单轴绑定，没有段可拆。
+///
+/// ══════════ 键名换成了图标 ══════════
+/// 键名原本一律是文字，长度随语言剧烈变化（"空格" ↔ "Mouse Left Button" ↔ 韩文长句），
+/// 而键格与页签的宽度是摆 prefab 时定死的 —— 切语言就溢出、压到隔壁格子上。
+/// 现在每格交给 KeyIconText：有图标显示图标，没有就回退显示文字。
+/// 图标从哪来（KeyIconMap）与"这个控制叫什么"（InputManager.ControlKey）都在输入域算好，
+/// 本页只负责把 (文字, 图标, 颜色) 三个值转交给行。
 ///
 /// ══════════ 数据与运行时短暂不一致（与一级页同理）══════════
 /// 重绑定必须【立刻写进 InputActionAsset】—— 按键格上显示的就是资产里当前的键，
@@ -33,7 +49,14 @@ public class KeybindBindingsPage : SettingsPageBase
     /// <summary>本页节点名。必须与 SettingPanelBuilder 生成的节点名一致。</summary>
     public const string PageNodeName = "Page_Keybind_Bindings";
 
-    /// <summary>键鼠方案的三行（双格）。</summary>
+    /// <summary>
+    /// 复合绑定的分段名。必须与 .inputactions 里各 part 的 name 逐字一致 ——
+    /// InputManager 是按名字找段的，它不知道也不该知道"移动"有哪两段。
+    /// </summary>
+    private const string PartNegative = "negative";
+    private const string PartPositive = "positive";
+
+    /// <summary>键鼠方案的行（双格）：左移 / 右移 / 攻击 / 跳跃。</summary>
     private readonly List<SettingRow_Keybind> _kmRows = new List<SettingRow_Keybind>();
 
     /// <summary>手柄方案的三行（单格）。</summary>
@@ -45,6 +68,10 @@ public class KeybindBindingsPage : SettingsPageBase
     private Button _tabModelPs;
     private Button _tabModelXbox;
     private GameObject _modelGroup;
+
+    /// <summary>两个页签 Label 上的图标格。页签没铺过图标时为 null，那时页签就是纯文字。</summary>
+    private KeyIconText _tabKeyboardIcon;
+    private KeyIconText _tabGamepadIcon;
 
     private GameObject _tabKeyboardSelected;
     private GameObject _tabGamepadSelected;
@@ -74,12 +101,18 @@ public class KeybindBindingsPage : SettingsPageBase
 
         BindHeader();
 
-        //键鼠三行：两个格子
-        BindKeyRow(SettingIds.Move, InputManager.ActionMove, InputManager.BindingKind.Keyboard, true);
+        //键鼠四行：每行两个格子。
+        //"移动"是一条 1DAxis 复合绑定（negative = 左、positive = 右），拆成两行 ——
+        //不拆的话界面把两段拼成 "A / D"，玩家只看到一个格子、改键要一次改两个方向。
+        //鼠标格也照样按段传 partName：资产里 Mouse 组被摆成与 Keyboard 组同构，
+        //所以"左移"的鼠标格就是 Mouse 组的 negative，能单独改绑。
+        BindKeyRow(SettingIds.MoveLeft, InputManager.ActionMove, InputManager.BindingKind.Keyboard, true, PartNegative);
+        BindKeyRow(SettingIds.MoveRight, InputManager.ActionMove, InputManager.BindingKind.Keyboard, true, PartPositive);
         BindKeyRow(SettingIds.Attack, InputManager.ActionAttack, InputManager.BindingKind.Keyboard, true);
         BindKeyRow(SettingIds.Jump, InputManager.ActionJump, InputManager.BindingKind.Keyboard, true);
 
-        //手柄三行：一个格子
+        //手柄三行：一个格子。
+        //手柄的移动不拆：它是 <Gamepad>/leftStick/x 单轴绑定，没有 negative/positive 段
         BindKeyRow(SettingIds.MoveGamepad, InputManager.ActionMove, InputManager.BindingKind.Gamepad, false);
         BindKeyRow(SettingIds.AttackGamepad, InputManager.ActionAttack, InputManager.BindingKind.Gamepad, false);
         BindKeyRow(SettingIds.JumpGamepad, InputManager.ActionJump, InputManager.BindingKind.Gamepad, false);
@@ -112,6 +145,10 @@ public class KeybindBindingsPage : SettingsPageBase
         _tabGamepad = FindButton(header, "Tab_Gamepad");
         _tabModelPs = modelGroup != null ? FindButton(modelGroup, "ModelTab_PS") : null;
         _tabModelXbox = modelGroup != null ? FindButton(modelGroup, "ModelTab_Xbox") : null;
+
+        //页签 Label 上的图标格。没铺过图标时为 null，那时页签保持纯文字（行为与改造前一致）
+        _tabKeyboardIcon = FindIconText(_tabKeyboard);
+        _tabGamepadIcon = FindIconText(_tabGamepad);
 
         _tabKeyboardSelected = FindMarker(_tabKeyboard, "Selected");
         _tabGamepadSelected = FindMarker(_tabGamepad, "Selected");
@@ -173,10 +210,15 @@ public class KeybindBindingsPage : SettingsPageBase
     /// 一行按键控件。行只抛意图（"想重绑这一格"×2、"想恢复这一行"），
     /// 重绑定与恢复默认都在本页处理 —— 行不必知道 Action 名与绑定序号这些输入域概念。
     ///
-    /// withMouseSlot：这一行有没有鼠标格。键鼠三行有，手柄三行没有，
+    /// withMouseSlot：这一行有没有鼠标格。键鼠行有，手柄三行没有，
     /// 后者上的 OnSecondRebindRequested 永远不会被触发（那个按钮不存在）。
+    ///
+    /// partName：这条行只认复合绑定里的哪一段（null = 整条绑定，不拆）。
+    /// 两个格子共用同一个 partName —— 资产里 Mouse 组被摆成与 Keyboard 组同构，
+    /// 所以"左移的键盘格"和"左移的鼠标格"都是各自组里的 negative。
     /// </summary>
-    private void BindKeyRow(string id, string actionName, InputManager.BindingKind kind, bool withMouseSlot)
+    private void BindKeyRow(string id, string actionName, InputManager.BindingKind kind, bool withMouseSlot,
+        string partName = null)
     {
         SettingRow_Keybind row = FindRow<SettingRow_Keybind>(id);
         if (row == null) return;
@@ -188,41 +230,46 @@ public class KeybindBindingsPage : SettingsPageBase
                 "鼠标格不会显示也无法重绑");
         }
 
-        row.OnRebindRequested = () => StartRebind(actionName, kind, row, false);
+        row.OnRebindRequested = () => StartRebind(actionName, kind, row, false, partName);
         if (withMouseSlot)
         {
             //键鼠行的第二格固定是鼠标组：第一格是 Keyboard，第二格就是 Mouse
             row.OnSecondRebindRequested =
-                () => StartRebind(actionName, InputManager.BindingKind.Mouse, row, true);
+                () => StartRebind(actionName, InputManager.BindingKind.Mouse, row, true, partName);
         }
-        row.OnResetRequested = () => ResetRow(actionName, kind, withMouseSlot);
+        row.OnResetRequested = () => ResetRow(actionName, kind, withMouseSlot, partName);
 
         if (withMouseSlot) _kmRows.Add(row);
         else _padRows.Add(row);
 
-        AddRefresher(data => RefreshRowText(row, actionName, kind, withMouseSlot, data));
+        AddRefresher(data => RefreshRowText(row, actionName, kind, withMouseSlot, data, partName));
     }
 
     /// <summary>
-    /// 回填一行显示的两个键名。
+    /// 回填一行显示的两个键名（或图标）。
     ///
     /// 键名不是 Pending 里某个字段的直接映射（它取决于当前设备、还取决于资产里的覆盖），
-    /// 所以走 GetBindingDisplay 而不是 Bind* 那套 —— 那套只会在字段与控件之间搬运。
+    /// 所以走 GetBindingVisual 而不是 Bind* 那套 —— 那套只会在字段与控件之间搬运。
+    ///
+    /// 文字与图标一次拿回来（BindingVisual）：两者都源于同一条控制路径，
+    /// 分开取等于把路径解析两遍，迟早会出现"文字对了图标却查不到"。
     /// </summary>
     private static void RefreshRowText(SettingRow_Keybind row, string actionName,
-        InputManager.BindingKind kind, bool withMouseSlot, SettingsData data)
+        InputManager.BindingKind kind, bool withMouseSlot, SettingsData data, string partName)
     {
         InputDeviceType device = (InputDeviceType)data.inputDevice;
 
         //手柄行的显示主题跟着当前手柄型号走（PS 显示 ✕○□△，Xbox 显示 A/B/X/Y）；
         //键盘格与鼠标格固定用键盘主题 —— 鼠标键名（左键/右键）本来就不分型号
-        row.SetKeyText(InputManager.Instance.GetBindingDisplay(actionName, kind,
-            kind == InputManager.BindingKind.Gamepad ? device : InputDeviceType.Keyboard));
+        InputManager.BindingVisual key = InputManager.Instance.GetBindingVisual(actionName, kind,
+            kind == InputManager.BindingKind.Gamepad ? device : InputDeviceType.Keyboard, partName);
+        row.SetKeyDisplay(key.Text, key.Icon, key.IconColor);
 
         if (withMouseSlot)
         {
-            row.SetSecondText(InputManager.Instance.GetBindingDisplay(
-                actionName, InputManager.BindingKind.Mouse, InputDeviceType.Keyboard));
+            InputManager.BindingVisual second = InputManager.Instance.GetBindingVisual(
+                actionName, InputManager.BindingKind.Mouse, InputDeviceType.Keyboard, partName);
+            row.SetSecondDisplay(second.Text, second.Icon, second.IconColor);
         }
     }
 
@@ -249,6 +296,40 @@ public class KeybindBindingsPage : SettingsPageBase
         //两套行按页签切换。只留一套在场，VerticalLayoutGroup 会自动重排，不会留下空洞
         for (int i = 0; i < _kmRows.Count; i++) _kmRows[i].gameObject.SetActive(!gamepad);
         for (int i = 0; i < _padRows.Count; i++) _padRows[i].gameObject.SetActive(gamepad);
+
+        //页签文案换成图标。放在最后：它只依赖上面算出的 model，与行的显隐无关
+        ApplyTabIcons(model);
+    }
+
+    /// <summary>
+    /// 两个页签显示图标而不是文字。
+    ///
+    /// ══════════════ 为什么页签最需要它 ══════════════
+    /// 页签是溢出最严重的一处：英文 "Keyboard &amp; Mouse" 有 16 个字符，
+    /// 而 Tab_Keyboard/Label 这个节点被摆成 76×50、TMP 38pt 且不换行 ——
+    /// 直接压到旁边的 Tab_Gamepad 上，且越长的语言越糟（日/韩更宽）。
+    /// 图标宽度恒定，语言再换也不会动。
+    ///
+    /// ══════════════ 文字没有丢 ══════════════
+    /// Label 上的 LocalizedText 保持原样（译文照样往里写），只是 TMP 被关掉。
+    /// 于是图标缺失时会自动回退成译文，不需要在页面里再抄一份文案。
+    /// </summary>
+    private void ApplyTabIcons(int gamepadModel)
+    {
+        KeyIconMap map = KeyIconMap.Active;
+        if (map == null) return;
+
+        if (_tabKeyboardIcon != null)
+        {
+            _tabKeyboardIcon.SetIconOnly(map.keyboardTabIcon, map.tint);
+        }
+
+        if (_tabGamepadIcon != null)
+        {
+            //手柄图标跟着型号走：PS 与 Xbox 的手柄外形不同，玩家一眼能看出当前在配哪一台。
+            //键鼠页签下 model 取的是存档里记着的那个，所以切来切去时图标不会跳
+            _tabGamepadIcon.SetIconOnly(map.GetTabIcon(InputScheme.ModelToDevice(gamepadModel)), map.tint);
+        }
     }
 
     private static void SetMarker(GameObject marker, bool on)
@@ -260,9 +341,10 @@ public class KeybindBindingsPage : SettingsPageBase
 
     /// <summary>
     /// 开始一次改键。secondSlot = 改的是这一行的鼠标格（键鼠行才有）。
+    /// partName = 这一行只改复合绑定的哪一段（null = 整条），拆行之后由它决定"只问一个方向"。
     /// </summary>
     private void StartRebind(string actionName, InputManager.BindingKind kind,
-        SettingRow_Keybind row, bool secondSlot)
+        SettingRow_Keybind row, bool secondSlot, string partName)
     {
         if (_rebindRoutine != null || InputManager.Instance.IsRebinding)
         {
@@ -272,21 +354,27 @@ public class KeybindBindingsPage : SettingsPageBase
             return;
         }
 
-        _rebindRoutine = StartCoroutine(RebindRoutine(actionName, kind, row, secondSlot));
+        _rebindRoutine = StartCoroutine(RebindRoutine(actionName, kind, row, secondSlot, partName));
     }
 
     /// <summary>
     /// 依次采集这个动作需要采集的每一段，任一段取消/超时则整条放弃。
     ///
-    /// 为什么要分多段：移动是一条 1DAxis 复合绑定（A=负方向、D=正方向），
-    /// 一次按键只能得到一个方向，所以"改移动键"实际是依次采集两次：
-    /// 先问左移、再问右移。只改半个方向会留下"左移是 A、右移还是个奇怪键"的残局，比不改更糟。
+    /// ══════════ 为什么可能分成多段 ══════════
+    /// 移动是一条 1DAxis 复合绑定（A=负方向、D=正方向）：一次按键只能得到一个方向，
+    /// 所以"改移动键"曾经必须依次采集两次（先问左移、再问右移），
+    /// 只改半个方向会留下"左移是 A、右移还是个奇怪键"的残局。
+    ///
+    /// ══════════ 拆行之后它其实只有一段 ══════════
+    /// 现在界面把每个方向摆成了独立一行，partName 把采集范围钉死在一段上，
+    /// 所以这个循环退化成"跑一次"。保留循环是因为它本来就是通用写法：
+    /// 哪天出现一条【不拆】的复合绑定（比如手柄的某条 2DVector），它照样能把这些段依次问完。
     /// 各段的提示词由 InputManager.GetRebindSteps 给出。
     /// </summary>
     private IEnumerator RebindRoutine(string actionName, InputManager.BindingKind kind,
-        SettingRow_Keybind row, bool secondSlot)
+        SettingRow_Keybind row, bool secondSlot, string partName)
     {
-        List<InputManager.RebindStep> steps = InputManager.Instance.GetRebindSteps(actionName, kind);
+        List<InputManager.RebindStep> steps = InputManager.Instance.GetRebindSteps(actionName, kind, partName);
         if (steps.Count == 0)
         {
             ChaosLog.Warn(LogChannel.Input,
@@ -432,14 +520,17 @@ public class KeybindBindingsPage : SettingsPageBase
     /// 恢复单个操作在当前页签这一套下的默认。
     /// 键鼠行要把两个格子都复位 —— 只复位键盘格会留下"鼠标格还是玩家改过的键"，
     /// 而玩家按的按钮上写的是"恢复这一行"。
+    ///
+    /// partName 非空时【只复位那一段】：拆行之后"左移"与"右移"是两行两格，
+    /// 点"左移"的重置却把右移也一起复位，那是顺手毁掉另一格 —— 与按钮上写的意思不符。
     /// </summary>
-    private void ResetRow(string actionName, InputManager.BindingKind kind, bool withMouseSlot)
+    private void ResetRow(string actionName, InputManager.BindingKind kind, bool withMouseSlot, string partName)
     {
-        bool any = InputManager.Instance.ResetBinding(actionName, kind);
+        bool any = InputManager.Instance.ResetBinding(actionName, kind, partName);
         if (withMouseSlot)
         {
             // |= 而不是 ||=：第二个调用必须照常执行（bool 的 |= 不短路，正好）
-            any |= InputManager.Instance.ResetBinding(actionName, InputManager.BindingKind.Mouse);
+            any |= InputManager.Instance.ResetBinding(actionName, InputManager.BindingKind.Mouse, partName);
         }
 
         if (!any) return;
@@ -509,5 +600,17 @@ public class KeybindBindingsPage : SettingsPageBase
 
         Transform marker = button.transform.Find(name);
         return marker != null ? marker.gameObject : null;
+    }
+
+    /// <summary>
+    /// 取页签 Label 上的图标格。页签的文字由它自己的 LocalizedText 管，
+    /// 所以这里只拿"切图标 / 切文字"的开关（见 KeyIconText.SetIconOnly），不参与写文案。
+    /// </summary>
+    private static KeyIconText FindIconText(Button button)
+    {
+        if (button == null) return null;
+
+        Transform label = button.transform.Find("Label");
+        return label != null ? label.GetComponent<KeyIconText>() : null;
     }
 }

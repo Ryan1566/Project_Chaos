@@ -18,7 +18,7 @@
                     "name": "Attack",
                     "type": "Button",
                     "id": "a0000000-0000-4000-8000-000000000102",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -63,39 +63,6 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "1DAxis",
-                    "id": "a0000000-0000-4000-8000-000000000204",
-                    "path": "1DAxis",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KeyboardFixed",
-                    "action": "Move",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "negative",
-                    "id": "a0000000-0000-4000-8000-000000000205",
-                    "path": "<Keyboard>/leftArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KeyboardFixed",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "positive",
-                    "id": "a0000000-0000-4000-8000-000000000206",
-                    "path": "<Keyboard>/rightArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KeyboardFixed",
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -173,28 +140,6 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Jump",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "a0000000-0000-4000-8000-00000000020e",
-                    "path": "",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Mouse",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "a0000000-0000-4000-8000-00000000020f",
-                    "path": "",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Mouse",
                     "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false

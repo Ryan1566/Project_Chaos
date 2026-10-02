@@ -88,9 +88,7 @@ public abstract class SettingRowBase : MonoBehaviour
         for (int i = 0; i < _texts.Length; i++)
         {
             if (_texts[i] == null) continue;
-            _texts[i].color = interactable
-                ? _baseColors[i]
-                : Color.Lerp(_baseColors[i], DisabledTint, DisabledBlend);
+            _texts[i].color = interactable ? _baseColors[i] : DisabledColor(_baseColors[i]);
         }
 
         SetClickable(interactable);
@@ -101,6 +99,18 @@ public abstract class SettingRowBase : MonoBehaviour
 
     /// <summary>混合比例。取 0.75 是为了让深色文字(0.1)与浅色行底(0.93)之间的对比明显掉下来。</summary>
     private const float DisabledBlend = 0.75f;
+
+    /// <summary>
+    /// 某个原始颜色在"不可用"状态下该变成什么。
+    ///
+    /// 公开出来是因为行里现在不只有文字：带图标的格子（KeyIconText）也要置灰，
+    /// 而它必须和文字【用同一个换算】—— 各写一份的话，图标与文字会灰成两个不同的程度，
+    /// 一眼就能看出"这两块不是一起被禁用的"。
+    /// </summary>
+    public static Color DisabledColor(Color baseColor)
+    {
+        return Color.Lerp(baseColor, DisabledTint, DisabledBlend);
+    }
 
     private TextMeshProUGUI[] _texts;
     private Color[] _baseColors;

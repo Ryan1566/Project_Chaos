@@ -406,13 +406,6 @@ MonoBehaviour:
     english: 0
     japanese: 0
     korean: 0
-  - key: ui_setting_move
-    description: "SettingPanel \u203A ContentArea/Page_Keybind_Bindings/Viewport/Content/Row_Move_KM/Label\u3000|\u3000\u6765\u6E90\uFF1ASettingLocalizationConfig"
-    chineseSimplified: "\u79FB\u52A8"
-    chineseTraditional: "\u79FB\u52D5"
-    english: Move
-    japanese: "\u79FB\u52D5"
-    korean: "\uC774\uB3D9"
   - key: ui_setting_contentarea_page_keybind_bindings_viewport_content_row_move_km_resetbutton_label
     description: "SettingPanel \u203A ContentArea/Page_Keybind_Bindings/Viewport/Content/Row_Move_KM/ResetButton/Label\u3000|\u3000\u6765\u6E90\uFF1ASettingLocalizationConfig"
     chineseSimplified: "\u91CD\u7F6E"
@@ -527,18 +520,18 @@ MonoBehaviour:
     korean: "\uAC8C\uC784\uD328\uB4DC"
   - key: ui_setting_contentarea_page_keybind_bindings_header_modelgroup_modeltab_ps_label
     description: "SettingPanel \u203A ContentArea/Page_Keybind_Bindings/Header/ModelGroup/ModelTab_PS/Label\u3000|\u3000\u6765\u6E90\uFF1ASettingLocalizationConfig"
-    chineseSimplified: "PS \u624B\u67C4"
-    chineseTraditional: "PS \u624B\u67C4"
-    english: PS Controller
-    japanese: "PS\u30B3\u30F3\u30C8\u30ED\u30FC\u30E9\u30FC"
-    korean: "PS \uCEE8\uD2B8\uB864\uB7EC"
+    chineseSimplified: PS
+    chineseTraditional: PS
+    english: PS
+    japanese: PS
+    korean: PS
   - key: ui_setting_contentarea_page_keybind_bindings_header_modelgroup_modeltab_xbox_label
     description: "SettingPanel \u203A ContentArea/Page_Keybind_Bindings/Header/ModelGroup/ModelTab_Xbox/Label\u3000|\u3000\u6765\u6E90\uFF1ASettingLocalizationConfig"
-    chineseSimplified: "Xbox \u624B\u67C4"
-    chineseTraditional: "Xbox \u624B\u67C4"
-    english: Xbox Controller
-    japanese: "Xbox\u30B3\u30F3\u30C8\u30ED\u30FC\u30E9\u30FC"
-    korean: "Xbox \uCEE8\uD2B8\uB864\uB7EC"
+    chineseSimplified: Xbox
+    chineseTraditional: Xbox
+    english: Xbox
+    japanese: Xbox
+    korean: Xbox
   - key: ui_setting_bottombar_applybtn_label
     description: "SettingPanel \u203A BottomBar/ApplyBtn/Label\u3000|\u3000\u6765\u6E90\uFF1ASettingLocalizationConfig"
     chineseSimplified: "\u5E94\u7528"
@@ -610,3 +603,17 @@ MonoBehaviour:
     english: "\uD55C\uAD6D\uC5B4"
     japanese: "\uD55C\uAD6D\uC5B4"
     korean: "\uD55C\uAD6D\uC5B4"
+  - key: ui_setting_moveleft
+    description: "SettingPanel \u203A ContentArea/Page_Keybind_Bindings/Viewport/Content/Row_MoveLeft_KM/Label\u3000|\u3000\u6765\u6E90\uFF1ASettingLocalizationConfig"
+    chineseSimplified: "\u5DE6\u79FB"
+    chineseTraditional: "\u5DE6\u79FB"
+    english: Move Left
+    japanese: "\u5DE6\u3078\u79FB\u52D5"
+    korean: "\uC67C\uCABD \uC774\uB3D9"
+  - key: ui_setting_moveright
+    description: "SettingPanel \u203A ContentArea/Page_Keybind_Bindings/Viewport/Content/Row_MoveRight_KM/Label\u3000|\u3000\u6765\u6E90\uFF1ASettingLocalizationConfig"
+    chineseSimplified: "\u53F3\u79FB"
+    chineseTraditional: "\u53F3\u79FB"
+    english: Move Right
+    japanese: "\u53F3\u3078\u79FB\u52D5"
+    korean: "\uC624\uB978\uCABD \uC774\uB3D9"
