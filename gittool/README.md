@@ -72,7 +72,9 @@ gittool\pull.bat
 
 1. 点 **检查更新** —— 会 `fetch` 并列出所有变更，按对 Unity 的影响分类着色
 2. 看完分类和影响说明后，点 **拉取更新** —— 弹窗二次确认，然后 fast-forward 拉取
-3. 忘记配 upstream 时，窗口里会出现 **设置** 按钮一键补上
+3. 忘记配 upstream 时，窗口里会出现 **设置** 按钮一键补上。
+   本地连该远端的任何分支记录都没有时，会出现 **检测远端** 按钮 —— 只有点它才会联网；
+   连不上时直接显示确切原因，而不是含混地说「没有可用的跟踪分支」
 4. 本地改动挡路时，用红色的 **※ 放弃本地更改并更新** 按钮 —— 会列出待丢弃的文件并要求二次确认
 
 `打开命令行` 按钮会在工程根目录开一个 `cmd` 窗口，拉取失败需要手动处理冲突时用得上。
@@ -254,6 +256,37 @@ git pull --rebase
 
 拿不准选哪个就先 `./gittool/pull.sh --discard --dry-run` 看一眼会丢什么。
 
+**「Permission denied (publickey)」/ 提示无法连接远端**
+
+这不是网络或代理问题，而是 **ssh 找不到可用的私钥**。
+
+git 只会在 `~/.ssh` 里找密钥（`id_rsa`、`id_ed25519`…），它不会去读别的 Git 工具自带的密钥库。
+所以「另一个 Git 工具（例如 UGit）能连上」并不代表 gittool 也能连上 —— 那类工具每次调用 git
+都自带 `-i <它自己的密钥>`，而 gittool 调的是裸 `git`。
+
+先确认现场：
+
+```bash
+ls -l ~/.ssh                  # 只有 known_hosts、没有任何私钥 => 就是这个原因
+ssh -T git@github.com         # 期望：Hi <用户名>! You've successfully authenticated...
+```
+
+修法（让普通 git 也用上那把可用的密钥；写在仓库配置里，只影响本仓库）：
+
+```bash
+git config core.sshCommand 'ssh -i "<私钥绝对路径>" -o IdentitiesOnly=yes'
+git ls-remote --symref origin HEAD    # 验证：应打印 HEAD 与远端默认分支
+```
+
+Windows 上 UGit 的可用密钥通常在这里，可以直接拿来用：
+
+```bash
+ls -l "$APPDATA/UGit/ssh/"    # 挑能在 ssh -T 里认证成功的那一把
+```
+
+想对所有仓库生效，就把同样的 `core.sshCommand` 写进 `~/.gitconfig`。
+`pull.sh` 与编辑器窗口现在都能识别这个报错，并直接把上面的修法显示出来。
+
 **「更新完第一次打开 Unity 特别慢」**
 说明这次含 `ProjectSettings` / `Packages` 级别的高影响变更，让 Unity 自己导入完就行。
 中途别关编辑器、别删 `Library` —— 删了只会让它从头再来一遍，更慢。
@@ -306,6 +339,11 @@ git commit -m "把包清单纳入版本控制"
    踩过一次：按钮文案里的 `⚠`（U+26A0）不在 GBK 里，转出来的文件从那里被切掉了。
    所以**转回去之后一定要检查文件结尾和 `file` 输出**，别直接信 `iconv` 没报错。
    GBK 可用的符号：`※ ▲ ！ ★ ● △ ◆`；不可用：`⚠`（以及绝大多数 emoji）。
+4. **转码只能解码一次。** 把已经转成 UTF-8 的文件再按 GBK 解码一遍，中文会变成
+   `鍛戒护鎵ц` 这样的乱码，而且替换字符 `?` 是不可逆的 —— 文件已经损坏，只能从 git 恢复。
+   正确流程是「GBK 字节 → 解码一次 → 编辑 → 编码回 GBK」，不要对同一个文件重复解码。
+   万一转坏了，先确认工作区没有未提交的改动（`git diff --stat <文件>`），
+   再用 `git checkout HEAD -- <文件>` 恢复重来。转回去之后按上一节检查文件结尾。
 
 ### 改 `pull.bat` 时务必注意
 

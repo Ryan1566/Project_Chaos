@@ -27,6 +27,10 @@ namespace GitTool.Editor
         private string branch = "";
         private string upstream = "";
         private string suggestedUpstream = "";
+        // 推断跟踪分支失败时的确切原因（区分「连不上远端」和「远端确实没这个分支」）
+        private string suggestedUpstreamError = "";
+        // 本地没有任何该远端的分支记录，需要用户点「检测远端」联网确认
+        private bool needsRemoteProbe;
         private string inProgress = "";
         private bool unityRunning;
         private List<string> dirtyFiles = new List<string>();
@@ -83,10 +87,16 @@ namespace GitTool.Editor
 
         // ------------------------------------------------------------------ 数据刷新
 
-        /// <summary>只读地收集仓库状态，不联网</summary>
+        /// <summary>
+        /// 只读地收集仓库状态 —— 这个方法完全不联网。
+        /// OnEnable 与「刷新状态」都会走这里，一旦联网，远端不通时窗口会卡住几十秒。
+        /// 需要联网的 upstream 推断放在 ProbeRemoteForUpstream，由用户显式触发。
+        /// </summary>
         private void RefreshRepoInfo()
         {
             repoRoot = GitHelper.RepoRoot;
+            suggestedUpstreamError = "";
+            needsRemoteProbe = false;
 
             if (!GitHelper.IsRepository())
             {
@@ -99,7 +109,11 @@ namespace GitTool.Editor
 
             branch = GitHelper.GetCurrentBranch();
             upstream = GitHelper.GetUpstream(branch);
-            suggestedUpstream = string.IsNullOrEmpty(upstream) ? GitHelper.SuggestUpstream(branch, remote) : "";
+            suggestedUpstream = string.IsNullOrEmpty(upstream)
+                ? GitHelper.SuggestUpstreamLocal(branch, remote)
+                : "";
+            // 连远端分支记录都没有时只能联网问，把这件事显式留给用户点按钮
+            needsRemoteProbe = string.IsNullOrEmpty(upstream) && string.IsNullOrEmpty(suggestedUpstream);
             inProgress = GitHelper.GetInProgressOperation();
             unityRunning = GitHelper.IsUnityRunning();
             dirtyFiles = GitHelper.GetDirtyFiles();
@@ -133,8 +147,15 @@ namespace GitTool.Editor
 
             if (!fetch.Success)
             {
-                SetStatus($"fetch 失败：{fetch.Message}", true);
+                SetStatus(GitHelper.DescribeRemoteFailure(fetch, $"fetch {remote} 失败"), true);
                 return;
+            }
+
+            // fetch 成功后本地就有了 origin/* 记录，这次推断不用再联网
+            if (string.IsNullOrEmpty(upstream) && string.IsNullOrEmpty(suggestedUpstream))
+            {
+                suggestedUpstream = GitHelper.SuggestUpstreamLocal(branch, remote);
+                if (!string.IsNullOrEmpty(suggestedUpstream)) needsRemoteProbe = false;
             }
 
             preview = GitHelper.BuildPreview();
@@ -142,9 +163,13 @@ namespace GitTool.Editor
 
             if (string.IsNullOrEmpty(preview.Upstream))
             {
-                SetStatus(string.IsNullOrEmpty(suggestedUpstream)
-                    ? $"分支 '{branch}' 没有可用的跟踪分支，无法比较差异"
-                    : $"分支 '{branch}' 没有设置跟踪分支，点上方按钮设置后即可检查更新", true);
+                // 有确切的失败原因时优先显示它，别让用户以为只是「没配 upstream」
+                if (!string.IsNullOrEmpty(suggestedUpstreamError))
+                    SetStatus(suggestedUpstreamError, true);
+                else if (!string.IsNullOrEmpty(suggestedUpstream))
+                    SetStatus($"分支 '{branch}' 没有设置跟踪分支，建议设为 {suggestedUpstream}，点上方按钮即可设置", true);
+                else
+                    SetStatus($"分支 '{branch}' 没有可用的跟踪分支，无法比较差异", true);
                 return;
             }
 
@@ -221,9 +246,10 @@ namespace GitTool.Editor
             }
             else
             {
-                SetStatus($"拉取失败：{result.Message}", true);
+                string why = GitHelper.DescribeRemoteFailure(result, "拉取失败");
+                SetStatus(why, true);
                 EditorUtility.DisplayDialog("拉取失败",
-                    result.Message + "\n\n常见原因：本地有提交或未提交改动与远端冲突。\n\n" +
+                    why + "\n\n常见原因：本地有提交或未提交改动与远端冲突。\n\n" +
                     "可在 Git Bash 中手动处理：\n" +
                     "  git pull --rebase\n" +
                     "  git stash && git pull\n\n" +
@@ -274,9 +300,13 @@ namespace GitTool.Editor
 
             if (!fetch.Success)
             {
-                SetStatus($"fetch 失败：{fetch.Message}", true);
+                SetStatus(GitHelper.DescribeRemoteFailure(fetch, $"fetch {remote} 失败"), true);
                 return;
             }
+
+            // fetch 成功后本地就有了 origin/* 记录，这次推断不用再联网
+            if (string.IsNullOrEmpty(upstream) && string.IsNullOrEmpty(suggestedUpstream))
+                suggestedUpstream = GitHelper.SuggestUpstreamLocal(branch, remote);
 
             preview = GitHelper.BuildPreview();
             previewReady = true;
@@ -284,7 +314,9 @@ namespace GitTool.Editor
             if (string.IsNullOrEmpty(preview.Upstream))
             {
                 EditorUtility.DisplayDialog("Git 拉取助手",
-                    $"分支 '{branch}' 没有可用的跟踪分支，无法比较差异。请先设置 upstream。", "确定");
+                    string.IsNullOrEmpty(suggestedUpstreamError)
+                        ? $"分支 '{branch}' 没有可用的跟踪分支，无法比较差异。请先设置 upstream。"
+                        : suggestedUpstreamError, "确定");
                 return;
             }
 
@@ -431,13 +463,33 @@ namespace GitTool.Editor
             }
             else
             {
-                SetStatus($"拉取失败：{result.Message}", true);
+                string why = GitHelper.DescribeRemoteFailure(result, "拉取失败");
+                SetStatus(why, true);
                 EditorUtility.DisplayDialog("拉取失败",
-                    result.Message + "\n\n本地未提交的改动已经在上一步丢弃，" +
+                    why + "\n\n本地未提交的改动已经在上一步丢弃，" +
                     "仍然失败通常是别的原因（例如未推送的提交）。\n\n" +
                     "可在 Git Bash 中查看：\n" +
                     $"  git log --oneline {preview?.Upstream}..HEAD", "知道了");
             }
+        }
+
+        /// <summary>
+        /// 本地没有任何该远端的分支记录时才会走到这里：联网问远端的默认分支。
+        /// 与 RefreshRepoInfo 分开是刻意的 —— 连接失败必须能作为错误显示出来，
+        /// 而不是被静默地当成「这个分支没有可用的跟踪分支」。
+        /// </summary>
+        private void ProbeRemoteForUpstream()
+        {
+            string error;
+            string suggestion = GitHelper.SuggestUpstream(branch, remote, out error);
+
+            suggestedUpstream = suggestion;
+            suggestedUpstreamError = error;
+            needsRemoteProbe = false;
+
+            SetStatus(string.IsNullOrEmpty(suggestion)
+                ? error
+                : $"建议把 '{branch}' 的跟踪分支设为 {suggestion}", string.IsNullOrEmpty(suggestion));
         }
 
         private void SetStatus(string message, bool isError)
@@ -548,6 +600,23 @@ namespace GitTool.Editor
                     SetStatus(r.Success ? $"已设置跟踪分支为 {suggestedUpstream}" : $"设置失败：{r.Message}", !r.Success);
                 }
                 EditorGUILayout.EndHorizontal();
+                any = true;
+            }
+            else if (needsRemoteProbe)
+            {
+                // 本地没有该远端的任何分支记录，只能联网才知道该跟踪谁。
+                // 用按钮而不是自动执行：连接可能失败，失败原因必须让用户看见。
+                EditorGUILayout.BeginHorizontal(EditorStyles.helpBox);
+                EditorGUILayout.LabelField(
+                    $"分支 '{branch}' 没有跟踪分支，且本地没有 {remote} 的任何分支记录。", wrapStyle);
+                if (GUILayout.Button("检测远端", GUILayout.Width(80)))
+                    ProbeRemoteForUpstream();
+                EditorGUILayout.EndHorizontal();
+                any = true;
+            }
+            else if (!string.IsNullOrEmpty(suggestedUpstreamError))
+            {
+                EditorGUILayout.HelpBox(suggestedUpstreamError, MessageType.Error);
                 any = true;
             }
 

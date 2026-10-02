@@ -233,11 +233,10 @@ namespace GitTool.Editor
         }
 
         /// <summary>
-        /// 推断某个分支应该跟踪哪个远端分支，用于「设置跟踪分支」按钮。
-        /// 优先同名分支，其次 main / master，本地都没有记录时才联网问远端默认分支。
-        /// 推断不出来时返回空串。
+        /// 只查本地已记录的远端分支来推断 upstream —— 不联网，因此永远不会卡住。
+        /// 优先同名分支，其次 main / master，本地都没有记录时返回空串。
         /// </summary>
-        public static string SuggestUpstream(string branch, string remote = "origin")
+        public static string SuggestUpstreamLocal(string branch, string remote = "origin")
         {
             if (string.IsNullOrEmpty(branch)) return "";
 
@@ -249,9 +248,38 @@ namespace GitTool.Editor
                     return $"{remote}/{candidate}";
             }
 
+            return "";
+        }
+
+        /// <summary>
+        /// 推断某个分支应该跟踪哪个远端分支，用于「设置跟踪分支」按钮。
+        /// 本地没有记录时才联网问远端的默认分支。
+        ///
+        /// 返回空串时 <paramref name="error"/> 一定会说明原因 —— 这是刻意的：
+        /// 「连不上远端（比如 SSH 没有可用密钥）」和「远端确实没有同名 / main / master 分支」
+        /// 是两件完全不同的事。两者都表示成空串，界面就会谎报「没有可用的跟踪分支」，
+        /// 把真正的认证失败藏起来（本工具踩过这个坑）。
+        /// </summary>
+        public static string SuggestUpstream(string branch, string remote, out string error)
+        {
+            error = "";
+
+            string local = SuggestUpstreamLocal(branch, remote);
+            if (!string.IsNullOrEmpty(local)) return local;
+
+            if (string.IsNullOrEmpty(branch))
+            {
+                error = "当前不在任何分支上（detached HEAD），无法推断跟踪分支";
+                return "";
+            }
+
             // 本地没有任何远端分支记录，才去问远端（需要网络）
             GitResult symref = Run(30000, "ls-remote", "--symref", remote, "HEAD");
-            if (!symref.Success) return "";
+            if (!symref.Success)
+            {
+                error = DescribeRemoteFailure(symref, $"无法连接远端 '{remote}'");
+                return "";
+            }
 
             foreach (string raw in symref.StdOut.Split('\n'))
             {
@@ -266,6 +294,58 @@ namespace GitTool.Editor
                 if (target.StartsWith("refs/heads/"))
                     return $"{remote}/{target.Substring("refs/heads/".Length)}";
             }
+
+            error = $"远端 '{remote}' 上既没有与 '{branch}' 同名的分支，也没有 main / master";
+            return "";
+        }
+
+        /// <summary>
+        /// 把 git 的原始报错翻译成「出了什么事 + 怎么修」，用于所有联网操作失败时的展示。
+        /// 认不出来的失败原样返回 git 的报错，不做过度猜测。
+        /// </summary>
+        public static string DescribeRemoteFailure(GitResult r, string what)
+        {
+            string raw = r.TimedOut ? "命令超时（可能是网络不通，或命令在等待交互式输入）" : r.Message;
+            string hint = ConnectionHint(raw);
+
+            return string.IsNullOrEmpty(hint) ? $"{what}：{raw}" : $"{what}：{raw}\n\n{hint}";
+        }
+
+        /// <summary>
+        /// 针对常见的连接类失败给出可复制的排查/修复命令；认不出来时返回空串。
+        /// 只依据 git 与 ssh 自己的报错文本判断，不猜、不联网。
+        /// </summary>
+        public static string ConnectionHint(string gitMessage)
+        {
+            if (string.IsNullOrEmpty(gitMessage)) return "";
+
+            // 关键区分：UGit 这类图形工具自带密钥，并且每次调用 git 都用 -i 显式指定，
+            // 所以它们能连上；而裸调 git 只会去 ~/.ssh 找密钥，那里一把都没有时就是这句报错。
+            // 这不是网络或代理问题 —— 只看「另一个工具能连上」会一直查错方向。
+            if (gitMessage.IndexOf("Permission denied (publickey)", StringComparison.OrdinalIgnoreCase) >= 0)
+                return "SSH 认证失败：ssh 找不到可用的私钥。\n" +
+                       "git 只会在 ~/.ssh 里找密钥（identity file），不会去读别的 Git 工具自带的密钥库，\n" +
+                       "所以「另一个 Git 工具能连上」并不代表这里的 ssh 也有密钥可用。\n" +
+                       "修法（本仓库生效）：\n" +
+                       "  git config core.sshCommand 'ssh -i <私钥路径> -o IdentitiesOnly=yes'\n" +
+                       "或者把公钥加到 GitHub → Settings → SSH and GPG keys。\n" +
+                       "验证：ssh -T git@github.com";
+
+            if (gitMessage.IndexOf("Host key verification failed", StringComparison.OrdinalIgnoreCase) >= 0)
+                return "远端主机指纹未被信任。\n" +
+                       "先手动连一次并确认指纹：ssh -T git@github.com";
+
+            if (gitMessage.IndexOf("Could not resolve hostname", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                gitMessage.IndexOf("Connection timed out", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                gitMessage.IndexOf("Connection refused", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                gitMessage.IndexOf("unable to access", StringComparison.OrdinalIgnoreCase) >= 0)
+                return "网络无法到达远端主机（DNS 解析失败 / 超时 / 连接被拒）。\n" +
+                       "检查网络、VPN 或代理设置后重试。";
+
+            if (gitMessage.IndexOf("could not read Username", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                gitMessage.IndexOf("Authentication failed", StringComparison.OrdinalIgnoreCase) >= 0)
+                return "HTTPS 凭据缺失或已过期。\n" +
+                       "检查 git config --get credential.helper，或把远端地址改成 SSH。";
 
             return "";
         }

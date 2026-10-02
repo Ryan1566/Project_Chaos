@@ -98,6 +98,43 @@ info()  { printf '       %s\n' "$1"; }
 die() { err "$1"; exit 1; }
 
 # =============================================================================
+#  连接类失败的针对性说明
+#  只依据 git / ssh 自己的报错文本判断，不猜。
+#  「连不上远端」和「远端确实没有这个分支」必须区分开：混在一起会让用户一直往
+#  网络/代理方向排查，而真正的原因往往是 ssh 根本找不到可用的私钥。
+#  传进来的是一段 git/ssh 的原始报错，认不出来时什么都不补充。
+# =============================================================================
+explain_remote_failure() {
+    local msg="${1:-}"
+    [ -n "$msg" ] || return 0
+
+    case "$msg" in
+        *"Permission denied (publickey)"*)
+            err "SSH 认证失败：ssh 找不到可用的私钥"
+            info "git 只会在 ~/.ssh 里找密钥，不会去读别的 Git 工具（如 UGit）自带的密钥库。"
+            info "所以「另一个 Git 工具能连上」不代表这里的 ssh 也有密钥可用，这不是网络或代理问题。"
+            info "修法（本仓库生效）："
+            info "  git config core.sshCommand 'ssh -i <私钥路径> -o IdentitiesOnly=yes'"
+            info "找可用的私钥：ls -l \"$HOME/AppData/Roaming/UGit/ssh/\""
+            info "验证：ssh -T git@github.com"
+            ;;
+        *"Host key verification failed"*)
+            err "远端主机指纹未被信任"
+            info "先手动连一次并确认指纹：ssh -T git@github.com"
+            ;;
+        *"Could not resolve hostname"*|*"Connection timed out"*|*"Connection refused"*|*"unable to access"*)
+            err "网络无法到达远端主机（DNS 解析失败 / 超时 / 连接被拒）"
+            info "检查网络、VPN 或代理设置后重试。"
+            ;;
+        *"could not read Username"*|*"Authentication failed"*)
+            err "HTTPS 凭据缺失或已过期"
+            info "检查 git config --get credential.helper，或把远端地址改成 SSH。"
+            ;;
+    esac
+    return 0
+}
+
+# =============================================================================
 #  路径分类：把变更文件映射到「类别 + 对 Unity 的影响等级」
 #  等级 3 = 可能触发全量 Reimport / 需要升级编辑器（最费时间）
 #  等级 2 = 触发脚本重编译（增量，通常较快）
@@ -233,13 +270,18 @@ if [ -z "$UPSTREAM" ]; then
 
     # 2) 本地完全没记录，才联网问远端的默认分支
     if [ -z "$SUGGEST_UPSTREAM" ]; then
-        REMOTE_SYMBOLIC="$(git ls-remote --symref "$REMOTE" HEAD 2>/dev/null)"
+        # 连 stderr 一起收：远端不通时，错误文本是给出针对性建议的唯一依据
+        if ! REMOTE_SYMBOLIC="$(git ls-remote --symref "$REMOTE" HEAD 2>&1)"; then
+            err "无法连接远端 '$REMOTE'"
+            explain_remote_failure "$REMOTE_SYMBOLIC"
+            exit 1
+        fi
+
         DEFAULT_BRANCH="$(printf '%s\n' "$REMOTE_SYMBOLIC" \
             | awk '/^ref:/ {sub("refs/heads/", "", $2); print $2; exit}')"
+
         if [ -n "$DEFAULT_BRANCH" ]; then
             SUGGEST_UPSTREAM="$REMOTE/$DEFAULT_BRANCH"
-        elif [ -z "$REMOTE_SYMBOLIC" ]; then
-            die "无法连接远端 '$REMOTE'（网络或凭据问题），请检查网络后重试"
         else
             die "无法推断 '$CURRENT_BRANCH' 应跟踪哪个远端分支，请手动 git branch --set-upstream-to=<远端分支>"
         fi
@@ -303,7 +345,12 @@ fi
 title "获取远端更新"
 info "git fetch $REMOTE ..."
 if ! git fetch --prune "$REMOTE"; then
-    die "fetch 失败（网络或凭据问题）"
+    # git 自己的报错已经实时打到终端上了，这里再跑一次廉价的 ls-remote，
+    # 只为把错误文本抓回来做针对性说明（不吞掉上面的实时输出）。
+    FETCH_ERR="$(git ls-remote "$REMOTE" HEAD 2>&1 >/dev/null)"
+    err "fetch 失败（网络或凭据问题）"
+    explain_remote_failure "$FETCH_ERR"
+    exit 1
 fi
 ok "fetch 完成"
 
@@ -517,12 +564,14 @@ if [ "$ASSUME_YES" -ne 1 ]; then
     esac
 fi
 
+PULL_RETRY_ERR=""
 if git pull --ff-only; then
     ok "拉取成功（fast-forward）"
-elif git pull --ff-only "$REMOTE" "$CURRENT_BRANCH" 2>/dev/null; then
+elif PULL_RETRY_ERR="$(git pull --ff-only "$REMOTE" "$CURRENT_BRANCH" 2>&1)"; then
     ok "拉取成功（fast-forward）"
 else
     err "fast-forward 拉取失败"
+    explain_remote_failure "$PULL_RETRY_ERR"
     if [ "$DISCARD" -eq 1 ]; then
         info "本地未提交的改动已经在上一步丢弃，仍然失败说明问题不在工作区。"
         info "多半是本地有未推送的提交（本工具不会替你丢弃提交历史）。"
