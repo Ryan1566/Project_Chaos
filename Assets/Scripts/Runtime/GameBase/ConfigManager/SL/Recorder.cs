@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using UnityEngine;
-using static ConfigLoader;
 
 /// <summary>
 /// MVP框架中所有Model的基接口

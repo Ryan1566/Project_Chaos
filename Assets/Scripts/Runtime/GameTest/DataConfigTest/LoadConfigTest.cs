@@ -13,7 +13,7 @@ public class LoadConfigTest : MonoBehaviour
         ChaosLog.Info(LogChannel.Config, testList.datas[0].Occupation.ToString());*/
 
         //异步读取配置信息
-        JsonDataManager.Instance.LoadDataAsync<TestTableConfig>((json) =>
+        ConfigLoader.Instance.LoadDataAsync<TestTableConfig>((json) =>
         {
             ChaosLog.Info(LogChannel.Config, json.datas[0].Occupation.ToString());
         });
