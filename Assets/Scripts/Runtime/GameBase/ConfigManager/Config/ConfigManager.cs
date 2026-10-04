@@ -5,8 +5,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using UnityEditor;
 using UnityEngine;
+using UnityEditor;
 using ChaosDebug;
 
 /// <summary>
@@ -57,7 +57,8 @@ public class ConfigManager
 
     }
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR 
+
     [MenuItem("ExcelTool/ExportExcel")]
     private static void ExportConfigsAndModels()
     {
@@ -168,7 +169,7 @@ public class ConfigManager
 
         sb.Append("}\n\n");
 
-        string savePath = mode == ExporterMode.Config ? GlobalPath.data_ClassPath : GlobalPath.data_ModelClassPath;
+        string savePath = mode == ExporterMode.Config ? GlobalPath.data_ExcelClassPath : GlobalPath.data_ExcelModelPath;
 
         FileUtil.SaveFile(savePath
             , string.Format("{0}{1}.cs", fileName,mode.ToString())
@@ -183,11 +184,11 @@ public class ConfigManager
         string str = "";
         int num = 0;
 
-        string[] endflags = GetEnd(workSheet);
+        string[] endflags = GetEnd(workSheet);//判断是不是client可用的字段
         string[] properties = GetProperties(workSheet);
         for (int col = 1; col <= properties.Length; col++)
         {
-            if (endflags[col - 1] == "server")
+            if (endflags[col - 1] == "server" || endflags[col - 1] == "")
                 continue;
 
             string[] temp = GetValues(workSheet, col);
@@ -276,7 +277,7 @@ public class ConfigManager
         {
             if (workSheet.Cells[propertyIndex, col].Text == "")
             {
-                throw new System.Exception(string.Format("第{0}行第{1}列为空", propertyIndex, col));
+                ChaosLog.Warn(string.Format("第{0}行第{1}列为空", propertyIndex, col));
             }
             end[col - 1] = workSheet.Cells[endIndex, col].Text;
         }
@@ -291,10 +292,10 @@ public class ConfigManager
     /// <returns></returns>
     private static string[] GetValues(ExcelWorksheet workSheet,int col)
     {
-        string[] values = new string[workSheet.Dimension.End.Row - valueIndex];//实际值数组的容量
-        for(int row = valueIndex + 1;row <= workSheet.Dimension.End.Row; row++)
+        string[] values = new string[workSheet.Dimension.End.Row - valueIndex + 1];//实际值数组的容量
+        for(int row = valueIndex;row <= workSheet.Dimension.End.Row; row++)
         {
-            values[row - valueIndex - 1] = workSheet.Cells[row,col].Text;
+            values[row - valueIndex] = workSheet.Cells[row,col].Text;
         }
         return values;
     }

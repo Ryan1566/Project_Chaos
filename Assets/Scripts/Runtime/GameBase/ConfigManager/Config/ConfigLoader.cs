@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,5 +18,15 @@ public class ConfigLoader : SingletonBase<ConfigLoader>
         string json = ResManager.Instance.Load<TextAsset>("Json/" + typeof(T).Name).text;
         DataList<T> dataList = JsonUtility.FromJson<DataList<T>>(json);
         return dataList;
+    }
+
+    /// <summary>
+    /// 泛型基类 各种数据类的列表
+    /// </summary>
+    /// <typeparam name="T">Data类</typeparam>
+    [Serializable]
+    public class DataList<T>
+    {
+        public List<T> datas = new List<T>();
     }
 }

@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9b7ea5860df0a241b850843c86744ac, type: 3}
+  m_Name: RecordLocalizationConfig
+  m_EditorClassIdentifier: 
+  configName: RecordLocalizationConfig
+  description: 
+  entries:
+  - key: ui_recordcell
+    description: "RecordCell \u203A Text (TMP)"
+    chineseSimplified: "\u5B58\u6863"
+    chineseTraditional: "\u5B58\u6A94"
+    english: File
+    japanese: "\u30BB\u30FC\u30D6"
+    korean: "\uC800\uC7A5"

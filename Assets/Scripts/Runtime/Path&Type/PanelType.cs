@@ -16,7 +16,6 @@ public enum PanelType
     QuestPanel,//任务面板
     GainQuestPanel,//新任务领取提示面板
     ProgressPanel,//加载面板
-    SavingPanel,//保存面板
-    LoadingPanel,//读取存档面板
+    SLPanel,//保存、读取面板
     EnddingPanel//结局面板
 }

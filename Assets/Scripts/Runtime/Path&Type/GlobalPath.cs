@@ -76,6 +76,7 @@ public static class GlobalPath
     };
     #endregion
 
+    #region 本地化配置路径
     /// <summary>
     /// 本地化配置资产的默认清单，第一个是【默认写入目标】。
     ///
@@ -106,6 +107,7 @@ public static class GlobalPath
     /// </summary>
     public const string ui_DefaultLocalizationConfigPath =
         "Assets/Data/Localization/Sub_LD/SettingLocalizationConfig.asset";
+    #endregion
 
     #region 表配置路径
     /// <summary>
@@ -116,17 +118,17 @@ public static class GlobalPath
     /// <summary>
     /// 导出的Json路径
     /// </summary>
-    public const string data_JsonPath = "Resources/Data/Json/";
+    public const string data_JsonPath = "Resources/Data/Json/Runtime/";
 
     /// <summary>
-    /// 导出的class路径
+    /// 导出的class路径，Class用于游戏常量配置数据，只读
     /// </summary>
-    public const string data_ClassPath = "Scripts/Runtime/Config/ClassConfig/";
+    public const string data_ExcelClassPath = "Scripts/Runtime/MVP/Model/ConfigData/";
 
     /// <summary>
-    /// 导出的Excel配置的Model路径
+    /// 导出的Excel配置的Model路径，Model用于游戏动态数据，可读可写，用于存档
     /// </summary>
-    public const string data_ExcelModelPath = "Data/Model/";
+    public const string data_ExcelModelPath = "Scripts/Runtime/MVP/Model/ModelData/";
 
     /// <summary>
     /// 编辑器导出的存档路径
@@ -141,6 +143,6 @@ public static class GlobalPath
     /// <summary>
     /// 导出的Model类持久化数据路径
     /// </summary>
-    public const string data_ModelClassPath = "Scripts/Runtime/MVP/Model/Data/";
+    //public const string data_ModelClassPath = "Scripts/Runtime/MVP/Model/Data/";
     #endregion
 }

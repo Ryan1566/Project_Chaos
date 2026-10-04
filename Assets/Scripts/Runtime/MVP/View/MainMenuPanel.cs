@@ -40,6 +40,7 @@ public class MainMenuPanel : BasePanel
     /// </summary>
     void StartGame()
     {
+        uiManager.PushPanel(PanelType.SLPanel);
         ChaosLog.Info("点击开始游戏按钮");
     }
 
