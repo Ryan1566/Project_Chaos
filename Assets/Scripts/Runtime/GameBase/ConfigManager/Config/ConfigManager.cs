@@ -212,6 +212,7 @@ public class ConfigManager
         str = str.Substring(0, str.Length - 1);//去除最小单位语句的最后一个","
         str = GetJsonFromJsonK_V(str, num);//组装成Json列表，并去除列表中最后一个","
         str = GetUnityJsonFromJson(str);//修改为适应JsonUtility的格式
+        str = FormatJson(str);//新增：导出前统一美化，便于人工查看
 
         //用 Unity 自带 JsonUtility（需手动加换行）
         //string json1 = JsonUtility.ToJson(fileContent); // 紧凑格式
@@ -406,5 +407,96 @@ public class ConfigManager
     private static string GetUnityJsonFromJson(string json)
     {
         return "{" + "\"datas\":" + json + "}";
+    }
+
+    /// <summary>
+    /// 把紧凑的 Json 文本整理成带缩进与换行的形式，便于人工查看与比较。
+    ///
+    /// 只影响导出产物的排版：.json 与 .record 的内容完全一致，只是扩展名不同；
+    /// JsonUtility.FromJson 不关心空白，所以美化不会影响运行时读取。
+    ///
+    /// 排版风格与 JsonUtility.ToJson(obj, true) 一致（4 空格缩进、冒号后留空格），
+    /// 这样工程里的 Json 文件看起来是同一种格式。
+    ///
+    /// 注意：必须区分「字符串内部」与「结构符号」。中文数据里如果出现逗号、
+    /// 冒号、花括号，不区分就会在字符串中间插换行，把 Json 写坏。
+    /// </summary>
+    private static string FormatJson(string compact)
+    {
+        if (string.IsNullOrEmpty(compact)) return compact;
+
+        const char QUOTE = (char)34;      //双引号
+        const char BACKSLASH = (char)92;  //反斜杠
+
+        StringBuilder sb = new StringBuilder(compact.Length * 2);
+        int depth = 0;//嵌套层级，1 层 = 4 个空格
+        bool inString = false;
+
+        for (int i = 0; i < compact.Length; i++)
+        {
+            char c = compact[i];
+
+            if (inString)//字符串内部原样搬运，只处理转义与结束引号
+            {
+                sb.Append(c);
+                if (c == BACKSLASH && i + 1 < compact.Length)
+                    sb.Append(compact[++i]);
+                else if (c == QUOTE)
+                    inString = false;
+                continue;
+            }
+
+            switch (c)
+            {
+                case QUOTE:
+                    inString = true;
+                    sb.Append(c);
+                    break;
+
+                case '{':
+                case '[':
+                    sb.Append(c);
+                    //空容器 {} 或 [] 不换行，免得出现只有一对括号的两行
+                    if (i + 1 < compact.Length && compact[i + 1] != '}' && compact[i + 1] != ']')
+                    {
+                        depth++;
+                        sb.Append('\n');
+                        sb.Append(' ', depth * 4);
+                    }
+                    break;
+
+                case '}':
+                case ']':
+                    //与上面的空容器判断保持对称
+                    if (depth > 0 && i > 0 && compact[i - 1] != '{' && compact[i - 1] != '[')
+                    {
+                        depth--;
+                        sb.Append('\n');
+                        sb.Append(' ', depth * 4);
+                    }
+                    sb.Append(c);
+                    break;
+
+                case ',':
+                    sb.Append(c).Append('\n').Append(' ', depth * 4);
+                    break;
+
+                case ':':
+                    sb.Append(c).Append(' ');
+                    break;
+
+                case ' '://紧凑文本里不该有空白，真有也丢掉，免得出现多余空行
+                case '\t':
+                case '\r':
+                case '\n':
+                    break;
+
+                default:
+                    sb.Append(c);
+                    break;
+            }
+        }
+
+        return sb.ToString();
     }
 }

@@ -15,7 +15,7 @@ public class ConfigLoader : SingletonBase<ConfigLoader>
     /// <returns></returns>
     public DataList<T> LoadConfig<T>()
     {
-        string json = ResManager.Instance.Load<TextAsset>("Json/" + typeof(T).Name).text;
+        string json = ResManager.Instance.Load<TextAsset>(GlobalPath.data_JsonPathToRead + typeof(T).Name).text;
         DataList<T> dataList = JsonUtility.FromJson<DataList<T>>(json);
         return dataList;
     }

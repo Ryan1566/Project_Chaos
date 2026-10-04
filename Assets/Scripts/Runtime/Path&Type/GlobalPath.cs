@@ -141,6 +141,11 @@ public static class GlobalPath
     public const string data_RecordPathInPackage = "Records/";
 
     /// <summary>
+    /// 读取配置Json文件的路径
+    /// </summary>
+    public const string data_JsonPathToRead = "Json/Runtime/";
+
+    /// <summary>
     /// 导出的Model类持久化数据路径
     /// </summary>
     //public const string data_ModelClassPath = "Scripts/Runtime/MVP/Model/Data/";
