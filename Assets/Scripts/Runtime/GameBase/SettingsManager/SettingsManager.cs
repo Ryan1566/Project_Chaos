@@ -277,9 +277,13 @@ public class SettingsManager : SingletonBase<SettingsManager>
         QualitySettings.SetQualityLevel(MapQualityLevel(data.qualityLevel), true);
 
         FullScreenMode mode = MapWindowMode((WindowModeType)data.windowMode);
-        int hz = Screen.currentResolution.refreshRate;
-        if (hz <= 0) hz = 60;
-        Screen.SetResolution(data.resolutionWidth, data.resolutionHeight, mode, hz);
+        RefreshRate rr = Screen.currentResolution.refreshRateRatio;
+        float hz = (float)Screen.currentResolution.refreshRateRatio.numerator / Screen.currentResolution.refreshRateRatio.denominator;
+        if (hz <= 0)
+        {
+            rr = new RefreshRate { numerator = 60, denominator = 1 };
+        }
+        Screen.SetResolution(data.resolutionWidth, data.resolutionHeight, mode, rr);
 
         ChaosLog.Info(LogChannel.Config,
             "画面已应用：" + data.resolutionWidth + "×" + data.resolutionHeight +

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using ChaosDebug;
 
+/*
 public class TestPanel : TangLaoShi.BasePanel
 {
     // Start is called before the first frame update
@@ -21,3 +22,4 @@ public class TestPanel : TangLaoShi.BasePanel
         
     }
 }
+*/

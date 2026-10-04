@@ -24,7 +24,7 @@ namespace LocalizationSystem
         public string[] formatArgs;//格式化参数
 
         private TextMeshProUGUI textComponent;//文本组件
-        private bool isInitialized = false;
+        //private bool isInitialized = false;
 
         private void Awake()
         {
@@ -75,7 +75,7 @@ namespace LocalizationSystem
                 LocalizationManager.GetInstance().OnLanguageChanged.AddListener(OnLanguageChanged);
             }
 
-            isInitialized = true;
+            //isInitialized = true;
         }
 
         private void OnDestroy()
