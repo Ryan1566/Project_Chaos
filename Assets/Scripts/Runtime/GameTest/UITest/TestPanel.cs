@@ -4,9 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using ChaosDebug;
 
-/*
-public class TestPanel : TangLaoShi.BasePanel
+
+public class TestPanel : MonoBehaviour
 {
+    /*
     // Start is called before the first frame update
     void Start()
     {
@@ -21,5 +22,5 @@ public class TestPanel : TangLaoShi.BasePanel
     {
         
     }
+    */
 }
-*/
