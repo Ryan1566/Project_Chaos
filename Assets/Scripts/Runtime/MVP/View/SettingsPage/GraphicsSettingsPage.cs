@@ -39,6 +39,7 @@ public class GraphicsSettingsPage : SettingsPageBase
         BindFrameRate();
         BindVSync();
         BindQuality();
+        
     }
 
     private void BindResolution()
@@ -89,6 +90,9 @@ public class GraphicsSettingsPage : SettingsPageBase
             (data, index) => data.windowMode = index);
     }
 
+    /// <summary>
+    /// 帧率设置
+    /// </summary>
     private void BindFrameRate()
     {
         BindSelector(SettingIds.FrameRate, FrameRateTexts,

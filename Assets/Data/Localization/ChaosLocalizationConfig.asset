@@ -51,6 +51,13 @@ MonoBehaviour:
     english: Update Notice
     japanese: "\u66F4\u65B0\u306E\u304A\u77E5\u3089\u305B"
     korean: "\uC5C5\uB370\uC774\uD2B8 \uACF5\uC9C0"
+  - key: ui_recordcell
+    description: "RecordCell \u203A Text (TMP)\u3000|\u3000\u6765\u6E90\uFF1ARecordLocalizationConfig"
+    chineseSimplified: "\u5B58\u6863"
+    chineseTraditional: "\u5B58\u6A94"
+    english: File
+    japanese: "\u30BB\u30FC\u30D6"
+    korean: "\uC800\uC7A5"
   - key: ui_setting_title
     description: "SettingPanel \u203A Title\u3000|\u3000\u6765\u6E90\uFF1ASettingLocalizationConfig"
     chineseSimplified: "\u8BBE\u7F6E"
@@ -93,20 +100,6 @@ MonoBehaviour:
     english: Language
     japanese: "\u8A00\u8A9E"
     korean: "\uC5B8\uC5B4"
-  - key: ui_setting_contentarea_page_gameplay_viewport_content_row_language_prev_label
-    description: "SettingPanel \u203A ContentArea/Page_Gameplay/Viewport/Content/Row_Language/Prev/Label\u3000|\u3000\u6765\u6E90\uFF1ASettingLocalizationConfig"
-    chineseSimplified: <
-    chineseTraditional: <
-    english: <
-    japanese: <
-    korean: <
-  - key: ui_setting_contentarea_page_gameplay_viewport_content_row_language_next_label
-    description: "SettingPanel \u203A ContentArea/Page_Gameplay/Viewport/Content/Row_Language/Next/Label\u3000|\u3000\u6765\u6E90\uFF1ASettingLocalizationConfig"
-    chineseSimplified: '>'
-    chineseTraditional: '>'
-    english: '>'
-    japanese: '>'
-    korean: '>'
   - key: ui_setting_contentarea_page_gameplay_viewport_content_row_language_options_option_0
     description: "SettingPanel \u203A ContentArea/Page_Gameplay/Viewport/Content/Row_Language/Options/Option_0\u3000|\u3000\u6765\u6E90\uFF1ASettingLocalizationConfig"
     chineseSimplified: "\u7B80\u4F53\u4E2D\u6587"
@@ -168,13 +161,6 @@ MonoBehaviour:
     english: Mouse Sensitivity
     japanese: "\u30DE\u30A6\u30B9\u611F\u5EA6"
     korean: "\uB9C8\uC6B0\uC2A4 \uAC10\uB3C4"
-  - key: ui_setting_contentarea_page_keybind_viewport_content_row_mousesensitivity_valuetext
-    description: "SettingPanel \u203A ContentArea/Page_Keybind/Viewport/Content/Row_MouseSensitivity/ValueText\u3000|\u3000\u6765\u6E90\uFF1ASettingLocalizationConfig"
-    chineseSimplified: 0
-    chineseTraditional: 0
-    english: 0
-    japanese: 0
-    korean: 0
   - key: ui_setting_attacktrigger
     description: "SettingPanel \u203A ContentArea/Page_Keybind/Viewport/Content/Row_AttackTrigger/Label\u3000|\u3000\u6765\u6E90\uFF1ASettingLocalizationConfig"
     chineseSimplified: "\u653B\u51FB\u89E6\u53D1\u65B9\u5F0F"
@@ -182,20 +168,6 @@ MonoBehaviour:
     english: Attack Trigger
     japanese: "\u653B\u6483\u306E\u767A\u52D5\u65B9\u6CD5"
     korean: "\uACF5\uACA9 \uBC1C\uB3D9 \uBC29\uC2DD"
-  - key: ui_setting_contentarea_page_keybind_viewport_content_row_attacktrigger_prev_label
-    description: "SettingPanel \u203A ContentArea/Page_Keybind/Viewport/Content/Row_AttackTrigger/Prev/Label\u3000|\u3000\u6765\u6E90\uFF1ASettingLocalizationConfig"
-    chineseSimplified: <
-    chineseTraditional: <
-    english: <
-    japanese: <
-    korean: <
-  - key: ui_setting_contentarea_page_keybind_viewport_content_row_attacktrigger_next_label
-    description: "SettingPanel \u203A ContentArea/Page_Keybind/Viewport/Content/Row_AttackTrigger/Next/Label\u3000|\u3000\u6765\u6E90\uFF1ASettingLocalizationConfig"
-    chineseSimplified: '>'
-    chineseTraditional: '>'
-    english: '>'
-    japanese: '>'
-    korean: '>'
   - key: ui_setting_contentarea_page_keybind_viewport_content_row_attacktrigger_options_option_0
     description: "SettingPanel \u203A ContentArea/Page_Keybind/Viewport/Content/Row_AttackTrigger/Options/Option_0\u3000|\u3000\u6765\u6E90\uFF1ASettingLocalizationConfig"
     chineseSimplified: "\u70B9\u6309"
@@ -217,27 +189,6 @@ MonoBehaviour:
     english: Resolution
     japanese: "\u89E3\u50CF\u5EA6"
     korean: "\uD574\uC0C1\uB3C4"
-  - key: ui_setting_contentarea_page_graphics_viewport_content_row_resolution_prev_label
-    description: "SettingPanel \u203A ContentArea/Page_Graphics/Viewport/Content/Row_Resolution/Prev/Label\u3000|\u3000\u6765\u6E90\uFF1ASettingLocalizationConfig"
-    chineseSimplified: <
-    chineseTraditional: <
-    english: <
-    japanese: <
-    korean: <
-  - key: ui_setting_contentarea_page_graphics_viewport_content_row_resolution_next_label
-    description: "SettingPanel \u203A ContentArea/Page_Graphics/Viewport/Content/Row_Resolution/Next/Label\u3000|\u3000\u6765\u6E90\uFF1ASettingLocalizationConfig"
-    chineseSimplified: '>'
-    chineseTraditional: '>'
-    english: '>'
-    japanese: '>'
-    korean: '>'
-  - key: ui_setting_contentarea_page_graphics_viewport_content_row_resolution_valuetext
-    description: "SettingPanel \u203A ContentArea/Page_Graphics/Viewport/Content/Row_Resolution/ValueText\u3000|\u3000\u6765\u6E90\uFF1ASettingLocalizationConfig"
-    chineseSimplified: '-'
-    chineseTraditional: '-'
-    english: '-'
-    japanese: '-'
-    korean: '-'
   - key: ui_setting_windowmode
     description: "SettingPanel \u203A ContentArea/Page_Graphics/Viewport/Content/Row_WindowMode/Label\u3000|\u3000\u6765\u6E90\uFF1ASettingLocalizationConfig"
     chineseSimplified: "\u89C6\u7A97\u6A21\u5F0F"
@@ -245,20 +196,6 @@ MonoBehaviour:
     english: Window Mode
     japanese: "\u30A6\u30A3\u30F3\u30C9\u30A6\u30E2\u30FC\u30C9"
     korean: "\uCC3D \uBAA8\uB4DC"
-  - key: ui_setting_contentarea_page_graphics_viewport_content_row_windowmode_prev_label
-    description: "SettingPanel \u203A ContentArea/Page_Graphics/Viewport/Content/Row_WindowMode/Prev/Label\u3000|\u3000\u6765\u6E90\uFF1ASettingLocalizationConfig"
-    chineseSimplified: <
-    chineseTraditional: <
-    english: <
-    japanese: <
-    korean: <
-  - key: ui_setting_contentarea_page_graphics_viewport_content_row_windowmode_next_label
-    description: "SettingPanel \u203A ContentArea/Page_Graphics/Viewport/Content/Row_WindowMode/Next/Label\u3000|\u3000\u6765\u6E90\uFF1ASettingLocalizationConfig"
-    chineseSimplified: '>'
-    chineseTraditional: '>'
-    english: '>'
-    japanese: '>'
-    korean: '>'
   - key: ui_setting_contentarea_page_graphics_viewport_content_row_windowmode_options_option_0
     description: "SettingPanel \u203A ContentArea/Page_Graphics/Viewport/Content/Row_WindowMode/Options/Option_0\u3000|\u3000\u6765\u6E90\uFF1ASettingLocalizationConfig"
     chineseSimplified: "\u65E0\u8FB9\u6846\u5168\u5C4F"
@@ -287,27 +224,6 @@ MonoBehaviour:
     english: Frame Rate
     japanese: "\u30D5\u30EC\u30FC\u30E0\u30EC\u30FC\u30C8"
     korean: "\uD504\uB808\uC784 \uC81C\uD55C"
-  - key: ui_setting_contentarea_page_graphics_viewport_content_row_framerate_prev_label
-    description: "SettingPanel \u203A ContentArea/Page_Graphics/Viewport/Content/Row_FrameRate/Prev/Label\u3000|\u3000\u6765\u6E90\uFF1ASettingLocalizationConfig"
-    chineseSimplified: <
-    chineseTraditional: <
-    english: <
-    japanese: <
-    korean: <
-  - key: ui_setting_contentarea_page_graphics_viewport_content_row_framerate_next_label
-    description: "SettingPanel \u203A ContentArea/Page_Graphics/Viewport/Content/Row_FrameRate/Next/Label\u3000|\u3000\u6765\u6E90\uFF1ASettingLocalizationConfig"
-    chineseSimplified: '>'
-    chineseTraditional: '>'
-    english: '>'
-    japanese: '>'
-    korean: '>'
-  - key: ui_setting_contentarea_page_graphics_viewport_content_row_framerate_valuetext
-    description: "SettingPanel \u203A ContentArea/Page_Graphics/Viewport/Content/Row_FrameRate/ValueText\u3000|\u3000\u6765\u6E90\uFF1ASettingLocalizationConfig"
-    chineseSimplified: '-'
-    chineseTraditional: '-'
-    english: '-'
-    japanese: '-'
-    korean: '-'
   - key: ui_setting_vsync
     description: "SettingPanel \u203A ContentArea/Page_Graphics/Viewport/Content/Row_VSync/Label\u3000|\u3000\u6765\u6E90\uFF1ASettingLocalizationConfig"
     chineseSimplified: "\u5782\u76F4\u540C\u6B65"
@@ -322,20 +238,6 @@ MonoBehaviour:
     english: Quality
     japanese: "\u753B\u8CEA"
     korean: "\uD654\uC9C8"
-  - key: ui_setting_contentarea_page_graphics_viewport_content_row_quality_prev_label
-    description: "SettingPanel \u203A ContentArea/Page_Graphics/Viewport/Content/Row_Quality/Prev/Label\u3000|\u3000\u6765\u6E90\uFF1ASettingLocalizationConfig"
-    chineseSimplified: <
-    chineseTraditional: <
-    english: <
-    japanese: <
-    korean: <
-  - key: ui_setting_contentarea_page_graphics_viewport_content_row_quality_next_label
-    description: "SettingPanel \u203A ContentArea/Page_Graphics/Viewport/Content/Row_Quality/Next/Label\u3000|\u3000\u6765\u6E90\uFF1ASettingLocalizationConfig"
-    chineseSimplified: '>'
-    chineseTraditional: '>'
-    english: '>'
-    japanese: '>'
-    korean: '>'
   - key: ui_setting_contentarea_page_graphics_viewport_content_row_quality_options_option_0
     description: "SettingPanel \u203A ContentArea/Page_Graphics/Viewport/Content/Row_Quality/Options/Option_0\u3000|\u3000\u6765\u6E90\uFF1ASettingLocalizationConfig"
     chineseSimplified: "\u4F4E"
@@ -364,13 +266,6 @@ MonoBehaviour:
     english: Master Volume
     japanese: "\u30DE\u30B9\u30BF\u30FC\u97F3\u91CF"
     korean: "\uC804\uCCB4 \uBCFC\uB968"
-  - key: ui_setting_contentarea_page_audio_viewport_content_row_mastervolume_valuetext
-    description: "SettingPanel \u203A ContentArea/Page_Audio/Viewport/Content/Row_MasterVolume/ValueText\u3000|\u3000\u6765\u6E90\uFF1ASettingLocalizationConfig"
-    chineseSimplified: 0
-    chineseTraditional: 0
-    english: 0
-    japanese: 0
-    korean: 0
   - key: ui_setting_music
     description: "SettingPanel \u203A ContentArea/Page_Audio/Viewport/Content/Row_MusicVolume/Label\u3000|\u3000\u6765\u6E90\uFF1ASettingLocalizationConfig"
     chineseSimplified: "\u97F3\u4E50\u97F3\u91CF"
@@ -378,13 +273,6 @@ MonoBehaviour:
     english: Music Volume
     japanese: "\u97F3\u697D\u97F3\u91CF"
     korean: "\uC74C\uC545 \uBCFC\uB968"
-  - key: ui_setting_contentarea_page_audio_viewport_content_row_musicvolume_valuetext
-    description: "SettingPanel \u203A ContentArea/Page_Audio/Viewport/Content/Row_MusicVolume/ValueText\u3000|\u3000\u6765\u6E90\uFF1ASettingLocalizationConfig"
-    chineseSimplified: 0
-    chineseTraditional: 0
-    english: 0
-    japanese: 0
-    korean: 0
   - key: ui_setting_sfx
     description: "SettingPanel \u203A ContentArea/Page_Audio/Viewport/Content/Row_SfxVolume/Label\u3000|\u3000\u6765\u6E90\uFF1ASettingLocalizationConfig"
     chineseSimplified: "\u97F3\u6548\u97F3\u91CF"
@@ -392,13 +280,6 @@ MonoBehaviour:
     english: SFX Volume
     japanese: "\u52B9\u679C\u97F3\u97F3\u91CF"
     korean: "\uD6A8\uACFC\uC74C \uBCFC\uB968"
-  - key: ui_setting_contentarea_page_audio_viewport_content_row_sfxvolume_valuetext
-    description: "SettingPanel \u203A ContentArea/Page_Audio/Viewport/Content/Row_SfxVolume/ValueText\u3000|\u3000\u6765\u6E90\uFF1ASettingLocalizationConfig"
-    chineseSimplified: 0
-    chineseTraditional: 0
-    english: 0
-    japanese: 0
-    korean: 0
   - key: ui_setting_ui
     description: "SettingPanel \u203A ContentArea/Page_Audio/Viewport/Content/Row_UiVolume/Label\u3000|\u3000\u6765\u6E90\uFF1ASettingLocalizationConfig"
     chineseSimplified: "UI \u97F3\u91CF"
@@ -406,13 +287,6 @@ MonoBehaviour:
     english: UI Volume
     japanese: "UI\u97F3\u91CF"
     korean: "UI \uBCFC\uB968"
-  - key: ui_setting_contentarea_page_audio_viewport_content_row_uivolume_valuetext
-    description: "SettingPanel \u203A ContentArea/Page_Audio/Viewport/Content/Row_UiVolume/ValueText\u3000|\u3000\u6765\u6E90\uFF1ASettingLocalizationConfig"
-    chineseSimplified: 0
-    chineseTraditional: 0
-    english: 0
-    japanese: 0
-    korean: 0
   - key: ui_setting_contentarea_page_keybind_bindings_viewport_content_row_move_km_resetbutton_label
     description: "SettingPanel \u203A ContentArea/Page_Keybind_Bindings/Viewport/Content/Row_Move_KM/ResetButton/Label\u3000|\u3000\u6765\u6E90\uFF1ASettingLocalizationConfig"
     chineseSimplified: "\u91CD\u7F6E"
