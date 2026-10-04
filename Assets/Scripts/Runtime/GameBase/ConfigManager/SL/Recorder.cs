@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using UnityEngine;
 using static ConfigLoader;
 
@@ -115,6 +116,8 @@ public class Recorder : SingletonBase<Recorder>
     public void SaveData<T>(DataList<T> data,bool save = false)
     {
         string json = JsonUtility.ToJson(data);
+        json = FormatJson(json);
+
         try
         {
             _cache[typeof(T).Name] = json;
@@ -223,4 +226,86 @@ public class Recorder : SingletonBase<Recorder>
         }
     }
     #endregion
+
+    /// <summary>
+    /// 自动序列化Json文件，适配.record后缀文件
+    /// </summary>
+    private static string FormatJson(string compact)
+    {
+        if (string.IsNullOrEmpty(compact)) return compact;
+
+        const char QUOTE = (char)34;      //双引号
+        const char BACKSLASH = (char)92;  //反斜杠
+
+        StringBuilder sb = new StringBuilder(compact.Length * 2);
+        int depth = 0;//嵌套层级，1 层 = 4 个空格
+        bool inString = false;
+
+        for (int i = 0; i < compact.Length; i++)
+        {
+            char c = compact[i];
+
+            if (inString)//字符串内部原样搬运，只处理转义与结束引号
+            {
+                sb.Append(c);
+                if (c == BACKSLASH && i + 1 < compact.Length)
+                    sb.Append(compact[++i]);
+                else if (c == QUOTE)
+                    inString = false;
+                continue;
+            }
+
+            switch (c)
+            {
+                case QUOTE:
+                    inString = true;
+                    sb.Append(c);
+                    break;
+
+                case '{':
+                case '[':
+                    sb.Append(c);
+                    //空容器 {} 或 [] 不换行，免得出现只有一对括号的两行
+                    if (i + 1 < compact.Length && compact[i + 1] != '}' && compact[i + 1] != ']')
+                    {
+                        depth++;
+                        sb.Append('\n');
+                        sb.Append(' ', depth * 4);
+                    }
+                    break;
+
+                case '}':
+                case ']':
+                    //与上面的空容器判断保持对称
+                    if (depth > 0 && i > 0 && compact[i - 1] != '{' && compact[i - 1] != '[')
+                    {
+                        depth--;
+                        sb.Append('\n');
+                        sb.Append(' ', depth * 4);
+                    }
+                    sb.Append(c);
+                    break;
+
+                case ',':
+                    sb.Append(c).Append('\n').Append(' ', depth * 4);
+                    break;
+
+                case ':':
+                    sb.Append(c).Append(' ');
+                    break;
+
+                case ' '://紧凑文本里不该有空白，真有也丢掉，免得出现多余空行
+                case '\t':
+                case '\r':
+                case '\n':
+                    break;
+
+                default:
+                    sb.Append(c);
+                    break;
+            }
+        }
+
+        return sb.ToString();
+    }
 }
