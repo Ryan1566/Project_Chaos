@@ -281,7 +281,7 @@ public class SettingsManager : SingletonBase<SettingsManager>
         float hz = (float)Screen.currentResolution.refreshRateRatio.numerator / Screen.currentResolution.refreshRateRatio.denominator;
         if (hz <= 0)
         {
-            rr = new RefreshRate { numerator = 60, denominator = 1 };
+            rr = new RefreshRate { numerator = (uint)data.frameRate, denominator = 1 };
         }
         Screen.SetResolution(data.resolutionWidth, data.resolutionHeight, mode, rr);
 
