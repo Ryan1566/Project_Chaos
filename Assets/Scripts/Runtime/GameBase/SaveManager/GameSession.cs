@@ -25,17 +25,44 @@ public class GameSession : SingletonBase<GameSession>
     public bool HasSession { get; private set; }
 
     /// <summary>
-    /// 开始一次会话：记下槽位与读到的 payload。
+    /// **读条场景的目标**：这次要切到哪个场景。
+    ///
+    /// ══════════════ 为什么放在这里 ══════════════
+    /// 玩法入口现在是「存档面板 → `LoadingScene` → 目标场景」三段（`06_加载读条界面落地方案.md` §4）：
+    /// 面板只负责把目标场景名**写进这个跨场景静态单例**，然后切到 `LoadingScene`；
+    /// `LoadingController` 再读它决定要流式加载哪个场景。
+    /// 这样 `LoadingScene` 对**任意**目标场景都可复用，不必为每个目标改一遍读条场景。
+    ///
+    /// 为空 = 没有读过存档就进了读条场景（异常路径）→ `LoadingController` 报 Error 并停在原地。
+    /// </summary>
+    public string TargetSceneName { get; private set; }
+
+    /// <summary>
+    /// 开始一次会话：记下槽位、读到的 payload，以及**要切到的目标场景**。
     /// 由面板在**写盘成功之后、切场景之前**调用。
     /// </summary>
-    public void Begin(int slot, SavePayload payload)
+    /// <param name="slot">槽位（1..3）</param>
+    /// <param name="payload">该槽位的存档内容</param>
+    /// <param name="targetSceneName">读条结束后要进入的场景名（如 "WorldScene"）</param>
+    public void Begin(int slot, SavePayload payload, string targetSceneName)
     {
         SelectedSlot = slot;
         LoadedPayload = payload ?? new SavePayload();
+        TargetSceneName = targetSceneName;
         HasSession = true;
 
         ChaosLog.Info(LogChannel.Save,
-            "已进入存档会话：槽 " + slot + "，payload.version=" + LoadedPayload.version);
+            "已进入存档会话：槽 " + slot + "，payload.version=" + LoadedPayload.version +
+            "，目标场景=" + (string.IsNullOrEmpty(targetSceneName) ? "(未指定)" : targetSceneName));
+    }
+
+    /// <summary>
+    /// 只设置目标场景（不开始会话）。用于「已经进过会话、只是想换个目标场景」的场合。
+    /// 传空等同于清除。
+    /// </summary>
+    public void SetTargetScene(string targetSceneName)
+    {
+        TargetSceneName = string.IsNullOrEmpty(targetSceneName) ? null : targetSceneName;
     }
 
     /// <summary>清掉会话（例如将来「返回主菜单」时）。没有会话时调用是空操作。</summary>
@@ -47,6 +74,7 @@ public class GameSession : SingletonBase<GameSession>
 
         SelectedSlot = 0;
         LoadedPayload = null;
+        TargetSceneName = null;
         HasSession = false;
     }
 }

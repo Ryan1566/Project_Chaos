@@ -51,8 +51,18 @@ public class SLPanel : BasePanel
     /// <summary>`RecordCell` 预制体路径（`Resources` 相对、不带扩展名）。</summary>
     private const string CellPrefabPath = "UIPanels/SubUI_Prefab/RecordCell";
 
-    /// <summary>要切过去的场景名（见 `EditorBuildSettings.scenes`）。</summary>
+    /// <summary>
+    /// **目标场景名**：读条结束后真正要进入的玩法场景。
+    /// 本面板不直接切它，而是写进 `GameSession.TargetSceneName`，由 `LoadingController` 去加载
+    /// （见 `06_加载读条界面落地方案.md` §4）。必须在 `EditorBuildSettings.scenes` 里。
+    /// </summary>
     private const string GameSceneName = "WorldScene";
+
+    /// <summary>
+    /// **读条场景名**：本面板实际切过去的场景。它很小、出现快，负责显示轮播背景 + 进度条，
+    /// 加载完目标场景后再激活。必须在 `EditorBuildSettings.scenes` 里。
+    /// </summary>
+    private const string LoadingSceneName = "LoadingScene";
 
     // ══════════════════ 本地化 Key ══════════════════
 
@@ -453,7 +463,14 @@ public class SLPanel : BasePanel
         EnterGame(slot);
     }
 
-    /// <summary>非空档位开始游戏：读存档 → 写入 `GameSession` → 切场景。</summary>
+    /// <summary>
+    /// 非空档位开始游戏：读存档 → 写入 `GameSession`（含**目标场景名**）→ 切到读条场景。
+    ///
+    /// ══════════════ 为什么不再直接切 WorldScene ══════════════
+    /// 见 `06_加载读条界面落地方案.md` §4：本面板只负责"把目标场景名告诉 `GameSession`"，然后切到
+    /// `LoadingScene`；由 `LoadingController` 去流式加载 `GameSceneName` 并显示读条。
+    /// 这样 `LoadingScene` 对**任意**目标场景都可复用，本面板不必知道加载是怎么做的。
+    /// </summary>
     private void EnterGame(int slot)
     {
         SaveSlotFile file;
@@ -464,17 +481,15 @@ public class SLPanel : BasePanel
             return;
         }
 
-        GameSession.Instance.Begin(slot, file.payload);
+        //把"要进哪个场景"写进跨场景静态单例：LoadingScene 里没有存档信息，只能靠它传过去
+        GameSession.Instance.Begin(slot, file.payload, GameSceneName);
 
-        //⚠ 语义澄清（方案 §决策 9 ③）：TestScene 同时承载 Canvas(主菜单 + 本面板) + Entry +
-        //LocalizationManager，**重载它 ≈ 回到主菜单**（真正的玩法场景尚不存在）。
-        //所以这里的「开始游戏」本轮只是**验证链路通了**，不是真的进了玩法。
         ChaosLog.Info(LogChannel.Save,
-            "开始游戏：槽 " + slot + " → 写入 GameSession，准备切到 " + GameSceneName +
-            "（注意：TestScene 重载 ≈ 回主菜单，本轮只验证链路）");
+            "开始游戏：槽 " + slot + " → 已写入 GameSession（目标场景 " + GameSceneName +
+            "），准备切到读条场景 " + LoadingSceneName);
 
         //R2：ScenesLoadManager.LoadScene 的第 19 行【无条件】调 action()，传 null 必 NRE → 传空委托
-        ScenesLoadManager.Instance.LoadScene(GameSceneName, () => { });
+        ScenesLoadManager.Instance.LoadScene(LoadingSceneName, () => { });
     }
 
     /// <summary>删除选中档位；删完重新选（第一个有文件的档位；都没有 → 槽 1）（验收标准 7）。</summary>
