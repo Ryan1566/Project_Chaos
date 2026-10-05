@@ -191,14 +191,28 @@ public class ConfigManager
             if (endflags[col - 1] == "server" || endflags[col - 1] == "")
                 continue;
 
+            string colType = GetType(workSheet, col);
+            string colField = properties[col - 1];
             string[] temp = GetValues(workSheet, col);
             num = temp.Length;
-            foreach (var value in temp)
+            for (int i = 0; i < temp.Length; i++)
             {
-                str += GetJsonK_VFromKeyAndValues
-                    (
-                    properties[col - 1], Convert(GetType(workSheet, col), value)
-                    ) + ',';
+                string converted;
+                try
+                {
+                    converted = Convert(colType, temp[i]);
+                }
+                catch (Exception ex)
+                {
+                    // 把出错位置的上下文一并抛出：表 / 页签 / Excel 行列 / 字段 / 类型 / 原始取值。
+                    // Convert 只拿得到 (type, value)，定位不到是哪一格；而本项目已经被
+                    // 「静默失败 / 定位不到」坑过多次（空表 return、路径错位、空列 Json 无 key），
+                    // 所以「不支持此类型」「bool 列取值非法」必须能直接指到那一格。
+                    throw new Exception(
+                        $"导出失败：表「{fileName}」页签「{workSheet.Name}」第 {valueIndex + i} 行第 {col} 列"
+                        + $"（字段 {colField}，类型 {colType}）的取值「{temp[i]}」无法转换：{ex.Message}", ex);
+                }
+                str += GetJsonK_VFromKeyAndValues(colField, converted) + ',';
             }
         }
 
@@ -309,28 +323,45 @@ public class ConfigManager
     /// <returns></returns>
     private static string GetType(ExcelWorksheet workSheet,int col)
     {
-        return workSheet.Cells[typeIndex, col].Text;
+        return workSheet.Cells[typeIndex, col].Text.Trim();
     }
 
     /// <summary>
     /// 类型转换
+    ///
+    /// ══════════════ 类型必须同时过两道关 ══════════════
+    /// 1) 必须是【合法的 C# 类型名】—— ExportClass 会把 Excel 第 6 行的文本【原样】当字段类型拼成
+    ///    `public {类型} {字段};`，拼出 `public int32 X;` 这种就直接编译不过；
+    /// 2) 必须能被【UnityEngine.JsonUtility 正确往返】—— 运行时读取链用的是 JsonUtility.FromJson。
+    ///
+    /// 【已移除】int32 / int64 / long long：
+    ///   它们曾是本方法的 case，但 C# 里并不存在这些类型名，生成的类必然编译失败。
+    ///   移除后它们落到 default 分支，在【导出阶段】就以「不支持此类型」明确失败 ——
+    ///   早失败好过"导出看起来成功、实际拿到一堆莫名其妙的编译错误"。
+    ///
+    /// 【已新增】byte / sbyte / short / ushort / bool（均经 JsonUtility 往返实测）。
+    ///
+    /// 【实测后否决，禁止重新加入】
+    ///   · decimal —— JsonUtility 会【静默丢弃】该字段：ToJson 输出里根本没有它，往返后恒为 0。
+    ///     这是"无声错值"，比报错危险得多，所以连试都不要试。
+    ///   · char    —— 能往返，但 JSON 里存成【数字】（'A' → 65），语义极易被误读。
+    ///
+    /// 【bool 为什么要归一化】—— 注意：理由【不是】"JsonUtility 要小写"。
+    ///   架构师实测：JsonUtility 对 bool 的【大小写不敏感】，"TRUE" 它也能解析。
+    ///   真正的理由是：策划表里会填中文，裸的「是」会产出 `"字段":是` —— 这在语法上就【不是合法 JSON】；
+    ///   而 1 / 0 语法上虽是合法 JSON（数字），却不是布尔字面量。
+    ///   所以这里统一归一化成规范的【裸值】true / false（不加引号，绝不能与 string 归到一组加引号）。
     /// </summary>
-    /// <param name="type"></param>
-    /// <param name="value"></param>
-    /// <returns></returns>
-    /// <exception cref="Exception"></exception>
+    /// <param name="type">Excel 第 6 行的类型文本（须是小写类型名）</param>
+    /// <param name="value">单元格文本</param>
+    /// <returns>可直接拼进 Json 的片段（string 会加双引号；bool 归一化为裸的 true/false）</returns>
+    /// <exception cref="Exception">类型不在白名单内；或 bool 列取值无法识别</exception>
     private static string Convert(string type,string value)
     {
         string res = "";
         switch (type)
         {
             case "int":
-                res = value;
-                break;
-            case "int32":
-                res = value;
-                break;
-            case "int64":
                 res = value;
                 break;
             case "uint":
@@ -342,7 +373,10 @@ public class ConfigManager
             case "ulong":
                 res = value;
                 break;
-            case "long long":
+            case "byte":
+            case "sbyte":
+            case "short":
+            case "ushort":
                 res = value;
                 break;
             case "float":
@@ -351,6 +385,17 @@ public class ConfigManager
             case "double":
                 res = value;
                 break;
+            case "bool":
+                {
+                    // 归一化成规范的【裸值】true / false（不加引号，不能与 string 同组）。
+                    // 取值刻意只留 true/false、1/0、是/否（不区分大小写）：
+                    // 多一套同义词（yes/y/no/n）就多一种填错方式。
+                    string v = (value ?? "").Trim().ToLowerInvariant();
+                    if (v == "true" || v == "1" || v == "是") res = "true";
+                    else if (v == "false" || v == "0" || v == "否") res = "false";
+                    else throw new Exception($"bool 列取值非法：'{value}'（应为 true/false、1/0 或 是/否）");
+                    break;
+                }
             case "string":
                 res = $"\"{value}\"";
                 break;
