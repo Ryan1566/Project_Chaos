@@ -1,0 +1,28 @@
+{
+    "datas": [
+        {
+            "Id": 1,
+            "srcImg": "UI/Loading/Loading_01",
+            "sort": 1,
+            "showSeconds": 5,
+            "fadeSeconds": 0.5,
+            "enable": true
+        },
+        {
+            "Id": 2,
+            "srcImg": "UI/Loading/Loading_02",
+            "sort": 2,
+            "showSeconds": 5,
+            "fadeSeconds": 0.5,
+            "enable": true
+        },
+        {
+            "Id": 3,
+            "srcImg": "UI/Loading/Loading_03",
+            "sort": 3,
+            "showSeconds": 5,
+            "fadeSeconds": 0.5,
+            "enable": true
+        }
+    ]
+}
