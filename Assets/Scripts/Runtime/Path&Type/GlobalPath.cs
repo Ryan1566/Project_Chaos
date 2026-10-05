@@ -92,6 +92,7 @@ public static class GlobalPath
     {
         "Assets/Data/Localization/Sub_LD/MainMenuLocalizationConfig.asset",
         "Assets/Data/Localization/Sub_LD/SettingLocalizationConfig.asset",
+        "Assets/Data/Localization/Sub_LD/SLPanelLocalizationConfig.asset",
     };
 
     /// <summary>
@@ -149,5 +150,29 @@ public static class GlobalPath
     /// 导出的Model类持久化数据路径
     /// </summary>
     //public const string data_ModelClassPath = "Scripts/Runtime/MVP/Model/Data/";
+    #endregion
+
+    #region 玩家存档路径
+    /// <summary>
+    /// 玩家存档所在目录，相对 Application.persistentDataPath。
+    ///
+    /// 【为什么不用 data_RecordPath】那是 Excel「Data 模式」的【导出产物】目录
+    /// （ConfigManager.cs 把 Data 写进 data_RecordPath），基准是 Application.dataPath；
+    /// 而玩家存档必须写在 persistentDataPath（打包后 dataPath 只读）。
+    /// 两者是互不相交的链路，详见 04_架构/05_存档槽位系统落地方案.md 第 4 节。
+    /// </summary>
+    public const string save_SlotDir = "Saves";
+
+    /// <summary>
+    /// 存档文件名前缀。完整文件名 = 前缀 + 槽位号 + ".json"（Slot1.json ~ Slot3.json）。
+    /// 只认这几个名字；目录里其它 .json 会被警告并忽略。
+    /// </summary>
+    public const string save_SlotFilePrefix = "Slot";
+
+    /// <summary>
+    /// 固定档位数量：槽位 1..save_SlotCount，永不重排（04_架构/05 决策 5）。
+    /// 改这个数字要同时确认 SaveSlotService.ReadAllSlots 的白名单循环与面板的格子数量。
+    /// </summary>
+    public const int save_SlotCount = 3;
     #endregion
 }

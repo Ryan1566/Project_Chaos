@@ -58,6 +58,55 @@ MonoBehaviour:
     english: File
     japanese: "\u30BB\u30FC\u30D6"
     korean: "\uC800\uC7A5"
+  - key: ui_slpanel_cell_empty
+    description: "\u5B58\u6863\u9762\u677F / \u7A7A\u6863\u4F4D\u683C\u5B50\u7684\u6807\u9898\u3000|\u3000\u6765\u6E90\uFF1ASLPanelLocalizationConfig"
+    chineseSimplified: "\u7A7A\u6863\u4F4D"
+    chineseTraditional: "\u7A7A\u6A94\u4F4D"
+    english: Empty
+    japanese: "\u7A7A\u304D\u30B9\u30ED\u30C3\u30C8"
+    korean: "\uBE48 \uC2AC\uB86F"
+  - key: ui_slpanel_bottombar_deletebtn_label
+    description: "\u5B58\u6863\u9762\u677F / \u5E95\u90E8\u5220\u9664\u6309\u94AE\u3000|\u3000\u6765\u6E90\uFF1ASLPanelLocalizationConfig"
+    chineseSimplified: "\u5220\u9664\u5B58\u6863"
+    chineseTraditional: "\u522A\u9664\u5B58\u6A94"
+    english: Delete Save
+    japanese: "\u30BB\u30FC\u30D6\u3092\u524A\u9664"
+    korean: "\uC138\uC774\uBE0C \uC0AD\uC81C"
+  - key: ui_slpanel_bottombar_returnbtn_label
+    description: "\u5B58\u6863\u9762\u677F / \u5E95\u90E8\u8FD4\u56DE\u6309\u94AE\u3000|\u3000\u6765\u6E90\uFF1ASLPanelLocalizationConfig"
+    chineseSimplified: "\u8FD4\u56DE"
+    chineseTraditional: "\u8FD4\u56DE"
+    english: Back
+    japanese: "\u623B\u308B"
+    korean: "\uB4A4\uB85C"
+  - key: ui_slpanel_confirm_start
+    description: "\u5B58\u6863\u9762\u677F / \u7A7A\u6863\u4F4D\u5F00\u59CB\u6E38\u620F\u7684\u4E8C\u6B21\u786E\u8BA4\u3000|\u3000\u6765\u6E90\uFF1ASLPanelLocalizationConfig"
+    chineseSimplified: "\u662F\u5426\u9009\u62E9\u8BE5\u6863\u4F4D\u5F00\u59CB\u6E38\u620F\uFF1F"
+    chineseTraditional: "\u662F\u5426\u9078\u64C7\u8A72\u6A94\u4F4D\u958B\u59CB\u904A\u6232\uFF1F"
+    english: Start a new game in this slot?
+    japanese: "\u3053\u306E\u30B9\u30ED\u30C3\u30C8\u3067\u30B2\u30FC\u30E0\u3092\u958B\u59CB\u3057\u307E\u3059\u304B\uFF1F"
+    korean: "\uC774 \uC2AC\uB86F\uC5D0\uC11C \uAC8C\uC784\uC744 \uC2DC\uC791\uD558\uC2DC\uACA0\uC2B5\uB2C8\uAE4C?"
+  - key: ui_slpanel_confirm_delete
+    description: "\u5B58\u6863\u9762\u677F / \u5220\u9664\u5B58\u6863\u7684\u4E8C\u6B21\u786E\u8BA4\u3000|\u3000\u6765\u6E90\uFF1ASLPanelLocalizationConfig"
+    chineseSimplified: "\u786E\u5B9A\u5220\u9664\u8BE5\u5B58\u6863\u5417\uFF1F"
+    chineseTraditional: "\u78BA\u5B9A\u522A\u9664\u8A72\u5B58\u6A94\u55CE\uFF1F"
+    english: Delete this save?
+    japanese: "\u3053\u306E\u30BB\u30FC\u30D6\u3092\u524A\u9664\u3057\u307E\u3059\u304B\uFF1F"
+    korean: "\uC774 \uC138\uC774\uBE0C\uB97C \uC0AD\uC81C\uD558\uC2DC\uACA0\uC2B5\uB2C8\uAE4C?"
+  - key: ui_slpanel_confirmgroup_confirmokbtn_label
+    description: "\u5B58\u6863\u9762\u677F / \u4E8C\u6B21\u786E\u8BA4\u7684\u786E\u5B9A\u6309\u94AE\u3000|\u3000\u6765\u6E90\uFF1ASLPanelLocalizationConfig"
+    chineseSimplified: "\u786E\u5B9A"
+    chineseTraditional: "\u78BA\u5B9A"
+    english: OK
+    japanese: OK
+    korean: "\uD655\uC778"
+  - key: ui_slpanel_confirmgroup_confirmcancelbtn_label
+    description: "\u5B58\u6863\u9762\u677F / \u4E8C\u6B21\u786E\u8BA4\u7684\u53D6\u6D88\u6309\u94AE\u3000|\u3000\u6765\u6E90\uFF1ASLPanelLocalizationConfig"
+    chineseSimplified: "\u53D6\u6D88"
+    chineseTraditional: "\u53D6\u6D88"
+    english: Cancel
+    japanese: "\u30AD\u30E3\u30F3\u30BB\u30EB"
+    korean: "\uCDE8\uC18C"
   - key: ui_setting_title
     description: "SettingPanel \u203A Title\u3000|\u3000\u6765\u6E90\uFF1ASettingLocalizationConfig"
     chineseSimplified: "\u8BBE\u7F6E"
