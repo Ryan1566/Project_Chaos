@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.project-infra",
+  "updated_at": "2026-10-06T11:58:42.533Z",
+  "mode": "groups",
+  "max_columns": 4,
+  "reading": {
+    "zh": "四簇：先包依赖与工程设置（基线），再第三方插件（Spine / DOTween / DLL），然后 Python 生成脚本与其产出的说明文档，最后仓库与 Agent 协作事项。跨簇箭头表示插件/脚本对资产的引用。",
+    "en": "Four clusters: packages+settings baseline, third-party plugins, the Python docs pipeline and its output manuals, then repo/agent ops. Cross-cluster arrows show plugin and script references."
+  },
+  "order": [
+    "project-chaos.project-infra.packages",
+    "project-chaos.project-infra.project-settings",
+    "project-chaos.project-infra.plugins-spine",
+    "project-chaos.project-infra.plugins-spine-examples",
+    "project-chaos.project-infra.plugins-dotween",
+    "project-chaos.project-infra.plugins-dlls",
+    "project-chaos.project-infra.python-docs",
+    "project-chaos.project-infra.learn-manuals",
+    "project-chaos.project-infra.agent-config",
+    "project-chaos.project-infra.agent-workspace",
+    "project-chaos.project-infra.git-helper",
+    "project-chaos.project-infra.repo-root"
+  ],
+  "groups": [
+    {
+      "id": "config",
+      "title": {
+        "zh": "包与工程设置",
+        "en": "Packages & Settings"
+      },
+      "children": [
+        "project-chaos.project-infra.packages",
+        "project-chaos.project-infra.project-settings"
+      ]
+    },
+    {
+      "id": "plugins",
+      "title": {
+        "zh": "第三方插件",
+        "en": "Third-Party Plugins"
+      },
+      "children": [
+        "project-chaos.project-infra.plugins-spine",
+        "project-chaos.project-infra.plugins-spine-examples",
+        "project-chaos.project-infra.plugins-dotween",
+        "project-chaos.project-infra.plugins-dlls"
+      ]
+    },
+    {
+      "id": "docs",
+      "title": {
+        "zh": "文档流水线",
+        "en": "Docs Pipeline"
+      },
+      "children": [
+        "project-chaos.project-infra.python-docs",
+        "project-chaos.project-infra.learn-manuals"
+      ]
+    },
+    {
+      "id": "ops",
+      "title": {
+        "zh": "仓库与协作",
+        "en": "Repo & Agent Ops"
+      },
+      "children": [
+        "project-chaos.project-infra.agent-config",
+        "project-chaos.project-infra.agent-workspace",
+        "project-chaos.project-infra.git-helper",
+        "project-chaos.project-infra.repo-root"
+      ]
+    }
+  ]
+}

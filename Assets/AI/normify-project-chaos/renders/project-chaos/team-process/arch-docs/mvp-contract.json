@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.team-process.arch-docs.mvp-contract",
+  "updated_at": "2026-10-06T11:56:19.658Z",
+  "mode": "layers",
+  "max_columns": 3,
+  "reading": {
+    "zh": "先读契约（分层与 Presenter），再看数据怎么流，最后是按风险排序的落地路线。",
+    "en": "Contract first (layers and Presenter), then how data flows, then the risk-ordered landing roadmap."
+  },
+  "order": [
+    "project-chaos.team-process.arch-docs.mvp-contract.layers",
+    "project-chaos.team-process.arch-docs.mvp-contract.data-flow",
+    "project-chaos.team-process.arch-docs.mvp-contract.roadmap"
+  ]
+}

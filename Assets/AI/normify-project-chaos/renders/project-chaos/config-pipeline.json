@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.config-pipeline",
+  "updated_at": "2026-10-06T12:00:44.784Z",
+  "mode": "groups",
+  "reading": {
+    "zh": "按链路读：源表/文案表 → 导出器（类型白名单逐格把关）→ 生成 Json 与数据类 → 运行时 ConfigLoader/Recorder 读它们并把可写数据写回 .record。注意 config-pipeline 不得指向 editor-tools（policy 强制）。",
+    "en": "Follow the chain: source tables, exporter (type whitelist gates every cell), generated JSON and classes, then runtime loading and .record saves. Note config-pipeline must never depend on editor-tools."
+  },
+  "order": [
+    "project-chaos.config-pipeline.table-repo",
+    "project-chaos.config-pipeline.localization-sheets",
+    "project-chaos.config-pipeline.exporter",
+    "project-chaos.config-pipeline.type-whitelist",
+    "project-chaos.config-pipeline.generated-json",
+    "project-chaos.config-pipeline.generated-models",
+    "project-chaos.config-pipeline.runtime-load",
+    "project-chaos.config-pipeline.record-store"
+  ],
+  "groups": [
+    {
+      "id": "sources",
+      "title": {
+        "zh": "源表与文案表",
+        "en": "Source Tables"
+      },
+      "children": [
+        "project-chaos.config-pipeline.table-repo",
+        "project-chaos.config-pipeline.localization-sheets"
+      ]
+    },
+    {
+      "id": "codegen",
+      "title": {
+        "zh": "导出与类型门禁",
+        "en": "Export and Type Gate"
+      },
+      "children": [
+        "project-chaos.config-pipeline.exporter",
+        "project-chaos.config-pipeline.type-whitelist"
+      ]
+    },
+    {
+      "id": "outputs",
+      "title": {
+        "zh": "生成物",
+        "en": "Artifacts"
+      },
+      "children": [
+        "project-chaos.config-pipeline.generated-json",
+        "project-chaos.config-pipeline.generated-models"
+      ]
+    },
+    {
+      "id": "runtime",
+      "title": {
+        "zh": "运行时读取与存档",
+        "en": "Runtime and Saves"
+      },
+      "children": [
+        "project-chaos.config-pipeline.runtime-load",
+        "project-chaos.config-pipeline.record-store"
+      ]
+    }
+  ]
+}

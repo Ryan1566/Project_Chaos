@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.assets.misc-resources",
+  "updated_at": "2026-10-06T11:58:42.305Z",
+  "mode": "grid",
+  "max_columns": 2,
+  "reading": {
+    "zh": "两格互相独立：左侧测试 Cube 是沙箱遗留，右侧 DOTween 设置被 DOTween 运行时读取。",
+    "en": "Two independent boxes: the test cube on the left is sandbox leftover; the DOTween settings on the right are read by the DOTween runtime."
+  },
+  "order": [
+    "project-chaos.assets.misc-resources.test-cube",
+    "project-chaos.assets.misc-resources.dotween-settings"
+  ]
+}

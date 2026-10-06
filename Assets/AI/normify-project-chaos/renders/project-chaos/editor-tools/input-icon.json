@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.editor-tools.input-icon",
+  "updated_at": "2026-10-06T12:01:11.867Z",
+  "mode": "groups",
+  "reading": {
+    "zh": "先由命名规则把 Art/icon 的文件名解析成控制键，窗口据此自动匹配映射表，再把图标位补到预制体按键行上。",
+    "en": "The naming rules first turn Art/icon file names into control keys, the window auto-matches them into the map, and the patcher adds icon slots to prefab key rows."
+  },
+  "order": [
+    "project-chaos.editor-tools.input-icon.icon-naming",
+    "project-chaos.editor-tools.input-icon.keymap-window",
+    "project-chaos.editor-tools.input-icon.keymap-prefab-patch"
+  ],
+  "groups": [
+    {
+      "id": "naming",
+      "title": {
+        "zh": "命名规则",
+        "en": "Naming Rules"
+      },
+      "children": [
+        "project-chaos.editor-tools.input-icon.icon-naming"
+      ]
+    },
+    {
+      "id": "mapping",
+      "title": {
+        "zh": "映射与补位",
+        "en": "Mapping and Patching"
+      },
+      "children": [
+        "project-chaos.editor-tools.input-icon.keymap-window",
+        "project-chaos.editor-tools.input-icon.keymap-prefab-patch"
+      ]
+    }
+  ],
+  "edge_hints": [
+    {
+      "from": "project-chaos.editor-tools.input-icon.keymap-window",
+      "to": "project-chaos.editor-tools.input-icon.icon-naming"
+    },
+    {
+      "from": "project-chaos.editor-tools.input-icon.keymap-prefab-patch",
+      "to": "project-chaos.editor-tools.input-icon.icon-naming",
+      "lane": 2
+    }
+  ]
+}

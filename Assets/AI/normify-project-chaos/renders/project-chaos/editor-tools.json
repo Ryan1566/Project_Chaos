@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.editor-tools",
+  "updated_at": "2026-10-06T12:00:36.189Z",
+  "mode": "groups",
+  "reading": {
+    "zh": "四个分组对应日常动作：内容编辑（本地化文案、剧情对话）→ 工作流与场景（Git 拉取、Scene 视图 UI 分离）→ 美术与图标管线（图集、按键图标）→ 预制体与插件设置。点开任一项继续下钻到具体窗口与代码行段。",
+    "en": "Four groups map to daily actions: content editing (localization text, dialogue), workflow and scene (Git pull, scene-view UI separation), art and icon pipeline (atlas, key icons), prefab and plugin settings. Drill into any of them for windows and code ranges."
+  },
+  "order": [
+    "project-chaos.editor-tools.localization",
+    "project-chaos.editor-tools.dialogue-editor",
+    "project-chaos.editor-tools.git",
+    "project-chaos.editor-tools.scene-ui-overview",
+    "project-chaos.editor-tools.art-pipeline",
+    "project-chaos.editor-tools.input-icon",
+    "project-chaos.editor-tools.ui-animator",
+    "project-chaos.editor-tools.spine-settings"
+  ],
+  "groups": [
+    {
+      "id": "content-editing",
+      "title": {
+        "zh": "内容编辑",
+        "en": "Content Editing"
+      },
+      "children": [
+        "project-chaos.editor-tools.localization",
+        "project-chaos.editor-tools.dialogue-editor"
+      ]
+    },
+    {
+      "id": "workflow-scene",
+      "title": {
+        "zh": "工作流与场景",
+        "en": "Workflow and Scene"
+      },
+      "children": [
+        "project-chaos.editor-tools.git",
+        "project-chaos.editor-tools.scene-ui-overview"
+      ]
+    },
+    {
+      "id": "art-icon",
+      "title": {
+        "zh": "美术与图标管线",
+        "en": "Art and Icon Pipeline"
+      },
+      "children": [
+        "project-chaos.editor-tools.art-pipeline",
+        "project-chaos.editor-tools.input-icon"
+      ]
+    },
+    {
+      "id": "prefab-plugin",
+      "title": {
+        "zh": "预制体与插件设置",
+        "en": "Prefab and Plugin Settings"
+      },
+      "children": [
+        "project-chaos.editor-tools.ui-animator",
+        "project-chaos.editor-tools.spine-settings"
+      ]
+    }
+  ]
+}

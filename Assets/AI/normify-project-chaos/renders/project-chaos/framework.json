@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.framework",
+  "updated_at": "2026-10-06T12:00:21.273Z",
+  "mode": "groups",
+  "reading": {
+    "zh": "按“先用后玩”读：左组是路径/日志/事件/资源/对象池等全局底座，第二组是 UI 与输入，第三组是本地化与设置，最后一组是音频、存档、对话与自测脚本；箭头是子模块之间的调用/引用关系。",
+    "en": "Read left to right: global foundations (paths, logging, events, resources, pool), then UI & input, then localization & settings, and finally audio, save, dialogue and dev-test probes. Arrows are call/reference links between the submodules."
+  },
+  "order": [
+    "project-chaos.framework.paths",
+    "project-chaos.framework.logging",
+    "project-chaos.framework.events",
+    "project-chaos.framework.resources",
+    "project-chaos.framework.pool",
+    "project-chaos.framework.ui",
+    "project-chaos.framework.ui-animation",
+    "project-chaos.framework.input",
+    "project-chaos.framework.input-icons",
+    "project-chaos.framework.localization",
+    "project-chaos.framework.settings",
+    "project-chaos.framework.setting-rows",
+    "project-chaos.framework.audio",
+    "project-chaos.framework.save",
+    "project-chaos.framework.dialogue",
+    "project-chaos.framework.dev-tests"
+  ],
+  "groups": [
+    {
+      "id": "base",
+      "title": {
+        "zh": "常量与基础设施",
+        "en": "Constants & Infrastructure"
+      },
+      "children": [
+        "project-chaos.framework.paths",
+        "project-chaos.framework.logging",
+        "project-chaos.framework.events",
+        "project-chaos.framework.resources",
+        "project-chaos.framework.pool"
+      ]
+    },
+    {
+      "id": "ui-input",
+      "title": {
+        "zh": "UI 与输入",
+        "en": "UI & Input"
+      },
+      "children": [
+        "project-chaos.framework.ui",
+        "project-chaos.framework.ui-animation",
+        "project-chaos.framework.input",
+        "project-chaos.framework.input-icons"
+      ]
+    },
+    {
+      "id": "data",
+      "title": {
+        "zh": "本地化与设置",
+        "en": "Localization & Settings"
+      },
+      "children": [
+        "project-chaos.framework.localization",
+        "project-chaos.framework.settings",
+        "project-chaos.framework.setting-rows"
+      ]
+    },
+    {
+      "id": "gameplay",
+      "title": {
+        "zh": "音频、存档、对话与自测",
+        "en": "Audio, Save, Dialogue & Tests"
+      },
+      "children": [
+        "project-chaos.framework.audio",
+        "project-chaos.framework.save",
+        "project-chaos.framework.dialogue",
+        "project-chaos.framework.dev-tests"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.framework.localization",
+  "updated_at": "2026-10-06T12:00:33.523Z",
+  "mode": "groups",
+  "reading": {
+    "zh": "从左到右：语言枚举与条目 → 配置资产 → 管理器与取词 → LocalizedText 组件落地 → 字体映射与应用 → 设置选项 Key 表。语言切换事件从管理器广播给文本与字体组件。",
+    "en": "Left to right: language enum and entries, the config asset, manager and lookup, the LocalizedText component, font mapping/application and the setting option key table. The language-changed event flows from the manager to text and font components."
+  },
+  "order": [
+    "project-chaos.framework.localization.entry",
+    "project-chaos.framework.localization.config",
+    "project-chaos.framework.localization.manager",
+    "project-chaos.framework.localization.manager-lookup",
+    "project-chaos.framework.localization.localized-text",
+    "project-chaos.framework.localization.font-map",
+    "project-chaos.framework.localization.text-font",
+    "project-chaos.framework.localization.text-font-apply",
+    "project-chaos.framework.localization.setting-keys"
+  ],
+  "groups": [
+    {
+      "id": "data",
+      "title": {
+        "zh": "数据与配置",
+        "en": "Data & Config"
+      },
+      "children": [
+        "project-chaos.framework.localization.entry",
+        "project-chaos.framework.localization.config"
+      ]
+    },
+    {
+      "id": "runtime",
+      "title": {
+        "zh": "运行时取词",
+        "en": "Runtime Lookup"
+      },
+      "children": [
+        "project-chaos.framework.localization.manager",
+        "project-chaos.framework.localization.manager-lookup",
+        "project-chaos.framework.localization.localized-text"
+      ]
+    },
+    {
+      "id": "font",
+      "title": {
+        "zh": "字体映射",
+        "en": "Font Mapping"
+      },
+      "children": [
+        "project-chaos.framework.localization.font-map",
+        "project-chaos.framework.localization.text-font",
+        "project-chaos.framework.localization.text-font-apply"
+      ]
+    },
+    {
+      "id": "keys",
+      "title": {
+        "zh": "设置选项 Key",
+        "en": "Setting Option Keys"
+      },
+      "children": [
+        "project-chaos.framework.localization.setting-keys"
+      ]
+    }
+  ]
+}

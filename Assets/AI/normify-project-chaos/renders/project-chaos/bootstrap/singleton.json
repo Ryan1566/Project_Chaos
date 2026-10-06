@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.bootstrap.singleton",
+  "updated_at": "2026-10-06T11:58:31.095Z",
+  "mode": "grid",
+  "max_columns": 3,
+  "reading": {
+    "zh": "三种单例形态并列，按“要不要 MonoBehaviour”递增：base 供普通 C# 类（懒 new）、mono 需手动挂到场景、auto-mono 首次取值时自动建对象并跨场景保留。",
+    "en": "Three singleton flavours side by side, increasing in MonoBehaviour-ness: base for plain C# classes (lazy new), mono requires manual placement, auto-mono creates its own object and survives scenes."
+  },
+  "order": [
+    "project-chaos.bootstrap.singleton.base",
+    "project-chaos.bootstrap.singleton.mono",
+    "project-chaos.bootstrap.singleton.auto-mono"
+  ]
+}

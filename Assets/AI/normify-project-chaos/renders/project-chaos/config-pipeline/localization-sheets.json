@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.config-pipeline.localization-sheets",
+  "updated_at": "2026-10-06T12:01:12.363Z",
+  "mode": "grid",
+  "max_columns": 2,
+  "reading": {
+    "zh": "两张 CSV 是本地化编辑器导出/导入的交换格式，内容为派生产物：改文案要回到配置资产再导出，不要直接改 CSV。",
+    "en": "These two CSVs are the interchange format used by the localization editor's export/import. They are derived artifacts: edit the config asset and re-export instead of editing the CSV."
+  },
+  "order": [
+    "project-chaos.config-pipeline.localization-sheets.main-menu",
+    "project-chaos.config-pipeline.localization-sheets.settings"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.framework.paths",
+  "updated_at": "2026-10-06T12:00:21.533Z",
+  "mode": "grid",
+  "reading": {
+    "zh": "两个常量文件：GlobalPath 管磁盘/资源路径，PanelType 管面板类型的枚举；全工程其它模块都指向它们取证。",
+    "en": "Two constant files: GlobalPath holds disk/resource paths, PanelType the panel-type enum. Most other framework modules point here for evidence."
+  },
+  "order": [
+    "project-chaos.framework.paths.global-path",
+    "project-chaos.framework.paths.panel-type"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.project-infra.learn-manuals",
+  "updated_at": "2026-10-06T11:58:48.773Z",
+  "mode": "grid",
+  "max_columns": 2,
+  "reading": {
+    "zh": "左为系统使用类说明（日志/面板动画/Scene 分离/本地化），右为管线类说明（Excel 配置表工具/MVP 分层）；两者都被 python-docs 的脚本写入或校验。",
+    "en": "Left: system guides (logging, panel animation, scene-view UI, localization). Right: pipeline guides (Excel tool, MVP layers). Both are written or checked by the python-docs scripts."
+  },
+  "order": [
+    "project-chaos.project-infra.learn-manuals.system-guides",
+    "project-chaos.project-infra.learn-manuals.pipeline-guides"
+  ]
+}

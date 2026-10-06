@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.team-process.arch-docs",
+  "updated_at": "2026-10-06T11:55:47.192Z",
+  "mode": "groups",
+  "max_columns": 3,
+  "reading": {
+    "zh": "从左到右：实测现状核查 → 目标蓝图/路径规范/MVP 契约 → 各功能落地方案。",
+    "en": "Left to right: measured as-is audit → target blueprint/rules/MVP contract → per-feature landing plans."
+  },
+  "order": [
+    "project-chaos.team-process.arch-docs.as-is-findings",
+    "project-chaos.team-process.arch-docs.as-is-evidence",
+    "project-chaos.team-process.arch-docs.blueprint",
+    "project-chaos.team-process.arch-docs.path-naming",
+    "project-chaos.team-process.arch-docs.mvp-contract",
+    "project-chaos.team-process.arch-docs.save-slot-plan",
+    "project-chaos.team-process.arch-docs.loading-screen-plan"
+  ],
+  "groups": [
+    {
+      "id": "as-is",
+      "title": {
+        "zh": "现状核查",
+        "en": "As-Is audit"
+      },
+      "children": [
+        "project-chaos.team-process.arch-docs.as-is-findings",
+        "project-chaos.team-process.arch-docs.as-is-evidence"
+      ]
+    },
+    {
+      "id": "to-be",
+      "title": {
+        "zh": "目标与规范",
+        "en": "To-Be rules"
+      },
+      "children": [
+        "project-chaos.team-process.arch-docs.blueprint",
+        "project-chaos.team-process.arch-docs.path-naming",
+        "project-chaos.team-process.arch-docs.mvp-contract"
+      ]
+    },
+    {
+      "id": "features",
+      "title": {
+        "zh": "功能落地方案",
+        "en": "Feature landing plans"
+      },
+      "children": [
+        "project-chaos.team-process.arch-docs.save-slot-plan",
+        "project-chaos.team-process.arch-docs.loading-screen-plan"
+      ]
+    }
+  ]
+}

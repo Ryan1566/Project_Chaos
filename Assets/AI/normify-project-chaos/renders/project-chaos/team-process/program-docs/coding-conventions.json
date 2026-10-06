@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.team-process.program-docs.coding-conventions",
+  "updated_at": "2026-10-06T11:56:19.897Z",
+  "mode": "layers",
+  "max_columns": 4,
+  "reading": {
+    "zh": "按实际需要顺序：编码 → 生成物/.meta → 命名空间与编译门禁 → MCP 规则与交接自检。",
+    "en": "Rules in the order you need them: encodings, generated artifacts/.meta, namespaces and the compile gate, then MCP rules and the handoff checklist."
+  },
+  "order": [
+    "project-chaos.team-process.program-docs.coding-conventions.encodings",
+    "project-chaos.team-process.program-docs.coding-conventions.generated-and-meta",
+    "project-chaos.team-process.program-docs.coding-conventions.editor-assembly-gate",
+    "project-chaos.team-process.program-docs.coding-conventions.mcp-and-checklist"
+  ]
+}

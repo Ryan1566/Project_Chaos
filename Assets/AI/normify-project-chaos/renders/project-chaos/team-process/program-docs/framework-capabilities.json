@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.team-process.program-docs.framework-capabilities",
+  "updated_at": "2026-10-06T11:56:19.775Z",
+  "mode": "grid",
+  "max_columns": 4,
+  "reading": {
+    "zh": "同一份文档按章节顺序拆分：范围与程序集 → 各 GameBase 子系统 → 末尾的实测附录与给架构师的阻塞清单。",
+    "en": "One document split by chapter in original order: scope/assemblies, then each GameBase subsystem, ending with the measured appendix and the architect blocker list."
+  },
+  "order": [
+    "project-chaos.team-process.program-docs.framework-capabilities.scope",
+    "project-chaos.team-process.program-docs.framework-capabilities.events",
+    "project-chaos.team-process.program-docs.framework-capabilities.singletons-and-mono",
+    "project-chaos.team-process.program-docs.framework-capabilities.resources-and-scenes",
+    "project-chaos.team-process.program-docs.framework-capabilities.ui-panels",
+    "project-chaos.team-process.program-docs.framework-capabilities.audio-and-pool",
+    "project-chaos.team-process.program-docs.framework-capabilities.input-and-icons",
+    "project-chaos.team-process.program-docs.framework-capabilities.settings",
+    "project-chaos.team-process.program-docs.framework-capabilities.localization",
+    "project-chaos.team-process.program-docs.framework-capabilities.dialogue-and-logging",
+    "project-chaos.team-process.program-docs.framework-capabilities.config-and-save",
+    "project-chaos.team-process.program-docs.framework-capabilities.rows-and-evidence"
+  ]
+}

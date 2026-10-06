@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.editor-tools.scene-ui-overview",
+  "updated_at": "2026-10-06T12:00:36.797Z",
+  "mode": "layers",
+  "max_columns": 3,
+  "reading": {
+    "zh": "开关与对象级隐藏是主干，预览面板把 Canvas 画到视图左侧，隐藏账本负责跨 Unity 重启的自愈。Play 期间只跑前两块。",
+    "en": "The toggle plus object-level hiding are the trunk, the preview panel draws canvases into the left of the view, and the ledger heals orphan hidden objects across editor restarts. During play only the first two run."
+  },
+  "order": [
+    "project-chaos.editor-tools.scene-ui-overview.overview-core",
+    "project-chaos.editor-tools.scene-ui-overview.preview-panel",
+    "project-chaos.editor-tools.scene-ui-overview.hidden-ledger"
+  ],
+  "edge_hints": [
+    {
+      "from": "project-chaos.editor-tools.scene-ui-overview.overview-core",
+      "to": "project-chaos.editor-tools.scene-ui-overview.preview-panel"
+    },
+    {
+      "from": "project-chaos.editor-tools.scene-ui-overview.overview-core",
+      "to": "project-chaos.editor-tools.scene-ui-overview.hidden-ledger",
+      "lane": 2,
+      "style": "curve"
+    }
+  ]
+}

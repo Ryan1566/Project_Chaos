@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.framework.logging",
+  "updated_at": "2026-10-06T12:00:34.225Z",
+  "mode": "groups",
+  "reading": {
+    "zh": "调用方从右往左看：业务代码用 levels 的快捷方法或 Write 起一条链式日志，链式构建器经频道/颜色着色后交给 core 输出；config/channels/colors 是这三条链路依赖的配置表。",
+    "en": "Read right to left for callers: business code uses the level shortcuts or Write to start a fluent line, the builder colors it via channel/color tables and core emits it. Config, channels and colors are the tables those paths depend on."
+  },
+  "order": [
+    "project-chaos.framework.logging.config",
+    "project-chaos.framework.logging.channels",
+    "project-chaos.framework.logging.colors",
+    "project-chaos.framework.logging.builder-chain",
+    "project-chaos.framework.logging.builder-emit",
+    "project-chaos.framework.logging.core",
+    "project-chaos.framework.logging.levels",
+    "project-chaos.framework.logging.bootstrap"
+  ],
+  "groups": [
+    {
+      "id": "meta",
+      "title": {
+        "zh": "配置与频道",
+        "en": "Config & Channels"
+      },
+      "children": [
+        "project-chaos.framework.logging.config",
+        "project-chaos.framework.logging.channels",
+        "project-chaos.framework.logging.colors"
+      ]
+    },
+    {
+      "id": "builder",
+      "title": {
+        "zh": "链式构建器",
+        "en": "Fluent Builder"
+      },
+      "children": [
+        "project-chaos.framework.logging.builder-chain",
+        "project-chaos.framework.logging.builder-emit"
+      ]
+    },
+    {
+      "id": "emit",
+      "title": {
+        "zh": "输出与等级",
+        "en": "Emit & Levels"
+      },
+      "children": [
+        "project-chaos.framework.logging.core",
+        "project-chaos.framework.logging.levels"
+      ]
+    },
+    {
+      "id": "boot",
+      "title": {
+        "zh": "启动引导",
+        "en": "Bootstrap"
+      },
+      "children": [
+        "project-chaos.framework.logging.bootstrap"
+      ]
+    }
+  ]
+}

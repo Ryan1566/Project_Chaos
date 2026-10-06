@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.config-pipeline.exporter",
+  "updated_at": "2026-10-06T12:01:20.982Z",
+  "mode": "groups",
+  "reading": {
+    "zh": "从菜单入口进入：先按 7 行表头约定读表（行号常量硬编码），再分两路产出——数据类生成器，以及 Json 写出（键值拼装 → 美化）；最后经 FileUtil 写盘，它不会替你建目录。",
+    "en": "Start at the menu entry: read tables per the 7-row header contract (row indices hard-coded), then emit along two paths - the class generator and the JSON writer (pair assembly, then pretty-printing) - and finally save through FileUtil, which never creates folders for you."
+  },
+  "order": [
+    "project-chaos.config-pipeline.exporter.export-menu",
+    "project-chaos.config-pipeline.exporter.row-schema",
+    "project-chaos.config-pipeline.exporter.class-generator",
+    "project-chaos.config-pipeline.exporter.json-writer",
+    "project-chaos.config-pipeline.exporter.json-builder",
+    "project-chaos.config-pipeline.exporter.json-formatter",
+    "project-chaos.config-pipeline.exporter.file-io"
+  ],
+  "groups": [
+    {
+      "id": "entry",
+      "title": {
+        "zh": "菜单入口",
+        "en": "Menu Entry"
+      },
+      "children": [
+        "project-chaos.config-pipeline.exporter.export-menu"
+      ]
+    },
+    {
+      "id": "table-io",
+      "title": {
+        "zh": "读表与文件读写",
+        "en": "Table Reading and File IO"
+      },
+      "children": [
+        "project-chaos.config-pipeline.exporter.row-schema",
+        "project-chaos.config-pipeline.exporter.file-io"
+      ]
+    },
+    {
+      "id": "emit",
+      "title": {
+        "zh": "类与 Json 生成",
+        "en": "Code and JSON Emitters"
+      },
+      "children": [
+        "project-chaos.config-pipeline.exporter.class-generator",
+        "project-chaos.config-pipeline.exporter.json-writer",
+        "project-chaos.config-pipeline.exporter.json-builder",
+        "project-chaos.config-pipeline.exporter.json-formatter"
+      ]
+    }
+  ],
+  "edge_hints": [
+    {
+      "from": "project-chaos.config-pipeline.exporter.export-menu",
+      "to": "project-chaos.config-pipeline.exporter.class-generator"
+    },
+    {
+      "from": "project-chaos.config-pipeline.exporter.export-menu",
+      "to": "project-chaos.config-pipeline.exporter.json-writer"
+    },
+    {
+      "from": "project-chaos.config-pipeline.exporter.class-generator",
+      "to": "project-chaos.config-pipeline.exporter.row-schema",
+      "lane": 3
+    },
+    {
+      "from": "project-chaos.config-pipeline.exporter.json-writer",
+      "to": "project-chaos.config-pipeline.exporter.row-schema",
+      "lane": 2
+    },
+    {
+      "from": "project-chaos.config-pipeline.exporter.json-writer",
+      "to": "project-chaos.config-pipeline.exporter.json-builder",
+      "lane": 1
+    },
+    {
+      "from": "project-chaos.config-pipeline.exporter.json-writer",
+      "to": "project-chaos.config-pipeline.exporter.json-formatter",
+      "lane": 1,
+      "style": "curve"
+    }
+  ]
+}

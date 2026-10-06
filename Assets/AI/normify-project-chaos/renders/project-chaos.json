@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos",
+  "updated_at": "2026-10-06T11:50:56.745Z",
+  "mode": "groups",
+  "max_columns": 4,
+  "reading": {
+    "zh": "第一组是运行时代码：启动骨架 → 框架服务 → MVP 视图（调用方向从左到右）；第二组是数据与工具（配置表管线、编辑器工具）；第三组是资产与工程基建；第四组是团队协作契约与文档。箭头代表调用/引用。",
+    "en": "Left to right: runtime code (bootstrap → framework services → MVP views), data & tooling (config pipeline, editor tools), assets & project infra, then team process docs. Arrows are call/reference direction."
+  },
+  "order": [
+    "project-chaos.bootstrap",
+    "project-chaos.framework",
+    "project-chaos.mvp",
+    "project-chaos.config-pipeline",
+    "project-chaos.editor-tools",
+    "project-chaos.assets",
+    "project-chaos.project-infra",
+    "project-chaos.team-process"
+  ],
+  "groups": [
+    {
+      "id": "runtime",
+      "title": {
+        "zh": "运行时代码",
+        "en": "Runtime code"
+      },
+      "children": [
+        "project-chaos.bootstrap",
+        "project-chaos.framework",
+        "project-chaos.mvp"
+      ]
+    },
+    {
+      "id": "data-tools",
+      "title": {
+        "zh": "数据与工具",
+        "en": "Data & tooling"
+      },
+      "children": [
+        "project-chaos.config-pipeline",
+        "project-chaos.editor-tools"
+      ]
+    },
+    {
+      "id": "assets-infra",
+      "title": {
+        "zh": "资产与工程",
+        "en": "Assets & infra"
+      },
+      "children": [
+        "project-chaos.assets",
+        "project-chaos.project-infra"
+      ]
+    },
+    {
+      "id": "process",
+      "title": {
+        "zh": "协作与文档",
+        "en": "Process & docs"
+      },
+      "children": [
+        "project-chaos.team-process"
+      ]
+    }
+  ]
+}

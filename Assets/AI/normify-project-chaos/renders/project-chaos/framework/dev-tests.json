@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.framework.dev-tests",
+  "updated_at": "2026-10-06T12:00:41.352Z",
+  "mode": "grid",
+  "reading": {
+    "zh": "五组 OnGUI/启动探针，分别验证音频、配置与存档、输入、对象池、UI；都挂在 TestScene 的 GameManager 上但当前 enabled=false，需手工开启才能跑。",
+    "en": "Five OnGUI/startup probes for audio, config & save, input, pool and UI. They sit on TestScene's GameManager but are all disabled, so they must be enabled to run."
+  },
+  "order": [
+    "project-chaos.framework.dev-tests.audio-probes",
+    "project-chaos.framework.dev-tests.config-probes",
+    "project-chaos.framework.dev-tests.input-probe",
+    "project-chaos.framework.dev-tests.pool-probes",
+    "project-chaos.framework.dev-tests.ui-probes"
+  ]
+}

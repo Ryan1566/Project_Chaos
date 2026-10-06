@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.assets.fonts",
+  "updated_at": "2026-10-06T11:58:33.969Z",
+  "mode": "grid",
+  "max_columns": 4,
+  "reading": {
+    "zh": "四种语言各一格，每格同时保留原始 TTF/TTC 与生成出的 TMP SDF 资产；箭头指向 TMP 全局设置（本地化字体受其管辖）。",
+    "en": "One box per language, each holding the raw TTF/TTC plus the generated TMP SDF asset; the arrow goes to TMP Settings, which governs these fonts."
+  },
+  "order": [
+    "project-chaos.assets.fonts.cn",
+    "project-chaos.assets.fonts.en",
+    "project-chaos.assets.fonts.jp",
+    "project-chaos.assets.fonts.kr"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.framework.resources",
+  "updated_at": "2026-10-06T12:00:40.738Z",
+  "mode": "auto",
+  "reading": {
+    "zh": "单模块：ResManager 是 Resources.Load/LoadAsync 的薄封装；注意 Load<GameObject> 已内部 Instantiate，调用方不要再实例化一次。",
+    "en": "Single module: ResManager wraps Resources.Load/LoadAsync. Note Load<GameObject> already instantiates, so callers must not instantiate again."
+  },
+  "order": [
+    "project-chaos.framework.resources.manager"
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.project-infra.project-settings",
+  "updated_at": "2026-10-06T11:58:42.772Z",
+  "mode": "groups",
+  "max_columns": 3,
+  "reading": {
+    "zh": "三簇各两格：先工程身份与输入/物理，再渲染与音频时序，最后服务开关与编辑器工具链；本层无内部箭头（各文件互不引用）。",
+    "en": "Three pairs: identity+input/physics, rendering+audio/time, then services+editor toolchain. No internal arrows — these files do not reference each other."
+  },
+  "order": [
+    "project-chaos.project-infra.project-settings.core",
+    "project-chaos.project-infra.project-settings.input-physics",
+    "project-chaos.project-infra.project-settings.rendering",
+    "project-chaos.project-infra.project-settings.audio-time",
+    "project-chaos.project-infra.project-settings.services",
+    "project-chaos.project-infra.project-settings.editor-misc"
+  ],
+  "groups": [
+    {
+      "id": "identity",
+      "title": {
+        "zh": "身份与仿真",
+        "en": "Identity & Simulation"
+      },
+      "children": [
+        "project-chaos.project-infra.project-settings.core",
+        "project-chaos.project-infra.project-settings.input-physics"
+      ]
+    },
+    {
+      "id": "runtime",
+      "title": {
+        "zh": "运行时表现",
+        "en": "Runtime Quality"
+      },
+      "children": [
+        "project-chaos.project-infra.project-settings.rendering",
+        "project-chaos.project-infra.project-settings.audio-time"
+      ]
+    },
+    {
+      "id": "toolchain",
+      "title": {
+        "zh": "服务与工具链",
+        "en": "Services & Toolchain"
+      },
+      "children": [
+        "project-chaos.project-infra.project-settings.services",
+        "project-chaos.project-infra.project-settings.editor-misc"
+      ]
+    }
+  ]
+}

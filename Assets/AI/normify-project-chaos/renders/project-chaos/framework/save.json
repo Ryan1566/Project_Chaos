@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.framework.save",
+  "updated_at": "2026-10-06T12:00:40.950Z",
+  "mode": "groups",
+  "reading": {
+    "zh": "从左到右：先看存档数据结构，再看服务读取（恒返 3 槽）与写入（保存/新建/删除），最后是跨场景传递选中槽与负载的 GameSession。",
+    "en": "Left to right: the save data types, the service read side (always 3 slots), the write side (save/create/delete), and finally GameSession carrying the selected slot and payload across scenes."
+  },
+  "order": [
+    "project-chaos.framework.save.slot-data",
+    "project-chaos.framework.save.service-read",
+    "project-chaos.framework.save.service-write",
+    "project-chaos.framework.save.session"
+  ],
+  "groups": [
+    {
+      "id": "model",
+      "title": {
+        "zh": "数据结构",
+        "en": "Data Model"
+      },
+      "children": [
+        "project-chaos.framework.save.slot-data"
+      ]
+    },
+    {
+      "id": "service",
+      "title": {
+        "zh": "槽位服务",
+        "en": "Slot Service"
+      },
+      "children": [
+        "project-chaos.framework.save.service-read",
+        "project-chaos.framework.save.service-write"
+      ]
+    },
+    {
+      "id": "session",
+      "title": {
+        "zh": "跨场景会话",
+        "en": "Cross-scene Session"
+      },
+      "children": [
+        "project-chaos.framework.save.session"
+      ]
+    }
+  ]
+}

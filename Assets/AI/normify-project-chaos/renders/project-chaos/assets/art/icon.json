@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.assets.art.icon",
+  "updated_at": "2026-10-06T11:58:33.337Z",
+  "mode": "groups",
+  "max_columns": 4,
+  "reading": {
+    "zh": "左侧三框是三个平台的原始 PNG 图标集（键鼠 241 / PS 104 / Xbox 91），右侧图集把它们打图打包供运行时按名取图。",
+    "en": "The three left boxes are the per-platform PNG sets (keyboard-mouse 241 / PS 104 / Xbox 91); the right box packs them into one atlas for name lookup."
+  },
+  "order": [
+    "project-chaos.assets.art.icon.keyboard-mouse",
+    "project-chaos.assets.art.icon.playstation",
+    "project-chaos.assets.art.icon.xbox",
+    "project-chaos.assets.art.icon.atlas"
+  ],
+  "groups": [
+    {
+      "id": "devices",
+      "title": {
+        "zh": "按设备分的图标",
+        "en": "Per-Device Icons"
+      },
+      "children": [
+        "project-chaos.assets.art.icon.keyboard-mouse",
+        "project-chaos.assets.art.icon.playstation",
+        "project-chaos.assets.art.icon.xbox"
+      ]
+    },
+    {
+      "id": "packing",
+      "title": {
+        "zh": "图集打包",
+        "en": "Atlas Packing"
+      },
+      "children": [
+        "project-chaos.assets.art.icon.atlas"
+      ]
+    }
+  ]
+}

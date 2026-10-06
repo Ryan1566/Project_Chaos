@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.editor-tools.git",
+  "updated_at": "2026-10-06T12:00:36.597Z",
+  "mode": "groups",
+  "reading": {
+    "zh": "从左到右：git 命令与仓库查询 → 改动分级与更新预览 → 窗口的检查/拉取/放弃本地更改流程 → 窗口展示层。箭头从右往左就是窗口在调用底层能力。",
+    "en": "Left to right: git commands and repo queries, change classification and preview, the window's check/pull/discard flows, then presentation. Arrows pointing left are the window calling into lower layers."
+  },
+  "order": [
+    "project-chaos.editor-tools.git.repo-core",
+    "project-chaos.editor-tools.git.change-preview",
+    "project-chaos.editor-tools.git.update-flow",
+    "project-chaos.editor-tools.git.window-ui"
+  ],
+  "groups": [
+    {
+      "id": "git-core",
+      "title": {
+        "zh": "命令与影响模型",
+        "en": "Commands and Impact Model"
+      },
+      "children": [
+        "project-chaos.editor-tools.git.repo-core",
+        "project-chaos.editor-tools.git.change-preview"
+      ]
+    },
+    {
+      "id": "git-ui",
+      "title": {
+        "zh": "流程与界面",
+        "en": "Flow and UI"
+      },
+      "children": [
+        "project-chaos.editor-tools.git.update-flow",
+        "project-chaos.editor-tools.git.window-ui"
+      ]
+    }
+  ],
+  "edge_hints": [
+    {
+      "from": "project-chaos.editor-tools.git.update-flow",
+      "to": "project-chaos.editor-tools.git.repo-core",
+      "lane": 2
+    },
+    {
+      "from": "project-chaos.editor-tools.git.update-flow",
+      "to": "project-chaos.editor-tools.git.change-preview",
+      "lane": 1
+    },
+    {
+      "from": "project-chaos.editor-tools.git.window-ui",
+      "to": "project-chaos.editor-tools.git.update-flow"
+    }
+  ]
+}
