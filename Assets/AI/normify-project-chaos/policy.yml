@@ -1,0 +1,46 @@
+# Normify 架构规则（policy.yml）：normify_validate 强制执行；规则类型与示例见 normify_policy_get。
+schema_version: 1
+updated_at: 2026-10-06T11:51:01.877Z
+rules:
+  - id: core-acyclic
+    type: acyclic
+    severity: error
+    includeCrossTree: true
+  - id: core-no-deprecated-target
+    type: forbid-dependency
+    severity: warning
+    from:
+      - "**"
+    to:
+      - "**"
+    toState: deprecated
+  - id: framework-never-to-view
+    type: forbid-dependency
+    severity: error
+    from:
+      - project-chaos.framework
+      - project-chaos.framework.**
+    to:
+      - project-chaos.mvp
+      - project-chaos.mvp.**
+  - id: runtime-never-to-editor-tools
+    type: forbid-dependency
+    severity: error
+    from:
+      - project-chaos.bootstrap
+      - project-chaos.bootstrap.**
+      - project-chaos.framework
+      - project-chaos.framework.**
+      - project-chaos.mvp
+      - project-chaos.mvp.**
+      - project-chaos.config-pipeline
+      - project-chaos.config-pipeline.**
+    to:
+      - project-chaos.editor-tools
+      - project-chaos.editor-tools.**
+  - id: naming-kebab-segments
+    type: naming
+    severity: error
+    pattern: ^[a-z][a-z0-9-]*$
+    scope:
+      - project-chaos.**

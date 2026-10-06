@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.mvp.view.save-load",
+  "updated_at": "2026-10-06T11:58:41.346Z",
+  "mode": "layers",
+  "reading": {
+    "zh": "格子是被动控件，SLPanel 只建 3 个并往里推数据。左 → 右是数据方向：档位信息 → 格子。",
+    "en": "The cell is a passive widget; SLPanel builds three of them once and pushes data in. Left to right is the data direction: slot info → cell."
+  },
+  "order": [
+    "project-chaos.mvp.view.save-load.record-cell",
+    "project-chaos.mvp.view.save-load.panel"
+  ]
+}

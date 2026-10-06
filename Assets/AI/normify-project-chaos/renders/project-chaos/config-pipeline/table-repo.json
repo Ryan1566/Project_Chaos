@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.config-pipeline.table-repo",
+  "updated_at": "2026-10-06T12:01:12.115Z",
+  "mode": "grid",
+  "max_columns": 3,
+  "reading": {
+    "zh": "两张表都是管线样本：测试表验证多类型列，读条轮播表验证 bool 列与资源路径列；README 只是占位，约定其实写在 ConfigManager 里。",
+    "en": "Both workbooks are pipeline samples: TestTable covers multiple column types, LoadingTable covers a bool column and asset paths. The README is only a placeholder; the real conventions live in ConfigManager."
+  },
+  "order": [
+    "project-chaos.config-pipeline.table-repo.test-table",
+    "project-chaos.config-pipeline.table-repo.loading-table",
+    "project-chaos.config-pipeline.table-repo.repo-readme"
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.framework.input",
+  "updated_at": "2026-10-06T12:00:22.590Z",
+  "mode": "groups",
+  "reading": {
+    "zh": "按使用顺序读：Init 加载 InputActions → 覆盖项 JSON 存取 → 绑定的显示与重置 → 改键（步骤拆分 → 监听流程 → 冲突解绑）→ 每帧按键轮询抛出事件。",
+    "en": "Read in usage order: Init loads the InputActions, overrides are persisted as JSON, bindings are displayed/reset, rebinding runs (step split, listening, conflict clearing) and finally per-frame polling raises key events."
+  },
+  "order": [
+    "project-chaos.framework.input.manager-core",
+    "project-chaos.framework.input.overrides",
+    "project-chaos.framework.input.reset",
+    "project-chaos.framework.input.display",
+    "project-chaos.framework.input.rebind-steps",
+    "project-chaos.framework.input.rebind-flow",
+    "project-chaos.framework.input.rebind-conflict",
+    "project-chaos.framework.input.tick"
+  ],
+  "groups": [
+    {
+      "id": "init",
+      "title": {
+        "zh": "初始化与覆盖项",
+        "en": "Init & Overrides"
+      },
+      "children": [
+        "project-chaos.framework.input.manager-core",
+        "project-chaos.framework.input.overrides"
+      ]
+    },
+    {
+      "id": "display",
+      "title": {
+        "zh": "显示与重置",
+        "en": "Display & Reset"
+      },
+      "children": [
+        "project-chaos.framework.input.reset",
+        "project-chaos.framework.input.display"
+      ]
+    },
+    {
+      "id": "rebind",
+      "title": {
+        "zh": "改键流程",
+        "en": "Rebinding"
+      },
+      "children": [
+        "project-chaos.framework.input.rebind-steps",
+        "project-chaos.framework.input.rebind-flow",
+        "project-chaos.framework.input.rebind-conflict"
+      ]
+    },
+    {
+      "id": "tick",
+      "title": {
+        "zh": "按键轮询",
+        "en": "Key Polling"
+      },
+      "children": [
+        "project-chaos.framework.input.tick"
+      ]
+    }
+  ]
+}

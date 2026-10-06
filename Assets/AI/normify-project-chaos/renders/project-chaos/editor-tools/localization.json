@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.editor-tools.localization",
+  "updated_at": "2026-10-06T12:00:36.390Z",
+  "mode": "groups",
+  "reading": {
+    "zh": "按数据流读：扫描收集面板文字 → 勾选导入子配置 → 回写 LocalizedText 组件；合并器再把子配置并成运行期整表。右侧组是条目编辑器（窗口/字段/CSV）与字体映射。",
+    "en": "Read left to right: scan panel text, import into sub-configs, write LocalizedText back; the merger then folds sub-configs into the runtime table. The right groups cover the entry editor (window, fields, CSV) and the font map."
+  },
+  "order": [
+    "project-chaos.editor-tools.localization.collector-window",
+    "project-chaos.editor-tools.localization.collector-scan",
+    "project-chaos.editor-tools.localization.collector-import",
+    "project-chaos.editor-tools.localization.collector-writer",
+    "project-chaos.editor-tools.localization.entry-editor-window",
+    "project-chaos.editor-tools.localization.entry-editor-fields",
+    "project-chaos.editor-tools.localization.entry-editor-csv",
+    "project-chaos.editor-tools.localization.merger",
+    "project-chaos.editor-tools.localization.font-map"
+  ],
+  "groups": [
+    {
+      "id": "collector",
+      "title": {
+        "zh": "面板文字收集器",
+        "en": "Prefab Text Collector"
+      },
+      "children": [
+        "project-chaos.editor-tools.localization.collector-window",
+        "project-chaos.editor-tools.localization.collector-scan",
+        "project-chaos.editor-tools.localization.collector-import",
+        "project-chaos.editor-tools.localization.collector-writer"
+      ]
+    },
+    {
+      "id": "entry-editor",
+      "title": {
+        "zh": "条目编辑与 CSV",
+        "en": "Entry Editor and CSV"
+      },
+      "children": [
+        "project-chaos.editor-tools.localization.entry-editor-window",
+        "project-chaos.editor-tools.localization.entry-editor-fields",
+        "project-chaos.editor-tools.localization.entry-editor-csv"
+      ]
+    },
+    {
+      "id": "assets",
+      "title": {
+        "zh": "配置资产与字体",
+        "en": "Config Assets and Fonts"
+      },
+      "children": [
+        "project-chaos.editor-tools.localization.merger",
+        "project-chaos.editor-tools.localization.font-map"
+      ]
+    }
+  ],
+  "edge_hints": [
+    {
+      "from": "project-chaos.editor-tools.localization.collector-window",
+      "to": "project-chaos.editor-tools.localization.collector-scan"
+    },
+    {
+      "from": "project-chaos.editor-tools.localization.collector-writer",
+      "to": "project-chaos.editor-tools.localization.collector-import",
+      "lane": 2,
+      "style": "curve"
+    },
+    {
+      "from": "project-chaos.editor-tools.localization.collector-import",
+      "to": "project-chaos.editor-tools.localization.merger",
+      "lane": 1
+    }
+  ]
+}

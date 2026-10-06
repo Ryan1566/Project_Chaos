@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.framework.setting-rows",
+  "updated_at": "2026-10-06T12:00:34.002Z",
+  "mode": "groups",
+  "reading": {
+    "zh": "所有行都继承基类：先看基类与按键图标文本组件，再看按钮/开关/滑条等简单行，然后是选择器行，最后是结构最复杂的改键行（核心/显示/监听三段）。",
+    "en": "Every row inherits the base: start with the base class and KeyIconText, then the simple rows (button/toggle/slider), then the selector row, and finally the keybind row split into core, display and listening."
+  },
+  "order": [
+    "project-chaos.framework.setting-rows.base",
+    "project-chaos.framework.setting-rows.icon-text",
+    "project-chaos.framework.setting-rows.button",
+    "project-chaos.framework.setting-rows.toggle",
+    "project-chaos.framework.setting-rows.slider",
+    "project-chaos.framework.setting-rows.selector",
+    "project-chaos.framework.setting-rows.selector-state",
+    "project-chaos.framework.setting-rows.keybind",
+    "project-chaos.framework.setting-rows.keybind-display",
+    "project-chaos.framework.setting-rows.keybind-listening"
+  ],
+  "groups": [
+    {
+      "id": "base",
+      "title": {
+        "zh": "基类与通用组件",
+        "en": "Base & Shared"
+      },
+      "children": [
+        "project-chaos.framework.setting-rows.base",
+        "project-chaos.framework.setting-rows.icon-text"
+      ]
+    },
+    {
+      "id": "simple",
+      "title": {
+        "zh": "简单行",
+        "en": "Simple Rows"
+      },
+      "children": [
+        "project-chaos.framework.setting-rows.button",
+        "project-chaos.framework.setting-rows.toggle",
+        "project-chaos.framework.setting-rows.slider"
+      ]
+    },
+    {
+      "id": "selector",
+      "title": {
+        "zh": "选择器行",
+        "en": "Selector Row"
+      },
+      "children": [
+        "project-chaos.framework.setting-rows.selector",
+        "project-chaos.framework.setting-rows.selector-state"
+      ]
+    },
+    {
+      "id": "keybind",
+      "title": {
+        "zh": "改键行",
+        "en": "Keybind Row"
+      },
+      "children": [
+        "project-chaos.framework.setting-rows.keybind",
+        "project-chaos.framework.setting-rows.keybind-display",
+        "project-chaos.framework.setting-rows.keybind-listening"
+      ]
+    }
+  ]
+}

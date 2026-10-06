@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.framework.input-icons",
+  "updated_at": "2026-10-06T12:00:33.286Z",
+  "mode": "grid",
+  "reading": {
+    "zh": "从左到右：映射表资产结构 → 缓存加载（Active/Load/ResetCache）→ 查询取图 → 维护补录，右侧三个都指回资产定义。",
+    "en": "Left to right: the asset structure, the cached loading layer, icon lookup, and maintenance/backfill; the three right-hand boxes all point back to the asset definition."
+  },
+  "order": [
+    "project-chaos.framework.input-icons.map-asset",
+    "project-chaos.framework.input-icons.cache",
+    "project-chaos.framework.input-icons.query",
+    "project-chaos.framework.input-icons.edit"
+  ]
+}

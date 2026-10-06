@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.assets.art",
+  "updated_at": "2026-10-06T11:58:33.024Z",
+  "mode": "layers",
+  "max_columns": 3,
+  "reading": {
+    "zh": "从左上到右下：先一份自制 Spine 角色，再 2D 贴图（草地瓦片）与输入图标集（按平台再分三层）。",
+    "en": "Left to right: the in-house Spine character first, then 2D textures (grass tiles) and the input icon set, which splits further by platform."
+  },
+  "order": [
+    "project-chaos.assets.art.citizen-001",
+    "project-chaos.assets.art.tile-textures",
+    "project-chaos.assets.art.icon"
+  ]
+}

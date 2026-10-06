@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.mvp.view.save-load.panel",
+  "updated_at": "2026-10-06T11:58:41.592Z",
+  "mode": "layers",
+  "reading": {
+    "zh": "左 → 右是运行流程：Awake 绑定并建 3 个格子（只做一次）→ OnEnter 只刷新 → 点击进入共用的二次确认 → 确认后执行新建/读取/删除。",
+    "en": "Left to right is the runtime flow: Awake binds nodes and builds the three cells once → OnEnter only refreshes → a click enters the shared confirm overlay → confirming runs create/load/delete."
+  },
+  "order": [
+    "project-chaos.mvp.view.save-load.panel.lifecycle",
+    "project-chaos.mvp.view.save-load.panel.node-and-cell-factory",
+    "project-chaos.mvp.view.save-load.panel.refresh-and-selection",
+    "project-chaos.mvp.view.save-load.panel.confirm-state-machine",
+    "project-chaos.mvp.view.save-load.panel.business-actions"
+  ]
+}

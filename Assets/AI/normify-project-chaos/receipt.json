@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "ok": true,
+  "project": "normify-project-chaos",
+  "compiled_at": "2026-10-06T12:08:29.004Z",
+  "stats": {
+    "tree_count": 1,
+    "module_count": 343,
+    "leaf_count": 268,
+    "api_count": 819,
+    "dep_count": 197,
+    "cross_tree_dep_count": 0,
+    "max_depth": 7,
+    "layout_count": 75,
+    "planned_count": 0,
+    "deprecated_count": 0,
+    "policy_rule_count": 5,
+    "change_count": 0,
+    "open_change_count": 0
+  },
+  "warnings": {
+    "api/leaf-empty": 3,
+    "dep/unanchored": 1,
+    "structure/leaf-too-coarse": 15,
+    "structure/leaf-too-coarse-many": 1,
+    "evidence/root-no-source": 1
+  },
+  "artifacts": {
+    "tree.json": {
+      "sha256": "c1ed1991b90ae7065ed9dac8575671ee1ac729a49dd1d67d4e41f621dadba8f8",
+      "bytes": 1101713
+    },
+    "outline.md": {
+      "sha256": "86312eaa38a66e9830a4001d32c07772c651f69ff9eb766431b0851481a589bb",
+      "bytes": 93173
+    },
+    "api-index.json": {
+      "sha256": "0ae624f3c66d1a32a59babb855196406e79a75c61247e81d17821d8df55b6bc1",
+      "bytes": 82263
+    },
+    "receipt.json": {
+      "sha256": "4fa983521d5a9ec2f6408fca641e97ef8162b47332455208feae8f957518e29b",
+      "bytes": 1062
+    }
+  }
+}

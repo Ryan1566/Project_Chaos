@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.bootstrap.scenes",
+  "updated_at": "2026-10-06T11:58:31.937Z",
+  "mode": "grid",
+  "max_columns": 4,
+  "reading": {
+    "zh": "按启动链路排：TestScene（构建清单第 0 项，挂 Entry 起手）→ LoadingScene（读条）→ WorldScene（游戏世界）；EnterScene 未被 EditorBuildSettings 登记，排在最后。",
+    "en": "Ordered by the boot chain: TestScene (build entry 0, hosts Entry) → LoadingScene (progress) → WorldScene (the game world); EnterScene is not registered in EditorBuildSettings and sits last."
+  },
+  "order": [
+    "project-chaos.bootstrap.scenes.test-scene",
+    "project-chaos.bootstrap.scenes.loading-scene",
+    "project-chaos.bootstrap.scenes.world-scene",
+    "project-chaos.bootstrap.scenes.enter-scene"
+  ]
+}

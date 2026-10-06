@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.framework.ui-animation",
+  "updated_at": "2026-10-06T12:00:22.064Z",
+  "mode": "groups",
+  "reading": {
+    "zh": "先看动画类型枚举与 Inspector 配置，再看公开播放接口（PlayEnter/PlayExit）及其内部实现（静止状态录制、依次入场），最后是可选的依次入场标记组件。",
+    "en": "Start with the animation-type enum and inspector config, then the public playback API and its internals (rest-state capture, stagger), and finally the optional stagger marker component."
+  },
+  "order": [
+    "project-chaos.framework.ui-animation.panel-anim-type",
+    "project-chaos.framework.ui-animation.panel-animator-config",
+    "project-chaos.framework.ui-animation.panel-animator-play",
+    "project-chaos.framework.ui-animation.panel-animator-rest",
+    "project-chaos.framework.ui-animation.panel-animator-stagger",
+    "project-chaos.framework.ui-animation.stagger-item"
+  ],
+  "groups": [
+    {
+      "id": "config",
+      "title": {
+        "zh": "类型与配置",
+        "en": "Types & Config"
+      },
+      "children": [
+        "project-chaos.framework.ui-animation.panel-anim-type",
+        "project-chaos.framework.ui-animation.panel-animator-config"
+      ]
+    },
+    {
+      "id": "impl",
+      "title": {
+        "zh": "播放与实现",
+        "en": "Playback & Internals"
+      },
+      "children": [
+        "project-chaos.framework.ui-animation.panel-animator-play",
+        "project-chaos.framework.ui-animation.panel-animator-rest",
+        "project-chaos.framework.ui-animation.panel-animator-stagger"
+      ]
+    },
+    {
+      "id": "marker",
+      "title": {
+        "zh": "标记组件",
+        "en": "Marker Component"
+      },
+      "children": [
+        "project-chaos.framework.ui-animation.stagger-item"
+      ]
+    }
+  ]
+}

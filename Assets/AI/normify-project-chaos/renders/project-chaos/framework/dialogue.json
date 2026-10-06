@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.framework.dialogue",
+  "updated_at": "2026-10-06T12:00:41.152Z",
+  "mode": "grid",
+  "reading": {
+    "zh": "从左到右：对话配置资产 → 播放流程（开始/推进/跳转）→ 打字机与选项等内部实现。注意 TestScene 内没有 DialogueManager 实例，当前不可用。",
+    "en": "Left to right: the dialogue asset, the playback flow (start/advance/jump) and the typewriter/options internals. Note there is no DialogueManager instance in TestScene today."
+  },
+  "order": [
+    "project-chaos.framework.dialogue.data",
+    "project-chaos.framework.dialogue.flow",
+    "project-chaos.framework.dialogue.typing"
+  ]
+}

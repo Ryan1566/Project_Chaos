@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.assets.tmp",
+  "updated_at": "2026-10-06T11:58:41.857Z",
+  "mode": "groups",
+  "max_columns": 4,
+  "reading": {
+    "zh": "先看全局配置（TMP Settings 与断行表），再看它管辖的字体与精灵资产，最后是渲染用的着色器。",
+    "en": "Start with the global config (TMP Settings + line-breaking tables), then the fonts and sprites it governs, then the render shaders."
+  },
+  "order": [
+    "project-chaos.assets.tmp.settings",
+    "project-chaos.assets.tmp.fonts",
+    "project-chaos.assets.tmp.sprites",
+    "project-chaos.assets.tmp.shaders"
+  ],
+  "groups": [
+    {
+      "id": "config",
+      "title": {
+        "zh": "全局配置",
+        "en": "Global Config"
+      },
+      "children": [
+        "project-chaos.assets.tmp.settings"
+      ]
+    },
+    {
+      "id": "content",
+      "title": {
+        "zh": "字体与精灵",
+        "en": "Fonts & Sprites"
+      },
+      "children": [
+        "project-chaos.assets.tmp.fonts",
+        "project-chaos.assets.tmp.sprites"
+      ]
+    },
+    {
+      "id": "render",
+      "title": {
+        "zh": "渲染",
+        "en": "Rendering"
+      },
+      "children": [
+        "project-chaos.assets.tmp.shaders"
+      ]
+    }
+  ]
+}

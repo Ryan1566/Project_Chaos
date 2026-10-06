@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.project-infra.plugins-spine-examples",
+  "updated_at": "2026-10-06T11:58:48.127Z",
+  "mode": "grid",
+  "max_columns": 3,
+  "reading": {
+    "zh": "左栏是 76 个示例脚本（箭头指向 Spine 运行时），中间是 168 个示例骨架资源，右栏是示例场景与音频。全部只作参考，不属游戏内容。",
+    "en": "Left: 76 example scripts (arrow to the Spine runtime). Middle: 168 example skeletons. Right: example scenes and audio. All reference material, not game content."
+  },
+  "order": [
+    "project-chaos.project-infra.plugins-spine-examples.scripts",
+    "project-chaos.project-infra.plugins-spine-examples.skeletons",
+    "project-chaos.project-infra.plugins-spine-examples.content"
+  ]
+}

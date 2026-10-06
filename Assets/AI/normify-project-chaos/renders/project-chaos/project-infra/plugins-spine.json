@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.project-infra.plugins-spine",
+  "updated_at": "2026-10-06T11:58:47.901Z",
+  "mode": "grid",
+  "max_columns": 3,
+  "reading": {
+    "zh": "左运行时、中编辑器扩展、右包元数据；运行时代码不得引用编辑器程序集，这是架构硬约束。",
+    "en": "Runtime on the left, editor extension in the middle, package metadata on the right. Runtime code must never reference the editor assembly."
+  },
+  "order": [
+    "project-chaos.project-infra.plugins-spine.runtime",
+    "project-chaos.project-infra.plugins-spine.editor",
+    "project-chaos.project-infra.plugins-spine.package-meta"
+  ]
+}

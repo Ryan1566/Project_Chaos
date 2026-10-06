@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.mvp.view.settings.pages",
+  "updated_at": "2026-10-06T11:58:40.908Z",
+  "mode": "grid",
+  "max_columns": 5,
+  "reading": {
+    "zh": "按设置面板的页签顺序（Gameplay → Keybind → Graphics → Audio，与 SettingCategory 枚举一致）排列；按键绑定二级页由按键页进入，排在最后。",
+    "en": "Ordered by the panel tab order (Gameplay → Keybind → Graphics → Audio, matching the SettingCategory enum); the keybind-bindings second-level page is reached from the keybind page and sits last."
+  },
+  "order": [
+    "project-chaos.mvp.view.settings.pages.gameplay",
+    "project-chaos.mvp.view.settings.pages.keybind",
+    "project-chaos.mvp.view.settings.pages.graphics",
+    "project-chaos.mvp.view.settings.pages.audio",
+    "project-chaos.mvp.view.settings.pages.keybind-bindings"
+  ]
+}

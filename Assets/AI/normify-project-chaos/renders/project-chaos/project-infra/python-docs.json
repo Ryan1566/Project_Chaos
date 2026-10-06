@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.project-infra.python-docs",
+  "updated_at": "2026-10-06T11:58:48.569Z",
+  "mode": "layers",
+  "max_columns": 3,
+  "reading": {
+    "zh": "从左到右：样式脚手架 → 三个生成/修订脚本（生成 Learn 下的手册）→ 自检脚本回查产物。",
+    "en": "Left to right: style scaffold, then the builder/patcher scripts that write the Learn manuals, then the self-check that reads the output back."
+  },
+  "order": [
+    "project-chaos.project-infra.python-docs.docx-kit",
+    "project-chaos.project-infra.python-docs.doc-builders",
+    "project-chaos.project-infra.python-docs.check-docx"
+  ]
+}

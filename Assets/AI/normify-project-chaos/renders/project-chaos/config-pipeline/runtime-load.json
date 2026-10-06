@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.config-pipeline.runtime-load",
+  "updated_at": "2026-10-06T12:01:21.242Z",
+  "mode": "layers",
+  "max_columns": 4,
+  "reading": {
+    "zh": "左侧是常量表读取（ConfigLoader，当前因路径前缀不匹配而读不到，见描述）；右侧是存档链路：构造时全量读入缓存 → 增删改查 → 写盘前统一美化。",
+    "en": "On the left, constant-table loading (ConfigLoader, currently broken by a path prefix mismatch - see its description). On the right, the save chain: load everything into a cache, run CRUD, then pretty-print before writing."
+  },
+  "order": [
+    "project-chaos.config-pipeline.runtime-load.config-loader",
+    "project-chaos.config-pipeline.runtime-load.record-cache",
+    "project-chaos.config-pipeline.runtime-load.record-crud",
+    "project-chaos.config-pipeline.runtime-load.record-format"
+  ],
+  "edge_hints": [
+    {
+      "from": "project-chaos.config-pipeline.runtime-load.record-crud",
+      "to": "project-chaos.config-pipeline.runtime-load.record-format",
+      "lane": 1
+    }
+  ]
+}

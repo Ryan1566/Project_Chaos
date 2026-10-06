@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.bootstrap.mono-tick",
+  "updated_at": "2026-10-06T11:58:30.807Z",
+  "mode": "layers",
+  "reading": {
+    "zh": "左 → 右是调用方向：manager 是单例门面，controller 才是真正挂在 GameObject 上、每帧扇出 updateEvent 的 MonoBehaviour。",
+    "en": "Left to right is the call direction: manager is the singleton facade, controller is the MonoBehaviour that actually lives on a GameObject and fans out updateEvent each frame."
+  },
+  "order": [
+    "project-chaos.bootstrap.mono-tick.manager",
+    "project-chaos.bootstrap.mono-tick.controller"
+  ]
+}

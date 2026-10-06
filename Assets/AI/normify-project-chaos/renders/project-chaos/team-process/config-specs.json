@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.team-process.config-specs",
+  "updated_at": "2026-10-06T11:55:47.132Z",
+  "mode": "groups",
+  "max_columns": 3,
+  "reading": {
+    "zh": "清单 → 通用填写规范 → 单表字段规格。本层所有类型都以 ConfigManager.Convert 为唯一权威。",
+    "en": "Inventory → general filling rules → per-table field specs. Everything here is mirrored from ConfigManager.Convert."
+  },
+  "order": [
+    "project-chaos.team-process.config-specs.list",
+    "project-chaos.team-process.config-specs.filling-header",
+    "project-chaos.team-process.config-specs.filling-execution",
+    "project-chaos.team-process.config-specs.field-spec-template",
+    "project-chaos.team-process.config-specs.testtable-spec",
+    "project-chaos.team-process.config-specs.loadingtable-spec"
+  ],
+  "groups": [
+    {
+      "id": "inventory",
+      "title": {
+        "zh": "清单",
+        "en": "Inventory"
+      },
+      "children": [
+        "project-chaos.team-process.config-specs.list"
+      ]
+    },
+    {
+      "id": "filling",
+      "title": {
+        "zh": "填写规范",
+        "en": "Filling rules"
+      },
+      "children": [
+        "project-chaos.team-process.config-specs.filling-header",
+        "project-chaos.team-process.config-specs.filling-execution"
+      ]
+    },
+    {
+      "id": "specs",
+      "title": {
+        "zh": "单表规格",
+        "en": "Per-table specs"
+      },
+      "children": [
+        "project-chaos.team-process.config-specs.field-spec-template",
+        "project-chaos.team-process.config-specs.testtable-spec",
+        "project-chaos.team-process.config-specs.loadingtable-spec"
+      ]
+    }
+  ]
+}

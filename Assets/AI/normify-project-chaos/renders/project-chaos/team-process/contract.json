@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.team-process.contract",
+  "updated_at": "2026-10-06T11:55:46.966Z",
+  "mode": "grid",
+  "max_columns": 3,
+  "reading": {
+    "zh": "先读流程弄清谁写什么，再读开工前必读与分支纪律，最后是类型权威与轻量通道。",
+    "en": "Read workflow first to know who writes what, then the pitfalls/branch rules, then the type authority and the lightweight path."
+  },
+  "order": [
+    "project-chaos.team-process.contract.workflow",
+    "project-chaos.team-process.contract.pitfalls",
+    "project-chaos.team-process.contract.config-and-fast-path"
+  ]
+}

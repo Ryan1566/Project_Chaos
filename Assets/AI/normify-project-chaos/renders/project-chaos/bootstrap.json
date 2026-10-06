@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.bootstrap",
+  "updated_at": "2026-10-06T11:58:30.506Z",
+  "mode": "groups",
+  "reading": {
+    "zh": "从左到右是启动链路：Entry 按次序拉起各管理器 → MonoManager 提供帧驱动与协程 → ScenesLoadManager 是全工程唯一调 SceneManager 的地方 → LoadingController 持控读条与激活 → 场景资产由构建清单决定哪些能被加载。",
+    "en": "Left to right is the boot chain: Entry brings the managers up in order → MonoManager supplies the tick and coroutines → ScenesLoadManager is the only caller of SceneManager → LoadingController owns the bar and activation → the build list decides which scenes can be loaded."
+  },
+  "order": [
+    "project-chaos.bootstrap.entry",
+    "project-chaos.bootstrap.mono-tick",
+    "project-chaos.bootstrap.singleton",
+    "project-chaos.bootstrap.scene-loading",
+    "project-chaos.bootstrap.loading-screen",
+    "project-chaos.bootstrap.scenes",
+    "project-chaos.bootstrap.build-settings"
+  ],
+  "groups": [
+    {
+      "id": "boot-and-drive",
+      "title": {
+        "zh": "入口与驱动",
+        "en": "Entry & Drive"
+      },
+      "children": [
+        "project-chaos.bootstrap.entry",
+        "project-chaos.bootstrap.mono-tick",
+        "project-chaos.bootstrap.singleton"
+      ]
+    },
+    {
+      "id": "scene-shell",
+      "title": {
+        "zh": "场景与读条",
+        "en": "Scene & Loading"
+      },
+      "children": [
+        "project-chaos.bootstrap.scene-loading",
+        "project-chaos.bootstrap.loading-screen",
+        "project-chaos.bootstrap.scenes"
+      ]
+    },
+    {
+      "id": "build",
+      "title": {
+        "zh": "构建清单",
+        "en": "Build List"
+      },
+      "children": [
+        "project-chaos.bootstrap.build-settings"
+      ]
+    }
+  ]
+}

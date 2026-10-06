@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.team-process.program-docs.config-pipeline-log",
+  "updated_at": "2026-10-06T11:56:19.835Z",
+  "mode": "layers",
+  "max_columns": 4,
+  "reading": {
+    "zh": "实测管线按顺序读：链路 → 行与类型裁定 → 路径错位实证 → 导出回归与结论。",
+    "en": "The measured pipeline in order: chain, then row/type verdicts, then the path-mismatch proof, then the export regression and conclusions."
+  },
+  "order": [
+    "project-chaos.team-process.program-docs.config-pipeline-log.chain",
+    "project-chaos.team-process.program-docs.config-pipeline-log.type-authority",
+    "project-chaos.team-process.program-docs.config-pipeline-log.path-mismatch",
+    "project-chaos.team-process.program-docs.config-pipeline-log.export-regression"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.mvp.view.settings.panel",
+  "updated_at": "2026-10-06T11:58:40.439Z",
+  "mode": "grid",
+  "max_columns": 3,
+  "reading": {
+    "zh": "同一份 SettingPanel.cs 切成三块：节点查找在 Awake 做，生命周期与切页驱动各页，底部按钮条负责提交或丢弃暂存改动。",
+    "en": "One SettingPanel.cs split three ways: node lookup happens in Awake, lifecycle/tab switching drives the pages, the bottom bar commits or discards the pending edit."
+  },
+  "order": [
+    "project-chaos.mvp.view.settings.panel.lifecycle",
+    "project-chaos.mvp.view.settings.panel.node-finder",
+    "project-chaos.mvp.view.settings.panel.bottom-bar"
+  ]
+}

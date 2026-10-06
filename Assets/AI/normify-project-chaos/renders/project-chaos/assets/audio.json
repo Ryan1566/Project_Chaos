@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.assets.audio",
+  "updated_at": "2026-10-06T11:58:33.690Z",
+  "mode": "grid",
+  "max_columns": 2,
+  "reading": {
+    "zh": "左为唯一真实音效（牛叫），右为 41 首测试 BGM；两者均为 Resources 下直接加载。",
+    "en": "Left: the single real SFX (cow moo). Right: 41 test BGM tracks. Both load straight from Resources."
+  },
+  "order": [
+    "project-chaos.assets.audio.sfx",
+    "project-chaos.assets.audio.test-music"
+  ]
+}

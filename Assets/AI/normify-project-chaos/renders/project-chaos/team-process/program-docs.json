@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.team-process.program-docs",
+  "updated_at": "2026-10-06T11:56:19.719Z",
+  "mode": "groups",
+  "max_columns": 3,
+  "reading": {
+    "zh": "先看有什么能力（清单），再看配置表管线的真实行为，最后是改代码时必须遵守的约定。",
+    "en": "What exists (capability inventory), what the config pipeline really does, and the rules for touching code."
+  },
+  "order": [
+    "project-chaos.team-process.program-docs.framework-capabilities",
+    "project-chaos.team-process.program-docs.config-pipeline-log",
+    "project-chaos.team-process.program-docs.coding-conventions"
+  ],
+  "groups": [
+    {
+      "id": "capabilities",
+      "title": {
+        "zh": "能力清点",
+        "en": "Capabilities"
+      },
+      "children": [
+        "project-chaos.team-process.program-docs.framework-capabilities"
+      ]
+    },
+    {
+      "id": "pipeline",
+      "title": {
+        "zh": "配置表管线",
+        "en": "Config pipeline"
+      },
+      "children": [
+        "project-chaos.team-process.program-docs.config-pipeline-log"
+      ]
+    },
+    {
+      "id": "conventions",
+      "title": {
+        "zh": "编码约定",
+        "en": "Conventions"
+      },
+      "children": [
+        "project-chaos.team-process.program-docs.coding-conventions"
+      ]
+    }
+  ]
+}

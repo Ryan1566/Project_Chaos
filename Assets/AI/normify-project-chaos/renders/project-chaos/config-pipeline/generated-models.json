@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.config-pipeline.generated-models",
+  "updated_at": "2026-10-06T12:01:21.776Z",
+  "mode": "groups",
+  "reading": {
+    "zh": "上半组是 Config 模式的只读常量类，下半组是 Data 模式的可写存档类；两者字段都由表头第 3/4/6 行决定，导出时整份覆盖。",
+    "en": "The top group holds read-only Config-mode classes, the bottom one the writable Data-mode class. Both are driven by header rows 3, 4 and 6 and are overwritten wholesale on every export."
+  },
+  "order": [
+    "project-chaos.config-pipeline.generated-models.test-table-config",
+    "project-chaos.config-pipeline.generated-models.loading-table-config",
+    "project-chaos.config-pipeline.generated-models.test-table-data"
+  ],
+  "groups": [
+    {
+      "id": "config-mode",
+      "title": {
+        "zh": "Config 模式（只读）",
+        "en": "Config Mode (read-only)"
+      },
+      "children": [
+        "project-chaos.config-pipeline.generated-models.test-table-config",
+        "project-chaos.config-pipeline.generated-models.loading-table-config"
+      ]
+    },
+    {
+      "id": "data-mode",
+      "title": {
+        "zh": "Data 模式（可写）",
+        "en": "Data Mode (writable)"
+      },
+      "children": [
+        "project-chaos.config-pipeline.generated-models.test-table-data"
+      ]
+    }
+  ]
+}

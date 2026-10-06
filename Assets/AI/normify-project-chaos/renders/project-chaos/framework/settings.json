@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.framework.settings",
+  "updated_at": "2026-10-06T12:00:33.759Z",
+  "mode": "groups",
+  "reading": {
+    "zh": "左侧是数据契约（id 常量、选项枚举、数据模型、分辨率工具），右侧是管理器四段：状态与初始化 → 读写盘 → 编辑会话 → 应用到运行时（音频/本地化/输入）。",
+    "en": "Left side is the data contract (ids, option enums, data model, resolution helper); right side is the manager in four steps: state/init, disk IO, edit session, and apply-to-runtime (audio, localization, input)."
+  },
+  "order": [
+    "project-chaos.framework.settings.ids",
+    "project-chaos.framework.settings.enums",
+    "project-chaos.framework.settings.data",
+    "project-chaos.framework.settings.resolution",
+    "project-chaos.framework.settings.manager",
+    "project-chaos.framework.settings.manager-persist",
+    "project-chaos.framework.settings.manager-edit",
+    "project-chaos.framework.settings.manager-apply"
+  ],
+  "groups": [
+    {
+      "id": "model",
+      "title": {
+        "zh": "模型与选项",
+        "en": "Model & Options"
+      },
+      "children": [
+        "project-chaos.framework.settings.ids",
+        "project-chaos.framework.settings.enums",
+        "project-chaos.framework.settings.data",
+        "project-chaos.framework.settings.resolution"
+      ]
+    },
+    {
+      "id": "manager",
+      "title": {
+        "zh": "管理器",
+        "en": "Manager"
+      },
+      "children": [
+        "project-chaos.framework.settings.manager",
+        "project-chaos.framework.settings.manager-persist",
+        "project-chaos.framework.settings.manager-edit",
+        "project-chaos.framework.settings.manager-apply"
+      ]
+    }
+  ]
+}

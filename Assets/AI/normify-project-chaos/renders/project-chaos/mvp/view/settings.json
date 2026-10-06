@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.mvp.view.settings",
+  "updated_at": "2026-10-06T11:58:40.224Z",
+  "mode": "layers",
+  "reading": {
+    "zh": "左 → 右是依赖方向：page-base 定义「行→字段」的契约，panel 只管切页与转达意图，pages 才是设置值的归属。",
+    "en": "Left to right is the dependency direction: page-base defines the row-to-field contract, panel only switches tabs and routes intent, pages own the actual setting values."
+  },
+  "order": [
+    "project-chaos.mvp.view.settings.page-base",
+    "project-chaos.mvp.view.settings.panel",
+    "project-chaos.mvp.view.settings.pages"
+  ]
+}

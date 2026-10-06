@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.assets",
+  "updated_at": "2026-10-06T11:58:32.657Z",
+  "mode": "groups",
+  "max_columns": 4,
+  "reading": {
+    "zh": "从左到右四簇：先美术图形素材，再字体与文本渲染，然后 UI 预制体/本地化/输入，最后音频与杂项。箭头表示资产之间的引用（如瓦片引用贴图、设置行引用输入动作）。",
+    "en": "Four clusters left to right: art, fonts/text, UI+localization+input, then audio and misc. Arrows are asset references (tile to texture, setting row to input action)."
+  },
+  "order": [
+    "project-chaos.assets.art",
+    "project-chaos.assets.ui-sprites",
+    "project-chaos.assets.tilemap",
+    "project-chaos.assets.fonts",
+    "project-chaos.assets.tmp",
+    "project-chaos.assets.ui-prefabs",
+    "project-chaos.assets.setting-row-prefabs",
+    "project-chaos.assets.localization-assets",
+    "project-chaos.assets.input-assets",
+    "project-chaos.assets.audio",
+    "project-chaos.assets.misc-resources",
+    "project-chaos.assets.animations"
+  ],
+  "groups": [
+    {
+      "id": "visual",
+      "title": {
+        "zh": "美术与图形",
+        "en": "Art & Graphics"
+      },
+      "children": [
+        "project-chaos.assets.art",
+        "project-chaos.assets.ui-sprites",
+        "project-chaos.assets.tilemap"
+      ]
+    },
+    {
+      "id": "text",
+      "title": {
+        "zh": "字体与文本",
+        "en": "Fonts & Text"
+      },
+      "children": [
+        "project-chaos.assets.fonts",
+        "project-chaos.assets.tmp"
+      ]
+    },
+    {
+      "id": "ui",
+      "title": {
+        "zh": "UI 与本地化",
+        "en": "UI & Localization"
+      },
+      "children": [
+        "project-chaos.assets.ui-prefabs",
+        "project-chaos.assets.setting-row-prefabs",
+        "project-chaos.assets.localization-assets",
+        "project-chaos.assets.input-assets"
+      ]
+    },
+    {
+      "id": "media",
+      "title": {
+        "zh": "音频与杂项",
+        "en": "Audio & Misc"
+      },
+      "children": [
+        "project-chaos.assets.audio",
+        "project-chaos.assets.misc-resources",
+        "project-chaos.assets.animations"
+      ]
+    }
+  ]
+}

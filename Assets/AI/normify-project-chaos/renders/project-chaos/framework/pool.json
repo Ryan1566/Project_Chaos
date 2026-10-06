@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.framework.pool",
+  "updated_at": "2026-10-06T12:00:40.542Z",
+  "mode": "grid",
+  "reading": {
+    "zh": "先看单个池的存储结构，再看管理器：按名字分池、GetObj 取用（缺则经 ResManager 实例化）、PushObj 回收、Clear 清空。",
+    "en": "Start with the per-pool storage type, then the manager: named pools, GetObj (instantiating via ResManager when empty), PushObj return and Clear."
+  },
+  "order": [
+    "project-chaos.framework.pool.data",
+    "project-chaos.framework.pool.manager"
+  ]
+}

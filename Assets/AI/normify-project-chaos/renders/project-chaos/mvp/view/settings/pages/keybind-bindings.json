@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.mvp.view.settings.pages.keybind-bindings",
+  "updated_at": "2026-10-06T11:58:41.131Z",
+  "mode": "grid",
+  "max_columns": 4,
+  "reading": {
+    "zh": "同一份 KeybindBindingsPage.cs 切成四块：页签决定当前方案，rows 负责显示，rebind 采集新键，reset 恢复单行或整方案的默认。",
+    "en": "One KeybindBindingsPage.cs split four ways: header tabs pick the scheme, rows display it, rebind captures a new key, reset restores defaults for one row or a whole scheme."
+  },
+  "order": [
+    "project-chaos.mvp.view.settings.pages.keybind-bindings.header-tabs",
+    "project-chaos.mvp.view.settings.pages.keybind-bindings.rows",
+    "project-chaos.mvp.view.settings.pages.keybind-bindings.rebind",
+    "project-chaos.mvp.view.settings.pages.keybind-bindings.reset"
+  ]
+}

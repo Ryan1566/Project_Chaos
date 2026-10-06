@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.team-process.doc-system",
+  "updated_at": "2026-10-06T11:56:19.534Z",
+  "mode": "grid",
+  "max_columns": 4,
+  "reading": {
+    "zh": "先看索引掌握全貌，再看模板使用说明，最后是两份模板本体。",
+    "en": "Index first for the lay of the land, then the template guide, then the two template bodies."
+  },
+  "order": [
+    "project-chaos.team-process.doc-system.story-index",
+    "project-chaos.team-process.doc-system.template-guide",
+    "project-chaos.team-process.doc-system.planning-template",
+    "project-chaos.team-process.doc-system.system-template"
+  ]
+}

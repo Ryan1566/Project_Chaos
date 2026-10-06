@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.bootstrap.loading-screen",
+  "updated_at": "2026-10-06T11:58:31.659Z",
+  "mode": "groups",
+  "reading": {
+    "zh": "同一份 LoadingController.cs 按职责切成五块：先定位节点并写进度条，再由 load-orchestration 跑加载时序；轮播图决定 assetsReady 何时为 1，failure-state 是卡死前的兜底，metrics 供自动化验收读取。",
+    "en": "One LoadingController.cs split by responsibility: nodes are located and the bar updated first, load-orchestration runs the timing; the carousel decides when assetsReady reaches 1, failure-state is the pre-freeze fallback and metrics feeds automated acceptance."
+  },
+  "order": [
+    "project-chaos.bootstrap.loading-screen.node-binding",
+    "project-chaos.bootstrap.loading-screen.load-orchestration",
+    "project-chaos.bootstrap.loading-screen.carousel",
+    "project-chaos.bootstrap.loading-screen.failure-state",
+    "project-chaos.bootstrap.loading-screen.metrics"
+  ],
+  "groups": [
+    {
+      "id": "main-flow",
+      "title": {
+        "zh": "主流程",
+        "en": "Main Flow"
+      },
+      "children": [
+        "project-chaos.bootstrap.loading-screen.node-binding",
+        "project-chaos.bootstrap.loading-screen.load-orchestration"
+      ]
+    },
+    {
+      "id": "carousel-group",
+      "title": {
+        "zh": "轮播资源",
+        "en": "Carousel"
+      },
+      "children": [
+        "project-chaos.bootstrap.loading-screen.carousel"
+      ]
+    },
+    {
+      "id": "fallback-observe",
+      "title": {
+        "zh": "兜底与观测",
+        "en": "Fallback & Observability"
+      },
+      "children": [
+        "project-chaos.bootstrap.loading-screen.failure-state",
+        "project-chaos.bootstrap.loading-screen.metrics"
+      ]
+    }
+  ]
+}

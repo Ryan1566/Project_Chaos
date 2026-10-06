@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.bootstrap.scene-loading",
+  "updated_at": "2026-10-06T11:58:31.378Z",
+  "mode": "grid",
+  "reading": {
+    "zh": "这一层只有一块：ScenesLoadManager 把三种加载方式（同步 / 协程异步 / 持控异步）收在同一个类里，SceneManager 的调用点不散到别处。",
+    "en": "A single box on this layer: ScenesLoadManager keeps all three load modes (sync, coroutine async, hands-off async) in one class so SceneManager calls never scatter."
+  },
+  "order": [
+    "project-chaos.bootstrap.scene-loading.manager"
+  ]
+}

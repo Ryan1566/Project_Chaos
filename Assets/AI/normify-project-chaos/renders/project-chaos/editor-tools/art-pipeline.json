@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.editor-tools.art-pipeline",
+  "updated_at": "2026-10-06T12:00:44.097Z",
+  "mode": "grid",
+  "max_columns": 2,
+  "reading": {
+    "zh": "先看导入策略（每张贴图落进工程时的口径），再看图集构建与体检（只打包被映射表引用的图，并报告页数与估算显存）。",
+    "en": "First the import policy (how each icon enters the project), then the atlas build and inspect step, which packs only icons referenced by the map and reports pages and estimated memory."
+  },
+  "order": [
+    "project-chaos.editor-tools.art-pipeline.icon-import-policy",
+    "project-chaos.editor-tools.art-pipeline.icon-atlas"
+  ],
+  "edge_hints": [
+    {
+      "from": "project-chaos.editor-tools.art-pipeline.icon-atlas",
+      "to": "project-chaos.editor-tools.art-pipeline.icon-import-policy",
+      "lane": 1
+    }
+  ]
+}

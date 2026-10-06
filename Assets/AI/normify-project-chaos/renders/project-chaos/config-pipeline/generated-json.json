@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.config-pipeline.generated-json",
+  "updated_at": "2026-10-06T12:01:21.522Z",
+  "mode": "grid",
+  "max_columns": 2,
+  "reading": {
+    "zh": "两份 Json 结构都是 {\"datas\":[...]}：TestTable 验证多类型列，LoadingTable 验证 bool 裸小写与浮点列。它们是导出产物，不要手改。",
+    "en": "Both files share the {\"datas\":[...]} shape: TestTable exercises mixed column types, LoadingTable exercises a bare-lowercase bool and float columns. They are generated - do not hand-edit."
+  },
+  "order": [
+    "project-chaos.config-pipeline.generated-json.test-table",
+    "project-chaos.config-pipeline.generated-json.loading-table"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.mvp.model",
+  "updated_at": "2026-10-06T11:58:41.887Z",
+  "mode": "grid",
+  "reading": {
+    "zh": "本层目前只有一个手写模型。注意它在工程里还没有任何消费方。",
+    "en": "Only one hand-written model exists today. Note it has no consumer anywhere in the project yet."
+  },
+  "order": [
+    "project-chaos.mvp.model.runtime-data"
+  ]
+}
