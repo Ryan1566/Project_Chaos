@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.team-process.system-designs",
+  "updated_at": "2026-10-07T06:26:20.861Z",
+  "mode": "grid",
+  "max_columns": 2,
+  "reading": {
+    "zh": "按文档章节顺序读：先看技术分析与选型（§1–§3），再看空间层与连通性硬规则（§4–§6），然后数据结构与配置表字段草案（§7–§9），最后是实现建议与验收（§10–§16）。",
+    "en": "Read in document order: analysis and technology choice (§1–§3), layer model and connectivity rules (§4–§6), data structures and config-field drafts (§7–§9), then implementation advice and acceptance (§10–§16)."
+  },
+  "order": [
+    "project-chaos.team-process.system-designs.runmap-analysis",
+    "project-chaos.team-process.system-designs.runmap-space-and-connectivity",
+    "project-chaos.team-process.system-designs.runmap-data-and-config",
+    "project-chaos.team-process.system-designs.runmap-impl-and-acceptance"
+  ]
+}

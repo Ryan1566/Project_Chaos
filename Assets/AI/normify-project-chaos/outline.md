@@ -4,7 +4,7 @@
 
 ## project-chaos（https://github.com/Ryan1566/Project_Chaos.git）
 
-- project-chaos — Project_Chaos 游戏工程 / Project_Chaos Game Project — Unity 2022.3.57f1c2 的 2D 横板 Roguelite 工程总览（仓库根 D:\Unity Projects\Project_Chaos）。… — [模块 343 · API 819]
+- project-chaos — Project_Chaos 游戏工程 / Project_Chaos Game Project — Unity 2022.3.57f1c2 的 2D 横板 Roguelite 工程总览（仓库根 D:\Unity Projects\Project_Chaos）。… — [模块 348 · API 823]
   - project-chaos.assets — 资源库 / Asset Library — 工程内美术、音频、字体、UI 预制体、TMP、Tilemap、输入与本地化资产的总目录。除代码、场景与配置表生成物之外的运行时资源都归这里；本轮只登记资产角色与… — [模块 34 · API 76]
     - project-chaos.assets.animations — 动画目录（空） / Animations (Empty) — Assets/Animations 目前是空目录：尚无 AnimationClip、AnimatorController 或 Timeline 资产。 — [模块 1 · API 0]
     - project-chaos.assets.art — 美术原始资源 / Source Art — Assets/Art 下的美术源资产：Spine 角色 Citizen_001 的骨架/图集/材质、四平台输入图标（键鼠/PS/Xbox）与图标图集、草地瓦片贴… — [模块 8 · API 18]
@@ -289,7 +289,7 @@
       - project-chaos.project-infra.python-docs.doc-builders — 文档生成器脚本 / Doc Builder Scripts — 顶层文档脚本：两个生成器（本地化、MVP 分层）与一个就地修订器（Excel 手册）。均为线性脚本，无函数定义。 — [模块 1 · API 3]
       - project-chaos.project-infra.python-docs.docx-kit — docx_kit 样式脚手架 / docx_kit Scaffold — 样式脚手架，复刻 Learn 既有文档的排版；另提供 bullet/spacer/table。共 220 行。 — [模块 1 · API 5]
     - project-chaos.project-infra.repo-root — 仓库根文件 / Repo Root Files — 仓库根元数据：README 占位、.gitignore、.vsconfig 与生成的解决方案文件。同目录的 .csproj 是 Unity 自动生成的产物。 — [模块 1 · API 4]
-  - project-chaos.team-process — 团队协作与文档契约 / Team Process & Docs — Chaos_Story 文档仓（直接提交 main）承载的协作契约与设计文档：README 团队契约、索引与模板、企划（游戏概念案）、系统策划模板、配置表设计（… — [模块 58 · API 46]
+  - project-chaos.team-process — 团队协作与文档契约 / Team Process & Docs — Chaos_Story 文档仓（直接提交 main）承载的协作契约与设计文档：README 团队契约、索引与模板、企划（游戏概念案）、系统策划模板、配置表设计（… — [模块 63 · API 50]
     - project-chaos.team-process.arch-docs — 架构文档 / Architecture Docs — 04_架构 下的架构真相源：现状核查（As-Is，C1–C12 与实测证据）、目标结构蓝图（To-Be）、路径与命名规范（含类型权威与分支纪律）、MVP 契约与… — [模块 13 · API 10]
       - project-chaos.team-process.arch-docs.as-is-evidence — 现状核查：证据与清单 / As-Is Evidence — 现状核查下篇：路径/存档/构建风险/生成物/死代码/场景等剩余章节、文档与代码不一致清单，以及只读复现命令。 — [模块 1 · API 1]
       - project-chaos.team-process.arch-docs.as-is-findings — 现状核查：结论 / As-Is Findings — 现状核查上篇：阅读约定、按风险排序的结论摘要、工程规模与编码现状、MVP 三层实际落位与缺口、IModel 现状、唯一但损坏的配置读取类、导出器与配置表契约冲突… — [模块 1 · API 1]
@@ -347,4 +347,9 @@
         - project-chaos.team-process.program-docs.framework-capabilities.settings — 设置权威 / Settings Authority — 设置的唯一权威：持久化什么、分辨率与按键如何处理、为何必须只让它写。 — [模块 1 · API 1]
         - project-chaos.team-process.program-docs.framework-capabilities.singletons-and-mono — 单例与 Mono 驱动 / Singletons & MonoManager — Singleton 三件套（选错就是 NRE）与 MonoManager/MonoController（给非 MonoBehaviour 类提供生命周期与协程）… — [模块 1 · API 1]
         - project-chaos.team-process.program-docs.framework-capabilities.ui-panels — 面板管理 / UI Panels — 面板管理：与预制体强耦合的 PanelType 枚举、UIManager（实测可用但缺 10 个面板预制体）、BasePanel、UIPanelAnimator… — [模块 1 · API 1]
+    - project-chaos.team-process.system-designs — 系统设计文档 / System Design Docs — Story/02_系统策划/**：各系统的详细设计文档（规则、数值、状态、异常、配置表字段草案）。首份 = 局内地图生成系统（M8/M14，死亡细胞式混合生成）… — [模块 5 · API 4]
+      - project-chaos.team-process.system-designs.runmap-analysis — 地图生成：技术分析与选型 / RunMap: Analysis & Choice — 01_局内地图生成系统.md §1–§3：系统概述与设计目标、术语表（空间层与「深度」轴的辨析）、死亡细胞混合式生成六步法分析（含 Spelunky 对照与本项… — [模块 1 · API 1]
+      - project-chaos.team-process.system-designs.runmap-data-and-config — 地图生成：数据与配置表 / RunMap: Data & Config — §7–§9：运行时数据结构与存档字段（种子/场景序号/图版本，不存布局）、6 张配置表字段草案（MapBiome/MapPreset/PresetLayer/M… — [模块 1 · API 1]
+      - project-chaos.team-process.system-designs.runmap-impl-and-acceptance — 地图生成：实现与验收 / RunMap: Impl & Acceptance — §10–§16：边界与异常 E1~E14、依赖系统与降级方案（含 ConfigLoader P0）、实现方式建议（候选模块划分、落位闸门、随机数与确定性约定）、… — [模块 1 · API 1]
+      - project-chaos.team-process.system-designs.runmap-space-and-connectivity — 地图生成：空间与连通性 / RunMap: Space & Connectivity — §4–§6：空间层模型（地下/地表/地表建筑）、地图总体结构与 boss 门、房间块与接口（Socket）规范、C1~C10 连通性硬规则、生成数值与公式、生成… — [模块 1 · API 1]
 
