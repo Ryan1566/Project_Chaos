@@ -9,16 +9,16 @@
         "repository": "https://github.com/Ryan1566/Project_Chaos.git"
       }
     ],
-    "compiled_at": "2026-10-06T12:08:29.004Z",
+    "compiled_at": "2026-10-07T06:26:25.105Z",
     "stats": {
       "tree_count": 1,
-      "module_count": 343,
-      "leaf_count": 268,
-      "api_count": 819,
+      "module_count": 348,
+      "leaf_count": 272,
+      "api_count": 823,
       "dep_count": 197,
       "cross_tree_dep_count": 0,
       "max_depth": 7,
-      "layout_count": 75,
+      "layout_count": 76,
       "planned_count": 0,
       "deprecated_count": 0,
       "policy_rule_count": 5,
@@ -52,9 +52,9 @@
       "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "repository": "https://github.com/Ryan1566/Project_Chaos.git",
       "aggregate": {
-        "descendant_count": 342,
+        "descendant_count": 347,
         "own_api_count": 0,
-        "inherited_api_count": 819,
+        "inherited_api_count": 823,
         "dep_out": 0,
         "dep_in": 0
       }
@@ -19036,9 +19036,9 @@
       "updated_at": "2026-10-06T11:55:00Z",
       "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "aggregate": {
-        "descendant_count": 57,
+        "descendant_count": 62,
         "own_api_count": 0,
-        "inherited_api_count": 46,
+        "inherited_api_count": 50,
         "dep_out": 0,
         "dep_in": 0
       }
@@ -20223,9 +20223,9 @@
           "end_line": 185
         }
       ],
-      "revision": "75df668e8bb1abec0b4352190c3082c585e2deef",
-      "updated_at": "2026-10-06T12:08:25.729Z",
-      "fingerprint": "d25799c300c15ff95e8a3607c0f9c7a7c3b7b863f5703c273b078c93c50f927e",
+      "revision": "2f3bda754a8a236a3100f9cdb4239376ad8eb367",
+      "updated_at": "2026-10-07T06:26:15.204Z",
+      "fingerprint": "35b5e495192a68a8185dfd805cc7146d3749142dcc34c03e4b6ca4faf6862848",
       "apis": [
         {
           "protocol": "file",
@@ -21602,6 +21602,229 @@
         "dep_out": 0,
         "dep_in": 0
       }
+    },
+    "project-chaos.team-process.system-designs": {
+      "uid": "7c0d0090",
+      "id": "project-chaos.team-process.system-designs",
+      "parent": "project-chaos.team-process",
+      "tree": "project-chaos",
+      "depth": 3,
+      "tags": [
+        "design",
+        "system",
+        "runmap"
+      ],
+      "name": {
+        "zh": "系统设计文档",
+        "en": "System Design Docs"
+      },
+      "description": {
+        "zh": "Story/02_系统策划/**：各系统的详细设计文档（规则、数值、状态、异常、配置表字段草案）。首份 = 局内地图生成系统（M8/M14，死亡细胞式混合生成）。\n",
+        "en": "Story/02_系统策划/** — per-system design docs: rules, numbers, states, failure modes and config-field drafts. First entry: in-run map generation (M8/M14, Dead Cells style hybrid generation).\n"
+      },
+      "source": [],
+      "revision": "2f3bda754a8a236a3100f9cdb4239376ad8eb367",
+      "updated_at": "2026-10-07T06:26:14.732Z",
+      "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "aggregate": {
+        "descendant_count": 4,
+        "own_api_count": 0,
+        "inherited_api_count": 4,
+        "dep_out": 0,
+        "dep_in": 0
+      }
+    },
+    "project-chaos.team-process.system-designs.runmap-analysis": {
+      "uid": "7c0d0091",
+      "id": "project-chaos.team-process.system-designs.runmap-analysis",
+      "parent": "project-chaos.team-process.system-designs",
+      "tree": "project-chaos",
+      "depth": 4,
+      "tags": [
+        "design",
+        "runmap",
+        "analysis"
+      ],
+      "name": {
+        "zh": "地图生成：技术分析与选型",
+        "en": "RunMap: Analysis & Choice"
+      },
+      "description": {
+        "zh": "01_局内地图生成系统.md §1–§3：系统概述与设计目标、术语表（空间层与「深度」轴的辨析）、死亡细胞混合式生成六步法分析（含 Spelunky 对照与本项目差异）与选型结论。\n",
+        "en": "Doc §1–§3: overview and goals, glossary (MapLayer vs Depth), the six-step hybrid generation of Dead Cells with the Spelunky comparison and project-specific differences, and the chosen approach.\n"
+      },
+      "source": [
+        {
+          "path": "Assets/Chaos_Story/Story/02_系统策划/01_局内地图生成系统.md",
+          "line": 1,
+          "end_line": 141
+        }
+      ],
+      "revision": "2f3bda754a8a236a3100f9cdb4239376ad8eb367",
+      "updated_at": "2026-10-07T06:26:01.049Z",
+      "fingerprint": "6bc0fc65874f5617ae4168fffba868ec71625053e6fd407d427edb71edc792bb",
+      "apis": [
+        {
+          "protocol": "file",
+          "path": "Assets/Chaos_Story/Story/02_系统策划/01_局内地图生成系统.md#L1-L141",
+          "description": {
+            "zh": "系统概述（M8/M14 归属、G1~G6 目标、Non-goals）、术语表（空间层/房间块/接口/原型图，含与「深度」轴辨析）、死亡细胞六步法分析与选型结论。\n",
+            "en": "Overview (M8/M14 ownership, goals G1–G6, non-goals), glossary, the Dead Cells six-step analysis and the chosen hybrid approach.\n"
+          },
+          "key": "file:Assets/Chaos_Story/Story/02_系统策划/01_局内地图生成系统.md#L1-L141"
+        }
+      ],
+      "aggregate": {
+        "descendant_count": 0,
+        "own_api_count": 1,
+        "inherited_api_count": 0,
+        "dep_out": 0,
+        "dep_in": 0
+      }
+    },
+    "project-chaos.team-process.system-designs.runmap-data-and-config": {
+      "uid": "7c0d0093",
+      "id": "project-chaos.team-process.system-designs.runmap-data-and-config",
+      "parent": "project-chaos.team-process.system-designs",
+      "tree": "project-chaos",
+      "depth": 4,
+      "tags": [
+        "design",
+        "runmap",
+        "config"
+      ],
+      "name": {
+        "zh": "地图生成：数据与配置表",
+        "en": "RunMap: Data & Config"
+      },
+      "description": {
+        "zh": "§7–§9：运行时数据结构与存档字段（种子/场景序号/图版本，不存布局）、6 张配置表字段草案（MapBiome/MapPreset/PresetLayer/MapChunk/ChunkSocket/ChunkSlot，12 类型白名单、无 enum、拆表+外键）、UI 与小地图要求。\n",
+        "en": "Doc §7–§9: runtime structures and save fields (seed/scene/mapVersion, layout not saved), field drafts for six config tables (whitelist-only types, no enums, split tables with foreign keys), and UI/minimap requirements.\n"
+      },
+      "source": [
+        {
+          "path": "Assets/Chaos_Story/Story/02_系统策划/01_局内地图生成系统.md",
+          "line": 358,
+          "end_line": 539
+        }
+      ],
+      "revision": "2f3bda754a8a236a3100f9cdb4239376ad8eb367",
+      "updated_at": "2026-10-07T06:26:01.051Z",
+      "fingerprint": "6bc0fc65874f5617ae4168fffba868ec71625053e6fd407d427edb71edc792bb",
+      "apis": [
+        {
+          "protocol": "file",
+          "path": "Assets/Chaos_Story/Story/02_系统策划/01_局内地图生成系统.md#L358-L539",
+          "description": {
+            "zh": "运行时结构（RunMapContext/RoomNode/RoomEdge/MapLayout/SpawnSlot）、存档字段与图版本兼容、6 张表的字段草案与枚举数字对照、UI 与小地图要求。\n",
+            "en": "Runtime structures, save fields and mapVersion compatibility, field drafts for the six tables, and UI/minimap requirements.\n"
+          },
+          "key": "file:Assets/Chaos_Story/Story/02_系统策划/01_局内地图生成系统.md#L358-L539"
+        }
+      ],
+      "aggregate": {
+        "descendant_count": 0,
+        "own_api_count": 1,
+        "inherited_api_count": 0,
+        "dep_out": 0,
+        "dep_in": 0
+      }
+    },
+    "project-chaos.team-process.system-designs.runmap-impl-and-acceptance": {
+      "uid": "7c0d0094",
+      "id": "project-chaos.team-process.system-designs.runmap-impl-and-acceptance",
+      "parent": "project-chaos.team-process.system-designs",
+      "tree": "project-chaos",
+      "depth": 4,
+      "tags": [
+        "design",
+        "runmap",
+        "acceptance"
+      ],
+      "name": {
+        "zh": "地图生成：实现与验收",
+        "en": "RunMap: Impl & Acceptance"
+      },
+      "description": {
+        "zh": "§10–§16：边界与异常 E1~E14、依赖系统与降级方案（含 ConfigLoader P0）、实现方式建议（候选模块划分、落位闸门、随机数与确定性约定）、A1~A13 验收、Q1~Q10 待确认、参考引用与变更记录。\n",
+        "en": "Doc §10–§16: failure modes E1–E14, dependencies with fallbacks (incl. the ConfigLoader blocker), implementation advice (candidate units, landing gates, RNG/determinism), acceptance A1–A13, open questions Q1–Q10, references and change log.\n"
+      },
+      "source": [
+        {
+          "path": "Assets/Chaos_Story/Story/02_系统策划/01_局内地图生成系统.md",
+          "line": 540,
+          "end_line": 714
+        }
+      ],
+      "revision": "2f3bda754a8a236a3100f9cdb4239376ad8eb367",
+      "updated_at": "2026-10-07T06:26:01.051Z",
+      "fingerprint": "6bc0fc65874f5617ae4168fffba868ec71625053e6fd407d427edb71edc792bb",
+      "apis": [
+        {
+          "protocol": "file",
+          "path": "Assets/Chaos_Story/Story/02_系统策划/01_局内地图生成系统.md#L540-L714",
+          "description": {
+            "zh": "边界与异常 E1~E14、依赖与降级、实现方式建议（候选单元与落位闸门、确定性约定、可测试性）、A1~A13 验收、Q1~Q10 待确认与参考资料。\n",
+            "en": "Failure modes E1–E14, dependencies and fallbacks, implementation advice, acceptance A1–A13, open questions Q1–Q10 and references.\n"
+          },
+          "key": "file:Assets/Chaos_Story/Story/02_系统策划/01_局内地图生成系统.md#L540-L714"
+        }
+      ],
+      "aggregate": {
+        "descendant_count": 0,
+        "own_api_count": 1,
+        "inherited_api_count": 0,
+        "dep_out": 0,
+        "dep_in": 0
+      }
+    },
+    "project-chaos.team-process.system-designs.runmap-space-and-connectivity": {
+      "uid": "7c0d0092",
+      "id": "project-chaos.team-process.system-designs.runmap-space-and-connectivity",
+      "parent": "project-chaos.team-process.system-designs",
+      "tree": "project-chaos",
+      "depth": 4,
+      "tags": [
+        "design",
+        "runmap",
+        "rules"
+      ],
+      "name": {
+        "zh": "地图生成：空间与连通性",
+        "en": "RunMap: Space & Connectivity"
+      },
+      "description": {
+        "zh": "§4–§6：空间层模型（地下/地表/地表建筑）、地图总体结构与 boss 门、房间块与接口（Socket）规范、C1~C10 连通性硬规则、生成数值与公式、生成状态机与 Pass A~F 生成流水线。\n",
+        "en": "Doc §4–§6: the layer model (underground / surface / surface buildings), overall map structure, chunk and socket spec, the C1–C10 connectivity rules, generation numbers, and the Pass A–F pipeline.\n"
+      },
+      "source": [
+        {
+          "path": "Assets/Chaos_Story/Story/02_系统策划/01_局内地图生成系统.md",
+          "line": 142,
+          "end_line": 357
+        }
+      ],
+      "revision": "2f3bda754a8a236a3100f9cdb4239376ad8eb367",
+      "updated_at": "2026-10-07T06:26:01.050Z",
+      "fingerprint": "6bc0fc65874f5617ae4168fffba868ec71625053e6fd407d427edb71edc792bb",
+      "apis": [
+        {
+          "protocol": "file",
+          "path": "Assets/Chaos_Story/Story/02_系统策划/01_局内地图生成系统.md#L142-L357",
+          "description": {
+            "zh": "空间层模型与层间规则、房间块/接口规范、C1~C10 连通性硬规则（含判定方法与失败处理）、生成数值 F1~F16、状态机与 Pass A~F 流水线。\n",
+            "en": "Layer model and cross-layer rules, chunk/socket spec, connectivity rules C1–C10 with checks and failure handling, generation numbers F1–F16, state machine and the Pass A–F pipeline.\n"
+          },
+          "key": "file:Assets/Chaos_Story/Story/02_系统策划/01_局内地图生成系统.md#L142-L357"
+        }
+      ],
+      "aggregate": {
+        "descendant_count": 0,
+        "own_api_count": 1,
+        "inherited_api_count": 0,
+        "dep_out": 0,
+        "dep_in": 0
+      }
     }
   },
   "api_index": {
@@ -21633,6 +21856,10 @@
     "file:Assets/Chaos_Story/Story/01_企划/01_游戏概念案.md#L166-L238": "project-chaos.team-process.game-concept.systems",
     "file:Assets/Chaos_Story/Story/01_企划/01_游戏概念案.md#L239-L395": "project-chaos.team-process.game-concept.risks-and-appendix",
     "file:Assets/Chaos_Story/Story/02_系统策划/00_系统设计文档模板.md": "project-chaos.team-process.doc-system.system-template",
+    "file:Assets/Chaos_Story/Story/02_系统策划/01_局内地图生成系统.md#L1-L141": "project-chaos.team-process.system-designs.runmap-analysis",
+    "file:Assets/Chaos_Story/Story/02_系统策划/01_局内地图生成系统.md#L142-L357": "project-chaos.team-process.system-designs.runmap-space-and-connectivity",
+    "file:Assets/Chaos_Story/Story/02_系统策划/01_局内地图生成系统.md#L358-L539": "project-chaos.team-process.system-designs.runmap-data-and-config",
+    "file:Assets/Chaos_Story/Story/02_系统策划/01_局内地图生成系统.md#L540-L714": "project-chaos.team-process.system-designs.runmap-impl-and-acceptance",
     "file:Assets/Chaos_Story/Story/03_配置表设计/00_配置表清单.md": "project-chaos.team-process.config-specs.list",
     "file:Assets/Chaos_Story/Story/03_配置表设计/01_配置表填写规范.md#L1-L182": "project-chaos.team-process.config-specs.filling-header",
     "file:Assets/Chaos_Story/Story/03_配置表设计/01_配置表填写规范.md#L183-L467": "project-chaos.team-process.config-specs.filling-execution",
@@ -26906,17 +27133,18 @@
     "project-chaos.team-process": {
       "schema_version": 1,
       "id": "project-chaos.team-process",
-      "updated_at": "2026-10-06T11:55:46.904Z",
+      "updated_at": "2026-10-07T06:26:20.653Z",
       "mode": "groups",
       "max_columns": 3,
       "reading": {
-        "zh": "从团队契约与模板开始，然后是企划/配置表规范，再看架构，最后是程序侧实测记录。",
-        "en": "Start with the contract and templates, then the design docs, then architecture, then the programmer-side measured records."
+        "zh": "从团队契约与模板开始，然后是企划 / 系统设计 / 配置表规范，再看架构，最后是程序侧实测记录。",
+        "en": "Start with the contract and templates, then the design docs (concept, system design, config specs), then architecture, then the programmer-side measured records."
       },
       "order": [
         "project-chaos.team-process.contract",
         "project-chaos.team-process.doc-system",
         "project-chaos.team-process.game-concept",
+        "project-chaos.team-process.system-designs",
         "project-chaos.team-process.config-specs",
         "project-chaos.team-process.arch-docs",
         "project-chaos.team-process.program-docs"
@@ -26936,11 +27164,12 @@
         {
           "id": "design",
           "title": {
-            "zh": "企划与配置表规范",
-            "en": "Design docs"
+            "zh": "企划、系统与配置表规范",
+            "en": "Concept, system & config specs"
           },
           "children": [
             "project-chaos.team-process.game-concept",
+            "project-chaos.team-process.system-designs",
             "project-chaos.team-process.config-specs"
           ]
         },
@@ -27261,6 +27490,23 @@
         "project-chaos.team-process.program-docs.framework-capabilities.dialogue-and-logging",
         "project-chaos.team-process.program-docs.framework-capabilities.config-and-save",
         "project-chaos.team-process.program-docs.framework-capabilities.rows-and-evidence"
+      ]
+    },
+    "project-chaos.team-process.system-designs": {
+      "schema_version": 1,
+      "id": "project-chaos.team-process.system-designs",
+      "updated_at": "2026-10-07T06:26:20.861Z",
+      "mode": "grid",
+      "max_columns": 2,
+      "reading": {
+        "zh": "按文档章节顺序读：先看技术分析与选型（§1–§3），再看空间层与连通性硬规则（§4–§6），然后数据结构与配置表字段草案（§7–§9），最后是实现建议与验收（§10–§16）。",
+        "en": "Read in document order: analysis and technology choice (§1–§3), layer model and connectivity rules (§4–§6), data structures and config-field drafts (§7–§9), then implementation advice and acceptance (§10–§16)."
+      },
+      "order": [
+        "project-chaos.team-process.system-designs.runmap-analysis",
+        "project-chaos.team-process.system-designs.runmap-space-and-connectivity",
+        "project-chaos.team-process.system-designs.runmap-data-and-config",
+        "project-chaos.team-process.system-designs.runmap-impl-and-acceptance"
       ]
     }
   },

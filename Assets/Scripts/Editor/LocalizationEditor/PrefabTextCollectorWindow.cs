@@ -77,6 +77,16 @@ namespace LocalizationSystem.Editor
         /// </summary>
         private bool _scanScenes = true;
 
+        /// <summary>
+        /// 批量改字体颜色时用的目标色。只作用于【勾选项】，改的是 TMP_Text.color（顶点色）。
+        ///
+        /// ══════════════ 为什么改的是 color 而不是 LocalizedText ══════════════
+        /// 颜色是纯表现，与本地化 Key 无关；把颜色塞进 LocalizedText 会让
+        /// "换语言时颜色该不该跟着变"变成一个没人能回答的问题。所以这里只动顶点色，
+        /// 不碰字体资产、材质与 LocalizedText。
+        /// </summary>
+        private Color _fontColor = Color.white;
+
         private const string TargetConfigKey = "PrefabTextCollector_TargetConfig";
 
         /// <summary>
@@ -313,6 +323,23 @@ namespace LocalizationSystem.Editor
             if (_scanned && GUILayout.Button("全选新增项", GUILayout.Width(100f))) SetSelectionForNewItems(true);
             if (_scanned && GUILayout.Button("清空勾选", GUILayout.Width(90f))) SetSelectionAll(false);
             EditorGUILayout.EndHorizontal();
+
+            // ══════════════ 批量改字体颜色 ══════════════
+            // 单独一行：上面那行已经排满（统计 + 3 个勾选按钮），再挤进去在最小窗口宽度
+            // （minSize 760）下会被裁掉。
+            if (_scanned)
+            {
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField("字体颜色", GUILayout.Width(60f));
+                _fontColor = EditorGUILayout.ColorField(_fontColor, GUILayout.Width(80f));
+                EditorGUILayout.LabelField("改的是勾选项的 TMP color（顶点色）", EditorStyles.miniLabel);
+                GUILayout.FlexibleSpace();
+                using (new EditorGUI.DisabledScope(selected == 0))
+                {
+                    if (GUILayout.Button("应用到勾选项", GUILayout.Width(110f))) ApplyFontColorToSelected();
+                }
+                EditorGUILayout.EndHorizontal();
+            }
 
             if (!_scanned)
             {
@@ -1390,6 +1417,217 @@ namespace LocalizationSystem.Editor
             RefreshConfigStatus();
         }
 
+        // ══════════════════ 批量改字体颜色 ══════════════════
+
+        /// <summary>
+        /// 把【勾选项】的字体颜色统一改成 _fontColor。
+        ///
+        /// ══════════════ 与「写入 LocalizedText 组件」同一套落盘约定 ══════════════
+        ///   · 预制体：LoadPrefabContents 隔离场景 → 改 → SaveAsPrefabAsset 存回；
+        ///   · 场景  ：改已加载的场景实例 → MarkSceneDirty → 由本方法统一 SaveScene；
+        ///   · 播放模式跳过场景写入；场景里属于预制体实例的物体跳过（同 WriteSceneItems）。
+        ///
+        /// ══════════════ 颜色没变的条目不会把资产标脏 ══════════════
+        /// 反复点同一个颜色时不该把所有预制体重存一遍（那会让 git diff 凭空多出一堆改动），
+        /// 所以 SetTextColor 会区分"改了 / 本来就是"。
+        /// </summary>
+        private void ApplyFontColorToSelected()
+        {
+            var picked = new List<TextItem>();
+            for (int g = 0; g < _groups.Count; g++)
+            {
+                for (int i = 0; i < _groups[g].Items.Count; i++)
+                {
+                    if (_groups[g].Items[i].Selected) picked.Add(_groups[g].Items[i]);
+                }
+            }
+            if (picked.Count == 0)
+            {
+                Notify("字体颜色", "没有勾选任何条目。");
+                return;
+            }
+
+            if (!SilentMode)
+            {
+                bool ok = EditorUtility.DisplayDialog("确认改字体颜色",
+                    "将把勾选的 " + picked.Count + " 条文字改成 " +
+                    ColorUtility.ToHtmlStringRGBA(_fontColor) + "：\n" +
+                    "· 只改 TMP 的 color（顶点色），不动字体与材质\n" +
+                    "· 直接写入预制体 / 场景，原颜色不被记录，无法一键还原",
+                    "改色", "取消");
+                if (!ok) return;
+            }
+
+            //按来源路径归组：一个预制体只开关一次，否则隔离场景会被反复创建
+            var byAsset = new Dictionary<string, List<TextItem>>();
+            for (int i = 0; i < picked.Count; i++)
+            {
+                List<TextItem> list;
+                if (!byAsset.TryGetValue(picked[i].PrefabPath, out list))
+                {
+                    list = new List<TextItem>();
+                    byAsset[picked[i].PrefabPath] = list;
+                }
+                list.Add(picked[i]);
+            }
+
+            int changed = 0, unchanged = 0, missing = 0;
+            var dirtyScenes = new List<UnityEngine.SceneManagement.Scene>();
+
+            AssetDatabase.StartAssetEditing();//批量改预制体期间暂停导入，快很多
+            try
+            {
+                foreach (KeyValuePair<string, List<TextItem>> kv in byAsset)
+                {
+                    if (IsScenePath(kv.Key))
+                    {
+                        ApplyColorInScene(kv.Key, kv.Value, dirtyScenes, ref changed, ref unchanged, ref missing);
+                    }
+                    else
+                    {
+                        ApplyColorInPrefab(kv.Key, kv.Value, ref changed, ref unchanged, ref missing);
+                    }
+                }
+            }
+            finally
+            {
+                AssetDatabase.StopAssetEditing();
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
+            }
+
+            // 场景落盘放在 StartAssetEditing 之外：SaveScene 会自己触发一轮导入
+            for (int i = 0; i < dirtyScenes.Count; i++)
+            {
+                try
+                {
+                    EditorSceneManager.SaveScene(dirtyScenes[i]);
+                    ChaosLog.Info(LogChannel.Localization, "已保存场景：" + dirtyScenes[i].path);
+                }
+                catch (Exception e)
+                {
+                    ChaosLog.Error(LogChannel.Localization, "保存场景失败：" + e.Message);
+                }
+            }
+
+            string msg = "已改色 " + changed + " 条。";
+            if (unchanged > 0) msg += "\n\n其中 " + unchanged + " 条本来就是该颜色，未重存资产。";
+            if (missing > 0) msg += "\n\n有 " + missing + " 条没找到 TMP 文本（层级路径可能已变），已跳过。";
+            if (dirtyScenes.Count > 0) msg += "\n\n已保存 " + dirtyScenes.Count + " 个场景。";
+            Notify("字体颜色", msg);
+
+            ChaosLog.Info(LogChannel.Localization, "面板文字批量改色：" + msg.Replace("\n", " "));
+        }
+
+        /// <summary>改一个预制体里勾选项的文字颜色。隔离场景保证不会误改场景里的实例。</summary>
+        private void ApplyColorInPrefab(string prefabPath, List<TextItem> items,
+            ref int changed, ref int unchanged, ref int missing)
+        {
+            GameObject root = null;
+            try
+            {
+                root = PrefabUtility.LoadPrefabContents(prefabPath);
+                if (root == null) { missing += items.Count; return; }
+
+                bool dirty = false;
+                for (int i = 0; i < items.Count; i++)
+                {
+                    Transform target = root.transform.Find(items[i].ObjectPath);
+                    if (target == null) { missing++; continue; }
+
+                    int r = SetTextColor(target, _fontColor);
+                    if (r == ColorMissing) missing++;
+                    else if (r == ColorChanged) { changed++; dirty = true; }
+                    else unchanged++;
+                }
+
+                if (dirty) PrefabUtility.SaveAsPrefabAsset(root, prefabPath);
+            }
+            finally
+            {
+                if (root != null) PrefabUtility.UnloadPrefabContents(root);
+            }
+        }
+
+        /// <summary>
+        /// 改一个场景里勾选项的文字颜色。定位用的是【已加载的场景实例】，所以：
+        ///   · 用户本来就打开着这个场景 → 直接改它（改完看得见）；
+        ///   · 没打开 → 这里 Additive 打开一次。
+        /// 与 WriteSceneItems 保持同一套边界：播放模式跳过；场景里属于预制体实例的物体跳过
+        /// （那是 Prefab Override，问题很难查）。
+        /// </summary>
+        private void ApplyColorInScene(string scenePath, List<TextItem> items,
+            List<UnityEngine.SceneManagement.Scene> dirtyScenes,
+            ref int changed, ref int unchanged, ref int missing)
+        {
+            if (Application.isPlaying)
+            {
+                ChaosLog.Warn(LogChannel.Localization,
+                    "正在播放模式，跳过场景改色（改的是运行时副本，不会保存）：" + scenePath);
+                missing += items.Count;
+                return;
+            }
+
+            UnityEngine.SceneManagement.Scene scene =
+                UnityEngine.SceneManagement.SceneManager.GetSceneByPath(scenePath);
+            if (!scene.IsValid() || !scene.isLoaded)
+            {
+                try
+                {
+                    scene = EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Additive);
+                }
+                catch (Exception e)
+                {
+                    ChaosLog.Error(LogChannel.Localization, "打开场景失败，跳过改色 " + scenePath + "：" + e.Message);
+                    missing += items.Count;
+                    return;
+                }
+            }
+
+            GameObject[] roots = scene.GetRootGameObjects();
+            bool dirty = false;
+
+            for (int i = 0; i < items.Count; i++)
+            {
+                Transform target = FindInSceneRoots(roots, items[i].ObjectPath);
+                if (target == null) { missing++; continue; }
+
+                if (PrefabUtility.GetPrefabInstanceStatus(target.gameObject) != PrefabInstanceStatus.NotAPrefab)
+                {
+                    ChaosLog.Warn(LogChannel.Localization,
+                        "跳过预制体实例内的物体（颜色应由预制体自己改）：" + items[i].ObjectPath);
+                    missing++;
+                    continue;
+                }
+
+                int r = SetTextColor(target, _fontColor);
+                if (r == ColorMissing) missing++;
+                else if (r == ColorChanged) { changed++; dirty = true; }
+                else unchanged++;
+            }
+
+            if (dirty && !dirtyScenes.Contains(scene))
+            {
+                EditorSceneManager.MarkSceneDirty(scene);
+                dirtyScenes.Add(scene);
+            }
+        }
+
+        /// <summary>
+        /// 把物体的 TMP 文字颜色改成 color，返回 Color* 之一。
+        /// 颜色本来就一样时返回 ColorUnchanged —— 调用方据此【不】重存资产。
+        /// </summary>
+        private static int SetTextColor(Transform target, Color color)
+        {
+            TMP_Text text = target.GetComponent<TMP_Text>();
+            if (text == null) return ColorMissing;
+            if (text.color == color) return ColorUnchanged;
+
+            text.color = color;
+            EditorUtility.SetDirty(text);//场景里靠它落到实例上；预制体走 SaveAsPrefabAsset
+            return ColorChanged;
+        }
+
         // ══════════════════ 清除勾选项 ══════════════════
 
         /// <summary>
@@ -1745,6 +1983,11 @@ namespace LocalizationSystem.Editor
         private const int ResultMissing = 0;
         private const int ResultAdded = 1;
         private const int ResultUpdated = 2;
+
+        //批量改色的三种结果（见 SetTextColor）
+        private const int ColorMissing = 0;    //该物体上没有 TMP 文本
+        private const int ColorChanged = 1;    //颜色被改了
+        private const int ColorUnchanged = 2;  //本来就是该颜色，不重存资产
 
         /// <summary>
         /// 给一个物体挂上/更新 LocalizedText。返回 Result* 之一。

@@ -1,17 +1,18 @@
 {
   "schema_version": 1,
   "id": "project-chaos.team-process",
-  "updated_at": "2026-10-06T11:55:46.904Z",
+  "updated_at": "2026-10-07T06:26:20.653Z",
   "mode": "groups",
   "max_columns": 3,
   "reading": {
-    "zh": "从团队契约与模板开始，然后是企划/配置表规范，再看架构，最后是程序侧实测记录。",
-    "en": "Start with the contract and templates, then the design docs, then architecture, then the programmer-side measured records."
+    "zh": "从团队契约与模板开始，然后是企划 / 系统设计 / 配置表规范，再看架构，最后是程序侧实测记录。",
+    "en": "Start with the contract and templates, then the design docs (concept, system design, config specs), then architecture, then the programmer-side measured records."
   },
   "order": [
     "project-chaos.team-process.contract",
     "project-chaos.team-process.doc-system",
     "project-chaos.team-process.game-concept",
+    "project-chaos.team-process.system-designs",
     "project-chaos.team-process.config-specs",
     "project-chaos.team-process.arch-docs",
     "project-chaos.team-process.program-docs"
@@ -31,11 +32,12 @@
     {
       "id": "design",
       "title": {
-        "zh": "企划与配置表规范",
-        "en": "Design docs"
+        "zh": "企划、系统与配置表规范",
+        "en": "Concept, system & config specs"
       },
       "children": [
         "project-chaos.team-process.game-concept",
+        "project-chaos.team-process.system-designs",
         "project-chaos.team-process.config-specs"
       ]
     },
