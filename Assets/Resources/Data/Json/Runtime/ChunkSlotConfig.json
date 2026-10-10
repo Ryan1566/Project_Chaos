@@ -1,0 +1,172 @@
+{
+    "datas": [
+        {
+            "Id": 1,
+            "chunkId": 1001,
+            "slotType": 5,
+            "posX": 5.5,
+            "posY": 3.5
+        },
+        {
+            "Id": 2,
+            "chunkId": 1002,
+            "slotType": 1,
+            "posX": 12,
+            "posY": 3.5
+        },
+        {
+            "Id": 3,
+            "chunkId": 1003,
+            "slotType": 1,
+            "posX": 10,
+            "posY": 3.5
+        },
+        {
+            "Id": 4,
+            "chunkId": 1003,
+            "slotType": 1,
+            "posX": 20,
+            "posY": 12.5
+        },
+        {
+            "Id": 5,
+            "chunkId": 1003,
+            "slotType": 2,
+            "posX": 33,
+            "posY": 8.5
+        },
+        {
+            "Id": 6,
+            "chunkId": 1011,
+            "slotType": 3,
+            "posX": 31.5,
+            "posY": 5.5
+        },
+        {
+            "Id": 7,
+            "chunkId": 1009,
+            "slotType": 1,
+            "posX": 20.5,
+            "posY": 12
+        },
+        {
+            "Id": 8,
+            "chunkId": 1010,
+            "slotType": 2,
+            "posX": 28,
+            "posY": 11.5
+        },
+        {
+            "Id": 9,
+            "chunkId": 1101,
+            "slotType": 5,
+            "posX": 5.5,
+            "posY": 3.5
+        },
+        {
+            "Id": 10,
+            "chunkId": 1102,
+            "slotType": 1,
+            "posX": 12,
+            "posY": 3.5
+        },
+        {
+            "Id": 11,
+            "chunkId": 1103,
+            "slotType": 1,
+            "posX": 10,
+            "posY": 3.5
+        },
+        {
+            "Id": 12,
+            "chunkId": 1103,
+            "slotType": 1,
+            "posX": 20,
+            "posY": 12.5
+        },
+        {
+            "Id": 13,
+            "chunkId": 1103,
+            "slotType": 2,
+            "posX": 33,
+            "posY": 8.5
+        },
+        {
+            "Id": 14,
+            "chunkId": 1111,
+            "slotType": 3,
+            "posX": 31.5,
+            "posY": 5.5
+        },
+        {
+            "Id": 15,
+            "chunkId": 1109,
+            "slotType": 1,
+            "posX": 20.5,
+            "posY": 12
+        },
+        {
+            "Id": 16,
+            "chunkId": 1110,
+            "slotType": 2,
+            "posX": 28,
+            "posY": 11.5
+        },
+        {
+            "Id": 17,
+            "chunkId": 1201,
+            "slotType": 5,
+            "posX": 5.5,
+            "posY": 3.5
+        },
+        {
+            "Id": 18,
+            "chunkId": 1202,
+            "slotType": 1,
+            "posX": 12,
+            "posY": 3.5
+        },
+        {
+            "Id": 19,
+            "chunkId": 1203,
+            "slotType": 1,
+            "posX": 10,
+            "posY": 3.5
+        },
+        {
+            "Id": 20,
+            "chunkId": 1203,
+            "slotType": 1,
+            "posX": 20,
+            "posY": 12.5
+        },
+        {
+            "Id": 21,
+            "chunkId": 1203,
+            "slotType": 2,
+            "posX": 33,
+            "posY": 8.5
+        },
+        {
+            "Id": 22,
+            "chunkId": 1211,
+            "slotType": 3,
+            "posX": 31.5,
+            "posY": 5.5
+        },
+        {
+            "Id": 23,
+            "chunkId": 1209,
+            "slotType": 1,
+            "posX": 20.5,
+            "posY": 12
+        },
+        {
+            "Id": 24,
+            "chunkId": 1210,
+            "slotType": 2,
+            "posX": 28,
+            "posY": 11.5
+        }
+    ]
+}

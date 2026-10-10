@@ -144,7 +144,7 @@ public static class GlobalPath
     /// <summary>
     /// 读取配置Json文件的路径
     /// </summary>
-    public const string data_JsonPathToRead = "Json/Runtime/";
+    public const string data_JsonPathToRead = "Data/Json/Runtime/";
 
     /// <summary>
     /// 导出的Model类持久化数据路径

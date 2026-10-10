@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UITestEnter : MonoBehaviour
+public class GM_UITestEnter : MonoBehaviour
 {
     private Button _uiTestBtn;
     private BasePanel testPanel;
@@ -13,18 +13,6 @@ public class UITestEnter : MonoBehaviour
     {
         _uiTestBtn = GetComponent<Button>();
         _uiTestBtn.onClick.AddListener(ShowUI);
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     private void ShowUI()
@@ -38,5 +26,7 @@ public class UITestEnter : MonoBehaviour
             else
                 UIManager.Instance.PushPanel(PanelType.MainMenuPanel);
         }
+
+        this.TriggerEvent(EventConstName.CloseGM);
     }
 }
