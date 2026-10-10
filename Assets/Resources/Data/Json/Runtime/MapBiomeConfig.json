@@ -1,0 +1,28 @@
+{
+    "datas": [
+        {
+            "Id": 1,
+            "themeKey": "Underground",
+            "nameCN": "地下",
+            "layer": 1,
+            "retryMax": 20,
+            "enable": true
+        },
+        {
+            "Id": 2,
+            "themeKey": "Surface",
+            "nameCN": "地表",
+            "layer": 2,
+            "retryMax": 20,
+            "enable": true
+        },
+        {
+            "Id": 3,
+            "themeKey": "Building",
+            "nameCN": "地表建筑",
+            "layer": 3,
+            "retryMax": 20,
+            "enable": true
+        }
+    ]
+}

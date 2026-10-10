@@ -27,4 +27,8 @@ public static class EventConstName
     #region 加载场景
     public const string LoadProgress = nameof(LoadProgress);//加载进度
     #endregion
+
+    #region GM
+    public const string CloseGM = nameof(CloseGM);//关掉GM面板
+    #endregion
 }

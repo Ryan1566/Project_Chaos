@@ -1,0 +1,59 @@
+{
+    "datas": [
+        {
+            "Id": 1,
+            "presetId": 10,
+            "layerOrder": 1,
+            "layer": 1,
+            "isMainPath": true,
+            "linkFromLayerOrder": 0,
+            "allowDirect": true,
+            "linkMin": 0,
+            "linkMax": 0
+        },
+        {
+            "Id": 2,
+            "presetId": 11,
+            "layerOrder": 1,
+            "layer": 2,
+            "isMainPath": true,
+            "linkFromLayerOrder": 0,
+            "allowDirect": true,
+            "linkMin": 0,
+            "linkMax": 0
+        },
+        {
+            "Id": 3,
+            "presetId": 12,
+            "layerOrder": 1,
+            "layer": 3,
+            "isMainPath": true,
+            "linkFromLayerOrder": 0,
+            "allowDirect": true,
+            "linkMin": 0,
+            "linkMax": 0
+        },
+        {
+            "Id": 4,
+            "presetId": 20,
+            "layerOrder": 1,
+            "layer": 2,
+            "isMainPath": true,
+            "linkFromLayerOrder": 0,
+            "allowDirect": true,
+            "linkMin": 1,
+            "linkMax": 2
+        },
+        {
+            "Id": 5,
+            "presetId": 20,
+            "layerOrder": 2,
+            "layer": 1,
+            "isMainPath": true,
+            "linkFromLayerOrder": 1,
+            "allowDirect": true,
+            "linkMin": 1,
+            "linkMax": 2
+        }
+    ]
+}

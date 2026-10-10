@@ -1,0 +1,84 @@
+{
+    "datas": [
+        {
+            "Id": 1,
+            "stage": 1,
+            "sort": 1,
+            "descCN": "正在准备本次探索的地形…",
+            "descTW": "正在準備本次探索的地形…",
+            "descEN": "Preparing the terrain for this expedition…",
+            "descJP": "今回の探索の地形を準備しています…",
+            "descKR": "이번 탐험의 지형을 준비하고 있습니다…"
+        },
+        {
+            "Id": 2,
+            "stage": 2,
+            "sort": 2,
+            "descCN": "正在勾勒边缘空间的轮廓…",
+            "descTW": "正在勾勒邊緣空間的輪廓…",
+            "descEN": "Sketching the outline of the Edge Realm…",
+            "descJP": "エッジレルムの輪郭を描いています…",
+            "descKR": "엣지 렐름의 윤곽을 그리고 있습니다…"
+        },
+        {
+            "Id": 3,
+            "stage": 3,
+            "sort": 3,
+            "descCN": "正在铺设地表与地下…",
+            "descTW": "正在鋪設地表與地下…",
+            "descEN": "Laying out the surface and the depths…",
+            "descJP": "地表と地下を敷き詰めています…",
+            "descKR": "지표와 지하를 깔고 있습니다…"
+        },
+        {
+            "Id": 4,
+            "stage": 4,
+            "sort": 4,
+            "descCN": "正在挑选房间与走廊…",
+            "descTW": "正在挑選房間與走廊…",
+            "descEN": "Choosing rooms and corridors…",
+            "descJP": "部屋と通路を選んでいます…",
+            "descKR": "방과 복도를 고르고 있습니다…"
+        },
+        {
+            "Id": 5,
+            "stage": 5,
+            "sort": 5,
+            "descCN": "正在建造建筑与通路…",
+            "descTW": "正在建造建築與通路…",
+            "descEN": "Raising buildings and passages…",
+            "descJP": "建物と通路を建てています…",
+            "descKR": "건물과 통로를 세우고 있습니다…"
+        },
+        {
+            "Id": 6,
+            "stage": 6,
+            "sort": 6,
+            "descCN": "正在封闭多余的通道…",
+            "descTW": "正在封閉多餘的通道…",
+            "descEN": "Sealing the unused passages…",
+            "descJP": "不要な通路を塞いでいます…",
+            "descKR": "사용하지 않는 통로를 막고 있습니다…"
+        },
+        {
+            "Id": 7,
+            "stage": 7,
+            "sort": 7,
+            "descCN": "正在确认每一条路径都能走通…",
+            "descTW": "正在確認每一條路徑都能走通…",
+            "descEN": "Verifying that every path connects…",
+            "descJP": "すべての経路が繋がるか確認しています…",
+            "descKR": "모든 경로가 연결되는지 확인하고 있습니다…"
+        },
+        {
+            "Id": 8,
+            "stage": 8,
+            "sort": 8,
+            "descCN": "地形已生成，准备进入…",
+            "descTW": "地形已生成，準備進入…",
+            "descEN": "Terrain ready. Proceeding…",
+            "descJP": "地形の生成が完了しました…",
+            "descKR": "지형 생성이 완료되었습니다…"
+        }
+    ]
+}

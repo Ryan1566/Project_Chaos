@@ -17,5 +17,6 @@ public enum PanelType
     GainQuestPanel,//新任务领取提示面板
     ProgressPanel,//加载面板
     SLPanel,//保存、读取面板
-    EnddingPanel//结局面板
+    EnddingPanel,//结局面板
+    GMPanel//GM面板
 }
