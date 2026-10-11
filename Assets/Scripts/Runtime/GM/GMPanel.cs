@@ -96,6 +96,23 @@ public class GMPanel : MonoBehaviour
     public TMP_FontAsset font;
     public Sprite buttonSprite;
 
+    // ── GM：局内地图生成（原型验证用，不进正式流程）──
+    private TMP_InputField _runMapSeedInput;
+    private TextMeshProUGUI _runMapStatus;
+    private uint _runMapSeed = 20261010u;
+
+    /// <summary>GM 生成的地图挂在哪个容器下（重复生成时先删掉它）。</summary>
+    private const string RunMapContainerName = "RunMap_GM";
+
+    /// <summary>GM 只生成"本局第 1 个场景"；一局内三个场景的种子由 RunSeed 派生、互不相同。</summary>
+    private const int RunMapSceneIndex = 1;
+
+    /// <summary>走真实读条流程时要进的场景（与 SLPanel 读档后的目标一致）。</summary>
+    private const string RunMapWorldScene = "WorldScene";
+
+    /// <summary>读条场景名（GM 跳转用；与 SLPanel 用的是同一个）。</summary>
+    private const string RunMapLoadingScene = "LoadingScene";
+
     private GmCategory[] _categories;
 
     private Transform _mainList;
@@ -174,6 +191,11 @@ public class GMPanel : MonoBehaviour
             {
                 new GmSection("语言切换", BuildLanguagePage),
                 new GmSection("日志与性能", page => AddHint(page, "预留：日志等级 / 频道开关 / 帧率与内存显示，待接入。")),
+            }),
+
+            new GmCategory("局内生成", new[]
+            {
+                new GmSection("生成地图", BuildRunMapPage),
             }),
 
             new GmCategory("道具", new[]
@@ -390,6 +412,134 @@ public class GMPanel : MonoBehaviour
         LayoutElement element = go.AddComponent<LayoutElement>();
         element.preferredWidth = HintWidth;
         element.preferredHeight = 60f;
+    }
+
+    // ══════════════════════ 局内地图生成（GM 原型入口） ══════════════════════
+
+    /// <summary>
+    /// GM 页：输入本局种子（RunSeed）+ 两个按钮（随机种子 / 按当前种子生成）。
+    ///
+    /// 这里**完全走正式流程**：登记本局种子 → 切到读条场景 → 读条期生成地图 → 激活目标场景，
+    /// 进到 WorldScene 看到的就是真实生成结果（和将来"开始游戏"走的是同一条链路）。
+    /// 正式流程里同一个 RunSeed 会派生出一局内三个**互不相同**的场景种子（见状态行）。
+    /// </summary>
+    private void BuildRunMapPage(Transform page)
+    {
+        _runMapSeedInput = CreateSeedInput(page);
+        if (_runMapSeedInput != null) _runMapSeedInput.SetTextWithoutNotify(_runMapSeed.ToString());
+
+        AddActionButton(page, "随机生成种子", RandomizeRunMapSeed);
+        AddActionButton(page, "按当前种子生成", GenerateRunMapFromSeed);
+
+        _runMapStatus = CreateStatusLabel(page);
+        SetRunMapStatus("输入本局种子（RunSeed），或先随机一个。点生成会走读条流程进入 " + RunMapWorldScene + "（读条期生成地图）。");
+    }
+
+    /// <summary>种子输入框（数字，最多 10 位 = uint 上限）。</summary>
+    private TMP_InputField CreateSeedInput(Transform page)
+    {
+        GameObject go = new GameObject("Input_RunSeed", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
+        RectTransform rect = (RectTransform)go.transform;
+        rect.SetParent(page, false);
+
+        Image bg = go.GetComponent<Image>();
+        bg.sprite = buttonSprite;
+        bg.type = Image.Type.Sliced;
+        bg.color = new Color(0.10f, 0.12f, 0.16f, 1f);
+
+        GameObject textGo = new GameObject("Text", typeof(RectTransform));
+        RectTransform textRect = (RectTransform)textGo.transform;
+        textRect.SetParent(rect, false);
+        Stretch(textRect);
+        textRect.offsetMin = new Vector2(12f, 0f);
+        textRect.offsetMax = new Vector2(-12f, 0f);
+
+        TextMeshProUGUI text = textGo.AddComponent<TextMeshProUGUI>();
+        text.font = font;
+        text.fontSize = 24;
+        text.color = LabelColor;
+        text.alignment = TextAlignmentOptions.Left;
+        text.enableWordWrapping = false;
+        text.raycastTarget = false;
+
+        TMP_InputField input = go.AddComponent<TMP_InputField>();
+        input.targetGraphic = bg;
+        input.textComponent = text;
+        input.textViewport = rect;
+        input.lineType = TMP_InputField.LineType.SingleLine;
+        input.contentType = TMP_InputField.ContentType.IntegerNumber;   // 种子是数字，挡掉非法输入
+        input.characterLimit = 10;                                      // uint 最多 10 位
+
+        LayoutElement element = go.AddComponent<LayoutElement>();
+        element.preferredWidth = ActionButtonWidth;
+        element.preferredHeight = ActionButtonHeight;
+        element.flexibleWidth = 0f;
+        return input;
+    }
+
+    /// <summary>可变状态行（AddHint 不返回引用，这里要能反复改写）。</summary>
+    private TextMeshProUGUI CreateStatusLabel(Transform page)
+    {
+        GameObject go = new GameObject("RunMapStatus", typeof(RectTransform));
+        RectTransform rect = (RectTransform)go.transform;
+        rect.SetParent(page, false);
+
+        TextMeshProUGUI label = go.AddComponent<TextMeshProUGUI>();
+        label.font = font;
+        label.fontSize = 20;
+        label.color = HintColor;
+        label.alignment = TextAlignmentOptions.TopLeft;
+        label.enableWordWrapping = true;
+        label.raycastTarget = false;
+
+        LayoutElement element = go.AddComponent<LayoutElement>();
+        element.preferredWidth = HintWidth;
+        element.preferredHeight = 120f;
+        return label;
+    }
+
+    private void RandomizeRunMapSeed()
+    {
+        // 1 ~ int.MaxValue：避开 0（RunMapRng 把 0 当退化值换成固定常量）
+        uint seed = (uint)UnityEngine.Random.Range(1, int.MaxValue);
+        _runMapSeed = seed;
+        if (_runMapSeedInput != null) _runMapSeedInput.SetTextWithoutNotify(seed.ToString());
+        SetRunMapStatus("已随机得到本局种子 " + seed + "。点【按当前种子生成】出图。");
+    }
+
+    private void GenerateRunMapFromSeed()
+    {
+        uint seed;
+        string raw = _runMapSeedInput != null ? _runMapSeedInput.text : null;
+        if (string.IsNullOrEmpty(raw) || !uint.TryParse(raw, out seed) || seed == 0)
+        {
+            SetRunMapStatus("种子无效：请输入 1 ~ 4294967295 的整数（0 会被当成退化值）。");
+            return;
+        }
+        _runMapSeed = seed;
+
+        // 模拟"开始游戏 → 读档 → 读条 → 进世界场景"：
+        //   ① 登记本局种子（读条期据此派生场景种子并生成地图）
+        //   ② 设定目标场景，③ 切到读条场景 —— 与 SLPanel 读档后的走法一致
+        RunMap.RunMapBootstrap.RequestForScene(RunMapWorldScene, seed, RunMapSceneIndex);
+
+        if (GameSession.Instance == null)
+        {
+            SetRunMapStatus("GameSession 不存在，走不了读条流程。");
+            return;
+        }
+        GameSession.Instance.SetTargetScene(RunMapWorldScene);
+
+        // 读条场景是"单开切换"，而 GM 面板是 DontDestroyOnLoad 的：不收掉就会盖在地图上，看不清实图
+        SetRunMapStatus("按种子 " + seed + " 走读条流程进入 " + RunMapWorldScene + "（生成阶段文案会显示在读条上）…");
+        ClosePanel();
+        ScenesLoadManager.Instance.LoadScene(RunMapLoadingScene, () => { });
+    }
+
+    private void SetRunMapStatus(string text)
+    {
+        if (_runMapStatus != null) _runMapStatus.text = text;
+        ChaosLog.Info(LogChannel.UI, "[GM/局内生成] " + text);
     }
 
     private Button CreateButton(Transform parent, string name, string label, Color color, float height, int fontSize)
