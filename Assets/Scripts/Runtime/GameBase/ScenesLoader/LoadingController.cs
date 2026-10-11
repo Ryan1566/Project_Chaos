@@ -4,6 +4,7 @@ using ChaosDebug;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 /// <summary>
 /// 加载读条控制器（挂在 `LoadingScene` 的 `LoadingCanvas` 下）。
@@ -45,6 +46,7 @@ public class LoadingController : MonoBehaviour
     private const string NodeBgImage = "BgImage";
     private const string NodeFadeImage = "FadeImage";
     private const string NodeProgressFill = "ProgressBar/Fill";
+    private const string NodeStageText = "StageText";
 
     /// <summary>Config 模式产物的 `Resources` 相对路径（不带扩展名）。
     /// ⚠ 这里直接 `Resources.Load`，**不走 `ConfigLoader`** —— 后者的路径常量是错的（已有 P0 记录）。</summary>
@@ -129,6 +131,19 @@ public class LoadingController : MonoBehaviour
     private Image _bgImage;
     private Image _fadeImage;
     private Image _progressFill;
+    private TextMeshProUGUI _stageText;
+
+    /// <summary>读条上最近一次显示的阶段文案（自动化验证用；也方便出问题时回看）。</summary>
+    public static string LastStageText;
+
+    /// <summary>读条期是否已经开始做"场景准备"（只做一次）。</summary>
+    private bool _mapPrepared;
+
+    /// <summary>读条期生成好的地图容器（DontDestroyOnLoad）；目标场景激活时搬进去。</summary>
+    private static GameObject _pendingMapRoot;
+
+    [Tooltip("阶段文案的字体映射表。显式指定，用于和本地化系统解耦：读条不依赖 LocalizationManager。")]
+    public LocalizationSystem.LanguageFontMap stageFontMap;
 
     /// <summary>有效轮播图（已过滤 `enable`，按 `sort` 升序）；每项含它自己的停留/淡出时长。</summary>
     private readonly List<Entry> _entries = new List<Entry>();
@@ -191,6 +206,19 @@ public class LoadingController : MonoBehaviour
         Transform fade = root.Find(NodeFadeImage);
         if (fade != null) _fadeImage = fade.GetComponent<Image>();
 
+        // 阶段文案节点：缺失只告警 —— 它是"锦上添花"，不该因为它挡住跳转
+        Transform stage = root.Find(NodeStageText);
+        if (stage != null)
+        {
+            _stageText = stage.GetComponent<TextMeshProUGUI>();
+            if (_stageText == null) ChaosLog.Warn(LogChannel.Scene, NodeStageText + " 上没有 TMP 文本组件，阶段文案不可用");
+            else ApplyStageFont();
+        }
+        else
+        {
+            ChaosLog.Warn(LogChannel.Scene, "LoadingScene 的 Canvas 下找不到 " + NodeStageText + "，阶段文案不可用");
+        }
+
         Transform fill = root.Find(NodeProgressFill);
         if (fill != null)
         {
@@ -231,6 +259,14 @@ public class LoadingController : MonoBehaviour
         if (!string.Equals(scene.name, LastTargetScene, System.StringComparison.Ordinal)) return;
 
         ActivatedRealtime = Time.realtimeSinceStartup;
+
+        // 读条期生成好的地图：此刻目标场景已激活，从跨场景容器搬进目标场景并重新取景
+        if (_pendingMapRoot != null)
+        {
+            RunMap.RunMapBootstrap.FinalizePendingInto(_pendingMapRoot, scene);
+            _pendingMapRoot = null;
+            ChaosLog.Info(LogChannel.Scene, "读条期生成的地图已搬入 '" + scene.name + "'");
+        }
 
         float delta = (ProgressFullRealtime >= 0f)
             ? (ActivatedRealtime - ProgressFullRealtime)
@@ -329,6 +365,15 @@ public class LoadingController : MonoBehaviour
                     assetsReady = (float)finished / totalAssets;
                 }
 
+                // ── 读条期的"场景准备"：目标场景已加载完（正在等激活）时，替它把局内地图生成出来 ──
+                //    放在进度条走满之前做：玩家看到的是"读条 + 生成阶段文案"，
+                //    而不是进场景之后突然卡一下（本类自己就在测加载期最大单帧，生成开销会体现在那个指标上）。
+                if (!_mapPrepared && _async.progress >= ProgressCeiling - 0.001f)
+                {
+                    _mapPrepared = true;
+                    PrepareTargetScene();
+                }
+
                 // ── 显示进度：单调不减，取两者较小值 ──
                 float candidate = Mathf.Min(sceneReady, assetsReady);
                 if (candidate > _shownProgress) _shownProgress = candidate;
@@ -377,6 +422,95 @@ public class LoadingController : MonoBehaviour
             // 失败/异常路径走这里；成功路径已在激活前显式恢复（见 RestorePriority）
             RestorePriority("Run 协程结束");
         }
+    }
+
+    /// <summary>
+    /// 读条期的"场景准备"：若派遣 / 读档流程登记过"给这个场景生成地图"（`RunMapBootstrap.RequestForScene`），
+    /// 就在读条期把它生成出来，并把生成阶段文案打到读条界面上。
+    ///
+    /// ⚠ **不碰目标场景**：目标场景此刻已加载但**未激活**，实测那时 `Scene.isLoaded` /
+    /// `GetRootGameObjects()` 都拿不到内容（第一版就栽在这里：条件不成立 → 静默跳过 →
+    /// 地图最后还是等场景激活才生成，读条上什么都看不到）。
+    /// 现在：先建到 `DontDestroyOnLoad` 容器，目标场景激活时再 `MoveGameObjectToScene` 搬进去
+    /// （见 `OnAnySceneLoaded`）。顺带**不需要任何场景对象探查**，读条功能与本地化完全解耦。
+    /// </summary>
+    private void PrepareTargetScene()
+    {
+        uint seed;
+        int idx;
+        if (!RunMap.RunMapBootstrap.TryTakeRequest(_targetScene, out seed, out idx))
+        {
+            return;   // 没人登记 → 这个场景不需要程序化生成地图（普通场景零影响）
+        }
+
+        var holder = new GameObject("RunMap_Pending");
+        holder.SetActive(false);   // DDOL 物体照样渲染：不隐藏就会出现在读条画面上（实测踩到）
+        UnityEngine.Object.DontDestroyOnLoad(holder);
+        _pendingMapRoot = holder;
+
+        ChaosLog.Info(LogChannel.Scene, "读条期开始生成局内地图（目标 '" + _targetScene + "'，种子 " + seed + "，第 " + idx + " 个场景）");
+
+        RunMap.RunMapBootstrap.StageChanged += OnRunMapStage;
+        try
+        {
+            RunMap.RunMapBootstrap.BuildIntoPending(holder.transform, seed, idx);
+        }
+        catch (System.Exception e)
+        {
+            ChaosLog.Error(LogChannel.Scene, "读条期生成局内地图失败（不阻塞进场）：" + e.Message);
+        }
+        finally
+        {
+            RunMap.RunMapBootstrap.StageChanged -= OnRunMapStage;
+        }
+    }
+
+    /// <summary>阶段文案回调：把地图生成的当前阶段显示到读条上。</summary>
+    private void OnRunMapStage(string text)
+    {
+        SetStageText(text);
+    }
+
+    /// <summary>
+    /// 给阶段文案指定字体。
+    ///
+    /// **刻意不走 LocalizedTextFont / LocalizationManager**（明确要求：读条功能暂不与本地化管理器耦合）：
+    /// 直接用 Inspector 指定的字体映射表 + 当前设置里的语言取字体。
+    /// ⚠ 必须**同时**换 `fontSharedMaterial` —— 只赋 `font` 会让文字变黑或干脆不显示（TMP 已知行为，工程记过）。
+    /// </summary>
+    private void ApplyStageFont()
+    {
+        if (_stageText == null) return;
+        if (stageFontMap == null)
+        {
+            ChaosLog.Warn(LogChannel.Scene, "阶段文案没指定字体映射表（stageFontMap）→ 中日韩字形会缺，英文不受影响");
+            return;
+        }
+        try
+        {
+            LocalizationSystem.LanguageType lang = RunMap.RunMapLoadingText.CurrentLanguage;
+            TMPro.TMP_FontAsset f = stageFontMap.GetFont(lang);
+            if (f == null) f = stageFontMap.GetFont(LocalizationSystem.LanguageType.ChineseSimplified);
+            if (f == null) { ChaosLog.Warn(LogChannel.Scene, "字体映射表里没有可用字体，阶段文案可能缺字形"); return; }
+            _stageText.font = f;
+            _stageText.fontSharedMaterial = f.material;
+        }
+        catch (System.Exception e)
+        {
+            ChaosLog.Warn(LogChannel.Scene, "阶段文案指定字体失败：" + e.Message);
+        }
+    }
+
+    private void SetStageText(string text)
+    {
+        LastStageText = text;
+        if (_stageText != null) _stageText.text = text;
+    }
+
+    private void OnDestroy()
+    {
+        // 读条场景会被卸载：不摘掉订阅就会持有已销毁对象（MissingReferenceException）
+        RunMap.RunMapBootstrap.StageChanged -= OnRunMapStage;
     }
 
     /// <summary>

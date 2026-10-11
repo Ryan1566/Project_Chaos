@@ -10,8 +10,8 @@ description:
   en: >
       UIPanelAnimator inspector configuration: enter/exit types, easing, slide distance, stagger settings, input blocking and runtime state.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.758Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.723Z"
 fingerprint: ca438f41c73fb26879bac743ccf5c9ab68e78458e1ca3ba696fe70887649c502
 source:
   - path: "Assets/Scripts/Runtime/GameBase/UIManager/UIPanelAnimator.cs"

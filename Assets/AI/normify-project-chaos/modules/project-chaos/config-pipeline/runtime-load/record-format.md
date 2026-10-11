@@ -10,8 +10,8 @@ description:
   en: >
       A second copy of the JSON pretty-printer (the exporter has its own) that formats .record payloads to JsonUtility.ToJson(obj, true) style. It tracks string state so commas and braces inside text are not treated as structure; whitespace does not affect JsonUtility parsing.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.731Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.696Z"
 fingerprint: a4f45a2229b4a5a8f6377de9fa5c8685696b8a5d9c964b0b8c110e062bc07823
 source:
   - path: "Assets/Scripts/Runtime/GameBase/ConfigManager/SL/Recorder.cs"

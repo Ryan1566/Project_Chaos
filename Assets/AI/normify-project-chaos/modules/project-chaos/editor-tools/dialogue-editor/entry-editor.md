@@ -10,8 +10,8 @@ description:
   en: >
       Right-panel editing: per-entry text, typing speed, auto-skip delay, voice override and next-dialogue id; nested editors for branch options and triggered events; character name/id lookup helpers; and creating, opening, saving and appending dialogue entries.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.733Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.699Z"
 fingerprint: 314cafcafdf79d46ed2d2fa1c1ecbb76eb765924249343fc8410de9f53662ae7
 source:
   - path: "Assets/Scripts/Editor/DialogueEditor/DialogueEditorWindow.cs"

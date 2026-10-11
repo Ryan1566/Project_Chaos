@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scripts/Runtime/GameBase/SaveManager/GameSession.cs.meta
+guid: e6effb05769dff04aad04f85653d974d
+========
+guid: eaa1758a280fb6049bf484a7a40ca40f
+>>>>>>>> Branch_feature_1:Assets/Scripts/Runtime/DontDestroy.cs.meta
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

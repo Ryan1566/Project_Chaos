@@ -11,9 +11,9 @@ description:
   en: >
       Doc §7–§9: runtime structures and save fields (seed/scene/mapVersion, layout not saved), field drafts for six config tables (whitelist-only types, no enums, split tables with foreign keys), and UI/minimap requirements.
       
-revision: 2f3bda754a8a236a3100f9cdb4239376ad8eb367
-updated_at: "2026-10-07T06:26:01.051Z"
-fingerprint: 6bc0fc65874f5617ae4168fffba868ec71625053e6fd407d427edb71edc792bb
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.756Z"
+fingerprint: 4e068de8cc72d20c5a6106054d10511656be94f23b535031e6678639a6b6c287
 source:
   - path: "Assets/Chaos_Story/Story/02_系统策划/01_局内地图生成系统.md"
     line: 358

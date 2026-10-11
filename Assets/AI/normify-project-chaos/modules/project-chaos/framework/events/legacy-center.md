@@ -10,8 +10,8 @@ description:
   en: >
       Legacy EventCenter (with IEventInfo/EventInfo<T>). Marked [Obsolete(..., true)]: referencing this class is a compile error — use EventManager instead. Dead code.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.744Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.709Z"
 fingerprint: 8a057c78171277edb4c32ee14fc4e3559f6c7da0b7265806ae5e4b0972b3247d
 source:
   - path: "Assets/Scripts/Runtime/GameBase/EventCenter/EventCenter.cs"

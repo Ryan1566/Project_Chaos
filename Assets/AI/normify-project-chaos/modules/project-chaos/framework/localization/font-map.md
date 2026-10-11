@@ -10,8 +10,8 @@ description:
   en: >
       LanguageFontMap asset: per-language TMP font assets with active-map caching, lookup and entry completion.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.747Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.712Z"
 fingerprint: 4058671362204296f8215354832fe0c555b68e8a7c185de5329c6c41cc4c3914
 source:
   - path: "Assets/Scripts/Runtime/GameBase/LocalizationManager/LanguageFontMap.cs"

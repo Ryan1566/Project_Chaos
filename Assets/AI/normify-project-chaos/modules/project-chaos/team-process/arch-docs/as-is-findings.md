@@ -11,8 +11,8 @@ description:
   en: >
       As-is audit part 1: reading conventions, the risk-ordered conclusion summary, project scale/encoding, real MVP placement, IModel, the single broken config reader, and the exporter/table contract conflicts.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.794Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.744Z"
 fingerprint: d2233277288d4ccbe244c9b6bc21e446687545e43edfab089741eecb807fbc5b
 source:
   - path: "Assets/Chaos_Story/Story/04_架构/01_架构现状核查.md"

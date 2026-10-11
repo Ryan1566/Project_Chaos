@@ -10,8 +10,8 @@ description:
   en: >
       Five settings-row prefabs (Button/Keybind/Selector/Slider/Toggle) instanced by the settings panel to build its option list.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.706Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.657Z"
 fingerprint: 1ff81c78dae96aa2839d812f1c012d1b7f5988b4546beb0e4bbbb671edaf0687
 source:
   - path: "Assets/Prefabs/UI/SettingRows/SettingRow_Button.prefab"

@@ -10,8 +10,8 @@ description:
   en: >
       Window presentation layer: status message with error styling, repo info block, warning block (Unity running, detached head, in-progress operation), action buttons, categorized preview list capped at 300 files, and an open-terminal helper.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.734Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.700Z"
 fingerprint: d766f0fb475c3b23d1c92ab3b4f89c07c7b3b1735449fc2912052bd11baa00bb
 source:
   - path: "Assets/Scripts/Editor/GitTool/GitToolWindow.cs"

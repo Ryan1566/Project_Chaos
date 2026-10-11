@@ -41,3 +41,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: UI
+    uniqueID: 2449543441
+    locked: 0
+  - name: GMUI
+    uniqueID: 3594052517
+    locked: 0

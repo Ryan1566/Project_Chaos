@@ -11,9 +11,9 @@ description:
   en: >
       TestScene.unity: build-list entry 0 (the startup scene). It hosts Entry, which triggers UI, input and settings initialisation. It is also the only entry scene that actually runs in this project.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.724Z"
-fingerprint: 9e25dbae3ee8584026378447d3c8ae29afefa6371a3a18d0ddc494ee41237e9a
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.690Z"
+fingerprint: a2d5886d11508f3b4c9b1fd6b707ac089dbe7cc5a3378f2994e154a88172aa31
 source:
   - path: "Assets/Scenes/TestScene.unity"
     line: 1

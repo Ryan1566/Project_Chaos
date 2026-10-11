@@ -11,8 +11,8 @@ description:
   en: >
       Config-pipeline record part 4: the one allowed write operation (export regression) with before/after, the end-to-end verdict, and the decisions left to the architect.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.802Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.751Z"
 fingerprint: a0e526ba94b8397d1c104025e5bf8a5693676d6b8749b6b7e58b4037cf6dfc1a
 source:
   - path: "Assets/Chaos_Story/Story/05_程序/02_配置表管线记录.md"

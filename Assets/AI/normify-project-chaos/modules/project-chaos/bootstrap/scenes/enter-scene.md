@@ -11,8 +11,8 @@ description:
   en: >
       EnterScene.unity: an early entry scene. No project script is attached to it and it is not registered in EditorBuildSettings (the build list only holds TestScene, WorldScene and LoadingScene). Kept as a spare asset.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.723Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.689Z"
 fingerprint: 5a56f5dfcd18e075ff4590802c5e4b3b38f413e5c553930f6a9696cc8677ebed
 source:
   - path: "Assets/Scenes/EnterScene.unity"

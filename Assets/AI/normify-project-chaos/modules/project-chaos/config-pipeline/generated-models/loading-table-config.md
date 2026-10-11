@@ -10,8 +10,8 @@ description:
   en: >
       Generated Config-mode class for the loading carousel: Id (uint), srcImg (string), sort (uint), showSeconds (float), fadeSeconds (float) and enable (bool). Note that a blank row-5 end marker drops the column from JSON but keeps the C# field at its default value.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.729Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.694Z"
 fingerprint: 5747f73cc90997ad936ab42b455fa53872164e62b116e023e00c9bb10baaaf28
 source:
   - path: "Assets/Scripts/Runtime/MVP/Model/ConfigData/LoadingTableConfig.cs"

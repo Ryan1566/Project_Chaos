@@ -11,8 +11,8 @@ description:
   en: >
       One save-slot cell (the RecordCell.prefab script). Bind and SetData are deliberately separate: SLPanel instantiates three cells once and reuses them forever, so binding must happen exactly once while data is repainted on every refresh. The cell never touches the file system — SLPanel fetches the data once and distributes it.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.765Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.726Z"
 fingerprint: 7966e1f2e9ae4a8554954d790b56ff83a8053cddbf9aade70be7f6e78fadc40b
 source:
   - path: "Assets/Scripts/Runtime/MVP/View/SLPanel_Record/RecordCell.cs"

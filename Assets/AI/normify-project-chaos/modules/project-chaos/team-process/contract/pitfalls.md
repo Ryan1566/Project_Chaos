@@ -11,8 +11,8 @@ description:
   en: >
       Team contract §5–§6: the nine must-read pitfalls (mixed encodings, generated artifacts, empty Presenter, Unity online, version control, empty-sheet NRE, AssetDatabase.Refresh, EditorBuildSettings persisting, sandbox integrity labels) and the branch/commit discipline for the three repos.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:08:07.158Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.747Z"
 fingerprint: 1181b4c467e97f70db7bdd660f41cfd72a6497d20d7de554a55242e4db2cdcc8
 source:
   - path: "Assets/Chaos_Story/Story/README.md"

@@ -10,8 +10,8 @@ description:
   en: >
       Selector state block: silent index/text setters, stepping with clamping, option counting and display refresh.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.754Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.720Z"
 fingerprint: b8e91d28c0d242c15945e58c8198e62e34aba89f4a1fcd321a04300a52c4c5b6
 source:
   - path: "Assets/Scripts/Runtime/GameBase/SettingRows/SettingRow_Selector.cs"

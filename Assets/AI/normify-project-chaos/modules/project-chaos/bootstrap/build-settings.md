@@ -11,9 +11,9 @@ description:
   en: >
       ProjectSettings/EditorBuildSettings.asset: the build list registers three enabled scenes in the order TestScene(0) → WorldScene(1) → LoadingScene(2). Only registered scenes get a valid buildIndex, and ScenesLoadManager's name-based loading depends on this table.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.720Z"
-fingerprint: eef39b135d957304ec224cd71355cddfadd01f3c856006e8303f380b258e9972
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.687Z"
+fingerprint: b78b493bfeaae969400125fca71831fdb5624ed48d383588163039c9ea978847
 source:
   - path: "ProjectSettings/EditorBuildSettings.asset"
     line: 1

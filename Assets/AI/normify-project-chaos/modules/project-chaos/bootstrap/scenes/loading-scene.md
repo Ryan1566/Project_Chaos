@@ -11,9 +11,9 @@ description:
   en: >
       LoadingScene.unity: a standalone mini scene, build-list entry 2. LoadingController is attached under its Canvas (a scene component, not a prefab). It deliberately avoids being named Canvas, hosting Entry or using DontDestroyOnLoad, so every load starts from clean objects.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.724Z"
-fingerprint: 97cad3f79ed32c3d3a517a1f3e77476035ec86a0bea0730883ac75bbc886318c
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.689Z"
+fingerprint: 485b77a07b7dcc65a83597662abe9626feb38eadb24a7b60c70b7591af1fdb1a
 source:
   - path: "Assets/Scenes/LoadingScene.unity"
     line: 1

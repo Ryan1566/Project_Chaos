@@ -10,8 +10,8 @@ description:
   en: >
       Dialogue data model: DialogueData ScriptableObject (characters, entries, flags) plus DialogueCharacter/Entry/Option/Event structs.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.742Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.708Z"
 fingerprint: ec8bceeceb35a63db776963906f254e0cc50dcf92eed709a09cbf797c67e08f2
 source:
   - path: "Assets/Scripts/Runtime/GameBase/DialogueManager/DialogueData.cs"

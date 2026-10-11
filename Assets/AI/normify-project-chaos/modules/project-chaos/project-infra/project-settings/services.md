@@ -10,8 +10,8 @@ description:
   en: >
       Editor services and platform toggles: Unity cloud binding, version-control mode, XR and auto-streaming settings.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.792Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.743Z"
 fingerprint: 44c2897f2e84908a5976fcf3de36ffbf42eee748501b710356a6700742b2eab6
 source:
   - path: "ProjectSettings/UnityConnectSettings.asset"

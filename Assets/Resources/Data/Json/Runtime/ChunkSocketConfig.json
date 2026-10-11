@@ -1,0 +1,490 @@
+{
+    "datas": [
+        {
+            "Id": 1,
+            "chunkId": 1001,
+            "dir": 2,
+            "heightProfile": 0,
+            "socketType": 1,
+            "posX": 39.5,
+            "posY": 5
+        },
+        {
+            "Id": 2,
+            "chunkId": 1002,
+            "dir": 1,
+            "heightProfile": 0,
+            "socketType": 1,
+            "posX": 0.5,
+            "posY": 5
+        },
+        {
+            "Id": 3,
+            "chunkId": 1002,
+            "dir": 2,
+            "heightProfile": 0,
+            "socketType": 1,
+            "posX": 39.5,
+            "posY": 5
+        },
+        {
+            "Id": 4,
+            "chunkId": 1002,
+            "dir": 3,
+            "heightProfile": 0,
+            "socketType": 1,
+            "posX": 20.5,
+            "posY": 23.5
+        },
+        {
+            "Id": 5,
+            "chunkId": 1002,
+            "dir": 4,
+            "heightProfile": 0,
+            "socketType": 1,
+            "posX": 20.5,
+            "posY": 0.5
+        },
+        {
+            "Id": 6,
+            "chunkId": 1003,
+            "dir": 1,
+            "heightProfile": 0,
+            "socketType": 1,
+            "posX": 0.5,
+            "posY": 5
+        },
+        {
+            "Id": 7,
+            "chunkId": 1003,
+            "dir": 2,
+            "heightProfile": 0,
+            "socketType": 1,
+            "posX": 39.5,
+            "posY": 5
+        },
+        {
+            "Id": 8,
+            "chunkId": 1003,
+            "dir": 3,
+            "heightProfile": 0,
+            "socketType": 1,
+            "posX": 20.5,
+            "posY": 23.5
+        },
+        {
+            "Id": 9,
+            "chunkId": 1003,
+            "dir": 4,
+            "heightProfile": 0,
+            "socketType": 1,
+            "posX": 20.5,
+            "posY": 0.5
+        },
+        {
+            "Id": 10,
+            "chunkId": 1011,
+            "dir": 1,
+            "heightProfile": 0,
+            "socketType": 1,
+            "posX": 0.5,
+            "posY": 5
+        },
+        {
+            "Id": 11,
+            "chunkId": 1011,
+            "dir": 3,
+            "heightProfile": 0,
+            "socketType": 1,
+            "posX": 20.5,
+            "posY": 23.5
+        },
+        {
+            "Id": 12,
+            "chunkId": 1011,
+            "dir": 4,
+            "heightProfile": 0,
+            "socketType": 1,
+            "posX": 20.5,
+            "posY": 0.5
+        },
+        {
+            "Id": 13,
+            "chunkId": 1009,
+            "dir": 3,
+            "heightProfile": 0,
+            "socketType": 2,
+            "posX": 20.5,
+            "posY": 23.5
+        },
+        {
+            "Id": 14,
+            "chunkId": 1009,
+            "dir": 4,
+            "heightProfile": 0,
+            "socketType": 2,
+            "posX": 20.5,
+            "posY": 0.5
+        },
+        {
+            "Id": 15,
+            "chunkId": 1010,
+            "dir": 1,
+            "heightProfile": 0,
+            "socketType": 1,
+            "posX": 0.5,
+            "posY": 5
+        },
+        {
+            "Id": 16,
+            "chunkId": 1010,
+            "dir": 3,
+            "heightProfile": 0,
+            "socketType": 1,
+            "posX": 20.5,
+            "posY": 23.5
+        },
+        {
+            "Id": 17,
+            "chunkId": 1010,
+            "dir": 4,
+            "heightProfile": 0,
+            "socketType": 1,
+            "posX": 20.5,
+            "posY": 0.5
+        },
+        {
+            "Id": 18,
+            "chunkId": 1010,
+            "dir": 2,
+            "heightProfile": 1,
+            "socketType": 3,
+            "posX": 39.5,
+            "posY": 13
+        },
+        {
+            "Id": 19,
+            "chunkId": 1101,
+            "dir": 2,
+            "heightProfile": 0,
+            "socketType": 1,
+            "posX": 39.5,
+            "posY": 5
+        },
+        {
+            "Id": 20,
+            "chunkId": 1102,
+            "dir": 1,
+            "heightProfile": 0,
+            "socketType": 1,
+            "posX": 0.5,
+            "posY": 5
+        },
+        {
+            "Id": 21,
+            "chunkId": 1102,
+            "dir": 2,
+            "heightProfile": 0,
+            "socketType": 1,
+            "posX": 39.5,
+            "posY": 5
+        },
+        {
+            "Id": 22,
+            "chunkId": 1102,
+            "dir": 3,
+            "heightProfile": 0,
+            "socketType": 1,
+            "posX": 20.5,
+            "posY": 23.5
+        },
+        {
+            "Id": 23,
+            "chunkId": 1102,
+            "dir": 4,
+            "heightProfile": 0,
+            "socketType": 1,
+            "posX": 20.5,
+            "posY": 0.5
+        },
+        {
+            "Id": 24,
+            "chunkId": 1103,
+            "dir": 1,
+            "heightProfile": 0,
+            "socketType": 1,
+            "posX": 0.5,
+            "posY": 5
+        },
+        {
+            "Id": 25,
+            "chunkId": 1103,
+            "dir": 2,
+            "heightProfile": 0,
+            "socketType": 1,
+            "posX": 39.5,
+            "posY": 5
+        },
+        {
+            "Id": 26,
+            "chunkId": 1103,
+            "dir": 3,
+            "heightProfile": 0,
+            "socketType": 1,
+            "posX": 20.5,
+            "posY": 23.5
+        },
+        {
+            "Id": 27,
+            "chunkId": 1103,
+            "dir": 4,
+            "heightProfile": 0,
+            "socketType": 1,
+            "posX": 20.5,
+            "posY": 0.5
+        },
+        {
+            "Id": 28,
+            "chunkId": 1111,
+            "dir": 1,
+            "heightProfile": 0,
+            "socketType": 1,
+            "posX": 0.5,
+            "posY": 5
+        },
+        {
+            "Id": 29,
+            "chunkId": 1111,
+            "dir": 3,
+            "heightProfile": 0,
+            "socketType": 1,
+            "posX": 20.5,
+            "posY": 23.5
+        },
+        {
+            "Id": 30,
+            "chunkId": 1111,
+            "dir": 4,
+            "heightProfile": 0,
+            "socketType": 1,
+            "posX": 20.5,
+            "posY": 0.5
+        },
+        {
+            "Id": 31,
+            "chunkId": 1109,
+            "dir": 3,
+            "heightProfile": 0,
+            "socketType": 2,
+            "posX": 20.5,
+            "posY": 23.5
+        },
+        {
+            "Id": 32,
+            "chunkId": 1109,
+            "dir": 4,
+            "heightProfile": 0,
+            "socketType": 2,
+            "posX": 20.5,
+            "posY": 0.5
+        },
+        {
+            "Id": 33,
+            "chunkId": 1110,
+            "dir": 1,
+            "heightProfile": 0,
+            "socketType": 1,
+            "posX": 0.5,
+            "posY": 5
+        },
+        {
+            "Id": 34,
+            "chunkId": 1110,
+            "dir": 3,
+            "heightProfile": 0,
+            "socketType": 1,
+            "posX": 20.5,
+            "posY": 23.5
+        },
+        {
+            "Id": 35,
+            "chunkId": 1110,
+            "dir": 4,
+            "heightProfile": 0,
+            "socketType": 1,
+            "posX": 20.5,
+            "posY": 0.5
+        },
+        {
+            "Id": 36,
+            "chunkId": 1110,
+            "dir": 2,
+            "heightProfile": 1,
+            "socketType": 3,
+            "posX": 39.5,
+            "posY": 13
+        },
+        {
+            "Id": 37,
+            "chunkId": 1201,
+            "dir": 2,
+            "heightProfile": 0,
+            "socketType": 1,
+            "posX": 39.5,
+            "posY": 5
+        },
+        {
+            "Id": 38,
+            "chunkId": 1202,
+            "dir": 1,
+            "heightProfile": 0,
+            "socketType": 1,
+            "posX": 0.5,
+            "posY": 5
+        },
+        {
+            "Id": 39,
+            "chunkId": 1202,
+            "dir": 2,
+            "heightProfile": 0,
+            "socketType": 1,
+            "posX": 39.5,
+            "posY": 5
+        },
+        {
+            "Id": 40,
+            "chunkId": 1202,
+            "dir": 3,
+            "heightProfile": 0,
+            "socketType": 1,
+            "posX": 20.5,
+            "posY": 23.5
+        },
+        {
+            "Id": 41,
+            "chunkId": 1202,
+            "dir": 4,
+            "heightProfile": 0,
+            "socketType": 1,
+            "posX": 20.5,
+            "posY": 0.5
+        },
+        {
+            "Id": 42,
+            "chunkId": 1203,
+            "dir": 1,
+            "heightProfile": 0,
+            "socketType": 1,
+            "posX": 0.5,
+            "posY": 5
+        },
+        {
+            "Id": 43,
+            "chunkId": 1203,
+            "dir": 2,
+            "heightProfile": 0,
+            "socketType": 1,
+            "posX": 39.5,
+            "posY": 5
+        },
+        {
+            "Id": 44,
+            "chunkId": 1203,
+            "dir": 3,
+            "heightProfile": 0,
+            "socketType": 1,
+            "posX": 20.5,
+            "posY": 23.5
+        },
+        {
+            "Id": 45,
+            "chunkId": 1203,
+            "dir": 4,
+            "heightProfile": 0,
+            "socketType": 1,
+            "posX": 20.5,
+            "posY": 0.5
+        },
+        {
+            "Id": 46,
+            "chunkId": 1211,
+            "dir": 1,
+            "heightProfile": 0,
+            "socketType": 1,
+            "posX": 0.5,
+            "posY": 5
+        },
+        {
+            "Id": 47,
+            "chunkId": 1211,
+            "dir": 3,
+            "heightProfile": 0,
+            "socketType": 1,
+            "posX": 20.5,
+            "posY": 23.5
+        },
+        {
+            "Id": 48,
+            "chunkId": 1211,
+            "dir": 4,
+            "heightProfile": 0,
+            "socketType": 1,
+            "posX": 20.5,
+            "posY": 0.5
+        },
+        {
+            "Id": 49,
+            "chunkId": 1209,
+            "dir": 3,
+            "heightProfile": 0,
+            "socketType": 2,
+            "posX": 20.5,
+            "posY": 23.5
+        },
+        {
+            "Id": 50,
+            "chunkId": 1209,
+            "dir": 4,
+            "heightProfile": 0,
+            "socketType": 2,
+            "posX": 20.5,
+            "posY": 0.5
+        },
+        {
+            "Id": 51,
+            "chunkId": 1210,
+            "dir": 1,
+            "heightProfile": 0,
+            "socketType": 1,
+            "posX": 0.5,
+            "posY": 5
+        },
+        {
+            "Id": 52,
+            "chunkId": 1210,
+            "dir": 3,
+            "heightProfile": 0,
+            "socketType": 1,
+            "posX": 20.5,
+            "posY": 23.5
+        },
+        {
+            "Id": 53,
+            "chunkId": 1210,
+            "dir": 4,
+            "heightProfile": 0,
+            "socketType": 1,
+            "posX": 20.5,
+            "posY": 0.5
+        },
+        {
+            "Id": 54,
+            "chunkId": 1210,
+            "dir": 2,
+            "heightProfile": 1,
+            "socketType": 3,
+            "posX": 39.5,
+            "posY": 13
+        }
+    ]
+}

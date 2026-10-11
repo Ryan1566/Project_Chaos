@@ -10,8 +10,8 @@ description:
   en: >
       The hard-coded 7-row header contract: row 1 class name (human only), row 2 read flag (not implemented), row 3 Chinese remark, row 4 English property name (the only hard validation - blank throws), row 5 end marker (server drops the column from class and JSON, blank drops it from JSON only), row 6 type, row 7 onward data. Row 7 is the first data row; a trailing blank row becomes an empty record.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.728Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.692Z"
 fingerprint: 8317ca6bb94bcacbc47c1bf98e79594b0f8559b3aa88a4c40c48d717703dcd5f
 source:
   - path: "Assets/Scripts/Runtime/GameBase/ConfigManager/Config/ConfigManager.cs"

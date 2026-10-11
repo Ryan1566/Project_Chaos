@@ -10,8 +10,8 @@ description:
   en: >
       IconAtlas_Input.spriteatlasv2 packs the input icons under Art/icon into a single SpriteAtlas looked up by sprite name at runtime.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.465Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.301Z"
 fingerprint: b34b8f84e12de526a0c97ed6668c3599ce4b8ac253d320aae46b679aa4c21ef1
 source:
   - path: "Assets/Art/icon/IconAtlas_Input.spriteatlasv2"

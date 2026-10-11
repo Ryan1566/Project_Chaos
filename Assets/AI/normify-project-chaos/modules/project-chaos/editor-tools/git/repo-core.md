@@ -10,8 +10,8 @@ description:
   en: >
       Git command core: locates the repository root and git executable, runs git with a timeout, and answers repo-level questions (is a repo, current branch, upstream, suggested upstream, dirty files, in-progress operation, is Unity running, fetch).
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.734Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.700Z"
 fingerprint: 8a47f9f083458046c167adb12ae2541546c57eec2897256e7614d1e5318e5920
 source:
   - path: "Assets/Scripts/Editor/GitTool/GitHelper.cs"

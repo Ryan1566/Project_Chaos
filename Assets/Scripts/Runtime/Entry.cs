@@ -14,5 +14,7 @@ public class Entry : MonoBehaviour
         // 但那条路径上的日志顺序会让人误以为设置加载失败了，不如这里写清楚。
         InputManager.Instance.Init();
         SettingsManager.Instance.Init();
+
+        UIManager.Instance.PushPanel(PanelType.MainMenuPanel);
     }
 }

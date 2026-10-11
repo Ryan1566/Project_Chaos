@@ -10,8 +10,8 @@ description:
   en: >
       Icon lookup: FindEntry by control key plus device family, GetIcon/GetIconColor, and GetTabIcon for keyboard/gamepad tabs.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.745Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.710Z"
 fingerprint: dce2712ad67121c6bd9ec2cabd8da2255fe257ba39608aa239a2482f97fe189e
 source:
   - path: "Assets/Scripts/Runtime/GameBase/InputManager/KeyIconMap.cs"

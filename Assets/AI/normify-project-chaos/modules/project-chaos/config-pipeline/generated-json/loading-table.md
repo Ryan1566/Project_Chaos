@@ -10,8 +10,8 @@ description:
   en: >
       Exported constant table for LoadingTable: three carousel entries with image path, sort order, dwell and fade seconds, and an enable flag. Note the exported bool is a bare lowercase true, which is what JsonUtility requires.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.728Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.692Z"
 fingerprint: fb436bd237c0387656d5d7b347fcd4ef592e7c9212f652a343c18a37bca6c5e9
 source:
   - path: "Assets/Resources/Data/Json/Runtime/LoadingTableConfig.json"

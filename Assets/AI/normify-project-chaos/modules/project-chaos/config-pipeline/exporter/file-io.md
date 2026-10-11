@@ -10,8 +10,8 @@ description:
   en: >
       Filesystem helper shared by the exporter and Recorder: resolves paths against Application.dataPath, lists folder contents while skipping .meta and ~temp files, and saves by deleting then writing. It never creates directories, so a missing output folder is a hard error rather than a silent no-op.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.727Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.691Z"
 fingerprint: 11440ab6863d19afddab82acd4dc17d253a2448eb1316a8f32a922bedd4a234e
 source:
   - path: "Assets/Scripts/Runtime/GameBase/ConfigManager/FileUtil.cs"

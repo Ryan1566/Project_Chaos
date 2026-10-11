@@ -11,8 +11,8 @@ description:
   en: >
       Second-level page support: a page finds its sub page by node name, the sub page raises OnBackRequested instead of knowing who owns it, and CancelPendingEdit walks down to OnCancelPendingEdit so a sub page can drop its half-collected input.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.766Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.726Z"
 fingerprint: 566f91ff5e4fd192b5d959c2369f661d2efc4a42ee64f280b1b24860fab98f4f
 source:
   - path: "Assets/Scripts/Runtime/MVP/View/SettingsPage/SettingsPageBase.cs"

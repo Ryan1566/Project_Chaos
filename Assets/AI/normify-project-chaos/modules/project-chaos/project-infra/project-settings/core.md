@@ -10,9 +10,9 @@ description:
   en: >
       Project identity and editor baseline: PlayerSettings, the Unity version pin, EditorSettings and the Tag/Layer table.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.786Z"
-fingerprint: d99272f5647fb778fefed9722dacf9aa4af0c08cc4fc708797edd2360e3c6662
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.740Z"
+fingerprint: d09d5949abc77b6062deb4b1849b0e649dfd68586dcc8bc1911432956422f40f
 source:
   - path: "ProjectSettings/ProjectSettings.asset"
   - path: "ProjectSettings/ProjectVersion.txt"

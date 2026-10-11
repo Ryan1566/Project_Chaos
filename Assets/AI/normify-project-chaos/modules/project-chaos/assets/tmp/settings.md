@@ -10,8 +10,8 @@ description:
   en: >
       TMP Settings plus the line-breaking tables and default style sheet that drive text layout.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.714Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.681Z"
 fingerprint: b60bbbfcce10b06caad22e422b6da185253c0bb8f204d59cb35216086a4ffdce
 source:
   - path: "Assets/TextMesh Pro/Resources/TMP Settings.asset"

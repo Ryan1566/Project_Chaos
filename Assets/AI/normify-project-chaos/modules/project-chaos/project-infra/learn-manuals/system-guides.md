@@ -10,8 +10,8 @@ description:
   en: >
       System-usage manuals: logging, panel animation, scene-view UI separation and the generated localization guide.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.773Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.730Z"
 fingerprint: bce5f339db3bb470744e24649e77b1b1d0156ac11e6a1e7313745440cae63a2b
 source:
   - path: "Assets/Learn/ChaosLog日志系统使用说明.docx"

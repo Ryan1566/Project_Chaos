@@ -10,8 +10,8 @@ description:
   en: >
       Spine package metadata: version declaration and the full changelog kept inside Assets/Plugins/Spine.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.783Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.738Z"
 fingerprint: d22393bcdc4c9034e315388c4d3f7b50bc729a84ec9a8da53174dd767c2eca55
 source:
   - path: "Assets/Plugins/Spine/package.json"

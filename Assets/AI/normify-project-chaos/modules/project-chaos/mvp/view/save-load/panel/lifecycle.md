@@ -11,8 +11,8 @@ description:
   en: >
       SLPanel lifecycle: Awake binds nodes and builds the three cells exactly once, OnEnter only refreshes, OnExit does nothing else. The R3 discipline exists because UIManager reuses the cached panel — putting AddListener or Instantiate in OnEnter would stack duplicate listeners and duplicate cells on every open.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.764Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.725Z"
 fingerprint: 476e33b9f31278b56b525f8ffb3a6299b5e9caa0d329cae08c07e8e1ad4cacec
 source:
   - path: "Assets/Scripts/Runtime/MVP/View/SLPanel.cs"

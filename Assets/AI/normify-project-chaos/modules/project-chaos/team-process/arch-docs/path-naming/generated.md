@@ -11,8 +11,8 @@ description:
   en: >
       Path/naming rules part 2: naming conventions, generated-artifact isolation (.gitignore, file headers), the landing checklist, and §9 — the config Type authority and three-repo branch discipline.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.796Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.746Z"
 fingerprint: cbd617d13b7bcfc29f11f2b7605f71c93a05d18ea8d42f95d57ef03ee9e1ae47
 source:
   - path: "Assets/Chaos_Story/Story/04_架构/03_路径与命名规范.md"

@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.project-infra.agent-workspace",
+  "updated_at": "2026-10-11T16:01:36.543Z",
+  "mode": "grid",
+  "max_columns": 2,
+  "reading": {
+    "zh": "本层只测绘 Assets/AI/runmap-art；Assets/AI/normify-project-chaos（结构数据自身）刻意不测绘，避免指纹自漂移。",
+    "en": "Only Assets/AI/runmap-art is mapped; Assets/AI/normify-project-chaos (the structure database itself) is deliberately left out to avoid self-fingerprinting."
+  },
+  "order": [
+    "project-chaos.project-infra.agent-workspace.runmap-art"
+  ]
+}

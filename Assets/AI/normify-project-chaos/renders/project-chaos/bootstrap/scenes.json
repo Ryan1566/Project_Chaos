@@ -1,17 +1,18 @@
 {
   "schema_version": 1,
   "id": "project-chaos.bootstrap.scenes",
-  "updated_at": "2026-10-06T11:58:31.937Z",
+  "updated_at": "2026-10-11T16:01:35.307Z",
   "mode": "grid",
-  "max_columns": 4,
+  "max_columns": 5,
   "reading": {
-    "zh": "按启动链路排：TestScene（构建清单第 0 项，挂 Entry 起手）→ LoadingScene（读条）→ WorldScene（游戏世界）；EnterScene 未被 EditorBuildSettings 登记，排在最后。",
-    "en": "Ordered by the boot chain: TestScene (build entry 0, hosts Entry) → LoadingScene (progress) → WorldScene (the game world); EnterScene is not registered in EditorBuildSettings and sits last."
+    "zh": "按启动顺序读：TestScene（构建第 0 项、挂 Entry）→ LoadingScene（读条，现在还播报地图生成阶段）→ WorldScene（局内世界，GM 面板把生成结果送到这里）；MainScene 与 EnterScene 当前都不在构建清单里。",
+    "en": "Read in boot order: TestScene (build entry 0, hosts Entry) -> LoadingScene (loading bar, now also narrates runmap generation) -> WorldScene (the in-run world the GM panel generates into). MainScene and EnterScene are currently in no build list."
   },
   "order": [
     "project-chaos.bootstrap.scenes.test-scene",
     "project-chaos.bootstrap.scenes.loading-scene",
     "project-chaos.bootstrap.scenes.world-scene",
+    "project-chaos.bootstrap.scenes.main-scene",
     "project-chaos.bootstrap.scenes.enter-scene"
   ]
 }

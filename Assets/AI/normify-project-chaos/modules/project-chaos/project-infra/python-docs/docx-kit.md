@@ -10,8 +10,8 @@ description:
   en: >
       Style scaffold that reproduces the existing Learn manuals' formatting; also exposes bullet/spacer/table. 220 lines.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.793Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.743Z"
 fingerprint: e668e923a14bda7d99178521edccc82323e045e79504b7eb7684e53cd8440671
 source:
   - path: "Assets/DocsSrc/docx_kit.py"

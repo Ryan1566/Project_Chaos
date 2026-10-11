@@ -1,0 +1,64 @@
+{
+    "datas": [
+        {
+            "Id": 10,
+            "biomeId": 1,
+            "nameCN": "单层_Underground",
+            "mainPathMin": 6,
+            "mainPathMax": 8,
+            "branchMin": 4,
+            "branchMax": 7,
+            "totalMin": 10,
+            "totalMax": 15,
+            "specialTreasure": 2,
+            "specialCamp": 1,
+            "retryMax": 30,
+            "enable": true
+        },
+        {
+            "Id": 11,
+            "biomeId": 2,
+            "nameCN": "单层_Surface",
+            "mainPathMin": 6,
+            "mainPathMax": 8,
+            "branchMin": 4,
+            "branchMax": 7,
+            "totalMin": 10,
+            "totalMax": 15,
+            "specialTreasure": 2,
+            "specialCamp": 1,
+            "retryMax": 30,
+            "enable": true
+        },
+        {
+            "Id": 12,
+            "biomeId": 3,
+            "nameCN": "单层_Building",
+            "mainPathMin": 6,
+            "mainPathMax": 8,
+            "branchMin": 4,
+            "branchMax": 7,
+            "totalMin": 10,
+            "totalMax": 15,
+            "specialTreasure": 2,
+            "specialCamp": 1,
+            "retryMax": 30,
+            "enable": true
+        },
+        {
+            "Id": 20,
+            "biomeId": 1,
+            "nameCN": "双层_地表_地下",
+            "mainPathMin": 7,
+            "mainPathMax": 9,
+            "branchMin": 4,
+            "branchMax": 8,
+            "totalMin": 12,
+            "totalMax": 18,
+            "specialTreasure": 2,
+            "specialCamp": 1,
+            "retryMax": 40,
+            "enable": true
+        }
+    ]
+}

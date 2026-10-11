@@ -10,8 +10,8 @@ description:
   en: >
       PoolData: one named pool holding its root GameObject and free list, with take/return helpers.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.751Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.715Z"
 fingerprint: f03d0c3c98a00b3fed7488a60428ce24496e6a69cde5958034233ba7098aa650
 source:
   - path: "Assets/Scripts/Runtime/GameBase/GameObjectPool/PoolManager.cs"

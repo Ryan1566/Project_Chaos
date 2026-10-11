@@ -11,8 +11,8 @@ description:
   en: >
       Part 1–4 of the team contract: who owns which directory, unified doc naming, Excel conventions (who may touch tables/generated artifacts), and the designer→architect→programmer collaboration flow.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:08:07.157Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.748Z"
 fingerprint: 1181b4c467e97f70db7bdd660f41cfd72a6497d20d7de554a55242e4db2cdcc8
 source:
   - path: "Assets/Chaos_Story/Story/README.md"

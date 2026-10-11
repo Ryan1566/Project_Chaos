@@ -11,8 +11,8 @@ description:
   en: >
       Singleton base for classes that do not extend MonoBehaviour: Instance lazily news up T on first access and reuses it afterwards. MonoManager and ScenesLoadManager both use it.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.726Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.690Z"
 fingerprint: 96397cc082258e1aebdaf04ee1d3d1773a36b96959defa2eaa1838906ad9c71d
 source:
   - path: "Assets/Scripts/Runtime/GameBase/Singleton/SingletonBase.cs"

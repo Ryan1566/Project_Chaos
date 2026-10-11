@@ -10,9 +10,9 @@ description:
   en: >
       GlobalPath constants: Resources sub-paths, Excel/Json/record output paths, UI prefab search paths, save-slot constants. Single source of truth for paths.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.751Z"
-fingerprint: dcb958855036cde1a5d93841c2c7392f506f34d7eec8fcc589f0fe6a529aeba8
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.715Z"
+fingerprint: 75aea6f4913b39abaf2861b284bc582fdad1e18fa49931aa7ce68d15d18b2d68
 source:
   - path: "Assets/Scripts/Runtime/Path&Type/GlobalPath.cs"
     line: 1
