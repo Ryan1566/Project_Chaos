@@ -11,8 +11,8 @@ description:
   en: >
       Header of the rebind page: back button, keyboard/gamepad tabs and the PS/Xbox model switch. Switching scheme or model writes inputDevice / gamepadModel into the pending buffer, refreshes both row sets and the tab icons, then notifies SettingsManager so the Apply button lights up.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.767Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.727Z"
 fingerprint: 03908ed9b1f158b11dcd01ea8368f47711a172a7e5cf15c0bd5f51e2eebf2f50
 source:
   - path: "Assets/Scripts/Runtime/MVP/View/SettingsPage/KeybindBindingsPage.cs"

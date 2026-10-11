@@ -10,8 +10,8 @@ description:
   en: >
       LogColor enum plus LogColorInfo hex table, used by the fluent builder's named color shortcuts.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.750Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.714Z"
 fingerprint: 503d7507b447926bb5b8e08138f49b97c6aab3be3010c72b18e2f95725dea3fd
 source:
   - path: "Assets/Scripts/Runtime/GameBase/LogManager/LogColor.cs"

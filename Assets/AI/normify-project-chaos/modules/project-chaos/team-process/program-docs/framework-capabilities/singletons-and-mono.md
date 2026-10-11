@@ -11,8 +11,8 @@ description:
   en: >
       The singleton trio (choosing wrong causes NRE) and MonoManager/MonoController as the tick/coroutine provider for non-MonoBehaviour classes.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.807Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.755Z"
 fingerprint: b0429f6cb346935a01da5f47629c153cccb8dfa4aa73d19245ec78b3bd70deff
 source:
   - path: "Assets/Chaos_Story/Story/05_程序/01_框架能力清单.md"

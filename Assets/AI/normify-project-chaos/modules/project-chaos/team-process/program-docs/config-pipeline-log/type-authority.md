@@ -11,8 +11,8 @@ description:
   en: >
       Config-pipeline record part 2: the code-beats-docs verdicts on row 5/row 7, the authoritative Type whitelist, and the remaining exporter defects.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.803Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.752Z"
 fingerprint: a0e526ba94b8397d1c104025e5bf8a5693676d6b8749b6b7e58b4037cf6dfc1a
 source:
   - path: "Assets/Chaos_Story/Story/05_程序/02_配置表管线记录.md"

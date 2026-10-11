@@ -10,8 +10,8 @@ description:
   en: >
       ResolutionHelper: built-in presets, display max resolution, available-option building, index lookup/closest match and best-available picking.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.758Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.722Z"
 fingerprint: 023436fd97e1c4ba95195e4be5985569e59e225bc5f957c0885a272c9974a9f8
 source:
   - path: "Assets/Scripts/Runtime/GameBase/SettingsManager/ResolutionHelper.cs"

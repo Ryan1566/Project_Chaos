@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "id": "2026-10-11-gm-console-restructure",
+  "title": {
+    "en": "GM console: main/sub list rework + unclickable panel fix",
+    "zh": "GM 控制台：主/副列表改版 + 点击失效修复"
+  },
+  "status": "verified",
+  "intent": {
+    "en": "Rework the in-scene GM console into category list + section list + page area, and fix the bug where every button inside GMPanel was unclickable. Root cause: GMPanel carried its own Canvas component serialized as World Space (no render camera), so its graphics registered to that canvas and were never raycast by GM_Canvas's GraphicRaycaster; on top of that the regular UI canvas' full-screen Base_BG outranked the GM canvas in raycast order.",
+    "zh": "按需求重做场景里的 GM 控制台：主列表装分类按钮，副列表随分类切换版块，右侧显示版块页面；并修复「GMPanel 显示后按钮点不动」。根因：GMPanel 上多挂了一个序列化成 World Space（无渲染相机）的 Canvas，面板里的 Graphic 全部注册到那个画布上，GM_Canvas 的 GraphicRaycaster 根本看不到它们；同时常规 UI 画布上的全屏 Base_BG 在射线排序上压住了 GM 画布。"
+  },
+  "modules": {
+    "create": [
+      "project-chaos.framework.dev-tests.gm-console",
+      "project-chaos.framework.dev-tests.gm-console.panel-shell",
+      "project-chaos.framework.dev-tests.gm-console.section-catalog",
+      "project-chaos.framework.dev-tests.gm-console.scene-entry",
+      "project-chaos.framework.dev-tests.gm-console.ui-test-entry"
+    ],
+    "modify": [
+      "project-chaos.mvp.view.main-menu"
+    ]
+  },
+  "acceptance": [
+    "GM 面板里主列表（分类）与副列表（版块）联动：切分类时副列表重建并停在第一个版块，右侧只显示当前版块页面",
+    "GM 面板打开后所有按钮可点击（真实射线命中 GM 面板内容，不再被常规 UI 的 Base_BG 挡住）",
+    "GM 面板里的「显示/隐藏主菜单」「打开设置面板」「打开存档面板」三个按钮在实机中可用且不报错",
+    "Unity 编译 0 error；模块树 validate 0 error 并与代码同步"
+  ],
+  "note": "GM 控制台改版：面板骨架/功能清单拆成两个叶子；UI 测试入口从 GameTest/UITest 迁到 GM 目录后，dev-tests.ui-probes 的悬空 source 一并修正。点击失效根因（GMPanel 自带 World Space Canvas + 常规 UI 全屏 Base_BG 压住）已在 Unity 实机验证。",
+  "revision": {
+    "before": null,
+    "after": "65c0242cb1a97ff8fcb7fab8ae973eac120e4208"
+  },
+  "created_at": "2026-10-10T17:54:03.643Z",
+  "updated_at": "2026-10-10T17:54:46.573Z",
+  "closed_at": "2026-10-10T17:54:46.573Z"
+}

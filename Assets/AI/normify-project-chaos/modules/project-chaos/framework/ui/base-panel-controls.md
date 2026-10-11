@@ -10,8 +10,8 @@ description:
   en: >
       BasePanel cursor and time helpers: CursorEnable/CursorHide, PauseTime/ResumeTime, and the IsShowing flag.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.760Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.724Z"
 fingerprint: 6f86e6829ce665ae2883c79887db6160eb8f54948fc32f05bb7e05e338fa659a
 source:
   - path: "Assets/Scripts/Runtime/GameBase/UIManager/BasePanel.cs"

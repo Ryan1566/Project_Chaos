@@ -10,9 +10,9 @@ description:
   en: >
       Three loading illustrations in Resources/UI/Loading (~400 bytes each, placeholder-quality) used by the Loading UI.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.720Z"
-fingerprint: 2323c265bf3bdeba44597234742142d871d2c6600947cc383c22cdf895eda79d
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.686Z"
+fingerprint: 95a8be2053f3dcf8441050dbdfedcb5acf1b525dedc7f09a4d8137d85265d25a
 source:
   - path: "Assets/Resources/UI/Loading/Loading_01.png"
   - path: "Assets/Resources/UI/Loading/Loading_02.png"

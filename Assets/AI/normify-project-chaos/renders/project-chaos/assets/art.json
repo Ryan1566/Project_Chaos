@@ -1,16 +1,43 @@
 {
   "schema_version": 1,
   "id": "project-chaos.assets.art",
-  "updated_at": "2026-10-06T11:58:33.024Z",
-  "mode": "layers",
+  "updated_at": "2026-10-11T16:03:56.389Z",
+  "mode": "groups",
   "max_columns": 3,
   "reading": {
-    "zh": "从左上到右下：先一份自制 Spine 角色，再 2D 贴图（草地瓦片）与输入图标集（按平台再分三层）。",
-    "en": "Left to right: the in-house Spine character first, then 2D textures (grass tiles) and the input icon set, which splits further by platform."
+    "zh": "左簇是游戏内美术：自制 Spine 角色 Citizen_001、四平台输入图标、草地瓦片贴图；右簇是界面与地图：Assets/Art/UI 的 164 张切图库与两张 4096 宽世界地图原画。",
+    "en": "Left cluster is in-game art: the in-house Citizen_001 Spine character, four-platform input icons and grass tile textures. Right cluster is UI and maps: the 164-sprite UI kit under Assets/Art/UI and two 4096-wide world map paintings."
   },
   "order": [
     "project-chaos.assets.art.citizen-001",
+    "project-chaos.assets.art.icon",
     "project-chaos.assets.art.tile-textures",
-    "project-chaos.assets.art.icon"
+    "project-chaos.assets.art.ui-kit",
+    "project-chaos.assets.art.world-maps"
+  ],
+  "groups": [
+    {
+      "id": "game-art",
+      "title": {
+        "zh": "角色与场景美术",
+        "en": "Character & Scene Art"
+      },
+      "children": [
+        "project-chaos.assets.art.citizen-001",
+        "project-chaos.assets.art.icon",
+        "project-chaos.assets.art.tile-textures"
+      ]
+    },
+    {
+      "id": "ui-maps",
+      "title": {
+        "zh": "界面与地图美术",
+        "en": "UI & Map Art"
+      },
+      "children": [
+        "project-chaos.assets.art.ui-kit",
+        "project-chaos.assets.art.world-maps"
+      ]
+    }
   ]
 }

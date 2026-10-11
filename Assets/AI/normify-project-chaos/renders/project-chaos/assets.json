@@ -1,17 +1,19 @@
 {
   "schema_version": 1,
   "id": "project-chaos.assets",
-  "updated_at": "2026-10-06T11:58:32.657Z",
+  "updated_at": "2026-10-11T16:03:56.146Z",
   "mode": "groups",
   "max_columns": 4,
   "reading": {
-    "zh": "从左到右四簇：先美术图形素材，再字体与文本渲染，然后 UI 预制体/本地化/输入，最后音频与杂项。箭头表示资产之间的引用（如瓦片引用贴图、设置行引用输入动作）。",
-    "en": "Four clusters left to right: art, fonts/text, UI+localization+input, then audio and misc. Arrows are asset references (tile to texture, setting row to input action)."
+    "zh": "从左到右四簇：美术与图形（Art 下的 UI 切图库/世界地图/图标/草地贴图，TileMap 三族瓦片，局内地图两套皮肤）→ 字体与文本 → UI 预制体与本地化 → 音频与杂项；运行期资源一律从 Resources 下取。",
+    "en": "Four clusters left to right: art and graphics (the UI sprite kit, world maps, input icons and grass textures under Art; three tilemap families; the two in-game RunMap skins), then fonts and text, then UI prefabs and localization, then audio and misc. Runtime assets are always loaded from Resources."
   },
   "order": [
     "project-chaos.assets.art",
     "project-chaos.assets.ui-sprites",
     "project-chaos.assets.tilemap",
+    "project-chaos.assets.runmap-greybox",
+    "project-chaos.assets.runmap-kenney",
     "project-chaos.assets.fonts",
     "project-chaos.assets.tmp",
     "project-chaos.assets.ui-prefabs",
@@ -32,7 +34,9 @@
       "children": [
         "project-chaos.assets.art",
         "project-chaos.assets.ui-sprites",
-        "project-chaos.assets.tilemap"
+        "project-chaos.assets.tilemap",
+        "project-chaos.assets.runmap-greybox",
+        "project-chaos.assets.runmap-kenney"
       ]
     },
     {

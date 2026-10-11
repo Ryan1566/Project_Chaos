@@ -10,8 +10,8 @@ description:
   en: >
       Two loose third-party DLLs under Assets/Plugins: EPPlus for Excel export (editor side) and LitJson for runtime JSON parsing.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.776Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.732Z"
 fingerprint: efd85ee5837e9ef4df49472caa584703b65c1950d0edc5c6b17ab7eaf91148e3
 source:
   - path: "Assets/Plugins/EPPlus.dll"

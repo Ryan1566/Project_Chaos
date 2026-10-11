@@ -10,8 +10,8 @@ description:
   en: >
       Main localization editor window: left column with search and entry list (per-language completeness), right column editor area, draggable splitter and style setup; silent mode skips the clear-all confirmation.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.737Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.703Z"
 fingerprint: f632328e9b94a45e950b53ac46275b6cce6123211b4d3c7a24f45471997cfe6b
 source:
   - path: "Assets/Scripts/Editor/LocalizationEditor/LocalizationEditorWindow.cs"

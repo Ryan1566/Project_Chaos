@@ -11,8 +11,8 @@ description:
   en: >
       Bottom button bar: Apply (CommitEdit + refresh every page), Reset (ResetPendingSection of the current category) and Return. Return pops a confirmation overlay when there are unapplied edits; if the prefab has no ConfirmGroup it degrades to discard-plus-warning instead of erroring.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.769Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.728Z"
 fingerprint: f6e00a704a92904810632d475db69fb4c2a10cbaf9072f1b9a5976923e8002f3
 source:
   - path: "Assets/Scripts/Runtime/MVP/View/SettingPanel.cs"

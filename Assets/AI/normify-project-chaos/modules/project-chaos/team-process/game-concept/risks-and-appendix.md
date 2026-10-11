@@ -11,8 +11,8 @@ description:
   en: >
       Concept part 3: milestones and scope, presentation tone, risks, glossary, the open-question list, and the appendices that preserve the user's original input verbatim to prevent paraphrase drift.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.800Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.749Z"
 fingerprint: ed531f387d52a91f4ecbaa4ab82a8535472098ea94d6261e1d9c0b4edc5d5f2a
 source:
   - path: "Assets/Chaos_Story/Story/01_企划/01_游戏概念案.md"

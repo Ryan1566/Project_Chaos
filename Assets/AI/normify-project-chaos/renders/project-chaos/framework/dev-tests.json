@@ -1,13 +1,14 @@
 {
   "schema_version": 1,
   "id": "project-chaos.framework.dev-tests",
-  "updated_at": "2026-10-06T12:00:41.352Z",
+  "updated_at": "2026-10-10T17:54:39.092Z",
   "mode": "grid",
   "reading": {
-    "zh": "五组 OnGUI/启动探针，分别验证音频、配置与存档、输入、对象池、UI；都挂在 TestScene 的 GameManager 上但当前 enabled=false，需手工开启才能跑。",
-    "en": "Five OnGUI/startup probes for audio, config & save, input, pool and UI. They sit on TestScene's GameManager but are all disabled, so they must be enabled to run."
+    "zh": "先看 gm-console：场景里的 GM 控制台，已经在装可视化测试控件（开面板、切语言），新功能往这里加。后面五组是 OnGUI/启动探针，都挂在 TestScene 的 GameManager 上但 enabled=false，需手工开启才能跑。",
+    "en": "The GM console comes first: it is the in-scene dev console that already hosts test widgets (UI panels, language switch) and where new tools should be added. The five OnGUI/startup probes follow; they sit on TestScene's GameManager but are all disabled, so they must be enabled to run."
   },
   "order": [
+    "project-chaos.framework.dev-tests.gm-console",
     "project-chaos.framework.dev-tests.audio-probes",
     "project-chaos.framework.dev-tests.config-probes",
     "project-chaos.framework.dev-tests.input-probe",

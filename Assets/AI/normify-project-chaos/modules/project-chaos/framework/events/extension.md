@@ -10,8 +10,8 @@ description:
   en: >
       EventTriggerExt: extension methods letting any object raise events through the bus in one line (with or without EventArgs).
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.743Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.709Z"
 fingerprint: 9854ccf84a246e351f41673ad509aba51fb3f8672672b40b8349e2d762ae9b2a
 source:
   - path: "Assets/Scripts/Runtime/GameBase/EventCenter/EventManager.cs"

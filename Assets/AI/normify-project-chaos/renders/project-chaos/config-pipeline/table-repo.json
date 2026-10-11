@@ -1,16 +1,53 @@
 {
   "schema_version": 1,
   "id": "project-chaos.config-pipeline.table-repo",
-  "updated_at": "2026-10-06T12:01:12.115Z",
-  "mode": "grid",
+  "updated_at": "2026-10-11T16:01:42.333Z",
+  "mode": "groups",
   "max_columns": 3,
   "reading": {
-    "zh": "两张表都是管线样本：测试表验证多类型列，读条轮播表验证 bool 列与资源路径列；README 只是占位，约定其实写在 ConfigManager 里。",
-    "en": "Both workbooks are pipeline samples: TestTable covers multiple column types, LoadingTable covers a bool column and asset paths. The README is only a placeholder; the real conventions live in ConfigManager."
+    "zh": "左组是示例表与读条表；右组是地图生成的 7 张表，按生成器消费顺序读：主题（MapBiome）→ 原型图预算（MapPreset）→ 层序（PresetLayer）→ 房间块池（MapChunk）→ 接口（ChunkSocket）→ 标记点（ChunkSlot），外加读条文案表（MapLoading）。",
+    "en": "Left: the smoke-test and loading tables. Right: the seven-table runmap set, read as the generator consumes it — biome (theme/layer) -> preset (layout budget) -> preset layer (layer order) -> chunk pool -> sockets -> slots, plus the loading-caption table."
   },
   "order": [
     "project-chaos.config-pipeline.table-repo.test-table",
     "project-chaos.config-pipeline.table-repo.loading-table",
-    "project-chaos.config-pipeline.table-repo.repo-readme"
+    "project-chaos.config-pipeline.table-repo.repo-readme",
+    "project-chaos.config-pipeline.table-repo.map-biome",
+    "project-chaos.config-pipeline.table-repo.map-preset",
+    "project-chaos.config-pipeline.table-repo.preset-layer",
+    "project-chaos.config-pipeline.table-repo.map-chunk",
+    "project-chaos.config-pipeline.table-repo.chunk-socket",
+    "project-chaos.config-pipeline.table-repo.chunk-slot",
+    "project-chaos.config-pipeline.table-repo.map-loading"
+  ],
+  "groups": [
+    {
+      "id": "basics",
+      "title": {
+        "zh": "示例表与读条表",
+        "en": "Smoke & loading tables"
+      },
+      "children": [
+        "project-chaos.config-pipeline.table-repo.test-table",
+        "project-chaos.config-pipeline.table-repo.loading-table",
+        "project-chaos.config-pipeline.table-repo.repo-readme"
+      ]
+    },
+    {
+      "id": "runmap",
+      "title": {
+        "zh": "地图生成表组",
+        "en": "RunMap generation set"
+      },
+      "children": [
+        "project-chaos.config-pipeline.table-repo.map-biome",
+        "project-chaos.config-pipeline.table-repo.map-preset",
+        "project-chaos.config-pipeline.table-repo.preset-layer",
+        "project-chaos.config-pipeline.table-repo.map-chunk",
+        "project-chaos.config-pipeline.table-repo.chunk-socket",
+        "project-chaos.config-pipeline.table-repo.chunk-slot",
+        "project-chaos.config-pipeline.table-repo.map-loading"
+      ]
+    }
   ]
 }

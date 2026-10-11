@@ -10,8 +10,8 @@ description:
   en: >
       Change impact model and update path: classifies each changed path into an impact level (code vs assets vs project settings), builds the ahead/behind preview with categorized items, summarizes and counts high-impact changes, then performs pull or discard-tracked-changes.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.733Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.699Z"
 fingerprint: 8a47f9f083458046c167adb12ae2541546c57eec2897256e7614d1e5318e5920
 source:
   - path: "Assets/Scripts/Editor/GitTool/GitHelper.cs"

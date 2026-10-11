@@ -11,8 +11,8 @@ description:
   en: >
       MVP contract part 2: Model creation/release through ModelHub, the View skeleton and lifecycle, EventCenter placement, and the three canonical cross-layer data flows.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.795Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.745Z"
 fingerprint: cf2cb2b671c970fd1561f3a3464a303ac77cc8017f6e76fdd115ec44c1317fc2
 source:
   - path: "Assets/Chaos_Story/Story/04_架构/04_MVP契约与落地路线.md"

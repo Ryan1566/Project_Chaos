@@ -10,8 +10,8 @@ description:
   en: >
       LocalizedText component: refreshes TMP text from the key, supports runtime key switching with format args and language-change subscription.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.748Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.713Z"
 fingerprint: ac4bb43478a47a948649b4df647ba2bd4d1c308e32b10d5a56ebabd829609ccf
 source:
   - path: "Assets/Scripts/Runtime/GameBase/LocalizationManager/LocalizedText.cs"

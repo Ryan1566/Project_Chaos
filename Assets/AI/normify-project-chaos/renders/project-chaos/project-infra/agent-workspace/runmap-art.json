@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.project-infra.agent-workspace.runmap-art",
+  "updated_at": "2026-10-11T16:01:42.574Z",
+  "mode": "layers",
+  "max_columns": 3,
+  "reading": {
+    "zh": "按“工作区”读：生成脚本与表格草稿 → 源码快照 → 参考美术/截图/授权。本层都是工作素材；真源在 Assets/Scripts 与 Assets/Excel。",
+    "en": "Read as a working directory: generator and table drafts -> source snapshots -> reference art, screens and licences. Everything here is working material; the real sources and tables live in Assets/Scripts and Assets/Excel."
+  },
+  "order": [
+    "project-chaos.project-infra.agent-workspace.runmap-art.generator",
+    "project-chaos.project-infra.agent-workspace.runmap-art.source-snapshots",
+    "project-chaos.project-infra.agent-workspace.runmap-art.reference"
+  ]
+}

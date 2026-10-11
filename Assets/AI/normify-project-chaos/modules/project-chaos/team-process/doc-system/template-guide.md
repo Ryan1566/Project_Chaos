@@ -11,8 +11,8 @@ description:
   en: >
       How the three planning templates are used together, the mandatory meta block and status transitions, and the full pipeline from a spoken requirement to a compliant xlsx plus the definition of done.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.799Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.749Z"
 fingerprint: 064768f08a20e693f96d5ed3e59456d081599309c217c9038b56d299660e74e7
 source:
   - path: "Assets/Chaos_Story/Story/01_模板使用说明.md"

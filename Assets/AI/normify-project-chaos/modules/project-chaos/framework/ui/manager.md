@@ -10,8 +10,8 @@ description:
   en: >
       UIManager: finds Canvas by name, instantiates panels by PanelType, keeps a panel stack with push/pop, and caches instances for reuse.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.761Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.724Z"
 fingerprint: ca79a1693ec313648593b4857b97bbb57739fd0dcc17ad458506762f333c53ce
 source:
   - path: "Assets/Scripts/Runtime/GameBase/UIManager/UIManager.cs"

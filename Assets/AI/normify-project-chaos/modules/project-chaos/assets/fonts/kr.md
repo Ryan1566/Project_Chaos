@@ -10,8 +10,8 @@ description:
   en: >
       Korean fonts: Hangeuljaemin4-Regular SDF plus its raw TTF source.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.702Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.632Z"
 fingerprint: 3cd02a455d58351f125f58bbc8afc0a69cc28e0d0645455e111e5a1fa042a5df
 source:
   - path: "Assets/Fonts/kr/Hangeuljaemin4-Regular SDF.asset"

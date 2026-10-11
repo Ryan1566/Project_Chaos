@@ -10,8 +10,8 @@ description:
   en: >
       The runtime entry point for constant tables: LoadData<T> resolves ResManager.Load<TextAsset> on GlobalPath.data_JsonPathToRead plus the type name and parses it into DataList<T>; LoadDataAsync does the same through the async loader with a UnityAction callback and warns when the asset is missing. DataList<T> is the [Serializable] {datas:[...]} wrapper JsonUtility needs.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.730Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.696Z"
 fingerprint: f92e08ea90db9b78145a652479389c3dc62fb1fd85fceff61eec0dfc92c130b0
 source:
   - path: "Assets/Scripts/Runtime/GameBase/ConfigManager/Config/ConfigLoader.cs"

@@ -10,8 +10,8 @@ description:
   en: >
       The built-in LiberationSans SDF font family: main atlas, fallback, outline and drop-shadow material presets, plus the raw TTF.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.712Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.681Z"
 fingerprint: e42c69242b62a593e77ef5dd875ba54953488eb6f4b97dbcbd469f1bf0a87a4d
 source:
   - path: "Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF.asset"

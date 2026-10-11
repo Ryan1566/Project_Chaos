@@ -10,8 +10,8 @@ description:
   en: >
       KeyIconText: shows either text, an icon, or both for one keybinding slot, with dimmed/icon-only modes used by setting rows.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.753Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.719Z"
 fingerprint: 18f4ea2cf5a0bd03dfb7514dd9cd8536889a361a9030013a8e06b9cba041e794
 source:
   - path: "Assets/Scripts/Runtime/GameBase/SettingRows/KeyIconText.cs"

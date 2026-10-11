@@ -10,8 +10,8 @@ description:
   en: >
       Authoritative type gate defined by Convert's switch alone: int, uint, long, ulong, byte, sbyte, short, ushort, float, double, bool, string. A type must be a legal C# name (row 6 is pasted verbatim into the class) and JsonUtility round-trippable. int32/int64/long long were removed and now fail at export; decimal is banned (silently dropped by JsonUtility); char survives but stores as a number. bool accepts only true/false, 1/0 and yes/no, normalised to bare lowercase.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.732Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.698Z"
 fingerprint: 8317ca6bb94bcacbc47c1bf98e79594b0f8559b3aa88a4c40c48d717703dcd5f
 source:
   - path: "Assets/Scripts/Runtime/GameBase/ConfigManager/Config/ConfigManager.cs"

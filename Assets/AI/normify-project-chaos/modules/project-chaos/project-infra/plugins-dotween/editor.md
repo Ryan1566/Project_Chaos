@@ -10,8 +10,8 @@ description:
   en: >
       DOTween editor DLL: utility panel for creating/updating DOTweenSettings and its XML docs.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.777Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.733Z"
 fingerprint: 01481b3acc13cd56705fa5c3d26704569976914aaeb625706c7dde09ff99227b
 source:
   - path: "Assets/Plugins/Demigiant/DOTween/Editor/DOTweenEditor.dll"

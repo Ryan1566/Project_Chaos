@@ -11,9 +11,9 @@ description:
   en: >
       Namespace rules, the UnityEditor-in-runtime build risk with its self-check command, and the four-step compile gate.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.801Z"
-fingerprint: e739ed90582b30e56e975cc7b0dbe1c74d95e72904b67d3a5f5c658593d6d698
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.750Z"
+fingerprint: 42404898d4219a742aa858eccfeec84265519f5c3be1ff022fe368b6ba0a7b26
 source:
   - path: "Assets/Chaos_Story/Story/05_程序/03_编码与协作约定.md"
     line: 366

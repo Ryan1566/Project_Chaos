@@ -11,8 +11,8 @@ description:
   en: >
       The system-design template used after the concept doc is frozen: four must-answer questions and the section skeleton that ties a system to config tables and code contracts.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.799Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.748Z"
 fingerprint: 51f485d344b851ce5e1606bbe36cc639c96dbe8e3d10b70cb7ecd745c9a800ff
 source:
   - path: "Assets/Chaos_Story/Story/02_系统策划/00_系统设计文档模板.md"

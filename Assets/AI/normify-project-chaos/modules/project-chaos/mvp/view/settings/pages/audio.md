@@ -11,8 +11,8 @@ description:
   en: >
       Audio page: master/music/sfx/ui volume, all 0-100 step 1. Volume is the one deliberate exception to apply-on-commit — dragging changes the live AudioSource output immediately (a slider you cannot hear is unusable) while the saved value still only lands in the pending buffer until Apply.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.767Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.726Z"
 fingerprint: 41ca215db524c24f825f6ec76874e51640b74da07da4876f57a59658cc3671ee
 source:
   - path: "Assets/Scripts/Runtime/MVP/View/SettingsPage/AudioSettingsPage.cs"

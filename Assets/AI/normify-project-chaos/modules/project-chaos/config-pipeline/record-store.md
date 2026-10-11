@@ -10,8 +10,8 @@ description:
   en: >
       Data-mode export written to Assets/Data/Records: the same {"datas":[...]} payload as the config JSON but with the .record extension, read at runtime by Recorder (editor and standalone use the Assets path, packages use the Records path).
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.730Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.696Z"
 fingerprint: 7c510137c54e89e456e4541faf9a746edf8c31964a8a3d5fe3b4c6755dc1ae9a
 source:
   - path: "Assets/Data/Records/TestTableData.record"

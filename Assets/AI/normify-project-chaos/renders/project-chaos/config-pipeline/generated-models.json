@@ -1,37 +1,52 @@
 {
   "schema_version": 1,
   "id": "project-chaos.config-pipeline.generated-models",
-  "updated_at": "2026-10-06T12:01:21.776Z",
+  "updated_at": "2026-10-11T16:01:36.305Z",
   "mode": "groups",
+  "max_columns": 3,
   "reading": {
-    "zh": "上半组是 Config 模式的只读常量类，下半组是 Data 模式的可写存档类；两者字段都由表头第 3/4/6 行决定，导出时整份覆盖。",
-    "en": "The top group holds read-only Config-mode classes, the bottom one the writable Data-mode class. Both are driven by header rows 3, 4 and 6 and are overwritten wholesale on every export."
+    "zh": "生成的数据类（Config 模式 → *Config.cs，Data 模式 → *Data.cs），public 字段供 JsonUtility 序列化。禁止手改；字段含义回指同名的 table-repo 模块。",
+    "en": "Generated C# data classes (Config mode -> *Config.cs, Data mode -> *Data.cs) with public fields for JsonUtility. Never hand-edit; field meanings point back to the matching table-repo module."
   },
   "order": [
     "project-chaos.config-pipeline.generated-models.test-table-config",
+    "project-chaos.config-pipeline.generated-models.test-table-data",
     "project-chaos.config-pipeline.generated-models.loading-table-config",
-    "project-chaos.config-pipeline.generated-models.test-table-data"
+    "project-chaos.config-pipeline.generated-models.map-biome-config",
+    "project-chaos.config-pipeline.generated-models.map-preset-config",
+    "project-chaos.config-pipeline.generated-models.preset-layer-config",
+    "project-chaos.config-pipeline.generated-models.map-chunk-config",
+    "project-chaos.config-pipeline.generated-models.chunk-socket-config",
+    "project-chaos.config-pipeline.generated-models.chunk-slot-config",
+    "project-chaos.config-pipeline.generated-models.map-loading-config"
   ],
   "groups": [
     {
-      "id": "config-mode",
+      "id": "basics",
       "title": {
-        "zh": "Config 模式（只读）",
-        "en": "Config Mode (read-only)"
+        "zh": "示例表与读条类",
+        "en": "Smoke & loading classes"
       },
       "children": [
         "project-chaos.config-pipeline.generated-models.test-table-config",
+        "project-chaos.config-pipeline.generated-models.test-table-data",
         "project-chaos.config-pipeline.generated-models.loading-table-config"
       ]
     },
     {
-      "id": "data-mode",
+      "id": "runmap",
       "title": {
-        "zh": "Data 模式（可写）",
-        "en": "Data Mode (writable)"
+        "zh": "地图生成类组",
+        "en": "RunMap generation classes"
       },
       "children": [
-        "project-chaos.config-pipeline.generated-models.test-table-data"
+        "project-chaos.config-pipeline.generated-models.map-biome-config",
+        "project-chaos.config-pipeline.generated-models.map-preset-config",
+        "project-chaos.config-pipeline.generated-models.preset-layer-config",
+        "project-chaos.config-pipeline.generated-models.map-chunk-config",
+        "project-chaos.config-pipeline.generated-models.chunk-socket-config",
+        "project-chaos.config-pipeline.generated-models.chunk-slot-config",
+        "project-chaos.config-pipeline.generated-models.map-loading-config"
       ]
     }
   ]
