@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.assets.art.ui-kit",
+  "updated_at": "2026-10-11T16:03:56.874Z",
+  "mode": "groups",
+  "max_columns": 3,
+  "reading": {
+    "zh": "先看最左的导入规范，再按构图层次从左到右：容器（面板/按钮、浮层/纹样）→ 控件（下拉/滑条/进度条、槽位/卡片）→ 整屏界面（Meta 时代树与局内 HUD、加载与存档）。全部 164 张按九宫格切片使用。",
+    "en": "Start with the import spec on the left, then read the kit by composition layer: containers (panels/buttons, overlays/ornaments), controls (dropdowns/sliders/bars, slots/cards), and full screens (meta era trees and in-run HUD, loading and save UI). All 164 sprites are used as 9-slice."
+  },
+  "order": [
+    "project-chaos.assets.art.ui-kit.spec",
+    "project-chaos.assets.art.ui-kit.panels-buttons",
+    "project-chaos.assets.art.ui-kit.overlays-ornaments",
+    "project-chaos.assets.art.ui-kit.controls-sliders",
+    "project-chaos.assets.art.ui-kit.slots-cards",
+    "project-chaos.assets.art.ui-kit.meta-run-system"
+  ],
+  "groups": [
+    {
+      "id": "foundation",
+      "title": {
+        "zh": "导入规范",
+        "en": "Import Spec"
+      },
+      "children": [
+        "project-chaos.assets.art.ui-kit.spec"
+      ]
+    },
+    {
+      "id": "containers",
+      "title": {
+        "zh": "容器层",
+        "en": "Containers"
+      },
+      "children": [
+        "project-chaos.assets.art.ui-kit.panels-buttons",
+        "project-chaos.assets.art.ui-kit.overlays-ornaments"
+      ]
+    },
+    {
+      "id": "controls",
+      "title": {
+        "zh": "控件层",
+        "en": "Controls"
+      },
+      "children": [
+        "project-chaos.assets.art.ui-kit.controls-sliders",
+        "project-chaos.assets.art.ui-kit.slots-cards"
+      ]
+    },
+    {
+      "id": "screens",
+      "title": {
+        "zh": "整屏界面",
+        "en": "Full Screens"
+      },
+      "children": [
+        "project-chaos.assets.art.ui-kit.meta-run-system"
+      ]
+    }
+  ]
+}

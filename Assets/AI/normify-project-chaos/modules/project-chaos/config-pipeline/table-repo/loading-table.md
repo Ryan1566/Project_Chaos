@@ -10,8 +10,8 @@ description:
   en: >
       Loading-screen carousel table: image path, sort order, dwell seconds, fade seconds and an enable flag. The enable column exercises the bool rule (true/false, 1/0, yes/no only; anything else fails at export time).
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.731Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.697Z"
 fingerprint: 0c0b82b66804a450d5d8079b8c466f24a096bc2aa178c0e6741414b216500757
 source:
   - path: "Assets/Excel/Chaos_excel/LoadingTable_读条轮播表.xlsx"

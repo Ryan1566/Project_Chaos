@@ -10,8 +10,8 @@ description:
   en: >
       91 Xbox icons named xbox_*.png covering ABXY, D-pad (incl. round), sticks, LB/RB/LT/RT and whole controllers.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.469Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.303Z"
 fingerprint: a91359517cfd0c7e5498f5006a39e74eafda7ec0c28a6bdd1c04b4afc479e205
 source:
   - path: "Assets/Art/icon/xbox/xbox_button_a.png"

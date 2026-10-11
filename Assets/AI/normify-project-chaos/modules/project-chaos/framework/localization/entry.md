@@ -10,8 +10,8 @@ description:
   en: >
       LanguageType enum (5 languages) and LocalizationEntry: key, description and per-language texts with GetText/SetText.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.747Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.712Z"
 fingerprint: a43836ec9d7eccc09086bde991db83bfcaa9da7c3997ca5e93cad03b191ad019
 source:
   - path: "Assets/Scripts/Runtime/GameBase/LocalizationManager/LocalizationData.cs"

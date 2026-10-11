@@ -10,8 +10,8 @@ description:
   en: >
       Editor entry points under the ExcelTool menu: ExportExcel runs both modes, ExportExcelConfigs and ExportExcelModels run one each. Each pass loads every file in the table folder, skips non-.xlsx, reads worksheet 1, returns early on an empty-dimension sheet (which aborts the whole batch), then exports JSON and a class per table before refreshing the asset database.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.727Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.691Z"
 fingerprint: 8317ca6bb94bcacbc47c1bf98e79594b0f8559b3aa88a4c40c48d717703dcd5f
 source:
   - path: "Assets/Scripts/Runtime/GameBase/ConfigManager/Config/ConfigManager.cs"

@@ -10,8 +10,8 @@ description:
   en: >
       Spine's editor settings asset stored under Assets/Editor: default scale, mix, shader, Z spacing, instantiate loop, hierarchy icons, texture importer policy and the multiply/screen/additive blend-mode materials. Consumed by the Spine plugin, not by project code.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.739Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.705Z"
 fingerprint: 11983ab4e8262d5a1adc7f0aafc32a48736e3f5a7043e25611709d52ab7da986
 source:
   - path: "Assets/Editor/SpineSettings.asset"

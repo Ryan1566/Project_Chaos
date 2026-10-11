@@ -10,8 +10,8 @@ description:
   en: >
       SettingRow_Keybind core: resolves key/icon child nodes for one or two slots and exposes rebind/reset request callbacks.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.754Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.720Z"
 fingerprint: 2186e49773a62815771d127f9d2318a12e8d0b72a5564611164ee53443310610
 source:
   - path: "Assets/Scripts/Runtime/GameBase/SettingRows/SettingRow_Keybind.cs"

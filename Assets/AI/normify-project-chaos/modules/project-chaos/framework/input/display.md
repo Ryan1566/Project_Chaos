@@ -10,8 +10,8 @@ description:
   en: >
       Binding display: resolves text/icon/tint for a slot, effective control paths, stable lookup keys, icon family and human-readable names.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.745Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.711Z"
 fingerprint: efe37e8935ef64f4a05c1a643ffb319ec12c7e252ac2c96d7411d8937425f466
 source:
   - path: "Assets/Scripts/Runtime/GameBase/InputManager/InputManager.cs"

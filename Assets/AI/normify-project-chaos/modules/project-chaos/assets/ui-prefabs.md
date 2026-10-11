@@ -10,9 +10,9 @@ description:
   en: >
       Runtime UI prefabs loaded from Resources/UIPanels: MainMenuPanel, SettingPanel, SLPanel plus the RecordCell list item.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.719Z"
-fingerprint: 544bcc93c45eaf9563d213f46e2fbb7b4440b50e2a20632fe7331e4cdc779e12
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.685Z"
+fingerprint: 76d00873ad00c387d1306ccbfa4705e25bec2a022c6462a975266aac61d1403c
 source:
   - path: "Assets/Resources/UIPanels/MainMenuPanel.prefab"
   - path: "Assets/Resources/UIPanels/SettingPanel.prefab"

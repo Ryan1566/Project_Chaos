@@ -10,8 +10,8 @@ description:
   en: >
       AudioManager channel/volume block: AudioChannel enum (Master/Music/Sound/UI), MaxVolume constant and per-channel GetVolume/SetVolume.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.740Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.706Z"
 fingerprint: 1bbab6cee523c3ffabcfd4e5396869f08770bac456d42d1419768b73354fd300
 source:
   - path: "Assets/Scripts/Runtime/GameBase/AudioManager/AudioManager.cs"

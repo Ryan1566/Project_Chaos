@@ -10,8 +10,8 @@ description:
   en: >
       Import-time policy for key icons: on preprocess, only paths under Assets/Art/icon (prefix match, not substring) are forced to sprite type with mipmaps off, alphaIsTransparency on, no NPOT scaling, bilinear filtering and a sane max size. A menu action re-applies the same policy to the existing library.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.732Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.699Z"
 fingerprint: f5e6e581490536ff4b1338ecf5e41e78951285fd5cf3b2e09f1613be1ee836a1
 source:
   - path: "Assets/Scripts/Editor/ArtPipeline/IconImportPostprocessor.cs"

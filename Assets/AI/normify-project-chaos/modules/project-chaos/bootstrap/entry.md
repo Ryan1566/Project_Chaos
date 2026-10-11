@@ -11,8 +11,8 @@ description:
   en: >
       The Entry script: on TestScene start it initialises UIManager → InputManager → SettingsManager in a fixed order. The order is not arbitrary — the input action asset must load before SettingsManager, otherwise stored keybindings have nothing to apply to.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.721Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.687Z"
 fingerprint: 30885a88f7753cadbd0bd32f8bd335897311348ed2e6c70b3991939de3a50548
 source:
   - path: "Assets/Scripts/Runtime/Entry.cs"

@@ -10,8 +10,8 @@ description:
   en: >
       The window's git flows: refresh repo information, probe the remote for the upstream branch when no local record exists, check for updates and build the preview, then pull, or discard tracked changes and pull (aborting if local commits are unpushed).
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.734Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.700Z"
 fingerprint: d766f0fb475c3b23d1c92ab3b4f89c07c7b3b1735449fc2912052bd11baa00bb
 source:
   - path: "Assets/Scripts/Editor/GitTool/GitToolWindow.cs"

@@ -10,8 +10,8 @@ description:
   en: >
       SettingRowBase abstract class: child lookup helpers, clickable/interactable state with disabled tinting, and the settingId field.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.753Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.719Z"
 fingerprint: 5d66eb0bff3b0706c3d9c260008a56f70c43e4688c611d5d2e8bb1372e7fc163
 source:
   - path: "Assets/Scripts/Runtime/GameBase/SettingRows/SettingRowBase.cs"

@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.framework.dev-tests.gm-console",
+  "updated_at": "2026-10-10T17:53:55.290Z",
+  "mode": "groups",
+  "reading": {
+    "zh": "先看 scene-entry（怎么打开），再看 panel-shell（怎么绑节点、切分类与版块）。右半是扩展点：section-catalog 是功能清单，ui-test-entry 是一个具体的版块按钮。",
+    "en": "Start at scene-entry (how the console is opened), then panel-shell (how it binds nodes and switches category/section). The right half is what to extend: section-catalog is the feature table, ui-test-entry is one concrete section button."
+  },
+  "order": [
+    "project-chaos.framework.dev-tests.gm-console.scene-entry",
+    "project-chaos.framework.dev-tests.gm-console.panel-shell",
+    "project-chaos.framework.dev-tests.gm-console.section-catalog",
+    "project-chaos.framework.dev-tests.gm-console.ui-test-entry"
+  ],
+  "groups": [
+    {
+      "id": "shell",
+      "title": {
+        "zh": "入口与骨架",
+        "en": "Entry and shell"
+      },
+      "children": [
+        "project-chaos.framework.dev-tests.gm-console.scene-entry",
+        "project-chaos.framework.dev-tests.gm-console.panel-shell"
+      ]
+    },
+    {
+      "id": "content",
+      "title": {
+        "zh": "功能清单与测试入口",
+        "en": "Catalog and test entries"
+      },
+      "children": [
+        "project-chaos.framework.dev-tests.gm-console.section-catalog",
+        "project-chaos.framework.dev-tests.gm-console.ui-test-entry"
+      ]
+    }
+  ]
+}

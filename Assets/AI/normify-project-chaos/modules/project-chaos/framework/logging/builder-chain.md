@@ -10,8 +10,8 @@ description:
   en: >
       LogBuilder fluent chain: channel, context, trace and color helpers (named colors via White/Gray/Red/... one-liners).
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.749Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.714Z"
 fingerprint: 6773abdfb8e4707eedb70b2374848144684d79756d69fda72304e0f8cad10558
 source:
   - path: "Assets/Scripts/Runtime/GameBase/LogManager/LogBuilder.cs"

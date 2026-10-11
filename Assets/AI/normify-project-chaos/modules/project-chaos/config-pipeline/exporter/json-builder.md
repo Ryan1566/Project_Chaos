@@ -10,8 +10,8 @@ description:
   en: >
       JSON text assembly with an important fragility: rows are regrouped by splitting the whole compact text on commas, so a string cell containing a comma silently corrupts the whole table's JSON while the log still reports success. Quotes and newlines inside strings are not escaped either.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.727Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.691Z"
 fingerprint: 8317ca6bb94bcacbc47c1bf98e79594b0f8559b3aa88a4c40c48d717703dcd5f
 source:
   - path: "Assets/Scripts/Runtime/GameBase/ConfigManager/Config/ConfigManager.cs"

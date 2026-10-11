@@ -10,8 +10,8 @@ description:
   en: >
       76 example C# files showing Spine usage: beginner tutorial controllers, mix-and-match, ragdoll and sample components.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.781Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.737Z"
 fingerprint: e8936a9c9c6a788e2ae2fb52d43a9def11e650094b0ea2b1f6de884ffac3098f
 source:
   - path: "Assets/Plugins/Spine Examples/spine-unity-examples.asmdef"

@@ -11,8 +11,8 @@ description:
   en: >
       The three save actions: create a new save in an empty slot, load a slot (write GameSession, then switch to LoadingScene with a non-null delegate — LoadScene invokes the callback unconditionally, so passing null would NRE), and delete the selected slot. All persistence goes through SaveSlotService.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.763Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.725Z"
 fingerprint: 476e33b9f31278b56b525f8ffb3a6299b5e9caa0d329cae08c07e8e1ad4cacec
 source:
   - path: "Assets/Scripts/Runtime/MVP/View/SLPanel.cs"

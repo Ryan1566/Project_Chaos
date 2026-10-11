@@ -10,8 +10,8 @@ description:
   en: >
       Tool state and visibility: static InitializeOnLoad entry, SessionState-backed enabled flag with change event, root-canvas discovery, hide/restore through SceneVisibilityManager (object-level, not layer-based, because panel prefabs stay on the Default layer), and adoption of hidden canvases after a scene opens.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.738Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.705Z"
 fingerprint: 9aaebbddb0f3dd27a279c563d1b8952bbdcffe7c594e2baeb5a3b6b8cac08707
 source:
   - path: "Assets/Scripts/Editor/SceneUIOverviewTool/SceneUIOverviewTool.cs"

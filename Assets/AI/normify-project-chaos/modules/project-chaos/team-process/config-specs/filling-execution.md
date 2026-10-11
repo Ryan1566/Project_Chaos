@@ -11,8 +11,8 @@ description:
   en: >
       Filling rules part 2: the two corrected header-row semantics, cell rules, exporter limitations, the delivery checklist, and the appendix comparing the rules against the old docx manual.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.797Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.746Z"
 fingerprint: 07bd4d2652e6e95edc0d28bc73fe7dc565c1f57a6fbe7f68825d59e904eb6cd3
 source:
   - path: "Assets/Chaos_Story/Story/03_配置表设计/01_配置表填写规范.md"

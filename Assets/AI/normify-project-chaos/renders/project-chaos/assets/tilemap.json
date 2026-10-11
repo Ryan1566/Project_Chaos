@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.assets.tilemap",
+  "updated_at": "2026-10-11T16:03:56.637Z",
+  "mode": "groups",
+  "max_columns": 3,
+  "reading": {
+    "zh": "左侧是旧草地瓦片与矩形调色板；右侧是局内地图两套皮肤——Kenney 主题（含 RuleTile 规则瓦片，按邻接自动拼接）与 Placeholder 灰盒主题（只有固定精灵 Tile）；对应的房间块 prefab 见 assets.runmap-kenney / runmap-greybox。",
+    "en": "Left: legacy grass tiles plus the rectangular palette. Right: the two in-game skins - Kenney themes (with RuleTiles that auto-tile by neighbour rules) and Placeholder greybox themes (fixed-sprite tiles only). Matching room-chunk prefabs live in assets.runmap-kenney / runmap-greybox."
+  },
+  "order": [
+    "project-chaos.assets.tilemap.grass-tiles",
+    "project-chaos.assets.tilemap.kenney",
+    "project-chaos.assets.tilemap.placeholder"
+  ],
+  "groups": [
+    {
+      "id": "legacy",
+      "title": {
+        "zh": "旧草地瓦片",
+        "en": "Legacy Grass Tiles"
+      },
+      "children": [
+        "project-chaos.assets.tilemap.grass-tiles"
+      ]
+    },
+    {
+      "id": "runmap-skins",
+      "title": {
+        "zh": "局内地图皮肤瓦片",
+        "en": "RunMap Skin Tiles"
+      },
+      "children": [
+        "project-chaos.assets.tilemap.kenney",
+        "project-chaos.assets.tilemap.placeholder"
+      ]
+    }
+  ]
+}

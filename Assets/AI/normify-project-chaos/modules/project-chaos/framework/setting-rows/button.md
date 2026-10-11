@@ -10,8 +10,8 @@ description:
   en: >
       SettingRow_Button: clickable action row (e.g. reset bindings) exposing an OnClick callback and clickable override.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.753Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.719Z"
 fingerprint: 2fea257bd73ae0a3975880a8925fb3520b6e2a38e4b525122e20175149e7a695
 source:
   - path: "Assets/Scripts/Runtime/GameBase/SettingRows/SettingRow_Button.cs"

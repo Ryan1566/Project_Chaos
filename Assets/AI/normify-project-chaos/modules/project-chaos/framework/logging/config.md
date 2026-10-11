@@ -10,8 +10,8 @@ description:
   en: >
       ChaosLog switches: Enabled, EnableDebug, MinLevel (Debug in editor / Warn in release), call-site and timestamp toggles.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.750Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.714Z"
 fingerprint: 9a18fb3ce66bbd1c9cbcb823f436fa9c13dd6baa63e576304feeabfb8f49c2e0
 source:
   - path: "Assets/Scripts/Runtime/GameBase/LogManager/ChaosLog.cs"

@@ -10,8 +10,8 @@ description:
   en: >
       ResManager: thin Resources.Load/LoadAsync wrapper with error logging. Note Load<GameObject> already instantiates the prefab.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.752Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.716Z"
 fingerprint: bf446302eec75ed3048abc1a327697f211cbc3adba45ceb5264a2d3e7f68191e
 source:
   - path: "Assets/Scripts/Runtime/GameBase/ResourcesLoader/ResManager.cs"

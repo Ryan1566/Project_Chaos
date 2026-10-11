@@ -10,8 +10,8 @@ description:
   en: >
       DOTween's Resources-side settings asset; DOTween.dll reads it at runtime to configure its tweener pool.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.705Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.634Z"
 fingerprint: 65df8bf060848ea58e831868273232d620a752d853ecd77e542e6dfc69881874
 source:
   - path: "Assets/Resources/DOTweenSettings.asset"

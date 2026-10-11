@@ -11,8 +11,8 @@ description:
   en: >
       ScenesLoadManager: LoadScene switches synchronously and invokes the callback; LoadSceneAsync runs through a MonoManager coroutine; BeginLoadSceneAsync returns the AsyncOperation with allowSceneActivation defaulting to false (progress tops out at 0.9, so callers must Clamp01). A null or unregistered scene returns null with an error instead of throwing.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.723Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.689Z"
 fingerprint: 734f7dbf660a8a647e04661de05ee62ad67d4040d0b6271f4b62a2d2a6e7f4f7
 source:
   - path: "Assets/Scripts/Runtime/GameBase/ScenesLoader/ScenesLoadManager.cs"

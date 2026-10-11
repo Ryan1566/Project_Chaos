@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.framework.runmap",
+  "updated_at": "2026-10-10T16:05:47.019Z",
+  "mode": "groups",
+  "max_columns": 2,
+  "reading": {
+    "zh": "按流水线顺序读：数据与种子 → 块名录（代码内置或表驱动）→ 配置表装载与读条文案 → 规划器（图→网格→选块）→ 校验器 → 编排器（重试与降级）→ 运行时装配（Pass E + 块瓦片引用 + 场景入口）。前七个是纯逻辑、可单测。",
+    "en": "Read in pipeline order: data/seed → chunk catalog (code or table) → config loader & loading text → planner (graph→grid→picking) → validator → orchestrator (retry & fallback) → runtime assembly (Pass E + chunk tile refs + scene bootstrap). The first seven are pure logic and unit-testable."
+  },
+  "order": [
+    "project-chaos.framework.runmap.data-model",
+    "project-chaos.framework.runmap.catalog",
+    "project-chaos.framework.runmap.config-loader",
+    "project-chaos.framework.runmap.loading-text",
+    "project-chaos.framework.runmap.planner",
+    "project-chaos.framework.runmap.validator",
+    "project-chaos.framework.runmap.generator",
+    "project-chaos.framework.runmap.assembler",
+    "project-chaos.framework.runmap.chunk-tiles",
+    "project-chaos.framework.runmap.bootstrap"
+  ],
+  "groups": [
+    {
+      "id": "pure",
+      "title": {
+        "zh": "纯逻辑与数据源",
+        "en": "Pure logic & data sources"
+      },
+      "children": [
+        "project-chaos.framework.runmap.data-model",
+        "project-chaos.framework.runmap.catalog",
+        "project-chaos.framework.runmap.config-loader",
+        "project-chaos.framework.runmap.loading-text",
+        "project-chaos.framework.runmap.planner"
+      ]
+    },
+    {
+      "id": "gate",
+      "title": {
+        "zh": "校验与编排",
+        "en": "Validation & orchestration"
+      },
+      "children": [
+        "project-chaos.framework.runmap.validator",
+        "project-chaos.framework.runmap.generator"
+      ]
+    },
+    {
+      "id": "runtime",
+      "title": {
+        "zh": "运行时装配与入口",
+        "en": "Runtime assembly & entry"
+      },
+      "children": [
+        "project-chaos.framework.runmap.assembler",
+        "project-chaos.framework.runmap.chunk-tiles",
+        "project-chaos.framework.runmap.bootstrap"
+      ]
+    }
+  ]
+}

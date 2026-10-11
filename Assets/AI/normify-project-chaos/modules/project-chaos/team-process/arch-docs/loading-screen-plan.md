@@ -11,8 +11,8 @@ description:
   en: >
       Landing plan for the loading screen: why an independent LoadingScene was chosen over a resident canvas, how the carousel table drives the background, progress-ceiling semantics, and the acceptance criterion revised to exactly one frame.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.794Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.745Z"
 fingerprint: 9d7d28eaaa9198849f55980b81e7305db6b9b3e4b4ab75f572dd9dbd20057788
 source:
   - path: "Assets/Chaos_Story/Story/04_架构/06_加载读条界面落地方案.md"

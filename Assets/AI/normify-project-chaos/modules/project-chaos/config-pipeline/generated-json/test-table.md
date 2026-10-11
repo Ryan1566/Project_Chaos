@@ -10,8 +10,8 @@ description:
   en: >
       Exported constant table for TestTable: four rows of Index, CharName, Occupation and head_icon. This is the artifact ConfigLoader.LoadData<TestTableConfig> reads at runtime.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.729Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.694Z"
 fingerprint: 6b36f5ea6af8be1f04d5a26f1bafcef7dee23da8e335f47bdc1124f2ddf7e60c
 source:
   - path: "Assets/Resources/Data/Json/Runtime/TestTableConfig.json"

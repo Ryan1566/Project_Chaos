@@ -10,8 +10,8 @@ description:
   en: >
       EventManager: the string-keyed event bus (add/remove/listen, trigger with or without args, clear) using C# EventHandler.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.744Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.710Z"
 fingerprint: 9854ccf84a246e351f41673ad509aba51fb3f8672672b40b8349e2d762ae9b2a
 source:
   - path: "Assets/Scripts/Runtime/GameBase/EventCenter/EventManager.cs"

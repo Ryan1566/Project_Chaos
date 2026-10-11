@@ -11,9 +11,9 @@ description:
   en: >
       The Story/ index: current directory state, per-document status, truth sources outside Story/, the shortest path to adding a config table, content that deliberately does not exist yet, open questions and TODOs.
       
-revision: 2f3bda754a8a236a3100f9cdb4239376ad8eb367
-updated_at: "2026-10-07T06:26:15.204Z"
-fingerprint: 35b5e495192a68a8185dfd805cc7146d3749142dcc34c03e4b6ca4faf6862848
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.748Z"
+fingerprint: 336e585e556341a3ecaf406695351976db1adf73480fadd0f4bac34e7cacde86
 source:
   - path: "Assets/Chaos_Story/Story/00_索引.md"
     line: 1

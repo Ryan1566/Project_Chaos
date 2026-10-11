@@ -1,15 +1,51 @@
 {
   "schema_version": 1,
   "id": "project-chaos.config-pipeline.generated-json",
-  "updated_at": "2026-10-06T12:01:21.522Z",
-  "mode": "grid",
-  "max_columns": 2,
+  "updated_at": "2026-10-11T16:01:36.069Z",
+  "mode": "groups",
+  "max_columns": 3,
   "reading": {
-    "zh": "两份 Json 结构都是 {\"datas\":[...]}：TestTable 验证多类型列，LoadingTable 验证 bool 裸小写与浮点列。它们是导出产物，不要手改。",
-    "en": "Both files share the {\"datas\":[...]} shape: TestTable exercises mixed column types, LoadingTable exercises a bare-lowercase bool and float columns. They are generated - do not hand-edit."
+    "zh": "Resources/Data/Json/Runtime 下的运行时 Json（Resources 加载不带扩展名）。本层全部是导出产物：禁止手改，改表后重跑导出。",
+    "en": "Runtime JSON under Resources/Data/Json/Runtime (loaded without extension). All files here are export output: never hand-edit; change the table and re-export instead."
   },
   "order": [
     "project-chaos.config-pipeline.generated-json.test-table",
-    "project-chaos.config-pipeline.generated-json.loading-table"
+    "project-chaos.config-pipeline.generated-json.loading-table",
+    "project-chaos.config-pipeline.generated-json.map-biome",
+    "project-chaos.config-pipeline.generated-json.map-preset",
+    "project-chaos.config-pipeline.generated-json.preset-layer",
+    "project-chaos.config-pipeline.generated-json.map-chunk",
+    "project-chaos.config-pipeline.generated-json.chunk-socket",
+    "project-chaos.config-pipeline.generated-json.chunk-slot",
+    "project-chaos.config-pipeline.generated-json.map-loading"
+  ],
+  "groups": [
+    {
+      "id": "basics",
+      "title": {
+        "zh": "示例表与读条表",
+        "en": "Smoke & loading tables"
+      },
+      "children": [
+        "project-chaos.config-pipeline.generated-json.test-table",
+        "project-chaos.config-pipeline.generated-json.loading-table"
+      ]
+    },
+    {
+      "id": "runmap",
+      "title": {
+        "zh": "地图生成表组",
+        "en": "RunMap generation set"
+      },
+      "children": [
+        "project-chaos.config-pipeline.generated-json.map-biome",
+        "project-chaos.config-pipeline.generated-json.map-preset",
+        "project-chaos.config-pipeline.generated-json.preset-layer",
+        "project-chaos.config-pipeline.generated-json.map-chunk",
+        "project-chaos.config-pipeline.generated-json.chunk-socket",
+        "project-chaos.config-pipeline.generated-json.chunk-slot",
+        "project-chaos.config-pipeline.generated-json.map-loading"
+      ]
+    }
   ]
 }

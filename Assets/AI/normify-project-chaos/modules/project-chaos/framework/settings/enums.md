@@ -10,8 +10,8 @@ description:
   en: >
       Settings option enums (window mode, frame rate, input device, gamepad model, quality, category) with InputScheme mapping helpers and SettingsLabels tables.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.756Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.721Z"
 fingerprint: d8afff3ee09f2f9b674ec3efc181e6fa496c3dfea536fa5e7612876ea2361476
 source:
   - path: "Assets/Scripts/Runtime/GameBase/SettingsManager/SettingsEnums.cs"

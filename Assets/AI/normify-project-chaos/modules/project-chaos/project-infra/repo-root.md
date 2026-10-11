@@ -10,9 +10,9 @@ description:
   en: >
       Repository-root metadata: README stub, .gitignore, .vsconfig and the generated solution file. The .csproj files here are Unity-regenerated artifacts.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:08:07.156Z"
-fingerprint: 072d4ae2ab381b18c96f8af1529caba3dd386b4c56bc2b950dbae4d8d4b8276d
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.744Z"
+fingerprint: afe46a829bbf4c9aca3aa137f7bdd526fd95e9a58e9050aac72e911299976754
 source:
   - path: "README.md"
   - path: ".gitignore"

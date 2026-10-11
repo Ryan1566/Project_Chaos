@@ -10,8 +10,8 @@ description:
   en: >
       SettingRow_Toggle: boolean setting row (e.g. vSync) with value-changed callback and silent set.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.755Z"
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.721Z"
 fingerprint: 4346772d804f5427938ce142b807362184a3b1b82584eea12da0d2e620a41a98
 source:
   - path: "Assets/Scripts/Runtime/GameBase/SettingRows/SettingRow_Toggle.cs"

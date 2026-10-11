@@ -11,9 +11,9 @@ description:
   en: >
       Locates widgets by hard-coded node names (BgImage / FadeImage / ProgressBar/Fill) under the Canvas and forces the bar to Filled/Horizontal/Left; writes 0..1 progress into fillAmount each frame. Missing nodes log an error rather than crash, degrading to a flat coloured screen.
       
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:03:05.722Z"
-fingerprint: 061eb4233455261dec94ded8289ecf3ff31bc96f8fe3d2671bc973fb81d5169a
+revision: b0eba89e88d383bc0589b06eee323cac5a625fff
+updated_at: "2026-10-11T16:04:35.688Z"
+fingerprint: 4c980c979681761cee6bfbd120faee15a1b319c392f6c9795eaa090a464c5370
 source:
   - path: "Assets/Scripts/Runtime/GameBase/ScenesLoader/LoadingController.cs"
     line: 155
