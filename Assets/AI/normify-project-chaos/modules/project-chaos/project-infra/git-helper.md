@@ -10,8 +10,8 @@ description:
   en: >
       Safe git-pull helper: inspect → see impact → confirm. Mirrored by the Unity editor window at Assets/Scripts/Editor/GitTool.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.729Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.445Z"
 fingerprint: 1613e934b478843f942246f0026a9eaf0d52f105a109d0d224df78d5319fecb3
 source:
   - path: "gittool/pull.sh"

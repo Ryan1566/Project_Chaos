@@ -1,0 +1,81 @@
+{
+    "datas": [
+        {
+            "Index": 1,
+            "Stage": 1,
+            "FactionId": 1,
+            "RegionId": 1,
+            "PointOrder": 1,
+            "X": 0.2100,
+            "Y": 0.5800,
+            "Color": "#2F3A4F",
+            "Enable": true
+        },
+        {
+            "Index": 2,
+            "Stage": 1,
+            "FactionId": 1,
+            "RegionId": 1,
+            "PointOrder": 2,
+            "X": 0.3000,
+            "Y": 0.5800,
+            "Color": "#2F3A4F",
+            "Enable": true
+        },
+        {
+            "Index": 3,
+            "Stage": 1,
+            "FactionId": 1,
+            "RegionId": 1,
+            "PointOrder": 3,
+            "X": 0.3000,
+            "Y": 0.6600,
+            "Color": "#2F3A4F",
+            "Enable": true
+        },
+        {
+            "Index": 4,
+            "Stage": 1,
+            "FactionId": 1,
+            "RegionId": 1,
+            "PointOrder": 4,
+            "X": 0.2100,
+            "Y": 0.6600,
+            "Color": "#2F3A4F",
+            "Enable": true
+        },
+        {
+            "Index": 5,
+            "Stage": 1,
+            "FactionId": 2,
+            "RegionId": 2,
+            "PointOrder": 1,
+            "X": 0.6348,
+            "Y": 0.4583,
+            "Color": "#4A6FA5",
+            "Enable": true
+        },
+        {
+            "Index": 6,
+            "Stage": 1,
+            "FactionId": 2,
+            "RegionId": 2,
+            "PointOrder": 2,
+            "X": 0.7080,
+            "Y": 0.5539,
+            "Color": "#4A6FA5",
+            "Enable": true
+        },
+        {
+            "Index": 7,
+            "Stage": 1,
+            "FactionId": 2,
+            "RegionId": 2,
+            "PointOrder": 3,
+            "X": 0.6104,
+            "Y": 0.6176,
+            "Color": "#4A6FA5",
+            "Enable": true
+        }
+    ]
+}

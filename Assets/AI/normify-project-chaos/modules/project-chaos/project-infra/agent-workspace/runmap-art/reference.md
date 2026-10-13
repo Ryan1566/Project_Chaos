@@ -11,9 +11,9 @@ description:
   en: >
       Reference material for map generation: Kenney tile source images (kenney/*.png), chunk preview renders (preview_*.png), map/loading reference screenshots (map_*, scene_*, loading_stage*, gm_to_worldscene.png), the download archive and the Kenney licence file.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.729Z"
-fingerprint: 42b89abd534c64a085d0ec6289c677211528e4355810b46b2bb8d2138d4a673b
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.445Z"
+fingerprint: ebf6eabf4d59b46061e32e48593cc1e8e4d4aa449ca706c23b226b876ef8e19f
 source:
   - path: "Assets/AI/runmap-art/KENNEY_LICENSES.md"
 apis:

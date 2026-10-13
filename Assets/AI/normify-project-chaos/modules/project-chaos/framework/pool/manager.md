@@ -10,8 +10,8 @@ description:
   en: >
       PoolManager: dictionary of named pools, GetObj reuses or loads via ResManager, PushObj returns, Clear empties. Known defect: GetObj returns null.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.716Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.428Z"
 fingerprint: f03d0c3c98a00b3fed7488a60428ce24496e6a69cde5958034233ba7098aa650
 source:
   - path: "Assets/Scripts/Runtime/GameBase/GameObjectPool/PoolManager.cs"

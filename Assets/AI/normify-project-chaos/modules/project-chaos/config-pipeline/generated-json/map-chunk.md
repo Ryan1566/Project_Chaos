@@ -11,8 +11,8 @@ description:
   en: >
       Generated runtime JSON for MapChunk (Resources path Data/Json/Runtime/MapChunkConfig, no extension). Produced by ExcelTool/ExportExcelConfigs — never hand-edit.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.692Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.401Z"
 fingerprint: 1a984da99c660afa715bc6563d02531bb9c41d9f32cfa1a5c55ed49cb7bbf607
 source:
   - path: "Assets/Resources/Data/Json/Runtime/MapChunkConfig.json"

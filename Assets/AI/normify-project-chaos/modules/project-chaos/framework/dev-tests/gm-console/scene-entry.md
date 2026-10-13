@@ -11,8 +11,8 @@ description:
   en: >
       The in-scene GM entry: the button component on GMBtn toggles the GM panel, and the GM_Canvas survives scene loads. Since 2026-10 the persistence component is the generic framework DontDestroy helper (GM/GMDontDestroy.cs no longer exists).
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.707Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.418Z"
 fingerprint: 6f4d093777e9476a73c2cffca750461c0525969e2f9c21284a73e8b2c456c0db
 source:
   - path: "Assets/Scripts/Runtime/GM/EnterGM.cs"

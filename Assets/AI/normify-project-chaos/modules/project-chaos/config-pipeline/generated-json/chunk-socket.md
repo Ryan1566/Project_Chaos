@@ -11,8 +11,8 @@ description:
   en: >
       Generated runtime JSON for ChunkSocket (Resources path Data/Json/Runtime/ChunkSocketConfig, no extension). Produced by ExcelTool/ExportExcelConfigs — never hand-edit.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.692Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.400Z"
 fingerprint: c3c07a860c433ecb77387596c2c2bf07561ad4940364476e37f3ab2c03b6d1fd
 source:
   - path: "Assets/Resources/Data/Json/Runtime/ChunkSocketConfig.json"

@@ -10,8 +10,8 @@ description:
   en: >
       Generated Config-mode class with public fields Index (uint), CharName (string), Occupation (uint) and head_icon (uint), each carrying the Chinese remark from row 3. Overwritten wholesale by every export, so never hand-edit it.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.695Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.404Z"
 fingerprint: b6432dd50d7c0091d9504af83d71180f61a8698fcd852e17714ffe1127a546cf
 source:
   - path: "Assets/Scripts/Runtime/MVP/Model/ConfigData/TestTableConfig.cs"

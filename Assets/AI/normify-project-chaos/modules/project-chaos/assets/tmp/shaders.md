@@ -10,8 +10,8 @@ description:
   en: >
       TMP shader set (15 files): SDF / bitmap / mobile variants plus shared cginc includes.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.682Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.392Z"
 fingerprint: 7f7e5c9eaf78eb17089ea733d10b6f06da8bb749dbc5dfa47cbc7c5eef4f9ce5
 source:
   - path: "Assets/TextMesh Pro/Shaders/TMP_SDF.shader"

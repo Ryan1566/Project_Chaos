@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.framework.world-map",
+  "updated_at": "2026-10-12T14:30:30.757Z",
+  "mode": "layers",
+  "reading": {
+    "zh": "先数据后表现：service 读入并按地图/时期过滤导出的 Json，runtime-model 是它返回的视图类型，faction-mask 把多边形光栅化成可显示的覆盖层，meta-provider 是将来地点表/兴趣点表接入的缝。",
+    "en": "Read data first, then presentation: the service loads and filters the generated JSON, the runtime view model is what it returns, the faction mask rasterises those polygons for display, and the meta provider is the seam where the location/POI tables will plug in later."
+  },
+  "order": [
+    "project-chaos.framework.world-map.service",
+    "project-chaos.framework.world-map.runtime-model",
+    "project-chaos.framework.world-map.faction-mask",
+    "project-chaos.framework.world-map.meta-provider"
+  ]
+}

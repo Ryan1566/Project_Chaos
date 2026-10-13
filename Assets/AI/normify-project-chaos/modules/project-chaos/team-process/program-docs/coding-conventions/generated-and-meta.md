@@ -11,8 +11,8 @@ description:
   en: >
       Generated-artifact and .meta discipline: never hand-edit ConfigData/ModelData/Json, how to add business logic instead, plus the two nested independent repos.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.750Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.467Z"
 fingerprint: 42404898d4219a742aa858eccfeec84265519f5c3be1ff022fe368b6ba0a7b26
 source:
   - path: "Assets/Chaos_Story/Story/05_程序/03_编码与协作约定.md"

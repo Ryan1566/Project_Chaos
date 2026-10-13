@@ -11,8 +11,8 @@ description:
   en: >
       Field spec for the loading-screen carousel table that drives the whole-screen background images and fade timing.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.747Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.464Z"
 fingerprint: 2db068db040b2900d9a5ba1c42d447b06aff60ef6511e16709003bd543f0217b
 source:
   - path: "Assets/Chaos_Story/Story/03_配置表设计/04_LoadingTable_字段规格.md"

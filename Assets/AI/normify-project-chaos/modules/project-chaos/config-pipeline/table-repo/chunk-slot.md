@@ -11,8 +11,8 @@ description:
   en: >
       ChunkSlot_房间块标记点表.xlsx -> ChunkSlotConfig: Id / chunkId (FK to MapChunk.Id) / slotType (1 enemy, 2 elite, 3 chest, 5 scene event, 6 camp site) / posX, posY (chunk-local metres).
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.697Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.406Z"
 fingerprint: 55b1df98c40017c3dde9bad8528b872f104de63329448c904189b4a3195fabeb
 source:
   - path: "Assets/Excel/Chaos_excel/ChunkSlot_房间块标记点表.xlsx"

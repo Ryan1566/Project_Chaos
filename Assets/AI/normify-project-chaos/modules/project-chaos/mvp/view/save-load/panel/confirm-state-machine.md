@@ -11,9 +11,9 @@ description:
   en: >
       The shared confirm overlay: create-from-empty and delete both reuse one ConfirmGroup, so a ConfirmPurpose enum records why it was opened — without it the OK callback could not tell whether to create or delete. The overlay is optional; when the prefab has no ConfirmGroup the panel degrades to acting immediately.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.725Z"
-fingerprint: 476e33b9f31278b56b525f8ffb3a6299b5e9caa0d329cae08c07e8e1ad4cacec
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.440Z"
+fingerprint: 126d11b07ddfa369cdd0aca467c1b3959945aa29c94b3f0a27c6ab81a4a92747
 source:
   - path: "Assets/Scripts/Runtime/MVP/View/SLPanel.cs"
     line: 369

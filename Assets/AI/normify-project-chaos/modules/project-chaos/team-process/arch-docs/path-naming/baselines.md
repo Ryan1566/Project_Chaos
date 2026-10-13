@@ -11,8 +11,8 @@ description:
   en: >
       Path rules part 1: the bug this spec kills, the three path bases, the GlobalPath ↔ disk mapping with a target repackaging, and resource load-path prefixes.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.746Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.463Z"
 fingerprint: cbd617d13b7bcfc29f11f2b7605f71c93a05d18ea8d42f95d57ef03ee9e1ae47
 source:
   - path: "Assets/Chaos_Story/Story/04_架构/03_路径与命名规范.md"

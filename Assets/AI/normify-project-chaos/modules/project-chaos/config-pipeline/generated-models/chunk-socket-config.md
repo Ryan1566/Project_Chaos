@@ -11,8 +11,8 @@ description:
   en: >
       Generated ChunkSocketConfig class: Id / chunkId / dir / heightProfile / socketType / posX / posY. Field meanings live in the source table module (table-repo.chunk-socket). Never hand-edit.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.694Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.402Z"
 fingerprint: c101cdb1db46b69521368a274dc2ea23924cb77d1cb70369faaf40fce9a5e489
 source:
   - path: "Assets/Scripts/Runtime/MVP/Model/ConfigData/ChunkSocketConfig.cs"

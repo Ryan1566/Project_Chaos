@@ -10,9 +10,9 @@ description:
   en: >
       Settings application: pushes applied settings into QualitySettings, AudioManager, InputManager overrides and LocalizationManager, plus option mapping helpers.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.721Z"
-fingerprint: a58af6ec57f3504b214f118edda3f6ebe55cc20e6545fda34175d3a94f17020e
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.433Z"
+fingerprint: e3c323738fad836796c9ec53e74318a84dff5000a9c6107a6b9dffb68650e3e8
 source:
   - path: "Assets/Scripts/Runtime/GameBase/SettingsManager/SettingsManager.cs"
     line: 240

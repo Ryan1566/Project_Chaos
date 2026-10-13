@@ -10,8 +10,8 @@ description:
   en: >
       Prefab side of key icons: walks panel prefabs, adds or repairs the KeyIconText plus Icon child under each key row, applies auto-size, resolves device tab icon file names, and drives batch patch/tab-icon entry points used by the window and by ForTest hooks.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.701Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.412Z"
 fingerprint: 96486d7e832cc7190baf94ca5cbad33b062a22120e8091b257d09d7d65b9a001
 source:
   - path: "Assets/Scripts/Editor/InputIcon/KeyIconMapWindow.cs"

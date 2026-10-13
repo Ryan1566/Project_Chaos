@@ -11,8 +11,8 @@ description:
   en: >
       Singleton facade over MonoController (extends SingletonBase). Its constructor creates the uniquely named "MonoController" GameObject and attaches the controller; it forwards update registration and StartCoroutine to the outside world.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.688Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.397Z"
 fingerprint: 9bb93c0997b8bd054de58b69876c6cd9b768ff9543a7f2b38acbc0e349681313
 source:
   - path: "Assets/Scripts/Runtime/GameBase/MonoTool/MonoManager.cs"

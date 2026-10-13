@@ -5,14 +5,14 @@ parent: project-chaos.framework.paths
 name: {zh: "面板类型枚举", en: "PanelType Enum"}
 description:
   zh: >
-      PanelType 面板类型枚举（主菜单/保存/设置/暂停/状态/对话/任务/读条/存档/结局/GM 等 14 项），UIManager 据此动态拼路径并实例化面板；注意 GMPanel 实际是场景对象，不走 UIManager 面板栈。
+      PanelType 面板类型枚举（追加 WorldMapPanel 后共 15 项），用于拼面板预制体路径。WorldMapPanel 即局外世界观地图主界面；只能追加，不能重排已有值。
       
   en: >
-      PanelType enum (MainMenuPanel, SettingPanel, SLPanel, ProgressPanel, GMPanel...). Drives dynamic panel path building; note GMPanel is a scene object and is not pushed through the UIManager stack.
+      PanelType enum (15 values after WorldMapPanel was appended) used to build panel prefab paths. WorldMapPanel is the meta world map screen; appending a value is safe, reordering existing ones is not.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.715Z"
-fingerprint: 88248870190a2a1d1d9a45a479a4705e60c2c0616cda96a9d6b6a1454533dbc1
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:30:54.571Z"
+fingerprint: 441dce61537755cfff6341a5f634f644068bf25833c741679ac6e97811949866
 source:
   - path: "Assets/Scripts/Runtime/Path&Type/PanelType.cs"
     line: 1

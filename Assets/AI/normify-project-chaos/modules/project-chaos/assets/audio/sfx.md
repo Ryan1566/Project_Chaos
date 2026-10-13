@@ -10,8 +10,8 @@ description:
   en: >
       The single real sound effect in the project: a cow moo, loaded from Resources/Audio/Sound.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.387Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.134Z"
 fingerprint: d72a1b37329e72fc689be8cc860e8568221a0fd5727ddfd635e4a5a9695a5ec8
 source:
   - path: "Assets/Resources/Audio/Sound/牛叫.mp3"

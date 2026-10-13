@@ -10,8 +10,8 @@ description:
   en: >
       Per-table JSON writer: walks the columns, skips server-marked and blank-marked ones, converts each cell through the type whitelist, joins key-value pairs, reshapes the flat text into a datas array, wraps it for JsonUtility, pretty-prints it, and saves as .json (Config) or .record (Data). Conversion failures are rethrown with sheet, row, column, field and type context.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.691Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.400Z"
 fingerprint: 8317ca6bb94bcacbc47c1bf98e79594b0f8559b3aa88a4c40c48d717703dcd5f
 source:
   - path: "Assets/Scripts/Runtime/GameBase/ConfigManager/Config/ConfigManager.cs"

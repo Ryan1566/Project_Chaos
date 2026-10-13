@@ -519,6 +519,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eaa1758a280fb6049bf484a7a40ca40f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  persistKey: 
 --- !u!4 &91892701
 Transform:
   m_ObjectHideFlags: 0
@@ -3986,6 +3987,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 175.24
       objectReference: {fileID: 0}
+    - target: {fileID: 4243220672308503301, guid: e973c450f03bcbd4bbd9175ad6b6a17f, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -46.570007
+      objectReference: {fileID: 0}
     - target: {fileID: 5058516459639841580, guid: e973c450f03bcbd4bbd9175ad6b6a17f, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -4113,6 +4118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eaa1758a280fb6049bf484a7a40ca40f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  persistKey: 
 --- !u!4 &1895968504
 Transform:
   m_ObjectHideFlags: 0
@@ -4286,6 +4292,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eaa1758a280fb6049bf484a7a40ca40f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  persistKey: 
 --- !u!4 &2122307391
 Transform:
   m_ObjectHideFlags: 0

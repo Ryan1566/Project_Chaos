@@ -11,8 +11,8 @@ description:
   en: >
       Doc §1–§3: overview and goals, glossary (MapLayer vs Depth), the six-step hybrid generation of Dead Cells with the Spelunky comparison and project-specific differences, and the chosen approach.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.756Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.473Z"
 fingerprint: 4e068de8cc72d20c5a6106054d10511656be94f23b535031e6678639a6b6c287
 source:
   - path: "Assets/Chaos_Story/Story/02_系统策划/01_局内地图生成系统.md"

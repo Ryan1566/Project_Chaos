@@ -11,8 +11,8 @@ description:
   en: >
       Generated MapChunkConfig class: Id / biomeId / themeKey / kind / layer / prefabPath / weight / maxCount / isUnique / enable. Field meanings live in the source table module (table-repo.map-chunk). Never hand-edit.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.694Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.403Z"
 fingerprint: 42b81644c2207e177a95433510fab232229341e20051eb8a9e513bf44aa2fbb6
 source:
   - path: "Assets/Scripts/Runtime/MVP/Model/ConfigData/MapChunkConfig.cs"

@@ -6,14 +6,14 @@ tags: [bootstrap, build, scene]
 name: {zh: "构建场景清单", en: "Build Scene List"}
 description:
   zh: >
-      ProjectSettings/EditorBuildSettings.asset：构建清单登记 3 个启用场景，顺序为 TestScene(0) → WorldScene(1) → LoadingScene(2)。进入构建的场景才有合法的 buildIndex，ScenesLoadManager 按名字加载时依赖这张表。
+      Scenes In Build：0 = EnterScene（启动/局外）、1 = WorldScene（局内）、2 = LoadingScene。TestScene 已2 026-10-12 从列表移除（文件未删）。只改变量仅改内存，必须 File/Save Project 才能落盘。
       
   en: >
-      ProjectSettings/EditorBuildSettings.asset: the build list registers three enabled scenes in the order TestScene(0) → WorldScene(1) → LoadingScene(2). Only registered scenes get a valid buildIndex, and ScenesLoadManager's name-based loading depends on this table.
+      Scenes In Build: 0 = EnterScene (boot/meta), 1 = WorldScene (run), 2 = LoadingScene. TestScene was removed from the list on 2026-10-12; the file is untouched. Changing this list only affects memory — it must be persisted with File/Save Project.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.687Z"
-fingerprint: b78b493bfeaae969400125fca71831fdb5624ed48d383588163039c9ea978847
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:30:54.570Z"
+fingerprint: da321487d55679513ca1ef611f607c8cdb919e1bae7c0d5283e6325055f605b1
 source:
   - path: "ProjectSettings/EditorBuildSettings.asset"
     line: 1

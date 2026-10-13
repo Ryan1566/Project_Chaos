@@ -11,9 +11,9 @@ description:
   en: >
       The .cs.txt snapshot copies of the RunMap implementation (thirteen under src/ plus RunMapPlaceholderPipeline.cs.txt), kept for reference only. Drift risk: these copies silently diverge from the real sources under Scripts/Runtime/GameBase/RunMap/ and Scripts/Editor/RunMapTool/.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.729Z"
-fingerprint: c08581081ad146bf09aa51fee4766e5e7bf8693b519c18bfc6ec61735089d5bf
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.445Z"
+fingerprint: d208af1697d72393a798b2ba4bb9980f6cf0c1b246dcb3f01f27575028feff65
 source:
   - path: "Assets/AI/runmap-art/src/RunMapGenerator.cs.txt"
 apis:

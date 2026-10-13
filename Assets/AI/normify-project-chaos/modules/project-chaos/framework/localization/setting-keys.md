@@ -10,8 +10,8 @@ description:
   en: >
       SettingKeys: localization keys for setting panel options (window mode, quality, trigger mode, language) and the id-to-table lookup.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.713Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.425Z"
 fingerprint: 231036b11d49330db6fec94418c31651f3bf80f54b60a6f622621348f26524d2
 source:
   - path: "Assets/Scripts/Runtime/GameBase/LocalizationManager/SettingKeys.cs"

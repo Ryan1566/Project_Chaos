@@ -10,8 +10,8 @@ description:
   en: >
       A placeholder README in the table folder that currently contains only the folder heading. The pipeline's real conventions (7-row header, 12-type whitelist, export menus) live in ConfigManager and the team process docs, not here.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.698Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.408Z"
 fingerprint: 88418ada365aa94945ac8b9cf63b5df057ca7828c10c35bbdb75d3670211f37c
 source:
   - path: "Assets/Excel/Chaos_excel/README.md"

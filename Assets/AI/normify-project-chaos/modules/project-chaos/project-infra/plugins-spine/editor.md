@@ -10,8 +10,8 @@ description:
   en: >
       Spine editor-only assembly (44 C# files): import pipeline, inspectors and menu entries. Never referenced by runtime code.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.738Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.453Z"
 fingerprint: 4868014b77eac5c5a35ae56cd35d1d7f443b3717c93559debc1505373b1c110e
 source:
   - path: "Assets/Plugins/Spine/Editor/spine-unity-editor.asmdef"

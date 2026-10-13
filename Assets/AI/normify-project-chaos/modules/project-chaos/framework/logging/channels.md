@@ -10,8 +10,8 @@ description:
   en: >
       LogChannel enum (General/Network/UI/Audio/Config/Dialogue/Localization/Input/Pool/Scene/Save/Battle/Editor) with name and color tables.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.714Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.427Z"
 fingerprint: fa1163b8f3f94ce90ba40968fb08d66c86691d38b6cd63863ab09532fc7f54bf
 source:
   - path: "Assets/Scripts/Runtime/GameBase/LogManager/LogChannel.cs"

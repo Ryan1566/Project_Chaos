@@ -10,8 +10,8 @@ description:
   en: >
       Save-file cache: the constructor lists every .record in the record folder (editor and standalone use the Assets path, packages use the built-in Records path) and reads each into a name-to-text dictionary; ForceSave rewrites those files from the cache. Also declares the IModel lifecycle contract that MVP models implement.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.696Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.406Z"
 fingerprint: a4f45a2229b4a5a8f6377de9fa5c8685696b8a5d9c964b0b8c110e062bc07823
 source:
   - path: "Assets/Scripts/Runtime/GameBase/ConfigManager/SL/Recorder.cs"

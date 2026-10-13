@@ -11,8 +11,8 @@ description:
   en: >
       Generated MapLoadingConfig class: Id / stage / sort / descCN / descTW / descEN / descJP / descKR. Field meanings live in the source table module (table-repo.map-loading). Never hand-edit.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.695Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.403Z"
 fingerprint: c9282886b92b0c7751cf1ed9ac153da972a864938b831007a12dd57c99c3a510
 source:
   - path: "Assets/Scripts/Runtime/MVP/Model/ConfigData/MapLoadingConfig.cs"

@@ -10,8 +10,8 @@ description:
   en: >
       Spine runtime (97 C# files): spine-csharp core plus spine-unity components. Citizen_001 and the example skeletons load through this assembly.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.739Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.456Z"
 fingerprint: e0357fb4d4686a0fb02f5a8cc7aa972f665c8d86eb9b8bb920e01751cd688b83
 source:
   - path: "Assets/Plugins/Spine/Runtime/spine-unity.asmdef"

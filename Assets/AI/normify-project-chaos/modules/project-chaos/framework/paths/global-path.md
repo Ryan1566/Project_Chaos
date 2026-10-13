@@ -5,13 +5,11 @@ parent: project-chaos.framework.paths
 name: {zh: "全局路径常量", en: "GlobalPath Constants"}
 description:
   zh: >
-      GlobalPath 全局常量：Resources 子路径、Excel/Json/.record 落盘路径、UI 预制体搜索路径、本地化配置路径与存档槽位常量。工程内路径定位的单一事实源。
-      
+      全局路径常量。2026-10-12 实测：data_JsonPathToRead = "Data/Json/Runtime/" 与产物目录一致，编辑器内 Resources.Load + JsonUtility 往返均成功，早先登记的“路径错位”已不可复现（见待修清单）。
   en: >
-      GlobalPath constants: Resources sub-paths, Excel/Json/record output paths, UI prefab search paths, save-slot constants. Single source of truth for paths.
-      
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.715Z"
+      Global path constants. Confirmed on 2026-10-12 that data_JsonPathToRead = "Data/Json/Runtime/" matches the generated JSON location: Resources.Load and JsonUtility round-trip were verified in the editor, so the earlier “path mismatch” defect no longer reproduces (see the defect list).
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:30:46.651Z"
 fingerprint: 75aea6f4913b39abaf2861b284bc582fdad1e18fa49931aa7ce68d15d18b2d68
 source:
   - path: "Assets/Scripts/Runtime/Path&Type/GlobalPath.cs"

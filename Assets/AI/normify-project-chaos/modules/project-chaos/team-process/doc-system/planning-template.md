@@ -11,8 +11,8 @@ description:
   en: >
       The planning-document template: three must-answer questions, the meta block and status flow, and the section skeleton a planning doc must follow.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.748Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.465Z"
 fingerprint: c1cd9f677ccfd0643e5ccd45c039b41783864b4bbe3f35473ec3084fc0bbdcc5
 source:
   - path: "Assets/Chaos_Story/Story/01_企划/00_企划文档模板.md"

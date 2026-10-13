@@ -10,8 +10,8 @@ description:
   en: >
       Preview panel rendering: draws world bounds and the panel frame, renders root canvases into a RenderTexture through a normal camera (PreviewRenderUtility cannot see scene canvases), switches overlay canvases to a probe camera, suppresses non-UI renderers, and temporarily activates inactive panels before restoring them.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.705Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.415Z"
 fingerprint: 9aaebbddb0f3dd27a279c563d1b8952bbdcffe7c594e2baeb5a3b6b8cac08707
 source:
   - path: "Assets/Scripts/Editor/SceneUIOverviewTool/SceneUIOverviewTool.cs"

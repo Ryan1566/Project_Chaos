@@ -1,0 +1,64 @@
+{
+    "datas": [
+        {
+            "Index": 1,
+            "MapId": 1,
+            "Kind": 1,
+            "Type": 1,
+            "RefId": 1001,
+            "X": 0.1953,
+            "Y": 0.8088,
+            "Scale": 1.0000,
+            "Layer": 0,
+            "Enable": true
+        },
+        {
+            "Index": 2,
+            "MapId": 1,
+            "Kind": 1,
+            "Type": 1,
+            "RefId": 1002,
+            "X": 0.5120,
+            "Y": 0.6099,
+            "Scale": 1.0000,
+            "Layer": 0,
+            "Enable": true
+        },
+        {
+            "Index": 3,
+            "MapId": 1,
+            "Kind": 2,
+            "Type": 2,
+            "RefId": 2001,
+            "X": 0.2449,
+            "Y": 0.7801,
+            "Scale": 0.8000,
+            "Layer": 1,
+            "Enable": true
+        },
+        {
+            "Index": 4,
+            "MapId": 1,
+            "Kind": 1,
+            "Type": 3,
+            "RefId": 1003,
+            "X": 0.7324,
+            "Y": 0.3627,
+            "Scale": 1.0000,
+            "Layer": 0,
+            "Enable": true
+        },
+        {
+            "Index": 5,
+            "MapId": 1,
+            "Kind": 2,
+            "Type": 2,
+            "RefId": 2002,
+            "X": 0.3662,
+            "Y": 0.2033,
+            "Scale": 1.0000,
+            "Layer": 2,
+            "Enable": true
+        }
+    ]
+}

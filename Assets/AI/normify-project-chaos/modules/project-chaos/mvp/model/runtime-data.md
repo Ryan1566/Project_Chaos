@@ -11,8 +11,8 @@ description:
   en: >
       Dialogue runtime data in namespace DialogueSystem: five [Serializable] DTOs (runtime dialogue, character, entry, option, event) that mirror what the dialogue editor would export at runtime. Note: nothing in the project currently constructs or consumes these types — the file is self-contained.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.724Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.439Z"
 fingerprint: cef391333c6c0ca9b5d9a5849cc92a6bc60030ff8c36404835e5f75e23a3f6e3
 source:
   - path: "Assets/Scripts/Runtime/MVP/Model/DialogueRuntimeData.cs"

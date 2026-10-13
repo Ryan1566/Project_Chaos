@@ -10,8 +10,8 @@ description:
   en: >
       Sub-configs are split per module under Assets/Data/Localization/Sub_LD while runtime reads a single table: this tool rebuilds ChaosLocalizationConfig.asset from scratch (clears old entries, rewrites everything, idempotent, no orphans). The window lists per-file entry counts and warnings.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.704Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.414Z"
 fingerprint: bc4e06cf1c36cd8de541805d94af37446d858631e5bb2746db6196a0657e7f24
 source:
   - path: "Assets/Scripts/Editor/LocalizationEditor/LocalizationMerger.cs"

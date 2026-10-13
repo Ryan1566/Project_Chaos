@@ -10,8 +10,8 @@ description:
   en: >
       Assigns a TMP font asset per language and checks coverage: probes per-language characters, reports missing glyphs, then patches UI prefabs in bulk. Note LanguageFontMap.asset lives under Assets/Data (not Resources), so runtime only reaches it through component references.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.704Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.413Z"
 fingerprint: 0d4e42ca459326da79fb1c10d835b5a9207048081e7fa9c435f1e4d38bf4a2b1
 source:
   - path: "Assets/Scripts/Editor/LocalizationEditor/LanguageFontMapWindow.cs"

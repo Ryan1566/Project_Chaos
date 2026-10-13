@@ -11,8 +11,8 @@ description:
   en: >
       Config-pipeline record part 3: the celebrated config-read path mismatch — method, raw output, conclusion, failure chain and temporary workaround — plus the ConfigLoader/Recorder overlap.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.752Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.468Z"
 fingerprint: a0e526ba94b8397d1c104025e5bf8a5693676d6b8749b6b7e58b4037cf6dfc1a
 source:
   - path: "Assets/Chaos_Story/Story/05_程序/02_配置表管线记录.md"

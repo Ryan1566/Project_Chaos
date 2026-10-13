@@ -6,14 +6,14 @@ tags: [bootstrap, scene, startup]
 name: {zh: "启动测试场景", en: "Test Scene"}
 description:
   zh: >
-      TestScene.unity：构建清单第 0 项（启动场景），场景里挂 Entry 触发 UI/输入/设置的初始化。也是本工程唯一实际跑得起来的入口场景。
+      旧的测试场景；2026-10-12 起已从 Build Settings 移除（index 0 由 EnterScene 接替），但场景文件保留。
       
   en: >
-      TestScene.unity: build-list entry 0 (the startup scene). It hosts Entry, which triggers UI, input and settings initialisation. It is also the only entry scene that actually runs in this project.
+      Legacy test scene; as of 2026-10-12 it is no longer in Build Settings (EnterScene replaced it at index 0) but the file is kept on disk.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.690Z"
-fingerprint: a2d5886d11508f3b4c9b1fd6b707ac089dbe7cc5a3378f2994e154a88172aa31
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:30:54.571Z"
+fingerprint: 839cf8a5476d18a9f696b79227e2f58b5f45c0e88202a21d86a012a4f0ce8a45
 source:
   - path: "Assets/Scenes/TestScene.unity"
     line: 1

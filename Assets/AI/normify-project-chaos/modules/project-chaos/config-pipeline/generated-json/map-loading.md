@@ -11,8 +11,8 @@ description:
   en: >
       Generated runtime JSON for MapLoading (Resources path Data/Json/Runtime/MapLoadingConfig, no extension). Drives the loading-screen stage captions during runmap generation — never hand-edit.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.693Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.401Z"
 fingerprint: e40515a887a2e680a1ea1d6cd34423772e18770d114cce6d9d4b306e7a60e859
 source:
   - path: "Assets/Resources/Data/Json/Runtime/MapLoadingConfig.json"

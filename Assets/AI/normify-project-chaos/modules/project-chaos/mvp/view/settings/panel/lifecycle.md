@@ -11,8 +11,8 @@ description:
   en: >
       SettingPanel lifecycle and tab switching: OnEnter opens an edit session, OnExit deals with unapplied edits, and ShowCategory always activates the page before calling EnsureBound (reversing that order binds silently-nothing because Awake has not run yet).
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.728Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.444Z"
 fingerprint: f6e00a704a92904810632d475db69fb4c2a10cbaf9072f1b9a5976923e8002f3
 source:
   - path: "Assets/Scripts/Runtime/MVP/View/SettingPanel.cs"

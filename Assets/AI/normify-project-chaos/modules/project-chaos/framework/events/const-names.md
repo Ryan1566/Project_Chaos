@@ -10,9 +10,9 @@ description:
   en: >
       EventConstName: string constants for the event bus (key up/down, save/load settings, scene load progress). Several legacy names are commented out.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.709Z"
-fingerprint: 2196b124f730c1f8749ef8668b8924f2bc3d413664cbd24eda8d6754eafed00e
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.421Z"
+fingerprint: b0c7b3042692c51b557ffea6b3e5a9ed8c36ecde05908d8a50ca0a1cfed4e3de
 source:
   - path: "Assets/Scripts/Runtime/GameBase/EventCenter/EventConstName.cs"
     line: 1

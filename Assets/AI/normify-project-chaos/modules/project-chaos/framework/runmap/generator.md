@@ -11,9 +11,9 @@ description:
   en: >
       Orchestrator: retries with derived seeds, validates each attempt, and falls back to a guaranteed-playable chained layout when retries run out; also drives a full three-scene run.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.717Z"
-fingerprint: c1f80a3341f952401ab6c60d89a8ac1d1ae3bd9c5f1badb59ee28264de4db16b
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.429Z"
+fingerprint: 04189848655d30f0e2e13c49cc3f1fdc9480bade71357e1030a185c9b330ed86
 source:
   - path: "Assets/Scripts/Runtime/GameBase/RunMap/RunMapGenerator.cs"
     line: 1

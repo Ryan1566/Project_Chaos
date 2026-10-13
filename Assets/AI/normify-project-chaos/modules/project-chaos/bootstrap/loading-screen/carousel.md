@@ -11,9 +11,9 @@ description:
   en: >
       Reads LoadingTableConfig, filters on enable and sorts by sort, then loads every carousel sprite in one Resources.LoadAsync pass. Each entry holds and fades for its own showSeconds/fadeSeconds. Missing or failed sprites still count toward the progress denominator — otherwise assetsReady never reaches 1 and the bar deadlocks just short of 100%.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.687Z"
-fingerprint: 4c980c979681761cee6bfbd120faee15a1b319c392f6c9795eaa090a464c5370
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.395Z"
+fingerprint: 69a4a1bd4f73b2dedecbe57dd419556d295a3c3480ce4cb7287c141697c1b224
 source:
   - path: "Assets/Scripts/Runtime/GameBase/ScenesLoader/LoadingController.cs"
     line: 402

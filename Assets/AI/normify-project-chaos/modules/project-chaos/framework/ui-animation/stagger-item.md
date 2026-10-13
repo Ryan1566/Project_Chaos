@@ -10,8 +10,8 @@ description:
   en: >
       UIPanelStaggerItem: optional marker placed on children that should participate in staggered entrance with a custom order.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.723Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.435Z"
 fingerprint: 53e965d82b557323d141625d7f08c183cb8c4a694a74fbca947c6c3ebf7605cf
 source:
   - path: "Assets/Scripts/Runtime/GameBase/UIManager/UIPanelStaggerItem.cs"

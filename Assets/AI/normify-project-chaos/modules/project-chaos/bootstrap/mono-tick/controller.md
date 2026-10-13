@@ -11,8 +11,8 @@ description:
   en: >
       The actual MonoBehaviour on a GameObject: fans out updateEvent every Update and marks its host DontDestroyOnLoad so subscribers survive scene switches.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.688Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.397Z"
 fingerprint: 2a9d77d41b667e893ee9e634a008fe3c44b2c9b7efc778e3a0ba8c126ed04683
 source:
   - path: "Assets/Scripts/Runtime/GameBase/MonoTool/MonoController.cs"

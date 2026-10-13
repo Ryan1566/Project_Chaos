@@ -6,14 +6,14 @@ tags: [mvp, ui, save]
 name: {zh: "三个业务动作", en: "Business Actions"}
 description:
   zh: >
-      三个业务动作：空档位新建、读取档位（写 GameSession 后切到 LoadingScene，回调必须传非空委托——LoadScene 会无条件调 action()，传 null 必 NRE）、删除选中档位。落盘统一走 SaveSlotService。
+      三个业务动作：空档位新建、读取档位、删除选中档位。自 2026-10-12 起，读档/新档改为 GameSession.Begin(slot, payload, null) + UIManager.SetRootPanel(WorldMapPanel)，不再切 LoadingScene/WorldScene——读档进的是局外，不再生成局内地图。
       
   en: >
-      The three save actions: create a new save in an empty slot, load a slot (write GameSession, then switch to LoadingScene with a non-null delegate — LoadScene invokes the callback unconditionally, so passing null would NRE), and delete the selected slot. All persistence goes through SaveSlotService.
+      The three save actions: create a new save in an empty slot, load a slot, delete the selected slot. Since 2026-10-12 loading or creating a save writes GameSession.Begin(slot, payload, null) and then UIManager.SetRootPanel(WorldMapPanel) — it no longer switches to LoadingScene/WorldScene, so reading a save enters the meta layer instead of generating the run map.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.725Z"
-fingerprint: 476e33b9f31278b56b525f8ffb3a6299b5e9caa0d329cae08c07e8e1ad4cacec
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:30:54.571Z"
+fingerprint: 126d11b07ddfa369cdd0aca467c1b3959945aa29c94b3f0a27c6ab81a4a92747
 source:
   - path: "Assets/Scripts/Runtime/MVP/View/SLPanel.cs"
     line: 451

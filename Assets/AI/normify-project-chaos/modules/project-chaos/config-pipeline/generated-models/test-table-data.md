@@ -10,8 +10,8 @@ description:
   en: >
       Generated Data-mode class (TestTableData) written into MVP/Model/ModelData: same fields as the config class but explicitly marked as the persistence shape for TestTableModel and the Recorder cache.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.695Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.404Z"
 fingerprint: 38f1fb0151d108bc22ead0da9c46b48ece90baf5dbca7af42cf896993f611fde
 source:
   - path: "Assets/Scripts/Runtime/MVP/Model/ModelData/TestTableData.cs"

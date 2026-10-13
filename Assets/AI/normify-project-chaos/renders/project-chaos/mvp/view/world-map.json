@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.mvp.view.world-map",
+  "updated_at": "2026-10-12T14:30:30.995Z",
+  "mode": "grid",
+  "reading": {
+    "zh": "同一块界面的两面：panel 脚本管行为（取当前时期、图标复用、点击信息、底部按钮），prefab 是 UIManager 按 PanelType 名实例化的冻结层级。",
+    "en": "Two sides of the same screen: the panel script owns behaviour (era lookup, icon pooling, click info, bottom buttons) and the prefab owns the frozen hierarchy that UIManager instantiates by PanelType name."
+  },
+  "order": [
+    "project-chaos.mvp.view.world-map.panel",
+    "project-chaos.mvp.view.world-map.prefab"
+  ]
+}

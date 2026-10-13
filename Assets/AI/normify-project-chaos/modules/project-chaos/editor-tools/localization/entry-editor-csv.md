@@ -10,8 +10,8 @@ description:
   en: >
       Exports and imports localization CSV with the fixed 7-column header (Key, Description, zh-Hans, zh-Hant, English, Japanese, Korean): quote escaping, per-line parsing, and updating or adding entries by key. The default export folder is Assets/Excel/Chaos_localization_excel.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.703Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.413Z"
 fingerprint: f632328e9b94a45e950b53ac46275b6cce6123211b4d3c7a24f45471997cfe6b
 source:
   - path: "Assets/Scripts/Editor/LocalizationEditor/LocalizationEditorWindow.cs"

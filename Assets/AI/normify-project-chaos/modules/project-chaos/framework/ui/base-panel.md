@@ -10,8 +10,8 @@ description:
   en: >
       BasePanel base class: OnEnter/OnExit hooks, Show/Hide with optional animation, and the cached Animator property.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.724Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.436Z"
 fingerprint: 6f86e6829ce665ae2883c79887db6160eb8f54948fc32f05bb7e05e338fa659a
 source:
   - path: "Assets/Scripts/Runtime/GameBase/UIManager/BasePanel.cs"

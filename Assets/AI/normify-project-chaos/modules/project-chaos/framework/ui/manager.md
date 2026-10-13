@@ -5,14 +5,14 @@ parent: project-chaos.framework.ui
 name: {zh: "UIManager 面板栈", en: "UIManager Panel Stack"}
 description:
   zh: >
-      UIManager 面板栈管理：按名字找 Canvas、按 PanelType 动态实例化面板、Push/Pop 栈式显隐、实例缓存复用。注意缓存导致 OnEnter 会多次触发。
+      面板实例字典 + 显示堆栈，靠静态单例跨场景存活。SetRootPanel(type) 先把栈内面板全部 Hide 并清栈再 Push 目标，这就是“存档面板被局外主界面替换、而不是叠在主菜单之上”的实现。
       
   en: >
-      UIManager: finds Canvas by name, instantiates panels by PanelType, keeps a panel stack with push/pop, and caches instances for reuse.
+      Panel instance dictionary + display stack, with cross-scene survival via a static singleton. SetRootPanel(type) hides and clears the whole stack before pushing the target, which is how the save panel is replaced by the meta main screen instead of stacking on top of the main menu.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.724Z"
-fingerprint: ca79a1693ec313648593b4857b97bbb57739fd0dcc17ad458506762f333c53ce
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:30:54.571Z"
+fingerprint: 13074b92b36a513a35110fc39143849d39bc7055774b148f84049fd06d6b60b8
 source:
   - path: "Assets/Scripts/Runtime/GameBase/UIManager/UIManager.cs"
     line: 1

@@ -10,8 +10,8 @@ description:
   en: >
       LogBuilder terminals: Emit plus per-level shortcuts that finish the chain and print the line. Emit calls back into ChaosLog.Emit (reverse edge omitted to keep the graph acyclic).
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.714Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.426Z"
 fingerprint: 6773abdfb8e4707eedb70b2374848144684d79756d69fda72304e0f8cad10558
 source:
   - path: "Assets/Scripts/Runtime/GameBase/LogManager/LogBuilder.cs"

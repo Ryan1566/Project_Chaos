@@ -11,9 +11,9 @@ description:
   en: >
       Chunk and preset registry: pools by theme/layer/kind, per-layer theme resolution, and run-level preset allocation that guarantees the three layers appear across a run.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.716Z"
-fingerprint: d3e9f8774b995c41006104a9ba36adc666e92eaece7a6cc00eed878ea7b880ac
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.429Z"
+fingerprint: fd13e1d3304f665e43f658f2e563a142739006741ada7cd4d222e0b927d8fa81
 source:
   - path: "Assets/Scripts/Runtime/GameBase/RunMap/RunMapCatalog.cs"
     line: 1

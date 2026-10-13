@@ -113,6 +113,9 @@ public class GMPanel : MonoBehaviour
     /// <summary>读条场景名（GM 跳转用；与 SLPanel 用的是同一个）。</summary>
     private const string RunMapLoadingScene = "LoadingScene";
 
+    /// <summary>局外（世界观地图）所在的常驻场景；GM 的【返回局外】用它。</summary>
+    private const string ReturnWorldMapScene = "EnterScene";
+
     private GmCategory[] _categories;
 
     private Transform _mainList;
@@ -185,6 +188,7 @@ public class GMPanel : MonoBehaviour
                 new GmSection("主菜单面板", page => AttachTestEntry(page, "显示 / 隐藏主菜单")),
                 new GmSection("设置面板", page => AddPanelButton(page, "打开设置面板", PanelType.SettingPanel)),
                 new GmSection("存档面板", page => AddPanelButton(page, "打开存档面板", PanelType.SLPanel)),
+                new GmSection("返回局外", page => AddActionButton(page, "返回局外（→ EnterScene）", ReturnToWorldMap)),
             }),
 
             new GmCategory("系统", new[]
@@ -532,6 +536,28 @@ public class GMPanel : MonoBehaviour
 
         // 读条场景是"单开切换"，而 GM 面板是 DontDestroyOnLoad 的：不收掉就会盖在地图上，看不清实图
         SetRunMapStatus("按种子 " + seed + " 走读条流程进入 " + RunMapWorldScene + "（生成阶段文案会显示在读条上）…");
+        ClosePanel();
+        ScenesLoadManager.Instance.LoadScene(RunMapLoadingScene, () => { });
+    }
+
+    /// <summary>
+    /// GM 页：返回局外主界面（`EnterScene`）。
+    ///
+    /// 与"局内生成"走同一条链路：设目标场景 → 收掉 GM 面板 → 切到读条场景；
+    /// 读条结束后 `Entry` 按 `GameSession.HasSession` 把根面板设成局外主界面。
+    /// </summary>
+    private void ReturnToWorldMap()
+    {
+        if (GameSession.Instance == null)
+        {
+            ChaosLog.Error(LogChannel.UI, "GameSession 不存在，无法返回局外");
+            return;
+        }
+
+        GameSession.Instance.SetTargetScene(ReturnWorldMapScene);
+        ChaosLog.Info(LogChannel.UI, "[GM/返回局外] 目标场景 " + ReturnWorldMapScene + "，走读条切换");
+
+        //与 GM 生成地图同理：GM 面板是常驻的，不收掉会盖在局外 UI 上
         ClosePanel();
         ScenesLoadManager.Instance.LoadScene(RunMapLoadingScene, () => { });
     }

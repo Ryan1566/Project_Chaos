@@ -11,8 +11,8 @@ description:
   en: >
       Filling rules part 1: the 30-second cheat sheet, file/naming rules, the hard-coded 7-row header, and the type whitelist (12 types plus how to add one).
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.747Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.464Z"
 fingerprint: 07bd4d2652e6e95edc0d28bc73fe7dc565c1f57a6fbe7f68825d59e904eb6cd3
 source:
   - path: "Assets/Chaos_Story/Story/03_配置表设计/01_配置表填写规范.md"

@@ -11,8 +11,8 @@ description:
   en: >
       Generated runtime JSON for ChunkSlot (Resources path Data/Json/Runtime/ChunkSlotConfig, no extension). Produced by ExcelTool/ExportExcelConfigs — never hand-edit.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.692Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.400Z"
 fingerprint: 558d90a7f18d83565a6cfc080abfa8bc8f1b4b6b5dbe8ff29c6984b919948c6c
 source:
   - path: "Assets/Resources/Data/Json/Runtime/ChunkSlotConfig.json"

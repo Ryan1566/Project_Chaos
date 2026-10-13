@@ -11,9 +11,9 @@ description:
   en: >
       Assets/TileMap/Kenney/** and Assets/Resources/Prefabs/RunMap/Kenney/** - the CC0 Kenney (Platformer Art) skin for in-run maps: 7 tiles plus one RuleTile (5 rules) per layer theme and 6 room-chunk kinds with sockets, spawn slots, camera bounds and colliders. Chunks follow Chunk_{layer}_{type} (layer Surface/Building/Underground; type Entry/Corridor/Combat/DeadEnd/BossGate/LayerLink_Stair; 18 total), used by framework.runmap. License: Assets/AI/runmap-art/KENNEY_LICENSES.md.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.656Z"
-fingerprint: 47f13a0d6c892a5e03eefdb9aea5dd515b53df18107704a3a1368b2573028788
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.372Z"
+fingerprint: e273747de21e0fbf25cf7de190cc3c66653c86314ef9ab8edfb7db3752f91672
 source:
   - path: "Assets/TileMap/Kenney/Surface/Tile_Top.asset"
     line: 1

@@ -10,8 +10,8 @@ description:
   en: >
       Pipeline manuals describing the Excel config-table tool and the MVP/config data-layer split.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.730Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.446Z"
 fingerprint: cd0069f5977f5066a0600918a8cfc16a0e135d80289479ced1fbce150bf7fc84
 source:
   - path: "Assets/Learn/Excel配置表工具使用说明.docx"

@@ -10,8 +10,8 @@ description:
   en: >
       Generates the C# container class: prepends using System and [Serializable], names the class file-name plus mode, then emits one public field per column, copying row 6 text verbatim as the field type and row 3 as the trailing comment. Columns marked server in row 5 are dropped entirely.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.691Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.399Z"
 fingerprint: 8317ca6bb94bcacbc47c1bf98e79594b0f8559b3aa88a4c40c48d717703dcd5f
 source:
   - path: "Assets/Scripts/Runtime/GameBase/ConfigManager/Config/ConfigManager.cs"

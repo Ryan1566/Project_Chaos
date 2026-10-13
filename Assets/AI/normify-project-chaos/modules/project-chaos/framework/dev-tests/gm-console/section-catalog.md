@@ -6,14 +6,12 @@ tags: [dev-tool, ui]
 name: {zh: "GM 功能清单与页面生成", en: "GM Catalog and Page Building"}
 description:
   zh: >
-      GM 面板的功能清单与控件工厂：分类→版块的静态表（界面 / 系统 / 道具），以及页面控件生成（动作按钮、提示文本、按钮外观）。加一个新测试功能只需要往这张表里加一条 GmSection，场景不用动；语言切换、打开设置/存档面板这类动作都定义在这里。
-      
+      GM 面板的调试板块/动作清单。2026-10-12 新增“返回局外”项（SetTargetScene("EnterScene") + LoadingScene）——在读档不再切场景之后，它是局内返回局外层的最小入口。
   en: >
-      GM panel catalog and widget factory: the static category-to-section table (UI / System / Items) plus page builders (action buttons, hint text, button styling). Adding a new test feature is one GmSection entry; no scene edits. Panel-opening and language-switch actions are defined here.
-      
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.707Z"
-fingerprint: 07ceed9bdb9694deba7f828640afcba72d609509c58db0db64b7f17bdc5dc472
+      GM panel catalogue of debug sections/actions. 2026-10-12 added a “return to meta” entry (SetTargetScene("EnterScene") + LoadingScene) — with the save panel no longer switching scenes, this GM item is the minimal in-run way back to the meta layer.
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:30:46.651Z"
+fingerprint: 46e9c0ef06a72b1823d6d594fe13c9a5037cee8e8cff5714cae42caeab8a3bce
 source:
   - path: "Assets/Scripts/Runtime/GM/GMPanel.cs"
     line: 161

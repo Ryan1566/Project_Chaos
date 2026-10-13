@@ -6,14 +6,14 @@ tags: [bootstrap, scene]
 name: {zh: "进入场景", en: "Enter Scene"}
 description:
   zh: >
-      EnterScene.unity：早期版本的进入场景，当前没有任何本工程脚本挂载，也未被 EditorBuildSettings 登记（构建清单只含 TestScene/WorldScene/LoadingScene）。属于保留资产。
+      EnterScene 是启动场景（Build Settings index 0），也是整个局外层的宿主：UIRoot（Canvas + 各面板 + GM_Canvas）、CameraRoot、Managers（GameManager/Entry、LocalizationManager、AudioManager）都挂幂等 DontDestroy 守卫，从局内返回时不会重复生成。
       
   en: >
-      EnterScene.unity: an early entry scene. No project script is attached to it and it is not registered in EditorBuildSettings (the build list only holds TestScene, WorldScene and LoadingScene). Kept as a spare asset.
+      EnterScene is the boot scene (Build Settings index 0) and the host of the whole meta layer: UIRoot (Canvas with the panel prefab instances plus GM_Canvas), CameraRoot and Managers (GameManager with Entry, LocalizationManager, AudioManager) all carry the idempotent DontDestroy guard so that returning from a run does not duplicate them.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.689Z"
-fingerprint: 5a56f5dfcd18e075ff4590802c5e4b3b38f413e5c553930f6a9696cc8677ebed
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:30:54.570Z"
+fingerprint: 44e298ce80946d527efd8c7ff3ed077a26bdf2f9bfcf56b3c2dd49dc7256c37d
 source:
   - path: "Assets/Scenes/EnterScene.unity"
     line: 1

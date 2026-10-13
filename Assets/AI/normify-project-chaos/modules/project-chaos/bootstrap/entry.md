@@ -6,14 +6,14 @@ tags: [bootstrap, startup]
 name: {zh: "启动入口", en: "Entry Point"}
 description:
   zh: >
-      Entry 入口脚本：TestScene 启动时按固定次序初始化 UIManager → InputManager → SettingsManager。顺序不可随意调换——输入动作表必须先于 SettingsManager 加载，否则存档里的按键绑定没有可覆盖的对象。
+      Entry 只做一次 UIManager → InputManager → SettingsManager 初始化（static _booted）并路由首屏。从局内重进 EnterScene 不得重复初始化；由于 Entry 挂在会被 DontDestroy 守卫销毁的常驻 Managers 子树下，二次路由挂在静态 SceneManager.sceneLoaded 回调上（幂等，Start 兼底）。
       
   en: >
-      The Entry script: on TestScene start it initialises UIManager → InputManager → SettingsManager in a fixed order. The order is not arbitrary — the input action asset must load before SettingsManager, otherwise stored keybindings have nothing to apply to.
+      Entry initialises UIManager → InputManager → SettingsManager once (static _booted) and routes the first screen. Re-entering EnterScene from a run must NOT re-initialise the managers; because Entry lives under the persistent Managers root that gets destroyed by the DontDestroy guard, the re-entry routing hangs off a static SceneManager.sceneLoaded callback (idempotent, with Start as fallback).
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.687Z"
-fingerprint: 30885a88f7753cadbd0bd32f8bd335897311348ed2e6c70b3991939de3a50548
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:30:54.570Z"
+fingerprint: 3d68c80f982a946dc44dd088b3541d384d93004c6d0a7ccb8df372f5936bcea2
 source:
   - path: "Assets/Scripts/Runtime/Entry.cs"
     line: 5

@@ -153,6 +153,43 @@ public class UIManager : SingletonBase<UIManager>
     /// 实例化对应的ui
     /// </summary>
     /// <param name="panelType"></param>
+    /// <summary>
+    /// **替换根面板**：把当前堆栈里的所有面板退场并清空堆栈，再把目标面板压成新的根。
+    ///
+    /// ══════════════ 为什么需要它 ══════════════
+    /// `PushPanel` 是"叠加"语义（新的压旧的）。而「主菜单 → 读档 → 局外主界面」是**替换**语义 ——
+    /// 只 Push 的话，局外界面底下会留着主菜单/存档面板，玩家按返回会**露出主菜单**，
+    /// 而且 `panelStack` 会越堆越深。
+    ///
+    /// ⚠ `PushPanel` / `PopPanel` 的语义**未改动**：这里只是在它们之上组合出替换语义，
+    /// 并且是**幂等**的（目标已是栈顶时 `PushPanel` 会自行提前返回），
+    /// 所以即使 `Entry` 的两条路由路径都跑到，也不会压出两层。
+    /// </summary>
+    public BasePanel SetRootPanel(PanelType panelType)
+    {
+        //先把现有面板全部退场并清空堆栈。
+        //从栈底往栈顶处理：SetAsLastSibling 之后栈顶那份的 sibling 最靠后，
+        //退场动画不会被下层挡掉（与 PopPanel 里"退场面板必须在下面那个之上"同一口径）。
+        BasePanel[] old = panelStack.ToArray();//[栈顶 ... 栈底]
+        panelStack.Clear();
+
+        for (int i = old.Length - 1; i >= 0; i--)
+        {
+            if (old[i] == null) continue;
+            old[i].transform.SetAsLastSibling();
+            old[i].Hide();
+        }
+
+        //栈已空 → PushPanel 不会误把旧栈顶当成"当前顶部"
+        BasePanel panel = PushPanel(panelType);
+
+        if (panel == null)
+        {
+            ChaosLog.Error($"[UIManager] SetRootPanel({panelType}) 失败：面板没能生成（预制体缺失？）");
+        }
+        return panel;
+    }
+
     public BasePanel SpawnPanel(PanelType panelType)//实例化生成ui
     {
         // 同一类型已经有活着的实例就直接复用。SpawnPanel 是公开的，直接调用它会把

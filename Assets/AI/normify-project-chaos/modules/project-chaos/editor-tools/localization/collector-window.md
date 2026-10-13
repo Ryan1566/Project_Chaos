@@ -10,8 +10,8 @@ description:
   en: >
       Collector window shell and data model: search-path section, target-config section, result list and item rows, selection/clear action bar; TextItem records the text source (prefab/scene), hierarchy path, raw text and already-exists flags. Silent mode logs instead of showing modal dialogs.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.702Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.412Z"
 fingerprint: f5eec2e75e4438251b6820a84dcc122eb620e15be08a7dc2759b088c2ce3045e
 source:
   - path: "Assets/Scripts/Editor/LocalizationEditor/PrefabTextCollectorWindow.cs"

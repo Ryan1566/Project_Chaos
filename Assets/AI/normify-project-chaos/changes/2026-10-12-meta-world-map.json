@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "id": "2026-10-12-meta-world-map",
+  "title": {
+    "en": "Meta world map: authoring tool + config tables + runtime panel + save-load into the meta layer",
+    "zh": "局外世界观地图：绘制工具 + 配置表 + 运行时面板 + 读档进局外"
+  },
+  "status": "verified",
+  "intent": {
+    "en": "After loading a save the game must enter the meta layer instead of generating the run map. First meta feature: the world map — fixed locations, POIs and faction areas are authored in an editor tool that exports xlsx (header identical to the existing config tables), converted to JSON by the existing ExcelTool/ExportExcelConfigs pipeline and rendered by WorldMapPanel (UI minimap).",
+    "zh": "读档后进入局外（不再生成局内场景）；局外先落地世界观地图：固定地点/兴趣点/势力范围由编辑器绘制工具产出 xlsx（表头与现有配置表一致），经 ExcelTool/ExportExcelConfigs 转 Json 供 WorldMapPanel 读取显示。"
+  },
+  "modules": {
+    "create": [
+      "project-chaos.editor-tools.worldmap-tool",
+      "project-chaos.editor-tools.worldmap-tool.window",
+      "project-chaos.editor-tools.worldmap-tool.draft-store",
+      "project-chaos.editor-tools.worldmap-tool.geometry",
+      "project-chaos.editor-tools.worldmap-tool.validator",
+      "project-chaos.editor-tools.worldmap-tool.xlsx-exporter",
+      "project-chaos.config-pipeline.table-repo.world-map",
+      "project-chaos.config-pipeline.table-repo.world-faction",
+      "project-chaos.config-pipeline.table-repo.worldmap-tool-workspace",
+      "project-chaos.config-pipeline.generated-json.world-map",
+      "project-chaos.config-pipeline.generated-json.world-faction",
+      "project-chaos.config-pipeline.generated-models.world-map-config",
+      "project-chaos.config-pipeline.generated-models.world-faction-config",
+      "project-chaos.framework.world-map",
+      "project-chaos.framework.world-map.service",
+      "project-chaos.framework.world-map.faction-mask",
+      "project-chaos.framework.world-map.meta-provider",
+      "project-chaos.framework.world-map.runtime-model",
+      "project-chaos.mvp.view.world-map",
+      "project-chaos.mvp.view.world-map.panel",
+      "project-chaos.mvp.view.world-map.prefab"
+    ],
+    "modify": [
+      "project-chaos.bootstrap.entry",
+      "project-chaos.bootstrap.build-settings",
+      "project-chaos.bootstrap.scenes.enter-scene",
+      "project-chaos.bootstrap.scenes.test-scene",
+      "project-chaos.framework.dont-destroy",
+      "project-chaos.framework.ui.manager",
+      "project-chaos.framework.paths.panel-type",
+      "project-chaos.mvp.view.save-load.panel.business-actions",
+      "project-chaos.framework.dev-tests.gm-console"
+    ]
+  },
+  "acceptance": [
+    "读档/新档后 activeScene 仍是 EnterScene，WorldScene 不加载，日志无 [RunMap] 阶段",
+    "工具导出 WorldMap_世界观地图表.xlsx 与 WorldFaction_势力范围配置表.xlsx；跑 ExcelTool/ExportExcelConfigs 无异常并生成两份 Json 与两个 Config 类，datas 行数与工具数据行数一致",
+    "顶层表 0 行数据时工具拒绝导出（不让导出器崩）",
+    "WorldMapPanel 显示底图 + 当前时期势力半透明填充（含凹多边形）+ 点位，位置与归一化坐标误差 < 1% 画布尺寸",
+    "存档 payload.era=2 时势力层切换为时期 2；era 缺失回退 1",
+    "局外→局内→返回局外闭环通，Canvas/UIRoot/Main Camera/AudioListener 各唯一（无重复 DDOL 实例）",
+    "WorldMapConfig.json 缺失时面板仍可打开并只报一条 Warn"
+  ],
+  "note": "模块树已同步：21 个新模块（工具 5 / 表仓 3 / 产物 4 / 运行时 5 / 界面 3 + 3 容器）全部转 active，13 个受影响模块描述已更新，3 个新容器补了渲染数据；唯一真实缺失（美术把 Map_tianxia_zhanguo.png 换成 GameWorld_Map/Map_tianxia_zhongyuan.png）已修 source。validate 0 error / 29 warning（均为既有：过粗叶子、未锚定箭头、order-incomplete、根模块无 source）。",
+  "revision": {
+    "before": null,
+    "after": "797aecab3ffa406505de00c7dd0baa0f15578bb7"
+  },
+  "created_at": "2026-10-12T13:28:31.220Z",
+  "updated_at": "2026-10-12T14:31:02.923Z",
+  "closed_at": "2026-10-12T14:31:02.923Z"
+}

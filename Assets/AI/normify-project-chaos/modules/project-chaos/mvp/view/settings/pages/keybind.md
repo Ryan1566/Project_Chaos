@@ -11,8 +11,8 @@ description:
   en: >
       Keybind first-level page: horizontal/vertical invert, sensitivity and attack trigger mode — all mouse-only, so they are greyed out (kept visible on purpose) while the gamepad scheme is active. Its 更改按键绑定 button hands over to the second-level bindings page and takes the back callback.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.728Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.443Z"
 fingerprint: 550dd7f596775fa6ab8fa5151993f4904dab93c9a88c2823628be7887989e9ee
 source:
   - path: "Assets/Scripts/Runtime/MVP/View/SettingsPage/KeybindSettingsPage.cs"

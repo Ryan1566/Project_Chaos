@@ -10,8 +10,8 @@ description:
   en: >
       Writes keys back to prefab/scene objects: adds LocalizedText components and assigns keys, or clears localization on selected items; prefabs are edited through LoadPrefabContents and scenes through loaded-scene lookup with dirty tracking.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.703Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.413Z"
 fingerprint: f5eec2e75e4438251b6820a84dcc122eb620e15be08a7dc2759b088c2ce3045e
 source:
   - path: "Assets/Scripts/Editor/LocalizationEditor/PrefabTextCollectorWindow.cs"

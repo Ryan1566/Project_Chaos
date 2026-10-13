@@ -10,8 +10,8 @@ description:
   en: >
       Example scenes and media: 6 Getting Started scenes, 25 Other Examples scenes, plus the Sound folder (4 ogg) and one doc image.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.736Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.451Z"
 fingerprint: 5d5c93bcbf82446001abcd9a0b32e4b59a95828b5c0416ce9ee76b53313563c2
 source:
   - path: "Assets/Plugins/Spine Examples/Getting Started/1 The Spine GameObject.unity"

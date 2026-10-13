@@ -10,8 +10,8 @@ description:
   en: >
       CSV export of SettingLocalizationConfig: the settings panel's largest localization sheet (80 rows), covering gameplay and keybind labels. Regenerate it from the config asset through the localization editor instead of hand-editing.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.695Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.405Z"
 fingerprint: d7151b350d6ac1be753afd41f361d4f573c41306754e2e93e186d787d364aa3d
 source:
   - path: "Assets/Excel/Chaos_localization_excel/SettingLocalizationConfig_Export.csv"

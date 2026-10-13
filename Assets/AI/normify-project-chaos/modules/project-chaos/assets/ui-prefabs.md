@@ -5,14 +5,12 @@ parent: project-chaos.assets
 name: {zh: "UI 面板预制体", en: "UI Panel Prefabs"}
 description:
   zh: >
-      从 Resources/UIPanels 加载的运行时 UI 预制体：主菜单、设置、存档面板，以及列表子项 RecordCell。
-      
+      Assets/Resources/UIPanels 下的面板预制体，UIManager 按 PanelType 名实例化（MainMenuPanel / SettingPanel / SLPanel，2026-10-12 新增 WorldMapPanel，以及子预制体 RecordCell）。缺同名预制体的 PanelType 会被 ValidatePanelPrefabs 点名。
   en: >
-      Runtime UI prefabs loaded from Resources/UIPanels: MainMenuPanel, SettingPanel, SLPanel plus the RecordCell list item.
-      
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.685Z"
-fingerprint: 76d00873ad00c387d1306ccbfa4705e25bec2a022c6462a975266aac61d1403c
+      Panel prefabs under Assets/Resources/UIPanels, instantiated by UIManager from the PanelType name (MainMenuPanel, SettingPanel, SLPanel, plus WorldMapPanel added 2026-10-12, and the RecordCell sub-prefab). A PanelType without a matching prefab is reported by ValidatePanelPrefabs.
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:30:46.651Z"
+fingerprint: 41516b4a541e19f32c5f1c3329decf59aae0938b86ba0338d9cf655d3e4d47cf
 source:
   - path: "Assets/Resources/UIPanels/MainMenuPanel.prefab"
   - path: "Assets/Resources/UIPanels/SettingPanel.prefab"

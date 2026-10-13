@@ -10,8 +10,8 @@ description:
   en: >
       CSV export of MainMenuLocalizationConfig: menu title and start/settings button labels across five languages. Regenerate it from the config asset through the localization editor's CSV export rather than hand-editing.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.695Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.405Z"
 fingerprint: 32ab341a9ace1d85bec8e68ae284f964d8c03bea7895c9905f0086dde7ca86fd
 source:
   - path: "Assets/Excel/Chaos_localization_excel/MainMenuLocalizationConfig_Export.csv"

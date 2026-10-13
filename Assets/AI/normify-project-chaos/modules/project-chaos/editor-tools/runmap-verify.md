@@ -11,9 +11,9 @@ description:
   en: >
       Assets/Scripts/Editor/RunMapTool/RunMapVerifyTool.cs — verification and visualisation for the generator: multi-seed stress test (pass/fail/degraded/determinism/three-layer coverage) and whole-map structure previews rendered to PNG.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.704Z"
-fingerprint: dbe873ee854ef7f71e23f9cec4531c595c4a4ff95149cb6e1d86ba541c0c4669
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.414Z"
+fingerprint: 8923e25338b3e21e6991191df8a3b20f795d4414814540963321139c4970c009
 source:
   - path: "Assets/Scripts/Editor/RunMapTool/RunMapVerifyTool.cs"
     line: 1

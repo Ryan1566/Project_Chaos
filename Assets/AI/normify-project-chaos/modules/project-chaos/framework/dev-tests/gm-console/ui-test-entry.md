@@ -11,8 +11,8 @@ description:
   en: >
       The UI test entry inside the GM panel: pushes the main-menu panel through UIManager and then fires CloseGM to collapse the GM panel. It used to be a standalone scene button and is now attached to a section button at runtime.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.707Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.418Z"
 fingerprint: e07a66661d5354220249d197188d6fb0d161d1ae964453434e84a244880a9fac
 source:
   - path: "Assets/Scripts/Runtime/GM/GM_UITestEnter.cs"

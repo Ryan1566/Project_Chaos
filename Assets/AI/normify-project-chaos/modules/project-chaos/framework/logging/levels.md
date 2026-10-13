@@ -10,8 +10,8 @@ description:
   en: >
       ChaosLog level shortcuts: Debug/Info/Success/Warn/WarnTrace/Error, each with optional channel, context and caller info overloads.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.715Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.427Z"
 fingerprint: 9a18fb3ce66bbd1c9cbcb823f436fa9c13dd6baa63e576304feeabfb8f49c2e0
 source:
   - path: "Assets/Scripts/Runtime/GameBase/LogManager/ChaosLog.cs"

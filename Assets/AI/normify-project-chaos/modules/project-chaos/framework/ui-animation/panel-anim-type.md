@@ -10,8 +10,8 @@ description:
   en: >
       PanelAnimType enum used by UIPanelAnimator; each value describes the start pose and also drives exit in reverse.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.723Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.434Z"
 fingerprint: 5fd602bdb80c44478b60dc4ae15e532990a4576d915833becb0791ead9af5748
 source:
   - path: "Assets/Scripts/Runtime/GameBase/UIManager/PanelAnimType.cs"

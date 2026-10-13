@@ -11,8 +11,8 @@ description:
   en: >
       MapLoading_地图生成读条表.xlsx -> MapLoadingConfig: Id / stage (1 assemble params, 2 build room graph, 3 lay out grid, 4 pick room blocks, 5 instantiate, 6 seal and fill, 7 validate, 8 done) / sort / descCN, descTW, descEN, descJP, descKR (captions; English commas, double quotes and newlines are forbidden). This table was added on top of the six tables drafted in the design doc, so the loading screen can narrate runmap generation.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.697Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.407Z"
 fingerprint: 5c3fa56c8f4a920778a4ecb8584c7aaff212693f546ef037ce13f1bbd2037c82
 source:
   - path: "Assets/Excel/Chaos_excel/MapLoading_地图生成读条表.xlsx"

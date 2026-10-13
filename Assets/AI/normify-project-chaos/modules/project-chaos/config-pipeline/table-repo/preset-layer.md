@@ -11,8 +11,8 @@ description:
   en: >
       PresetLayer_原型图层序表.xlsx -> PresetLayerConfig: Id / presetId (FK to MapPreset.Id) / layerOrder (1-based, contiguous) / layer (1 underground, 2 surface, 3 surface building) / isMainPath (must the main path cross this layer) / linkFromLayerOrder (0 = first layer) / allowDirect / linkMin, linkMax (cross-layer connector count).
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.698Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.408Z"
 fingerprint: 1c9e8c9ad63fd1c7c1879216ec5fc68863cf12f9c3c254f009473def97344840
 source:
   - path: "Assets/Excel/Chaos_excel/PresetLayer_原型图层序表.xlsx"

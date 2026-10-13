@@ -11,8 +11,8 @@ description:
   en: >
       The to-be blueprint: target directory tree, per-layer contents, new-file placement decision tree, the template path for adding a system, migration mapping and explicit non-goals.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.745Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.462Z"
 fingerprint: a10e56c548d8e40d80a87e6d2ff74a885018c31fa537141e2862479dbf90d0d4
 source:
   - path: "Assets/Chaos_Story/Story/04_架构/02_目标结构蓝图.md"

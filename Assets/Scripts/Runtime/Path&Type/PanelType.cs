@@ -18,5 +18,6 @@ public enum PanelType
     ProgressPanel,//加载面板
     SLPanel,//保存、读取面板
     EnddingPanel,//结局面板
-    GMPanel//GM面板
+    GMPanel,//GM面板
+    WorldMapPanel//局外世界观地图主界面
 }

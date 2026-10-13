@@ -11,8 +11,8 @@ description:
   en: >
       Generated PresetLayerConfig class: Id / presetId / layerOrder / layer / isMainPath / linkFromLayerOrder / allowDirect / linkMin / linkMax. Field meanings live in the source table module (table-repo.preset-layer). Never hand-edit.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.695Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.404Z"
 fingerprint: 5b5ab26459c5892ee936b91c1dbe5bd0433c28ec4fa6f5452923b01c6886dbc7
 source:
   - path: "Assets/Scripts/Runtime/MVP/Model/ConfigData/PresetLayerConfig.cs"

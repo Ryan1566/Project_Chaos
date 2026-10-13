@@ -10,8 +10,8 @@ description:
   en: >
       Rendering configuration: URP graphics pipeline, quality tiers, URP and ShaderGraph settings plus the VFX manager.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.742Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.459Z"
 fingerprint: 0478d3c201a5d2865bad641db06e3477d4affaf50b4958327af2d283d8508352
 source:
   - path: "ProjectSettings/GraphicsSettings.asset"

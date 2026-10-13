@@ -11,8 +11,8 @@ description:
   en: >
       Landing plan for the save/load slot system: how the start button opens the panel, three fixed slots read from disk, first-non-empty default selection, and the confirm/delete flows.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.746Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.464Z"
 fingerprint: db2e06fe689f0358c3c3267d57c688721f8aa10da018ae899f1d094f91b4646c
 source:
   - path: "Assets/Chaos_Story/Story/04_架构/05_存档槽位系统落地方案.md"

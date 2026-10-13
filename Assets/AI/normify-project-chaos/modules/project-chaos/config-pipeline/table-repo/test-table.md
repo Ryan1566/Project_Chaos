@@ -10,8 +10,8 @@ description:
   en: >
       The sample character table: four rows of Index, CharName, Occupation and head_icon (types uint/string/uint/uint). Row 7 is the first data row - there is no example row, and a trailing blank row would be imported as an empty record.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.698Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.408Z"
 fingerprint: f4cc4e9d51f96c845e3b400834261f38c18aab92e803860875cf347432899c87
 source:
   - path: "Assets/Excel/Chaos_excel/TestTable_测试表.xlsx"

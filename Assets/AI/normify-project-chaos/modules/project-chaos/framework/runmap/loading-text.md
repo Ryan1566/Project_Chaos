@@ -11,9 +11,9 @@ description:
   en: >
       Loading-screen text for the map-generation stages. Deliberately NOT routed through the game's localization system: one column per language (CN/TW/EN/JP/KR) in the MapLoading table, selected by the language currently set in settings (SettingsManager.Applied.language), with fallback to Simplified Chinese.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.717Z"
-fingerprint: 43e2e1c8bd5ee8cf8a22ea1ea5404c4f239b99518f57815f4e0e88e05dd486d0
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.430Z"
+fingerprint: 789e7f5eb1922b9d83b114e83a015703f8ea087a10a7f0ebf26699c35365932c
 source:
   - path: "Assets/Scripts/Runtime/GameBase/RunMap/RunMapLoadingText.cs"
     line: 1

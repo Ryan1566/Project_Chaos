@@ -11,8 +11,8 @@ description:
   en: >
       Field spec for the smoke-test table: which columns exist, their whitelist types, and what the exporter must produce from them.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.747Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.465Z"
 fingerprint: b8ce703ad64b475a1e7cb1995b3a6ff5de63a34f8b402d87d0dd8d5d9d2c4887
 source:
   - path: "Assets/Chaos_Story/Story/03_配置表设计/03_TestTable_字段规格.md"

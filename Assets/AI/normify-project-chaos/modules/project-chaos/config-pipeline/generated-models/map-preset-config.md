@@ -11,8 +11,8 @@ description:
   en: >
       Generated MapPresetConfig class: Id / biomeId / nameCN / mainPathMin-Max / branchMin-Max / totalMin-Max / specialTreasure / specialCamp / retryMax / enable. Field meanings live in the source table module (table-repo.map-preset). Never hand-edit.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.695Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.404Z"
 fingerprint: ab8cad15a0cb00b37a96a2586e62e2c3568d5cd3a8b45197e9d717cd54f583ae
 source:
   - path: "Assets/Scripts/Runtime/MVP/Model/ConfigData/MapPresetConfig.cs"

@@ -10,8 +10,8 @@ description:
   en: >
       One-shot editor tool that materialises panel entrance/exit animation components into the prefabs: runtime auto-added components are never saved, so their inspector values stay at field defaults. Loads each panel prefab in isolation, skips non-BasePanel or already-equipped objects, saves in bulk under a single asset-editing scope.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.705Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.415Z"
 fingerprint: d97467c137d2dea498637d8efe04962bf704570cd71a4d8c604e0a027da0296e
 source:
   - path: "Assets/Scripts/Editor/UIPanelAnimatorTool/UIPanelAnimatorTool.cs"

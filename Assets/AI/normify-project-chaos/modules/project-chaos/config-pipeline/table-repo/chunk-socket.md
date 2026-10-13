@@ -11,8 +11,8 @@ description:
   en: >
       ChunkSocket_房间块接口表.xlsx -> ChunkSocketConfig: Id / chunkId (FK to MapChunk.Id) / dir (1 left, 2 right, 3 up, 4 down) / heightProfile (horizontal height tier 0/1/2; vertical openings are always 0 and match by column) / socketType (1 normal passage, 2 cross-layer passage, 3 boss gate) / posX, posY (chunk-local metres).
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.697Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.407Z"
 fingerprint: 1dcc9908ea65381e6fe4a1a82dc1d467e8eb27553c567fa5dac349a0c3c955c8
 source:
   - path: "Assets/Excel/Chaos_excel/ChunkSocket_房间块接口表.xlsx"

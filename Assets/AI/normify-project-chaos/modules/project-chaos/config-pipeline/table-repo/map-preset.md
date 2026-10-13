@@ -11,8 +11,8 @@ description:
   en: >
       MapPreset_原型图主表.xlsx -> MapPresetConfig: Id / biomeId (FK to MapBiome.Id) / nameCN / mainPathMin-Max / branchMin-Max / totalMin-Max / specialTreasure (dead-end reward rooms, lower bound) / specialCamp (camp sites, reserved) / retryMax (per-node pick/backtrack limit) / enable.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.698Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.407Z"
 fingerprint: 272e7a1112ae817941234a8336fed35131333a40f7f708254ff052737f2c41ee
 source:
   - path: "Assets/Excel/Chaos_excel/MapPreset_原型图主表.xlsx"

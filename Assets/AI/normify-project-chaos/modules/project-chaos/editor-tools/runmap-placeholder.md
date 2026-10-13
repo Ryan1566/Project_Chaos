@@ -11,9 +11,9 @@ description:
   en: >
       Assets/Scripts/Editor/RunMapTool/RunMapPlaceholderPipeline.cs — greybox asset pipeline for in-run maps: procedurally draws 64x64 tiles for three layer themes and assembles 40x24 room-chunk prefabs (Socket_*, SpawnSlot_*, CameraBounds, composite colliders) per the map-generation spec; menus under Tools/局内地图/*.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.704Z"
-fingerprint: 8e34e13f6db546a774bf2d1f8f7d1f6ae1dd8a15cefc7c4166ac5ad4b569602b
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.414Z"
+fingerprint: 5ab5ed78540839342f8527b4862745ed176da4cc449177845aba9f1c1ae398e0
 source:
   - path: "Assets/Scripts/Editor/RunMapTool/RunMapPlaceholderPipeline.cs"
     line: 1

@@ -51,18 +51,9 @@ public class SLPanel : BasePanel
     /// <summary>`RecordCell` 预制体路径（`Resources` 相对、不带扩展名）。</summary>
     private const string CellPrefabPath = "UIPanels/SubUI_Prefab/RecordCell";
 
-    /// <summary>
-    /// **目标场景名**：读条结束后真正要进入的玩法场景。
-    /// 本面板不直接切它，而是写进 `GameSession.TargetSceneName`，由 `LoadingController` 去加载
-    /// （见 `06_加载读条界面落地方案.md` §4）。必须在 `EditorBuildSettings.scenes` 里。
-    /// </summary>
-    private const string GameSceneName = "WorldScene";
-
-    /// <summary>
-    /// **读条场景名**：本面板实际切过去的场景。它很小、出现快，负责显示轮播背景 + 进度条，
-    /// 加载完目标场景后再激活。必须在 `EditorBuildSettings.scenes` 里。
-    /// </summary>
-    private const string LoadingSceneName = "LoadingScene";
+    //注：原来的 `GameSceneName` / `LoadingSceneName` 已随 task-24 移除。
+    //「开始游戏」现在的语义是**进入局外**（世界观地图），局外主界面就在 EnterScene 的常驻 UI 里，
+    //不需要切场景；「进局内」由局外主界面的【进入局内】按钮负责（读条 → WorldScene）。
 
     // ══════════════════ 本地化 Key ══════════════════
 
@@ -464,32 +455,41 @@ public class SLPanel : BasePanel
     }
 
     /// <summary>
-    /// 非空档位开始游戏：读存档 → 写入 `GameSession`（含**目标场景名**）→ 切到读条场景。
+    /// 读档 / 新档成功：写入 `GameSession`，并**把局外主界面换成根面板**。
     ///
-    /// ══════════════ 为什么不再直接切 WorldScene ══════════════
-    /// 见 `06_加载读条界面落地方案.md` §4：本面板只负责"把目标场景名告诉 `GameSession`"，然后切到
-    /// `LoadingScene`；由 `LoadingController` 去流式加载 `GameSceneName` 并显示读条。
-    /// 这样 `LoadingScene` 对**任意**目标场景都可复用，本面板不必知道加载是怎么做的。
+    /// ══════════════ 为什么不再切场景（task-24 语义变更） ══════════════
+    /// 「开始游戏」现在是**进入局外**（世界观地图），不再是进局内：
+    ///   · 局外主界面住在 `EnterScene` 的常驻 UI 里，**不需要切场景**；
+    ///   · 切场景会让刚初始化好的常驻层与本地化重来一遍，纯属浪费；
+    ///   · 真正的"进局内"由局外主界面的【进入局内】按钮触发（读条 → WorldScene）。
+    ///
+    /// 用 `SetRootPanel` 而非 `PushPanel`：这是**替换**语义，
+    /// 否则局外界面底下会留着主菜单/存档面板，按返回会露出主菜单。
     /// </summary>
     private void EnterGame(int slot)
     {
         SaveSlotFile file;
         if (!SaveSlotService.Instance.TryLoad(slot, out file))
         {
-            ChaosLog.Error(LogChannel.Save, "槽 " + slot + " 读取失败，已中止进入游戏（不切场景）");
+            ChaosLog.Error(LogChannel.Save, "槽 " + slot + " 读取失败，已中止进入游戏");
             Refresh();
             return;
         }
 
-        //把"要进哪个场景"写进跨场景静态单例：LoadingScene 里没有存档信息，只能靠它传过去
-        GameSession.Instance.Begin(slot, file.payload, GameSceneName);
+        //目标场景传 null：本面板不再负责切场景，去哪由局外主界面决定
+        GameSession.Instance.Begin(slot, file.payload, null);
 
+        uint era = file.payload != null ? file.payload.era : 1u;
         ChaosLog.Info(LogChannel.Save,
-            "开始游戏：槽 " + slot + " → 已写入 GameSession（目标场景 " + GameSceneName +
-            "），准备切到读条场景 " + LoadingSceneName);
+            "开始游戏：槽 " + slot + " → 已写入 GameSession（era=" + era + "），进入局外主界面");
 
-        //R2：ScenesLoadManager.LoadScene 的第 19 行【无条件】调 action()，传 null 必 NRE → 传空委托
-        ScenesLoadManager.Instance.LoadScene(LoadingSceneName, () => { });
+        if (UIManager.Instance == null)
+        {
+            ChaosLog.Error(LogChannel.Save, "UIManager 不存在，无法进入局外主界面");
+            return;
+        }
+
+        UIManager.Instance.SetRootPanel(PanelType.WorldMapPanel);
     }
 
     /// <summary>删除选中档位；删完重新选（第一个有文件的档位；都没有 → 槽 1）（验收标准 7）。</summary>

@@ -10,8 +10,8 @@ description:
   en: >
       SaveSlotService read side: directory resolution, slot validation, path building, ReadAllSlots (always 3) and TryLoad with corrupt-file fallback.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.718Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.430Z"
 fingerprint: 8e71d66d7c2df229548a801e2b34a665614a6e0faa67777f36a02d0b91c1fece
 source:
   - path: "Assets/Scripts/Runtime/GameBase/SaveManager/SaveSlotService.cs"

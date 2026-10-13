@@ -11,8 +11,8 @@ description:
   en: >
       MapChunk_房间块表.xlsx -> MapChunkConfig: Id / biomeId / themeKey / kind (1 entry, 2 corridor, 3 combat, 9 layer link, 10 boss gate, 11 dead-end reward) / layer (0 = cross-layer) / prefabPath (Resources-relative, no extension) / weight / maxCount / isUnique / enable. This is the table the generator draws from, and prefabPath must match the Chunk_* prefab naming.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.697Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.407Z"
 fingerprint: dff792707961feba6f67fbe5938a6fc03b0ebb95ea241b563a2ca437d0682048
 source:
   - path: "Assets/Excel/Chaos_excel/MapChunk_房间块表.xlsx"

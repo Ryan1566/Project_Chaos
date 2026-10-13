@@ -10,8 +10,8 @@ description:
   en: >
       LocalizationManager init and switching: loads saved language, builds the text cache, ChangeLanguage and the OnLanguageChanged UnityEvent.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.713Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.425Z"
 fingerprint: e3467c7f202c922325ea9bcf15be6ea006a25d272a717bf7c80efe6e63dd930c
 source:
   - path: "Assets/Scripts/Runtime/GameBase/LocalizationManager/LocalizationManager.cs"

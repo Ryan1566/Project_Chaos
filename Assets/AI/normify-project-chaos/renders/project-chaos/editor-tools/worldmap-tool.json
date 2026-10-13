@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.editor-tools.worldmap-tool",
+  "updated_at": "2026-10-12T14:30:30.518Z",
+  "mode": "layers",
+  "reading": {
+    "zh": "按工具的数据流读：窗口负责交互，每次落点只在 geometry 里做一次坐标换算（归一化 0~1，X 自左向右、Y 自下向上），draft-store 负责草稿持久化，validator 是导出门禁，xlsx-exporter 按项目 7 行表头写出三处产物。",
+    "en": "Read as the tool's data flow: the window drives interaction, every click is converted once in geometry (normalised 0~1, X left-to-right, Y bottom-to-top), the draft store persists the workspace, the validator gates the export, and the xlsx exporter writes the three workbooks in the project's 7-row header format."
+  },
+  "order": [
+    "project-chaos.editor-tools.worldmap-tool.window",
+    "project-chaos.editor-tools.worldmap-tool.geometry",
+    "project-chaos.editor-tools.worldmap-tool.draft-store",
+    "project-chaos.editor-tools.worldmap-tool.validator",
+    "project-chaos.editor-tools.worldmap-tool.xlsx-exporter"
+  ]
+}

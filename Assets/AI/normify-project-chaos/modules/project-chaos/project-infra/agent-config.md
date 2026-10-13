@@ -10,8 +10,8 @@ description:
   en: >
       Agent tooling config found inside Assets: a Claude Code local settings file whitelisting the env command and Unity MCP instance/execute tools.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.728Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.444Z"
 fingerprint: a452556c17a02358d4f5b8013c51512bbc470f8ca557b31c3e1f776f2612a668
 source:
   - path: "Assets/.claude/settings.local.json"

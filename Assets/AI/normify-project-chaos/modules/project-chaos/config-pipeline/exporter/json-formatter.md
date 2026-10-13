@@ -10,8 +10,8 @@ description:
   en: >
       Formatting pass that makes exported .json and .record files human-readable at the same 4-space style as JsonUtility.ToJson(obj, true). It tracks string state and escapes so commas, colons and braces inside Chinese text are not mistaken for structure; whitespace is not significant to JsonUtility.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.691Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.400Z"
 fingerprint: 8317ca6bb94bcacbc47c1bf98e79594b0f8559b3aa88a4c40c48d717703dcd5f
 source:
   - path: "Assets/Scripts/Runtime/GameBase/ConfigManager/Config/ConfigManager.cs"

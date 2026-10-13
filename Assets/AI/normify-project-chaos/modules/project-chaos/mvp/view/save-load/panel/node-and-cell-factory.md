@@ -11,9 +11,9 @@ description:
   en: >
       Node lookup and the cell factory: Locates RecordsList / BottomBar / ConfirmGroup by hard-coded names, then EnsureCells loads RecordCell from Resources (ResManager already instantiates it), reuses an existing child when the list is not empty, and binds slot number, click callback and selection marker exactly once.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.725Z"
-fingerprint: 476e33b9f31278b56b525f8ffb3a6299b5e9caa0d329cae08c07e8e1ad4cacec
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.440Z"
+fingerprint: 126d11b07ddfa369cdd0aca467c1b3959945aa29c94b3f0a27c6ab81a4a92747
 source:
   - path: "Assets/Scripts/Runtime/MVP/View/SLPanel.cs"
     line: 139

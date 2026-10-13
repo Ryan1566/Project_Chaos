@@ -47,6 +47,17 @@ public class SavePayload
 
     /// <summary>写入时的结构版本，供将来做不兼容迁移判断。</summary>
     public int version = CurrentVersion;
+
+    /// <summary>
+    /// **当前时代（时期）**：1~5，与 `WorldFaction` 表的 `Stage` 同义
+    /// （1 战国末期 / 2 秦朝 / 3 秦末起义初期 / 4 楚汉争霸 / 5 汉刘邦时期）。
+    /// 局外世界观地图按这个值筛选要画的势力范围。
+    ///
+    /// ⚠ **追加字段 = 零迁移**：`JsonUtility.FromJson` 是「先默认构造、再用 Json 里出现的字段覆盖」，
+    /// 所以老存档里没有 `era` 时会保留这里的初始化值 **1**，不会变成 0（见本文件顶部注释）。
+    /// **不要改 `version` 的语义** —— 只加字段不需要 +1。
+    /// </summary>
+    public uint era = 1;
 }
 
 /// <summary>一个存档文件的根对象（= 落盘的整个 Json）。</summary>

@@ -11,8 +11,8 @@ description:
   en: >
       Doc §4–§6: the layer model (underground / surface / surface buildings), overall map structure, chunk and socket spec, the C1–C10 connectivity rules, generation numbers, and the Pass A–F pipeline.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.757Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.474Z"
 fingerprint: 4e068de8cc72d20c5a6106054d10511656be94f23b535031e6678639a6b6c287
 source:
   - path: "Assets/Chaos_Story/Story/02_系统策划/01_局内地图生成系统.md"

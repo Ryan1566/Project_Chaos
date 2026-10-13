@@ -10,8 +10,8 @@ description:
   en: >
       Legacy TangLaoShi namespace UI layer: an [Obsolete] BasePanel with GetControl<T> and a completely empty UIManager shell. Dead code, kept for history.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.724Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.436Z"
 fingerprint: d34f715f9cbf0f5c44d97dc5c9a950a0e386a2fb02c66c08d96ca66ba696332e
 source:
   - path: "Assets/Scripts/Runtime/GameBase/UIManager/OtherUIManager/BasePanel.cs"

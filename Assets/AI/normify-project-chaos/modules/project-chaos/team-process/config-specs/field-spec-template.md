@@ -11,8 +11,8 @@ description:
   en: >
       The field-spec template every new config table must follow before it is filled: field names, types from the whitelist, meaning, and the three must-answer questions.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.746Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.464Z"
 fingerprint: a67b7e676d650795a00fd2f9416634a82ef51ebad08113b4a0cc908dd3624285
 source:
   - path: "Assets/Chaos_Story/Story/03_配置表设计/02_配置表字段规格模板.md"

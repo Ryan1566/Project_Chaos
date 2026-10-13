@@ -10,8 +10,8 @@ description:
   en: >
       LogBootstrap: RuntimeInitializeOnLoadMethod plus an editor InitializeOnLoadMethod that configure ChaosLog defaults on startup.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.714Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.426Z"
 fingerprint: c9bc9718a1bf70d351563773bde68cf887d63b9d61da4f458a85a7fb12599567
 source:
   - path: "Assets/Scripts/Runtime/GameBase/LogManager/LogBootstrap.cs"

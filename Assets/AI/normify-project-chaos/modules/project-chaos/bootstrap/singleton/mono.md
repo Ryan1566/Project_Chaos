@@ -11,8 +11,8 @@ description:
   en: >
       Singleton base for MonoBehaviours: Unity writes the instance into a static field during Awake and callers use GetInstance(). It never auto-creates a GameObject — the component must be placed in the scene manually.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.690Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.399Z"
 fingerprint: cb01d77795ee5a5efa9028f4a75a0a55c52e53f8e9eecea1c231f6cb8d3b773e
 source:
   - path: "Assets/Scripts/Runtime/GameBase/Singleton/SingletonMono.cs"

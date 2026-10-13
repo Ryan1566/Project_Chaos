@@ -11,8 +11,8 @@ description:
   en: >
       Generated MapBiomeConfig class: Id / themeKey / nameCN / layer / retryMax / enable. Field meanings live in the source table module (table-repo.map-biome). Never hand-edit.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.694Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.403Z"
 fingerprint: b8664235a1b6842786c65c33c0629c1290c8c2813587089bd577edbe646543c7
 source:
   - path: "Assets/Scripts/Runtime/MVP/Model/ConfigData/MapBiomeConfig.cs"

@@ -10,8 +10,8 @@ description:
   en: >
       EventArgs family for the event bus: InputArgs, Saving/LoadingEventArgs, Saving/LoadingSettingEventArgs, LoadingProgressEventArgs, DelegateQuestEventArgs.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.709Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.420Z"
 fingerprint: 40124927494b7719ae70baebfcc8b18b6cd4d368177ce432df66971ef1d6c0c0
 source:
   - path: "Assets/Scripts/Runtime/GameBase/EventCenter/CustomEventArgs.cs"

@@ -10,8 +10,8 @@ description:
   en: >
       Persistent memory for hidden canvases: the ledger under Library (same lifetime as SceneVisibilityState) records scene path plus hierarchy path, is healed when the tool was killed while enabled, and is consulted on scene open. Also holds the Scene-view Overlay exposing the toggle.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.705Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.414Z"
 fingerprint: 9aaebbddb0f3dd27a279c563d1b8952bbdcffe7c594e2baeb5a3b6b8cac08707
 source:
   - path: "Assets/Scripts/Editor/SceneUIOverviewTool/SceneUIOverviewTool.cs"

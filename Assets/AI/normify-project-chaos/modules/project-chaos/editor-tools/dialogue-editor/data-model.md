@@ -10,8 +10,8 @@ description:
   en: >
       Serializable data model shared by the dialogue editor and runtime: DialogData (dialogue id, name, description, characters, entries, canSkip, autoPlay, showHistory, pauseGame) plus DialogCharacter, DialogEntry, DialogOption and DialogEvent, all [Serializable] for Unity serialization.
       
-revision: b0eba89e88d383bc0589b06eee323cac5a625fff
-updated_at: "2026-10-11T16:04:35.699Z"
+revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
+updated_at: "2026-10-12T14:28:55.410Z"
 fingerprint: c33733d11e852487a14edfb5b00eb60fa7ad7e94fc1f0c032dd7ffc13e62906f
 source:
   - path: "Assets/Scripts/Editor/DialogueEditor/DialogData.cs"
