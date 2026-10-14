@@ -308,6 +308,7 @@
   "file:Assets/Scripts/Runtime/GameBase/UIManager/UIPanelAnimator.cs#L301-L517": "project-chaos.framework.ui-animation.panel-animator-rest",
   "file:Assets/Scripts/Runtime/GameBase/UIManager/UIPanelAnimator.cs#L518-L677": "project-chaos.framework.ui-animation.panel-animator-stagger",
   "file:Assets/Scripts/Runtime/GameBase/UIManager/UIPanelStaggerItem.cs": "project-chaos.framework.ui-animation.stagger-item",
+  "file:Assets/Scripts/Runtime/GameBase/WorldMap/WorldFactionArea.cs": "project-chaos.framework.world-map.runtime-model",
   "file:Assets/Scripts/Runtime/GameBase/WorldMap/WorldFactionMask.cs": "project-chaos.framework.world-map.faction-mask",
   "file:Assets/Scripts/Runtime/GameBase/WorldMap/WorldMapMetaProvider.cs": "project-chaos.framework.world-map.meta-provider",
   "file:Assets/Scripts/Runtime/GameBase/WorldMap/WorldMapPoint.cs": "project-chaos.framework.world-map.runtime-model",
@@ -729,6 +730,8 @@
   "rpc:Menu/Tools/局内地图/2. 只生成占位房间块 Prefab": "project-chaos.editor-tools.runmap-placeholder",
   "rpc:Menu/Tools/局内地图/3. 校验生成器（多种子压测）": "project-chaos.editor-tools.runmap-verify",
   "rpc:Menu/Tools/局内地图/4. 生成整图预览 PNG": "project-chaos.editor-tools.runmap-verify",
+  "rpc:Menu/Tools/局外地图/0. 打开世界观地图绘制工具": "project-chaos.editor-tools.worldmap-tool.window",
+  "rpc:Menu/Tools/局外地图/8. 校验坐标对齐（所见即所点）": "project-chaos.editor-tools.worldmap-tool.window",
   "rpc:Menu/Tools/图标/按键图标映射": "project-chaos.editor-tools.input-icon.keymap-window",
   "rpc:Menu/Tools/图标/应用图标导入设置": "project-chaos.editor-tools.art-pipeline.icon-import-policy",
   "rpc:Menu/Tools/图标/重建图标图集": "project-chaos.editor-tools.art-pipeline.icon-atlas",
@@ -921,5 +924,8 @@
   "rpc:UIPanelAnimator.staggerEnabled": "project-chaos.framework.ui-animation.panel-animator-config",
   "rpc:UIPanelAnimatorTool.AddAnimatorToAllPanelPrefabs": "project-chaos.editor-tools.ui-animator",
   "rpc:UIPanelAnimatorTool.ValidateAddAnimatorToAllPanelPrefabs": "project-chaos.editor-tools.ui-animator",
-  "rpc:UIPanelStaggerItem.order": "project-chaos.framework.ui-animation.stagger-item"
+  "rpc:UIPanelStaggerItem.order": "project-chaos.framework.ui-animation.stagger-item",
+  "rpc:WorldFactionArea.Contains": "project-chaos.framework.world-map.runtime-model",
+  "rpc:WorldMapService.FactionIds": "project-chaos.framework.world-map.service",
+  "rpc:WorldMapService.TryGetFactionAt": "project-chaos.framework.world-map.service"
 }

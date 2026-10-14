@@ -31,6 +31,7 @@ public class WorldMapService : SingletonBase<WorldMapService>
 
     private static readonly List<WorldMapPoint> EmptyPoints = new List<WorldMapPoint>();
     private static readonly List<WorldFactionArea> EmptyAreas = new List<WorldFactionArea>();
+    private static readonly List<uint> EmptyIds = new List<uint>();
 
     // ══════════════════ 对外查询 ══════════════════
 
@@ -52,6 +53,52 @@ public class WorldMapService : SingletonBase<WorldMapService>
         List<WorldFactionArea> list;
         if (_areasByStage != null && _areasByStage.TryGetValue(stage, out list)) return list;
         return EmptyAreas;
+    }
+
+    /// <summary>该时期出现过的所有势力 ID（**去重**，保持首次出现顺序）。没有数据时返回空列表。</summary>
+    public List<uint> FactionIds(uint stage)
+    {
+        EnsureLoaded();
+
+        List<WorldFactionArea> list;
+        if (_areasByStage == null || !_areasByStage.TryGetValue(stage, out list)) return EmptyIds;
+
+        var ids = new List<uint>();
+        for (int i = 0; i < list.Count; i++)
+        {
+            uint id = list[i].factionId;
+            if (!ids.Contains(id)) ids.Add(id);
+        }
+        return ids;
+    }
+
+    /// <summary>
+    /// 归一化坐标落在该时期的哪个势力里。
+    ///
+    /// ⚠ **任一区域命中即判定属于该势力** —— 这正是"飞地"（同一势力多块不相连领地）能正确判定的原因：
+    ///   只要点落在该势力的**任意一块**区域内，就返回**同一个** `factionId`（`regionId` 给出具体命中的那一块）。
+    ///   所以"本土里"与"飞地里"会得到相同 factionId；两块之间的缝隙则返回 false。
+    /// </summary>
+    public bool TryGetFactionAt(uint stage, Vector2 normalized, out uint factionId, out uint regionId)
+    {
+        EnsureLoaded();
+        factionId = 0;
+        regionId = 0;
+
+        List<WorldFactionArea> list;
+        if (_areasByStage == null || !_areasByStage.TryGetValue(stage, out list)) return false;
+
+        for (int i = 0; i < list.Count; i++)
+        {
+            WorldFactionArea area = list[i];
+            if (area == null || !area.IsValid) continue;
+            if (!area.Contains(normalized)) continue;
+
+            factionId = area.factionId;
+            regionId = area.regionId;
+            return true;
+        }
+        return false;
     }
 
     /// <summary>强制重新读表（改完配表后调试用）。</summary>
@@ -156,6 +203,8 @@ public class WorldMapService : SingletonBase<WorldMapService>
         }
 
         int dropped = 0;
+        var factionColor = new Dictionary<string, Color>();   //(时期|势力) → 该势力统一颜色
+        int colorConflict = 0;
         for (int i = 0; i < order.Count; i++)
         {
             List<WorldFactionConfig> group = groups[order[i]];
@@ -172,12 +221,27 @@ public class WorldMapService : SingletonBase<WorldMapService>
             group.Sort((a, b) => a.PointOrder.CompareTo(b.PointOrder));
 
             WorldFactionConfig first = group[0];
+
+            //★ 同一 (时期,势力) 的多块区域（飞地）**颜色归一化为第一块的颜色**：
+            //  表里若被填成两种色，同一势力在地图上会被画成两个势力 —— 这里统一，并只 Warn 一次。
+            string colorKey = first.Stage + "|" + first.FactionId;
+            Color resolvedColor;
+            if (factionColor.TryGetValue(colorKey, out resolvedColor))
+            {
+                if (!IsSameColor(ParseColor(first.Color), resolvedColor)) colorConflict++;
+            }
+            else
+            {
+                resolvedColor = ParseColor(first.Color);
+                factionColor.Add(colorKey, resolvedColor);
+            }
+
             var area = new WorldFactionArea
             {
                 stage = first.Stage,
                 factionId = first.FactionId,
                 regionId = first.RegionId,
-                color = ParseColor(first.Color),
+                color = resolvedColor,
             };
 
             for (int k = 0; k < group.Count; k++)
@@ -196,6 +260,19 @@ public class WorldMapService : SingletonBase<WorldMapService>
 
         ChaosLog.Info(LogChannel.Config,
             "[局外地图] 势力范围已加载：时期 " + _areasByStage.Count + " 个，共 " + CountAreas() + " 块区域（跳过顶点不足 " + dropped + " 块）");
+
+        if (colorConflict > 0)
+        {
+            ChaosLog.Warn(LogChannel.Config,
+                "[局外地图] 有 " + colorConflict + " 处「同一势力不同区域颜色不一致」，已按各势力第一块区域的颜色统一（表里应改成同色）");
+        }
+    }
+
+    /// <summary>两个颜色是否可视为同一个（逐通道容差 0.01，对应 8 位色约 ±2）。</summary>
+    private static bool IsSameColor(Color a, Color b)
+    {
+        return Mathf.Abs(a.r - b.r) < 0.01f && Mathf.Abs(a.g - b.g) < 0.01f
+            && Mathf.Abs(a.b - b.b) < 0.01f && Mathf.Abs(a.a - b.a) < 0.01f;
     }
 
     /// <summary>`#RRGGBB` → Color；解析失败回退品红并记 Warn（不抛异常）。</summary>

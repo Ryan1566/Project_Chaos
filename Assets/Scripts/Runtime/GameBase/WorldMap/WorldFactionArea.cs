@@ -32,6 +32,49 @@ public class WorldFactionArea
         get { return vertices.Count >= 3; }
     }
 
+    /// <summary>
+    /// 归一化坐标是否落在这块区域内。**射线法**，且**点落在边上算在内**。
+    ///
+    /// ⚠ 与工具侧 `WorldMapToolGeometry.PointInPolygon` **同语义**，但这里是**独立实现**：
+    ///   工具在 `Scripts/Editor/`（编辑器程序集），运行时**引用不到**。
+    ///   改命中语义（尤其"边上算不算在内"）时**必须两边一起改**，否则工具所见与运行时判定会漂移。
+    /// </summary>
+    public bool Contains(Vector2 normalized)
+    {
+        int n = vertices.Count;
+        if (n < 3) return false;
+
+        bool inside = false;
+        for (int i = 0, j = n - 1; i < n; j = i++)
+        {
+            Vector2 a = vertices[i];
+            Vector2 b = vertices[j];
+
+            if (IsPointOnSegment(normalized, a, b)) return true;   //边上算在内
+
+            bool crossesRay = (a.y > normalized.y) != (b.y > normalized.y);
+            if (crossesRay)
+            {
+                float intersectX = (b.x - a.x) * (normalized.y - a.y) / (b.y - a.y) + a.x;
+                if (normalized.x < intersectX) inside = !inside;
+            }
+        }
+        return inside;
+    }
+
+    /// <summary>点是否落在线段 a-b 上（含端点，带容差）。</summary>
+    private static bool IsPointOnSegment(Vector2 point, Vector2 a, Vector2 b)
+    {
+        float cross = (b.x - a.x) * (point.y - a.y) - (b.y - a.y) * (point.x - a.x);
+        if (Mathf.Abs(cross) > 1e-4f) return false;
+
+        float dot = (point.x - a.x) * (b.x - a.x) + (point.y - a.y) * (b.y - a.y);
+        if (dot < 0f) return false;
+
+        float lengthSq = (b.x - a.x) * (b.x - a.x) + (b.y - a.y) * (b.y - a.y);
+        return dot <= lengthSq;
+    }
+
     /// <summary>人类可读标签（日志用）。</summary>
     public string Label
     {

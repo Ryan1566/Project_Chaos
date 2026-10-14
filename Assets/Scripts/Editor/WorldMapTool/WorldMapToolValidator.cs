@@ -300,6 +300,33 @@ public static class WorldMapToolValidator
             }
         }
 
+        //★ 同一 (时期,势力) 下不同区域**颜色必须一致**（Error）——
+        //  同势力的多块领地就是"飞地"，颜色不一致会让它们在地图上被画成两个势力。
+        var factionFirstColor = new Dictionary<string, string>();
+        var factionFirstRegion = new Dictionary<string, uint>();
+        for (int i = 0; i < regions.Count; i++)
+        {
+            WorldMapFactionRegion region = regions[i];
+            string key = region.stage + "|" + region.factionId;
+
+            string firstColor;
+            if (!factionFirstColor.TryGetValue(key, out firstColor))
+            {
+                factionFirstColor[key] = region.color;
+                factionFirstRegion[key] = region.regionId;
+                continue;
+            }
+
+            if (!string.Equals(firstColor, region.color, StringComparison.OrdinalIgnoreCase))
+            {
+                issues.Add(WorldMapToolIssue.Error(
+                    "同一势力颜色不一致：时期" + region.stage + "/势力" + region.factionId +
+                    " 的区域" + factionFirstRegion[key] + " 用 " + firstColor +
+                    "，而区域" + region.regionId + " 用 " + region.color +
+                    " —— 同势力的多块领地（飞地）必须同色，否则地图上会被画成两个势力。"));
+            }
+        }
+
         return issues;
     }
 

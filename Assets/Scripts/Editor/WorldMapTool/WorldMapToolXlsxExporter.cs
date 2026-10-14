@@ -259,6 +259,8 @@ public static class WorldMapToolXlsxExporter
         EnsureFolder(ToolFolderAbsolute);
 
         List<WorldMapFactionRegion> regions = WorldMapToolDataIO.GroupRegions(draft);
+        //★ 同一 (时期,势力) 统一取"第一块区域"的颜色：把"同势力两块不同色"挡在导出这一层
+        Dictionary<string, string> factionColors = BuildFactionColorMap(regions);
 
         for (uint stage = WorldMapToolDataIO.MinStage; stage <= WorldMapToolDataIO.MaxStage; stage++)
         {
@@ -294,7 +296,7 @@ public static class WorldMapToolXlsxExporter
                             SetUInt(sheet, rowIndex, 5, (uint)(k + 1));       //PointOrder = 组内顺序，1 起连续
                             SetFloat(sheet, rowIndex, 6, vertex.x);
                             SetFloat(sheet, rowIndex, 7, vertex.y);
-                            SetText(sheet, rowIndex, 8, vertex.color);
+                            SetText(sheet, rowIndex, 8, ResolveFactionColor(factionColors, vertex.stage, vertex.factionId));
                             SetBool(sheet, rowIndex, 9, vertex.enable);
 
                             rowIndex++;
@@ -347,6 +349,8 @@ public static class WorldMapToolXlsxExporter
         }
 
         List<WorldMapFactionRegion> regions = WorldMapToolDataIO.GroupRegions(draft);
+        //★ 同一 (时期,势力) 统一取"第一块区域"的颜色：把"同势力两块不同色"挡在导出这一层
+        Dictionary<string, string> factionColors = BuildFactionColorMap(regions);
         string absolutePath = Path.Combine(TopLevelFolderAbsolute, FactionMergedFileName);
 
         try
@@ -380,7 +384,7 @@ public static class WorldMapToolXlsxExporter
                             SetUInt(sheet, rowIndex, 5, (uint)(k + 1));
                             SetFloat(sheet, rowIndex, 6, vertex.x);
                             SetFloat(sheet, rowIndex, 7, vertex.y);
-                            SetText(sheet, rowIndex, 8, vertex.color);
+                            SetText(sheet, rowIndex, 8, ResolveFactionColor(factionColors, vertex.stage, vertex.factionId));
                             SetBool(sheet, rowIndex, 9, vertex.enable);
 
                             rowIndex++;
@@ -429,6 +433,25 @@ public static class WorldMapToolXlsxExporter
         //归一化坐标是 Y 向上，所以有符号面积为负 = 顺时针 → 反转成逆时针
         if (points.Count >= 3 && WorldMapToolGeometry.SignedArea(points) < 0f) ordered.Reverse();
         return ordered;
+    }
+
+    /// <summary>`(时期|势力)` → 该势力**第一块区域**的颜色。用于"同势力同色"的统一。</summary>
+    private static Dictionary<string, string> BuildFactionColorMap(List<WorldMapFactionRegion> regions)
+    {
+        var map = new Dictionary<string, string>();
+        for (int i = 0; i < regions.Count; i++)
+        {
+            string key = regions[i].stage + "|" + regions[i].factionId;
+            if (!map.ContainsKey(key)) map.Add(key, regions[i].color);   //只在第一次写入 → 取第一块
+        }
+        return map;
+    }
+
+    /// <summary>取该势力统一的颜色；查不到（理论不可达）时回退 null，由调用方保证有值。</summary>
+    private static string ResolveFactionColor(Dictionary<string, string> map, uint stage, uint factionId)
+    {
+        string color;
+        return map.TryGetValue(stage + "|" + factionId, out color) ? color : null;
     }
 
     // ══════════════════ (Kind, Type, RefId) 使用清单 ══════════════════

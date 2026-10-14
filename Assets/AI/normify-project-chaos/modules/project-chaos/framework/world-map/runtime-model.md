@@ -5,14 +5,14 @@ parent: project-chaos.framework.world-map
 name: {zh: "运行时视图模型", en: "Runtime View Model"}
 description:
   zh: >
-      WorldMapService 产出的运行时视图类型：WorldMapPoint（归一化位置、Kind/Type/RefId、Scale、Layer）与 WorldFactionArea（FactionId、RegionId、颜色、顶点数组），均已按 MapId/时期与 Enable 过滤。
+      WorldMapPoint 与 WorldFactionArea 是服务返回的运行时视图。一个势力可拥有多块区域（同 factionId、不同 regionId），这就是飞地的表示。Contains(normalized) 用射线法判定且把边算在内；编辑器具与运行时各有一份实现（运行时程序集引用不到编辑器程序集），两边都注明改语义要一起改。
       
   en: >
-      Runtime view types produced by WorldMapService: WorldMapPoint (normalised position, Kind/Type/RefId, Scale, Layer) and WorldFactionArea (FactionId, RegionId, colour, vertex array), both already filtered by MapId/era and Enable.
+      WorldMapPoint and WorldFactionArea are the runtime views returned by the service. A faction may own several areas (same factionId, different regionId) — that is how enclaves are represented. Contains(normalized) does the ray-casting test with on-edge counting as inside; it is deliberately implemented here as well as in the editor tool because the runtime assembly cannot reference the editor one (both sides say to change the semantics together).
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:30:54.569Z"
-fingerprint: c51436e81a83e921702bb94672a48d6f54bf5d0be25b0c1ad09d731fee95a949
+revision: a7c3b8fe6345669cb33b508b5355f6a13e4cf0af
+updated_at: "2026-10-14T13:18:15.975Z"
+fingerprint: 228b076c0e3d632862ad2a0330e24eb79b93f3156f0d3f02f127506abb2ff8d2
 source:
   - path: "Assets/Scripts/Runtime/GameBase/WorldMap/WorldMapPoint.cs"
   - path: "Assets/Scripts/Runtime/GameBase/WorldMap/WorldFactionArea.cs"
@@ -21,9 +21,27 @@ apis:
     path: "Assets/Scripts/Runtime/GameBase/WorldMap/WorldMapPoint.cs"
     description:
       zh: >
-          地图点位与势力区域的运行时视图类型（归一化位置、颜色、顶点数组）。
+          点位的运行时视图类型（归一化位置、Kind/Type/RefId、Scale、Layer）。
           
       en: >
-          Runtime view types for a map point and a faction area (normalised position, colour, vertex array).
+          Runtime view type for a map point (normalised position, Kind/Type/RefId, Scale, Layer).
+          
+  - protocol: file
+    path: "Assets/Scripts/Runtime/GameBase/WorldMap/WorldFactionArea.cs"
+    description:
+      zh: >
+          一块势力区域的运行时视图（一个多边形）；同一 factionId 可有多个（飞地）。
+          
+      en: >
+          Runtime view type for one faction region (one polygon); several of them may share a factionId (enclaves).
+          
+  - protocol: rpc
+    path: "WorldFactionArea.Contains"
+    description:
+      zh: >
+          点在多边形内判定（边算在内）；供势力归属判定使用。
+          
+      en: >
+          Point-in-polygon containment with edges counting as inside; used by the faction ownership test.
           
 ---

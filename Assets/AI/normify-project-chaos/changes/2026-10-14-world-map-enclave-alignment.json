@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "id": "2026-10-14-world-map-enclave-alignment",
+  "title": {
+    "en": "World map tool: coordinate alignment fix + faction enclaves",
+    "zh": "世界观地图：坐标对齐修复 + 势力飞地支持"
+  },
+  "status": "verified",
+  "intent": {
+    "en": "Fix the authoring tool's 'what you see is not what you click' bug (GUI.BeginClip does translate the origin, proven by an in-editor probe) by drawing in clip-local coordinates while hit-testing keeps window coordinates; and support enclaves — several disconnected territories of the same faction — by adding a 'new region (same faction)' flow, a same-faction colour constraint, and runtime faction-level aggregation (FactionIds / TryGetFactionAt / WorldFactionArea.Contains).",
+    "zh": "修掉绘制工具「所见≠所点」：实测 GUI.BeginClip 会平移坐标原点，故绘制改用剪辑局部坐标、命中判定仍用窗口坐标；并支持飞地——同一势力的多块不相连领地：新增「新建区域(同势力)」流程、同势力同色约束、运行时按势力聚合（FactionIds / TryGetFactionAt / WorldFactionArea.Contains）。"
+  },
+  "modules": {
+    "modify": [
+      "project-chaos.editor-tools.worldmap-tool.window",
+      "project-chaos.editor-tools.worldmap-tool.validator",
+      "project-chaos.editor-tools.worldmap-tool.xlsx-exporter",
+      "project-chaos.framework.world-map.service",
+      "project-chaos.framework.world-map.runtime-model"
+    ]
+  },
+  "acceptance": [
+    "工具坐标对齐自检 Tools/局外地图/8 输出 PASS（|p-c| 与 |p2-c| < 0.5），且 BeginClip 原点实测仍为平移",
+    "同势力两块不相连领地在合并表中 RegionId 为 N/N+1 且 Color 相同",
+    "同一 (Stage,FactionId) 颜色不一致时校验器报 Error 且顶层合并表拒绝导出",
+    "运行时 FactionIds(1) 去重正确；TryGetFactionAt 在 A 片内/B 片内均返回同一 factionId，两片之间缝隙返回 false",
+    "同势力多块区域颜色归一化为第一块（冲突时 Warn 一次）",
+    "用户草稿与配置表在测试后逐字节还原（SHA256 10/10 一致）"
+  ],
+  "note": "工具坐标对齐修复（实测 BeginClip 会平移原点 → 绘制改剪辑局部坐标、命中仍窗口坐标；菜单 8 自检 PASS 误差 0.000）+ 飞地支持（新建区域(同势力) / 同势力同色 Error / 运行时 FactionIds + TryGetFactionAt + Contains + 颜色归一化）。5 个模块描述与 API 已更新；顺带刷新 assets.fonts.cn（MSYH SDF.asset 被 Unity 重写导致的漂移）。",
+  "revision": {
+    "before": null,
+    "after": "a7c3b8fe6345669cb33b508b5355f6a13e4cf0af"
+  },
+  "created_at": "2026-10-14T13:18:02.554Z",
+  "updated_at": "2026-10-14T13:18:19.135Z",
+  "closed_at": "2026-10-14T13:18:19.135Z"
+}

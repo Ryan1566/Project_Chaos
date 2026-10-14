@@ -15,11 +15,16 @@ using UnityEngine;
 ///
 /// ⚠ 本窗口产出的 xlsx **不要手工改**：改了就和草稿不一致，下次重导会被覆盖。
 ///
-/// ══════════════════ 两个设计上的硬点 ══════════════════
-/// ① **画布用 `GUI.BeginClip`，且坐标是「窗口坐标」**：`BeginClip` 只做裁剪、**不平移坐标原点**
-///    （平移是 `BeginGroup` 的行为）。所以底图矩形、点位、多边形的绘制坐标都带 `_pan` 偏移，
-///    不要以为进了 clip 就变成 (0,0) 起算 —— 这一条写错会让整张图偏移。
+/// ══════════════════ 三个设计上的硬点 ══════════════════
+/// ① **`GUI.BeginClip` 【会】平移坐标原点** —— 这一条以前写反了，正是"所见≠所点"的根因。
+///    **实测**（2022.3.57f1c2；探针 `WMClipProbe`，pixelsPerPoint=1.25）：
+///      `clipRect=(120,80,300,200)` 时，剪辑内 `(0,0)` 的屏幕点 **等于** 剪辑外 `clipRect.position` 的屏幕点，
+///      且 `delta = clipRect.position = (120,80)` → **与 `BeginGroup` 同源、确实平移原点**。
+///    → `BeginClip` ~ `EndClip` 之间**一律用剪辑局部坐标**（见 `ToClipLocal` / `imageRectLocal`）；
+///      而**鼠标命中判定继续用窗口坐标**（鼠标事件本身就是窗口坐标，不要跟着改）。
+///      两者混用 = 用户报的"点击位置和实际不一致"。
 /// ② **Y 轴翻转只在 `WorldMapToolGeometry` 里做**：本文件一律调它换算，**不自己写 `1 - y`**。
+/// ③ ①有机器自检兜着：菜单 `Tools/局外地图/8. 校验坐标对齐（所见即所点）`。
 /// </summary>
 public class WorldMapToolWindow : EditorWindow
 {
@@ -45,6 +50,27 @@ public class WorldMapToolWindow : EditorWindow
         window.Show();
     }
 
+    /// <summary>
+    /// **机器自检：所见 = 所点**（菜单 `Tools/局外地图/8.`）。
+    ///
+    /// 这里只做"标记 + 重绘"；真正的断言在 `RunAlignmentCheck` 里、
+    /// **Repaint 且位于 `BeginClip` 之内**时才执行 —— 只有那一刻才能量到剪辑原点的真实屏幕位置。
+    /// 以后改布局/缩放/绘制路径，跑一次这个菜单就知道有没有又错位。
+    /// </summary>
+    [MenuItem("Tools/局外地图/8. 校验坐标对齐（所见即所点）", false, 108)]
+    private static void RequestAlignmentCheck()
+    {
+        var window = GetWindow<WorldMapToolWindow>("世界观地图绘制工具");
+        if (window._draft == null)
+        {
+            Debug.LogError("[坐标对齐] 草稿未初始化，无法自检");
+            return;
+        }
+
+        window._pendingAlignmentCheck = true;
+        window.Repaint();
+    }
+
     // ══════════════════ 状态 ══════════════════
 
     private WorldMapDraft _draft;
@@ -59,8 +85,28 @@ public class WorldMapToolWindow : EditorWindow
     private bool _panInitialized;
 
     private Rect _canvasRect;
+
+    /// <summary>菜单 8 请求的一次性坐标自检（在 Repaint + 剪辑内执行）。</summary>
+    private bool _pendingAlignmentCheck;
+
     private bool _isPanning;
     private bool _spaceHeld;
+
+    /// <summary>
+    /// **笔尖**：下一个顶点插在它**之后**（用来表达"从任意点续画"）。索引指向 `_draft.factionVertices`。
+    /// **-1 = 自动**（取当前 (时期,势力,区域) 的最后一个顶点）。
+    /// </summary>
+    private int _penHeadIndex = -1;
+
+    /// <summary>当前选中的**顶点**索引（-1 = 没选）；「从选中顶点继续」用它。</summary>
+    private int _selectedVertexIndex = -1;
+
+    /// <summary>画布内鼠标位置（**窗口坐标**）。所有鼠标事件都更新；绘制前要过 `ToClipLocal`。</summary>
+    private Vector2 _mouseCanvasPos;
+    private bool _mouseInsideCanvas;
+
+    /// <summary>是否画"收口边"的淡虚线（默认开）。**虚线 ≠ 生成顺序**，只表示导出时会自动闭合。</summary>
+    private bool _showClosingDash = true;
 
     //「选择移动」模式的拖动状态：正在拖第几个点位/顶点
     private int _dragIndex = -1;
@@ -162,6 +208,7 @@ public class WorldMapToolWindow : EditorWindow
                 for (int i = region.sourceIndices.Count - 1; i >= 0; i--)
                     _draft.factionVertices.RemoveAt(region.sourceIndices[i]);
                 _selectedRegion = -1;
+                ResetPenHead(null);   //删除会移动下标 → 笔尖必须重置
                 ValidateNow();
             }
             _pendingDeleteRegion = -1;
@@ -189,6 +236,7 @@ public class WorldMapToolWindow : EditorWindow
                 PushUndo("清空势力顶点");
                 _draft.factionVertices.Clear();
                 _selectedRegion = -1;
+                ResetPenHead(null);
                 ValidateNow();
             }
         }
@@ -234,6 +282,7 @@ public class WorldMapToolWindow : EditorWindow
         }
         _selectedPoint = -1;
         _selectedRegion = -1;
+        ResetPenHead(null);   //撤销会整体回滚 → 顶点下标失效，笔尖必须重置
         _statusMessage = "已撤销（剩余 " + _undoStack.Count + " 步）";
         RefreshSourceTexture();
         ValidateNow();
@@ -390,15 +439,25 @@ public class WorldMapToolWindow : EditorWindow
         else if (_mode == ToolMode.DrawFactionPolygon)
         {
             EditorGUILayout.LabelField("时期", GUILayout.Width(34f));
+            uint prevStage = _stage;
             _stage = (uint)EditorGUILayout.IntPopup((int)_stage,
                 new[] { "1 战国末期", "2 秦朝", "3 秦末起义初期", "4 楚汉争霸", "5 汉刘邦时期" },
                 new[] { 1, 2, 3, 4, 5 }, GUILayout.Width(140f));
 
             EditorGUILayout.LabelField("FactionId", GUILayout.Width(64f));
+            uint prevFaction = _factionId;
             _factionId = (uint)Mathf.Max(0, EditorGUILayout.IntField((int)_factionId, GUILayout.Width(50f)));
+
+            //(时期,势力) 一变就自动带出该势力**已有区域**的颜色与推荐 RegionId ——
+            //不做这一步最容易画出"同一势力两块不同色"（飞地在本土之外，颜色却不一样）
+            if (_stage != prevStage || _factionId != prevFaction) OnFactionContextChanged();
 
             EditorGUILayout.LabelField("RegionId", GUILayout.Width(58f));
             _regionId = (uint)Mathf.Max(1, EditorGUILayout.IntField((int)_regionId, GUILayout.Width(50f)));
+
+            if (GUILayout.Button("新建区域(同势力)", GUILayout.Width(130f))) CreateNewRegionForCurrentFaction();
+
+            _showClosingDash = EditorGUILayout.ToggleLeft("显示闭合虚线", _showClosingDash, GUILayout.Width(104f));
 
             EditorGUILayout.LabelField("颜色", GUILayout.Width(34f));
             _factionColor = EditorGUILayout.TextField(_factionColor, GUILayout.Width(80f));
@@ -417,6 +476,33 @@ public class WorldMapToolWindow : EditorWindow
             EditorGUILayout.LabelField("（选择/移动 或 擦除 模式无放置参数）", EditorStyles.miniLabel);
         }
         EditorGUILayout.EndHorizontal();
+
+        // ── 第 3.5 行：笔尖控制（仅"画势力"模式；模式切换已延后到 Layout，所以同帧元素数稳定） ──
+        if (_mode == ToolMode.DrawFactionPolygon)
+        {
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("笔尖", GUILayout.Width(34f));
+
+            int headIndex = EffectivePenHeadIndex();
+            string headText = headIndex < 0
+                ? "（当前区域还没有顶点）"
+                : ("第 " + (headIndex + 1) + " 个顶点" + (IsPenHeadExplicit() ? "（手动指定）" : "（自动=末点）"));
+            EditorGUILayout.LabelField(headText, GUILayout.Width(200f));
+
+            bool canUseSelected = _selectedVertexIndex >= 0
+                && _selectedVertexIndex < _draft.factionVertices.Count
+                && IsInCurrentRegion(_draft.factionVertices[_selectedVertexIndex]);
+            EditorGUI.BeginDisabledGroup(!canUseSelected);
+            if (GUILayout.Button("从选中顶点继续", GUILayout.Width(120f)))
+                SetPenHead(_selectedVertexIndex, "从选中顶点继续");
+            EditorGUI.EndDisabledGroup();
+
+            if (GUILayout.Button("回到末点", GUILayout.Width(80f)))
+                ResetPenHead("笔尖已回到末点（自动 = 当前区域最后一个顶点）");
+
+            EditorGUILayout.LabelField("虚线=导出时自动闭合，不是生成顺序", EditorStyles.miniLabel);
+            EditorGUILayout.EndHorizontal();
+        }
 
         // ── 第 4 行：草稿 / 视图 / 撤销 ──
         EditorGUILayout.BeginHorizontal();
@@ -463,21 +549,39 @@ public class WorldMapToolWindow : EditorWindow
         {
             EditorGUI.DrawRect(_canvasRect, new Color(0.16f, 0.16f, 0.18f, 1f));
 
-            //BeginClip 只裁剪、不平移原点 → 下面用的都是**窗口坐标**
+            //自检要在剪辑外先量一次参考点（见 RunAlignmentCheck）
+            bool doCheck = _pendingAlignmentCheck;
+            Vector2 outZero = Vector2.zero, outClipPos = Vector2.zero;
+            if (doCheck)
+            {
+                outZero = GUIUtility.GUIToScreenPoint(Vector2.zero);
+                outClipPos = GUIUtility.GUIToScreenPoint(_canvasRect.position);
+            }
+
             GUI.BeginClip(_canvasRect);
-            Rect imageRect = GetImageRect();
+
+            //★ BeginClip 之后原点被平移到 _canvasRect.position（实测，见类注释①）
+            //  → 剪辑内的一切绘制都必须用【剪辑局部坐标】；
+            //    忘了减 _canvasRect.position 就是"所见≠所点"。
+            Rect imageRectLocal = ToClipLocal(GetImageRect());
 
             if (_sourceTexture != null)
             {
-                GUI.DrawTexture(imageRect, _sourceTexture, ScaleMode.StretchToFill);
+                GUI.DrawTexture(imageRectLocal, _sourceTexture, ScaleMode.StretchToFill);
             }
             else
             {
-                EditorGUI.DrawRect(imageRect, new Color(0.25f, 0.12f, 0.12f, 1f));
+                EditorGUI.DrawRect(imageRectLocal, new Color(0.25f, 0.12f, 0.12f, 1f));
             }
 
-            DrawFactionPolygons(imageRect);
-            DrawPoints(imageRect);
+            DrawFactionPolygons(imageRectLocal);
+            DrawPoints(imageRectLocal);
+
+            if (doCheck)
+            {
+                _pendingAlignmentCheck = false;
+                RunAlignmentCheck(outZero, outClipPos, imageRectLocal);
+            }
 
             GUI.EndClip();
 
@@ -488,7 +592,8 @@ public class WorldMapToolWindow : EditorWindow
         //提示文字用 GUI.Label（非 GUILayout）—— 不参与布局，Layout/Repaint 都能画
         GUI.Label(new Rect(_canvasRect.x + 6f, _canvasRect.y + 4f,
                 _canvasRect.width - 12f, 20f),
-            "滚轮缩放 / 中键或空格+左键拖拽平移 / 左键按当前模式操作", EditorStyles.miniLabel);
+            "滚轮缩放 / 中键或空格+左键拖拽平移 / 左键按当前模式操作　｜　实线=生成顺序，虚线=导出时自动闭合（不是生成顺序）",
+            EditorStyles.miniLabel);
 
         //⚠ 必须与开头的 BeginVertical 配对！漏掉 EndVertical 会让【整个窗口】的 GUILayout 状态失衡，
         //   Unity 只在 HostView 层报 "Invalid GUILayout state in WorldMapToolWindow view"，
@@ -496,10 +601,168 @@ public class WorldMapToolWindow : EditorWindow
         EditorGUILayout.EndVertical();
     }
 
-    /// <summary>底图当前在**窗口坐标**下的矩形。</summary>
+    /// <summary>底图当前在**窗口坐标**下的矩形。命中判定用这个（鼠标事件是窗口坐标）。</summary>
     private Rect GetImageRect()
     {
         return new Rect(_pan.x, _pan.y, _draft.imageWidth * _zoom, _draft.imageHeight * _zoom);
+    }
+
+    /// <summary>
+    /// 窗口坐标 → **剪辑局部坐标**（减掉 `_canvasRect.position`）。
+    /// `BeginClip` 会把原点平移到 `_canvasRect.position`（实测，见类注释①），
+    /// 所以剪辑内的绘制必须过这一层；**命中判定不要用**（鼠标事件是窗口坐标）。
+    /// </summary>
+    private Rect ToClipLocal(Rect windowRect)
+    {
+        return new Rect(windowRect.x - _canvasRect.x, windowRect.y - _canvasRect.y,
+                        windowRect.width, windowRect.height);
+    }
+
+    /// <summary>窗口坐标 → 剪辑局部坐标（点）。橡皮筋的鼠标位置要用它（缓存的是窗口坐标）。</summary>
+    private Vector2 ToClipLocal(Vector2 windowPoint)
+    {
+        return new Vector2(windowPoint.x - _canvasRect.x, windowPoint.y - _canvasRect.y);
+    }
+
+    // ══════════════════ 笔尖（"从任意点续画"） ══════════════════
+
+    /// <summary>该顶点是否属于当前 (时期,势力,区域)。</summary>
+    private bool IsInCurrentRegion(WorldMapFactionVertex v)
+    {
+        return v != null && v.stage == _stage && v.factionId == _factionId && v.regionId == _regionId;
+    }
+
+    /// <summary>当前区域内**最后一个顶点**在 draft 里的索引（该区域还没有顶点时返回 -1）。</summary>
+    private int LastIndexOfCurrentRegion()
+    {
+        int last = -1;
+        for (int i = 0; i < _draft.factionVertices.Count; i++)
+            if (IsInCurrentRegion(_draft.factionVertices[i])) last = i;
+        return last;
+    }
+
+    /// <summary>
+    /// **实际生效的笔尖**：显式笔尖有效（在范围内且属于当前区域）就用它；
+    /// 否则自动回退到"当前区域的最后一个顶点"（-1 = 该区域还没有顶点）。
+    /// </summary>
+    private int EffectivePenHeadIndex()
+    {
+        if (_penHeadIndex >= 0 && _penHeadIndex < _draft.factionVertices.Count
+            && IsInCurrentRegion(_draft.factionVertices[_penHeadIndex]))
+            return _penHeadIndex;
+
+        return LastIndexOfCurrentRegion();
+    }
+
+    /// <summary>笔尖是否为"用户显式指定"（状态栏措辞用）。</summary>
+    private bool IsPenHeadExplicit()
+    {
+        return _penHeadIndex >= 0 && _penHeadIndex < _draft.factionVertices.Count
+            && IsInCurrentRegion(_draft.factionVertices[_penHeadIndex]);
+    }
+
+    /// <summary>笔尖顶点（没有则 null）。</summary>
+    private WorldMapFactionVertex PenHeadVertex()
+    {
+        int i = EffectivePenHeadIndex();
+        return (i >= 0 && i < _draft.factionVertices.Count) ? _draft.factionVertices[i] : null;
+    }
+
+    /// <summary>把某个顶点设为笔尖（会校验它属于当前区域）。</summary>
+    private void SetPenHead(int vertexIndex, string why)
+    {
+        if (vertexIndex < 0 || vertexIndex >= _draft.factionVertices.Count) return;
+        if (!IsInCurrentRegion(_draft.factionVertices[vertexIndex]))
+        {
+            _statusMessage = "该顶点不属于当前 时期/势力/区域，不能设为笔尖";
+            return;
+        }
+
+        _penHeadIndex = vertexIndex;
+        _selectedVertexIndex = vertexIndex;
+        _statusMessage = "笔尖已移到第 " + (vertexIndex + 1) + " 个顶点（" + why + "），接下来从它连线";
+    }
+
+    /// <summary>清空笔尖 → 回到"自动 = 当前区域最后一个顶点"。</summary>
+    private void ResetPenHead(string why)
+    {
+        _penHeadIndex = -1;
+        _selectedVertexIndex = -1;
+        if (!string.IsNullOrEmpty(why)) _statusMessage = why;
+    }
+
+    /// <summary>
+    /// 新顶点要插入的位置 = **笔尖之后**。
+    /// 笔尖无效/不属于当前区域时回退到"该区域在草稿里的最后一个顶点之后" ——
+    /// **不要无脑 Add 到整个列表尾**：列表里混着其它区域，那样会把区域块打散（导出虽无害但难读）。
+    /// </summary>
+    private int InsertIndexAfterPenHead()
+    {
+        int head = EffectivePenHeadIndex();
+        if (head >= 0 && head < _draft.factionVertices.Count) return head + 1;
+
+        int last = LastIndexOfCurrentRegion();
+        return last >= 0 ? last + 1 : _draft.factionVertices.Count;
+    }
+
+    /// <summary>
+    /// 显示用"边计划"：**链边 = N-1**（生成顺序相邻的两点）；**收口边仅 N>=3 且开关打开**。
+    /// 抽成纯函数是为了让绘制与自测**共用同一套判据**（验收 1 要断言边数）。
+    /// </summary>
+    private static void GetDisplayEdgePlan(int vertexCount, bool showClosing, out int chainCount, out bool hasClosing)
+    {
+        chainCount = vertexCount > 1 ? vertexCount - 1 : 0;
+        hasClosing = showClosing && vertexCount >= 3;
+    }
+
+    /// <summary>画淡虚线：把一条线切成若干"实段/空段"，不引新依赖。</summary>
+    private static void DrawDashedLine(Vector2 from, Vector2 to, Color color, float width, float seg, float gap)
+    {
+        Vector2 delta = to - from;
+        float length = delta.magnitude;
+        if (length < 0.5f) return;
+
+        Vector2 dir = delta / length;
+        float step = seg + gap;
+        for (float done = 0f; done < length; done += step)
+        {
+            float end = Mathf.Min(done + seg, length);
+            DrawLine(from + dir * done, from + dir * end, color, width);
+        }
+    }
+
+    /// <summary>
+    /// **所见 = 所点** 的机器自检（菜单 `Tools/局外地图/8.`）。必须在**剪辑内、Repaint** 里跑。
+    ///
+    /// 两条断言：
+    ///   ① `|p - c| < 0.5`：命中路径（窗口坐标）的换算往返回到画布中心；
+    ///   ② `|p2 - c| < 0.5`：**绘制路径**（剪辑局部坐标 + 剪辑原点）也落在同一个点上；
+    ///   ③ 另外现场量一次剪辑原点：剪辑内 `(0,0)` 的屏幕点应等于剪辑外 `_canvasRect.position` 的屏幕点
+    ///      —— 这条是根因证据，Unity 若改了 `BeginClip` 语义会先在这里炸出来。
+    /// </summary>
+    private void RunAlignmentCheck(Vector2 outZero, Vector2 outClipPos, Rect imageRectLocal)
+    {
+        Rect windowImageRect = GetImageRect();
+        Vector2 c = _canvasRect.center;
+
+        Vector2 n = WorldMapToolGeometry.CanvasToNormalized(c, windowImageRect);
+        Vector2 p = WorldMapToolGeometry.NormalizedToCanvas(n, windowImageRect);                              //"所点"回算（窗口坐标）
+        Vector2 p2 = _canvasRect.position + WorldMapToolGeometry.NormalizedToCanvas(n, imageRectLocal);      //"所见"回算（剪辑局部 + 剪辑原点）
+
+        Vector2 insideZero = GUIUtility.GUIToScreenPoint(Vector2.zero);   //剪辑内 (0,0) 的屏幕点
+        bool clipOffsets = (insideZero - outClipPos).magnitude < 0.5f;
+
+        bool pass = (p - c).magnitude < 0.5f && (p2 - c).magnitude < 0.5f && clipOffsets;
+
+        string msg = "[坐标对齐] c=" + c + " n=" + n + " p=" + p + " p2=" + p2
+            + " | |p-c|=" + (p - c).magnitude.ToString("F3") + " |p2-c|=" + (p2 - c).magnitude.ToString("F3")
+            + " | clipRect=" + _canvasRect + " imageRectLocal=" + imageRectLocal
+            + " | insideZero=" + insideZero + " outClipPos=" + outClipPos
+            + " | BEGINCLIP_OFFSETS_ORIGIN=" + clipOffsets
+            + " || " + (pass ? "PASS" : "FAIL");
+
+        if (pass) Debug.Log(msg); else Debug.LogError(msg);
+        _statusMessage = msg;
     }
 
     private void FitToWindow()
@@ -521,9 +784,13 @@ public class WorldMapToolWindow : EditorWindow
     {
         Event e = Event.current;
 
+        //★ 鼠标位置**每个事件都缓存**（不能只在 Repaint 里取，否则橡皮筋会跟不上/不更新）
+        _mouseCanvasPos = e.mousePosition;
+        _mouseInsideCanvas = _canvasRect.Contains(e.mousePosition);
+
         if (e.type == EventType.KeyUp && e.keyCode == KeyCode.Space) { _spaceHeld = false; e.Use(); return; }
 
-        bool inside = _canvasRect.Contains(e.mousePosition);
+        bool inside = _mouseInsideCanvas;
 
         //滚轮缩放（以鼠标为锚点）
         if (e.type == EventType.ScrollWheel && inside)
@@ -616,7 +883,8 @@ public class WorldMapToolWindow : EditorWindow
                 break;
 
             case ToolMode.DrawFactionPolygon:
-                AddFactionVertex(normalized);
+                //先看是否点在**当前区域的已有顶点**附近：那是"把笔尖移过去"，**不新增顶点**
+                if (!TryPickVertexAsPenHead(mousePosition)) AddFactionVertex(normalized);
                 break;
 
             case ToolMode.Erase:
@@ -652,6 +920,41 @@ public class WorldMapToolWindow : EditorWindow
                          "，Type=" + _placeType + "，RefId=" + _placeRefId + "）";
     }
 
+    /// <summary>
+    /// 「画势力」模式下点在**当前区域的已有顶点**附近 → **不新增顶点**，改为把该顶点设为笔尖
+    /// （= 「从任意点续画」）。阈值与选择模式一致（屏幕 ~14px 折算到归一化空间）。
+    /// </summary>
+    private bool TryPickVertexAsPenHead(Vector2 mousePosition)
+    {
+        Vector2 normalized = WorldMapToolGeometry.ClampNormalized(
+            WorldMapToolGeometry.CanvasToNormalized(mousePosition, GetImageRect()));
+        float threshold = PickThreshold();
+
+        int best = -1;
+        float bestDistance = float.MaxValue;
+        for (int i = 0; i < _draft.factionVertices.Count; i++)
+        {
+            WorldMapFactionVertex v = _draft.factionVertices[i];
+            if (!IsInCurrentRegion(v)) continue;   //只认当前区域的顶点
+
+            float d = Vector2.Distance(v.Position, normalized);
+            if (d < bestDistance) { bestDistance = d; best = i; }
+        }
+
+        if (best >= 0 && bestDistance <= threshold)
+        {
+            SetPenHead(best, "点了已有顶点");
+            return true;
+        }
+        return false;
+    }
+
+    /// <summary>鼠标命中阈值（归一化空间）：屏幕上 ~14px。</summary>
+    private float PickThreshold()
+    {
+        return Mathf.Max(14f / Mathf.Max(1f, _draft.imageWidth * _zoom), 0.005f);
+    }
+
     private void AddFactionVertex(Vector2 normalized)
     {
         if (!WorldMapToolValidator.IsValidColor(_factionColor))
@@ -672,9 +975,18 @@ public class WorldMapToolWindow : EditorWindow
         };
         vertex.Position = normalized;
 
-        _draft.factionVertices.Add(vertex);
-        _statusMessage = "已加顶点：时期" + _stage + " / 势力" + _factionId +
-                         " / 区域" + _regionId + "（该区域共 " + CountRegionVertices() + " 个顶点）";
+        //★ 插到【笔尖之后】：这样"从任意点续画"就能被表达出来。
+        //  导出侧的 PointOrder 正是草稿里的**出现顺序**（WorldMapToolXlsxExporter.GetOrderedRegionVertices），
+        //  所以"插入到笔尖之后"就等价于"PointOrder 从该点续上"，**不需要动表结构或运行时**。
+        int insertAt = InsertIndexAfterPenHead();
+        _draft.factionVertices.Insert(insertAt, vertex);
+
+        //新顶点成为新笔尖 → 继续从它往下画
+        _penHeadIndex = insertAt;
+        _selectedVertexIndex = insertAt;
+
+        _statusMessage = "已加顶点（插在第 " + (insertAt + 1) + " 位）：时期" + _stage + " / 势力" + _factionId +
+                         " / 区域" + _regionId + "（该区域共 " + CountRegionVertices() + " 个顶点；笔尖=新顶点）";
     }
 
     private int CountRegionVertices()
@@ -686,6 +998,69 @@ public class WorldMapToolWindow : EditorWindow
             if (v != null && v.stage == _stage && v.factionId == _factionId && v.regionId == _regionId) count++;
         }
         return count;
+    }
+
+    /// <summary>该 `(时期,势力)` 下**下一个可用**的区域号（已有 1、2 → 返回 3）。</summary>
+    private uint NextRegionIdFor(uint stage, uint factionId)
+    {
+        uint max = 0;
+        for (int i = 0; i < _draft.factionVertices.Count; i++)
+        {
+            WorldMapFactionVertex v = _draft.factionVertices[i];
+            if (v == null || v.stage != stage || v.factionId != factionId) continue;
+            if (v.regionId > max) max = v.regionId;
+        }
+        return max + 1;
+    }
+
+    /// <summary>
+    /// `(时期,势力)` 变了之后：把**颜色**与**推荐 RegionId** 对齐到该势力已有的区域。
+    /// 这是"飞地与本土同色"的第一道保障（第二道是导出时按势力统一取第一块的颜色，
+    /// 第三道是校验里的"同势力不同色 = Error"）。
+    /// </summary>
+    private void OnFactionContextChanged()
+    {
+        List<WorldMapFactionRegion> regions = WorldMapToolDataIO.GroupRegions(_draft);
+        for (int i = 0; i < regions.Count; i++)
+        {
+            WorldMapFactionRegion region = regions[i];
+            if (region.stage != _stage || region.factionId != _factionId) continue;
+
+            _factionColor = region.color;                       //继承该势力已有颜色
+            _regionId = NextRegionIdFor(_stage, _factionId);    //推荐下一个区域号（新建飞地用）
+            ResetPenHead(null);                                 //换了势力 → 笔尖重置
+            _statusMessage = "已切到 时期" + _stage + "/势力" + _factionId + "：颜色继承 " + region.color
+                + "，推荐 RegionId=" + _regionId + "（要画飞地就点【新建区域(同势力)】）";
+            return;
+        }
+
+        //该势力还没有任何区域 → 用建议配色，区域号从 1 起
+        string suggested;
+        if (WorldMapToolDataIO.SuggestedFactionColors.TryGetValue(_factionId, out suggested)) _factionColor = suggested;
+        _regionId = 1;
+        ResetPenHead(null);
+        _statusMessage = "时期" + _stage + "/势力" + _factionId + " 还没有区域：颜色用建议值 " + _factionColor + "，RegionId 从 1 起";
+    }
+
+    /// <summary>
+    /// 「新建区域（同势力）」= 画**飞地**：`时期/势力` 不变，只把 `RegionId` 换成下一个可用号，
+    /// 并**继承该势力已有区域的颜色**（保证同势力同色）。
+    /// </summary>
+    private void CreateNewRegionForCurrentFaction()
+    {
+        uint next = NextRegionIdFor(_stage, _factionId);
+
+        List<WorldMapFactionRegion> regions = WorldMapToolDataIO.GroupRegions(_draft);
+        for (int i = 0; i < regions.Count; i++)
+        {
+            if (regions[i].stage == _stage && regions[i].factionId == _factionId) { _factionColor = regions[i].color; break; }
+        }
+
+        _regionId = next;
+        ResetPenHead(null);   //进了新区域 → 笔尖回到"自动=该区域末点"（该区域还没点，所以没有笔尖）
+        _statusMessage = "已新建 时期" + _stage + "/势力" + _factionId + "/区域" + next + "（飞地）"
+            + "　颜色 " + _factionColor + "　→ 接着在画布上点顶点即可";
+        Debug.Log("[局外地图] " + _statusMessage);
     }
 
     /// <summary>
@@ -722,6 +1097,7 @@ public class WorldMapToolWindow : EditorWindow
         {
             _selectedPoint = bestPoint;
             _selectedRegion = -1;
+            _selectedVertexIndex = -1;
             _dragIndex = bestPoint;
             _dragIsPoint = true;
             _statusMessage = "已选中点位 #" + (bestPoint + 1) + "（按住左键可拖动）";
@@ -748,11 +1124,16 @@ public class WorldMapToolWindow : EditorWindow
                     && regions[r].regionId == vertex.regionId) { _selectedRegion = r; break; }
             }
 
-            _statusMessage = "已选中势力顶点 #" + (vertexIndex + 1) + "（按住左键可拖动）";
+            //★ 需求 2-2：选择模式下点中顶点 → **同时设为笔尖**（便于发现"从任意点续画"）
+            _selectedVertexIndex = vertexIndex;
+            _penHeadIndex = vertexIndex;
+            _statusMessage = "已选中势力顶点 #" + (vertexIndex + 1) +
+                "（按住左键可拖动；**已设为笔尖**，切到「画势力」就能从它续画）";
             return;
         }
 
         _selectedPoint = -1;
+        _selectedVertexIndex = -1;
         _dragIndex = -1;
         _statusMessage = "未命中任何点位/顶点";
     }
@@ -849,6 +1230,7 @@ public class WorldMapToolWindow : EditorWindow
     private void DrawFactionPolygons(Rect imageRect)
     {
         List<WorldMapFactionRegion> regions = WorldMapToolDataIO.GroupRegions(_draft);
+        int penHead = EffectivePenHeadIndex();   //-1 = 当前区域没有顶点
 
         for (int r = 0; r < regions.Count; r++)
         {
@@ -865,7 +1247,6 @@ public class WorldMapToolWindow : EditorWindow
             Vector2 max = WorldMapToolGeometry.NormalizedToCanvas(new Vector2(bounds.xMax, bounds.yMin), imageRect);
             EditorGUI.DrawRect(new Rect(min.x, min.y, max.x - min.x, max.y - min.y), fill);
 
-            //边线（含闭合边 last -> first：本工具不重复首点，闭合是"画出来"的）
             Color lineColor = r == _selectedRegion ? new Color(1f, 0.3f, 0.3f, 1f) : fill;
             lineColor.a = 1f;
 
@@ -873,16 +1254,31 @@ public class WorldMapToolWindow : EditorWindow
             for (int k = 0; k < region.vertices.Count; k++)
                 canvasVertices.Add(WorldMapToolGeometry.NormalizedToCanvas(region.vertices[k], imageRect));
 
-            for (int k = 0; k < canvasVertices.Count; k++)
+            int chainCount;
+            bool hasClosing;
+            GetDisplayEdgePlan(canvasVertices.Count, _showClosingDash, out chainCount, out hasClosing);
+
+            //★ 链边：**只有生成顺序相邻的两点**之间才画实线（k → k+1）。
+            //  以前是对每个顶点都画 (k+1)%N，于是"末点→首点"也被画成实线 ——
+            //  用户看到的"连线总是从固定一个点出发连到最新的点"就是那条假边。
+            for (int k = 0; k < chainCount; k++)
+                DrawLine(canvasVertices[k], canvasVertices[k + 1], lineColor, 2f);
+
+            //★ 收口边：仅 N>=3，且用**淡虚线**。虚线 ≠ 生成顺序，只表示"导出时会自动闭合"。
+            if (hasClosing)
             {
-                Vector2 a = canvasVertices[k];
-                Vector2 b = canvasVertices[(k + 1) % canvasVertices.Count];
-                DrawLine(a, b, lineColor, 2f);
+                Color dashColor = lineColor;
+                dashColor.a = 0.4f;
+                DrawDashedLine(canvasVertices[canvasVertices.Count - 1], canvasVertices[0],
+                    dashColor, 1f, 8f, 6f);
             }
 
-            //顶点把手
+            //顶点把手（笔尖那个跳过，下面单独用醒目样式画）
             for (int k = 0; k < canvasVertices.Count; k++)
+            {
+                if (k < region.sourceIndices.Count && region.sourceIndices[k] == penHead) continue;
                 DrawDisc(canvasVertices[k], 4f, lineColor, false);
+            }
 
             //选区标签
             if (canvasVertices.Count > 0)
@@ -890,6 +1286,35 @@ public class WorldMapToolWindow : EditorWindow
                 GUI.Label(new Rect(canvasVertices[0].x + 6f, canvasVertices[0].y - 18f, 220f, 18f),
                     region.Label, EditorStyles.miniLabel);
             }
+
+            //★ 笔尖：更大半径 + 双环 + 十字 + tiny label（只画当前区域的那一个）
+            for (int k = 0; k < region.sourceIndices.Count && k < canvasVertices.Count; k++)
+            {
+                if (region.sourceIndices[k] != penHead) continue;
+
+                Vector2 c = canvasVertices[k];
+                Color headColor = new Color(1f, 0.55f, 0.10f, 1f);
+                DrawDisc(c, 9f, headColor, true);                                  //外环
+                DrawDisc(c, 4.5f, new Color(0.08f, 0.08f, 0.10f, 1f), false);       //内芯
+                DrawLine(new Vector2(c.x - 12f, c.y), new Vector2(c.x + 12f, c.y), headColor, 1.5f);
+                DrawLine(new Vector2(c.x, c.y - 12f), new Vector2(c.x, c.y + 12f), headColor, 1.5f);
+                GUI.Label(new Rect(c.x + 13f, c.y + 7f, 260f, 18f),
+                    "笔尖（下一个点从这里连）", EditorStyles.miniLabel);
+            }
+        }
+
+        //★ 橡皮筋：当前笔尖 → 鼠标位置（只有"画势力"模式 + 鼠标在画布内 + 笔尖有效时才画）
+        if (_mode == ToolMode.DrawFactionPolygon && _mouseInsideCanvas
+            && penHead >= 0 && penHead < _draft.factionVertices.Count)
+        {
+            Vector2 headCanvas = WorldMapToolGeometry.NormalizedToCanvas(
+                _draft.factionVertices[penHead].Position, imageRect);
+            //⚠ 缓存的是**窗口坐标**，画布内要转成**剪辑局部坐标**
+            Vector2 mouseLocal = ToClipLocal(_mouseCanvasPos);
+
+            DrawLine(headCanvas, mouseLocal, new Color(1f, 0.75f, 0.20f, 0.9f), 1.5f);
+            GUI.Label(new Rect(mouseLocal.x + 12f, mouseLocal.y + 6f, 220f, 18f),
+                "橡皮筋 → 点这里落下一个顶点", EditorStyles.miniLabel);
         }
     }
 
@@ -971,21 +1396,56 @@ public class WorldMapToolWindow : EditorWindow
     private void DrawRegionListPanel()
     {
         EditorGUILayout.BeginVertical(GUILayout.Width(300f));
-        EditorGUILayout.LabelField("势力区域", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("势力区域（按 时期→势力→区域 分组）", EditorStyles.boldLabel);
 
         _regionListScroll = EditorGUILayout.BeginScrollView(_regionListScroll, GUILayout.ExpandHeight(true));
 
         List<WorldMapFactionRegion> regions = WorldMapToolDataIO.GroupRegions(_draft);
 
+        //⚠ 平铺下标 r 必须保持为 regions 里的下标 —— 选中/删除/同步逻辑用的都是它
+        int curStage = int.MinValue, curFaction = int.MinValue;
         for (int r = 0; r < regions.Count; r++)
         {
             WorldMapFactionRegion region = regions[r];
+
+            // ── 新的一组 (时期,势力)：先打一行组汇总 ──
+            if ((int)region.stage != curStage || (int)region.factionId != curFaction)
+            {
+                if (curStage != int.MinValue) EditorGUILayout.Space();
+                curStage = (int)region.stage;
+                curFaction = (int)region.factionId;
+
+                int regionCount = 0, readyCount = 0;
+                string detail = string.Empty;
+                string groupColor = null;
+                bool sameColor = true;
+                for (int k = 0; k < regions.Count; k++)
+                {
+                    WorldMapFactionRegion g = regions[k];
+                    if ((int)g.stage != curStage || (int)g.factionId != curFaction) continue;
+
+                    regionCount++;
+                    if (g.vertices.Count >= 3) readyCount++;
+                    detail += (detail.Length > 0 ? "、" : "") + "R" + g.regionId + ":" + g.vertices.Count + "点";
+                    if (groupColor == null) groupColor = g.color;
+                    else if (!string.Equals(groupColor, g.color, System.StringComparison.OrdinalIgnoreCase)) sameColor = false;
+                }
+
+                EditorGUILayout.LabelField(
+                    "时期" + curStage + "（" + WorldMapToolDataIO.StageName((uint)curStage) + "）/ 势力" + curFaction
+                    + "　区域 " + regionCount + " 块，满3顶点 " + readyCount + "/" + regionCount
+                    + ((regionCount > 1 && !sameColor) ? "　⚠同势力颜色不一致" : ""),
+                    EditorStyles.boldLabel);
+                EditorGUILayout.LabelField("　　" + detail + "　颜色 " + groupColor, EditorStyles.miniLabel);
+            }
 
             EditorGUILayout.BeginHorizontal();
             if (r == _selectedRegion) EditorGUILayout.LabelField("▶", GUILayout.Width(14f));
             else EditorGUILayout.LabelField("", GUILayout.Width(14f));
 
-            if (GUILayout.Button(region.Label, EditorStyles.miniButton))
+            string shortLabel = "区域" + region.regionId + " · " + region.vertices.Count + "点"
+                + (region.vertices.Count >= 3 ? "" : "（不足3点）");
+            if (GUILayout.Button(shortLabel, EditorStyles.miniButton))
             {
                 _selectedRegion = r;
                 _selectedPoint = -1;
@@ -994,6 +1454,7 @@ public class WorldMapToolWindow : EditorWindow
                 _factionId = region.factionId;
                 _regionId = region.regionId;
                 _factionColor = region.color;
+                ResetPenHead(null);   //换了区域 → 笔尖回到"自动=该区域末点"
                 Repaint();
             }
 
@@ -1021,7 +1482,11 @@ public class WorldMapToolWindow : EditorWindow
             EditorGUILayout.EndHorizontal();
         }
 
+        if (regions.Count == 0) EditorGUILayout.LabelField("（还没有任何区域）", EditorStyles.miniLabel);
+
         EditorGUILayout.EndScrollView();
+
+        if (GUILayout.Button("新建区域（同势力 · 飞地）")) CreateNewRegionForCurrentFaction();
 
         if (GUILayout.Button("清空全部势力顶点") && _draft.factionVertices.Count > 0)
         {

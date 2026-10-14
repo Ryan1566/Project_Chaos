@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "id": "2026-10-14-world-map-pen-head",
+  "title": {
+    "en": "World map tool: pen-head chaining and dashed auto-close",
+    "zh": "世界观地图工具：笔尖连线与虚线收口"
+  },
+  "status": "verified",
+  "intent": {
+    "en": "Make polygon editing read the way it is drawn: preview only chains consecutive vertices with a solid line, shows the auto-closing edge as a dim dashed line, draws a rubber band from the pen head to the cursor, and lets any vertex be chosen as the pen head so drawing can continue from it (the new vertex is inserted right after the pen head).",
+    "zh": "让多边形编辑看起来等于它的生成顺序：预览只在相邻顶点之间画实线链边，收口边改为淡虚线，并维护「笔尖（最后一个生成点）」—— 从笔尖到鼠标画橡皮筋，且可指定任意顶点为笔尖，新顶点插入到笔尖之后，从而实现从任意点继续连线。"
+  },
+  "modules": {
+    "modify": [
+      "project-chaos.editor-tools.worldmap-tool.window"
+    ]
+  },
+  "acceptance": [
+    "预览只在生成顺序相邻顶点间画实线链边；收口边仅 N≥3 时以淡虚线绘制且可开关",
+    "笔尖（最后一个生成点）可用三处入口指定；新顶点插入到笔尖之后而不是列表末尾",
+    "导出后 PointOrder 1..N 连续且顺序等于插入链",
+    "Tools/局外地图/8 坐标对齐自检仍 PASS",
+    "用户草稿与配置表逐字节未变（SHA256 与备份一致）"
+  ],
+  "note": "绘制连线两条逻辑：链边只连生成顺序相邻点（实线）、收口边改淡虚线（可开关）、橡皮筋从笔尖跟鼠标；笔尖=最后一个生成点，可从「画势力模式点已有顶点 / 选择模式点中顶点 / 工具栏两按钮」指定，新顶点 Insert 到笔尖之后（可从任意点续画）。导出 PointOrder 1..N 连续且等于插入链；菜单 8 坐标对齐仍 PASS；用户草稿与表未变（SHA256 一致）。",
+  "revision": {
+    "before": null,
+    "after": "a7c3b8fe6345669cb33b508b5355f6a13e4cf0af"
+  },
+  "created_at": "2026-10-14T13:38:07.930Z",
+  "updated_at": "2026-10-14T13:38:19.470Z",
+  "closed_at": "2026-10-14T13:38:19.470Z"
+}
