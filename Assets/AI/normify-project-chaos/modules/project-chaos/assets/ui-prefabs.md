@@ -6,11 +6,13 @@ name: {zh: "UI 面板预制体", en: "UI Panel Prefabs"}
 description:
   zh: >
       Assets/Resources/UIPanels 下的面板预制体，UIManager 按 PanelType 名实例化（MainMenuPanel / SettingPanel / SLPanel，2026-10-12 新增 WorldMapPanel，以及子预制体 RecordCell）。缺同名预制体的 PanelType 会被 ValidatePanelPrefabs 点名。
+      
   en: >
       Panel prefabs under Assets/Resources/UIPanels, instantiated by UIManager from the PanelType name (MainMenuPanel, SettingPanel, SLPanel, plus WorldMapPanel added 2026-10-12, and the RecordCell sub-prefab). A PanelType without a matching prefab is reported by ValidatePanelPrefabs.
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:30:46.651Z"
-fingerprint: 41516b4a541e19f32c5f1c3329decf59aae0938b86ba0338d9cf655d3e4d47cf
+      
+revision: b6dae190152cdcce64be3587bb098f7af5b42563
+updated_at: "2026-10-17T09:35:47.637Z"
+fingerprint: 130603b27b982dc64483959c931a49fccf9d58698769d841852bc91fa0afd642
 source:
   - path: "Assets/Resources/UIPanels/MainMenuPanel.prefab"
   - path: "Assets/Resources/UIPanels/SettingPanel.prefab"

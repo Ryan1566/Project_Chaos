@@ -2,7 +2,7 @@
   "schema_version": 1,
   "ok": true,
   "project": "normify-project-chaos",
-  "compiled_at": "2026-10-14T13:38:20.281Z",
+  "compiled_at": "2026-10-17T09:35:55.742Z",
   "stats": {
     "tree_count": 1,
     "module_count": 427,
@@ -15,7 +15,7 @@
     "planned_count": 0,
     "deprecated_count": 0,
     "policy_rule_count": 5,
-    "change_count": 4,
+    "change_count": 5,
     "open_change_count": 0
   },
   "warnings": {
@@ -28,8 +28,8 @@
   },
   "artifacts": {
     "tree.json": {
-      "sha256": "74223b07dcd81e284afefb74e9efc8bded2bf93b666e0f47e78a306f233db7ca",
-      "bytes": 1361688
+      "sha256": "89b61de65d4ae02563580bb4c0f9442fc42cfa67d59bf049b97bbe38a65c067f",
+      "bytes": 1361898
     },
     "outline.md": {
       "sha256": "45560740aab89a879d1abec47d7cf42dfc41cae584a5581144ee02819c82ef64",
@@ -40,7 +40,7 @@
       "bytes": 95223
     },
     "receipt.json": {
-      "sha256": "44df4c85d75a0698303e6e62909e765f4d67e68924e7724186f5925c4c9aad7f",
+      "sha256": "a37c555d4192df0a763676e8c06cbe2252d548fc5499a2647f730165825eb4fd",
       "bytes": 1097
     }
   }

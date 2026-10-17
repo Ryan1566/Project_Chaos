@@ -11,9 +11,9 @@ description:
   en: >
       WorldScene.unity: build-list entry 1, the game world scene and the target SLPanel switches to after loading a save. No script from this task's scope is attached to it.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.398Z"
-fingerprint: 82dfa0841c5fddf1d9c0e94e08448e608d45dd484e95f89a9d6eebcd6f647050
+revision: b6dae190152cdcce64be3587bb098f7af5b42563
+updated_at: "2026-10-17T09:35:47.638Z"
+fingerprint: e506587953a27728927733a43132675190a5f10a8135efa7e4fdf679c79e00a2
 source:
   - path: "Assets/Scenes/WorldScene.unity"
     line: 1

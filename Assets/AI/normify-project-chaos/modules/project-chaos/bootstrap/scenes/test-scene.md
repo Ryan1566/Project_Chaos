@@ -11,9 +11,9 @@ description:
   en: >
       Legacy test scene; as of 2026-10-12 it is no longer in Build Settings (EnterScene replaced it at index 0) but the file is kept on disk.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:30:54.571Z"
-fingerprint: 839cf8a5476d18a9f696b79227e2f58b5f45c0e88202a21d86a012a4f0ce8a45
+revision: b6dae190152cdcce64be3587bb098f7af5b42563
+updated_at: "2026-10-17T09:35:47.637Z"
+fingerprint: 5679929fc6eff75b2cac1cd10a2acc67dd9405e433ae740f453f9ac8a5bf33e9
 source:
   - path: "Assets/Scenes/TestScene.unity"
     line: 1

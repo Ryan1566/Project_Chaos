@@ -10,9 +10,9 @@ description:
   en: >
       WorldMap_世界观地图表.xlsx: exported by the world map authoring tool, placed at the top level of the source-table repo, directly consumable by ExcelTool/ExportExcelConfigs. Ten columns Index/MapId/Kind/Type/RefId/X/Y/Scale/Layer/Enable; X and Y are normalised 0~1 (X left-to-right, Y bottom-to-top); Kind 1 = fixed location, 2 = POI; (Kind,Type,RefId) keys into the location/POI table.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:30:54.567Z"
-fingerprint: d5c83a48c95d45397c00f77b51e215d44c01f22b1c66acacd7b98f2a297d6874
+revision: b6dae190152cdcce64be3587bb098f7af5b42563
+updated_at: "2026-10-17T09:35:47.638Z"
+fingerprint: 242ede5f266a3960f48642fa2f79492bcf0ab0be43faf3face06075d92be4174
 source:
   - path: "Assets/Excel/Chaos_excel/WorldMap_世界观地图表.xlsx"
 apis:

@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "id": "2026-10-17-world-map-new-faction",
+  "title": {
+    "en": "World map tool: new-faction region button",
+    "zh": "世界观地图工具：新建势力区域"
+  },
+  "status": "verified",
+  "intent": {
+    "en": "The authoring tool had two buttons calling the same 'new region (same faction)' method, so there was no way to start a brand-new faction. Turn the toolbar one into 'new faction area' (next free FactionId for the current era, RegionId = 1, colour chosen with avoidance: suggested palette → fallback palette → golden-angle derivation), keep the sidebar one for enclaves, and surface the existing factions plus the next id in the toolbar.",
+    "zh": "工具里两个按钮都调同一个「新建区域(同势力)」，因而无法新建一个全新势力。把工具栏那个改成「新建势力区域」（取当前时期下一个可用 FactionId、RegionId=1、颜色按 建议配色→后备调色板→黄金角色相派生 逐级避让），侧栏那个保留给飞地，并在工具栏常显「已有势力 … · 下一个 N」。"
+  },
+  "modules": {
+    "modify": [
+      "project-chaos.editor-tools.worldmap-tool.window"
+    ]
+  },
+  "acceptance": [
+    "工具栏按钮为「新建势力区域」→ 新方法 CreateNewFactionRegion；侧栏仍为「新建区域（同势力 · 飞地）」→ 旧方法，两者调用不同方法",
+    "点新建势力区域：FactionId 取该时期下一个可用号、RegionId=1、颜色与同时期其它势力不重复",
+    "手敲该时期尚不存在的 FactionId 时状态栏提示「是新势力」并给出避让色",
+    "新势力导出后 xlsx 出现该 FactionId 的行（RegionId=1）",
+    "编译 0 error；菜单 8 坐标对齐仍 PASS；用户草稿与表 SHA256 未变"
+  ],
+  "note": "重复的「新建区域(同势力)」按钮拆开：工具栏改为「新建势力区域」（下一可用 FactionId + RegionId=1 + 颜色逐级避让：建议配色→后备 8 色→黄金角色相派生，并加「已有势力 1,2 · 下一个 3」只读提示），侧栏保留飞地按钮；「该势力还没有区域」分支也不再静默沿用旧色。验收：第1次 → FactionId=3/R1/#B23A48，画 3 点后再点 → 4/R1/#2E8B57；导出后 xlsx 出现 S1F3R1 三行；菜单 8 仍 PASS；用户草稿/表 SHA256 10/10 未变。顺带刷新了 7 处漂移（用户的表与草稿重导、本次 WorldMapToolData.cs、以及 test/world 场景与本地化资产）。",
+  "revision": {
+    "before": null,
+    "after": "b6dae190152cdcce64be3587bb098f7af5b42563"
+  },
+  "created_at": "2026-10-17T09:35:35.970Z",
+  "updated_at": "2026-10-17T09:35:54.873Z",
+  "closed_at": "2026-10-17T09:35:54.873Z"
+}

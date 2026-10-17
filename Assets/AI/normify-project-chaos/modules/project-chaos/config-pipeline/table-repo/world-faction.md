@@ -10,9 +10,9 @@ description:
   en: >
       WorldFaction_势力范围配置表.xlsx: the tool exports five per-era part tables (in the _worldmap_tool subfolder, never scanned by the exporter) which are merged into this single top-level table. Nine columns Index/Stage/FactionId/RegionId/PointOrder/X/Y/Color/Enable; vertices of one (Stage,FactionId,RegionId) connect in ascending PointOrder into a closed polygon of at least 3 vertices; Color is a #RRGGBB string.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:30:54.567Z"
-fingerprint: ceb780038e01d16123cb07e941fd15813e0242056f0f6d75e73796f41de7886b
+revision: b6dae190152cdcce64be3587bb098f7af5b42563
+updated_at: "2026-10-17T09:35:47.638Z"
+fingerprint: 79fe0a4104293edee319629b78ce1aa1dedab6d99339ae5e7a5cbf33a46373de
 source:
   - path: "Assets/Excel/Chaos_excel/WorldFaction_势力范围配置表.xlsx"
 apis:

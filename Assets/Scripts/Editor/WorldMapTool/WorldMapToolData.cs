@@ -201,6 +201,16 @@ public static class WorldMapToolDataIO
         { 9, "#808080" },   // 中立 / 无主
     };
 
+    /// <summary>
+    /// 「新势力」的**后备调色板**：建议配色表命中不了、或该颜色已被本时期其它势力占用时，依次尝试这里。
+    /// 取明显互相区分的色相，尽量让新势力不与本时期已有势力撞色。
+    /// </summary>
+    public static readonly string[] FallbackFactionColors =
+    {
+        "#C0392B", "#1F618D", "#117A65", "#8E44AD",
+        "#B9770E", "#7F8C8D", "#2C3E50", "#A04000",
+    };
+
     /// <summary>时期的中文名（1~5），用于侧栏显示。</summary>
     public static readonly string[] StageNames =
     {

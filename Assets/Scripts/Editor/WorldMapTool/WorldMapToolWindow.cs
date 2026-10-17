@@ -455,7 +455,9 @@ public class WorldMapToolWindow : EditorWindow
             EditorGUILayout.LabelField("RegionId", GUILayout.Width(58f));
             _regionId = (uint)Mathf.Max(1, EditorGUILayout.IntField((int)_regionId, GUILayout.Width(50f)));
 
-            if (GUILayout.Button("新建区域(同势力)", GUILayout.Width(130f))) CreateNewRegionForCurrentFaction();
+            //★ 「新建势力区域」= 开一个**新势力**（FactionId+1、RegionId 从 1 起、颜色避让）
+            //   与侧栏的「新建区域（同势力 · 飞地）」不同：那个是同一势力再加一块领地。
+            if (GUILayout.Button("新建势力区域", GUILayout.Width(130f))) CreateNewFactionRegion();
 
             _showClosingDash = EditorGUILayout.ToggleLeft("显示闭合虚线", _showClosingDash, GUILayout.Width(104f));
 
@@ -502,6 +504,11 @@ public class WorldMapToolWindow : EditorWindow
 
             EditorGUILayout.LabelField("虚线=导出时自动闭合，不是生成顺序", EditorStyles.miniLabel);
             EditorGUILayout.EndHorizontal();
+
+            //势力号只读提示（**常量占位、始终存在** → 不改变 IMGUI 元素数）
+            EditorGUILayout.LabelField(
+                "已有势力 " + ExistingFactionsText(_stage) + " · 下一个 " + NextFactionIdFor(_stage),
+                EditorStyles.miniLabel);
         }
 
         // ── 第 4 行：草稿 / 视图 / 撤销 ──
@@ -1030,16 +1037,18 @@ public class WorldMapToolWindow : EditorWindow
             _regionId = NextRegionIdFor(_stage, _factionId);    //推荐下一个区域号（新建飞地用）
             ResetPenHead(null);                                 //换了势力 → 笔尖重置
             _statusMessage = "已切到 时期" + _stage + "/势力" + _factionId + "：颜色继承 " + region.color
-                + "，推荐 RegionId=" + _regionId + "（要画飞地就点【新建区域(同势力)】）";
+                + "，推荐 RegionId=" + _regionId + "（要画飞地就点侧栏【新建区域（同势力 · 飞地）】）";
             return;
         }
 
-        //该势力还没有任何区域 → 用建议配色，区域号从 1 起
-        string suggested;
-        if (WorldMapToolDataIO.SuggestedFactionColors.TryGetValue(_factionId, out suggested)) _factionColor = suggested;
+        //该势力还没有任何区域（= 新势力）→ **必须给一个避让后的颜色**：
+        //以前只在建议配色表命中时才换色，未命中就静默**沿用上一个势力的颜色** ——
+        //用户"感觉只能在已有势力里改"的坑之一就在这里。
+        _factionColor = PickColorForNewFaction(_stage, _factionId);
         _regionId = 1;
         ResetPenHead(null);
-        _statusMessage = "时期" + _stage + "/势力" + _factionId + " 还没有区域：颜色用建议值 " + _factionColor + "，RegionId 从 1 起";
+        _statusMessage = "时期" + _stage + "/势力" + _factionId + " 是新势力：颜色 " + _factionColor
+            + "（可点『按势力取色』重取），RegionId 从 1 起";
     }
 
     /// <summary>
@@ -1059,6 +1068,90 @@ public class WorldMapToolWindow : EditorWindow
         _regionId = next;
         ResetPenHead(null);   //进了新区域 → 笔尖回到"自动=该区域末点"（该区域还没点，所以没有笔尖）
         _statusMessage = "已新建 时期" + _stage + "/势力" + _factionId + "/区域" + next + "（飞地）"
+            + "　颜色 " + _factionColor + "　→ 接着在画布上点顶点即可";
+        Debug.Log("[局外地图] " + _statusMessage);
+    }
+
+    /// <summary>该**时期**下下一个可用的势力号 = 该时期所有顶点里最大 `factionId` + 1（该时期没有顶点则 1）。</summary>
+    private uint NextFactionIdFor(uint stage)
+    {
+        uint max = 0;
+        for (int i = 0; i < _draft.factionVertices.Count; i++)
+        {
+            WorldMapFactionVertex v = _draft.factionVertices[i];
+            if (v == null || v.stage != stage) continue;
+            if (v.factionId > max) max = v.factionId;
+        }
+        return max + 1;
+    }
+
+    /// <summary>该时期已经出现过的势力号（升序、去重），用于工具栏只读提示。</summary>
+    private string ExistingFactionsText(uint stage)
+    {
+        var ids = new List<uint>();
+        for (int i = 0; i < _draft.factionVertices.Count; i++)
+        {
+            WorldMapFactionVertex v = _draft.factionVertices[i];
+            if (v == null || v.stage != stage) continue;
+            if (!ids.Contains(v.factionId)) ids.Add(v.factionId);
+        }
+        if (ids.Count == 0) return "（无）";
+
+        ids.Sort();
+        var sb = new System.Text.StringBuilder();
+        for (int i = 0; i < ids.Count; i++) sb.Append(i == 0 ? "" : ",").Append(ids[i]);
+        return sb.ToString();
+    }
+
+    /// <summary>
+    /// 给"新势力"挑颜色：
+    ///   ① 先试 `SuggestedFactionColors`，但**必须避开该时期其它势力已用的颜色**；
+    ///   ② 建议色被占用 / id 超出 → 走 `FallbackFactionColors`；
+    ///   ③ 全被占用 → 按**黄金角**做确定性色相派生（同一个 id 每次得到同一个颜色）。
+    /// 这样新势力既不会静默沿用上一个势力的颜色，也不会和同时期的势力撞色。
+    /// </summary>
+    private string PickColorForNewFaction(uint stage, uint factionId)
+    {
+        var used = new HashSet<string>(System.StringComparer.OrdinalIgnoreCase);
+        for (int i = 0; i < _draft.factionVertices.Count; i++)
+        {
+            WorldMapFactionVertex v = _draft.factionVertices[i];
+            if (v == null || v.stage != stage) continue;
+            if (v.factionId == factionId) continue;          //同一势力不算冲突
+            if (!string.IsNullOrEmpty(v.color)) used.Add(v.color);
+        }
+
+        //① 建议配色表
+        string suggested;
+        if (WorldMapToolDataIO.SuggestedFactionColors.TryGetValue(factionId, out suggested)
+            && !used.Contains(suggested))
+            return suggested;
+
+        //② 固定后备调色板
+        for (int i = 0; i < WorldMapToolDataIO.FallbackFactionColors.Length; i++)
+        {
+            string candidate = WorldMapToolDataIO.FallbackFactionColors[i];
+            if (!used.Contains(candidate)) return candidate;
+        }
+
+        //③ 黄金角确定性派生
+        float hue = (factionId * 137.508f) % 360f;
+        Color derived = Color.HSVToRGB(hue / 360f, 0.45f, 0.62f);
+        return "#" + ColorUtility.ToHtmlStringRGB(derived);
+    }
+
+    /// <summary>
+    /// 「新建势力区域」= 开一个**新势力**：`FactionId` 取该时期下一个可用号、`RegionId` 从 1 起，
+    /// 颜色用 `PickColorForNewFaction`（避开本时期已用色）。
+    /// 与侧栏的「新建区域（同势力 · 飞地）」**不同**：那个是同一势力再加一块不相连的领地。
+    /// </summary>
+    private void CreateNewFactionRegion()
+    {
+        _factionId = NextFactionIdFor(_stage);
+        _regionId = 1;                                        //新势力的第一块区域
+        _factionColor = PickColorForNewFaction(_stage, _factionId);
+        ResetPenHead(null);
+        _statusMessage = "已新建 时期" + _stage + "/势力" + _factionId + "/区域1（新势力）"
             + "　颜色 " + _factionColor + "　→ 接着在画布上点顶点即可";
         Debug.Log("[局外地图] " + _statusMessage);
     }
