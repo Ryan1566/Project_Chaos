@@ -239,6 +239,7 @@
   "file:Assets/Scripts/Editor/UIPanelAnimatorTool/UIPanelAnimatorTool.cs#L15-L86": "project-chaos.editor-tools.ui-animator",
   "file:Assets/Scripts/Editor/WorldMapTool/WorldMapToolData.cs": "project-chaos.editor-tools.worldmap-tool.draft-store",
   "file:Assets/Scripts/Editor/WorldMapTool/WorldMapToolGeometry.cs": "project-chaos.editor-tools.worldmap-tool.geometry",
+  "file:Assets/Scripts/Editor/WorldMapTool/WorldMapToolRegionTree.cs": "project-chaos.editor-tools.worldmap-tool.region-tree",
   "file:Assets/Scripts/Editor/WorldMapTool/WorldMapToolValidator.cs": "project-chaos.editor-tools.worldmap-tool.validator",
   "file:Assets/Scripts/Editor/WorldMapTool/WorldMapToolWindow.cs": "project-chaos.editor-tools.worldmap-tool.window",
   "file:Assets/Scripts/Editor/WorldMapTool/WorldMapToolXlsxExporter.cs": "project-chaos.editor-tools.worldmap-tool.xlsx-exporter",
@@ -926,6 +927,7 @@
   "rpc:UIPanelAnimatorTool.ValidateAddAnimatorToAllPanelPrefabs": "project-chaos.editor-tools.ui-animator",
   "rpc:UIPanelStaggerItem.order": "project-chaos.framework.ui-animation.stagger-item",
   "rpc:WorldFactionArea.Contains": "project-chaos.framework.world-map.runtime-model",
+  "rpc:WorldMapRegionTree.Build": "project-chaos.editor-tools.worldmap-tool.region-tree",
   "rpc:WorldMapService.FactionIds": "project-chaos.framework.world-map.service",
   "rpc:WorldMapService.TryGetFactionAt": "project-chaos.framework.world-map.service"
 }

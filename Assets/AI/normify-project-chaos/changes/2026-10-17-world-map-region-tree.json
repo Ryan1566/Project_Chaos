@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "id": "2026-10-17-world-map-region-tree",
+  "title": {
+    "en": "World map tool: resizable faction-region tree with drag-and-drop",
+    "zh": "世界观地图工具：可拖宽的势力区域主从树与拖放"
+  },
+  "status": "verified",
+  "intent": {
+    "en": "The flat faction-region list was not readable. Turn it into a resizable, collapsible three-level master/detail tree (era → faction → region) with drag-and-drop: dragging a region inside its faction reorders and renumbers RegionId (visual order = number), dragging it onto another faction moves the region (FactionId/RegionId/Color rewritten, with confirmation and undo).",
+    "zh": "侧栏的势力区域扁平列表不直观。改成可拖宽、可折叠的三级主从树（时期 → 势力 → 区域）并支持拖放：同势力内拖区域 = 排序并重编 RegionId（视觉顺序=号码）；拖到另一个势力下 = 改该区域全部顶点的 FactionId/RegionId/Color（需二次确认、可撤销）。"
+  },
+  "modules": {
+    "create": [
+      "project-chaos.editor-tools.worldmap-tool.region-tree"
+    ],
+    "modify": [
+      "project-chaos.editor-tools.worldmap-tool.window"
+    ]
+  },
+  "acceptance": [
+    "侧栏为 时期→势力→区域 三级可折叠树，点击区域行能同步工具栏上下文",
+    "画布与侧栏之间有可拖分隔条，宽度可调并持久化（260~640）",
+    "拖动区域行到同一势力内另一区域 = 按新顺序重编 RegionId（视觉顺序=号码）",
+    "拖动区域行到另一个势力 = 改全部顶点的 FactionId/RegionId/Color，且需二次确认、可撤销",
+    "导出后 xlsx 反映新归属与新 RegionId",
+    "编译 0 error；菜单 8 坐标对齐仍 PASS；用户草稿与表 SHA256 未变"
+  ],
+  "note": "侧栏扁平列表 → 可拖宽 + 三级主从树（时期→势力→区域，可折叠、势力带色块、区域显示顶点数与是否满3）；画布/侧栏间加可拖分隔条（260~640，EditorPrefs 持久化，实测 300→420 且画布 936→810）；拖放：同势力内拖区域=按视觉顺序重编 RegionId（把顶点块整体搬移后再编号，修掉了\"只改号码不搬块\"的真 bug），跨势力拖=改全部顶点 FactionId/RegionId/Color 并需二次确认、可撤销。新增模块 editor-tools.worldmap-tool.region-tree（树模型，纯数据）。验收：跨势力移动 F1/R1→F2/R4 且撤销回滚；排序后 R1@x0.250 等；xlsx 回读出现 F2/R4 四行；菜单 8 仍 PASS；用户草稿/表 SHA256 10/10 未变。",
+  "revision": {
+    "before": null,
+    "after": "3e4115979ea7e37fe093c0b4cd179612739ab7c5"
+  },
+  "created_at": "2026-10-17T09:59:24.661Z",
+  "updated_at": "2026-10-17T09:59:33.469Z",
+  "closed_at": "2026-10-17T09:59:33.469Z"
+}

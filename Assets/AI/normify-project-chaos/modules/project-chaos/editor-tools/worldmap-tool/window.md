@@ -5,14 +5,14 @@ parent: project-chaos.editor-tools.worldmap-tool
 name: {zh: "工具窗口", en: "Tool Window"}
 description:
   zh: >
-      绘制窗口：5 种模式、可缩放平移的画布、点位与多边形绘制、侧栏列表、三个导出按钮。绘制在 GUI.BeginClip 内且用剪辑局部坐标（探针实测 BeginClip 会平移原点），命中判定用窗口坐标，两者等价性由菜单 8 断言。预览只在生成顺序相邻顶点间画实线，收口边为淡虚线；维护「笔尖」（可点选已有顶点/选择模式/工具栏按钮指定），橡皮筋从笔尖跟鼠标，新顶点插入到笔尖之后。两个“新建”按钮分工：工具栏「新建势力区域」取该时期下一个可用 FactionId、RegionId=1，并对颜色逐级避让（建议配色→后备调色板→黄金角派生）；侧栏「新建区域（同势力·飞地）」建同一势力的飞地。
+      绘制窗口：5 种模式、可缩放平移的画布、点位与多边形绘制、可拖宽侧栏与三个导出按钮。绘制在 GUI.BeginClip 内用剪辑局部坐标（实测会平移原点），命中判定用窗口坐标，菜单 8 断言两者一致。预览只在生成顺序相邻顶点间画实线，收口边为淡虚线；维护「笔尖」并可插到笔尖之后。两个“新建”按钮分工：工具栏「新建势力区域」取该时期下一可用 FactionId，侧栏「新建区域（同势力·飞地）」建飞地。侧栏是 时期→势力→区域 三级可折叠树，支持拖拽「区域」行：同势力内排序、或跨势力移动（跨势力需二次确认）。
       
   en: >
-      Authoring window for the meta world map. Drawing uses clip-local coordinates inside GUI.BeginClip (probe: it translates the origin); hit-testing uses window coordinates, asserted by menu 8. Preview chains consecutive vertices only, the auto-close edge is dashed, and new vertices insert after the pen head. Toolbar 'new faction area' allocates the era's next free FactionId with RegionId=1 and an avoided colour; sidebar 'new region (same faction)' adds an enclave.
+      Meta world map authoring window. Drawing uses clip-local coordinates (GUI.BeginClip translates the origin) while hit-testing uses window coordinates; menu 8 asserts they match. Preview chains consecutive vertices, the auto-close edge is dashed, new vertices insert after the pen head. Toolbar 'new faction area' takes the era's next free FactionId. Sidebar: resizable era→faction→region tree; dragging a region reorders it within a faction or moves it to another faction (confirmed).
       
-revision: b6dae190152cdcce64be3587bb098f7af5b42563
-updated_at: "2026-10-17T09:35:52.613Z"
-fingerprint: 6ee21495aa5620eda45d929f696586b7e12d2507d2e9f1d1bd59c4948380fcf0
+revision: 3e4115979ea7e37fe093c0b4cd179612739ab7c5
+updated_at: "2026-10-17T09:59:30.828Z"
+fingerprint: 2ee8d583708cc6bca43d775b8ed5f66c1692b3482158387e676b0e3156e0fa1d
 source:
   - path: "Assets/Scripts/Editor/WorldMapTool/WorldMapToolWindow.cs"
 apis:

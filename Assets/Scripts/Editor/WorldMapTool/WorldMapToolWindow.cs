@@ -134,6 +134,31 @@ public class WorldMapToolWindow : EditorWindow
 
     private Vector2 _pointListScroll;
     private Vector2 _regionListScroll;
+
+    // ══════════ 右栏：可拖宽 + 三级树 + 拖拽排序 ══════════
+
+    private const string SidebarWidthPrefKey = "WorldMapTool.SidebarWidth";
+    private const string ExpandedPrefKey = "WorldMapTool.Tree.Expanded";
+    private const float MinSidebarWidth = 260f;
+    private const float MaxSidebarWidth = 640f;
+    private const float SplitterWidth = 6f;
+
+    /// <summary>右侧栏宽度（拖分隔条调整；存 EditorPrefs 以便重开窗口保持）。</summary>
+    private float _sidebarWidth = 300f;
+    private bool _resizingSidebar;
+
+    /// <summary>树展开状态（key 见 `WorldMapRegionTree.StageKey / FactionKey`）。</summary>
+    private readonly HashSet<string> _expanded = new HashSet<string>();
+
+    /// <summary>拖拽状态（窗口内拖放）。</summary>
+    private WorldMapDragNode _dragNode;
+    private Vector2 _dragStartPos;
+    private string _dropTargetKey;
+
+    //延后执行（IMGUI：改元素数量 / 改数据都必须等 Layout 之前统一应用）
+    private string _pendingExpandToggle;
+    private WorldMapMoveRegionIntent _pendingMoveRegion;
+    private WorldMapReorderIntent _pendingReorder;
     private Vector2 _issueScroll;
 
     // ══════════════════ 生命周期 ══════════════════
@@ -155,12 +180,14 @@ public class WorldMapToolWindow : EditorWindow
         }
 
         _initialized = true;
+        LoadSidebarPrefs();
         RefreshSourceTexture();
         ValidateNow();
     }
 
     private void OnDisable()
     {
+        SaveSidebarPrefs();
         //注：不做自动保存 —— 草稿是"作者的东西"，静默写盘容易覆盖掉别人的意图。
         //未保存状态在工具条上以醒目颜色提示，关窗后下次打开会提示"有未保存改动"。
     }
@@ -185,6 +212,28 @@ public class WorldMapToolWindow : EditorWindow
     private void ApplyPendingState()
     {
         if (_pendingMode >= 0) { _mode = (ToolMode)_pendingMode; _pendingMode = -1; }
+
+        //展开/折叠会改变树的行数 → 必须在这里改（不能在绘制过程中改）
+        if (!string.IsNullOrEmpty(_pendingExpandToggle))
+        {
+            if (!_expanded.Remove(_pendingExpandToggle)) _expanded.Add(_pendingExpandToggle);
+            SaveSidebarPrefs();
+            _pendingExpandToggle = null;
+        }
+
+        if (_pendingMoveRegion != null)
+        {
+            WorldMapMoveRegionIntent move = _pendingMoveRegion;
+            _pendingMoveRegion = null;
+            ApplyMoveRegion(move);
+        }
+
+        if (_pendingReorder != null)
+        {
+            WorldMapReorderIntent reorder = _pendingReorder;
+            _pendingReorder = null;
+            ApplyReorder(reorder);
+        }
 
         if (_pendingDeletePoint >= 0)
         {
@@ -353,6 +402,7 @@ public class WorldMapToolWindow : EditorWindow
             EditorGUILayout.BeginHorizontal();
             DrawPointListPanel();
             DrawCanvasPanel();
+            DrawSidebarSplitter();     //画布 ↔ 右侧栏之间的可拖分隔条
             DrawRegionListPanel();
             EditorGUILayout.EndHorizontal();
 
@@ -370,6 +420,16 @@ public class WorldMapToolWindow : EditorWindow
         if (e.type != EventType.KeyDown) return;
 
         if (e.keyCode == KeyCode.Space) { _spaceHeld = true; e.Use(); return; }
+
+        if (e.keyCode == KeyCode.Escape && _dragNode != null)
+        {
+            _dragNode = null;
+            _dropTargetKey = null;
+            _statusMessage = "已取消拖动";
+            e.Use();
+            Repaint();
+            return;
+        }
 
         if (e.control && e.keyCode == KeyCode.Z)
         {
@@ -1488,94 +1548,30 @@ public class WorldMapToolWindow : EditorWindow
 
     private void DrawRegionListPanel()
     {
-        EditorGUILayout.BeginVertical(GUILayout.Width(300f));
-        EditorGUILayout.LabelField("势力区域（按 时期→势力→区域 分组）", EditorStyles.boldLabel);
+        EditorGUILayout.BeginVertical(GUILayout.Width(_sidebarWidth));
+
+        List<WorldMapFactionRegion> regions = WorldMapToolDataIO.GroupRegions(_draft);
+        List<WorldMapTreeNode> tree = WorldMapRegionTree.Build(regions, WorldMapToolDataIO.MinStage, WorldMapToolDataIO.MaxStage);
+        List<WorldMapTreeRow> rows = BuildVisibleTreeRows(tree);
+
+        EditorGUILayout.LabelField("势力区域（时期 → 势力 → 区域）", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("拖「区域」行：到别的势力=改归属；同势力内=调顺序", EditorStyles.miniLabel);
 
         _regionListScroll = EditorGUILayout.BeginScrollView(_regionListScroll, GUILayout.ExpandHeight(true));
 
-        List<WorldMapFactionRegion> regions = WorldMapToolDataIO.GroupRegions(_draft);
+        _dropTargetKey = null;
+        for (int i = 0; i < rows.Count; i++) DrawTreeRow(rows[i], regions);
 
-        //⚠ 平铺下标 r 必须保持为 regions 里的下标 —— 选中/删除/同步逻辑用的都是它
-        int curStage = int.MinValue, curFaction = int.MinValue;
-        for (int r = 0; r < regions.Count; r++)
+        //拖动中的 ghost（画在树的最上层）
+        if (_dragNode != null)
         {
-            WorldMapFactionRegion region = regions[r];
-
-            // ── 新的一组 (时期,势力)：先打一行组汇总 ──
-            if ((int)region.stage != curStage || (int)region.factionId != curFaction)
-            {
-                if (curStage != int.MinValue) EditorGUILayout.Space();
-                curStage = (int)region.stage;
-                curFaction = (int)region.factionId;
-
-                int regionCount = 0, readyCount = 0;
-                string detail = string.Empty;
-                string groupColor = null;
-                bool sameColor = true;
-                for (int k = 0; k < regions.Count; k++)
-                {
-                    WorldMapFactionRegion g = regions[k];
-                    if ((int)g.stage != curStage || (int)g.factionId != curFaction) continue;
-
-                    regionCount++;
-                    if (g.vertices.Count >= 3) readyCount++;
-                    detail += (detail.Length > 0 ? "、" : "") + "R" + g.regionId + ":" + g.vertices.Count + "点";
-                    if (groupColor == null) groupColor = g.color;
-                    else if (!string.Equals(groupColor, g.color, System.StringComparison.OrdinalIgnoreCase)) sameColor = false;
-                }
-
-                EditorGUILayout.LabelField(
-                    "时期" + curStage + "（" + WorldMapToolDataIO.StageName((uint)curStage) + "）/ 势力" + curFaction
-                    + "　区域 " + regionCount + " 块，满3顶点 " + readyCount + "/" + regionCount
-                    + ((regionCount > 1 && !sameColor) ? "　⚠同势力颜色不一致" : ""),
-                    EditorStyles.boldLabel);
-                EditorGUILayout.LabelField("　　" + detail + "　颜色 " + groupColor, EditorStyles.miniLabel);
-            }
-
-            EditorGUILayout.BeginHorizontal();
-            if (r == _selectedRegion) EditorGUILayout.LabelField("▶", GUILayout.Width(14f));
-            else EditorGUILayout.LabelField("", GUILayout.Width(14f));
-
-            string shortLabel = "区域" + region.regionId + " · " + region.vertices.Count + "点"
-                + (region.vertices.Count >= 3 ? "" : "（不足3点）");
-            if (GUILayout.Button(shortLabel, EditorStyles.miniButton))
-            {
-                _selectedRegion = r;
-                _selectedPoint = -1;
-                //把绘制参数切到该区域，方便继续加点
-                _stage = region.stage;
-                _factionId = region.factionId;
-                _regionId = region.regionId;
-                _factionColor = region.color;
-                ResetPenHead(null);   //换了区域 → 笔尖回到"自动=该区域末点"
-                Repaint();
-            }
-
-            if (GUILayout.Button("×", GUILayout.Width(22f)))
-            {
-                _pendingDeleteRegion = r;   //同点位：延后到 Layout 之前执行
-                Repaint();
-            }
-
-            EditorGUILayout.EndHorizontal();
-
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("颜色", GUILayout.Width(34f));
-            EditorGUI.BeginChangeCheck();
-            string color = EditorGUILayout.TextField(region.color, GUILayout.Width(80f));
-            if (EditorGUI.EndChangeCheck())
-            {
-                for (int k = 0; k < region.sourceIndices.Count; k++)
-                {
-                    WorldMapFactionVertex v = _draft.factionVertices[region.sourceIndices[k]];
-                    if (v != null) v.color = color;
-                }
-                _draft.dirty = true;
-            }
-            EditorGUILayout.EndHorizontal();
+            Vector2 mouse = Event.current.mousePosition;
+            var ghost = new Rect(mouse.x + 14f, mouse.y + 8f, 320f, 20f);
+            EditorGUI.DrawRect(ghost, new Color(0f, 0f, 0f, 0.78f));
+            GUI.Label(new Rect(ghost.x + 6f, ghost.y + 1f, ghost.width, 18f),
+                _dragNode.label + "　→ 拖到势力行=改归属 / 区域行=调顺序（Esc 取消）",
+                EditorStyles.whiteMiniLabel);
         }
-
-        if (regions.Count == 0) EditorGUILayout.LabelField("（还没有任何区域）", EditorStyles.miniLabel);
 
         EditorGUILayout.EndScrollView();
 
@@ -1591,6 +1587,475 @@ public class WorldMapToolWindow : EditorWindow
         }
 
         EditorGUILayout.EndVertical();
+    }
+
+    /// <summary>画布 ↔ 右侧栏之间的可拖动分隔条（宽 6px，拖动改 `_sidebarWidth`）。</summary>
+    private void DrawSidebarSplitter()
+    {
+        Rect rect = GUILayoutUtility.GetRect(SplitterWidth, SplitterWidth,
+            GUILayout.Width(SplitterWidth), GUILayout.ExpandHeight(true));
+
+        bool hover = rect.Contains(Event.current.mousePosition);
+        EditorGUIUtility.AddCursorRect(rect, MouseCursor.ResizeHorizontal);
+
+        if (Event.current.type == EventType.MouseDown && Event.current.button == 0 && hover)
+        {
+            _resizingSidebar = true;
+            Event.current.Use();
+        }
+
+        if (_resizingSidebar && Event.current.type == EventType.MouseDrag)
+        {
+            //往右拖 = 右栏变窄（画布变宽）；往左拖反之
+            _sidebarWidth = Mathf.Clamp(_sidebarWidth - Event.current.delta.x, MinSidebarWidth, MaxSidebarWidth);
+            Event.current.Use();
+            Repaint();
+        }
+
+        if (_resizingSidebar && (Event.current.type == EventType.MouseUp || Event.current.type == EventType.Ignore))
+        {
+            _resizingSidebar = false;
+            SaveSidebarPrefs();
+            Event.current.Use();
+        }
+
+        if (Event.current.type == EventType.Repaint)
+        {
+            Color color = _resizingSidebar
+                ? new Color(0.30f, 0.55f, 0.90f, 1f)
+                : (hover ? new Color(0.42f, 0.42f, 0.46f, 1f) : new Color(0.24f, 0.24f, 0.26f, 1f));
+            EditorGUI.DrawRect(rect, color);
+        }
+    }
+
+    // ══════════════════ 三级树 ══════════════════
+
+    /// <summary>
+    /// 把三级树按展开状态拍平成**可见行**。
+    /// ⚠ 一次 OnGUI 只算一次：展开状态的改变必须延后到 Layout 之前（见 ApplyPendingState），
+    ///   否则同帧 Layout/Repaint 的元素数不一致 → "Invalid GUILayout state"。
+    /// </summary>
+    private List<WorldMapTreeRow> BuildVisibleTreeRows(List<WorldMapTreeNode> tree)
+    {
+        var rows = new List<WorldMapTreeRow>();
+
+        for (int i = 0; i < tree.Count; i++)
+        {
+            WorldMapTreeNode stageNode = tree[i];
+            string stageKey = WorldMapRegionTree.StageKey(stageNode.stage);
+            bool stageExpanded = _expanded.Contains(stageKey);
+            rows.Add(new WorldMapTreeRow
+            {
+                node = stageNode, depth = 0, expandable = stageNode.children.Count > 0,
+                expanded = stageExpanded, key = stageKey,
+            });
+            if (!stageExpanded) continue;
+
+            for (int f = 0; f < stageNode.children.Count; f++)
+            {
+                WorldMapTreeNode factionNode = stageNode.children[f];
+                string factionKey = WorldMapRegionTree.FactionKey(factionNode.stage, factionNode.factionId);
+                bool factionExpanded = _expanded.Contains(factionKey);
+                rows.Add(new WorldMapTreeRow
+                {
+                    node = factionNode, depth = 1, expandable = true,
+                    expanded = factionExpanded, key = factionKey,
+                });
+                if (!factionExpanded) continue;
+
+                for (int k = 0; k < factionNode.children.Count; k++)
+                {
+                    WorldMapTreeNode regionNode = factionNode.children[k];
+                    rows.Add(new WorldMapTreeRow
+                    {
+                        node = regionNode, depth = 2, expandable = false, expanded = false,
+                        key = "R" + regionNode.sourceIndex,
+                    });
+                }
+            }
+        }
+        return rows;
+    }
+
+    /// <summary>画一行树 + 处理该行的点击/拖拽。</summary>
+    private void DrawTreeRow(WorldMapTreeRow row, List<WorldMapFactionRegion> regions)
+    {
+        WorldMapTreeNode node = row.node;
+        const float rowHeight = 20f;
+
+        Rect rect = GUILayoutUtility.GetRect(0f, rowHeight, GUILayout.ExpandWidth(true), GUILayout.Height(rowHeight));
+
+        bool hover = rect.Contains(Event.current.mousePosition);
+        bool isSelectedRegion = node.kind == WorldMapTreeKind.Region && node.sourceIndex == _selectedRegion;
+        bool acceptsDrop = _dragNode != null && hover && DragAcceptsDrop(row);
+        if (acceptsDrop) _dropTargetKey = row.key;
+
+        if (Event.current.type == EventType.Repaint)
+        {
+            if (isSelectedRegion) EditorGUI.DrawRect(rect, new Color(0.25f, 0.50f, 0.95f, 0.30f));
+            else if (hover) EditorGUI.DrawRect(rect, new Color(1f, 1f, 1f, 0.06f));
+
+            if (acceptsDrop)
+            {
+                EditorGUI.DrawRect(rect, new Color(0.20f, 0.45f, 0.85f, 0.35f));
+                DrawRectOutline(rect, new Color(0.45f, 0.75f, 1f, 1f));
+            }
+        }
+
+        float indent = 6f + row.depth * 16f;
+
+        // ── foldout 三角 ──
+        if (row.expandable)
+        {
+            if (GUI.Button(new Rect(rect.x + indent, rect.y + 2f, 14f, 16f),
+                    row.expanded ? "▼" : "▶", EditorStyles.miniLabel))
+            {
+                _pendingExpandToggle = row.key;   //延后应用（会改变行数）
+                Repaint();
+            }
+        }
+        indent += 16f;
+
+        // ── 势力行的颜色小色块 ──
+        float swatch = 0f;
+        if (node.kind == WorldMapTreeKind.Faction)
+        {
+            if (Event.current.type == EventType.Repaint)
+            {
+                Color color;
+                if (!ColorUtility.TryParseHtmlString(node.color, out color)) color = Color.magenta;
+                EditorGUI.DrawRect(new Rect(rect.x + indent, rect.y + 5f, 10f, 10f), color);
+            }
+            swatch = 14f;
+        }
+
+        // ── 文本 ──
+        GUI.Label(new Rect(rect.x + indent + swatch, rect.y + 2f,
+                rect.width - indent - swatch - 26f, 16f),
+            TreeRowText(node), TreeRowStyle(node));
+
+        // ── 区域行右侧的删除 × ──
+        if (node.kind == WorldMapTreeKind.Region)
+        {
+            if (GUI.Button(new Rect(rect.xMax - 22f, rect.y + 2f, 20f, 16f), "×", EditorStyles.miniButton))
+            {
+                _pendingDeleteRegion = node.sourceIndex;   //延后到 Layout 之前执行
+                Repaint();
+            }
+        }
+
+        // ── 点击 ──
+        if (Event.current.type == EventType.MouseDown && Event.current.button == 0 && rect.Contains(Event.current.mousePosition))
+        {
+            if (node.kind == WorldMapTreeKind.Region)
+            {
+                WorldMapFactionRegion region = regions[node.sourceIndex];
+                _selectedRegion = node.sourceIndex;
+                _selectedPoint = -1;
+                //沿用现有同步逻辑：把工具栏的绘制参数切到该区域
+                _stage = region.stage;
+                _factionId = region.factionId;
+                _regionId = region.regionId;
+                _factionColor = region.color;
+                ResetPenHead(null);
+                _statusMessage = "已选中 时期" + region.stage + "/势力" + region.factionId + "/区域" + region.regionId
+                    + "（" + region.vertices.Count + " 顶点）";
+                _dragNode = new WorldMapDragNode
+                {
+                    kind = WorldMapTreeKind.Region, stage = region.stage, factionId = region.factionId,
+                    regionId = region.regionId, sourceIndex = node.sourceIndex,
+                    label = "区域" + region.regionId + "（" + region.vertices.Count + "点）",
+                };
+            }
+            else
+            {
+                //时期/势力行：点击=折叠展开；允许起拖，但松手只提示不改数据
+                _pendingExpandToggle = row.key;
+                _dragNode = new WorldMapDragNode
+                {
+                    kind = node.kind, stage = node.stage, factionId = node.factionId,
+                    label = node.kind == WorldMapTreeKind.Stage ? ("时期" + node.stage) : ("势力" + node.factionId),
+                };
+            }
+            _dragStartPos = Event.current.mousePosition;
+            Event.current.Use();
+            Repaint();
+        }
+
+        // ── 松手：结算拖放 ──
+        if (Event.current.type == EventType.MouseUp && _dragNode != null)
+        {
+            if (acceptsDrop) ResolveDrop(row, regions);
+            _dragNode = null;
+            _dropTargetKey = null;
+            Event.current.Use();
+            Repaint();
+        }
+    }
+
+    /// <summary>当前拖拽能否落在这一行上（只有「区域」节点能拖，且不能落回自己）。</summary>
+    private bool DragAcceptsDrop(WorldMapTreeRow row)
+    {
+        if (_dragNode == null || _dragNode.kind != WorldMapTreeKind.Region) return false;
+
+        WorldMapTreeNode node = row.node;
+        if (node.kind == WorldMapTreeKind.Stage) return false;
+
+        if (node.kind == WorldMapTreeKind.Faction)
+            return !(node.stage == _dragNode.stage && node.factionId == _dragNode.factionId);
+
+        return node.sourceIndex != _dragNode.sourceIndex;
+    }
+
+    private void ResolveDrop(WorldMapTreeRow row, List<WorldMapFactionRegion> regions)
+    {
+        WorldMapTreeNode node = row.node;
+        WorldMapFactionRegion source = regions[_dragNode.sourceIndex];
+
+        if (node.kind == WorldMapTreeKind.Faction)
+        {
+            RequestMoveRegion(_dragNode.sourceIndex, node.stage, node.factionId, source);
+            return;
+        }
+
+        if (node.kind == WorldMapTreeKind.Region)
+        {
+            if (node.stage == _dragNode.stage && node.factionId == _dragNode.factionId)
+            {
+                _pendingReorder = new WorldMapReorderIntent
+                {
+                    stage = node.stage, factionId = node.factionId,
+                    sourceIndex = _dragNode.sourceIndex, targetIndex = node.sourceIndex,
+                };
+                _statusMessage = "将调整 时期" + node.stage + "/势力" + node.factionId + " 的区域顺序";
+            }
+            else
+            {
+                RequestMoveRegion(_dragNode.sourceIndex, node.stage, node.factionId, source);
+            }
+        }
+    }
+
+    /// <summary>「把区域移到另一个势力下」—— **必须二次确认**，确认后才登记延后变更。</summary>
+    private void RequestMoveRegion(int sourceIndex, uint targetStage, uint targetFactionId, WorldMapFactionRegion source)
+    {
+        if (source.stage == targetStage && source.factionId == targetFactionId) return;
+
+        bool confirmed = EditorUtility.DisplayDialog(
+            "移动区域",
+            "把 时期" + source.stage + "/势力" + source.factionId + "/区域" + source.regionId
+            + "（" + source.vertices.Count + " 顶点）移动到 时期" + targetStage + "/势力" + targetFactionId + " 下？\n"
+            + "这会改变 " + source.vertices.Count + " 个顶点的 FactionId / RegionId / Color。",
+            "移动", "取消");
+
+        if (!confirmed)
+        {
+            _statusMessage = "已取消：区域未移动";
+            return;
+        }
+
+        _pendingMoveRegion = new WorldMapMoveRegionIntent
+        {
+            sourceIndex = sourceIndex, targetStage = targetStage, targetFactionId = targetFactionId,
+        };
+        Repaint();
+    }
+
+    /// <summary>执行「移动区域到势力X」：改 factionId、取目标势力下一个 regionId、跟目标势力的颜色。</summary>
+    private void ApplyMoveRegion(WorldMapMoveRegionIntent intent)
+    {
+        List<WorldMapFactionRegion> regions = WorldMapToolDataIO.GroupRegions(_draft);
+        if (intent.sourceIndex < 0 || intent.sourceIndex >= regions.Count) return;
+
+        WorldMapFactionRegion region = regions[intent.sourceIndex];
+
+        string targetColor = null;
+        uint maxRegionId = 0;
+        for (int i = 0; i < regions.Count; i++)
+        {
+            if (regions[i].stage != intent.targetStage || regions[i].factionId != intent.targetFactionId) continue;
+            if (targetColor == null) targetColor = regions[i].color;
+            if (regions[i].regionId > maxRegionId) maxRegionId = regions[i].regionId;
+        }
+        uint nextRegionId = maxRegionId + 1;
+        //目标势力还没有区域 → 用该区域自己的颜色，成为该势力的首块
+        if (targetColor == null) targetColor = region.color;
+
+        PushUndo("移动区域到势力" + intent.targetFactionId);
+
+        int moved = 0;
+        for (int i = 0; i < region.sourceIndices.Count; i++)
+        {
+            WorldMapFactionVertex vertex = _draft.factionVertices[region.sourceIndices[i]];
+            if (vertex == null) continue;
+            vertex.stage = intent.targetStage;
+            vertex.factionId = intent.targetFactionId;
+            vertex.regionId = nextRegionId;
+            vertex.color = targetColor;
+            moved++;
+        }
+
+        _stage = intent.targetStage;
+        _factionId = intent.targetFactionId;
+        _regionId = nextRegionId;
+        _factionColor = targetColor;
+        ResetPenHead(null);
+        _draft.dirty = true;
+        _selectedRegion = -1;
+        ValidateNow();
+
+        _statusMessage = "已把 时期" + region.stage + "/势力" + region.factionId + "/区域" + region.regionId
+            + "（" + moved + " 顶点）移到 时期" + intent.targetStage + "/势力" + intent.targetFactionId
+            + "/区域" + nextRegionId + "　颜色 " + targetColor;
+        Debug.Log("[局外地图] " + _statusMessage);
+        Repaint();
+    }
+
+    /// <summary>
+    /// 执行「同势力内调整区域顺序」：把该势力的**顶点块**按新顺序重排，再重编号 RegionId = 1..N。
+    ///
+    /// ⚠ 只改 RegionId 是不够的：树 / `GroupRegions` 的顺序来自**顶点在 draft 里的出现顺序**，
+    ///   光改号码会让显示顺序不变、号码乱跳。所以这里必须把顶点块也搬一遍，
+    ///   "视觉顺序即号码" 才成立。（RegionId 只是"该势力下第几块"，重编号不影响几何与导出列结构。）
+    /// </summary>
+    private void ApplyReorder(WorldMapReorderIntent intent)
+    {
+        List<WorldMapFactionRegion> regions = WorldMapToolDataIO.GroupRegions(_draft);
+        if (intent.sourceIndex < 0 || intent.sourceIndex >= regions.Count) return;
+
+        var order = new List<WorldMapFactionRegion>();
+        for (int i = 0; i < regions.Count; i++)
+            if (regions[i].stage == intent.stage && regions[i].factionId == intent.factionId) order.Add(regions[i]);
+        if (order.Count < 2) return;
+
+        WorldMapFactionRegion moving = regions[intent.sourceIndex];
+        int from = order.IndexOf(moving);
+        if (from < 0) return;
+
+        int to = from;
+        if (intent.targetIndex >= 0 && intent.targetIndex < regions.Count)
+        {
+            int at = order.IndexOf(regions[intent.targetIndex]);
+            if (at >= 0) to = at;
+        }
+
+        order.RemoveAt(from);
+        if (to > order.Count) to = order.Count;
+        order.Insert(to, moving);
+
+        PushUndo("调整区域顺序（时期" + intent.stage + "/势力" + intent.factionId + "）");
+
+        //① 按新顺序取出各区域的顶点块（此时 sourceIndices 仍指向旧列表，先全部取出来）
+        var blocks = new List<List<WorldMapFactionVertex>>();
+        for (int i = 0; i < order.Count; i++)
+        {
+            var block = new List<WorldMapFactionVertex>();
+            for (int k = 0; k < order[i].sourceIndices.Count; k++)
+                block.Add(_draft.factionVertices[order[i].sourceIndices[k]]);
+            blocks.Add(block);
+        }
+
+        //② 该势力顶点在 draft 里占用的位置（其它势力相对位置保持不变）
+        var slots = new List<int>();
+        for (int i = 0; i < _draft.factionVertices.Count; i++)
+        {
+            WorldMapFactionVertex vertex = _draft.factionVertices[i];
+            if (vertex != null && vertex.stage == intent.stage && vertex.factionId == intent.factionId) slots.Add(i);
+        }
+
+        if (slots.Count > 0)
+        {
+            //从后往前删，避免下标位移
+            for (int i = slots.Count - 1; i >= 0; i--) _draft.factionVertices.RemoveAt(slots[i]);
+
+            var flattened = new List<WorldMapFactionVertex>();
+            for (int i = 0; i < blocks.Count; i++)
+            {
+                for (int k = 0; k < blocks[i].Count; k++) flattened.Add(blocks[i][k]);
+                //③ 新号码 = 视觉顺序
+                for (int k = 0; k < blocks[i].Count; k++)
+                    if (blocks[i][k] != null) blocks[i][k].regionId = (uint)(i + 1);
+            }
+
+            int insertAt = Mathf.Min(slots[0], _draft.factionVertices.Count);
+            _draft.factionVertices.InsertRange(insertAt, flattened);
+        }
+
+        _regionId = (uint)(to + 1);
+        _draft.dirty = true;
+        _selectedRegion = -1;
+        ValidateNow();
+
+        string map = string.Empty;
+        for (int i = 0; i < order.Count; i++)
+            map += (map.Length > 0 ? "、" : "") + "旧R" + order[i].regionId + "→R" + (i + 1);
+        _statusMessage = "已调整 时期" + intent.stage + "/势力" + intent.factionId + " 的区域顺序：" + map;
+        Debug.Log("[局外地图] " + _statusMessage);
+        Repaint();
+    }
+
+private string TreeRowText(WorldMapTreeNode node)
+    {
+        if (node.kind == WorldMapTreeKind.Stage)
+        {
+            int factionCount = node.children.Count;
+            int regionCount = 0;
+            int vertexCount = 0;
+            for (int f = 0; f < node.children.Count; f++)
+            {
+                regionCount += node.children[f].children.Count;
+                for (int k = 0; k < node.children[f].children.Count; k++)
+                    vertexCount += node.children[f].children[k].vertexCount;
+            }
+
+            string extra = regionCount == 0
+                ? "（无）"
+                : (factionCount + " 势力 / " + regionCount + " 区域 / " + vertexCount + " 顶点");
+            return "时期 " + node.stage + "（" + WorldMapToolDataIO.StageName(node.stage) + "）　" + extra;
+        }
+
+        if (node.kind == WorldMapTreeKind.Faction)
+        {
+            int vertexCount = 0;
+            for (int k = 0; k < node.children.Count; k++) vertexCount += node.children[k].vertexCount;
+            return "势力 " + node.factionId + "    " + node.children.Count + " 区域 / " + vertexCount + " 顶点";
+        }
+
+        string ready = node.vertexCount >= 3 ? "✔ 满3" : "⚠ 不足3（导出会被跳过）";
+        return "区域 " + node.regionId + "　" + node.vertexCount + " 顶点　" + ready;
+    }
+
+    private GUIStyle TreeRowStyle(WorldMapTreeNode node)
+    {
+        return node.kind == WorldMapTreeKind.Region ? EditorStyles.miniLabel : EditorStyles.boldLabel;
+    }
+
+    // ══════════════════ 右栏宽度 / 展开状态（EditorPrefs） ══════════════════
+
+    private void LoadSidebarPrefs()
+    {
+        _sidebarWidth = Mathf.Clamp(EditorPrefs.GetFloat(SidebarWidthPrefKey, 300f), MinSidebarWidth, MaxSidebarWidth);
+
+        _expanded.Clear();
+        string saved = EditorPrefs.GetString(ExpandedPrefKey, string.Empty);
+        if (string.IsNullOrEmpty(saved))
+        {
+            _expanded.Add(WorldMapRegionTree.StageKey(1));   //首次打开：默认展开时期 1
+            return;
+        }
+
+        string[] parts = saved.Split('|');
+        for (int i = 0; i < parts.Length; i++)
+            if (!string.IsNullOrEmpty(parts[i])) _expanded.Add(parts[i]);
+    }
+
+    private void SaveSidebarPrefs()
+    {
+        EditorPrefs.SetFloat(SidebarWidthPrefKey, _sidebarWidth);
+
+        var parts = new List<string>(_expanded);
+        parts.Sort();
+        EditorPrefs.SetString(ExpandedPrefKey, string.Join("|", parts.ToArray()));
     }
 
     // ══════════════════ 底部：错误列表 + 导出 ══════════════════

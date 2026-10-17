@@ -1,0 +1,44 @@
+{
+    "datas": [
+        {
+            "Index": 1,
+            "EffectType": 2,
+            "Target": 0,
+            "Value": 2,
+            "Note": "家族树·家族产业·节点2：格位 +2",
+            "Enable": true
+        },
+        {
+            "Index": 2,
+            "EffectType": 3,
+            "Target": 0,
+            "Value": 1,
+            "Note": "家族树·影响力·节点1：带出上限 +1",
+            "Enable": true
+        },
+        {
+            "Index": 3,
+            "EffectType": 5,
+            "Target": 0,
+            "Value": 1,
+            "Note": "家族树·族人培养·节点3：解锁扎营补员",
+            "Enable": true
+        },
+        {
+            "Index": 4,
+            "EffectType": 6,
+            "Target": 2001,
+            "Value": -5,
+            "Note": "家族树·家族产业·节点1：农田建造时长 -5 秒",
+            "Enable": true
+        },
+        {
+            "Index": 5,
+            "EffectType": 4,
+            "Target": 1,
+            "Value": 10,
+            "Note": "家族树·族人培养·节点1：族人生命 +10",
+            "Enable": true
+        }
+    ]
+}

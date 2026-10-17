@@ -3,6 +3,7 @@ using ChaosDebug;
 using LocalizationSystem;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 /// <summary>
@@ -99,6 +100,14 @@ public class GMPanel : MonoBehaviour
     // ── GM：局内地图生成（原型验证用，不进正式流程）──
     private TMP_InputField _runMapSeedInput;
     private TextMeshProUGUI _runMapStatus;
+    /// <summary>原型·进度页的状态行。</summary>
+    private TextMeshProUGUI _protoProgressStatus;
+    /// <summary>原型·存档页的状态行。</summary>
+    private TextMeshProUGUI _protoSaveStatus;
+    /// <summary>原型·地图页的状态行。</summary>
+    private TextMeshProUGUI _protoMapStatus;
+    /// <summary>原型·地图页的场景号输入（1~3）。</summary>
+    private TMP_InputField _protoSceneIndexInput;
     private uint _runMapSeed = 20261010u;
 
     /// <summary>GM 生成的地图挂在哪个容器下（重复生成时先删掉它）。</summary>
@@ -206,6 +215,13 @@ public class GMPanel : MonoBehaviour
             {
                 new GmSection("发放道具", page => AddHint(page, "预留：等仓库系统完成后接入（选道具 + 数量 + 发放）。")),
                 new GmSection("背包 / 仓库", page => AddHint(page, "预留：等仓库系统完成后接入（查看 / 增删 / 清空）。")),
+            }),
+
+            new GmCategory("原型", new[]
+            {
+                new GmSection("进度", BuildPrototypeProgressPage),
+                new GmSection("存档", BuildPrototypeSavePage),
+                new GmSection("地图", BuildPrototypeMapPage),
             }),
         };
     }
@@ -395,6 +411,211 @@ public class GMPanel : MonoBehaviour
         if (onClick != null) button.onClick.AddListener(() => onClick());
         return button;
     }
+
+
+    // ══════════════════════ 原型：进度 / 存档 / 地图（W0）══════════════════════
+
+    private void BuildPrototypeProgressPage(Transform page)
+    {
+        AddHint(page, "W0 地基：时代(M13) 单向 + 深度(M13b) 上限=时代序号。深度截断：era=1 时连点通关，深度停 1。");
+
+        AddActionButton(page, "打印进度状态", () =>
+        {
+            string text = MetaProgressService.Instance.DumpState();
+            SetProtoStatus(_protoProgressStatus, text);
+            Debug.Log(text);
+        });
+
+        AddActionButton(page, "模拟通关一次（clears++ 且深度+1）", () =>
+        {
+            MetaProgressService.Instance.SimulateClear();
+            string text = MetaProgressService.Instance.DumpState();
+            SetProtoStatus(_protoProgressStatus, text);
+            Debug.Log(text);
+        });
+
+        AddActionButton(page, "模拟满足里程碑（本局打过第3场景boss）", () =>
+        {
+            MetaProgressService.Instance.SimulateSatisfyMilestone();
+            string text = MetaProgressService.Instance.DumpState();
+            SetProtoStatus(_protoProgressStatus, text);
+            Debug.Log(text);
+        });
+
+        AddActionButton(page, "模拟推进时代（双门槛判定）", () =>
+        {
+            bool advanced = MetaProgressService.Instance.TryAdvanceEra();
+            string text = (advanced ? "推进成功：" : "推进被拒：") + MetaProgressService.Instance.DumpState();
+            SetProtoStatus(_protoProgressStatus, text);
+            Debug.Log("[原型·进度] " + text);
+        });
+
+        AddActionButton(page, "重置进度", () =>
+        {
+            MetaProgressService.Instance.ResetAll();
+            string text = MetaProgressService.Instance.DumpState();
+            SetProtoStatus(_protoProgressStatus, text);
+            Debug.Log(text);
+        });
+
+        _protoProgressStatus = CreateStatusLabel(page);
+        SetProtoStatus(_protoProgressStatus, MetaProgressService.Instance.DumpState());
+    }
+
+    private void BuildPrototypeSavePage(Transform page)
+    {
+        AddHint(page, "写槽位 1 → 读回并打印。⚠ 会覆盖槽位 1 的现有存档（自测请先备份）。");
+
+        AddActionButton(page, "打印当前 payload", () =>
+        {
+            SavePayload p = MetaProgressService.Instance.Payload;
+            string text = "[原型·存档] era=" + p.era + " depth=" + p.depth
+                + " 资源(材料/图纸/货物/钱)=" + p.resMaterial + "/" + p.resBlueprint + "/" + p.resGoods + "/" + p.resMoney
+                + " runs=" + p.runs + " clears=" + p.clears + " scenesCleared=" + p.scenesCleared
+                + " 族人=" + (p.retainers == null ? 0 : p.retainers.Count)
+                + " 建筑=" + (p.buildings == null ? 0 : p.buildings.Count)
+                + " 家族树节点=" + (p.familyTreeNodes == null ? 0 : p.familyTreeNodes.Count);
+            SetProtoStatus(_protoSaveStatus, text);
+            Debug.Log(text);
+        });
+
+        AddActionButton(page, "写入槽位 1", () =>
+        {
+            bool ok = SaveSlotService.Instance.Save(1, MetaProgressService.Instance.Payload);
+            string text = "[原型·存档] 写槽位1 " + (ok ? "成功" : "失败");
+            SetProtoStatus(_protoSaveStatus, text);
+            Debug.Log(text);
+        });
+
+        AddActionButton(page, "读回槽位 1 并打印", () =>
+        {
+            SaveSlotFile file;
+            if (!SaveSlotService.Instance.TryLoad(1, out file) || file == null || file.payload == null)
+            {
+                string failText = "[原型·存档] 读槽位1 失败（空槽或损坏）";
+                SetProtoStatus(_protoSaveStatus, failText);
+                Debug.Log(failText);
+                return;
+            }
+
+            SavePayload p = file.payload;
+            string text = "[原型·存档] 读回槽位1：era=" + p.era + " depth=" + p.depth
+                + " 资源(材料/图纸/货物/钱)=" + p.resMaterial + "/" + p.resBlueprint + "/" + p.resGoods + "/" + p.resMoney
+                + " runs=" + p.runs + " clears=" + p.clears + " scenesCleared=" + p.scenesCleared
+                + " version=" + p.version;
+            SetProtoStatus(_protoSaveStatus, text);
+            Debug.Log(text);
+        });
+
+        _protoSaveStatus = CreateStatusLabel(page);
+        SetProtoStatus(_protoSaveStatus, "槽位 1 路径：" + SaveSlotService.Instance.GetSlotPath(1));
+    }
+
+    private void BuildPrototypeMapPage(Transform page)
+    {
+        AddHint(page, "在当前 TestScene 里**就地**生成 RunMap 地图（不切场景、不走读条）。容器名固定 PrototypeRunMap。");
+
+        _protoSceneIndexInput = CreateSceneIndexInput(page);
+        if (_protoSceneIndexInput != null) _protoSceneIndexInput.SetTextWithoutNotify("1");
+
+        AddActionButton(page, "在场景中生成第 N 场景（输入 1~3）", () =>
+        {
+            int sceneIndex = 1;
+            string raw = _protoSceneIndexInput != null ? _protoSceneIndexInput.text : null;
+            if (!int.TryParse(raw, out sceneIndex) || sceneIndex < 1 || sceneIndex > 3)
+            {
+                SetProtoStatus(_protoMapStatus, "场景号无效：请输入 1 ~ 3 的整数");
+                return;
+            }
+            SpawnPrototypeMap(sceneIndex);
+        });
+
+        AddActionButton(page, "生成第 1 场景", () => SpawnPrototypeMap(1));
+        AddActionButton(page, "生成第 2 场景", () => SpawnPrototypeMap(2));
+        AddActionButton(page, "生成第 3 场景", () => SpawnPrototypeMap(3));
+
+        AddActionButton(page, "清除已生成地图", () =>
+        {
+            PrototypeMapSpawner.Clear();
+            SetProtoStatus(_protoMapStatus, "已清除：" + PrototypeMapSpawner.ContainerName + " 存在=" + PrototypeMapSpawner.IsSpawned);
+            Debug.Log("[原型·地图] 已清除，IsSpawned=" + PrototypeMapSpawner.IsSpawned);
+        });
+
+        AddActionButton(page, "打印生成状态", () =>
+        {
+            string text = "[原型·地图] IsSpawned=" + PrototypeMapSpawner.IsSpawned
+                + " 当前场景=" + SceneManager.GetActiveScene().name
+                + " RunMap根=" + (RunMap.RunMapBootstrap.CurrentMapRoot == null ? "null" : RunMap.RunMapBootstrap.CurrentMapRoot.name)
+                + " 阶段=" + RunMap.RunMapBootstrap.CurrentStageText;
+            SetProtoStatus(_protoMapStatus, text);
+            Debug.Log(text);
+        });
+
+        _protoMapStatus = CreateStatusLabel(page);
+        SetProtoStatus(_protoMapStatus, "点【生成第 1/2/3 场景】在**当前场景**就地出图。");
+    }
+
+    private void SpawnPrototypeMap(int sceneIndex)
+    {
+        GameObject container = PrototypeMapSpawner.Spawn(sceneIndex);
+        string text = container == null
+            ? "[原型·地图] 生成失败（看 Console 的 Warn/Error）"
+            : "[原型·地图] 已生成 场景" + sceneIndex
+              + " 容器=" + container.name
+              + " 子节点=" + container.transform.childCount
+              + " 当前场景=" + SceneManager.GetActiveScene().name;
+        SetProtoStatus(_protoMapStatus, text);
+        Debug.Log(text);
+    }
+
+    /// <summary>原型页的状态行（AddHint 不返回引用，这里要能反复改写）。</summary>
+    private void SetProtoStatus(TextMeshProUGUI label, string text)
+    {
+        if (label != null) label.text = text;
+    }
+
+    /// <summary>场景号输入框（1~3，数字，最多 1 位）。</summary>
+    private TMP_InputField CreateSceneIndexInput(Transform page)
+    {
+        GameObject go = new GameObject("Input_ProtoSceneIndex", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
+        RectTransform rect = (RectTransform)go.transform;
+        rect.SetParent(page, false);
+
+        Image bg = go.GetComponent<Image>();
+        bg.sprite = buttonSprite;
+        bg.type = Image.Type.Sliced;
+        bg.color = new Color(0.10f, 0.12f, 0.16f, 1f);
+
+        GameObject textGo = new GameObject("Text", typeof(RectTransform));
+        RectTransform textRect = (RectTransform)textGo.transform;
+        textRect.SetParent(rect, false);
+        Stretch(textRect);
+        textRect.offsetMin = new Vector2(12f, 0f);
+        textRect.offsetMax = new Vector2(-12f, 0f);
+
+        TextMeshProUGUI text = textGo.AddComponent<TextMeshProUGUI>();
+        text.font = font;
+        text.fontSize = 24;
+        text.color = LabelColor;
+        text.alignment = TextAlignmentOptions.Left;
+        text.enableWordWrapping = false;
+        text.raycastTarget = false;
+
+        TMP_InputField input = go.AddComponent<TMP_InputField>();
+        input.targetGraphic = bg;
+        input.textComponent = text;
+        input.textViewport = rect;
+        input.lineType = TMP_InputField.LineType.SingleLine;
+        input.contentType = TMP_InputField.ContentType.IntegerNumber;
+        input.characterLimit = 1;
+
+        LayoutElement element = go.AddComponent<LayoutElement>();
+        element.preferredWidth = ActionButtonWidth;
+        element.preferredHeight = ActionButtonHeight;
+        element.flexibleWidth = 0f;
+        return input;
+    }
+
 
     private void AddHint(Transform page, string text)
     {

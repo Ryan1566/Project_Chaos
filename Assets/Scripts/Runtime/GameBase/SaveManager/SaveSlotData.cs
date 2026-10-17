@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 /// <summary>
 /// 玩家存档的落盘结构定义 —— 【唯一】的存档结构真相源。
@@ -58,6 +59,42 @@ public class SavePayload
     /// **不要改 `version` 的语义** —— 只加字段不需要 +1。
     /// </summary>
     public uint era = 1;
+    // ══════════════════ W0 追加（M15 / M13 / M13b）══════════════════
+    //⚠ **追加字段 = 零迁移**（见本文件顶部）：老存档没有这些字段时保留初始化值，不需要迁移代码。
+    //   注意：只加字段。**改已有字段语义**才需要 version + 1。
+
+    /// <summary>当前深度（M13b）：1~era。**上限 = 当前时代序号**，由 `MetaProgressService` 截断。</summary>
+    public uint depth = 1;
+
+    /// <summary>局外资源：材料（W1 资源表落地前先占位）。</summary>
+    public uint resMaterial;
+
+    /// <summary>局外资源：图纸。</summary>
+    public uint resBlueprint;
+
+    /// <summary>局外资源：货物。</summary>
+    public uint resGoods;
+
+    /// <summary>局外资源：钱币。</summary>
+    public uint resMoney;
+
+    /// <summary>族人（W0 用最小占位结构 `RetainerSave`，字段待 W1 定）。</summary>
+    public List<RetainerSave> retainers = new List<RetainerSave>();
+
+    /// <summary>建筑（W0 用最小占位结构 `BuildingSave`，字段待 W1 定）。</summary>
+    public List<BuildingSave> buildings = new List<BuildingSave>();
+
+    /// <summary>已点亮的家族树节点 ID（M3；效果靠 FamilyTreeEffect 关联，不在此存效果）。</summary>
+    public List<uint> familyTreeNodes = new List<uint>();
+
+    /// <summary>进入局内的次数（M15 局内计数）。</summary>
+    public uint runs;
+
+    /// <summary>累计通关数（M13 里程碑 Type=1 的统计量）。</summary>
+    public uint clears;
+
+    /// <summary>累计通关过的场景数。</summary>
+    public uint scenesCleared;
 }
 
 /// <summary>一个存档文件的根对象（= 落盘的整个 Json）。</summary>
@@ -101,4 +138,32 @@ public class SaveSlotInfo
 
     /// <summary>便捷判断：非空且未损坏，才允许"直接读取进入游戏"。</summary>
     public bool HasUsableSave { get { return !IsEmpty && !IsCorrupt; } }
+}
+
+/// <summary>
+/// 族人存档（**W0 最小占位**：W1 定字段后再往上加 —— 只加字段，零迁移）。
+/// ⚠ JsonUtility 限制：只 public 字段、不要属性/DateTime/Dictionary。
+/// </summary>
+[Serializable]
+public class RetainerSave
+{
+    public uint id;
+    public uint quality;
+    public int hp;
+    public int confidence;
+    public bool wounded;
+    /// <summary>重伤到期时刻，**UTC ticks**（JsonUtility 不支持 DateTime）。0 = 未重伤。</summary>
+    public long woundedUntilUtcTicks;
+}
+
+/// <summary>建筑存档（**W0 最小占位**：W1 定字段后再往上加）。</summary>
+[Serializable]
+public class BuildingSave
+{
+    public uint id;
+    public uint buildingType;
+    public uint level;
+    public bool completed;
+    /// <summary>完工时刻，**UTC ticks**。0 = 未在建造。</summary>
+    public long finishUtcTicks;
 }

@@ -4,7 +4,7 @@
 
 ## project-chaos（https://github.com/Ryan1566/Project_Chaos.git）
 
-- project-chaos — Project_Chaos 游戏工程 / Project_Chaos Game Project — Unity 2022.3.57f1c2 的 2D 横板 Roguelite 工程总览（仓库根 D:\Unity Projects\Project_Chaos）。… — [模块 427 · API 929]
+- project-chaos — Project_Chaos 游戏工程 / Project_Chaos Game Project — Unity 2022.3.57f1c2 的 2D 横板 Roguelite 工程总览（仓库根 D:\Unity Projects\Project_Chaos）。… — [模块 428 · API 931]
   - project-chaos.assets — 资源库 / Asset Library — 工程内美术、音频、字体、UI 预制体、TMP、Tilemap、输入与本地化资产的总目录。除代码、场景与配置表生成物之外的运行时资源都归这里；本轮只登记资产角色与… — [模块 47 · API 102]
     - project-chaos.assets.animations — 动画目录（空） / Animations (Empty) — Assets/Animations 目前是空目录：尚无 AnimationClip、AnimatorController 或 Timeline 资产。 — [模块 1 · API 0]
     - project-chaos.assets.art — 美术原始资源 / Source Art — Assets/Art 下的美术源资产：Spine 角色 Citizen_001 的骨架/图集/材质、四平台输入图标（键鼠/PS/Xbox）与图标图集、草地瓦片贴… — [模块 16 · API 34]
@@ -134,7 +134,7 @@
       - project-chaos.config-pipeline.table-repo.world-map — WorldMap 世界观地图表 / WorldMap Workbook — WorldMap_世界观地图表.xlsx：由世界观地图绘制工具导出、放在源表目录顶层、可被 ExcelTool/ExportExcelConfigs 直接读取。… — [模块 1 · API 1]
       - project-chaos.config-pipeline.table-repo.worldmap-tool-workspace — 地图工具工作区 / World Map Tool Workspace — Assets/Excel/Chaos_excel/_worldmap_tool/：世界观地图绘制工具的草稿与中间产物目录——WorldMapDraft.json… — [模块 1 · API 1]
     - project-chaos.config-pipeline.type-whitelist — 类型白名单 / Type Whitelist — 权威类型门禁，只由 Convert 的 switch 定义：int、uint、long、ulong、byte、sbyte、short、ushort、float、… — [模块 1 · API 3]
-  - project-chaos.editor-tools — 编辑器工具集 / Editor Tooling — Assets/Scripts/Editor 的编辑器工具集：本地化编辑器（文本收集/合并/字体映射/窗口）、Git 工具窗、场景 UI 概览、图标命名与图集管线… — [模块 41 · API 144]
+  - project-chaos.editor-tools — 编辑器工具集 / Editor Tooling — Assets/Scripts/Editor 的编辑器工具集：本地化编辑器（文本收集/合并/字体映射/窗口）、Git 工具窗、场景 UI 概览、图标命名与图集管线… — [模块 42 · API 146]
     - project-chaos.editor-tools.art-pipeline — 图标美术管线 / Icon Art Pipeline — 图标美术管线：按键图标导入策略（AssetPostprocessor 只接管 Art/icon 下的贴图）与图标图集构建/体检（只打包被按键映射表引用的图，报告… — [模块 3 · API 10]
       - project-chaos.editor-tools.art-pipeline.icon-atlas — 图标图集构建与体检 / Icon Atlas Build and Inspect — 构建与体检 IconAtlas_Input.spriteatlas：套用各平台打包设置，只把按键映射表引用到的图打进图集，回读打包后的页纹理，按平台格式估算显存… — [模块 1 · API 5]
       - project-chaos.editor-tools.art-pipeline.icon-import-policy — 图标导入策略 / Icon Import Policy — 按键图标的导入期口径：仅在预处理阶段接管 Assets/Art/icon 下（前缀匹配而非子串匹配）的贴图，强制 sprite 类型、关 mipmap、开 al… — [模块 1 · API 5]
@@ -169,11 +169,12 @@
       - project-chaos.editor-tools.scene-ui-overview.preview-panel — 预览面板渲染 / Preview Panel Rendering — 预览面板渲染：绘制世界包围盒与面板边框，用普通相机 + RenderTexture 渲染根 Canvas（PreviewRenderUtility 看不到场景 … — [模块 1 · API 5]
     - project-chaos.editor-tools.spine-settings — Spine 编辑器设置 / Spine Editor Settings — 存放在 Assets/Editor 下的 Spine 编辑器设置资产：默认缩放、混合、着色器、Z 间距、实例化循环、层级图标、贴图导入策略，以及 multipl… — [模块 1 · API 1]
     - project-chaos.editor-tools.ui-animator — 面板动画组件批量工具 / UIPanelAnimator Batch Tool — 一次性编辑器工具，把面板显隐动画组件固化进预制体：运行时自动补挂的组件不会被保存，Inspector 参数永远是字段初始值。逐个在隔离场景打开面板预制体，跳过没… — [模块 1 · API 4]
-    - project-chaos.editor-tools.worldmap-tool — 世界观地图绘制工具 / World Map Authoring Tool — 局外世界观地图的编辑器绘制工具：在可自定义底图上摆放固定地点与兴趣点（带 Type/RefId）、按 5 个时期分别绘制势力范围多边形，并导出表头与现有配置表一… — [模块 6 · API 7]
+    - project-chaos.editor-tools.worldmap-tool — 世界观地图绘制工具 / World Map Authoring Tool — 局外世界观地图的编辑器绘制工具：在可自定义底图上摆放固定地点与兴趣点（带 Type/RefId）、按 5 个时期分别绘制势力范围多边形，并导出表头与现有配置表一… — [模块 7 · API 9]
       - project-chaos.editor-tools.worldmap-tool.draft-store — 草稿存取 / Draft Store — 可序列化草稿模型（源图路径、真实像素尺寸、MapId、点位、势力区域）与 _worldmap_tool/WorldMapDraft.json 的读写，保证重新打… — [模块 1 · API 1]
       - project-chaos.editor-tools.worldmap-tool.geometry — 坐标换算 / Geometry — 几何工具：归一化(0~1，X 自左向右、Y 自下向上) ↔ 图像像素(左上原点) ↔ UI 锚点三种坐标的换算（Y 轴翻转只在本文件），以及点在多边形内、自交检… — [模块 1 · API 1]
+      - project-chaos.editor-tools.worldmap-tool.region-tree — 区域树模型 / Region Tree Model — 势力区域主从树的纯数据层（不含绘制）：把草稿的势力顶点按 时期 → 势力 → 区域 三级聚成节点（时期 1~5 全列、势力去重并排序、区域带 sourceInd… — [模块 1 · API 2]
       - project-chaos.editor-tools.worldmap-tool.validator — 导出校验 / Export Validator — 导出前校验：数据行 0 条与顶层前缀冲突属硬拒绝；坐标越界、(Kind,Type,RefId) 重复、颜色格式、顶点数与顺序、自交与极小面积分别报错或告警。新增… — [模块 1 · API 1]
-      - project-chaos.editor-tools.worldmap-tool.window — 工具窗口 / Tool Window — 绘制窗口：5 种模式、可缩放平移的画布、点位与多边形绘制、侧栏列表、三个导出按钮。绘制在 GUI.BeginClip 内且用剪辑局部坐标（探针实测 BeginC… — [模块 1 · API 3]
+      - project-chaos.editor-tools.worldmap-tool.window — 工具窗口 / Tool Window — 绘制窗口：5 种模式、可缩放平移的画布、点位与多边形绘制、可拖宽侧栏与三个导出按钮。绘制在 GUI.BeginClip 内用剪辑局部坐标（实测会平移原点），命中… — [模块 1 · API 3]
       - project-chaos.editor-tools.worldmap-tool.xlsx-exporter — xlsx 导出 / XLSX Exporter — EPPlus 4.5.3 写出符合项目 7 行表头的工作簿：顶层地图表、_worldmap_tool 子目录下的 5 张时期势力分表（导出器不扫描子目录）、以及… — [模块 1 · API 1]
   - project-chaos.framework — 运行时框架 / Runtime Framework — Assets/Scripts/Runtime/GameBase 与 Path&Type 下的运行时系统群：UIManager 面板栈与动画、音频、输入与按键图标… — [模块 121 · API 330]
     - project-chaos.framework.audio — 音频管理 / Audio Manager — AudioManager：BGM 播放/暂停/停止、音效一次性播放与回调、按 AudioChannel（Master/Music/Sound/UI）分通道音量（… — [模块 4 · API 13]

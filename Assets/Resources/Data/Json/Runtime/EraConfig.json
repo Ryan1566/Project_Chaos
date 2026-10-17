@@ -1,0 +1,49 @@
+{
+    "datas": [
+        {
+            "Index": 1,
+            "Era": 1,
+            "NameKey": "era_01_name",
+            "BaseDifficulty": 10,
+            "MilestoneType": 1,
+            "MilestoneValue": 0,
+            "Enable": true
+        },
+        {
+            "Index": 2,
+            "Era": 2,
+            "NameKey": "era_02_name",
+            "BaseDifficulty": 12,
+            "MilestoneType": 1,
+            "MilestoneValue": 3,
+            "Enable": true
+        },
+        {
+            "Index": 3,
+            "Era": 3,
+            "NameKey": "era_03_name",
+            "BaseDifficulty": 14,
+            "MilestoneType": 1,
+            "MilestoneValue": 6,
+            "Enable": true
+        },
+        {
+            "Index": 4,
+            "Era": 4,
+            "NameKey": "era_04_name",
+            "BaseDifficulty": 16,
+            "MilestoneType": 1,
+            "MilestoneValue": 10,
+            "Enable": true
+        },
+        {
+            "Index": 5,
+            "Era": 5,
+            "NameKey": "era_05_name",
+            "BaseDifficulty": 18,
+            "MilestoneType": 1,
+            "MilestoneValue": 0,
+            "Enable": true
+        }
+    ]
+}

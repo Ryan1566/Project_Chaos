@@ -9,12 +9,12 @@
         "repository": "https://github.com/Ryan1566/Project_Chaos.git"
       }
     ],
-    "compiled_at": "2026-10-17T09:35:55.742Z",
+    "compiled_at": "2026-10-17T09:59:34.359Z",
     "stats": {
       "tree_count": 1,
-      "module_count": 427,
-      "leaf_count": 342,
-      "api_count": 929,
+      "module_count": 428,
+      "leaf_count": 343,
+      "api_count": 931,
       "dep_count": 216,
       "cross_tree_dep_count": 0,
       "max_depth": 7,
@@ -22,7 +22,7 @@
       "planned_count": 0,
       "deprecated_count": 0,
       "policy_rule_count": 5,
-      "change_count": 5,
+      "change_count": 6,
       "open_change_count": 0
     }
   },
@@ -52,9 +52,9 @@
       "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "repository": "https://github.com/Ryan1566/Project_Chaos.git",
       "aggregate": {
-        "descendant_count": 426,
+        "descendant_count": 427,
         "own_api_count": 0,
-        "inherited_api_count": 929,
+        "inherited_api_count": 931,
         "dep_out": 0,
         "dep_in": 0
       }
@@ -8254,9 +8254,9 @@
         }
       ],
       "aggregate": {
-        "descendant_count": 40,
+        "descendant_count": 41,
         "own_api_count": 0,
-        "inherited_api_count": 144,
+        "inherited_api_count": 146,
         "dep_out": 2,
         "dep_in": 0
       }
@@ -10817,9 +10817,9 @@
       "updated_at": "2026-10-12T21:40:00Z",
       "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "aggregate": {
-        "descendant_count": 5,
+        "descendant_count": 6,
         "own_api_count": 0,
-        "inherited_api_count": 7,
+        "inherited_api_count": 9,
         "dep_out": 0,
         "dep_in": 0
       }
@@ -10906,6 +10906,56 @@
         "dep_in": 0
       }
     },
+    "project-chaos.editor-tools.worldmap-tool.region-tree": {
+      "uid": "aa910016",
+      "id": "project-chaos.editor-tools.worldmap-tool.region-tree",
+      "parent": "project-chaos.editor-tools.worldmap-tool",
+      "tree": "project-chaos",
+      "depth": 4,
+      "name": {
+        "zh": "区域树模型",
+        "en": "Region Tree Model"
+      },
+      "description": {
+        "zh": "势力区域主从树的纯数据层（不含绘制）：把草稿的势力顶点按 时期 → 势力 → 区域 三级聚成节点（时期 1~5 全列、势力去重并排序、区域带 sourceIndex），并提供拖拽节点/放置目标/移动意图/重排序意图等结构，供窗口渲染与拖放使用。\n",
+        "en": "Pure data layer of the faction-region master/detail tree (no drawing): groups the draft's faction vertices into era → faction → region nodes (all five eras listed, factions de-duplicated and ordered, regions carrying a source index), and provides the drag node, drop target, move-intent and reorder-intent structures used by the window's rendering and drag-and-drop.\n"
+      },
+      "source": [
+        {
+          "path": "Assets/Scripts/Editor/WorldMapTool/WorldMapToolRegionTree.cs"
+        }
+      ],
+      "revision": "3e4115979ea7e37fe093c0b4cd179612739ab7c5",
+      "updated_at": "2026-10-17T09:59:30.827Z",
+      "fingerprint": "d8044cb5a64bb51be8c25fc3551a4e3798c04b07c3231a7d6724d35e7ce2b199",
+      "apis": [
+        {
+          "protocol": "file",
+          "path": "Assets/Scripts/Editor/WorldMapTool/WorldMapToolRegionTree.cs",
+          "description": {
+            "zh": "构建 时期 → 势力 → 区域 三级树行（时期 1~5 全列、势力有序、区域带 sourceIndex）。\n",
+            "en": "Builds the era → faction → region tree rows (all five eras, ordered factions, regions with source index).\n"
+          },
+          "key": "file:Assets/Scripts/Editor/WorldMapTool/WorldMapToolRegionTree.cs"
+        },
+        {
+          "protocol": "rpc",
+          "path": "WorldMapRegionTree.Build",
+          "description": {
+            "zh": "侧栏使用的树构建器；按展开状态返回可见行。\n",
+            "en": "Tree builder used by the sidebar; returns visible rows for the expanded state.\n"
+          },
+          "key": "rpc:WorldMapRegionTree.Build"
+        }
+      ],
+      "aggregate": {
+        "descendant_count": 0,
+        "own_api_count": 2,
+        "inherited_api_count": 0,
+        "dep_out": 0,
+        "dep_in": 0
+      }
+    },
     "project-chaos.editor-tools.worldmap-tool.validator": {
       "uid": "aa91000e",
       "id": "project-chaos.editor-tools.worldmap-tool.validator",
@@ -10958,17 +11008,17 @@
         "en": "Tool Window"
       },
       "description": {
-        "zh": "绘制窗口：5 种模式、可缩放平移的画布、点位与多边形绘制、侧栏列表、三个导出按钮。绘制在 GUI.BeginClip 内且用剪辑局部坐标（探针实测 BeginClip 会平移原点），命中判定用窗口坐标，两者等价性由菜单 8 断言。预览只在生成顺序相邻顶点间画实线，收口边为淡虚线；维护「笔尖」（可点选已有顶点/选择模式/工具栏按钮指定），橡皮筋从笔尖跟鼠标，新顶点插入到笔尖之后。两个“新建”按钮分工：工具栏「新建势力区域」取该时期下一个可用 FactionId、RegionId=1，并对颜色逐级避让（建议配色→后备调色板→黄金角派生）；侧栏「新建区域（同势力·飞地）」建同一势力的飞地。\n",
-        "en": "Authoring window for the meta world map. Drawing uses clip-local coordinates inside GUI.BeginClip (probe: it translates the origin); hit-testing uses window coordinates, asserted by menu 8. Preview chains consecutive vertices only, the auto-close edge is dashed, and new vertices insert after the pen head. Toolbar 'new faction area' allocates the era's next free FactionId with RegionId=1 and an avoided colour; sidebar 'new region (same faction)' adds an enclave.\n"
+        "zh": "绘制窗口：5 种模式、可缩放平移的画布、点位与多边形绘制、可拖宽侧栏与三个导出按钮。绘制在 GUI.BeginClip 内用剪辑局部坐标（实测会平移原点），命中判定用窗口坐标，菜单 8 断言两者一致。预览只在生成顺序相邻顶点间画实线，收口边为淡虚线；维护「笔尖」并可插到笔尖之后。两个“新建”按钮分工：工具栏「新建势力区域」取该时期下一可用 FactionId，侧栏「新建区域（同势力·飞地）」建飞地。侧栏是 时期→势力→区域 三级可折叠树，支持拖拽「区域」行：同势力内排序、或跨势力移动（跨势力需二次确认）。\n",
+        "en": "Meta world map authoring window. Drawing uses clip-local coordinates (GUI.BeginClip translates the origin) while hit-testing uses window coordinates; menu 8 asserts they match. Preview chains consecutive vertices, the auto-close edge is dashed, new vertices insert after the pen head. Toolbar 'new faction area' takes the era's next free FactionId. Sidebar: resizable era→faction→region tree; dragging a region reorders it within a faction or moves it to another faction (confirmed).\n"
       },
       "source": [
         {
           "path": "Assets/Scripts/Editor/WorldMapTool/WorldMapToolWindow.cs"
         }
       ],
-      "revision": "b6dae190152cdcce64be3587bb098f7af5b42563",
-      "updated_at": "2026-10-17T09:35:52.613Z",
-      "fingerprint": "6ee21495aa5620eda45d929f696586b7e12d2507d2e9f1d1bd59c4948380fcf0",
+      "revision": "3e4115979ea7e37fe093c0b4cd179612739ab7c5",
+      "updated_at": "2026-10-17T09:59:30.828Z",
+      "fingerprint": "2ee8d583708cc6bca43d775b8ed5f66c1692b3482158387e676b0e3156e0fa1d",
       "apis": [
         {
           "protocol": "file",
@@ -26872,6 +26922,7 @@
     "file:Assets/Scripts/Editor/UIPanelAnimatorTool/UIPanelAnimatorTool.cs#L15-L86": "project-chaos.editor-tools.ui-animator",
     "file:Assets/Scripts/Editor/WorldMapTool/WorldMapToolData.cs": "project-chaos.editor-tools.worldmap-tool.draft-store",
     "file:Assets/Scripts/Editor/WorldMapTool/WorldMapToolGeometry.cs": "project-chaos.editor-tools.worldmap-tool.geometry",
+    "file:Assets/Scripts/Editor/WorldMapTool/WorldMapToolRegionTree.cs": "project-chaos.editor-tools.worldmap-tool.region-tree",
     "file:Assets/Scripts/Editor/WorldMapTool/WorldMapToolValidator.cs": "project-chaos.editor-tools.worldmap-tool.validator",
     "file:Assets/Scripts/Editor/WorldMapTool/WorldMapToolWindow.cs": "project-chaos.editor-tools.worldmap-tool.window",
     "file:Assets/Scripts/Editor/WorldMapTool/WorldMapToolXlsxExporter.cs": "project-chaos.editor-tools.worldmap-tool.xlsx-exporter",
@@ -27559,6 +27610,7 @@
     "rpc:UIPanelAnimatorTool.ValidateAddAnimatorToAllPanelPrefabs": "project-chaos.editor-tools.ui-animator",
     "rpc:UIPanelStaggerItem.order": "project-chaos.framework.ui-animation.stagger-item",
     "rpc:WorldFactionArea.Contains": "project-chaos.framework.world-map.runtime-model",
+    "rpc:WorldMapRegionTree.Build": "project-chaos.editor-tools.worldmap-tool.region-tree",
     "rpc:WorldMapService.FactionIds": "project-chaos.framework.world-map.service",
     "rpc:WorldMapService.TryGetFactionAt": "project-chaos.framework.world-map.service"
   },
@@ -31400,14 +31452,15 @@
     "project-chaos.editor-tools.worldmap-tool": {
       "schema_version": 1,
       "id": "project-chaos.editor-tools.worldmap-tool",
-      "updated_at": "2026-10-12T14:30:30.518Z",
+      "updated_at": "2026-10-17T09:59:28.235Z",
       "mode": "layers",
       "reading": {
-        "zh": "按工具的数据流读：窗口负责交互，每次落点只在 geometry 里做一次坐标换算（归一化 0~1，X 自左向右、Y 自下向上），draft-store 负责草稿持久化，validator 是导出门禁，xlsx-exporter 按项目 7 行表头写出三处产物。",
-        "en": "Read as the tool's data flow: the window drives interaction, every click is converted once in geometry (normalised 0~1, X left-to-right, Y bottom-to-top), the draft store persists the workspace, the validator gates the export, and the xlsx exporter writes the three workbooks in the project's 7-row header format."
+        "zh": "按工具的数据流读：窗口负责交互并渲染 时期→势力→区域 三级树，region-tree 提供树的节点与拖放意图模型，geometry 是唯一的坐标换算处（归一化 0~1，X 自左向右、Y 自下向上），draft-store 负责草稿持久化，validator 是导出门禁，xlsx-exporter 按项目 7 行表头写出三处产物。",
+        "en": "Read as the tool's data flow: the window drives interaction and now also renders the era→faction→region tree, region-tree models that tree's rows and drag intents, geometry owns the single coordinate conversion (normalised 0~1, X left-to-right, Y bottom-to-top), the draft store persists the workspace, the validator gates the export, and the xlsx exporter writes the three workbooks in the project's 7-row header format."
       },
       "order": [
         "project-chaos.editor-tools.worldmap-tool.window",
+        "project-chaos.editor-tools.worldmap-tool.region-tree",
         "project-chaos.editor-tools.worldmap-tool.geometry",
         "project-chaos.editor-tools.worldmap-tool.draft-store",
         "project-chaos.editor-tools.worldmap-tool.validator",
@@ -33156,6 +33209,15 @@
         "zh": "世界观地图工具：新建势力区域"
       },
       "updated_at": "2026-10-17T09:35:54.873Z"
+    },
+    {
+      "id": "2026-10-17-world-map-region-tree",
+      "status": "verified",
+      "title": {
+        "en": "World map tool: resizable faction-region tree with drag-and-drop",
+        "zh": "世界观地图工具：可拖宽的势力区域主从树与拖放"
+      },
+      "updated_at": "2026-10-17T09:59:33.469Z"
     }
   ]
 }
