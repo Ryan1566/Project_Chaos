@@ -274,6 +274,30 @@ public class RetainerService : SingletonBase<RetainerService>
         return sb.ToString();
     }
 
+    // ══════════════ 家族树效果加成（EffectType=4，只读；不改存档字段）══════════════
+
+    /// <summary>族人生命加成。</summary>
+    public int BonusHp { get { return EffectAggregator.Instance.Snapshot.HpBonus; } }
+    /// <summary>族人攻击加成。</summary>
+    public int BonusAttack { get { return EffectAggregator.Instance.Snapshot.AttackBonus; } }
+    /// <summary>族人防御加成。</summary>
+    public int BonusDefense { get { return EffectAggregator.Instance.Snapshot.DefenseBonus; } }
+    /// <summary>族人速度加成。</summary>
+    public int BonusSpeed { get { return EffectAggregator.Instance.Snapshot.SpeedBonus; } }
+
+    /// <summary>某族人的最终属性 = 模板值 + 家族树加成（属性不落盘）。</summary>
+    public void GetEffectiveStats(RetainerSave retainer, out int hp, out int attack, out int defense, out int speed)
+    {
+        hp = attack = defense = speed = 0;
+        if (retainer == null) return;
+        RetainerConfig def = GetDefinition(retainer.protoId);
+        if (def == null) return;
+        hp = (int)def.Hp + BonusHp;
+        attack = (int)def.Attack + BonusAttack;
+        defense = (int)def.Defense + BonusDefense;
+        speed = (int)def.Speed + BonusSpeed;
+    }
+
     /// <summary>调试：清空族人列表。</summary>
     public void ClearAll()
     {

@@ -63,6 +63,62 @@
             "Value": 2,
             "Note": "W1a 验收：带出上限 +2（W3 用）",
             "Enable": true
+        },
+        {
+            "Index": 9,
+            "EffectType": 3,
+            "Target": 0,
+            "Value": 1,
+            "Note": "家族树·影响力·节点2：带出上限 +1",
+            "Enable": true
+        },
+        {
+            "Index": 10,
+            "EffectType": 3,
+            "Target": 0,
+            "Value": 2,
+            "Note": "家族树·局外战斗·节点3：带出上限 +2",
+            "Enable": true
+        },
+        {
+            "Index": 11,
+            "EffectType": 3,
+            "Target": 0,
+            "Value": 3,
+            "Note": "家族树·局内战斗·节点3：带出上限 +3",
+            "Enable": true
+        },
+        {
+            "Index": 12,
+            "EffectType": 4,
+            "Target": 2,
+            "Value": 5,
+            "Note": "家族树·局外战斗·节点1：族人攻击 +5",
+            "Enable": true
+        },
+        {
+            "Index": 13,
+            "EffectType": 4,
+            "Target": 3,
+            "Value": 5,
+            "Note": "家族树·局外战斗·节点2：族人防御 +5",
+            "Enable": true
+        },
+        {
+            "Index": 14,
+            "EffectType": 4,
+            "Target": 4,
+            "Value": 2,
+            "Note": "家族树·局内战斗·节点1：族人速度 +2",
+            "Enable": true
+        },
+        {
+            "Index": 15,
+            "EffectType": 7,
+            "Target": 2001,
+            "Value": 2,
+            "Note": "家族树·家族产业·节点3：农田收获产量 +2",
+            "Enable": true
         }
     ]
 }

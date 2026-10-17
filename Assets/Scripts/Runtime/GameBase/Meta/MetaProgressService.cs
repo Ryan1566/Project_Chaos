@@ -198,6 +198,18 @@ public class MetaProgressService : SingletonBase<MetaProgressService>
         ChaosLog.Info(LogChannel.Config, "[进度] 已重置：era=" + p.era + " depth=" + p.depth + " 资源/计数归零");
     }
 
+    /// <summary>带出上限 = 1 + 家族树带出加成，clamp 1~10（W3 带出用）。</summary>
+    public int DeployCap
+    {
+        get { return Mathf.Clamp(1 + EffectAggregator.Instance.Snapshot.DeployCapBonus, 1, 10); }
+    }
+
+    /// <summary>扎营「补充减员」是否已解锁（EffectType=5；W3 扎营用）。</summary>
+    public bool CampRefillUnlocked
+    {
+        get { return EffectAggregator.Instance.Snapshot.CampRefillUnlocked; }
+    }
+
     /// <summary>给 GM 打印的一行状态（含难度与里程碑进度）。</summary>
     public string DumpState()
     {

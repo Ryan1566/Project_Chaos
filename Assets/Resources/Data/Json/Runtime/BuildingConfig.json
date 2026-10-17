@@ -1,0 +1,108 @@
+{
+    "datas": [
+        {
+            "Index": 1,
+            "BuildingId": 2001,
+            "NameKey": "building_2001_lv1",
+            "Level": 1,
+            "BuildSeconds": 20,
+            "OutputResourceType": 1,
+            "OutputAmount": 2,
+            "HarvestSeconds": 30,
+            "CostResourceType": 1,
+            "CostAmount": 20,
+            "Enable": true
+        },
+        {
+            "Index": 2,
+            "BuildingId": 2001,
+            "NameKey": "building_2001_lv2",
+            "Level": 2,
+            "BuildSeconds": 40,
+            "OutputResourceType": 1,
+            "OutputAmount": 4,
+            "HarvestSeconds": 30,
+            "CostResourceType": 1,
+            "CostAmount": 40,
+            "Enable": true
+        },
+        {
+            "Index": 3,
+            "BuildingId": 2002,
+            "NameKey": "building_2002_lv1",
+            "Level": 1,
+            "BuildSeconds": 20,
+            "OutputResourceType": 2,
+            "OutputAmount": 2,
+            "HarvestSeconds": 30,
+            "CostResourceType": 2,
+            "CostAmount": 20,
+            "Enable": true
+        },
+        {
+            "Index": 4,
+            "BuildingId": 2002,
+            "NameKey": "building_2002_lv2",
+            "Level": 2,
+            "BuildSeconds": 40,
+            "OutputResourceType": 2,
+            "OutputAmount": 4,
+            "HarvestSeconds": 30,
+            "CostResourceType": 2,
+            "CostAmount": 40,
+            "Enable": true
+        },
+        {
+            "Index": 5,
+            "BuildingId": 2003,
+            "NameKey": "building_2003_lv1",
+            "Level": 1,
+            "BuildSeconds": 20,
+            "OutputResourceType": 3,
+            "OutputAmount": 2,
+            "HarvestSeconds": 30,
+            "CostResourceType": 3,
+            "CostAmount": 20,
+            "Enable": true
+        },
+        {
+            "Index": 6,
+            "BuildingId": 2003,
+            "NameKey": "building_2003_lv2",
+            "Level": 2,
+            "BuildSeconds": 40,
+            "OutputResourceType": 3,
+            "OutputAmount": 4,
+            "HarvestSeconds": 30,
+            "CostResourceType": 3,
+            "CostAmount": 40,
+            "Enable": true
+        },
+        {
+            "Index": 7,
+            "BuildingId": 2004,
+            "NameKey": "building_2004_lv1",
+            "Level": 1,
+            "BuildSeconds": 20,
+            "OutputResourceType": 4,
+            "OutputAmount": 2,
+            "HarvestSeconds": 30,
+            "CostResourceType": 4,
+            "CostAmount": 20,
+            "Enable": true
+        },
+        {
+            "Index": 8,
+            "BuildingId": 2004,
+            "NameKey": "building_2004_lv2",
+            "Level": 2,
+            "BuildSeconds": 40,
+            "OutputResourceType": 4,
+            "OutputAmount": 4,
+            "HarvestSeconds": 30,
+            "CostResourceType": 4,
+            "CostAmount": 40,
+            "Enable": true
+        }
+    ]
+}

@@ -178,6 +178,9 @@ public class BuildingSave
     public bool completed;
     /// <summary>完工时刻，**UTC ticks**。0 = 未在建造。</summary>
     public long finishUtcTicks;
+
+    /// <summary>建造/升级剩余秒数（**原型期真正读写的字段**；只按运行中时间递减）。</summary>
+    public uint remainSeconds;
 }
 
 /// <summary>库存堆叠（**W1a 新增**）：一种道具占一格，count 是该种的数量。</summary>

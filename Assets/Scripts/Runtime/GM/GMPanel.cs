@@ -115,6 +115,8 @@ public class GMPanel : MonoBehaviour
     private TextMeshProUGUI _protoItemStatus;
     /// <summary>原型·库存页的状态行。</summary>
     private TextMeshProUGUI _protoInventoryStatus;
+    private TextMeshProUGUI _protoVillageStatus;
+    private TextMeshProUGUI _protoFamilyTreeStatus;
     private uint _runMapSeed = 20261010u;
 
     /// <summary>GM 生成的地图挂在哪个容器下（重复生成时先删掉它）。</summary>
@@ -137,6 +139,10 @@ public class GMPanel : MonoBehaviour
     private Transform _mainList;
     private Transform _subListContent;
     private Transform _contentArea;
+    /// <summary>主列表（分类）滚动容器（运行时构建）。</summary>
+    private ScrollRect _mainScroll;
+    /// <summary>页面区（版块页面）滚动容器（运行时构建）。</summary>
+    private ScrollRect _contentScroll;
     private Button _closeBtn;
     private TextMeshProUGUI _title;
 
@@ -149,6 +155,7 @@ public class GMPanel : MonoBehaviour
         _categories = BuildCatalog();
 
         BindNodes();
+        SetupScrollViews();
         BuildCloseButton();
 
         BuildCategoryButtons();
@@ -212,6 +219,8 @@ public class GMPanel : MonoBehaviour
                 new GmSection("语言切换", BuildLanguagePage),
                 new GmSection("日志与性能", page => AddHint(page, "预留：日志等级 / 频道开关 / 帧率与内存显示，待接入。")),
                 new GmSection("族人", BuildRetainerPage),
+                new GmSection("村庄", BuildVillagePage),
+                new GmSection("家族树", BuildFamilyTreePage),
             }),
 
             new GmCategory("局内生成", new[]
@@ -780,6 +789,230 @@ public class GMPanel : MonoBehaviour
         string text = "[库存] " + InventoryService.ResourceDisplayName(kind) + " +" + amount + " → " + now;
         SetProtoStatus(_protoItemStatus, text + "\n" + InventoryService.Instance.DumpState());
         Debug.Log(text);
+    }
+
+
+
+    // ══════════════════════ 原型：村庄 / 家族树（W1b）══════════════════════
+
+    private void BuildVillagePage(Transform page)
+    {
+        AddHint(page, "W1b 村庄：4 建筑 × 2 级；同时 1 条队列；取消返 50%；仅运行中计时。");
+        AddActionButton(page, "打开村庄面板", () => { if (UIManager.Instance == null) return; UIManager.Instance.PushPanel(PanelType.VillagePanel); ClosePanel(); });
+        AddActionButton(page, "给 100 各资源", () => { GrantAllResources(100u); });
+        AddActionButton(page, "建造农田 2001", () => { string why; bool ok = VillageService.Instance.StartBuild(2001u, out why); Debug.Log("[村庄] 建造农田 " + (ok ? "成功" : ("失败：" + why))); SetProtoStatus(_protoVillageStatus, VillageService.Instance.DumpState()); });
+        AddActionButton(page, "快进 30 秒", () => { VillageService.Instance.Tick(30f); Debug.Log("[村庄] 快进 30s\n" + VillageService.Instance.DumpState()); SetProtoStatus(_protoVillageStatus, VillageService.Instance.DumpState()); });
+        AddActionButton(page, "一键建成（快进 999s）", () => { VillageService.Instance.Tick(999f); Debug.Log("[村庄] 一键建成\n" + VillageService.Instance.DumpState()); SetProtoStatus(_protoVillageStatus, VillageService.Instance.DumpState()); });
+        AddActionButton(page, "收取农田（2001）", () => { uint amt; string why; bool ok = VillageService.Instance.Harvest(2001u, out amt, out why); Debug.Log("[村庄] 收取 " + (ok ? ("+" + amt) : ("失败：" + why))); SetProtoStatus(_protoVillageStatus, VillageService.Instance.DumpState()); });
+        AddActionButton(page, "打印村庄状态", () => { string s = VillageService.Instance.DumpState(); Debug.Log(s); SetProtoStatus(_protoVillageStatus, s); });
+        _protoVillageStatus = CreateStatusLabel(page);
+        SetProtoStatus(_protoVillageStatus, VillageService.Instance.DumpState());
+    }
+
+    private void BuildFamilyTreePage(Transform page)
+    {
+        AddHint(page, "W1b 家族树：5 板块 × 3 节点；点亮需前置已点亮 + 资源足够。");
+        AddActionButton(page, "打开家族树面板", () => { if (UIManager.Instance == null) return; UIManager.Instance.PushPanel(PanelType.FamilyTreePanel); ClosePanel(); });
+        AddActionButton(page, "给 100 各资源", () => { GrantAllResources(100u); });
+        AddActionButton(page, "点亮第一个（101）", () => { string why; bool ok = FamilyTreeService.Instance.Unlock(101u, out why); Debug.Log("[家族树] 点亮101 " + (ok ? "成功" : ("失败：" + why))); SetProtoStatus(_protoFamilyTreeStatus, EffectAggregator.Instance.Snapshot.Dump()); });
+        AddActionButton(page, "一键点亮全部（按前置顺序）", () => { GrantAllResources(9999u); int n = 0; var defs = FamilyTreeService.Instance.GetAll(); for (int i = 0; i < defs.Count; i++) { if (defs[i] == null) continue; string why; if (FamilyTreeService.Instance.Unlock(defs[i].Index, out why)) n++; } Debug.Log("[家族树] 一键点亮 " + n + " 个\n" + EffectAggregator.Instance.Snapshot.Dump()); SetProtoStatus(_protoFamilyTreeStatus, EffectAggregator.Instance.Snapshot.Dump()); });
+        AddActionButton(page, "重置家族树", () => { FamilyTreeService.Instance.ResetAll(); SetProtoStatus(_protoFamilyTreeStatus, EffectAggregator.Instance.Snapshot.Dump()); });
+        AddActionButton(page, "打印效果快照", () => { string s = EffectAggregator.Instance.Snapshot.Dump(); Debug.Log(s); SetProtoStatus(_protoFamilyTreeStatus, s); });
+        _protoFamilyTreeStatus = CreateStatusLabel(page);
+        SetProtoStatus(_protoFamilyTreeStatus, EffectAggregator.Instance.Snapshot.Dump());
+    }
+
+    private void GrantAllResources(uint amount)
+    {
+        InventoryService.Instance.AddResource(InventoryService.ResourceKind.Goods, amount);
+        InventoryService.Instance.AddResource(InventoryService.ResourceKind.Material, amount);
+        InventoryService.Instance.AddResource(InventoryService.ResourceKind.Blueprint, amount);
+        InventoryService.Instance.AddResource(InventoryService.ResourceKind.Money, amount);
+        Debug.Log("[原型] 已给四种资源各 +" + amount);
+    }
+
+
+    // ══════════════════════ 运行时滚动容器（T35）══════════════════════
+    //
+    // 现状：MainList / ContentArea 在场景里都**没有 ScrollRect** → 元素一多就超框
+    //（家族树页 15 节点最明显）。这里**不改场景资产**，运行时给它们各套一层
+    // ScrollView(Viewport + RectMask2D + Content[VL+ContentSizeFitter])，
+    // 并把 `_mainList` / `_contentArea` 直接改指向新的 **Content** ——
+    // 这样所有既有构建代码（CreateButton/CreatePage）**一行都不用改**。
+
+    /// <summary>绑定节点后，给主列表与页面区各建/复用滚动容器。</summary>
+    private void SetupScrollViews()
+    {
+        if (_mainList != null)
+            _mainList = WrapInScrollView(_mainList, "主列表 MainList", out _mainScroll);
+
+        if (_contentArea != null)
+            _contentArea = WrapInScrollView(_contentArea, "页面区 ContentArea", out _contentScroll);
+
+        //分类按钮按视口宽度**拉伸**（否则按钮比视口宽 → 横向溢出被 RectMask2D 裁剪）
+        if (_mainList != null)
+        {
+            VerticalLayoutGroup mainLayout = _mainList.GetComponent<VerticalLayoutGroup>();
+            if (mainLayout != null)
+            {
+                mainLayout.childControlWidth = false;
+                mainLayout.childForceExpandWidth = true;
+            }
+        }
+
+        ValidateSubListScroll();
+    }
+
+    /// <summary>
+    /// **共用的**滚动容器构建：在 host 的父节点下建 `xxx_ScrollView → Viewport(RectMask2D) → Content(VL+CSF)`，
+    /// 复用 host 的矩形；原 host **保留但停用**（不删除场景里的东西）。已存在 ScrollRect 则直接复用。
+    /// 返回可放内容的 `Content`。
+    /// </summary>
+    private Transform WrapInScrollView(Transform host, string label, out ScrollRect scrollRect)
+    {
+        //已有可用滚动容器 → 直接复用它的 content
+        ScrollRect existing = host.GetComponentInChildren<ScrollRect>(true);
+        if (existing != null && existing.content != null)
+        {
+            scrollRect = existing;
+            ChaosLog.Info(LogChannel.UI, "[GM] " + label + " 已有可用的 ScrollRect，直接复用");
+            return existing.content;
+        }
+
+        Transform parent = host.parent;
+        var hostRect = host as RectTransform;
+
+        //① ScrollView
+        var scrollGo = new GameObject(host.name + "_ScrollView", typeof(RectTransform), typeof(ScrollRect));
+        var scrollRectTransform = (RectTransform)scrollGo.transform;
+        scrollRectTransform.SetParent(parent, false);
+        if (hostRect != null)
+        {
+            scrollRectTransform.anchorMin = hostRect.anchorMin;
+            scrollRectTransform.anchorMax = hostRect.anchorMax;
+            scrollRectTransform.pivot = hostRect.pivot;
+            scrollRectTransform.anchoredPosition = hostRect.anchoredPosition;
+            scrollRectTransform.sizeDelta = hostRect.sizeDelta;
+        }
+        else
+        {
+            scrollRectTransform.anchorMin = Vector2.zero;
+            scrollRectTransform.anchorMax = Vector2.one;
+            scrollRectTransform.offsetMin = Vector2.zero;
+            scrollRectTransform.offsetMax = Vector2.zero;
+        }
+
+        //② Viewport（RectMask2D 裁剪 + 透明 Image 吃射线）
+        var viewportGo = new GameObject("Viewport", typeof(RectTransform), typeof(RectMask2D), typeof(Image));
+        var viewportRect = (RectTransform)viewportGo.transform;
+        viewportRect.SetParent(scrollRectTransform, false);
+        viewportRect.anchorMin = Vector2.zero;
+        viewportRect.anchorMax = Vector2.one;
+        viewportRect.offsetMin = Vector2.zero;
+        viewportRect.offsetMax = Vector2.zero;
+        viewportRect.pivot = new Vector2(0f, 1f);
+        Image viewportImage = viewportGo.GetComponent<Image>();
+        viewportImage.color = new Color(0f, 0f, 0f, 0f);
+        viewportImage.raycastTarget = true;
+
+        //③ Content（竖直布局 + 高度自适应）
+        var contentGo = new GameObject("Content", typeof(RectTransform), typeof(VerticalLayoutGroup), typeof(ContentSizeFitter));
+        var contentRect = (RectTransform)contentGo.transform;
+        contentRect.SetParent(viewportRect, false);
+        contentRect.anchorMin = new Vector2(0f, 1f);
+        contentRect.anchorMax = new Vector2(1f, 1f);
+        contentRect.pivot = new Vector2(0f, 1f);
+        contentRect.anchoredPosition = Vector2.zero;
+        contentRect.sizeDelta = Vector2.zero;
+
+        VerticalLayoutGroup layout = contentGo.GetComponent<VerticalLayoutGroup>();
+        layout.padding = new RectOffset(8, 8, 8, 8);
+        layout.spacing = 8f;
+        layout.childAlignment = TextAnchor.UpperLeft;
+        layout.childControlWidth = true;
+        layout.childControlHeight = true;
+        layout.childForceExpandWidth = false;
+        layout.childForceExpandHeight = false;
+
+        ContentSizeFitter fitter = contentGo.GetComponent<ContentSizeFitter>();
+        fitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
+        fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+
+        //④ ScrollRect 参数
+        ScrollRect sr = scrollGo.GetComponent<ScrollRect>();
+        sr.viewport = viewportRect;
+        sr.content = contentRect;
+        sr.horizontal = false;
+        sr.vertical = true;
+        sr.movementType = ScrollRect.MovementType.Clamped;
+        sr.scrollSensitivity = 30f;
+        sr.inertia = true;
+        sr.decelerationRate = 0.135f;
+
+        //⑤ 原 host **保留但停用**（不删场景对象）；已有子物体整体挪进 Content 以保持兼容
+        if (host.childCount > 0)
+        {
+            for (int i = host.childCount - 1; i >= 0; i--)
+            {
+                Transform child = host.GetChild(i);
+                child.SetParent(contentRect, false);
+            }
+        }
+        host.gameObject.SetActive(false);
+
+        scrollRect = sr;
+        ChaosLog.Info(LogChannel.UI, "[GM] 已为 " + label + " 运行时构建 ScrollView（原节点保留并停用）");
+        return contentRect;
+    }
+
+    /// <summary>副列表（场景里已有 ScrollRect）的**防守性校验**：缺什么就在运行时补什么并 Warn。</summary>
+    private void ValidateSubListScroll()
+    {
+        if (_subListContent == null) return;
+
+        ScrollRect sr = _subListContent.GetComponentInParent<ScrollRect>(true);
+        if (sr == null)
+        {
+            ChaosLog.Warn(LogChannel.UI, "[GM] 副列表 SubList 找不到 ScrollRect（场景里缺，未自动补 —— 版块多了可能超框）");
+            return;
+        }
+
+        if (sr.content == null)
+        {
+            sr.content = _subListContent as RectTransform;
+            ChaosLog.Warn(LogChannel.UI, "[GM] 场景里 SubList 的 ScrollRect.content 未赋值，已运行时补上");
+        }
+
+        Transform viewport = sr.viewport;
+        if (viewport == null)
+        {
+            ChaosLog.Warn(LogChannel.UI, "[GM] 场景里 SubList 的 ScrollRect.viewport 未赋值（无法自动补 Viewport，跳过）");
+        }
+        else if (viewport.GetComponent<RectMask2D>() == null && viewport.GetComponent<Mask>() == null)
+        {
+            viewport.gameObject.AddComponent<RectMask2D>();
+            ChaosLog.Warn(LogChannel.UI, "[GM] 场景里 SubList 的 Viewport 缺遮罩，已运行时补 RectMask2D");
+        }
+
+        if (_subListContent.GetComponent<VerticalLayoutGroup>() == null)
+        {
+            VerticalLayoutGroup vl = _subListContent.gameObject.AddComponent<VerticalLayoutGroup>();
+            vl.childAlignment = TextAnchor.UpperLeft;
+            vl.childControlWidth = true;
+            vl.childControlHeight = true;
+            vl.childForceExpandWidth = false;
+            vl.childForceExpandHeight = false;
+            vl.spacing = 8f;
+            ChaosLog.Warn(LogChannel.UI, "[GM] 场景里 SubList Content 缺 VerticalLayoutGroup，已运行时补上");
+        }
+
+        if (_subListContent.GetComponent<ContentSizeFitter>() == null)
+        {
+            ContentSizeFitter fitter = _subListContent.gameObject.AddComponent<ContentSizeFitter>();
+            fitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
+            fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+            ChaosLog.Warn(LogChannel.UI, "[GM] 场景里 SubList Content 缺 ContentSizeFitter，已运行时补上");
+        }
     }
 
 

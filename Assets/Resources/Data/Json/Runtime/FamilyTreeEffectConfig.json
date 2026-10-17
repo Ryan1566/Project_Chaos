@@ -1,0 +1,109 @@
+{
+    "datas": [
+        {
+            "Index": 1,
+            "NodeId": 101,
+            "EffectId": 2,
+            "Weight": 1,
+            "Enable": true
+        },
+        {
+            "Index": 2,
+            "NodeId": 102,
+            "EffectId": 9,
+            "Weight": 1,
+            "Enable": true
+        },
+        {
+            "Index": 3,
+            "NodeId": 103,
+            "EffectId": 8,
+            "Weight": 1,
+            "Enable": true
+        },
+        {
+            "Index": 4,
+            "NodeId": 201,
+            "EffectId": 4,
+            "Weight": 1,
+            "Enable": true
+        },
+        {
+            "Index": 5,
+            "NodeId": 202,
+            "EffectId": 1,
+            "Weight": 1,
+            "Enable": true
+        },
+        {
+            "Index": 6,
+            "NodeId": 203,
+            "EffectId": 15,
+            "Weight": 1,
+            "Enable": true
+        },
+        {
+            "Index": 7,
+            "NodeId": 301,
+            "EffectId": 5,
+            "Weight": 1,
+            "Enable": true
+        },
+        {
+            "Index": 8,
+            "NodeId": 302,
+            "EffectId": 6,
+            "Weight": 1,
+            "Enable": true
+        },
+        {
+            "Index": 9,
+            "NodeId": 303,
+            "EffectId": 3,
+            "Weight": 1,
+            "Enable": true
+        },
+        {
+            "Index": 10,
+            "NodeId": 401,
+            "EffectId": 12,
+            "Weight": 1,
+            "Enable": true
+        },
+        {
+            "Index": 11,
+            "NodeId": 402,
+            "EffectId": 13,
+            "Weight": 1,
+            "Enable": true
+        },
+        {
+            "Index": 12,
+            "NodeId": 403,
+            "EffectId": 10,
+            "Weight": 1,
+            "Enable": true
+        },
+        {
+            "Index": 13,
+            "NodeId": 501,
+            "EffectId": 14,
+            "Weight": 1,
+            "Enable": true
+        },
+        {
+            "Index": 14,
+            "NodeId": 502,
+            "EffectId": 6,
+            "Weight": 1,
+            "Enable": true
+        },
+        {
+            "Index": 15,
+            "NodeId": 503,
+            "EffectId": 11,
+            "Weight": 1,
+            "Enable": true
+        }
+    ]
+}

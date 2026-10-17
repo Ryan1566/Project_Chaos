@@ -21,5 +21,7 @@ public enum PanelType
     GMPanel,//GM面板
     WorldMapPanel,//局外世界观地图主界面
     RetainerPanel,//族人面板
-    InventoryPanel//库存面板
+    InventoryPanel,//库存面板
+    VillagePanel,//村庄面板
+    FamilyTreePanel//家族树面板
 }

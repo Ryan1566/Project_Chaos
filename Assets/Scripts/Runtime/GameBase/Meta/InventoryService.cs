@@ -94,17 +94,27 @@ public class InventoryService : SingletonBase<InventoryService>
     /// <summary>总格位 = clamp(8 + ΣEffectType=2 的数值, 0, 24)。</summary>
     public int TotalSlots
     {
-        get { return Mathf.Clamp(BaseSlots + _slotBonus, 0, HardMaxSlots); }
+        get { return Mathf.Clamp(BaseSlots + SlotBonus, 0, HardMaxSlots); }
     }
 
-    /// <summary>格位加成（来自 EffectType=2 的聚合结果，展示用）。</summary>
-    public int SlotBonus { get { return _slotBonus; } }
+    /// <summary>格位加成 —— **统一从 EffectAggregator 读**（08 §3.3；不再自己算）。</summary>
+    public int SlotBonus { get { return EffectAggregator.Instance.Snapshot.TotalSlotsBonus; } }
 
     /// <summary>
     /// 挂一组效果，按 `EffectType=2`（格位）累计加成。
     /// （W1a 原型：由 GM 直接传入 effectId 列表；W1b 家族树点亮后接同一入口。）
     /// </summary>
     public int ApplySlotEffects(List<uint> effectIds)
+    {
+        //W1b：格位加成改由 EffectAggregator 统一聚合（家族树点亮即生效），这里只负责触发重算。
+        EffectAggregator.Instance.MarkDirty();
+        _slotBonus = EffectAggregator.Instance.Snapshot.TotalSlotsBonus;
+        ChaosLog.Info(LogChannel.Config,
+            "[库存] 已按效果快照重算格位：加成 " + _slotBonus + "，总格位 " + TotalSlots);
+        return _slotBonus;
+    }
+
+    private int ApplySlotEffectsLegacy(List<uint> effectIds)
     {
         _slotBonus = 0;
         if (effectIds != null)

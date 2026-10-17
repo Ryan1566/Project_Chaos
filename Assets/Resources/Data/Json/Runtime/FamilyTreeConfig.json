@@ -1,0 +1,154 @@
+{
+    "datas": [
+        {
+            "Index": 101,
+            "Board": 1,
+            "OrderInBoard": 1,
+            "NameKey": "ft_101_name",
+            "PrereqNodeId": 0,
+            "CostType": 1,
+            "CostValue": 50,
+            "Enable": true
+        },
+        {
+            "Index": 102,
+            "Board": 1,
+            "OrderInBoard": 2,
+            "NameKey": "ft_102_name",
+            "PrereqNodeId": 101,
+            "CostType": 1,
+            "CostValue": 120,
+            "Enable": true
+        },
+        {
+            "Index": 103,
+            "Board": 1,
+            "OrderInBoard": 3,
+            "NameKey": "ft_103_name",
+            "PrereqNodeId": 102,
+            "CostType": 1,
+            "CostValue": 300,
+            "Enable": true
+        },
+        {
+            "Index": 201,
+            "Board": 2,
+            "OrderInBoard": 1,
+            "NameKey": "ft_201_name",
+            "PrereqNodeId": 0,
+            "CostType": 1,
+            "CostValue": 60,
+            "Enable": true
+        },
+        {
+            "Index": 202,
+            "Board": 2,
+            "OrderInBoard": 2,
+            "NameKey": "ft_202_name",
+            "PrereqNodeId": 201,
+            "CostType": 1,
+            "CostValue": 150,
+            "Enable": true
+        },
+        {
+            "Index": 203,
+            "Board": 2,
+            "OrderInBoard": 3,
+            "NameKey": "ft_203_name",
+            "PrereqNodeId": 202,
+            "CostType": 2,
+            "CostValue": 40,
+            "Enable": true
+        },
+        {
+            "Index": 301,
+            "Board": 3,
+            "OrderInBoard": 1,
+            "NameKey": "ft_301_name",
+            "PrereqNodeId": 0,
+            "CostType": 1,
+            "CostValue": 80,
+            "Enable": true
+        },
+        {
+            "Index": 302,
+            "Board": 3,
+            "OrderInBoard": 2,
+            "NameKey": "ft_302_name",
+            "PrereqNodeId": 301,
+            "CostType": 1,
+            "CostValue": 180,
+            "Enable": true
+        },
+        {
+            "Index": 303,
+            "Board": 3,
+            "OrderInBoard": 3,
+            "NameKey": "ft_303_name",
+            "PrereqNodeId": 302,
+            "CostType": 3,
+            "CostValue": 10,
+            "Enable": true
+        },
+        {
+            "Index": 401,
+            "Board": 4,
+            "OrderInBoard": 1,
+            "NameKey": "ft_401_name",
+            "PrereqNodeId": 0,
+            "CostType": 1,
+            "CostValue": 200,
+            "Enable": true
+        },
+        {
+            "Index": 402,
+            "Board": 4,
+            "OrderInBoard": 2,
+            "NameKey": "ft_402_name",
+            "PrereqNodeId": 401,
+            "CostType": 2,
+            "CostValue": 60,
+            "Enable": true
+        },
+        {
+            "Index": 403,
+            "Board": 4,
+            "OrderInBoard": 3,
+            "NameKey": "ft_403_name",
+            "PrereqNodeId": 402,
+            "CostType": 4,
+            "CostValue": 200,
+            "Enable": true
+        },
+        {
+            "Index": 501,
+            "Board": 5,
+            "OrderInBoard": 1,
+            "NameKey": "ft_501_name",
+            "PrereqNodeId": 0,
+            "CostType": 1,
+            "CostValue": 220,
+            "Enable": true
+        },
+        {
+            "Index": 502,
+            "Board": 5,
+            "OrderInBoard": 2,
+            "NameKey": "ft_502_name",
+            "PrereqNodeId": 501,
+            "CostType": 2,
+            "CostValue": 80,
+            "Enable": true
+        },
+        {
+            "Index": 503,
+            "Board": 5,
+            "OrderInBoard": 3,
+            "NameKey": "ft_503_name",
+            "PrereqNodeId": 502,
+            "CostType": 4,
+            "CostValue": 300,
+            "Enable": true
+        }
+    ]
+}
