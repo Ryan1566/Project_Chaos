@@ -95,6 +95,12 @@ public class SavePayload
 
     /// <summary>累计通关过的场景数。</summary>
     public uint scenesCleared;
+
+    /// <summary>历史最深通关深度（原型期统计；只写不清）。</summary>
+    public uint maxClearedDepth = 0;
+
+    /// <summary>库存堆叠（itemId → count）。**不用 Dictionary**（JsonUtility 不支持）。</summary>
+    public List<ItemStackSave> items = new List<ItemStackSave>();
 }
 
 /// <summary>一个存档文件的根对象（= 落盘的整个 Json）。</summary>
@@ -154,6 +160,12 @@ public class RetainerSave
     public bool wounded;
     /// <summary>重伤到期时刻，**UTC ticks**（JsonUtility 不支持 DateTime）。0 = 未重伤。</summary>
     public long woundedUntilUtcTicks;
+
+    /// <summary>模板外键 → `RetainerConfig.Index`（表→存档的外键；0 = 老存档/占位）。</summary>
+    public uint protoId;
+
+    /// <summary>重伤剩余秒数（**原型期真正读写的字段**；只按运行中时间递减）。</summary>
+    public uint woundedRemainSeconds;
 }
 
 /// <summary>建筑存档（**W0 最小占位**：W1 定字段后再往上加）。</summary>
@@ -166,4 +178,15 @@ public class BuildingSave
     public bool completed;
     /// <summary>完工时刻，**UTC ticks**。0 = 未在建造。</summary>
     public long finishUtcTicks;
+}
+
+/// <summary>库存堆叠（**W1a 新增**）：一种道具占一格，count 是该种的数量。</summary>
+[Serializable]
+public class ItemStackSave
+{
+    /// <summary>外键 → `ItemConfig.Index`。</summary>
+    public uint itemId;
+
+    /// <summary>该种道具持有的数量（上限 = `ItemConfig.StackLimit`）。</summary>
+    public uint count;
 }

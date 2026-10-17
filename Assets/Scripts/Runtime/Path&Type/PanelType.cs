@@ -19,5 +19,7 @@ public enum PanelType
     SLPanel,//保存、读取面板
     EnddingPanel,//结局面板
     GMPanel,//GM面板
-    WorldMapPanel//局外世界观地图主界面
+    WorldMapPanel,//局外世界观地图主界面
+    RetainerPanel,//族人面板
+    InventoryPanel//库存面板
 }

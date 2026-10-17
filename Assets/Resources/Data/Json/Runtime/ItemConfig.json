@@ -1,0 +1,94 @@
+{
+    "datas": [
+        {
+            "Index": 1,
+            "NameKey": "item_01_name",
+            "Category": 1,
+            "IsCampItem": true,
+            "StackLimit": 99,
+            "EffectId": 0,
+            "IconKey": "UI/Items/icon_potion_01",
+            "Enable": true
+        },
+        {
+            "Index": 2,
+            "NameKey": "item_02_name",
+            "Category": 2,
+            "IsCampItem": false,
+            "StackLimit": 99,
+            "EffectId": 0,
+            "IconKey": "UI/Items/icon_material_01",
+            "Enable": true
+        },
+        {
+            "Index": 3,
+            "NameKey": "item_03_name",
+            "Category": 3,
+            "IsCampItem": false,
+            "StackLimit": 99,
+            "EffectId": 0,
+            "IconKey": "UI/Items/icon_gear_01",
+            "Enable": true
+        },
+        {
+            "Index": 4,
+            "NameKey": "item_04_name",
+            "Category": 4,
+            "IsCampItem": false,
+            "StackLimit": 99,
+            "EffectId": 0,
+            "IconKey": "UI/Items/icon_blueprint_01",
+            "Enable": true
+        },
+        {
+            "Index": 5,
+            "NameKey": "item_05_name",
+            "Category": 5,
+            "IsCampItem": true,
+            "StackLimit": 99,
+            "EffectId": 0,
+            "IconKey": "UI/Items/icon_consumable_01",
+            "Enable": true
+        },
+        {
+            "Index": 6,
+            "NameKey": "item_06_name",
+            "Category": 1,
+            "IsCampItem": false,
+            "StackLimit": 99,
+            "EffectId": 0,
+            "IconKey": "UI/Items/icon_potion_02",
+            "Enable": true
+        },
+        {
+            "Index": 7,
+            "NameKey": "item_07_name",
+            "Category": 2,
+            "IsCampItem": false,
+            "StackLimit": 99,
+            "EffectId": 0,
+            "IconKey": "UI/Items/icon_material_02",
+            "Enable": true
+        },
+        {
+            "Index": 8,
+            "NameKey": "item_08_name",
+            "Category": 3,
+            "IsCampItem": false,
+            "StackLimit": 99,
+            "EffectId": 0,
+            "IconKey": "UI/Items/icon_gear_02",
+            "Enable": true
+        },
+        {
+            "Index": 9,
+            "NameKey": "item_09_name",
+            "Category": 4,
+            "IsCampItem": false,
+            "StackLimit": 99,
+            "EffectId": 0,
+            "IconKey": "UI/Items/icon_blueprint_02",
+            "Enable": true
+        }
+    ]
+}

@@ -1,0 +1,64 @@
+{
+    "datas": [
+        {
+            "Index": 1,
+            "NameKey": "retainer_01",
+            "Quality": 1,
+            "Hp": 100,
+            "Attack": 12,
+            "Defense": 6,
+            "Speed": 10,
+            "InitialConfidence": 80,
+            "RecruitWeight": 50,
+            "Enable": true
+        },
+        {
+            "Index": 2,
+            "NameKey": "retainer_02",
+            "Quality": 1,
+            "Hp": 110,
+            "Attack": 14,
+            "Defense": 7,
+            "Speed": 9,
+            "InitialConfidence": 75,
+            "RecruitWeight": 40,
+            "Enable": true
+        },
+        {
+            "Index": 3,
+            "NameKey": "retainer_03",
+            "Quality": 2,
+            "Hp": 130,
+            "Attack": 18,
+            "Defense": 9,
+            "Speed": 11,
+            "InitialConfidence": 80,
+            "RecruitWeight": 25,
+            "Enable": true
+        },
+        {
+            "Index": 4,
+            "NameKey": "retainer_04",
+            "Quality": 3,
+            "Hp": 150,
+            "Attack": 22,
+            "Defense": 12,
+            "Speed": 12,
+            "InitialConfidence": 85,
+            "RecruitWeight": 10,
+            "Enable": true
+        },
+        {
+            "Index": 5,
+            "NameKey": "retainer_05",
+            "Quality": 3,
+            "Hp": 170,
+            "Attack": 26,
+            "Defense": 14,
+            "Speed": 13,
+            "InitialConfidence": 60,
+            "RecruitWeight": 5,
+            "Enable": true
+        }
+    ]
+}

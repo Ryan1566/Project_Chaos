@@ -39,6 +39,30 @@
             "Value": 10,
             "Note": "家族树·族人培养·节点1：族人生命 +10",
             "Enable": true
+        },
+        {
+            "Index": 6,
+            "EffectType": 2,
+            "Target": 0,
+            "Value": 1,
+            "Note": "W1a 验收：格位 +1（验证格位可被提升）",
+            "Enable": true
+        },
+        {
+            "Index": 7,
+            "EffectType": 4,
+            "Target": 5,
+            "Value": 10,
+            "Note": "W1a 验收：族人信心上限 +10",
+            "Enable": true
+        },
+        {
+            "Index": 8,
+            "EffectType": 3,
+            "Target": 0,
+            "Value": 2,
+            "Note": "W1a 验收：带出上限 +2（W3 用）",
+            "Enable": true
         }
     ]
 }

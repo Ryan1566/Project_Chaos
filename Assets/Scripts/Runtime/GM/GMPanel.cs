@@ -3,6 +3,7 @@ using ChaosDebug;
 using LocalizationSystem;
 using TMPro;
 using UnityEngine;
+using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -108,6 +109,12 @@ public class GMPanel : MonoBehaviour
     private TextMeshProUGUI _protoMapStatus;
     /// <summary>原型·地图页的场景号输入（1~3）。</summary>
     private TMP_InputField _protoSceneIndexInput;
+    /// <summary>原型·族人页的状态行。</summary>
+    private TextMeshProUGUI _protoRetainerStatus;
+    /// <summary>原型·道具发放页的状态行。</summary>
+    private TextMeshProUGUI _protoItemStatus;
+    /// <summary>原型·库存页的状态行。</summary>
+    private TextMeshProUGUI _protoInventoryStatus;
     private uint _runMapSeed = 20261010u;
 
     /// <summary>GM 生成的地图挂在哪个容器下（重复生成时先删掉它）。</summary>
@@ -204,6 +211,7 @@ public class GMPanel : MonoBehaviour
             {
                 new GmSection("语言切换", BuildLanguagePage),
                 new GmSection("日志与性能", page => AddHint(page, "预留：日志等级 / 频道开关 / 帧率与内存显示，待接入。")),
+                new GmSection("族人", BuildRetainerPage),
             }),
 
             new GmCategory("局内生成", new[]
@@ -213,8 +221,8 @@ public class GMPanel : MonoBehaviour
 
             new GmCategory("道具", new[]
             {
-                new GmSection("发放道具", page => AddHint(page, "预留：等仓库系统完成后接入（选道具 + 数量 + 发放）。")),
-                new GmSection("背包 / 仓库", page => AddHint(page, "预留：等仓库系统完成后接入（查看 / 增删 / 清空）。")),
+                new GmSection("发放道具", BuildItemGrantPage),
+                new GmSection("背包 / 仓库", BuildInventoryPage),
             }),
 
             new GmCategory("原型", new[]
@@ -614,6 +622,164 @@ public class GMPanel : MonoBehaviour
         element.preferredHeight = ActionButtonHeight;
         element.flexibleWidth = 0f;
         return input;
+    }
+
+
+
+    // ══════════════════════ 原型：族人 / 道具 / 库存（W1a）══════════════════════
+
+    private void BuildRetainerPage(Transform page)
+    {
+        AddHint(page, "W1a：可出战 = 未重伤 且 信心 ≥ 30；重伤 30 秒倒计时（只按运行中时间）。上限 8 人。");
+
+        AddActionButton(page, "给 1 个随机族人（按 RecruitWeight）", () =>
+        {
+            RetainerSave r = RetainerService.Instance.RecruitRandom();
+            string text = r == null ? "[族人] 招募失败（上限/无模板，看 Console）"
+                : ("[族人] 招募 #" + r.id + " proto=" + r.protoId + " 品质=" + r.quality + " 信心=" + r.confidence);
+            SetProtoStatus(_protoRetainerStatus, text + "\n" + RetainerService.Instance.DumpAll());
+            Debug.Log(text);
+        });
+
+        AddActionButton(page, "打伤第 1 个族人（30s）", () =>
+        {
+            List<RetainerSave> all = RetainerService.Instance.GetAll();
+            if (all.Count == 0) { SetProtoStatus(_protoRetainerStatus, "没有族人可打伤"); return; }
+            RetainerService.Instance.Wound(all[0].id);
+            SetProtoStatus(_protoRetainerStatus, RetainerService.Instance.DumpAll());
+            Debug.Log("[族人] 打伤 #" + all[0].id + "\n" + RetainerService.Instance.DumpAll());
+        });
+
+        AddActionButton(page, "第 1 个族人信心 -40", () =>
+        {
+            List<RetainerSave> all = RetainerService.Instance.GetAll();
+            if (all.Count == 0) { SetProtoStatus(_protoRetainerStatus, "没有族人"); return; }
+            RetainerService.Instance.ChangeConfidence(all[0].id, -40);
+            SetProtoStatus(_protoRetainerStatus, RetainerService.Instance.DumpAll());
+            Debug.Log("[族人] 信心-40\n" + RetainerService.Instance.DumpAll());
+        });
+
+        AddActionButton(page, "快进 30 秒（Tick）", () =>
+        {
+            RetainerService.Instance.Tick(30f);
+            SetProtoStatus(_protoRetainerStatus, RetainerService.Instance.DumpAll());
+            Debug.Log("[族人] 快进 30s\n" + RetainerService.Instance.DumpAll());
+        });
+
+        AddActionButton(page, "打印全部族人状态", () =>
+        {
+            string text = RetainerService.Instance.DumpAll();
+            SetProtoStatus(_protoRetainerStatus, text);
+            Debug.Log(text);
+        });
+
+        AddActionButton(page, "打开族人面板", () =>
+        {
+            if (UIManager.Instance == null) { Debug.LogError("[族人] UIManager 未初始化"); return; }
+            UIManager.Instance.PushPanel(PanelType.RetainerPanel);
+            ClosePanel();
+        });
+
+        _protoRetainerStatus = CreateStatusLabel(page);
+        SetProtoStatus(_protoRetainerStatus, RetainerService.Instance.DumpAll());
+    }
+
+    private void BuildItemGrantPage(Transform page)
+    {
+        AddHint(page, "资源是 4 个全局数字（不占格位）；道具占格位（种类数）。");
+
+        AddActionButton(page, "物资 +10", () => { GrantResource(InventoryService.ResourceKind.Goods, 10u); });
+        AddActionButton(page, "材料 +10", () => { GrantResource(InventoryService.ResourceKind.Material, 10u); });
+        AddActionButton(page, "图纸 +10", () => { GrantResource(InventoryService.ResourceKind.Blueprint, 10u); });
+        AddActionButton(page, "钱财 +10", () => { GrantResource(InventoryService.ResourceKind.Money, 10u); });
+
+        AddActionButton(page, "给 1 个药品（itemId=1）", () =>
+        {
+            string reason;
+            bool ok = InventoryService.Instance.AddItem(1u, 1u, out reason);
+            string text = "[库存] 给药品 " + (ok ? "成功" : ("失败：" + reason)) + "\n" + InventoryService.Instance.DumpState();
+            SetProtoStatus(_protoItemStatus, text);
+            Debug.Log(text);
+        });
+
+        AddActionButton(page, "给 10 个药品（叠加上限测试）", () =>
+        {
+            string reason;
+            bool ok = InventoryService.Instance.AddItem(1u, 10u, out reason);
+            string text = "[库存] 给药品×10 " + (ok ? "成功" : ("失败：" + reason)) + "\n" + InventoryService.Instance.DumpState();
+            SetProtoStatus(_protoItemStatus, text);
+            Debug.Log(text);
+        });
+
+        AddActionButton(page, "塞满格位（塞 8 种）", () =>
+        {
+            for (uint id = 1; id <= 8; id++)
+            {
+                string reason;
+                InventoryService.Instance.AddItem(id, 1u, out reason);
+            }
+            string dump = InventoryService.Instance.DumpState();
+            SetProtoStatus(_protoItemStatus, "[库存] 塞格完成\n" + dump);
+            Debug.Log("[库存] 塞格完成\n" + dump);
+        });
+
+        AddActionButton(page, "清空库存（资源不变）", () =>
+        {
+            InventoryService.Instance.ClearItems();
+            string dump = InventoryService.Instance.DumpState();
+            SetProtoStatus(_protoItemStatus, "[库存] 已清空\n" + dump);
+            Debug.Log("[库存] 已清空\n" + dump);
+        });
+
+        _protoItemStatus = CreateStatusLabel(page);
+        SetProtoStatus(_protoItemStatus, InventoryService.Instance.DumpState());
+    }
+
+    private void BuildInventoryPage(Transform page)
+    {
+        AddHint(page, "格位 = 物品种类数上限（基础 8，Effect 可提升，原型硬上限 24）；同名叠加 99。");
+
+        AddActionButton(page, "挂 1 个格位效果（Effect.Index=1）→ 总格位应变 10", () =>
+        {
+            InventoryService.Instance.ApplySlotEffects(new List<uint> { 1u });
+            string text = "[库存] 已挂 Effect.Index=1（类型2 值2）→ 总格位 " + InventoryService.Instance.TotalSlots
+                + "\n" + InventoryService.Instance.DumpState();
+            SetProtoStatus(_protoInventoryStatus, text);
+            Debug.Log(text);
+        });
+
+        AddActionButton(page, "卸掉格位效果（总格位回 8）", () =>
+        {
+            InventoryService.Instance.ApplySlotEffects(new List<uint>());
+            string text = "[库存] 已卸效果 → 总格位 " + InventoryService.Instance.TotalSlots;
+            SetProtoStatus(_protoInventoryStatus, text);
+            Debug.Log(text);
+        });
+
+        AddActionButton(page, "打印库存状态", () =>
+        {
+            string text = InventoryService.Instance.DumpState();
+            SetProtoStatus(_protoInventoryStatus, text);
+            Debug.Log(text);
+        });
+
+        AddActionButton(page, "打开库存面板", () =>
+        {
+            if (UIManager.Instance == null) { Debug.LogError("[库存] UIManager 未初始化"); return; }
+            UIManager.Instance.PushPanel(PanelType.InventoryPanel);
+            ClosePanel();
+        });
+
+        _protoInventoryStatus = CreateStatusLabel(page);
+        SetProtoStatus(_protoInventoryStatus, InventoryService.Instance.DumpState());
+    }
+
+    private void GrantResource(InventoryService.ResourceKind kind, uint amount)
+    {
+        uint now = InventoryService.Instance.AddResource(kind, amount);
+        string text = "[库存] " + InventoryService.ResourceDisplayName(kind) + " +" + amount + " → " + now;
+        SetProtoStatus(_protoItemStatus, text + "\n" + InventoryService.Instance.DumpState());
+        Debug.Log(text);
     }
 
 
