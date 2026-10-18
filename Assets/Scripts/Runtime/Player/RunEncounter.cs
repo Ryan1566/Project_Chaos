@@ -26,6 +26,17 @@ public static class RunEncounter
     private static bool _sceneReady;
     /// <summary>重入保护。</summary>
     private static bool _entering;
+    private static int _enterCount;
+    /// <summary>本局随机种子（掉落可复现用）。</summary>
+    private static uint _runSeed = 12345u;
+    /// <summary>本局击杀序号（掉落可复现用）。</summary>
+    private static uint _killSeq;
+    public static uint RunSeed { get { return _runSeed; } }
+    /// <summary>待执行的下一场景（延迟一帧，禁止同步递归 EnterScene）。</summary>
+    private static int _pendingNextScene = -1;
+    /// <summary>ticker 静态缓存（W3.1n B）。</summary>
+    private static RunEncounterTicker _ticker;
+    private static readonly int DiagId = typeof(RunEncounter).GetHashCode();
 
     public static int CurrentSceneIndex { get; private set; }
     public static bool RunCleared { get; private set; }
@@ -46,6 +57,44 @@ public static class RunEncounter
             return false;
         }
 
+        //══════ 诊断（W3.1j）：谁在调 EnterScene ══════
+        _enterCount++;
+        {
+            var stack = new System.Diagnostics.StackTrace(true);
+            string frames = "";
+            for (int fi = 0; fi < stack.FrameCount && fi < 4; fi++)
+            {
+                var fr = stack.GetFrame(fi);
+                frames += "\n       #" + fi + " " + (fr.GetMethod() == null ? "?" : fr.GetMethod().DeclaringType + "." + fr.GetMethod().Name)
+                       + "  (" + (fr.GetFileName() == null ? "?" : System.IO.Path.GetFileName(fr.GetFileName())) + ":" + fr.GetFileLineNumber() + ")";
+            }
+            ChaosLog.Warn(LogChannel.UI, "[诊断] EnterScene #" + _enterCount + " sceneIndex=" + sceneIndex
+                + " staticId=" + DiagId + " frameCount=" + Time.frameCount
+                + " ticker数=" + UnityEngine.Object.FindObjectsOfType<RunEncounterTicker>().Length + frames);
+        }
+        if (Time.frameCount < 0) return false;
+
+        ChaosLog.Warn(LogChannel.UI, "[诊断] EnterScene Team.Count=" + Team.Count + " 传入runTeam=" + (runTeam == null ? -1 : runTeam.Count) + " frameCount=" + Time.frameCount);
+
+        //W3.2b：进场景清空局内库存与未捡掉落物
+        RunInventory.Clear();
+        ClearGroundDrops();
+        RunDepthHud.DisableAndDestroy();   //W4e：关闸 + 销毁   //W4c：撤离销毁 HUD
+        CampService.ResetForNewRun();
+        _killSeq = 0u;
+        _runSeed = (uint)(Time.frameCount * 7919 + sceneIndex * 131);
+        ChaosLog.Info(LogChannel.Config, "[局内库存] 场景 " + sceneIndex + " runSeed=" + _runSeed);
+
+        //★W3.1l：进场景第一步先按类型全场景清理（防残留叠加）
+        PurgeAllRuntimeObjects();
+        _clearedRooms = 0;
+        _clearedCurrentScene = false;
+        Defeated = false;
+        _pendingNextScene = -1;
+        AliveByRoom.Clear();
+        TotalByRoom.Clear();
+        AllEnemies.Clear();
+
         //重入保护：EnterScene 未完成时再次进入 → 直接拒绝（防重复生成）
         if (_entering)
         {
@@ -56,7 +105,18 @@ public static class RunEncounter
         _sceneReady = false;
         ChaosLog.Info(LogChannel.UI, "[局内] EnterScene 开始：sceneIndex=" + sceneIndex);
 
-        if (runTeam != null) { Team.Clear(); Team.AddRange(runTeam); }
+        if (runTeam != null && runTeam.Count > 0)
+        {
+            //★W3.1n：必须**先拷贝**再清空 —— 否则当传入的就是 Team 自身时（ProcessPendingScene 传 Team），
+            //  Team.Clear() 会把自己清空，导致 SpawnAllies 收到 0 人 → 切场景后门客=0
+            var teamCopy = new List<uint>(runTeam);
+            Team.Clear();
+            Team.AddRange(teamCopy);
+        }
+        else if (Team.Count == 0)
+        {
+            ChaosLog.Warn(LogChannel.UI, "[局内] EnterScene 收到的队伍为空且 Team 也为空 → 门客将不会生成");
+        }
 
         ClearEnemies();
         PlayerSpawner.Clear(false);
@@ -87,7 +147,12 @@ public static class RunEncounter
         EnsureTicker();
 
         _sceneReady = true;
+        RunDepthHud.EnableForRun();   //W4e：进局开闸 + 建 HUD（CurrentSceneIndex 已就位）
         _entering = false;
+
+        ChaosLog.Success(LogChannel.UI,
+            "[局内] 场景" + sceneIndex + " 生成完成：房间 " + TotalRooms + " / 敌人 " + AllEnemies.Count
+            + " / 门客 " + AllyController.All.Count + " / 玩家 " + (PlayerSpawner.CurrentPlayer == null ? 0 : 1));
 
         ChaosLog.Success(LogChannel.UI,
             "[局内] 进入场景 " + sceneIndex + "/" + MaxSceneIndex + "，地图根=" + container.name
@@ -124,6 +189,37 @@ public static class RunEncounter
         return EnterScene(next, Team);
     }
 
+    /// <summary>由 Ticker 每帧调用：执行延迟登记的下一场景（禁止同步递归）。</summary>
+    public static void ProcessPendingScene()
+    {
+        ChaosLog.Warn(LogChannel.UI, "[诊断] ProcessPendingScene 入口 pending=" + _pendingNextScene + " frameCount=" + Time.frameCount);
+        if (_pendingNextScene < 0) return;
+        int next = _pendingNextScene;
+        _pendingNextScene = -1;
+        _sceneReady = false;
+        EnterScene(next, Team);
+    }
+
+    /// <summary>诊断状态串（W3.1n）。</summary>
+    /// <summary>W3.2d：本局是否已判负（HP 归零）。</summary>
+    public static bool Defeated { get; private set; }
+
+    /// <summary>判负（由 PlayerHealth 在 HP 归零时调用；结算面板下轮接）。</summary>
+    public static void TriggerDefeat()
+    {
+        if (Defeated) return;
+        Defeated = true;
+        _sceneReady = false;   //停止清房/切场景
+        RunSettlementPanel.Open(false);   //W3.2e：弹失败态结算面板
+        ChaosLog.Warn(LogChannel.UI, "[局内] TriggerDefeat：本局失败（sceneIndex=" + CurrentSceneIndex + "，掉落条目 " + RunInventory.UsedSlots + " 种）");
+    }
+
+    public static string DumpDiagState()
+    {
+        return "pending=" + _pendingNextScene + " sceneReady=" + _sceneReady + " entering=" + _entering
+            + " scene=" + CurrentSceneIndex + " ticker数=" + UnityEngine.Object.FindObjectsOfType<RunEncounterTicker>().Length;
+    }
+
     public static string DumpProgress()
     {
         int alive = 0, total = 0;
@@ -154,50 +250,93 @@ public static class RunEncounter
     }
 
     /// <summary>敌人死亡回调（击杀/掉落死亡都会来；这里只从列表移除，清房由 RefreshRooms 统一判定）。</summary>
-    public static void NotifyEnemyKilled(ushort roomId, EnemyPlaceholder enemy)
+    public static void NotifyEnemyKilled(ushort roomId, EnemyPlaceholder enemy, bool allowDrop = true)
     {
         List<EnemyPlaceholder> list;
-        if (!AliveByRoom.TryGetValue(roomId, out list)) return;
-        list.Remove(enemy);
+        if (AliveByRoom.TryGetValue(roomId, out list)) list.Remove(enemy);
+
+        //W3.2d：掉落死亡不触发掉落（防引诱跳崖刷装备 / 进局凭空多掉落）
+        if (!allowDrop) return;
+
+        //W3.2b：击杀掉落（可复现：runSeed + killSeq）
+        _killSeq++;
+        uint itemId, count;
+        if (!DropService.Instance.RollForEnemy(DropService.GroupNormal, _runSeed, _killSeq, out itemId, out count)) return;
+
+        Vector3 position = enemy == null ? Vector3.zero : enemy.transform.position;
+        string reason;
+        if (RunInventory.AddItem(itemId, count, out reason)) return;
+
+        //满格/满叠 → 留地可捡
+        SpawnGroundDrop(itemId, count, position, reason);
+    }
+
+    /// <summary>在指定位置生成可捡掉落物（挂在 PrototypeDropRoot 下）。</summary>
+    private static void SpawnGroundDrop(uint itemId, uint count, Vector3 position, string reason)
+    {
+        GameObject root = GameObject.Find(DropRootName);
+        if (root == null) root = new GameObject(DropRootName);
+
+        GameObject go = new GameObject("Drop_" + itemId + "x" + count, typeof(BoxCollider2D), typeof(SpriteRenderer));
+        go.transform.SetParent(root.transform, false);
+        go.transform.position = position + new Vector3(0f, 0.5f, 0f);
+        go.GetComponent<BoxCollider2D>().isTrigger = true;
+        go.GetComponent<BoxCollider2D>().size = new Vector2(1.2f, 1.2f);
+        SpriteRenderer sr = go.GetComponent<SpriteRenderer>();
+        sr.sprite = Resources.Load<Sprite>("UI/Skin/UISprite");
+        sr.color = new Color(1f, 0.85f, 0.2f, 1f);
+        sr.sortingOrder = 12;
+
+        RunDropItem drop = go.AddComponent<RunDropItem>();
+        drop.itemId = itemId;
+        drop.count = count;
+        ChaosLog.Warn(LogChannel.Config, "[局内库存] 拾取失败（" + reason + "）→ 掉落物留地：" + go.name + " @" + go.transform.position);
+    }
+
+    public const string DropRootName = "PrototypeDropRoot";
+
+    /// <summary>清掉所有未捡的掉落物（切场景/撤离）。</summary>
+    public static void ClearGroundDrops()
+    {
+        GameObject root = GameObject.Find(DropRootName);
+        if (root == null) return;
+        root.name = DropRootName + "_purging";
+        Object.Destroy(root);
+        ChaosLog.Info(LogChannel.Config, "[局内库存] 已清除未捡掉落物");
     }
 
     /// <summary>**按活体重算清房**：每房间统计"存活且在本房间矩形内"的敌人；0 即已清。</summary>
     private static void RefreshRooms()
     {
-        //★硬门（W3.1i）：场景未生成完不许判清房
         if (!_sceneReady) return;
-        if (AliveByRoom.Count == 0) return;
+        if (_pendingNextScene > 0) return;          //已有待切场景，本帧不再判
+        if (TotalRooms == 0) return;
 
+        //W3.1l：只按"登记的敌人是否 IsDead"统计（掉落死亡已走 Die()），不再用房间矩形过滤
         List<ushort> clearedNow = null;
         foreach (KeyValuePair<ushort, List<EnemyPlaceholder>> pair in AliveByRoom)
         {
             int alive = 0;
-            for (int i = pair.Value.Count - 1; i >= 0; i--)
+            for (int k = 0; k < pair.Value.Count; k++)
             {
-                EnemyPlaceholder enemy = pair.Value[i];
-                if (enemy == null) { pair.Value.RemoveAt(i); continue; }
+                EnemyPlaceholder enemy = pair.Value[k];
+                if (enemy == null) continue;
                 if (enemy.IsDead) continue;
-                if (!InsideRoom(enemy)) continue;      //跑出房间的不计入（也别让它挡住清房）
                 alive++;
             }
             if (alive == 0) { if (clearedNow == null) clearedNow = new List<ushort>(); clearedNow.Add(pair.Key); }
         }
 
-        if (clearedNow == null || clearedNow.Count == 0)
-        {
-            if (_clearedRooms >= TotalRooms && TotalRooms > 0) OnSceneCleared();
-            return;
-        }
+        if (clearedNow == null || clearedNow.Count == 0) return;
 
-        for (int i = 0; i < clearedNow.Count; i++)
+        for (int k = 0; k < clearedNow.Count; k++)
         {
-            AliveByRoom.Remove(clearedNow[i]);
+            AliveByRoom.Remove(clearedNow[k]);
             _clearedRooms++;
-            ChaosLog.Info(LogChannel.UI, "[局内] 房间 " + clearedNow[i] + " 已清空（剩余未清房间 "
-                + (TotalRooms - _clearedRooms) + "）");
+            ChaosLog.Info(LogChannel.UI, "[局内] 房间 " + clearedNow[k] + " 已清空（剩余未清房间 " + (TotalRooms - _clearedRooms) + "）");
         }
 
-        if (_clearedRooms >= TotalRooms && TotalRooms > 0) OnSceneCleared();
+        if (_clearedRooms >= TotalRooms) OnSceneCleared();
     }
 
     private static bool InsideRoom(EnemyPlaceholder enemy)
@@ -212,16 +351,19 @@ public static class RunEncounter
         if (_clearedCurrentScene) return;
         _clearedCurrentScene = true;
 
-        ChaosLog.Info(LogChannel.UI, "[局内] OnSceneCleared：sceneIndex=" + CurrentSceneIndex + " 全部房间已清，准备进入下一场景");
+        ChaosLog.Info(LogChannel.UI, "[局内] OnSceneCleared：sceneIndex=" + CurrentSceneIndex + " 全部房间已清");
 
         if (CurrentSceneIndex >= MaxSceneIndex)
         {
             RunCleared = true;
             ChaosLog.Success(LogChannel.UI, "[局内] 第 3 场景清空 → 本局通关（boss 占位，结算留 W3.2）");
+            RunSettlementPanel.Open(true);   //W3.2e：弹通关态结算面板
             return;
         }
 
-        EnterScene(CurrentSceneIndex + 1, Team);
+        //★W3.1l：只登记，交给 Ticker 下一帧执行（禁止同步递归 EnterScene）
+        _pendingNextScene = CurrentSceneIndex + 1;
+        ChaosLog.Info(LogChannel.UI, "[局内] 已登记下一场景 " + _pendingNextScene + "（下一帧由 Ticker 执行）");
     }
 
     /// <summary>玩家是否在指定房间内（用房间世界矩形近似）。</summary>
@@ -272,6 +414,7 @@ public static class RunEncounter
 
     private static void SpawnEnemiesForScene()
     {
+        ChaosLog.Warn(LogChannel.UI, "[诊断] SpawnEnemiesForScene 进入 frameCount=" + Time.frameCount);
         MapLayout layout = RunMapBootstrap.CurrentLayout;
         if (layout == null || layout.Nodes == null) return;
 
@@ -329,9 +472,14 @@ public static class RunEncounter
 
     private static void EnsureTicker()
     {
-        if (GameObject.Find("RunEncounterTicker") != null) return;
+        int sceneTickers = UnityEngine.Object.FindObjectsOfType<RunEncounterTicker>().Length;
+        ChaosLog.Warn(LogChannel.UI, "[诊断] EnsureTicker：场景 ticker 数=" + sceneTickers + " 缓存=" + (_ticker == null ? "null" : _ticker.GetInstanceID().ToString()) + " frameCount=" + Time.frameCount);
+        if (_ticker != null) return;                       //W3.1n B：缓存优先
+        _ticker = UnityEngine.Object.FindObjectOfType<RunEncounterTicker>();
+        if (_ticker != null) return;
         GameObject go = new GameObject("RunEncounterTicker");
-        go.AddComponent<RunEncounterTicker>();
+        _ticker = go.AddComponent<RunEncounterTicker>();
+        ChaosLog.Warn(LogChannel.UI, "[诊断] EnsureTicker 新建 ticker id=" + _ticker.GetInstanceID() + " frameCount=" + Time.frameCount);
     }
 
     private static void HideStrayCitizen()
@@ -364,10 +512,56 @@ public static class RunEncounter
         if (root != null) Object.Destroy(root);
     }
 
+    /// <summary>
+    /// 按标记类型全场景清掉本系统的运行时对象（W3.1k）。
+    /// 不依赖自己维护的 List —— 即使有未登记的残留也能清掉。
+    /// 注意 Destroy 帧末生效：同帧统计会偏大，请等下一帧。
+    /// </summary>
+    public static void PurgeAllRuntimeObjects()
+    {
+        int removed = 0;
+        removed += DestroyAllOf<AllyController>();
+        removed += DestroyAllOf<EnemyPlaceholder>();
+        removed += DestroyAllOf<EnemyDummy>();
+        removed += DestroyAllOf<SpawnPoint>();
+        //W3.1n（A）：ticker 是系统单例，**不参与 purge**（否则帧末被销毁 → ProcessPendingScene 没人调）
+        removed += DestroyAllOf<PlayerLocomotion>();
+
+        string[] roots = { "PrototypePlayerRoot", "PrototypeEnemyRoot", "PrototypeSpawnRoot", "PrototypeBoundaryRoot" };
+        for (int i = 0; i < roots.Length; i++)
+        {
+            GameObject go = GameObject.Find(roots[i]);
+            while (go != null)
+            {
+                go.name = roots[i] + "_purging";
+                Object.Destroy(go);
+                removed++;
+                go = GameObject.Find(roots[i]);
+            }
+        }
+
+        AllEnemies.Clear();
+        AliveByRoom.Clear();
+        TotalByRoom.Clear();
+        ChaosLog.Warn(LogChannel.UI, "[局内] PurgeAllRuntimeObjects 清理 " + removed + " 个运行时对象 frameCount=" + Time.frameCount);
+    }
+
+    private static int DestroyAllOf<T>() where T : Component
+    {
+        T[] items = Object.FindObjectsOfType<T>(true);
+        for (int i = 0; i < items.Length; i++)
+            if (items[i] != null) Object.Destroy(items[i].gameObject);
+        return items.Length;
+    }
+
     /// <summary>撤离：全清。</summary>
     public static void Clear()
     {
         RestoreStrayCitizen();
+        RunInventory.Clear();
+        ClearGroundDrops();
+        RunDepthHud.DisableAndDestroy();   //W4e：关闸 + 销毁   //W4c：撤离销毁 HUD
+        PurgeAllRuntimeObjects();
         ClearEnemies();
         _clearedRooms = 0;
         CurrentSceneIndex = 0;
@@ -383,10 +577,43 @@ public class RunEncounterTicker : MonoBehaviour
 {
     private float _next;
 
+    private void Awake()
+    {
+        ChaosLog.Warn(LogChannel.UI, "[诊断] RunEncounterTicker 创建 id=" + GetInstanceID() + " frameCount=" + Time.frameCount);
+    }
+
     private void Update()
     {
         if (Time.time < _next) return;
         _next = Time.time + RunEncounter.ScanInterval;
+        RunEncounter.ProcessPendingScene();
+        int before = RunEncounter.CurrentSceneIndex;
         RunEncounter.RefreshNow();
+        if (RunEncounter.CurrentSceneIndex != before)
+            ChaosLog.Warn(LogChannel.UI, "[诊断] Ticker(id=" + GetInstanceID() + ") 调用清房导致场景切换 " + before + " → " + RunEncounter.CurrentSceneIndex + " frameCount=" + Time.frameCount);
+    }
+}
+
+/// <summary>地上的可捡掉落物：玩家碰到 → 重试入包，成功销毁，失败保留。</summary>
+public class RunDropItem : MonoBehaviour
+{
+    public uint itemId;
+    public uint count;
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other == null) return;
+        if (other.GetComponentInParent<PlayerLocomotion>() == null) return;   //只认受控玩家
+
+        string reason;
+        if (RunInventory.AddItem(itemId, count, out reason))
+        {
+            ChaosLog.Info(LogChannel.Config, "[局内库存] 捡起掉落物 " + name + "（物品 " + itemId + " ×" + count + "）");
+            Destroy(gameObject);
+        }
+        else
+        {
+            ChaosLog.Warn(LogChannel.Config, "[局内库存] 捡起失败：" + reason + "（掉落物保留）");
+        }
     }
 }

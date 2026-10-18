@@ -154,76 +154,38 @@ public class InventoryService : SingletonBase<InventoryService>
     /// `reason` 给出失败/部分成功原因（**不静默丢弃**）。
     /// </summary>
     public bool AddItem(uint itemId, uint count, out string reason)
-    {
+            {
         reason = null;
         if (count == 0) { reason = "数量为 0"; return false; }
 
         ItemConfig def = GetDefinition(itemId);
-        if (def == null)
-        {
-            reason = "道具表里没有 itemId=" + itemId;
-            ChaosLog.Warn(LogChannel.Config, "[库存] " + reason);
-            return false;
-        }
-        if (!def.Enable)
-        {
-            reason = "道具 itemId=" + itemId + " 已禁用（Enable=false）";
-            ChaosLog.Warn(LogChannel.Config, "[库存] " + reason);
-            return false;
-        }
+        if (def == null) { reason = "道具表里没有 itemId=" + itemId; ChaosLog.Warn(LogChannel.Config, "[库存] " + reason); return false; }
+        if (!def.Enable) { reason = "道具 itemId=" + itemId + " 已禁用（Enable=false）"; ChaosLog.Warn(LogChannel.Config, "[库存] " + reason); return false; }
 
-        List<ItemStackSave> stacks = GetStacks();
         uint stackLimit = def.StackLimit == 0 ? 1u : def.StackLimit;
+        List<ItemStackSave> stacks = GetStacks();
 
-        //① 已有该种类 → 叠加（**不受格位影响**，A5）
-        for (int i = 0; i < stacks.Count; i++)
+        //★W3.2c 裁决 C：局外保留"部分成功" —— 只加能加的部分，>0 就返回 true
+        uint addable = InventoryRules.MaxAddableStacks(stacks, TotalSlots, itemId, count, stackLimit);
+        if (addable == 0u)
         {
-            ItemStackSave stack = stacks[i];
-            if (stack == null || stack.itemId != itemId) continue;
-
-            if (stack.count >= stackLimit)
-            {
-                reason = "已达叠加上限（" + stack.count + "/" + stackLimit + "）";
-                ChaosLog.Warn(LogChannel.Config, "[库存] 入库被拒：" + reason + " itemId=" + itemId);
-                return false;
-            }
-
-            uint canAdd = stackLimit - stack.count;
-            uint actual = count < canAdd ? count : canAdd;
-            stack.count += actual;
-
-            if (actual < count)
-            {
-                reason = "已达叠加上限，只入库 " + actual + " 个（" + stack.count + "/" + stackLimit + "）";
-                ChaosLog.Warn(LogChannel.Config, "[库存] " + reason + " itemId=" + itemId);
-            }
-            else
-            {
-                ChaosLog.Info(LogChannel.Config, "[库存] " + def.NameKey + " +" + actual + " → " + stack.count + "/" + stackLimit);
-            }
-            return true;
-        }
-
-        //② 新种类 → 需要空余格位（R3）
-        if (UsedSlots >= TotalSlots)
-        {
-            reason = "格位已满（" + UsedSlots + "/" + TotalSlots + "）";
-            ChaosLog.Warn(LogChannel.Config, "[库存] 新种类入库被拒：" + reason + " itemId=" + itemId);
+            reason = "格位/叠加已满，无法入库（已有该物品上限 " + stackLimit + "，格位 " + UsedSlots + "/" + TotalSlots + "）";
+            ChaosLog.Warn(LogChannel.Config, "[库存] " + reason);
             return false;
         }
 
-        uint newCount = count < stackLimit ? count : stackLimit;
-        stacks.Add(new ItemStackSave { itemId = itemId, count = newCount });
+        InventoryRules.ApplyAddStacks(stacks, TotalSlots, itemId, addable, stackLimit);
 
-        if (newCount < count)
+        if (addable < count)
         {
-            reason = "新格入库达叠加上限，只入库 " + newCount + " 个（" + newCount + "/" + stackLimit + "）";
-            ChaosLog.Warn(LogChannel.Config, "[库存] " + reason + " itemId=" + itemId);
+            uint lost = count - addable;
+            reason = "实际入库 " + addable + "，剩余 " + lost + " 未入库（格位/叠加已满）";
+            ChaosLog.Warn(LogChannel.Config, "[库存] itemId=" + itemId + " " + reason);
         }
         else
         {
-            ChaosLog.Info(LogChannel.Config,
-                "[库存] 新占一格：" + def.NameKey + " ×" + newCount + "，已用 " + UsedSlots + "/" + TotalSlots);
+            ChaosLog.Info(LogChannel.Config, "[库存] +" + addable + " itemId=" + itemId
+                + "（已用格 " + UsedSlots + "/" + TotalSlots + "，叠加上限 " + stackLimit + "）");
         }
         return true;
     }

@@ -130,7 +130,15 @@ public class DispatchService : SingletonBase<DispatchService>
     {
         reason = null;
 
-        if (_isInRun) { reason = "已经在局内"; return false; }
+        ChaosLog.Warn(LogChannel.UI, "[诊断] Depart 进入 frameCount=" + Time.frameCount + " id=" + GetHashCode() + " IsInRun=" + _isInRun + " 选中=" + _selected.Count);
+
+        //W3.1k：幂等 —— 未撤离则先自动撤离再继续（防重复生成）
+        if (_isInRun)
+        {
+            ChaosLog.Warn(LogChannel.UI, "[派遣] 检测到未撤离的局内状态，先自动撤离");
+            string autoReason;
+            ReturnToMeta(out autoReason);
+        }
         if (_selected.Count < MinTeamSize) { reason = "至少选择 " + MinTeamSize + " 位门客"; return false; }
         if (_selected.Count > MaxTeamSize) { reason = "队伍超过上限 " + MaxTeamSize; return false; }
 
@@ -175,6 +183,7 @@ public class DispatchService : SingletonBase<DispatchService>
     /// <summary>**撤离 / 返回局外**：清掉就地生成的地图，`IsInRun = false`。</summary>
     public bool ReturnToMeta(out string reason)
     {
+        RunDepthHud.DisableAndDestroy();   //W4e：关闸 + 销毁
         reason = null;
         if (!_isInRun)
         {

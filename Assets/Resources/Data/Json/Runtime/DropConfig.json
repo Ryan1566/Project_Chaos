@@ -1,0 +1,58 @@
+{
+    "datas": [
+        {
+            "Index": 1,
+            "DropGroup": 1,
+            "ItemId": 2,
+            "MinCount": 1,
+            "MaxCount": 2,
+            "Weight": 40,
+            "Enable": true
+        },
+        {
+            "Index": 2,
+            "DropGroup": 1,
+            "ItemId": 3,
+            "MinCount": 1,
+            "MaxCount": 1,
+            "Weight": 30,
+            "Enable": true
+        },
+        {
+            "Index": 3,
+            "DropGroup": 1,
+            "ItemId": 1,
+            "MinCount": 1,
+            "MaxCount": 1,
+            "Weight": 20,
+            "Enable": true
+        },
+        {
+            "Index": 4,
+            "DropGroup": 1,
+            "ItemId": 7,
+            "MinCount": 2,
+            "MaxCount": 3,
+            "Weight": 10,
+            "Enable": true
+        },
+        {
+            "Index": 5,
+            "DropGroup": 2,
+            "ItemId": 4,
+            "MinCount": 1,
+            "MaxCount": 2,
+            "Weight": 60,
+            "Enable": true
+        },
+        {
+            "Index": 6,
+            "DropGroup": 2,
+            "ItemId": 9,
+            "MinCount": 2,
+            "MaxCount": 3,
+            "Weight": 40,
+            "Enable": true
+        }
+    ]
+}

@@ -82,8 +82,12 @@ public class EnemyPlaceholder : MonoBehaviour, IDamageable
         IsDead = true;
         DeathReason = reason;
         _deathStart = Time.time;
-        ChaosLog.Info(LogChannel.UI, "[敌人] 「" + name + "」死亡（" + reason + "）");
-        RunEncounter.NotifyEnemyKilled(roomId, this);
+        bool allowDrop = reason != "掉落死亡";
+        if (allowDrop)
+            ChaosLog.Info(LogChannel.UI, "[敌人] 「" + name + "」死亡（" + reason + "）");
+        else
+            ChaosLog.Warn(LogChannel.UI, "[敌人] 「" + name + "」掉落死亡（不掉落）");
+        RunEncounter.NotifyEnemyKilled(roomId, this, allowDrop);
     }
 
     private void Update()

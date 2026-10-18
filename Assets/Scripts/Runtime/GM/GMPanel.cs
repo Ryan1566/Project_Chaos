@@ -1032,6 +1032,13 @@ public class GMPanel : MonoBehaviour
         AddActionButton(page, "清空当前场景所有敌人", ClearSceneEnemies);
         AddActionButton(page, "跳到下一场景", SkipNextScene);
         AddActionButton(page, "打印房间清空进度", PrintEncounterProgress);
+        AddActionButton(page, "强制通关（弹面板）", ForceWin);
+        AddActionButton(page, "强制失败（弹面板）", ForceLose);
+        AddActionButton(page, "打印结算状态", PrintSettlementState);
+        AddActionButton(page, "打开扎营面板", () => { RunCampPanel.Open(); });
+        AddActionButton(page, "给 5 个药品（itemId=1）", () => { string rr; bool ok = RunInventory.AddItem(1u, 5u, out rr); Debug.Log("[GM] 给 5 药品=" + ok + "  " + RunInventory.DumpState()); });
+        AddActionButton(page, "打印扎营状态", () => { string s = CampService.DumpState(); Debug.Log(s); SetProtoStatus(_protoDispatchStatus, s); });
+        AddActionButton(page, "打开时代进度面板", () => { EraProgressPanel.Open(); });
         _protoDispatchStatus = CreateStatusLabel(page);
         SetProtoStatus(_protoDispatchStatus, DispatchService.Instance.DumpState());
     }
@@ -1103,6 +1110,28 @@ public class GMPanel : MonoBehaviour
     private void PrintEncounterProgress()
     {
         string text = RunEncounter.DumpProgress();
+        Debug.Log(text);
+        SetProtoStatus(_protoDispatchStatus, text);
+    }
+
+
+    private void ForceWin()
+    {
+        ChaosLog.Warn(LogChannel.UI, "[GM] 强制通关");
+        RunSettlementPanel.Open(true);
+    }
+
+    private void ForceLose()
+    {
+        ChaosLog.Warn(LogChannel.UI, "[GM] 强制失败");
+        RunEncounter.TriggerDefeat();
+    }
+
+    private void PrintSettlementState()
+    {
+        string text = "[结算] RunCleared=" + RunEncounter.RunCleared + " Defeated=" + RunEncounter.Defeated
+            + " DeployCap=" + MetaProgressService.Instance.DeployCap
+            + "\n" + RunInventory.DumpState();
         Debug.Log(text);
         SetProtoStatus(_protoDispatchStatus, text);
     }

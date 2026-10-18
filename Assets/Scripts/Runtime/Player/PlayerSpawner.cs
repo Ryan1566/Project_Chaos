@@ -46,6 +46,8 @@ public static class PlayerSpawner
     {
         Clear();
 
+        ChaosLog.Warn(LogChannel.UI, "[诊断] SpawnForTeam 进入 frameCount=" + Time.frameCount + " 队伍=" + (runTeam == null ? 0 : runTeam.Count));
+
         EnsureGroundColliders();
 
         SpawnPoint spawnPoint = PlaceSpawnPoint();
@@ -316,11 +318,12 @@ public static class PlayerSpawner
     /// <summary>按 runTeam 生成 AI 门客（第 1 位是受控玩家，其余最多 3 个）。</summary>
     private static void SpawnAllies(Transform parent, List<uint> runTeam, SpawnPoint spawnPoint)
     {
+        ChaosLog.Warn(LogChannel.UI, "[诊断] SpawnAllies 进入 frameCount=" + Time.frameCount);
         if (runTeam == null || runTeam.Count <= 1) return;
         GameObject allyPrefab = Resources.Load<GameObject>("Player/Ally");
         if (allyPrefab == null) { ChaosLog.Warn(LogChannel.UI, "[门客] 找不到 Resources/Player/Ally.prefab"); return; }
 
-        AllyController.ClearAll();   //防重复：清掉可能残留的门客（修 AllyController=6）
+        //W3.1m：清理统一由 RunEncounter.PurgeAllRuntimeObjects() 负责，这里不再 ClearAll（否则会把刚生成的清掉）
 
         int count = Mathf.Min(runTeam.Count - 1, 3);
         for (int i = 0; i < count; i++)

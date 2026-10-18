@@ -87,6 +87,7 @@ public class PlayerLocomotion : MonoBehaviour
             if (keyboard.aKey.isPressed || keyboard.leftArrowKey.isPressed) horizontal -= 1f;
             if (keyboard.dKey.isPressed || keyboard.rightArrowKey.isPressed) horizontal += 1f;
             if (keyboard.kKey.wasPressedThisFrame || keyboard.spaceKey.wasPressedThisFrame) _jumpRequested = true;
+            if (keyboard.cKey.wasPressedThisFrame) RunCampPanel.Open();   //W3.2i：C 键扎营
         }
         if (gamepad != null)
         {

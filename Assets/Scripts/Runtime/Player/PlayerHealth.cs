@@ -41,8 +41,23 @@ public class PlayerHealth : MonoBehaviour
         ChaosLog.Info(LogChannel.UI, "[玩家] 受到接触伤害 " + amount + "，HP=" + Mathf.Max(0, Hp) + "/" + maxHp
             + "（无敌帧 " + invulnSeconds + "s）");
 
-        if (Hp <= 0) Respawn();
+        if (Hp <= 0) { Hp = 0; TriggerDefeat(); }
         return true;
+    }
+
+    /// <summary>W3.2d：HP 归零 → 判负（不再回出生点重生）。</summary>
+    /// <summary>扎营：hp 直接回满（W3.2i）。</summary>
+    public void RefillFullHp()
+    {
+        Hp = maxHp;
+        _invulnUntil = Time.time + invulnSeconds;
+        ChaosLog.Info(LogChannel.UI, "[扎营] 完全治疗：hp 回满 " + Hp + "/" + maxHp);
+    }
+
+    private void TriggerDefeat()
+    {
+        ChaosLog.Warn(LogChannel.UI, "[玩家] 受控门客倒下，本局失败");
+        RunEncounter.TriggerDefeat();
     }
 
     private void Respawn()

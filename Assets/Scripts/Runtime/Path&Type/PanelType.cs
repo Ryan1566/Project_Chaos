@@ -24,5 +24,8 @@ public enum PanelType
     InventoryPanel,//库存面板
     VillagePanel,//村庄面板
     FamilyTreePanel,//家族树面板
-    DispatchPanel//派遣编队面板
+    DispatchPanel,//派遣编队面板
+    RunSettlementPanel,//结算面板
+    RunCampPanel,//扎营面板
+    EraProgressPanel//时代进度面板
 }
