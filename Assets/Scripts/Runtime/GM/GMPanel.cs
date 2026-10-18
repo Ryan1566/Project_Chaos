@@ -118,6 +118,8 @@ public class GMPanel : MonoBehaviour
     private TextMeshProUGUI _protoVillageStatus;
     private TextMeshProUGUI _protoDispatchStatus;
     private TextMeshProUGUI _protoFamilyTreeStatus;
+    /// <summary>W3.3：局内生成·扎营页的状态行（门客 HP / 倒地）。</summary>
+    private TextMeshProUGUI _protoRunTeamStatus;
     private uint _runMapSeed = 20261010u;
 
     /// <summary>GM 生成的地图挂在哪个容器下（重复生成时先删掉它）。</summary>
@@ -228,6 +230,7 @@ public class GMPanel : MonoBehaviour
             new GmCategory("局内生成", new[]
             {
                 new GmSection("生成地图", BuildRunMapPage),
+                new GmSection("扎营", BuildRunTeamDebugPage),   //W3.3：门客 HP / 倒地调试
             }),
 
             new GmCategory("道具", new[]
@@ -661,6 +664,24 @@ public class GMPanel : MonoBehaviour
             Debug.Log("[门客] 打伤 #" + all[0].id + "\n" + RetainerService.Instance.DumpAll());
         });
 
+        AddActionButton(page, "打伤第 1 个门客(50)", () =>
+        {
+            //W3.3：局内门客 HP 直伤 50（无视 0.5s 无敌帧；普通受击走 TakeDamage）
+            if (AllyController.All.Count == 0)
+            {
+                const string none = "[门客] 当前不在局内（没有 AI 门客），无法打伤";
+                SetProtoStatus(_protoRetainerStatus, none);
+                Debug.Log(none);
+                return;
+            }
+            AllyController ally = AllyController.All[0];
+            ally.TakeDamageDirect(50);
+            string text = "[门客] 直伤 50 → " + ally.AllyName + " HP=" + ally.Hp + "/" + ally.MaxHp
+                + (ally.IsDowned ? "（已倒地）" : "") + "\n" + RunEncounter.DumpTeamHp();
+            SetProtoStatus(_protoRetainerStatus, text);
+            Debug.Log(text);
+        });
+
         AddActionButton(page, "第 1 个门客信心 -40", () =>
         {
             List<RetainerSave> all = RetainerService.Instance.GetAll();
@@ -693,6 +714,60 @@ public class GMPanel : MonoBehaviour
 
         _protoRetainerStatus = CreateStatusLabel(page);
         SetProtoStatus(_protoRetainerStatus, RetainerService.Instance.DumpAll());
+    }
+
+    // ══════════════════════ W3.3：局内队伍 HP / 倒地（局内生成 → 扎营）══════════════════════
+
+    private void BuildRunTeamDebugPage(Transform page)
+    {
+        AddHint(page, "W3.3：门客 HP 纯运行时（不写存档）；倒地 = 不可操作 / 不可被攻击 / 不跟随（半透明）。"
+            + "全队（受控角色 + 全部门客）倒下 → 失败；只剩门客活着 → 观战模式。");
+
+        AddActionButton(page, "让门客全倒", () =>
+        {
+            var allies = new List<AllyController>(AllyController.All);
+            int downed = 0;
+            for (int i = 0; i < allies.Count; i++)
+            {
+                if (allies[i] == null || allies[i].IsDowned) continue;
+                allies[i].ForceDown();
+                downed++;
+            }
+            string text = "[GM] 让门客全倒：本次倒下 " + downed + " 名（AI 门客共 " + AllyController.All.Count + " 名）\n"
+                + RunEncounter.DumpTeamHp();
+            SetProtoStatus(_protoRunTeamStatus, text);
+            Debug.Log(text);
+        });
+
+        AddActionButton(page, "让受控角色倒下", () =>
+        {
+            GameObject player = PlayerSpawner.CurrentPlayer;
+            PlayerHealth health = player == null ? null : player.GetComponent<PlayerHealth>();
+            string text;
+            if (health == null)
+            {
+                text = "[GM] 当前不在局内（没有受控角色）";
+            }
+            else
+            {
+                bool changed = health.ForceDown();
+                text = "[GM] 让受控角色倒下 → " + (changed ? "已倒下" : "本来就倒地")
+                    + "（观战=" + RunEncounter.IsSpectator + " 失败=" + RunEncounter.Defeated + "）\n"
+                    + RunEncounter.DumpTeamHp();
+            }
+            SetProtoStatus(_protoRunTeamStatus, text);
+            Debug.Log(text);
+        });
+
+        AddActionButton(page, "打印门客 HP", () =>
+        {
+            string text = RunEncounter.DumpTeamHp() + "\n" + CampService.DumpState();
+            SetProtoStatus(_protoRunTeamStatus, text);
+            Debug.Log(text);
+        });
+
+        _protoRunTeamStatus = CreateStatusLabel(page);
+        SetProtoStatus(_protoRunTeamStatus, RunEncounter.DumpTeamHp());
     }
 
     private void BuildItemGrantPage(Transform page)

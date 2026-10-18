@@ -70,7 +70,9 @@ public class AllyController : MonoBehaviour
     }
 
     private void OnEnable() { if (!All.Contains(this)) All.Add(this); }
-    private void OnDisable() { All.Remove(this); }
+    //⚠ W3.3：**不要**在 OnDisable 里移除。倒地 = `enabled=false`，结算暂停世界也是 `enabled=false`；
+    //  若 OnDisable 就移出 All，倒地门客会从 All 消失 → 观战判定/补员/结算重伤全部漏掉。
+    //   统一只在 OnDestroy 移除。
     private void OnDestroy() { All.Remove(this); }
 
     private void Update()
@@ -329,5 +331,146 @@ public class AllyController : MonoBehaviour
     {
         for (int i = 0; i < All.Count; i++) if (All[i] != null) Object.Destroy(All[i].gameObject);
         All.Clear();
+    }
+
+    // ══════════════ W3.3：门客运行时 HP / 倒地 / 复活 ══════════════
+    /// <summary>
+    /// 血量上限 = `RetainerConfig.Hp` + `EffectAggregator` 的 **EffectType=4 / Target=1** 加成。
+    /// **懒解析**：`memberId` 是 Instantiate 之后由 `PlayerSpawner.SpawnAllies` 写入的，Awake 里还是 0。
+    /// 取不到模板 / 服务异常 → Warn 并用 100。
+    /// </summary>
+    public int MaxHp { get { EnsureMaxHp(); return _maxHp; } }
+
+    /// <summary>倒地时的半透明 alpha（Spine 材质没有 `_Color`，用 `skeleton.A`）。</summary>
+    public const float DownedAlpha = 0.4f;
+
+    private int _maxHp = 100;
+    private bool _maxHpInited;
+    private int _hp;
+    private bool _hpInited;
+    private float _invulnUntil;
+
+    /// <summary>是否已倒地（不可操作 / 不可被攻击 / 不跟随）。</summary>
+    public bool IsDowned { get; private set; }
+
+    /// <summary>当前 HP（首次访问时初始化为 MaxHp）。</summary>
+    public int Hp
+    {
+        get { if (!_hpInited && !IsDowned) { _hp = MaxHp; _hpInited = true; } return _hp; }
+    }
+
+    /// <summary>按 `memberId` 把 MaxHp 解析成「Retainer 表值 + 家族树生命加成」（只解析一次）。</summary>
+    public void EnsureMaxHp()
+    {
+        if (_maxHpInited) return;
+        _maxHpInited = true;
+
+        int tableHp = 0;
+        int bonusHp = 0;
+        try
+        {
+            RetainerService service = RetainerService.Instance;
+            RetainerSave retainer;
+            if (service != null && service.TryGet(memberId, out retainer))
+            {
+                RetainerConfig definition = service.GetDefinition(retainer.protoId);
+                if (definition != null) tableHp = (int)definition.Hp;
+                bonusHp = service.BonusHp;
+            }
+        }
+        catch (System.Exception exception)
+        {
+            ChaosLog.Warn(LogChannel.UI, "[门客] " + AllyName + " 读取 Retainer 表异常：" + exception.Message);
+        }
+
+        if (tableHp <= 0)
+        {
+            _maxHp = 100 + bonusHp;
+            ChaosLog.Warn(LogChannel.UI, "[门客] " + AllyName + " 取不到 Retainer.Hp（memberId=" + memberId
+                + "）→ 基数用 100，MaxHp=" + _maxHp + "（加成 " + bonusHp + "）");
+        }
+        else
+        {
+            _maxHp = tableHp + bonusHp;
+            ChaosLog.Info(LogChannel.UI, "[门客] " + AllyName + " MaxHp=" + _maxHp
+                + "（Retainer.Hp=" + tableHp + " + 家族树生命加成=" + bonusHp + "）");
+        }
+    }
+
+    /// <summary>受击：0.5s 无敌帧；归零 → 倒地。</summary>
+    public void TakeDamage(int damage)
+    {
+        if (IsDowned || damage <= 0) return;
+        if (Time.time < _invulnUntil) return;
+        _invulnUntil = Time.time + 0.5f;
+        if (!_hpInited) { _hp = MaxHp; _hpInited = true; }
+        _hp -= damage;
+        ChaosLog.Info(LogChannel.UI, "[门客] " + AllyName + " 受伤 -" + damage + " → HP " + _hp + "/" + MaxHp);
+        if (_hp <= 0) Down();
+    }
+
+    /// <summary>GM/验收：无视 0.5s 无敌帧造成伤害（普通受击走 `TakeDamage`）。</summary>
+    public void TakeDamageDirect(int damage)
+    {
+        if (IsDowned || damage <= 0) return;
+        int before = Hp;   //触发懒初始化
+        _hp = Mathf.Max(0, before - damage);
+        _hpInited = true;
+        ChaosLog.Info(LogChannel.UI, "[门客] " + AllyName + " 受伤 -" + damage + " → HP " + _hp + "/" + MaxHp + "（GM 直伤）");
+        if (_hp <= 0) Down();
+    }
+
+    /// <summary>GM/验收：无视无敌帧直接打空 HP 并倒地。</summary>
+    public void ForceDown()
+    {
+        if (IsDowned) return;
+        EnsureMaxHp();
+        _hp = 0;
+        _hpInited = true;
+        Down();
+    }
+
+    /// <summary>倒地：停止移动/攻击、不可操作（禁用组件）、从敌人目标中移除、半透明。</summary>
+    public void Down()
+    {
+        if (IsDowned) return;
+        EnsureMaxHp();
+        IsDowned = true;
+        _hp = 0;
+        _hpInited = true;
+        if (_body != null) _body.velocity = Vector2.zero;
+        SetDownedVisual(true);
+        enabled = false;   //停掉 Update（不跟随、不攻击）
+        ChaosLog.Warn(LogChannel.UI, "[门客] " + AllyName + " 倒地（不可操作/不可被攻击/不跟随）位置="
+            + transform.position.x.ToString("F2") + "," + transform.position.y.ToString("F2"));
+
+        //W3.3：受控角色已在观战 + 这是最后一个站着的门客 → 全队倒下 → 失败
+        RunEncounter.CheckTeamWipe();
+    }
+
+    /// <summary>复活：回到指定 HP 并恢复跟随/攻击。</summary>
+    public void Revive(int hp)
+    {
+        EnsureMaxHp();
+        IsDowned = false;
+        _hp = Mathf.Clamp(hp, 1, MaxHp);
+        _hpInited = true;
+        _invulnUntil = Time.time + 0.5f;
+        SetDownedVisual(false);
+        enabled = true;
+        ChaosLog.Success(LogChannel.UI, "[门客] " + AllyName + " 复活 HP " + _hp + "/" + MaxHp);
+    }
+
+    /// <summary>倒地视觉：Spine 没有 `_Color` → 改 `skeleton.A`（0.4 = 半透明）。</summary>
+    public void SetDownedVisual(bool downed)
+    {
+        if (_skeleton == null) _skeleton = GetComponentInChildren<SkeletonAnimation>(true);
+        if (_skeleton == null || _skeleton.skeleton == null)
+        {
+            ChaosLog.Warn(LogChannel.UI, "[门客] " + AllyName + " 找不到 SkeletonAnimation，倒地半透明不可用（仅日志标记）");
+            return;
+        }
+        _skeleton.skeleton.A = downed ? DownedAlpha : 1f;
+        ChaosLog.Info(LogChannel.UI, "[门客] " + AllyName + " 倒地视觉 alpha=" + (downed ? DownedAlpha : 1f));
     }
 }

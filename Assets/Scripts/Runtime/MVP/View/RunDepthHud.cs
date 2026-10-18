@@ -10,6 +10,8 @@ using UnityEngine.UI;
 /// * 自带**独立 `Canvas`（sortingOrder 100）** —— 局内 `HideAllPanelsForGameplay()` 会把主 UI Canvas
 ///   整块隐藏，HUD 挂在那上面就看不见了；
 /// * **不每帧刷新**（无 `Update()`）：只在 `EnterScene` 成功、切场景、显式调用时刷一次；
+/// * **中文字体走 `RunTeamHud.ResolveFont()`**（MSYH SDF）—— `TMP_Settings.defaultFontAsset`
+///   是 LiberationSans SDF，没有中文字形，直接用会把「深度/场景/可带出」显示成方框（□）；
 /// * **单实例保证**：`EnsureBuilt()` 以"场景内存活实例数"为准（不是只看 `_root`），
 ///   只要不是"恰好 1 个且就是 `_root`"，就先 `DestroyHud()` 再建；
 /// * `DestroyHud()` 遍历**所有**名字以 `RunDepthHudCanvas` 开头的对象销毁，并打印 `killed=N`。
@@ -163,7 +165,8 @@ public static class RunDepthHud
         rect.sizeDelta = new Vector2(520f, 40f);
 
         _text = textGo.AddComponent<TextMeshProUGUI>();
-        _text.font = TMP_Settings.defaultFontAsset;
+        //★根因修复：默认字体是 LiberationSans SDF（无中文字形）→ 必须复用队伍血条那套中文字体解析
+        _text.font = RunTeamHud.ResolveFont();
         _text.fontSize = 26f;
         _text.color = new Color(0.96f, 0.97f, 1f, 1f);
         _text.alignment = TextAlignmentOptions.TopRight;
@@ -171,6 +174,7 @@ public static class RunDepthHud
         _text.enableWordWrapping = false;
 
         _root = canvasGo;
-        ChaosLog.Info(LogChannel.UI, "[HUD] 已创建（独立 Canvas sortingOrder=100，右上角）");
+        ChaosLog.Info(LogChannel.UI, "[HUD] 已创建（独立 Canvas sortingOrder=100，右上角，字体="
+            + (_text.font == null ? "null" : _text.font.name) + "）");
     }
 }

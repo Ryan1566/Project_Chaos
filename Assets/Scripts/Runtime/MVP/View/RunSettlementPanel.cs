@@ -27,6 +27,7 @@ public class RunSettlementPanel : BasePanel
 
     private TextMeshProUGUI _title;
     private TextMeshProUGUI _hint;
+    private TextMeshProUGUI _woundLine;
     private RectTransform _listArea;
     private TMP_FontAsset _font;
     private bool _built;
@@ -45,6 +46,7 @@ public class RunSettlementPanel : BasePanel
         //缺陷B 修复：局内 Canvas 被隐藏 → 先恢复再加面板
         UIManager.Instance.RestoreAfterGameplay();
         RunDepthHud.SetVisible(false);   //W4e：结算时隐藏 HUD
+        RunTeamHud.SetVisible(false);    //W3.3：结算隐藏队伍血条
         UIManager.Instance.PushPanel(PanelType.RunSettlementPanel);
 
         RunSettlementPanel panel = Object.FindFirstObjectByType<RunSettlementPanel>(FindObjectsInactive.Include);
@@ -116,6 +118,15 @@ public class RunSettlementPanel : BasePanel
         hintRect.offsetMin = new Vector2(24f, -160f);
         hintRect.offsetMax = new Vector2(-24f, -80f);
 
+        //W3.3：重伤行（"N 名门客重伤（30s）"）
+        _woundLine = MakeText(boxRect, "WoundLine", "", 20f, new Color(1f, 0.55f, 0.45f, 1f));
+        RectTransform woundRect = (RectTransform)_woundLine.transform;
+        woundRect.anchorMin = new Vector2(0f, 1f);
+        woundRect.anchorMax = new Vector2(1f, 1f);
+        woundRect.pivot = new Vector2(0.5f, 1f);
+        woundRect.offsetMin = new Vector2(24f, -204f);
+        woundRect.offsetMax = new Vector2(-24f, -164f);
+
         //列表区（中部，带遮罩裁剪）
         GameObject listGo = new GameObject("ListArea", typeof(RectTransform));
         _listArea = (RectTransform)listGo.transform;
@@ -123,7 +134,7 @@ public class RunSettlementPanel : BasePanel
         _listArea.anchorMin = new Vector2(0f, 0f);
         _listArea.anchorMax = new Vector2(1f, 1f);
         _listArea.offsetMin = new Vector2(24f, 96f);
-        _listArea.offsetMax = new Vector2(-24f, -168f);
+        _listArea.offsetMax = new Vector2(-24f, -212f);
         listGo.AddComponent<RectMask2D>();
 
         //底部按钮（居中并排，纯中文）
@@ -134,7 +145,8 @@ public class RunSettlementPanel : BasePanel
     private void Refresh()
     {
         PauseWorld(true);
-        if (_title != null) _title.text = _winMode ? "局内通关" : "局内失败";
+        //W3.3：失败 = 全员（受控角色 + 全部门客）倒下
+        if (_title != null) _title.text = _winMode ? "局内通关" : "全员倒下 · 本局失败";
 
         CollectItems();
         if (_hint != null)
@@ -145,6 +157,12 @@ public class RunSettlementPanel : BasePanel
                 _hint.text = "失败：保留 50% 掉落（" + _allItemIds.Count + " 条 → 保留 " + _retained.Count + " 条："
                     + RetainedNames() + "）";
         }
+
+        //W3.3：重伤行（失败 = 全部门客；通关/撤离 = 仅倒地门客）
+        if (_woundLine != null)
+            _woundLine.text = RunEncounter.LastWoundCount > 0
+                ? RunEncounter.LastWoundCount + " 名门客重伤（30s）"
+                : "";
 
         ClearList();
         float y = -4f;

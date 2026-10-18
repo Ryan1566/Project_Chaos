@@ -3,9 +3,10 @@ using ChaosDebug;
 using UnityEngine;
 
 /// <summary>
-/// 扎营（W3.2i）。**本轮只做两个动作**：
-/// * **完全治疗**：玩家 hp 回满，消耗 **1 瓶药**；
-/// * **补充减员**：需 `MetaProgressService.CampRefillUnlocked`（家族树 303），消耗 **2 瓶药**（占位实现 + 日志）；
+/// 扎营（W3.2i / **W3.3 补员落地**）。**两个动作**：
+/// * **完全治疗**：玩家 hp 回满，消耗 **1 瓶药**（若受控角色处于观战，回满后恢复操作）；
+/// * **补充减员**（W3.3 真实复活）：需 `MetaProgressService.CampRefillUnlocked`（家族树 303），消耗 **2 瓶药**，
+///   把本局**所有倒地门客**复活到 `ceil(MaxHp*0.5)`；**无人倒地 → 不可用（原因「无需补充」）**；
 /// * **修甲本轮不做**（无护甲系统）。
 ///
 /// 药品 = `Item.Category == 1`，从 **RunInventory** 扣（局内库存）。
@@ -88,11 +89,28 @@ public static class CampService
         return true;
     }
 
+    /// <summary>W3.3：本局倒地（`IsDowned`）门客数。</summary>
+    public static int DownedCount
+    {
+        get
+        {
+            int count = 0;
+            for (int i = 0; i < AllyController.All.Count; i++)
+            {
+                AllyController ally = AllyController.All[i];
+                if (ally != null && ally.IsDowned) count++;
+            }
+            return count;
+        }
+    }
+
     /// <summary>是否允许"补充减员"。</summary>
     public static bool CanRefill(out string reason)
     {
         reason = null;
+        if (RunEncounter.Defeated) { reason = "本局已判负（补员不回滚失败）"; return false; }
         if (!MetaProgressService.Instance.CampRefillUnlocked) { reason = "未解锁：需点亮家族树 303（扎营补充减员）"; return false; }
+        if (DownedCount == 0) { reason = "无需补充（没有倒地门客）"; return false; }   //★W3.3：放在"已扎营"之前，验收要求此原因
         if (CampUsed) { reason = "本局已扎营过（每局 1 次）"; return false; }
         if (!IsInSafeRoom) { reason = "战斗中不能扎营（当前房间还有敌人）"; return false; }
         if (MedicineCount < RefillCost) { reason = "药品不足：需要 " + RefillCost + "，当前 " + MedicineCount; return false; }
@@ -124,19 +142,38 @@ public static class CampService
 
         CampUsed = true;
         ChaosLog.Success(LogChannel.Config, "[扎营] 完全治疗完成：hp 回满，消耗 " + HealCost + " 药；剩余药 " + MedicineCount);
-        ChaosLog.Info(LogChannel.Config, "[扎营] 门客已满状态（门客暂无 HP，占位）");
+        if (DownedCount > 0)
+            ChaosLog.Info(LogChannel.Config, "[扎营] 完全治疗只回受控角色 HP（还有 " + DownedCount + " 名门客倒地，需用「补充减员」）");
         return true;
     }
 
-    /// <summary>补充减员（占位实现）：扣 2 药 + 标记已扎营。真正的减员补充留 W3.3。</summary>
+    /// <summary>
+    /// **W3.3 真实补员**：本局所有倒地门客 `Revive(ceil(MaxHp*0.5))`，扣 2 药，标记已扎营。
+    /// 需家族树 303（`CampRefillUnlocked`）；无人倒地 → 不可用（原因「无需补充」）。
+    /// 已判负的局不会因补员回滚（`CanRefill` 直接拒绝）。
+    /// </summary>
     public static bool TryRefill(out string reason)
     {
         if (!CanRefill(out reason)) return false;
 
         if (!SpendMedicine(RefillCost, out reason)) return false;
 
+        var allies = new List<AllyController>(AllyController.All);
+        int revived = 0;
+        for (int i = 0; i < allies.Count; i++)
+        {
+            AllyController ally = allies[i];
+            if (ally == null || !ally.IsDowned) continue;
+            int hp = Mathf.CeilToInt(ally.MaxHp * 0.5f);
+            ally.Revive(hp);
+            revived++;
+            ChaosLog.Success(LogChannel.Config, "[扎营] 补充减员：门客 " + ally.AllyName
+                + " 复活 HP " + ally.Hp + "/" + ally.MaxHp + "（ceil(" + ally.MaxHp + "*0.5)=" + hp + "）");
+        }
+
         CampUsed = true;
-        ChaosLog.Success(LogChannel.Config, "[扎营] 补充减员（占位实现）：消耗 " + RefillCost + " 药；剩余药 " + MedicineCount);
+        ChaosLog.Success(LogChannel.Config, "[扎营] 补充减员完成：复活 " + revived + " 名倒地门客（每人 ceil(MaxHp*0.5)），消耗 "
+            + RefillCost + " 药；剩余药 " + MedicineCount);
         return true;
     }
 

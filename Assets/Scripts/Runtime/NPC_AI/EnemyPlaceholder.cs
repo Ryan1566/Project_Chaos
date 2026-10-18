@@ -9,7 +9,8 @@ using UnityEngine;
 /// 2. 前方 **0.6 格做"向下探地 + 水平探墙"** 两条 Raycast：没地面或遇墙就折返；
 /// 3. 真掉出地图 → 走 **`Die()`（算掉落死亡，计入房间清零）**，不再"销毁不计入"。
 ///
-/// 接触伤害见 `OnCollisionStay2D`（W3.1b）。敌人**不打 AI 门客**（门客没有 PlayerHealth）。
+/// 接触伤害见 `OnCollisionStay2D`（W3.1b / **W3.3 改**：受控角色与未倒地门客都会被打）。
+/// **W3.3 目标选择**：最近者（受控角色 + 未倒地门客），**同距时受控角色优先**；倒地单位不进候选。
 /// </summary>
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(BoxCollider2D))]
@@ -36,6 +37,9 @@ public class EnemyPlaceholder : MonoBehaviour, IDamageable
     public bool IsDead { get; private set; }
     /// <summary>死亡原因（"击杀" / "掉落死亡"）。</summary>
     public string DeathReason { get; private set; }
+
+    /// <summary>W3.3：当前追击目标（受控角色或未倒地门客；GM/验收打印用）。</summary>
+    public Transform CurrentTarget { get; private set; }
 
     private Rigidbody2D _body;
     private SpriteRenderer _renderer;
@@ -121,18 +125,15 @@ public class EnemyPlaceholder : MonoBehaviour, IDamageable
         if (_body == null) return;
         if (Time.time < _knockUntil) return;
 
-        GameObject player = PlayerSpawner.CurrentPlayer;
+        Transform target = SelectTarget();
+        CurrentTarget = target;
         bool chasing = false;
         int dir = _patrolDir;
 
-        if (player != null)
+        if (target != null)
         {
-            float distance = Vector2.Distance(player.transform.position, transform.position);
-            if (distance <= chaseRange && RunEncounter.IsPlayerInRoom(roomId))
-            {
-                chasing = true;
-                dir = player.transform.position.x >= transform.position.x ? 1 : -1;
-            }
+            chasing = true;
+            dir = target.position.x >= transform.position.x ? 1 : -1;
         }
 
         //巡逻：限制在所属房间矩形内（不再用固定 ±3）
@@ -154,6 +155,49 @@ public class EnemyPlaceholder : MonoBehaviour, IDamageable
 
         float speed = chasing ? chaseSpeed : patrolSpeed;
         _body.velocity = new Vector2(dir * speed, _body.velocity.y);
+    }
+
+    /// <summary>
+    /// W3.3：目标 = **最近者**（受控角色 + 未倒地门客）。**同距时受控角色优先**
+    /// （门客先选、玩家用 `&lt;=` 覆盖）。倒地单位（门客 `IsDowned` / 玩家 `Hp&lt;=0`）不进候选；
+    /// 目标必须在本敌人所属房间内。返回 null = 没目标 → 巡逻。
+    /// </summary>
+    private Transform SelectTarget()
+    {
+        Transform best = null;
+        float bestDistance = chaseRange;
+
+        //① 未倒地门客
+        var allies = AllyController.All;
+        for (int i = 0; i < allies.Count; i++)
+        {
+            AllyController ally = allies[i];
+            if (ally == null || ally.IsDowned) continue;
+            if (!RunEncounter.IsPositionInRoom(roomId, ally.transform.position)) continue;
+            float distance = Vector2.Distance(ally.transform.position, transform.position);
+            if (distance > bestDistance) continue;
+            bestDistance = distance;
+            best = ally.transform;
+        }
+
+        //② 受控角色（同距优先）
+        GameObject player = PlayerSpawner.CurrentPlayer;
+        if (player != null)
+        {
+            PlayerHealth health = player.GetComponent<PlayerHealth>();
+            bool playerDowned = health != null && health.IsDowned;
+            if (!playerDowned && RunEncounter.IsPositionInRoom(roomId, player.transform.position))
+            {
+                float distance = Vector2.Distance(player.transform.position, transform.position);
+                if (distance <= bestDistance)
+                {
+                    bestDistance = distance;
+                    best = player.transform;
+                }
+            }
+        }
+
+        return best;
     }
 
     /// <summary>前方 probeDistance 处向下探地（跳过自身碰撞体）。</summary>
@@ -185,12 +229,24 @@ public class EnemyPlaceholder : MonoBehaviour, IDamageable
         return false;
     }
 
-    /// <summary>接触伤害：只打受控玩家（AI 门客没有 PlayerHealth → 天然不受伤）。</summary>
+    /// <summary>接触伤害：受控角色与**未倒地门客**都打（倒地门客不可被攻击）。</summary>
     private void OnCollisionStay2D(Collision2D collision)
     {
         if (IsDead) return;
         if (Time.time < _nextContactDamage) return;
+        if (collision.collider == null) return;
 
+        //① 门客（倒地则跳过；门客自己还有 0.5s 无敌帧）
+        AllyController ally = collision.collider.GetComponentInParent<AllyController>();
+        if (ally != null)
+        {
+            if (ally.IsDowned) return;
+            ally.TakeDamage(contactDamage);
+            _nextContactDamage = Time.time + contactDamageInterval;
+            return;
+        }
+
+        //② 受控角色
         PlayerHealth health = collision.collider.GetComponentInParent<PlayerHealth>();
         if (health == null) return;
 

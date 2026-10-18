@@ -143,7 +143,7 @@ public class RunCampPanel : BasePanel
         string reason;
         if (CampService.TryRefill(out reason))
         {
-            if (_hint != null) _hint.text = "已补充减员（占位，门客系统待 W3.3），消耗 2 药";
+            if (_hint != null) _hint.text = "已补充减员：倒地门客全部复活到 ceil(MaxHp*0.5)，消耗 2 药";
             Refresh();
         }
         else if (_hint != null) _hint.text = reason;
@@ -151,8 +151,10 @@ public class RunCampPanel : BasePanel
 
     private static void SetPlayerInput(bool enabled)
     {
-        foreach (PlayerLocomotion loco in Object.FindObjectsOfType<PlayerLocomotion>()) loco.enabled = enabled;
-        foreach (PlayerAttack attack in Object.FindObjectsOfType<PlayerAttack>()) attack.enabled = enabled;
+        //W3.3：观战模式（受控角色倒地但门客还活着）下，关面板不能把受控角色放回可操作状态
+        bool allowControl = enabled && !RunEncounter.IsSpectator;
+        foreach (PlayerLocomotion loco in Object.FindObjectsOfType<PlayerLocomotion>()) loco.enabled = allowControl;
+        foreach (PlayerAttack attack in Object.FindObjectsOfType<PlayerAttack>()) attack.enabled = allowControl;
     }
 
     private static void SetButton(Button button, bool interactable)

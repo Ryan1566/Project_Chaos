@@ -1,10 +1,13 @@
 using ChaosDebug;
+using Spine.Unity;
 using UnityEngine;
 
 /// <summary>
-/// 受控玩家血量（W3.1b）：hp=100，接触伤害 5 点带 0.5s 无敌帧；归零 → 回出生点并回满。
-/// ⚠ **本轮不做死亡结算**（W3.2 再做）。
-/// ⚠ Spine 材质没有 `_Color`（W3.0 实测会报 error）→ "受击闪红"用**缩放脉冲**占位，不是真变色。
+/// 受控玩家血量（W3.1b / **W3.3 改**）：hp=100，接触伤害 5 点带 0.5s 无敌帧。
+///
+/// **W3.3 关键改动**：HP 归零**不再直接判负** —— 交给 `RunEncounter.OnPlayerDowned()`：
+/// 门客还活着 → 进入「观战模式」（本角色不可操作、不可被攻击，门客 AI 继续）；全部门客也倒地 → 失败。
+/// ⚠ Spine 材质没有 `_Color`（W3.0 实测会报 error）→ 倒地半透明用 `skeleton.A`，不是材质色。
 /// </summary>
 public class PlayerHealth : MonoBehaviour
 {
@@ -12,8 +15,13 @@ public class PlayerHealth : MonoBehaviour
     public float invulnSeconds = 0.5f;
     public float flashSeconds = 0.15f;
 
+    /// <summary>倒地时的半透明 alpha（Spine 没有 _Color → 用 skeleton.A）。</summary>
+    public const float DownedAlpha = 0.4f;
+
     public int Hp { get; private set; }
     public bool IsInvulnerable { get { return Time.time < _invulnUntil; } }
+    /// <summary>W3.3：受控角色是否已倒地（Hp 归零）。倒地后敌人不再把它当目标。</summary>
+    public bool IsDowned { get { return Hp <= 0; } }
 
     private float _invulnUntil;
     private float _flashUntil;
@@ -41,23 +49,60 @@ public class PlayerHealth : MonoBehaviour
         ChaosLog.Info(LogChannel.UI, "[玩家] 受到接触伤害 " + amount + "，HP=" + Mathf.Max(0, Hp) + "/" + maxHp
             + "（无敌帧 " + invulnSeconds + "s）");
 
-        if (Hp <= 0) { Hp = 0; TriggerDefeat(); }
+        if (Hp <= 0)
+        {
+            Hp = 0;
+            OnDowned();
+        }
         return true;
     }
 
-    /// <summary>W3.2d：HP 归零 → 判负（不再回出生点重生）。</summary>
-    /// <summary>扎营：hp 直接回满（W3.2i）。</summary>
+    /// <summary>W3.3 GM/验收用：直接把受控角色打到倒地（无视无敌帧）。</summary>
+    public bool ForceDown()
+    {
+        if (Hp <= 0) return false;
+        Hp = 0;
+        _flashUntil = 0f;
+        transform.localScale = _baseScale;
+        ChaosLog.Warn(LogChannel.UI, "[玩家] GM：受控角色被强制打到倒地（HP 0/" + maxHp + "）");
+        OnDowned();
+        return true;
+    }
+
+    /// <summary>W3.3：HP 归零 → 交给 RunEncounter 判定「观战」还是「全队倒下 → 失败」。</summary>
+    private void OnDowned()
+    {
+        ChaosLog.Warn(LogChannel.UI, "[玩家] 受控角色 HP 归零 → 倒地（等待 RunEncounter 判定观战/失败）");
+        RunEncounter.OnPlayerDowned();
+    }
+
+    /// <summary>倒地/复活的视觉：Spine 没有 _Color → 改 `skeleton.A`（0.4 = 半透明）。</summary>
+    public void MarkDownedVisual(bool downed)
+    {
+        PlayerLocomotion locomotion = GetComponent<PlayerLocomotion>();
+        SkeletonAnimation skeleton = locomotion == null ? null : locomotion.Skeleton;
+        if (skeleton == null) skeleton = GetComponentInChildren<SkeletonAnimation>(true);
+        if (skeleton == null || skeleton.skeleton == null)
+        {
+            ChaosLog.Warn(LogChannel.UI, "[玩家] 找不到 SkeletonAnimation，倒地半透明不可用（仅日志标记）");
+            return;
+        }
+        skeleton.skeleton.A = downed ? DownedAlpha : 1f;
+        ChaosLog.Info(LogChannel.UI, "[玩家] 倒地视觉 alpha=" + (downed ? DownedAlpha : 1f));
+    }
+
+    /// <summary>扎营：hp 直接回满（W3.2i）。W3.3：若之前处于观战，回满后恢复操作。</summary>
     public void RefillFullHp()
     {
+        bool wasDowned = Hp <= 0;
         Hp = maxHp;
         _invulnUntil = Time.time + invulnSeconds;
         ChaosLog.Info(LogChannel.UI, "[扎营] 完全治疗：hp 回满 " + Hp + "/" + maxHp);
-    }
-
-    private void TriggerDefeat()
-    {
-        ChaosLog.Warn(LogChannel.UI, "[玩家] 受控门客倒下，本局失败");
-        RunEncounter.TriggerDefeat();
+        if (wasDowned)
+        {
+            MarkDownedVisual(false);
+            RunEncounter.ResetSpectator();
+        }
     }
 
     private void Respawn()
@@ -68,8 +113,7 @@ public class PlayerHealth : MonoBehaviour
 
         Hp = maxHp;
         _invulnUntil = Time.time + invulnSeconds;
-        ChaosLog.Warn(LogChannel.UI, "[玩家] HP 归零 → 已回出生点 " + transform.position + " 并回满 HP=" + Hp
-            + "（死亡结算留 W3.2）");
+        ChaosLog.Warn(LogChannel.UI, "[玩家] HP 归零 → 已回出生点 " + transform.position + " 并回满 HP=" + Hp);
     }
 
     private void Update()
