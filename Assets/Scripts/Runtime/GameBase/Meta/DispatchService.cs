@@ -157,21 +157,18 @@ public class DispatchService : SingletonBase<DispatchService>
         payload.runs++;
 
         PlayerSpawner.CaptureOutsideCameraState();   //必须在生图前记局外相机尺寸
-        GameObject container = PrototypeMapSpawner.Spawn(StartSceneIndex);
-        if (container == null)
+        //W3.1a：统一走 RunEncounter.EnterScene（清旧 → 生图 → 出生点 → 玩家 → 边界 → 敌人）
+        if (!RunEncounter.EnterScene(StartSceneIndex, _selected))
         {
-            reason = "就地生成局内地图失败（看 Console）";
+            reason = "就地生成局内场景失败（看 Console）";
             return false;
         }
-
-        //W3.0：进局后生成受控角色（SpawnPos + 玩家 + 训练靶 + 相机跟随）
-        PlayerSpawner.SpawnForTeam(_selected);
 
         _isInRun = true;
         ChaosLog.Success(LogChannel.Config,
             "[派遣] 出发：队伍 [" + string.Join(",", System.Array.ConvertAll(_selected.ToArray(), x => x.ToString())) + "]"
             + "（" + _selected.Count + " 人），runs=" + payload.runs
-            + "，就地生成场景 " + StartSceneIndex + "（容器 " + container.name + "，不切场景）");
+            + "，就地生成场景 " + StartSceneIndex + "（容器 PrototypeRunMap，不切场景）");
         return true;
     }
 
@@ -185,6 +182,7 @@ public class DispatchService : SingletonBase<DispatchService>
             return false;
         }
 
+        RunEncounter.Clear();
         PlayerSpawner.Clear();
 
         //恢复进局前隐藏的局外 UI（集中在这里做：GM 的撤离按钮也走这条路）

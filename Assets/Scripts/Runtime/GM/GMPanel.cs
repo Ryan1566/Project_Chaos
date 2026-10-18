@@ -1029,6 +1029,9 @@ public class GMPanel : MonoBehaviour
         AddActionButton(page, "打印 runTeam 与 runs", () => { string s = DispatchService.Instance.DumpState(); Debug.Log(s); SetProtoStatus(_protoDispatchStatus, s); });
         AddActionButton(page, "生成出生点（仅地图）", SpawnSpawnPointOnly);
         AddActionButton(page, "打印玩家坐标/朝向", PrintPlayerState);
+        AddActionButton(page, "清空当前场景所有敌人", ClearSceneEnemies);
+        AddActionButton(page, "跳到下一场景", SkipNextScene);
+        AddActionButton(page, "打印房间清空进度", PrintEncounterProgress);
         _protoDispatchStatus = CreateStatusLabel(page);
         SetProtoStatus(_protoDispatchStatus, DispatchService.Instance.DumpState());
     }
@@ -1077,6 +1080,32 @@ public class GMPanel : MonoBehaviour
         SetProtoStatus(_protoDispatchStatus, text);
     }
 
+
+
+    // ══════════════════════ W3.1a 局内遭遇战调试 ══════════════════════
+
+    private void ClearSceneEnemies()
+    {
+        int n = RunEncounter.KillAllEnemiesInScene();
+        string text = "[局内] 已清空敌人 " + n + " 个\n" + RunEncounter.DumpProgress();
+        Debug.Log(text);
+        SetProtoStatus(_protoDispatchStatus, text);
+    }
+
+    private void SkipNextScene()
+    {
+        bool ok = RunEncounter.SkipToNextScene();
+        string text = (ok ? "[局内] 已跳到场景 " : "[局内] 跳转失败（已是最后场景）") + RunEncounter.CurrentSceneIndex;
+        Debug.Log(text);
+        SetProtoStatus(_protoDispatchStatus, text);
+    }
+
+    private void PrintEncounterProgress()
+    {
+        string text = RunEncounter.DumpProgress();
+        Debug.Log(text);
+        SetProtoStatus(_protoDispatchStatus, text);
+    }
 
     private void AddHint(Transform page, string text)
     {

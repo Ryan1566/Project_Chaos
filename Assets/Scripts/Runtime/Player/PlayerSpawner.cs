@@ -67,16 +67,27 @@ public static class PlayerSpawner
         }
 
         Vector3 spawnPosition = spawnPoint.transform.position + new Vector3(0f, 1.0f, 0f);
+        //防重复：先清掉场景里已有的受控玩家（W3.1b 遗留2）
+        PlayerLocomotion[] existingPlayers = Object.FindObjectsOfType<PlayerLocomotion>();
+        if (existingPlayers.Length > 0)
+        {
+            ChaosLog.Warn(LogChannel.UI, "[玩家] 生成前发现已存在的玩家 " + existingPlayers.Length + " 个，先清理（防重复）");
+            for (int i = 0; i < existingPlayers.Length; i++) if (existingPlayers[i] != null) Object.Destroy(existingPlayers[i].gameObject);
+        }
+
         GameObject player = Object.Instantiate(playerPrefab, spawnPosition, Quaternion.identity, root.transform);
         player.name = "Player";
         CurrentPlayer = player;
         Spawned.Add(player);
 
+        //血量（W3.1b）
+        if (player.GetComponent<PlayerHealth>() == null) player.AddComponent<PlayerHealth>();
+
+        //AI 门客（W3.1b）：runTeam[1..] 最多 3 个
+        SpawnAllies(root.transform, runTeam, spawnPoint);
+
         PlayerLocomotion locomotion = player.GetComponent<PlayerLocomotion>();
         if (locomotion != null) locomotion.SetFacing(spawnPoint.facing);
-
-        //训练靶：出生点右侧 3.5 格
-        SpawnTrainingDummy(root.transform, spawnPoint.transform.position + new Vector3(3.5f, 0.5f, 0f));
 
         //相机跟随
         PlayerCameraFollow.Attach(Camera.main, player.transform);
@@ -114,17 +125,18 @@ public static class PlayerSpawner
     }
 
     /// <summary>撤离：清掉玩家/训练靶/SpawnPos/相机跟随。</summary>
-    public static void Clear()
+    public static void Clear(bool restoreCamera = true)
     {
         for (int i = 0; i < Spawned.Count; i++)
             if (Spawned[i] != null) Object.Destroy(Spawned[i]);
         Spawned.Clear();
         CurrentPlayer = null;
 
+        AllyController.ClearAll();
         PlayerCameraFollow.Detach();
 
-        //恢复局外相机尺寸
-        if (_savedOrthoSize >= 0f)
+        //恢复局外相机尺寸（切场景时不恢复）
+        if (restoreCamera && _savedOrthoSize >= 0f)
         {
             Camera camera = Camera.main;
             if (camera != null)
@@ -195,6 +207,9 @@ public static class PlayerSpawner
             CompositeCollider2D composite = tilemap.GetComponent<CompositeCollider2D>();
             if (composite == null) composite = tilemap.gameObject.AddComponent<CompositeCollider2D>();
             composite.geometryType = CompositeCollider2D.GeometryType.Outlines;
+            //⚠ 新加的 CompositeCollider2D 在同一帧里几何体还没生成 → 立刻 GenerateGeometry，
+            //   否则紧接着的室内射线会全部打空（W3.1a 实测踩到）。
+            composite.GenerateGeometry();
             added++;
         }
 
@@ -216,58 +231,111 @@ public static class PlayerSpawner
             ChaosLog.Warn(LogChannel.UI, "[玩家] 已禁用地图里的非瓦片碰撞体（避免困住角色）：「" + collider.name + "」 " + collider.GetType().Name);
         }
         if (disabled > 0) ChaosLog.Info(LogChannel.UI, "[玩家] 共禁用 " + disabled + " 个非瓦片碰撞体");
+
+        //让新碰撞体立刻对 Physics2D 查询可见
+        Physics2D.SyncTransforms();
     }
 
-    /// <summary>在入口房左侧找地面并放 SpawnPos。</summary>
+    /// <summary>
+    /// **室内地面射线**（W3.1a 修正）：从房间垂直中部向下打，避免打到天花板/屋檐。
+    /// 依次尝试多个 x，取第一个命中且 y 落在房间内部区间 `(roomBottom+1, roomTop-1)` 的结果。
+    /// </summary>
+    public static bool TryFindInteriorFloor(float roomLeftX, float roomBottomY, float[] candidateXs, out Vector2 hitPoint)
+    {
+        hitPoint = Vector2.zero;
+        float roomTop = roomBottomY + RunMapConst.ChunkH;
+        float startY = roomBottomY + RunMapConst.ChunkH * 0.5f;
+        float distance = RunMapConst.ChunkH;
+
+        for (int i = 0; i < candidateXs.Length; i++)
+        {
+            float x = candidateXs[i];
+            if (x <= roomLeftX || x >= roomLeftX + RunMapConst.ChunkW) continue;
+
+            RaycastHit2D hit = Physics2D.Raycast(new Vector2(x, startY), Vector2.down, distance);
+            if (hit.collider == null) continue;
+            if (hit.point.y <= roomBottomY + 1f || hit.point.y >= roomTop - 1f) continue;
+
+            hitPoint = new Vector2(x, hit.point.y);
+            return true;
+        }
+        return false;
+    }
+
+    /// <summary>在入口房左侧、**室内地面**上放 SpawnPos（W3.1a 修正）。</summary>
     private static SpawnPoint PlaceSpawnPoint()
     {
         MapLayout layout = RunMapBootstrap.CurrentLayout;
-        if (layout == null)
-        {
-            ChaosLog.Warn(LogChannel.UI, "[玩家] CurrentLayout 为 null，无法定位入口房");
-            return null;
-        }
-
+        if (layout == null) { ChaosLog.Warn(LogChannel.UI, "[玩家] CurrentLayout 为 null，无法定位入口房"); return null; }
         RoomNode entry = layout.Find(layout.EntryId);
-        if (entry == null)
-        {
-            ChaosLog.Warn(LogChannel.UI, "[玩家] 找不到入口房 id=" + layout.EntryId);
-            return null;
-        }
+        if (entry == null) { ChaosLog.Warn(LogChannel.UI, "[玩家] 找不到入口房 id=" + layout.EntryId); return null; }
 
-        //1 格 = 1 世界单位；chunk = 40×24 格
         float roomX = entry.CellX * RunMapConst.ChunkW;
         float roomY = entry.CellY * RunMapConst.ChunkH;
-        float spawnX = roomX + 2f;                       //"场景左侧"：房间左边界 + 2
-        float rayStartY = roomY + RunMapConst.ChunkH - 2f;
+        float roomTop = roomY + RunMapConst.ChunkH;
 
-        bool hasGround = false;
-        float groundY = roomY + 0.5f;
-        RaycastHit2D hit = Physics2D.Raycast(new Vector2(spawnX, rayStartY), Vector2.down, RunMapConst.ChunkH + 8f);
-        if (hit.collider != null)
+        //室内射线：优先左侧（贴近"场景左侧"语义），再房间中部、右侧
+        float[] candidates = { roomX + 3f, roomX + RunMapConst.ChunkW * 0.5f, roomX + RunMapConst.ChunkW - 3f };
+        Vector2 hit;
+        bool hasGround = TryFindInteriorFloor(roomX, roomY, candidates, out hit);
+
+        float spawnX = roomX + 2f;
+        float spawnY;
+        if (hasGround)
         {
-            hasGround = true;
-            groundY = hit.point.y + 0.1f;
+            spawnY = hit.y + 0.1f;
         }
         else
         {
-            ChaosLog.Warn(LogChannel.UI, "[玩家] 出生点射线没打到地面，回退到房间左下角 +0.5");
+            int[] rows = RunMapConst.ProfileFloorRow;
+            int midRow = rows == null || rows.Length == 0 ? 4 : rows[rows.Length / 2];
+            spawnY = roomY + midRow + 0.1f;
+            ChaosLog.Warn(LogChannel.UI, "[玩家] 室内射线全部未命中，回退到 ProfileFloorRow 中部行 " + midRow + "（y=" + spawnY + "）");
         }
 
         PlayerRoot root = GetOrCreate<PlayerRoot>(SpawnRootName);
         GameObject go = new GameObject("SpawnPos");
         go.transform.SetParent(root.transform, false);
-        go.transform.position = new Vector3(spawnX, groundY, 0f);
+        go.transform.position = new Vector3(spawnX, spawnY, 0f);
 
         SpawnPoint point = go.AddComponent<SpawnPoint>();
         point.facing = 1;
         point.hasGround = hasGround;
 
+        bool insideRoom = spawnY > roomY && spawnY < roomTop;
         ChaosLog.Info(LogChannel.UI,
-            "[玩家] 入口房 Cell=(" + entry.CellX + "," + entry.CellY + ") 房间世界矩形 x[" + roomX + "," + (roomX + RunMapConst.ChunkW) + "]"
-            + " y[" + roomY + "," + (roomY + RunMapConst.ChunkH) + "] → SpawnPos=" + go.transform.position
-            + " hasGround=" + hasGround);
+            "[玩家] 入口房 Cell=(" + entry.CellX + "," + entry.CellY + ")  roomTop=" + roomTop
+            + "  射线起点 y=" + (roomY + RunMapConst.ChunkH * 0.5f) + "  命中 y=" + (hasGround ? hit.y.ToString("F2") : "无")
+            + "  命中点 x=" + (hasGround ? hit.x.ToString("F2") : "无")
+            + "  → SpawnPos=" + go.transform.position + "  hasGround=" + hasGround
+            + "  在房间内部=" + insideRoom);
+        if (!insideRoom) ChaosLog.Error(LogChannel.UI, "[玩家] ★SpawnPos 不在房间内部（y=" + spawnY + "，房间 y 范围 [" + roomY + "," + roomTop + "]）");
         return point;
+    }
+
+    /// <summary>按 runTeam 生成 AI 门客（第 1 位是受控玩家，其余最多 3 个）。</summary>
+    private static void SpawnAllies(Transform parent, List<uint> runTeam, SpawnPoint spawnPoint)
+    {
+        if (runTeam == null || runTeam.Count <= 1) return;
+        GameObject allyPrefab = Resources.Load<GameObject>("Player/Ally");
+        if (allyPrefab == null) { ChaosLog.Warn(LogChannel.UI, "[门客] 找不到 Resources/Player/Ally.prefab"); return; }
+
+        int count = Mathf.Min(runTeam.Count - 1, 3);
+        for (int i = 0; i < count; i++)
+        {
+            Vector3 position = spawnPoint.transform.position + new Vector3(-1.2f * (i + 1), 1f, 0f);
+            GameObject ally = Object.Instantiate(allyPrefab, position, Quaternion.identity, parent);
+            AllyController controller = ally.GetComponent<AllyController>();
+            if (controller != null)
+            {
+                controller.followIndex = i + 1;
+                controller.memberId = runTeam[i + 1];
+                //统一命名：Ally_{位序}(id={门客id}) —— 日志/来源全用它
+                ally.name = "Ally_" + (i + 1) + "(id=" + runTeam[i + 1] + ")";
+            }
+            Spawned.Add(ally);
+        }
+        ChaosLog.Info(LogChannel.UI, "[门客] 已生成 AI 门客 " + count + " 个（队伍 " + runTeam.Count + " 人）");
     }
 
     private static void SpawnTrainingDummy(Transform parent, Vector3 position)
