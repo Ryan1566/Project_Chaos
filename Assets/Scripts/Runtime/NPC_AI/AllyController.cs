@@ -25,7 +25,11 @@ public class AllyController : MonoBehaviour
 
     public int followIndex;                 //队伍位序 1、2、3
     public uint memberId;                   //门客 id（存档里的 id）
-    public float moveSpeed = 5.5f;
+    public float moveSpeed = 5.0f;          //略低于玩家 6.0 → 自然落在后面
+    /// <summary>加速度限制（格/s²），避免瞬间跟死。</summary>
+    public float acceleration = 30f;
+    /// <summary>队形偏移（按 followIndex 取）：{ -2.6, +2.6, -4.3 }。</summary>
+    private static readonly float[] FollowOffsets = { -2.6f, 2.6f, -4.3f };
     public float jumpForce = 11f;
     public float attackRange = 2.5f;
     public float attackCooldown = 0.6f;
@@ -47,6 +51,10 @@ public class AllyController : MonoBehaviour
     private int _facing = 1;
     private EnemyPlaceholder _target;
     private float _lostSince = -1f;
+    private float _verticalGapSince = -1f;
+    private float _nextDebugLog;
+    /// <summary>调试日志开关（0.5s 一次：grounded / vx / dy）。</summary>
+    public bool debugLog;
 
     /// <summary>统一显示名：`Ally_{位序}(id={门客id})`。</summary>
     public string AllyName { get { return "Ally_" + followIndex + "(id=" + memberId + ")"; } }
@@ -79,6 +87,20 @@ public class AllyController : MonoBehaviour
         float dx = controlled.transform.position.x - transform.position.x;
         float dy = controlled.transform.position.y - transform.position.y;
 
+        //跨层兜底（W3.1h）：垂直差 >2.5 持续 3s（跳不上去/停在下层）→ 传送
+        if (dy > 2.5f)
+        {
+            if (_verticalGapSince < 0f) _verticalGapSince = Time.time;
+            else if (Time.time - _verticalGapSince > 3f)
+            {
+                TeleportCount++;
+                TeleportNear(controlled, "垂直差 " + dy.ToString("F2") + " 持续 >3s");
+                _verticalGapSince = -1f;
+                return;
+            }
+        }
+        else _verticalGapSince = -1f;
+
         //跟丢兜底：持续 >2s 才传送（避免抖动误判）
         if (Mathf.Abs(dx) > lostHorizontal || Mathf.Abs(dy) > lostVertical)
         {
@@ -91,6 +113,15 @@ public class AllyController : MonoBehaviour
             }
         }
         else _lostSince = -1f;
+
+        if (debugLog && Time.time >= _nextDebugLog)
+        {
+            _nextDebugLog = Time.time + 0.5f;
+            ChaosLog.Info(LogChannel.UI, "[门客调试] " + AllyName + " grounded=" + IsGrounded()
+                + " vx=" + (_body == null ? 0f : _body.velocity.x).ToString("F2")
+                + " vy=" + (_body == null ? 0f : _body.velocity.y).ToString("F2")
+                + " dy=" + dy.ToString("F2"));
+        }
 
         if (_target == null || _target.IsDead) _target = FindNearestEnemy();
         if (_target != null && Vector2.Distance(_target.transform.position, transform.position) > attackRange * 1.6f) _target = null;
@@ -110,7 +141,8 @@ public class AllyController : MonoBehaviour
             return;
         }
 
-        float wantedX = controlled.transform.position.x + (followIndex == 3 ? 2f : (followIndex == 2 ? 0f : -2f));
+        float offset = FollowOffsets[Mathf.Clamp(followIndex - 1, 0, FollowOffsets.Length - 1)];
+        float wantedX = controlled.transform.position.x + offset;
         Rect room;
         if (RunEncounter.TryGetRoomRect(controlled.transform.position, out room))
             wantedX = Mathf.Clamp(wantedX, room.xMin + 1f, room.xMax - 1f);
@@ -127,7 +159,9 @@ public class AllyController : MonoBehaviour
         }
 
         bool playerBelow = dy < -1.5f;
-        if (Mathf.Abs(targetDx) > followDeadZone || playerBelow)
+        bool alreadyMoving = _body != null && Mathf.Abs(_body.velocity.x) > 0.1f;
+        float deadZone = alreadyMoving ? 1.4f : 1.6f;   //死区滞回：动则 1.4 继续，停则 1.6 才起步
+        if (Mathf.Abs(targetDx) > deadZone || playerBelow)
         {
             if (!GroundAhead(dir) && !playerBelow)
             {
@@ -136,7 +170,12 @@ public class AllyController : MonoBehaviour
                 return;
             }
 
-            if (_body != null) _body.velocity = new Vector2(dir * moveSpeed, _body.velocity.y);
+            if (_body != null)
+            {
+                float targetVx = dir * moveSpeed;
+                float vx = Mathf.MoveTowards(_body.velocity.x, targetVx, acceleration * Time.deltaTime);
+                _body.velocity = new Vector2(vx, _body.velocity.y);
+            }
             SetFacing(dir);
 
             if (Time.time >= _nextJump && WallAhead(dir) && IsGrounded())
@@ -162,14 +201,19 @@ public class AllyController : MonoBehaviour
         ChaosLog.Warn(LogChannel.UI, "[门客] 「" + AllyName + "」传送回玩家身边（" + reason + "）");
     }
 
+    /// <summary>W3.1f：改用胶囊底部 BoxCast（脚底小圆 r=0.16 打不到瓦片面）。</summary>
     private bool IsGrounded()
     {
-        Vector2 feet = (Vector2)transform.position + new Vector2(0f, -0.05f);
-        Collider2D[] hits = Physics2D.OverlapCircleAll(feet, 0.16f);
+        Collider2D col = GetComponent<Collider2D>();
+        if (col == null) return false;
+        Bounds b = col.bounds;
+        Vector2 origin = new Vector2(b.center.x, b.min.y + 0.05f);
+        Vector2 size = new Vector2(Mathf.Max(0.1f, b.size.x * 0.8f), 0.04f);
+        RaycastHit2D[] hits = Physics2D.BoxCastAll(origin, size, 0f, Vector2.down, 0.12f);
         for (int i = 0; i < hits.Length; i++)
         {
-            if (hits[i] == null || hits[i].isTrigger) continue;
-            if (hits[i].transform == transform || hits[i].transform.IsChildOf(transform)) continue;
+            if (hits[i].collider == null || hits[i].collider.isTrigger) continue;
+            if (hits[i].collider.transform == transform || hits[i].collider.transform.IsChildOf(transform)) continue;
             return true;
         }
         return false;

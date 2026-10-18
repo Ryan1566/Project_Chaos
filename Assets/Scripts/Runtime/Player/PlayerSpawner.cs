@@ -320,6 +320,8 @@ public static class PlayerSpawner
         GameObject allyPrefab = Resources.Load<GameObject>("Player/Ally");
         if (allyPrefab == null) { ChaosLog.Warn(LogChannel.UI, "[门客] 找不到 Resources/Player/Ally.prefab"); return; }
 
+        AllyController.ClearAll();   //防重复：清掉可能残留的门客（修 AllyController=6）
+
         int count = Mathf.Min(runTeam.Count - 1, 3);
         for (int i = 0; i < count; i++)
         {
@@ -332,6 +334,19 @@ public static class PlayerSpawner
                 controller.memberId = runTeam[i + 1];
                 //统一命名：Ally_{位序}(id={门客id}) —— 日志/来源全用它
                 ally.name = "Ally_" + (i + 1) + "(id=" + runTeam[i + 1] + ")";
+            }
+
+            //C：门客与玩家、门客之间互不碰撞（保留与地形/边界墙的碰撞）
+            {
+                Collider2D allyCollider = ally.GetComponent<Collider2D>();
+                Collider2D playerCollider = CurrentPlayer == null ? null : CurrentPlayer.GetComponent<Collider2D>();
+                if (allyCollider != null && playerCollider != null) Physics2D.IgnoreCollision(playerCollider, allyCollider, true);
+                for (int k = 0; k < Spawned.Count; k++)
+                {
+                    if (Spawned[k] == null || Spawned[k] == ally) continue;
+                    Collider2D other = Spawned[k].GetComponent<Collider2D>();
+                    if (other != null && allyCollider != null) Physics2D.IgnoreCollision(other, allyCollider, true);
+                }
             }
             Spawned.Add(ally);
         }

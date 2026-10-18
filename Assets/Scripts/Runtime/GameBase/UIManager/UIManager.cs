@@ -11,6 +11,9 @@ using UnityEngine;
 /// </summary>
 public class UIManager : SingletonBase<UIManager>
 {
+    /// <summary>缓存的 UI Canvas（避免隐藏后再 Find 找不到 → Console error）。</summary>
+    private static Canvas _cachedCanvas;
+
     private Dictionary<PanelType, BasePanel> PanelDic = new Dictionary<PanelType, BasePanel>();//存储对应ui的字典
     public Stack<BasePanel> panelStack = new Stack<BasePanel>();//存储ui内容的堆栈
 
@@ -36,7 +39,24 @@ public class UIManager : SingletonBase<UIManager>
     /// </summary>
     private static Transform FindCanvas()
     {
-        GameObject canvasObj = GameObject.Find("Canvas");
+
+        //① 缓存优先（Canvas 被隐藏后再 Find 会找不到 → 之前会报 error）
+        GameObject canvasObj = _cachedCanvas != null ? _cachedCanvas.gameObject : GameObject.Find("Canvas");
+
+        //② 兜底：包含未激活对象再找一次（进局时 Canvas 被 HideAllPanelsForGameplay 隐藏过）
+        if (canvasObj == null)
+        {
+            Canvas[] all = Resources.FindObjectsOfTypeAll<Canvas>();
+            for (int i = 0; i < all.Length; i++)
+            {
+                if (all[i] == null || all[i].gameObject.name != "Canvas") continue;
+                canvasObj = all[i].gameObject;
+                break;
+            }
+        }
+
+        if (canvasObj != null) _cachedCanvas = canvasObj.GetComponent<Canvas>();   //③ 写入缓存
+
         if (canvasObj == null)
         {
             ChaosLog.Error("[UIManager] 场景中找不到名为 Canvas 的物体，UI 无法显示");

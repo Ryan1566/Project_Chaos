@@ -135,16 +135,19 @@ public class PlayerLocomotion : MonoBehaviour
     }
 
     /// <summary>脚底圆形检测：忽略自身碰撞体与触发器。</summary>
+    /// <summary>W3.1f：改用胶囊底部 BoxCast（与门客同一套）。</summary>
     private bool CheckGrounded()
     {
-        Vector2 feet = (Vector2)transform.position + feetOffset;
-        Collider2D[] hits = Physics2D.OverlapCircleAll(feet, groundCheckRadius);
+        Collider2D col = GetComponent<Collider2D>();
+        if (col == null) return false;
+        Bounds b = col.bounds;
+        Vector2 origin = new Vector2(b.center.x, b.min.y + 0.05f);
+        Vector2 size = new Vector2(Mathf.Max(0.1f, b.size.x * 0.8f), 0.04f);
+        RaycastHit2D[] hits = Physics2D.BoxCastAll(origin, size, 0f, Vector2.down, 0.12f);
         for (int i = 0; i < hits.Length; i++)
         {
-            Collider2D hit = hits[i];
-            if (hit == null || hit.isTrigger) continue;
-            if (hit.attachedRigidbody == _body) continue;
-            if (hit.transform == transform || hit.transform.IsChildOf(transform)) continue;
+            if (hits[i].collider == null || hits[i].collider.isTrigger) continue;
+            if (hits[i].collider.transform == transform || hits[i].collider.transform.IsChildOf(transform)) continue;
             return true;
         }
         return false;
