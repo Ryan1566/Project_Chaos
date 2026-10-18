@@ -3,7 +3,7 @@ using ChaosDebug;
 using UnityEngine;
 
 /// <summary>
-/// 族人系统（M2 招募/展示 + M11 重伤/信心）的服务层 —— **唯一读写入口**。
+/// 门客系统（M2 招募/展示 + M11 重伤/信心）的服务层 —— **唯一读写入口**。
 ///
 /// ══════════════ 表是模板、存档是实例 ══════════════
 /// `Retainer` 表 = 模板；`SavePayload.retainers` 里每个 `RetainerSave` = 某一行的**副本实例**
@@ -23,7 +23,7 @@ public class RetainerService : SingletonBase<RetainerService>
     /// <summary>重伤时长（原型期常量 30 秒）。</summary>
     public const uint DefaultWoundSeconds = 30u;
 
-    /// <summary>族人数量上限（原型）。</summary>
+    /// <summary>门客数量上限（原型）。</summary>
     public const int MaxRetainers = 8;
 
     /// <summary>重伤/信心不足/可用 三态。</summary>
@@ -46,7 +46,7 @@ public class RetainerService : SingletonBase<RetainerService>
         TextAsset asset = Resources.Load<TextAsset>(path);
         if (asset == null)
         {
-            ChaosLog.Warn(LogChannel.Config, "[族人] 找不到 " + path + "（招募/展示会退化，不抛异常）");
+            ChaosLog.Warn(LogChannel.Config, "[门客] 找不到 " + path + "（招募/展示会退化，不抛异常）");
             _defs = new List<RetainerConfig>();
             return;
         }
@@ -104,7 +104,7 @@ public class RetainerService : SingletonBase<RetainerService>
     }
 
     /// <summary>
-    /// 按 `RecruitWeight` 加权随机招募一个族人（**不消耗资源**，GM 免费发放）。
+    /// 按 `RecruitWeight` 加权随机招募一个门客（**不消耗资源**，GM 免费发放）。
     /// 达到上限 8 / 无可用模板时返回 null 并 Warn（E2）。
     /// </summary>
     public RetainerSave RecruitRandom()
@@ -113,7 +113,7 @@ public class RetainerService : SingletonBase<RetainerService>
 
         if (GetAll().Count >= MaxRetainers)
         {
-            ChaosLog.Warn(LogChannel.Config, "[族人] 已达上限 " + MaxRetainers + "，招募被拒");
+            ChaosLog.Warn(LogChannel.Config, "[门客] 已达上限 " + MaxRetainers + "，招募被拒");
             return null;
         }
 
@@ -132,7 +132,7 @@ public class RetainerService : SingletonBase<RetainerService>
 
         if (pool.Count == 0 || total == 0)
         {
-            ChaosLog.Warn(LogChannel.Config, "[族人] 没有可招募的模板（表为空/全 Enable=false/权重全 0）");
+            ChaosLog.Warn(LogChannel.Config, "[门客] 没有可招募的模板（表为空/全 Enable=false/权重全 0）");
             return null;
         }
 
@@ -160,7 +160,7 @@ public class RetainerService : SingletonBase<RetainerService>
 
         GetAll().Add(instance);
         ChaosLog.Success(LogChannel.Config,
-            "[族人] 招募到 #" + instance.id + " protoId=" + picked.Index + "（" + picked.NameKey + "）"
+            "[门客] 招募到 #" + instance.id + " protoId=" + picked.Index + "（" + picked.NameKey + "）"
             + " 品质=" + instance.quality + " 信心=" + instance.confidence + "，当前 " + GetAll().Count + "/" + MaxRetainers);
         return instance;
     }
@@ -192,13 +192,13 @@ public class RetainerService : SingletonBase<RetainerService>
         }
     }
 
-    /// <summary>把族人打成重伤（原型期 GM 触发）。**信心不变**。</summary>
+    /// <summary>把门客打成重伤（原型期 GM 触发）。**信心不变**。</summary>
     public bool Wound(uint id, uint seconds = DefaultWoundSeconds)
     {
         RetainerSave retainer;
         if (!TryGet(id, out retainer))
         {
-            ChaosLog.Warn(LogChannel.Config, "[族人] 打伤失败：找不到 id=" + id);
+            ChaosLog.Warn(LogChannel.Config, "[门客] 打伤失败：找不到 id=" + id);
             return false;
         }
         if (seconds == 0) seconds = DefaultWoundSeconds;
@@ -207,7 +207,7 @@ public class RetainerService : SingletonBase<RetainerService>
         retainer.woundedRemainSeconds = seconds;
         retainer.woundedUntilUtcTicks = 0L;
         ChaosLog.Info(LogChannel.Config,
-            "[族人] #" + id + " 重伤 " + seconds + "s（信心仍为 " + retainer.confidence + "，重伤不影响信心）");
+            "[门客] #" + id + " 重伤 " + seconds + "s（信心仍为 " + retainer.confidence + "，重伤不影响信心）");
         return true;
     }
 
@@ -228,7 +228,7 @@ public class RetainerService : SingletonBase<RetainerService>
                 retainer.wounded = false;
                 retainer.woundedRemainSeconds = 0u;
                 ChaosLog.Success(LogChannel.Config,
-                    "[族人] #" + retainer.id + " 重伤恢复 → 可用（信心 " + retainer.confidence + " 保持不变）");
+                    "[门客] #" + retainer.id + " 重伤恢复 → 可用（信心 " + retainer.confidence + " 保持不变）");
             }
             else
             {
@@ -243,23 +243,23 @@ public class RetainerService : SingletonBase<RetainerService>
         RetainerSave retainer;
         if (!TryGet(id, out retainer))
         {
-            ChaosLog.Warn(LogChannel.Config, "[族人] 改信心失败：找不到 id=" + id);
+            ChaosLog.Warn(LogChannel.Config, "[门客] 改信心失败：找不到 id=" + id);
             return false;
         }
 
         int before = retainer.confidence;
         retainer.confidence = Mathf.Clamp(retainer.confidence + delta, 0, 100);
         ChaosLog.Info(LogChannel.Config,
-            "[族人] #" + id + " 信心 " + before + " → " + retainer.confidence + "（delta=" + delta + "）");
+            "[门客] #" + id + " 信心 " + before + " → " + retainer.confidence + "（delta=" + delta + "）");
         return true;
     }
 
-    /// <summary>给 GM 打印的全部族人状态。</summary>
+    /// <summary>给 GM 打印的全部门客状态。</summary>
     public string DumpAll()
     {
         List<RetainerSave> all = GetAll();
         var sb = new System.Text.StringBuilder();
-        sb.Append("[族人] 共 ").Append(all.Count).Append("/").Append(MaxRetainers).Append(" 位：");
+        sb.Append("[门客] 共 ").Append(all.Count).Append("/").Append(MaxRetainers).Append(" 位：");
         for (int i = 0; i < all.Count; i++)
         {
             RetainerSave retainer = all[i];
@@ -276,16 +276,16 @@ public class RetainerService : SingletonBase<RetainerService>
 
     // ══════════════ 家族树效果加成（EffectType=4，只读；不改存档字段）══════════════
 
-    /// <summary>族人生命加成。</summary>
+    /// <summary>门客生命加成。</summary>
     public int BonusHp { get { return EffectAggregator.Instance.Snapshot.HpBonus; } }
-    /// <summary>族人攻击加成。</summary>
+    /// <summary>门客攻击加成。</summary>
     public int BonusAttack { get { return EffectAggregator.Instance.Snapshot.AttackBonus; } }
-    /// <summary>族人防御加成。</summary>
+    /// <summary>门客防御加成。</summary>
     public int BonusDefense { get { return EffectAggregator.Instance.Snapshot.DefenseBonus; } }
-    /// <summary>族人速度加成。</summary>
+    /// <summary>门客速度加成。</summary>
     public int BonusSpeed { get { return EffectAggregator.Instance.Snapshot.SpeedBonus; } }
 
-    /// <summary>某族人的最终属性 = 模板值 + 家族树加成（属性不落盘）。</summary>
+    /// <summary>某门客的最终属性 = 模板值 + 家族树加成（属性不落盘）。</summary>
     public void GetEffectiveStats(RetainerSave retainer, out int hp, out int attack, out int defense, out int speed)
     {
         hp = attack = defense = speed = 0;
@@ -298,10 +298,10 @@ public class RetainerService : SingletonBase<RetainerService>
         speed = (int)def.Speed + BonusSpeed;
     }
 
-    /// <summary>调试：清空族人列表。</summary>
+    /// <summary>调试：清空门客列表。</summary>
     public void ClearAll()
     {
         GetAll().Clear();
-        ChaosLog.Info(LogChannel.Config, "[族人] 已清空");
+        ChaosLog.Info(LogChannel.Config, "[门客] 已清空");
     }
 }

@@ -109,13 +109,14 @@ public class GMPanel : MonoBehaviour
     private TextMeshProUGUI _protoMapStatus;
     /// <summary>原型·地图页的场景号输入（1~3）。</summary>
     private TMP_InputField _protoSceneIndexInput;
-    /// <summary>原型·族人页的状态行。</summary>
+    /// <summary>原型·门客页的状态行。</summary>
     private TextMeshProUGUI _protoRetainerStatus;
     /// <summary>原型·道具发放页的状态行。</summary>
     private TextMeshProUGUI _protoItemStatus;
     /// <summary>原型·库存页的状态行。</summary>
     private TextMeshProUGUI _protoInventoryStatus;
     private TextMeshProUGUI _protoVillageStatus;
+    private TextMeshProUGUI _protoDispatchStatus;
     private TextMeshProUGUI _protoFamilyTreeStatus;
     private uint _runMapSeed = 20261010u;
 
@@ -218,9 +219,10 @@ public class GMPanel : MonoBehaviour
             {
                 new GmSection("语言切换", BuildLanguagePage),
                 new GmSection("日志与性能", page => AddHint(page, "预留：日志等级 / 频道开关 / 帧率与内存显示，待接入。")),
-                new GmSection("族人", BuildRetainerPage),
+                new GmSection("门客", BuildRetainerPage),
                 new GmSection("村庄", BuildVillagePage),
                 new GmSection("家族树", BuildFamilyTreePage),
+                new GmSection("派遣", BuildDispatchPage),
             }),
 
             new GmCategory("局内生成", new[]
@@ -489,7 +491,7 @@ public class GMPanel : MonoBehaviour
             string text = "[原型·存档] era=" + p.era + " depth=" + p.depth
                 + " 资源(材料/图纸/货物/钱)=" + p.resMaterial + "/" + p.resBlueprint + "/" + p.resGoods + "/" + p.resMoney
                 + " runs=" + p.runs + " clears=" + p.clears + " scenesCleared=" + p.scenesCleared
-                + " 族人=" + (p.retainers == null ? 0 : p.retainers.Count)
+                + " 门客=" + (p.retainers == null ? 0 : p.retainers.Count)
                 + " 建筑=" + (p.buildings == null ? 0 : p.buildings.Count)
                 + " 家族树节点=" + (p.familyTreeNodes == null ? 0 : p.familyTreeNodes.Count);
             SetProtoStatus(_protoSaveStatus, text);
@@ -635,56 +637,56 @@ public class GMPanel : MonoBehaviour
 
 
 
-    // ══════════════════════ 原型：族人 / 道具 / 库存（W1a）══════════════════════
+    // ══════════════════════ 原型：门客 / 道具 / 库存（W1a）══════════════════════
 
     private void BuildRetainerPage(Transform page)
     {
         AddHint(page, "W1a：可出战 = 未重伤 且 信心 ≥ 30；重伤 30 秒倒计时（只按运行中时间）。上限 8 人。");
 
-        AddActionButton(page, "给 1 个随机族人（按 RecruitWeight）", () =>
+        AddActionButton(page, "给 1 个随机门客（按 RecruitWeight）", () =>
         {
             RetainerSave r = RetainerService.Instance.RecruitRandom();
-            string text = r == null ? "[族人] 招募失败（上限/无模板，看 Console）"
-                : ("[族人] 招募 #" + r.id + " proto=" + r.protoId + " 品质=" + r.quality + " 信心=" + r.confidence);
+            string text = r == null ? "[门客] 招募失败（上限/无模板，看 Console）"
+                : ("[门客] 招募 #" + r.id + " proto=" + r.protoId + " 品质=" + r.quality + " 信心=" + r.confidence);
             SetProtoStatus(_protoRetainerStatus, text + "\n" + RetainerService.Instance.DumpAll());
             Debug.Log(text);
         });
 
-        AddActionButton(page, "打伤第 1 个族人（30s）", () =>
+        AddActionButton(page, "打伤第 1 个门客（30s）", () =>
         {
             List<RetainerSave> all = RetainerService.Instance.GetAll();
-            if (all.Count == 0) { SetProtoStatus(_protoRetainerStatus, "没有族人可打伤"); return; }
+            if (all.Count == 0) { SetProtoStatus(_protoRetainerStatus, "没有门客可打伤"); return; }
             RetainerService.Instance.Wound(all[0].id);
             SetProtoStatus(_protoRetainerStatus, RetainerService.Instance.DumpAll());
-            Debug.Log("[族人] 打伤 #" + all[0].id + "\n" + RetainerService.Instance.DumpAll());
+            Debug.Log("[门客] 打伤 #" + all[0].id + "\n" + RetainerService.Instance.DumpAll());
         });
 
-        AddActionButton(page, "第 1 个族人信心 -40", () =>
+        AddActionButton(page, "第 1 个门客信心 -40", () =>
         {
             List<RetainerSave> all = RetainerService.Instance.GetAll();
-            if (all.Count == 0) { SetProtoStatus(_protoRetainerStatus, "没有族人"); return; }
+            if (all.Count == 0) { SetProtoStatus(_protoRetainerStatus, "没有门客"); return; }
             RetainerService.Instance.ChangeConfidence(all[0].id, -40);
             SetProtoStatus(_protoRetainerStatus, RetainerService.Instance.DumpAll());
-            Debug.Log("[族人] 信心-40\n" + RetainerService.Instance.DumpAll());
+            Debug.Log("[门客] 信心-40\n" + RetainerService.Instance.DumpAll());
         });
 
         AddActionButton(page, "快进 30 秒（Tick）", () =>
         {
             RetainerService.Instance.Tick(30f);
             SetProtoStatus(_protoRetainerStatus, RetainerService.Instance.DumpAll());
-            Debug.Log("[族人] 快进 30s\n" + RetainerService.Instance.DumpAll());
+            Debug.Log("[门客] 快进 30s\n" + RetainerService.Instance.DumpAll());
         });
 
-        AddActionButton(page, "打印全部族人状态", () =>
+        AddActionButton(page, "打印全部门客状态", () =>
         {
             string text = RetainerService.Instance.DumpAll();
             SetProtoStatus(_protoRetainerStatus, text);
             Debug.Log(text);
         });
 
-        AddActionButton(page, "打开族人面板", () =>
+        AddActionButton(page, "打开门客面板", () =>
         {
-            if (UIManager.Instance == null) { Debug.LogError("[族人] UIManager 未初始化"); return; }
+            if (UIManager.Instance == null) { Debug.LogError("[门客] UIManager 未初始化"); return; }
             UIManager.Instance.PushPanel(PanelType.RetainerPanel);
             ClosePanel();
         });
@@ -1015,6 +1017,35 @@ public class GMPanel : MonoBehaviour
         }
     }
 
+
+
+    private void BuildDispatchPage(Transform page)
+    {
+        AddHint(page, "W2 派遣：选 1~4 位门客 → 出发即**就地**生成第 1 场景（不切场景、不改 RunMap）。");
+        AddActionButton(page, "打开派遣面板", () => { if (UIManager.Instance == null) return; UIManager.Instance.PushPanel(PanelType.DispatchPanel); ClosePanel(); });
+        AddActionButton(page, "打印可用门客", () => { string s = RetainerService.Instance.DumpAll(); Debug.Log(s); SetProtoStatus(_protoDispatchStatus, s); });
+        AddActionButton(page, "出发（随机 1~4 人）", () => { string s = DepartRandom(); Debug.Log(s); SetProtoStatus(_protoDispatchStatus, s); });
+        AddActionButton(page, "撤离 / 返回局外", () => { string why; bool ok = DispatchService.Instance.ReturnToMeta(out why); string s = ok ? "[派遣] 已撤离" : ("[派遣] 撤离失败：" + why); Debug.Log(s); SetProtoStatus(_protoDispatchStatus, s + "\n" + DispatchService.Instance.DumpState()); });
+        AddActionButton(page, "打印 runTeam 与 runs", () => { string s = DispatchService.Instance.DumpState(); Debug.Log(s); SetProtoStatus(_protoDispatchStatus, s); });
+        _protoDispatchStatus = CreateStatusLabel(page);
+        SetProtoStatus(_protoDispatchStatus, DispatchService.Instance.DumpState());
+    }
+
+    private string DepartRandom()
+    {
+        DispatchService svc = DispatchService.Instance;
+        svc.ResetSelection();
+        var all = svc.GetCandidates();
+        var ok = new System.Collections.Generic.List<RetainerSave>();
+        for (int i = 0; i < all.Count; i++) if (string.IsNullOrEmpty(svc.GetUnavailableReason(all[i]))) ok.Add(all[i]);
+        if (ok.Count == 0) return "[派遣] 没有可出战的门客";
+        int want = UnityEngine.Random.Range(1, System.Math.Min(ok.Count, DispatchService.MaxTeamSize) + 1);
+        int picked = 0;
+        for (int i = 0; i < ok.Count && picked < want; i++) { string why; if (svc.Toggle(ok[i].id, out why)) picked++; }
+        string reason;
+        bool departed = svc.Depart(out reason);
+        return departed ? ("[派遣] 已出发（" + picked + " 人）\n" + svc.DumpState()) : ("[派遣] 出发失败：" + reason);
+    }
 
     private void AddHint(Transform page, string text)
     {

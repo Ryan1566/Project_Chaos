@@ -78,7 +78,7 @@ public class SavePayload
     /// <summary>局外资源：钱币。</summary>
     public uint resMoney;
 
-    /// <summary>族人（W0 用最小占位结构 `RetainerSave`，字段待 W1 定）。</summary>
+    /// <summary>门客（W0 用最小占位结构 `RetainerSave`，字段待 W1 定）。</summary>
     public List<RetainerSave> retainers = new List<RetainerSave>();
 
     /// <summary>建筑（W0 用最小占位结构 `BuildingSave`，字段待 W1 定）。</summary>
@@ -86,6 +86,9 @@ public class SavePayload
 
     /// <summary>已点亮的家族树节点 ID（M3；效果靠 FamilyTreeEffect 关联，不在此存效果）。</summary>
     public List<uint> familyTreeNodes = new List<uint>();
+
+    /// <summary>本局派遣队伍（门客 id 列表；出发时写入，零迁移）。</summary>
+    public List<uint> runTeam = new List<uint>();
 
     /// <summary>进入局内的次数（M15 局内计数）。</summary>
     public uint runs;
@@ -147,7 +150,7 @@ public class SaveSlotInfo
 }
 
 /// <summary>
-/// 族人存档（**W0 最小占位**：W1 定字段后再往上加 —— 只加字段，零迁移）。
+/// 门客存档（**W0 最小占位**：W1 定字段后再往上加 —— 只加字段，零迁移）。
 /// ⚠ JsonUtility 限制：只 public 字段、不要属性/DateTime/Dictionary。
 /// </summary>
 [Serializable]

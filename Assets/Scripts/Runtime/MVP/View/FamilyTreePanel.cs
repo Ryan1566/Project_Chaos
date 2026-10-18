@@ -53,7 +53,7 @@ public class FamilyTreePanel : BasePanel
                 + "　　扎营补员 " + (snap.CampRefillUnlocked ? "已解锁" : "未解锁"));
 
         if (_hint != null) ApplyLocalized(_hint, "ui_familytree_hint",
-            "（点亮的节点效果会立刻聚合：带出上限/格位/族人属性/扎营补员）");
+            "（点亮的节点效果会立刻聚合：带出上限/格位/门客属性/扎营补员）");
 
         ClearRows();
 

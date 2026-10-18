@@ -14,7 +14,7 @@ using UnityEngine;
 ///
 /// ══════════════ 计时口径（U2）══════════════
 /// **只用运行中时间**：`BuildingSave.remainSeconds`（本轮**新增字段**，零迁移）逐帧递减；
-/// 旧 `finishUtcTicks` 保留但**恒 0 不读**（同族人重伤字段的处理方式）。
+/// 旧 `finishUtcTicks` 保留但**恒 0 不读**（同门客重伤字段的处理方式）。
 /// 离线不产、不推进 —— 与"仅运行中计时"一致。
 /// </summary>
 public class VillageService : SingletonBase<VillageService>

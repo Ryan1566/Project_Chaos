@@ -23,5 +23,6 @@ public enum PanelType
     RetainerPanel,//族人面板
     InventoryPanel,//库存面板
     VillagePanel,//村庄面板
-    FamilyTreePanel//家族树面板
+    FamilyTreePanel,//家族树面板
+    DispatchPanel//派遣编队面板
 }

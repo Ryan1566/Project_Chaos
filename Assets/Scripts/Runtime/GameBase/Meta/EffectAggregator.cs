@@ -9,7 +9,7 @@ public class MetaEffectSnapshot
     public int TotalSlotsBonus;
     /// <summary>带出上限加成（EffectType=3 相加；最终上限 = 1 + 这个，clamp 1~10）。</summary>
     public int DeployCapBonus;
-    /// <summary>族人属性加成（EffectType=4，按 Target：1 生命 / 2 攻击 / 3 防御 / 4 速度 / 5 信心上限）。</summary>
+    /// <summary>门客属性加成（EffectType=4，按 Target：1 生命 / 2 攻击 / 3 防御 / 4 速度 / 5 信心上限）。</summary>
     public int HpBonus;
     public int AttackBonus;
     public int DefenseBonus;
@@ -40,7 +40,7 @@ public class MetaEffectSnapshot
 /// **唯一的效果聚合器**（08_Effect §5 口径：增量相加 / 上限取最高 / 覆盖取最后）。
 ///
 /// 来源 = `FamilyTreeEffect`（已点亮节点）→ `Effect`（效果本体）；
-/// 输出 = 一份 `MetaEffectSnapshot`，供库存（格位）、带出（上限）、族人（属性）、扎营（补员）、村庄（建造/产量）读取。
+/// 输出 = 一份 `MetaEffectSnapshot`，供库存（格位）、带出（上限）、门客（属性）、扎营（补员）、村庄（建造/产量）读取。
 ///
 /// ⚠ **不要在别处再算一遍**：`InventoryService.SlotBonus` / `RetainerService` 的加成 getter /
 ///   `MetaProgressService.DeployCap` 全部读这里，保证只有一份真相。

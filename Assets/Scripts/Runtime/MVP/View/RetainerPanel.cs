@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// 族人面板（W1a）：一行一个族人，**状态标签一眼可见**（可用 / 信心不足 / 重伤 Ns）。
+/// 门客面板（W1a）：一行一个门客，**状态标签一眼可见**（可用 / 信心不足 / 重伤 Ns）。
 /// 状态优先级：重伤 &gt; 信心不足 &gt; 可用（05 §8.2）。
 ///
 /// 说明：UI 在 `Awake` 里**运行时构建**（只依赖 prefab 根上的 Title 文本当字体模板），
@@ -48,7 +48,7 @@ public class RetainerPanel : BasePanel
         if (_title != null)
         {
             _font = _title.font;
-            ApplyLocalized(_title, "ui_retainer_panel_title", "族人");
+            ApplyLocalized(_title, "ui_retainer_panel_title", "门客");
         }
 
         _summary = CreateText("Summary", 64f, NormalColor, 22f);
@@ -60,7 +60,7 @@ public class RetainerPanel : BasePanel
 
     private void Refresh()
     {
-        if (_title != null) ApplyLocalized(_title, "ui_retainer_panel_title", "族人");
+        if (_title != null) ApplyLocalized(_title, "ui_retainer_panel_title", "门客");
 
         RetainerService svc = RetainerService.Instance;
         List<RetainerSave> all = svc.GetAll();
@@ -77,7 +77,7 @@ public class RetainerPanel : BasePanel
 
         if (all.Count == 0)
         {
-            if (_hint != null) ApplyLocalized(_hint, "ui_retainer_empty", "暂无族人（用 GM 发放）");
+            if (_hint != null) ApplyLocalized(_hint, "ui_retainer_empty", "暂无门客（用 GM 发放）");
             return;
         }
         if (_hint != null) ApplyLocalized(_hint, "ui_retainer_hint", "");
@@ -88,7 +88,7 @@ public class RetainerPanel : BasePanel
             if (retainer == null) continue;
 
             RetainerConfig def = svc.GetDefinition(retainer.protoId);
-            string name = def == null ? ("族人#" + retainer.id) : def.NameKey;
+            string name = def == null ? ("门客#" + retainer.id) : def.NameKey;
 
             string line = name
                 + "　　品质 " + retainer.quality
