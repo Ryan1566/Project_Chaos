@@ -141,6 +141,8 @@ public class DispatchPanel : BasePanel
     {
         string reason;
         bool ok = DispatchService.Instance.Depart(out reason);
+
+        if (ok && UIManager.Instance != null) UIManager.Instance.HideAllPanelsForGameplay();
         Debug.Log(ok ? "[派遣] 出发成功" : ("[派遣] 出发失败：" + reason));
         Refresh();
     }
@@ -149,6 +151,8 @@ public class DispatchPanel : BasePanel
     {
         string reason;
         bool ok = DispatchService.Instance.ReturnToMeta(out reason);
+
+        if (ok && UIManager.Instance != null) UIManager.Instance.RestoreAfterGameplay();
         Debug.Log(ok ? "[派遣] 已撤离" : ("[派遣] 撤离失败：" + reason));
         Refresh();
     }

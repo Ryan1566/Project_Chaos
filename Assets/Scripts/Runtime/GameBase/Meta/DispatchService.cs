@@ -156,12 +156,16 @@ public class DispatchService : SingletonBase<DispatchService>
         payload.runTeam = new List<uint>(_selected);
         payload.runs++;
 
+        PlayerSpawner.CaptureOutsideCameraState();   //必须在生图前记局外相机尺寸
         GameObject container = PrototypeMapSpawner.Spawn(StartSceneIndex);
         if (container == null)
         {
             reason = "就地生成局内地图失败（看 Console）";
             return false;
         }
+
+        //W3.0：进局后生成受控角色（SpawnPos + 玩家 + 训练靶 + 相机跟随）
+        PlayerSpawner.SpawnForTeam(_selected);
 
         _isInRun = true;
         ChaosLog.Success(LogChannel.Config,
@@ -180,6 +184,11 @@ public class DispatchService : SingletonBase<DispatchService>
             reason = "当前不在局内";
             return false;
         }
+
+        PlayerSpawner.Clear();
+
+        //恢复进局前隐藏的局外 UI（集中在这里做：GM 的撤离按钮也走这条路）
+        if (UIManager.Instance != null) UIManager.Instance.RestoreAfterGameplay();
 
         PrototypeMapSpawner.Clear();
         _isInRun = false;

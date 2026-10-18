@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using ChaosDebug;
 using UnityEngine;
 
@@ -188,6 +188,76 @@ public class UIManager : SingletonBase<UIManager>
             ChaosLog.Error($"[UIManager] SetRootPanel({panelType}) 失败：面板没能生成（预制体缺失？）");
         }
         return panel;
+    }
+
+    // ══════════════════════ 局内：隐藏/恢复局外面板（W3.0b）══════════════════════
+
+    /// <summary>进局时被隐藏的面板（按发现顺序，恢复时按原序 SetActive 回来）。</summary>
+    private readonly List<PanelType> _hiddenForGameplay = new List<PanelType>();
+
+    /// <summary>进局时被隐藏的 UI Canvas（局外 UI 根，例如主菜单 Canvas）；GM 的 Canvas 不在此列。</summary>
+    private readonly List<GameObject> _hiddenCanvases = new List<GameObject>();
+
+    /// <summary>
+    /// **进局时隐藏所有已打开的局外面板**（不改 PushPanel/PopPanel 语义，也不动 panelStack，
+    /// 只是把面板对象 SetActive(false)；恢复时原样激活回来）。
+    /// ⚠ **GM 面板不隐藏** —— 开发期要能用它撤离/调试。
+    /// </summary>
+    public void HideAllPanelsForGameplay()
+    {
+        _hiddenForGameplay.Clear();
+        foreach (KeyValuePair<PanelType, BasePanel> pair in PanelDic)
+        {
+            if (pair.Value == null) continue;
+            if (pair.Key == PanelType.GMPanel) continue;              //GM 面板保持可用
+            if (!pair.Value.gameObject.activeSelf) continue;
+
+            _hiddenForGameplay.Add(pair.Key);
+            pair.Value.gameObject.SetActive(false);
+        }
+
+        //局外面板挂在这些 Canvas 下：只隐藏面板对象的话 Canvas 的背景/其它元素仍会挡画面，
+        //所以把非 GM 的 UI Canvas 一起隐藏（记录后原样恢复）。
+        _hiddenCanvases.Clear();
+        UnityEngine.Canvas[] canvases = UnityEngine.Object.FindObjectsOfType<UnityEngine.Canvas>(true);
+        for (int i = 0; i < canvases.Length; i++)
+        {
+            UnityEngine.Canvas canvas = canvases[i];
+            if (canvas == null) continue;
+            string canvasName = canvas.gameObject.name;
+            if (canvasName.Contains("GM")) continue;          //GM 的 Canvas（GMBtn / GM_Canvas）保持可见
+            if (!canvas.gameObject.activeSelf) continue;
+            _hiddenCanvases.Add(canvas.gameObject);
+            canvas.gameObject.SetActive(false);
+        }
+        ChaosLog.Info(LogChannel.UI, "[局内] 已隐藏局外 Canvas " + _hiddenCanvases.Count + " 个");
+
+        ChaosLog.Info(LogChannel.UI, "[局内] 已隐藏局外面板 " + _hiddenForGameplay.Count + " 个（GM 面板保持可见）："
+            + string.Join(",", _hiddenForGameplay.ConvertAll(t => t.ToString()).ToArray()));
+    }
+
+    /// <summary>撤离时恢复进局前打开的面板（按原顺序）。</summary>
+    public void RestoreAfterGameplay()
+    {
+        //先恢复 Canvas，再恢复面板（面板是 Canvas 的子节点）
+        for (int i = 0; i < _hiddenCanvases.Count; i++)
+        {
+            if (_hiddenCanvases[i] != null) _hiddenCanvases[i].SetActive(true);
+        }
+        _hiddenCanvases.Clear();
+
+        int restored = 0;
+        for (int i = 0; i < _hiddenForGameplay.Count; i++)
+        {
+            BasePanel panel;
+            if (!PanelDic.TryGetValue(_hiddenForGameplay[i], out panel) || panel == null) continue;
+            panel.gameObject.SetActive(true);
+            restored++;
+        }
+
+        ChaosLog.Info(LogChannel.UI, "[局外] 已恢复面板 " + restored + " 个："
+            + string.Join(",", _hiddenForGameplay.ConvertAll(t => t.ToString()).ToArray()));
+        _hiddenForGameplay.Clear();
     }
 
     public BasePanel SpawnPanel(PanelType panelType)//实例化生成ui

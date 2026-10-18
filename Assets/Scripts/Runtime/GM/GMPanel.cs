@@ -1027,6 +1027,8 @@ public class GMPanel : MonoBehaviour
         AddActionButton(page, "出发（随机 1~4 人）", () => { string s = DepartRandom(); Debug.Log(s); SetProtoStatus(_protoDispatchStatus, s); });
         AddActionButton(page, "撤离 / 返回局外", () => { string why; bool ok = DispatchService.Instance.ReturnToMeta(out why); string s = ok ? "[派遣] 已撤离" : ("[派遣] 撤离失败：" + why); Debug.Log(s); SetProtoStatus(_protoDispatchStatus, s + "\n" + DispatchService.Instance.DumpState()); });
         AddActionButton(page, "打印 runTeam 与 runs", () => { string s = DispatchService.Instance.DumpState(); Debug.Log(s); SetProtoStatus(_protoDispatchStatus, s); });
+        AddActionButton(page, "生成出生点（仅地图）", SpawnSpawnPointOnly);
+        AddActionButton(page, "打印玩家坐标/朝向", PrintPlayerState);
         _protoDispatchStatus = CreateStatusLabel(page);
         SetProtoStatus(_protoDispatchStatus, DispatchService.Instance.DumpState());
     }
@@ -1046,6 +1048,35 @@ public class GMPanel : MonoBehaviour
         bool departed = svc.Depart(out reason);
         return departed ? ("[派遣] 已出发（" + picked + " 人）\n" + svc.DumpState()) : ("[派遣] 出发失败：" + reason);
     }
+
+
+    // ══════════════════════ W3.0 spike 调试（出生点 / 玩家坐标）══════════════════════
+
+    private void SpawnSpawnPointOnly()
+    {
+        SpawnPoint point = PlayerSpawner.PlaceSpawnPointAndGround();
+        string text = point == null
+            ? "[玩家] 出生点放置失败（看 Console）"
+            : ("[玩家] SpawnPos=" + point.transform.position + " hasGround=" + point.hasGround);
+        Debug.Log(text);
+        SetProtoStatus(_protoDispatchStatus, text);
+    }
+
+    private void PrintPlayerState()
+    {
+        GameObject player = PlayerSpawner.CurrentPlayer;
+        if (player == null) { string none = "[玩家] 当前没有生成的玩家"; Debug.Log(none); SetProtoStatus(_protoDispatchStatus, none); return; }
+
+        PlayerLocomotion locomotion = player.GetComponent<PlayerLocomotion>();
+        string text = "[玩家] 坐标=" + player.transform.position
+            + " 朝向=" + (locomotion == null ? "?" : locomotion.Facing.ToString())
+            + " 落地=" + (locomotion == null ? "?" : locomotion.IsGrounded.ToString())
+            + " 速度=" + (locomotion == null ? "?" : locomotion.Velocity.ToString())
+            + "  相机=" + (Camera.main == null ? "null" : Camera.main.transform.position.ToString());
+        Debug.Log(text);
+        SetProtoStatus(_protoDispatchStatus, text);
+    }
+
 
     private void AddHint(Transform page, string text)
     {
