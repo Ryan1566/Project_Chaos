@@ -22,6 +22,10 @@ public static class RunEncounter
     private static readonly List<GameObject> AllEnemies = new List<GameObject>();
     private static readonly List<uint> Team = new List<uint>();
     private static bool _clearedCurrentScene;
+    /// <summary>本场景是否**已生成完成**（未完成前 RefreshRooms 不许判清房，否则会提前切场景）。</summary>
+    private static bool _sceneReady;
+    /// <summary>重入保护。</summary>
+    private static bool _entering;
 
     public static int CurrentSceneIndex { get; private set; }
     public static bool RunCleared { get; private set; }
@@ -41,6 +45,16 @@ public static class RunEncounter
             ChaosLog.Warn(LogChannel.UI, "[局内] 场景序号越界：" + sceneIndex);
             return false;
         }
+
+        //重入保护：EnterScene 未完成时再次进入 → 直接拒绝（防重复生成）
+        if (_entering)
+        {
+            ChaosLog.Warn(LogChannel.UI, "[局内] EnterScene 正在执行，忽略重复进入（sceneIndex=" + sceneIndex + "）");
+            return false;
+        }
+        _entering = true;
+        _sceneReady = false;
+        ChaosLog.Info(LogChannel.UI, "[局内] EnterScene 开始：sceneIndex=" + sceneIndex);
 
         if (runTeam != null) { Team.Clear(); Team.AddRange(runTeam); }
 
@@ -71,6 +85,9 @@ public static class RunEncounter
         HideStrayCitizen();
         SpawnEnemiesForScene();
         EnsureTicker();
+
+        _sceneReady = true;
+        _entering = false;
 
         ChaosLog.Success(LogChannel.UI,
             "[局内] 进入场景 " + sceneIndex + "/" + MaxSceneIndex + "，地图根=" + container.name
@@ -147,6 +164,8 @@ public static class RunEncounter
     /// <summary>**按活体重算清房**：每房间统计"存活且在本房间矩形内"的敌人；0 即已清。</summary>
     private static void RefreshRooms()
     {
+        //★硬门（W3.1i）：场景未生成完不许判清房
+        if (!_sceneReady) return;
         if (AliveByRoom.Count == 0) return;
 
         List<ushort> clearedNow = null;
@@ -193,7 +212,7 @@ public static class RunEncounter
         if (_clearedCurrentScene) return;
         _clearedCurrentScene = true;
 
-        ChaosLog.Info(LogChannel.UI, "[局内] 本场景清空，准备进入下一场景");
+        ChaosLog.Info(LogChannel.UI, "[局内] OnSceneCleared：sceneIndex=" + CurrentSceneIndex + " 全部房间已清，准备进入下一场景");
 
         if (CurrentSceneIndex >= MaxSceneIndex)
         {
