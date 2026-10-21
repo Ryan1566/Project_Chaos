@@ -36,7 +36,7 @@ using UnityEngine.UI;
 /// 页面里用 AddActionButton / AddHint / AddPanelButton 拼控件；
 /// 需要一小段独立逻辑（像"显示主菜单"）就挂一个现成的测试组件。
 /// </summary>
-public class GMPanel : MonoBehaviour
+public partial class GMPanel : MonoBehaviour
 {
     // ══════════════════════ 场景节点路径 ══════════════════════
     private const string Node_MainList = "Window/Body/MainList";
@@ -118,6 +118,8 @@ public class GMPanel : MonoBehaviour
     private TextMeshProUGUI _protoVillageStatus;
     private TextMeshProUGUI _protoDispatchStatus;
     private TextMeshProUGUI _protoFamilyTreeStatus;
+    /// <summary>W5.1：原型·剧情事件页的状态行。</summary>
+    private TextMeshProUGUI _protoEventStatus;
     /// <summary>W3.3：局内生成·扎营页的状态行（门客 HP / 倒地）。</summary>
     private TextMeshProUGUI _protoRunTeamStatus;
     private uint _runMapSeed = 20261010u;
@@ -231,12 +233,14 @@ public class GMPanel : MonoBehaviour
             {
                 new GmSection("生成地图", BuildRunMapPage),
                 new GmSection("扎营", BuildRunTeamDebugPage),   //W3.3：门客 HP / 倒地调试
+                new GmSection("地形与阵营", BuildTerrainFactionPage),   //W5.2：M14 地形与阵营
             }),
 
             new GmCategory("道具", new[]
             {
                 new GmSection("发放道具", BuildItemGrantPage),
                 new GmSection("背包 / 仓库", BuildInventoryPage),
+                new GmSection("市场", BuildMarketPage),   //W5.3：M5 市场（买卖）
             }),
 
             new GmCategory("原型", new[]
@@ -244,6 +248,7 @@ public class GMPanel : MonoBehaviour
                 new GmSection("进度", BuildPrototypeProgressPage),
                 new GmSection("存档", BuildPrototypeSavePage),
                 new GmSection("地图", BuildPrototypeMapPage),
+                new GmSection("剧情事件", BuildEventPage),   //W5.1：M4 剧情事件
             }),
         };
     }
@@ -594,6 +599,67 @@ public class GMPanel : MonoBehaviour
     private void SetProtoStatus(TextMeshProUGUI label, string text)
     {
         if (label != null) label.text = text;
+    }
+
+    // ══════════════════════ 原型：剧情事件（W5.1 · M4）══════════════════════
+
+    /// <summary>
+    /// 剧情事件的 GM 演示入口（`16_剧情事件.md` §11 的 1~9 步都落在这 5 个按钮上）：
+    /// 打印触发状态 → 强制检查 → 加 runs → 设 maxClearedDepth → 清空 firedEvents。
+    /// 「点亮家族树 303」走「系统 → 家族树」页（一键点亮全部包含 303），不在这里重复。
+    /// </summary>
+    private void BuildEventPage(Transform page)
+    {
+        AddHint(page, "W5.1 剧情事件：触发只有 3 种（runs / maxClearedDepth / familyTreeNodes）；"
+            + "一次性事件处置后写 firedEvents；排队 = Priority 降序 + Index 升序，一次只弹一个，单次最多 5 个。");
+
+        AddActionButton(page, "打印触发状态", () =>
+        {
+            string text = EventService.Instance.DumpState();
+            SetProtoStatus(_protoEventStatus, text);
+            Debug.Log(text);
+        });
+
+        AddActionButton(page, "强制检查并弹事件", () =>
+        {
+            int n = EventService.Instance.CheckAndShowOnReturnToMeta();
+            EventConfig head = EventService.Instance.Current;
+            string text = n == 0
+                ? "[剧情事件] 强制检查：没有满足条件的事件（队列 0 个，不弹面板）"
+                : ("[剧情事件] 强制检查：入队 " + n + " 个，队首 " + head.Index + "《" + head.TitleText + "》，已弹面板");
+            SetProtoStatus(_protoEventStatus, text + "\n" + EventService.Instance.DumpState());
+            Debug.Log(text);
+        });
+
+        AddActionButton(page, "加 1 次 runs", () =>
+        {
+            SavePayload p = MetaProgressService.Instance.Payload;
+            p.runs++;
+            string text = "[剧情事件] runs +1 → " + p.runs;
+            SetProtoStatus(_protoEventStatus, text + "\n" + EventService.Instance.DumpState());
+            Debug.Log(text);
+        });
+
+        AddActionButton(page, "把 maxClearedDepth 设为 2", () =>
+        {
+            SavePayload p = MetaProgressService.Instance.Payload;
+            p.maxClearedDepth = 2u;
+            string text = "[剧情事件] maxClearedDepth 设为 2（当前 " + p.maxClearedDepth + "）";
+            SetProtoStatus(_protoEventStatus, text + "\n" + EventService.Instance.DumpState());
+            Debug.Log(text);
+        });
+
+        AddActionButton(page, "清空 firedEvents", () =>
+        {
+            EventService.Instance.ResetFired();
+            string text = "[剧情事件] 已清空 firedEvents → 一次性事件恢复可弹"
+                + "\n" + EventService.Instance.DumpState();
+            SetProtoStatus(_protoEventStatus, text);
+            Debug.Log(text);
+        });
+
+        _protoEventStatus = CreateStatusLabel(page);
+        SetProtoStatus(_protoEventStatus, EventService.Instance.DumpState());
     }
 
     /// <summary>场景号输入框（1~3，数字，最多 1 位）。</summary>

@@ -208,6 +208,31 @@ namespace RunMap
         }
     }
 
+    // ─────────────────────────── 地形（MapBiome 行，W5.2 / M14） ───────────────────────────
+
+    /// <summary>
+    /// 地形运行时数据：`MapBiome_地图主题表` 的一行。
+    /// W5.2 给该表**末尾加了 3 列**（`EnemyHpMul` / `EnemyDmgMul` / `DropGroupBase`），
+    /// 由 `RunMapConfigLoader` 读进这里 —— **生成逻辑（规划器/装配器）不依赖它**，
+    /// 只有敌人属性、掉落组、进场提示这三处消费（§3.3 影响面）。
+    /// </summary>
+    [Serializable]
+    public class BiomeInfo
+    {
+        public uint Id;
+        public string ThemeKey;
+        /// <summary>中文名（直接用于进场提示「地形：地下」）。</summary>
+        public string NameCN;
+        /// <summary>空间层：1 地下 / 2 地表 / 3 地表建筑。</summary>
+        public uint Layer;
+        /// <summary>敌人 HP 倍率（缺列 / ≤0 视为 1，§9 E1）。</summary>
+        public float EnemyHpMul = 1f;
+        /// <summary>敌人接触伤害倍率（缺列 / ≤0 视为 1）。</summary>
+        public float EnemyDmgMul = 1f;
+        /// <summary>该地形默认掉落组（缺列 / 0 视为 1 = 普通组）。</summary>
+        public uint DropGroupBase = 1u;
+    }
+
     // ─────────────────────────── 生成结果（运行时） ───────────────────────────
 
     [Serializable]

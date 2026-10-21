@@ -8,7 +8,9 @@
             "StackLimit": 99,
             "EffectId": 0,
             "IconKey": "UI/Items/icon_potion_01",
-            "Enable": true
+            "Enable": true,
+            "BuyPrice": 10,
+            "SellPrice": 5
         },
         {
             "Index": 2,
@@ -18,7 +20,9 @@
             "StackLimit": 99,
             "EffectId": 0,
             "IconKey": "UI/Items/icon_material_01",
-            "Enable": true
+            "Enable": true,
+            "BuyPrice": 8,
+            "SellPrice": 4
         },
         {
             "Index": 3,
@@ -28,7 +32,9 @@
             "StackLimit": 99,
             "EffectId": 0,
             "IconKey": "UI/Items/icon_gear_01",
-            "Enable": true
+            "Enable": true,
+            "BuyPrice": 30,
+            "SellPrice": 15
         },
         {
             "Index": 4,
@@ -38,7 +44,9 @@
             "StackLimit": 99,
             "EffectId": 0,
             "IconKey": "UI/Items/icon_blueprint_01",
-            "Enable": true
+            "Enable": true,
+            "BuyPrice": 20,
+            "SellPrice": 10
         },
         {
             "Index": 5,
@@ -48,7 +56,9 @@
             "StackLimit": 99,
             "EffectId": 0,
             "IconKey": "UI/Items/icon_consumable_01",
-            "Enable": true
+            "Enable": true,
+            "BuyPrice": 10,
+            "SellPrice": 5
         },
         {
             "Index": 6,
@@ -58,7 +68,9 @@
             "StackLimit": 99,
             "EffectId": 0,
             "IconKey": "UI/Items/icon_potion_02",
-            "Enable": true
+            "Enable": true,
+            "BuyPrice": 10,
+            "SellPrice": 5
         },
         {
             "Index": 7,
@@ -68,7 +80,9 @@
             "StackLimit": 99,
             "EffectId": 0,
             "IconKey": "UI/Items/icon_material_02",
-            "Enable": true
+            "Enable": true,
+            "BuyPrice": 8,
+            "SellPrice": 4
         },
         {
             "Index": 8,
@@ -78,7 +92,9 @@
             "StackLimit": 99,
             "EffectId": 0,
             "IconKey": "UI/Items/icon_gear_02",
-            "Enable": true
+            "Enable": true,
+            "BuyPrice": 30,
+            "SellPrice": 15
         },
         {
             "Index": 9,
@@ -88,7 +104,9 @@
             "StackLimit": 99,
             "EffectId": 0,
             "IconKey": "UI/Items/icon_blueprint_02",
-            "Enable": true
+            "Enable": true,
+            "BuyPrice": 20,
+            "SellPrice": 10
         }
     ]
 }

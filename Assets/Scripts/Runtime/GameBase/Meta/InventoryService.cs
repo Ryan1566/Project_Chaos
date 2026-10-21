@@ -67,6 +67,17 @@ public class InventoryService : SingletonBase<InventoryService>
         return null;
     }
 
+    /// <summary>
+    /// 全部道具定义（**表顺序，只读用途，别改里面的对象**）。
+    /// 给“按表遍历”的场景用（W5.3 市场要列出所有可交易物品，逐个 itemId 试探既慢又不可靠）。
+    /// </summary>
+    public List<ItemConfig> GetAllDefinitions()
+    {
+        EnsureLoaded();
+        if (_defs == null) _defs = new List<ItemConfig>();
+        return _defs;
+    }
+
     /// <summary>库存堆叠列表（直接返回存档引用）。</summary>
     public List<ItemStackSave> GetStacks()
     {

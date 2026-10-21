@@ -11,5 +11,7 @@ public class ItemConfig
 	public uint EffectId;//效果ID
 	public string IconKey;//图标key
 	public bool Enable;//是否启用
+	public uint BuyPrice;//买价
+	public uint SellPrice;//卖价
 }
 

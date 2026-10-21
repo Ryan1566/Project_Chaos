@@ -146,6 +146,56 @@ public class RetainerService : SingletonBase<RetainerService>
         }
         if (picked == null) picked = pool[pool.Count - 1];
 
+        RetainerSave instance = CreateInstance(picked);
+        ChaosLog.Success(LogChannel.Config,
+            "[门客] 招募到 #" + instance.id + " protoId=" + picked.Index + "（" + picked.NameKey + "）"
+            + " 品质=" + instance.quality + " 信心=" + instance.confidence + "，当前 " + GetAll().Count + "/" + MaxRetainers);
+        return instance;
+    }
+
+    /// <summary>
+    /// **按模板 ID 实例化一名门客**（W5.1 剧情事件「给门客」用）。
+    ///
+    /// 与 <see cref="RecruitRandom"/> **同一条实例化路径**（都走 <see cref="CreateInstance"/>），
+    /// 只是不再随机挑模板 —— 事件表里的 `GiveRetainerId` 就指 `RetainerConfig.Index`。
+    /// 达到上限 / 模板不存在 / 模板禁用时返回 null 并给出原因（E4：跳过该奖励 + Warn）。
+    /// </summary>
+    public RetainerSave RecruitByProtoId(uint protoId, out string reason)
+    {
+        reason = null;
+        EnsureLoaded();
+
+        if (GetAll().Count >= MaxRetainers)
+        {
+            reason = "门客已达上限 " + MaxRetainers;
+            ChaosLog.Warn(LogChannel.Config, "[门客] " + reason + "，按模板 " + protoId + " 发放被拒");
+            return null;
+        }
+
+        RetainerConfig def = GetDefinition(protoId);
+        if (def == null)
+        {
+            reason = "门客模板 " + protoId + " 不存在";
+            ChaosLog.Warn(LogChannel.Config, "[门客] " + reason);
+            return null;
+        }
+        if (!def.Enable)
+        {
+            reason = "门客模板 " + protoId + " 已禁用（Enable=false）";
+            ChaosLog.Warn(LogChannel.Config, "[门客] " + reason);
+            return null;
+        }
+
+        RetainerSave instance = CreateInstance(def);
+        ChaosLog.Success(LogChannel.Config,
+            "[门客] 按模板发放 #" + instance.id + " protoId=" + def.Index + "（" + def.NameKey + "）"
+            + " 品质=" + instance.quality + " 信心=" + instance.confidence + "，当前 " + GetAll().Count + "/" + MaxRetainers);
+        return instance;
+    }
+
+    /// <summary>模板 → 存档实例（招募与事件发放**共用**这一处，别另写一份）。</summary>
+    private RetainerSave CreateInstance(RetainerConfig picked)
+    {
         var instance = new RetainerSave
         {
             id = NextId(),
@@ -159,9 +209,6 @@ public class RetainerService : SingletonBase<RetainerService>
         };
 
         GetAll().Add(instance);
-        ChaosLog.Success(LogChannel.Config,
-            "[门客] 招募到 #" + instance.id + " protoId=" + picked.Index + "（" + picked.NameKey + "）"
-            + " 品质=" + instance.quality + " 信心=" + instance.confidence + "，当前 " + GetAll().Count + "/" + MaxRetainers);
         return instance;
     }
 

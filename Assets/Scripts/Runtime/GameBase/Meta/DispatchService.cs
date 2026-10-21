@@ -201,6 +201,10 @@ public class DispatchService : SingletonBase<DispatchService>
         _isInRun = false;
 
         ChaosLog.Info(LogChannel.Config, "[派遣] 已撤离局内：地图已清除，IsInRun=false");
+
+        //W5.1：**回局外是剧情事件检查的唯一正式时机**（16_剧情事件.md §3.3 C1）。
+        //只在这里调一次 —— 不做 Update/定时轮询（C4 禁止每帧）；有满足的事件才弹面板。
+        EventService.Instance.CheckAndShowOnReturnToMeta();
         return true;
     }
 

@@ -33,6 +33,14 @@ public class EnemyPlaceholder : MonoBehaviour, IDamageable
     /// <summary>所属房间世界矩形（由 RunEncounter 生成时写入）。</summary>
     public float roomX0, roomY0, roomW, roomH;
 
+    /// <summary>
+    /// W5.2（M14）**基础**数值：地形/阵营倍率乘在它上面。
+    /// 刻意不用 `maxHp`/`contactDamage` 字段当基数 —— 那两个是 public、会被别的系统改，
+    /// 拿它们当基数会在重复生成/重复应用时叠乘。
+    /// </summary>
+    public const int BaseMaxHp = 30;
+    public const int BaseContactDamage = 5;
+
     public int Hp { get; private set; }
     public bool IsDead { get; private set; }
     /// <summary>死亡原因（"击杀" / "掉落死亡"）。</summary>
@@ -55,7 +63,47 @@ public class EnemyPlaceholder : MonoBehaviour, IDamageable
         _body = GetComponent<Rigidbody2D>();
         _renderer = GetComponent<SpriteRenderer>();
         if (_renderer != null) _baseColor = _renderer.color;
+        ApplyTerrainScaling();   //W5.2：地形/阵营倍率（**必须在 Hp = maxHp 之前**）
         Hp = maxHp;
+    }
+
+    /// <summary>
+    /// W5.2 / M14 影响面 M1：**生成时**按当前场景地形（`MapBiome`）+ 阵营（`Era` 映射）覆盖
+    /// `maxHp` / `contactDamage`：
+    /// `maxHp = max(1, Round(30 × EnemyHpMul × FactionMul))`、
+    /// `contactDamage = max(1, Round(5 × EnemyDmgMul × FactionMul))`（§9 E4：至少 1）。
+    ///
+    /// 地形取「当前场景」：`RunMapBootstrap.CurrentLayout.PresetId → MapPreset.biomeId → MapBiome` 行；
+    /// 读不到会退回地表（倍率 1）并 Warn，不会 0 血 0 伤。
+    /// </summary>
+    private void ApplyTerrainScaling()
+    {
+        RunMap.BiomeInfo biome = RunMap.RunMapConfigLoader.GetCurrentBiome();
+        int sceneIndex = RunEncounter.CurrentSceneIndex;
+
+        uint era = FactionService.ResolveEra();
+        float factionMul = FactionService.GetFactionMul(era);
+
+        float hpMul = 1f, dmgMul = 1f;
+        uint dropGroup = 1u;
+        if (biome != null)
+        {
+            hpMul = biome.EnemyHpMul > 0f ? biome.EnemyHpMul : 1f;
+            dmgMul = biome.EnemyDmgMul > 0f ? biome.EnemyDmgMul : 1f;
+            dropGroup = biome.DropGroupBase == 0u ? 1u : biome.DropGroupBase;
+        }
+
+        int hp = Mathf.Max(1, Mathf.RoundToInt(BaseMaxHp * hpMul * factionMul));
+        int damage = Mathf.Max(1, Mathf.RoundToInt(BaseContactDamage * dmgMul * factionMul));
+
+        maxHp = hp;
+        contactDamage = damage;
+
+        ChaosLog.Info(LogChannel.UI,
+            "[地形] 场景" + sceneIndex + " " + (biome == null ? "未知" : biome.NameCN) + "(biome=" + (biome == null ? 0u : biome.Id) + ")"
+            + "：HP倍率=" + hpMul.ToString("F2") + " 伤害倍率=" + dmgMul.ToString("F2") + " 掉落组=" + dropGroup
+            + " 阵营=" + FactionService.GetFactionName(era) + " FactionMul=" + factionMul.ToString("F2")
+            + " → 敌人 HP=" + hp + " 伤害=" + damage);
     }
 
     public void TakeDamage(int amount)

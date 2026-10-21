@@ -6,7 +6,10 @@
             "nameCN": "地下",
             "layer": 1,
             "retryMax": 20,
-            "enable": true
+            "enable": true,
+            "EnemyHpMul": 1.2,
+            "EnemyDmgMul": 1.0,
+            "DropGroupBase": 1
         },
         {
             "Id": 2,
@@ -14,7 +17,10 @@
             "nameCN": "地表",
             "layer": 2,
             "retryMax": 20,
-            "enable": true
+            "enable": true,
+            "EnemyHpMul": 1.0,
+            "EnemyDmgMul": 1.0,
+            "DropGroupBase": 1
         },
         {
             "Id": 3,
@@ -22,7 +28,10 @@
             "nameCN": "地表建筑",
             "layer": 3,
             "retryMax": 20,
-            "enable": true
+            "enable": true,
+            "EnemyHpMul": 1.5,
+            "EnemyDmgMul": 1.2,
+            "DropGroupBase": 2
         }
     ]
 }

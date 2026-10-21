@@ -104,6 +104,15 @@ public class SavePayload
 
     /// <summary>库存堆叠（itemId → count）。**不用 Dictionary**（JsonUtility 不支持）。</summary>
     public List<ItemStackSave> items = new List<ItemStackSave>();
+
+    /// <summary>
+    /// **W5.1 新增（M4 剧情事件）**：已处置的**一次性**事件 ID 列表（存的是 `EventConfig.Index`）。
+    ///
+    /// ⚠ **追加字段 = 零迁移**（见本文件顶部）：老存档没有 `firedEvents` 时保留这里的
+    /// `new List&lt;uint&gt;()`，即"还没触发过任何事件"，不报错、不需要迁移代码。
+    /// 可重复事件（`Repeatable=true`）**不写这里**，它靠运行时不落盘的会话集合去重。
+    /// </summary>
+    public List<uint> firedEvents = new List<uint>();
 }
 
 /// <summary>一个存档文件的根对象（= 落盘的整个 Json）。</summary>

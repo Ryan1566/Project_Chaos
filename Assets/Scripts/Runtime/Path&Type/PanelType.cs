@@ -27,5 +27,7 @@ public enum PanelType
     DispatchPanel,//派遣编队面板
     RunSettlementPanel,//结算面板
     RunCampPanel,//扎营面板
-    EraProgressPanel//时代进度面板
+    EraProgressPanel,//时代进度面板
+    EventPanel,//剧情事件面板
+    MarketPanel//市场面板
 }

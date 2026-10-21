@@ -31,6 +31,8 @@ namespace RunMap
         /// <summary>装载。任一张表读不到都返回 null（调用方决定降级到灰盒名录，见 §10 E12）。</summary>
         public static RunMapCatalog LoadFromConfigs()
         {
+            Biomes.Clear();          //W5.2：每次装载都重建地形登记（表改了就跟着变，§12 A5）
+            BiomeByPreset.Clear();
             var cat = new RunMapCatalog();
 
             var biomes = Read<MapBiomeConfig>(BiomeTable);
@@ -54,6 +56,7 @@ namespace RunMap
                 MapBiomeConfig b = biomes.datas[i];
                 if (!b.enable) continue;
                 cat.RegisterTheme((MapLayer)b.layer, b.themeKey);
+                RegisterBiome(b);   //W5.2：地形倍率 / 掉落组（只读进运行时结构，不参与生成）
                 nBiome++;
             }
 
@@ -130,6 +133,7 @@ namespace RunMap
                     RetryMax = (int)p.retryMax,
                 };
                 cat.AddPreset(def);
+                BiomeByPreset[p.Id] = p.biomeId;   //W5.2：场景 → 地形 走 MapPreset.biomeId
                 byPresetId[p.Id] = def;
                 nPreset++;
             }
@@ -157,6 +161,107 @@ namespace RunMap
             LastReport = "主题 " + nBiome + " / 房间块 " + nChunk + " / 接口 " + nSock +
                          " / 标记点 " + nSlot + " / 预设 " + nPreset + " / 层序 " + nLayer;
             return cat;
+        }
+
+        // ══════════════════════════ 地形（W5.2 / M14） ══════════════════════════
+        //
+        // 口径（Lead 已裁决）：`MapBiome_地图主题表` 末尾加 3 列
+        // `EnemyHpMul`(float) / `EnemyDmgMul`(float) / `DropGroupBase`(uint)；
+        // 「场景 → 地形」不新建映射，走**已存在**的 `MapPreset.biomeId`。
+        // 这里只做**读取**：把表读成运行时 `BiomeInfo`，生成逻辑一行不改。
+
+        /// <summary>`MapBiome` 行（Id → 地形）。每次 `LoadFromConfigs` 重建。</summary>
+        private static readonly Dictionary<uint, BiomeInfo> Biomes = new Dictionary<uint, BiomeInfo>();
+
+        /// <summary>`MapPreset.Id` → `biomeId`。每次 `LoadFromConfigs` 重建。</summary>
+        private static readonly Dictionary<uint, uint> BiomeByPreset = new Dictionary<uint, uint>();
+
+        /// <summary>`preset.biomeId` 悬空时的兜底地形（§9 E2：视为地表）。</summary>
+        public const uint DefaultBiomeId = 2u;
+
+        /// <summary>按 Id 取地形；表里没有则返回 null。</summary>
+        public static BiomeInfo GetBiome(uint biomeId)
+        {
+            BiomeInfo info;
+            return Biomes.TryGetValue(biomeId, out info) ? info : null;
+        }
+
+        /// <summary>预设 → 地形 Id（`MapPreset.biomeId`；没登记则 0）。</summary>
+        public static uint GetBiomeIdForPreset(uint presetId)
+        {
+            uint id;
+            return BiomeByPreset.TryGetValue(presetId, out id) ? id : 0u;
+        }
+
+        /// <summary>
+        /// **当前场景的地形**（W5.2 唯一入口）：
+        /// `RunMapBootstrap.CurrentLayout.PresetId` → `MapPreset.biomeId` → `BiomeInfo`。
+        ///
+        /// 读不到时（不在局内 / 表没装载 / biomeId 悬空 / 灰盒名录）按 §9 E2 退回「地表」并 Warn，
+        /// **绝不返回 null** —— 调用方拿到的倍率至少是 1（E1/E4：不能出现 0 血 0 伤）。
+        /// </summary>
+        public static BiomeInfo GetCurrentBiome()
+        {
+            MapLayout layout = RunMapBootstrap.CurrentLayout;
+            if (layout == null) return FallbackBiome("当前没有地图布局（不在局内？）");
+
+            uint biomeId = GetBiomeIdForPreset((uint)layout.PresetId);
+            if (biomeId == 0u)
+                return FallbackBiome("预设 " + layout.PresetId + " 没登记 biomeId（表未装载 / 走了灰盒名录）");
+
+            BiomeInfo info = GetBiome(biomeId);
+            if (info != null) return info;
+
+            return FallbackBiome("presetId=" + layout.PresetId + " → biomeId=" + biomeId + " 在 MapBiome 表里不存在");
+        }
+
+        /// <summary>兜底地形：地表、倍率 1、掉落组 1（§9 E1 / E2）。</summary>
+        private static BiomeInfo FallbackBiome(string why)
+        {
+            ChaosLog.Warn(LogChannel.Config, "[地形] 兜底地表（" + why + "）：HP倍率=1 伤害倍率=1 掉落组=1");
+            return new BiomeInfo
+            {
+                Id = DefaultBiomeId,
+                ThemeKey = "Surface",
+                NameCN = "地表",
+                Layer = 2u,
+                EnemyHpMul = 1f,
+                EnemyDmgMul = 1f,
+                DropGroupBase = 1u,
+            };
+        }
+
+        /// <summary>把一行 `MapBiome` 读成 `BiomeInfo`（§9 E1：倍率 ≤0 / 掉落组 0 一律兜底 1 + Warn）。</summary>
+        private static void RegisterBiome(MapBiomeConfig b)
+        {
+            var info = new BiomeInfo
+            {
+                Id = b.Id,
+                ThemeKey = b.themeKey,
+                NameCN = b.nameCN,
+                Layer = b.layer,
+                EnemyHpMul = b.EnemyHpMul,
+                EnemyDmgMul = b.EnemyDmgMul,
+                DropGroupBase = b.DropGroupBase,
+            };
+
+            if (info.EnemyHpMul <= 0f)
+            {
+                ChaosLog.Warn(LogChannel.Config, "[地形] biomeId=" + info.Id + " 的 EnemyHpMul=" + info.EnemyHpMul + "（≤0）→ 按 1 处理");
+                info.EnemyHpMul = 1f;
+            }
+            if (info.EnemyDmgMul <= 0f)
+            {
+                ChaosLog.Warn(LogChannel.Config, "[地形] biomeId=" + info.Id + " 的 EnemyDmgMul=" + info.EnemyDmgMul + "（≤0）→ 按 1 处理");
+                info.EnemyDmgMul = 1f;
+            }
+            if (info.DropGroupBase == 0u)
+            {
+                ChaosLog.Warn(LogChannel.Config, "[地形] biomeId=" + info.Id + " 的 DropGroupBase=0 → 按 1（普通组）处理");
+                info.DropGroupBase = 1u;
+            }
+
+            Biomes[info.Id] = info;
         }
 
         private static DataList<T> Read<T>(string tableName) where T : class

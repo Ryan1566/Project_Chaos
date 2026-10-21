@@ -1,0 +1,54 @@
+{
+    "datas": [
+        {
+            "Index": 1001,
+            "TriggerType": 1,
+            "TriggerValue": 1,
+            "Repeatable": false,
+            "Priority": 10,
+            "TitleText": "第一次出征",
+            "BodyText": "你带着门客从传送阵归来。村中老者在村口等了许久，说你们看上去有些不一样了。",
+            "Enable": true
+        },
+        {
+            "Index": 1002,
+            "TriggerType": 2,
+            "TriggerValue": 2,
+            "Repeatable": false,
+            "Priority": 20,
+            "TitleText": "深层的回响",
+            "BodyText": "你们从更深处带回了不属于这个时代的东西。老族长摩挲着它，久久没有作声。",
+            "Enable": true
+        },
+        {
+            "Index": 1003,
+            "TriggerType": 3,
+            "TriggerValue": 303,
+            "Repeatable": false,
+            "Priority": 30,
+            "TitleText": "门客的誓言",
+            "BodyText": "门客培养有成。一名门客在营前立誓，愿随你走更远的路。",
+            "Enable": true
+        },
+        {
+            "Index": 1004,
+            "TriggerType": 1,
+            "TriggerValue": 3,
+            "Repeatable": true,
+            "Priority": 10,
+            "TitleText": "又一趟",
+            "BodyText": "第三趟踏入边缘空间后，你开始习惯那种失重感。",
+            "Enable": true
+        },
+        {
+            "Index": 1005,
+            "TriggerType": 1,
+            "TriggerValue": 2,
+            "Repeatable": false,
+            "Priority": 50,
+            "TitleText": "村口的陌生人",
+            "BodyText": "一名风尘仆仆的旅人在村口打听消息。他说自己从很远的地方来。",
+            "Enable": true
+        }
+    ]
+}

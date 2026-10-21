@@ -87,6 +87,7 @@ public static class RunEncounter
         ClearGroundDrops();
         RunDepthHud.DisableAndDestroy();   //W4e：关闸 + 销毁   //W4c：撤离销毁 HUD
         RunTeamHud.DisableAndDestroy();    //W3.3：队伍血条关闸 + 销毁
+        RunTerrainToast.DisableAndDestroy();   //W5.2：地形/阵营提示（进新场景先彻底清掉旧的）
         CampService.ResetForNewRun();
         _killSeq = 0u;
         _runSeed = (uint)(Time.frameCount * 7919 + sceneIndex * 131);
@@ -140,6 +141,10 @@ public static class RunEncounter
         }
 
         CurrentSceneIndex = sceneIndex;
+
+        //★W5.2：进第 1 场景 = 本次「出发」，把本局阵营定格（整局不变，17 号文档 §9 E7）
+        if (sceneIndex == 1)
+            FactionService.LockRunFaction(MetaProgressService.Instance == null ? 1u : MetaProgressService.Instance.Era);
         _clearedCurrentScene = false;
         _clearedRooms = 0;
         AliveByRoom.Clear();
@@ -159,6 +164,7 @@ public static class RunEncounter
         _sceneReady = true;
         RunDepthHud.EnableForRun();   //W4e：进局开闸 + 建 HUD（CurrentSceneIndex 已就位）
         RunTeamHud.EnableForRun();    //W3.3：队伍血条（左侧，独立 Canvas）
+        ShowTerrainToast(sceneIndex);   //W5.2：进场提示「地形：X · 阵营：Y」，3 秒淡出
         _entering = false;
 
         ChaosLog.Success(LogChannel.UI,
@@ -198,6 +204,56 @@ public static class RunEncounter
         }
         ChaosLog.Info(LogChannel.UI, "[局内] GM：跳转到场景 " + next);
         return EnterScene(next, Team);
+    }
+
+    /// <summary>
+    /// GM / 验收用：**直接跳到指定场景**（1~3），沿用当前队伍（不经过"清房→下一场景"）。
+    /// 与 <see cref="SkipToNextScene"/> 一样走唯一入口 `EnterScene`，所以地形/阵营/掉落全部按新场景重算。
+    /// </summary>
+    public static bool JumpToScene(int sceneIndex)
+    {
+        ChaosLog.Info(LogChannel.UI, "[局内] GM：直接跳到第 " + sceneIndex + " 场景");
+        return EnterScene(sceneIndex, Team);
+    }
+
+    // ══════════════════ W5.2 / M14：地形与阵营 ══════════════════
+
+    /// <summary>
+    /// M2：**本场景击杀掉落组** = `MapBiome.DropGroupBase`（地下/地表=1 普通、建筑=2 精英）。
+    /// 地形读不到时退回普通组并 Warn（§9 E5：组内没数据 → `DropService` 自己 Warn 不掉落）。
+    /// </summary>
+    private static uint ResolveDropGroup()
+    {
+        RunMap.BiomeInfo biome = RunMap.RunMapConfigLoader.GetCurrentBiome();
+        if (biome == null || biome.DropGroupBase == 0u)
+        {
+            ChaosLog.Warn(LogChannel.Config, "[地形] 掉落组读不到（地形缺失）→ 退回普通组 " + DropService.GroupNormal + "（§9 E5）");
+            return DropService.GroupNormal;
+        }
+
+        ChaosLog.Info(LogChannel.Config, "[地形] 场景" + CurrentSceneIndex + " " + biome.NameCN
+            + "(biome=" + biome.Id + ") 击杀掉落 → DropGroup=" + biome.DropGroupBase);
+        return biome.DropGroupBase;
+    }
+
+    /// <summary>
+    /// M3：进场提示「地形：X · 阵营：Y」（3 秒淡出）。**纯文本、不打断操作、不遮挡 HUD**。
+    /// 地形取当前场景预设的 `biomeId`；阵营取本局定格的时代映射（`FactionService`）。
+    /// </summary>
+    private static void ShowTerrainToast(int sceneIndex)
+    {
+        RunMap.BiomeInfo biome = RunMap.RunMapConfigLoader.GetCurrentBiome();
+        string terrain = biome == null ? "未知" : biome.NameCN;
+        uint biomeId = biome == null ? 0u : biome.Id;
+        uint era = FactionService.ResolveEra();
+        string faction = FactionService.GetFactionName(era);
+
+        RunTerrainToast.EnableForRun();
+        RunTerrainToast.ShowTerrain(terrain, faction);
+
+        ChaosLog.Info(LogChannel.UI, "[地形] 场景" + sceneIndex + "/" + MaxSceneIndex + " biomeId=" + biomeId
+            + " 地形=" + terrain + " 阵营=" + faction + "（Era=" + era
+            + "，FactionMul=" + FactionService.GetFactionMul(era).ToString("F2") + "）");
     }
 
     /// <summary>由 Ticker 每帧调用：执行延迟登记的下一场景（禁止同步递归）。</summary>
@@ -439,7 +495,8 @@ public static class RunEncounter
         //W3.2b：击杀掉落（可复现：runSeed + killSeq）
         _killSeq++;
         uint itemId, count;
-        if (!DropService.Instance.RollForEnemy(DropService.GroupNormal, _runSeed, _killSeq, out itemId, out count)) return;
+        uint dropGroup = ResolveDropGroup();   //W5.2（M2）：掉落组由地形决定（不再固定普通组）
+        if (!DropService.Instance.RollForEnemy(dropGroup, _runSeed, _killSeq, out itemId, out count)) return;
 
         Vector3 position = enemy == null ? Vector3.zero : enemy.transform.position;
         string reason;
@@ -748,6 +805,8 @@ public static class RunEncounter
         //W3.3：撤离 → 只把**本局倒地**的门客结算成重伤（必须在 Purge 之前读 AllyController.All）
         ApplyRunWounds(false);
         RunTeamHud.DisableAndDestroy();   //W3.3：撤离销毁队伍血条
+        RunTerrainToast.DisableAndDestroy();   //W5.2：撤离销毁地形/阵营提示（验收：撤离后实例=0）
+        FactionService.ResetRunFaction();      //W5.2：撤离清掉本局阵营锁定（下次出发重新定格）
         IsSpectator = false;
 
         RestoreStrayCitizen();
