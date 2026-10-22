@@ -245,15 +245,20 @@ public class SaveSlotService : SingletonBase<SaveSlotService>
             payload = body,
         };
 
+        string temporaryPath = path + ".tmp";
         try
         {
             string json = JsonUtility.ToJson(file, true);
-            File.WriteAllText(path, json, new UTF8Encoding(false));
+            File.WriteAllText(temporaryPath, json, new UTF8Encoding(false));
+            if (File.Exists(path)) File.Replace(temporaryPath, path, null);
+            else File.Move(temporaryPath, path);
             ChaosLog.Info(LogChannel.Save, "槽 " + slot + " 已写入：" + path);
             return true;
         }
         catch (Exception e)
         {
+            try { if (File.Exists(temporaryPath)) File.Delete(temporaryPath); }
+            catch (Exception cleanupError) { ChaosLog.Warn(LogChannel.Save, "临时存档清理失败：" + cleanupError.Message); }
             ChaosLog.Error(LogChannel.Save, "槽 " + slot + " 写入失败：" + path + " → " + e.Message);
             return false;
         }

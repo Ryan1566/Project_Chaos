@@ -1,3 +1,4 @@
+using Chaos.MVP.Presenter.Gameplay;
 using System.Collections.Generic;
 using ChaosDebug;
 using TMPro;
@@ -15,6 +16,18 @@ using UnityEngine.UI;
 /// </summary>
 public static class RunTeamHud
 {
+    private static TeamHudPresenter _presenter;
+    private sealed class TeamView : ITeamHudView
+    {
+        public void RenderTeam(IReadOnlyList<HealthRow> snapshots)
+        {
+            int row = 0;
+            for (; row < snapshots.Count && row < Rows.Count; row++) SetRow(row, snapshots[row]);
+            for (; row < Rows.Count; row++)
+                if (Rows[row]?.Root != null) Rows[row].Root.gameObject.SetActive(false);
+        }
+    }
+
     public const string CanvasName = "RunTeamHudCanvas";
     /// <summary>刷新间隔（秒）—— 不每帧刷。</summary>
     public const float RefreshInterval = 0.3f;
@@ -88,6 +101,8 @@ public static class RunTeamHud
     /// <summary>销毁**所有**血条对象（撤离 / 重进局）。打印 `killed=N` 便于诊断。</summary>
     public static void DestroyHud()
     {
+        _presenter?.Dispose();
+        _presenter = null;
         int killed = 0;
 
         Transform[] all = Object.FindObjectsOfType<Transform>(true);
@@ -139,7 +154,7 @@ public static class RunTeamHud
 
     private static void Build()
     {
-        GameObject canvasGo = new GameObject(CanvasName, typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
+        GameObject canvasGo = new GameObject(CanvasName, typeof(Canvas), typeof(GameplayCanvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
         _canvas = canvasGo.GetComponent<Canvas>();
         _canvas.renderMode = RenderMode.ScreenSpaceOverlay;
         _canvas.sortingOrder = 99;   //低于深度 HUD 的 100
@@ -213,39 +228,22 @@ public static class RunTeamHud
     /// <summary>刷新所有行：受控角色 1 行 + 未销毁门客依次 1 行。</summary>
     private static void RefreshRows()
     {
-        int row = 0;
-
-        GameObject player = PlayerSpawner.CurrentPlayer;
-        if (player != null && row < Rows.Count)
+        if (_presenter == null || _presenter.IsDisposed)
         {
-            PlayerHealth health = player.GetComponent<PlayerHealth>();
-            int hp = health == null ? 0 : health.Hp;
-            int max = health == null ? 0 : health.maxHp;
-            bool downed = health != null && health.IsDowned;
-            SetRow(row++, "受控角色", hp, max, downed);
+            _presenter = new TeamHudPresenter();
+            _presenter.Attach(new TeamView());
         }
-
-        for (int i = 0; i < AllyController.All.Count && row < Rows.Count; i++)
-        {
-            AllyController ally = AllyController.All[i];
-            if (ally == null) continue;
-            SetRow(row++, ally.AllyName, ally.Hp, ally.MaxHp, ally.IsDowned);
-        }
-
-        for (; row < Rows.Count; row++)
-        {
-            RowWidgets empty = Rows[row];
-            if (empty != null && empty.Root != null) empty.Root.gameObject.SetActive(false);
-        }
+        else _presenter.Refresh();
     }
 
-    private static void SetRow(int index, string name, int hp, int max, bool downed)
+    private static void SetRow(int index, HealthRow snapshot)
     {
         RowWidgets row = Rows[index];
         if (row == null || row.Root == null) return;
         row.Root.gameObject.SetActive(true);
 
-        float ratio = max <= 0 ? 0f : Mathf.Clamp01((float)hp / max);
+        float ratio = snapshot.Ratio;
+        bool downed = snapshot.Downed;
         if (row.Fill != null)
         {
             row.Fill.rectTransform.sizeDelta = new Vector2(RowWidth * ratio, 0f);
@@ -256,8 +254,7 @@ public static class RunTeamHud
                     : (ratio > 0.25f ? new Color(0.95f, 0.8f, 0.25f, 0.55f) : new Color(0.9f, 0.35f, 0.25f, 0.55f)));
         }
 
-        string state = downed ? "倒地" : "可用";
-        string text = name + "　" + hp + "/" + max + "　" + state;
+        string text = snapshot.Text;
         if (row.Label != null)
         {
             row.Label.text = text;

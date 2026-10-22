@@ -18,6 +18,20 @@ public static class PrototypeMapSpawner
 
     public static bool IsSpawned { get { return FindContainer() != null; } }
 
+    /// <summary>接管读条期间已生成的地图容器，不重新生成。后续换场景/撤离沿用 Clear。</summary>
+    public static GameObject AdoptPreparedMap()
+    {
+        GameObject root = RunMap.RunMapBootstrap.CurrentMapRoot;
+        if (root == null) return null;
+        Transform holder = root.transform.parent;
+        if (holder != null && holder.name == "RunMap_Pending")
+        {
+            holder.name = ContainerName;
+            return holder.gameObject;
+        }
+        return null;
+    }
+
     /// <summary>
     /// 生成第 `sceneIndex` 场景（1~3）。`seed == 0` 时用 UTC ticks 当种子并打日志。
     /// 返回容器对象；失败返回 null（不抛异常）。

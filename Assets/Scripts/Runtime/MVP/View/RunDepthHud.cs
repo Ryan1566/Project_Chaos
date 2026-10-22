@@ -1,3 +1,4 @@
+using Chaos.MVP.Presenter.Gameplay;
 using ChaosDebug;
 using TMPro;
 using UnityEngine;
@@ -18,6 +19,15 @@ using UnityEngine.UI;
 /// </summary>
 public static class RunDepthHud
 {
+    private static DepthHudPresenter _presenter;
+    private sealed class DepthView : IDepthHudView
+    {
+        public void RenderDepth(string text)
+        {
+            if (_text != null) _text.text = text;
+        }
+    }
+
     public const int TotalScenes = 3;
 
     private const string CanvasName = "RunDepthHudCanvas";
@@ -34,19 +44,15 @@ public static class RunDepthHud
     /// <summary>确保存在（单实例）并刷新文本。`EnterScene` 成功、切场景时调用。</summary>
     public static void Refresh()
     {
-        if (!_enabled) return;   //W4e：未进局时任何刷新都不建 canvas
+        if (!_enabled) return;
         EnsureBuilt();
         SetVisible(true);
-        if (_text == null) return;
-
-        MetaProgressService meta = MetaProgressService.Instance;
-        uint depth = meta == null ? 1u : meta.Depth;
-        uint cap = meta == null ? 1u : meta.DepthCap;
-        int deploy = meta == null ? 1 : meta.DeployCap;
-        int scene = RunEncounter.CurrentSceneIndex;
-
-        _text.text = "深度 " + depth + "/" + cap + " · 场景 " + scene + "/" + TotalScenes + " · 可带出 " + deploy + " 件";
-        ChaosLog.Info(LogChannel.UI, "[HUD] " + _text.text);
+        if (_presenter == null || _presenter.IsDisposed)
+        {
+            _presenter = new DepthHudPresenter();
+            _presenter.Attach(new DepthView());
+        }
+        else _presenter.Refresh();
     }
 
     /// <summary>显示/隐藏（结算面板打开时传 false）。</summary>
@@ -77,6 +83,8 @@ public static class RunDepthHud
     /// <summary>销毁**所有** HUD 对象（撤离 / 重进局）。打印 `killed=N` 便于诊断。</summary>
     public static void DestroyHud()
     {
+        _presenter?.Dispose();
+        _presenter = null;
         int killed = 0;
 
         //① 按 Transform 遍历（含未激活），名字以 CanvasName 开头（覆盖 "(Clone)"）
@@ -142,7 +150,7 @@ public static class RunDepthHud
 
     private static void Build()
     {
-        GameObject canvasGo = new GameObject(CanvasName, typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
+        GameObject canvasGo = new GameObject(CanvasName, typeof(Canvas), typeof(GameplayCanvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
         _canvas = canvasGo.GetComponent<Canvas>();
         _canvas.renderMode = RenderMode.ScreenSpaceOverlay;
         _canvas.sortingOrder = 100;

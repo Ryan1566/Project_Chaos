@@ -60,15 +60,11 @@ public class MarketService : SingletonBase<MarketService>
     }
 
     /// <summary>
-    /// 面板显示用的名称：表里 `NameKey` 是本地化 key（如 `item_01_name`，工程内**没有**对应中文条目），
-    /// 直接显示会是一串英文 key；所以 key 里没有中文时退回「类别中文 + #id」（纯中文，不挂 `LocalizedText`）。
+    /// 面板、交易日志与 GM 价格表共享 Item.NameKey 对应的本地化名称。
     /// </summary>
     public string GetDisplayName(uint itemId)
     {
-        ItemConfig def = InventoryService.Instance.GetDefinition(itemId);
-        if (def == null) return "道具 #" + itemId;
-        if (!string.IsNullOrEmpty(def.NameKey) && ContainsChinese(def.NameKey)) return def.NameKey;
-        return CategoryName(def.Category) + " #" + itemId;
+        return LocalizationSystem.GameplayText.ItemName(itemId);
     }
 
     /// <summary>类别 → 中文名（与 `InventoryPanel` 的占位色分组一致：1 药品 / 2 材料 / 3 装备 / 4 图纸 / 5 消耗）。</summary>
@@ -83,16 +79,6 @@ public class MarketService : SingletonBase<MarketService>
             case 5u: return "消耗品";
             default: return "物品";
         }
-    }
-
-    private static bool ContainsChinese(string text)
-    {
-        for (int i = 0; i < text.Length; i++)
-        {
-            char c = text[i];
-            if (c >= '\u4e00' && c <= '\u9fff') return true;
-        }
-        return false;
     }
 
     // ══════════════════════ 买 ══════════════════════
@@ -137,6 +123,7 @@ public class MarketService : SingletonBase<MarketService>
             return false;
         }
 
+        string beforeTrade = JsonUtility.ToJson(MetaProgressService.Instance.Payload);
         string spendReason;
         if (!inv.SpendResource(InventoryService.ResourceKind.Money, price, out spendReason))
         {
@@ -162,6 +149,7 @@ public class MarketService : SingletonBase<MarketService>
             return false;
         }
 
+        if (!SaveTrade(beforeTrade, out reason)) return false;
         ChaosLog.Info(LogChannel.Config, Tag + " 买入 " + name + "（itemId=" + itemId + "）×1：钱财 "
             + moneyBefore + " → " + inv.GetResource(InventoryService.ResourceKind.Money) + "（-" + price + "），持有 "
             + countBefore + " → " + countAfter + "，格位 " + inv.UsedSlots + "/" + inv.TotalSlots);
@@ -218,6 +206,7 @@ public class MarketService : SingletonBase<MarketService>
         }
 
         uint moneyBefore = inv.GetResource(InventoryService.ResourceKind.Money);
+        string beforeTrade = JsonUtility.ToJson(MetaProgressService.Instance.Payload);
         string removeReason;
         if (!inv.RemoveItem(itemId, 1u, out removeReason))
         {
@@ -227,9 +216,17 @@ public class MarketService : SingletonBase<MarketService>
         }
 
         uint moneyNow = inv.AddResource(InventoryService.ResourceKind.Money, price);
+        if (!SaveTrade(beforeTrade, out reason)) return false;
         ChaosLog.Info(LogChannel.Config, Tag + " 卖出 " + name + "（itemId=" + itemId + "）×1：持有 "
             + have + " → " + GetCount(itemId) + "，钱财 " + moneyBefore + " → " + moneyNow + "（+" + price + "）");
         return true;
+    }
+
+    private static bool SaveTrade(string beforeTrade, out string reason)
+    {
+        if (MetaProgressService.Instance.SaveProgress(out reason)) return true;
+        JsonUtility.FromJsonOverwrite(beforeTrade, MetaProgressService.Instance.Payload);
+        return false;
     }
 
     // ══════════════════════ 打印（GM / 验收）══════════════════════

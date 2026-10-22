@@ -47,7 +47,7 @@
             "Repeatable": false,
             "Priority": 50,
             "TitleText": "村口的陌生人",
-            "BodyText": "一名风尘仆仆的旅人在村口打听消息。他说自己从很远的地方来。",
+            "BodyText": "一名风尘仆仆的旅人来到村口。他带来了补给和图纸，请你从中收下一份。",
             "Enable": true
         }
     ]

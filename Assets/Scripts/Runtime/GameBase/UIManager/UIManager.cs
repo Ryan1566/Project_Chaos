@@ -163,10 +163,12 @@ public class UIManager : SingletonBase<UIManager>
 
         topPanel.Hide();//播放退场动画，播完自动关闭
 
-        if (panelStack.Count == 0) return;//修复：原来这里直接 Peek()，栈里只剩一个面板时会抛异常
-
-        BasePanel panel = panelStack.Peek();//获取删除原本顶部对象后新的顶部对象
-        if (panel != topPanel) panel.Show();//显示新的ui
+        if (panelStack.Count > 0)
+        {
+            BasePanel panel = panelStack.Peek();
+            if (panel != topPanel) panel.Show();
+        }
+        if (topPanel.ReturnsToGameplayOnClose) HideAllPanelsForGameplay();
     }
 
     /// <summary>
@@ -244,6 +246,7 @@ public class UIManager : SingletonBase<UIManager>
         {
             UnityEngine.Canvas canvas = canvases[i];
             if (canvas == null) continue;
+            if (canvas.GetComponent<GameplayCanvas>() != null) continue;
             string canvasName = canvas.gameObject.name;
             if (canvasName.Contains("GM")) continue;          //GM 的 Canvas（GMBtn / GM_Canvas）保持可见
             if (!canvas.gameObject.activeSelf) continue;

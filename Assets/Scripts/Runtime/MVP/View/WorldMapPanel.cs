@@ -4,6 +4,8 @@ using LocalizationSystem;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Chaos.MVP.Model.WorldMap;
+using Chaos.MVP.Presenter.WorldMap;
 
 /// <summary>
 /// 局外世界观地图面板（常驻 UI 层的"局外主界面"）。
@@ -16,7 +18,7 @@ using UnityEngine.UI;
 /// ├─ InfoBar        (LocalizedText + TextMeshProUGUI)  信息条
 /// └─ BottomBar
 ///    ├─ ReturnBtn         返回（PopPanel）
-///    ├─ EnterRunBtn       进入局内（读条 → WorldScene）
+///    ├─ EnterRunBtn       选择出战门客
 ///    ├─ StageDebugPrev    时期预览 -1
 ///    └─ StageDebugNext    时期预览 +1
 ///
@@ -32,7 +34,7 @@ using UnityEngine.UI;
 /// **找节点与绑按钮只做一次（`Awake`）**，`OnEnter` 只刷新数据。
 /// 否则每次打开都会重复 `AddListener`，点一下触发 N 次。
 /// </summary>
-public class WorldMapPanel : BasePanel
+public class WorldMapPanel : BasePanel, IWorldMapView
 {
     // ── 冻结的层级名 ──
     private const string NodeBaseMap = "BaseMap";
@@ -46,22 +48,6 @@ public class WorldMapPanel : BasePanel
 
     /// <summary>当前只有 1 = 天下中原（多图预留）。</summary>
     private const uint CurrentMapId = 1;
-
-    /// <summary>没有存档时期时的兜底时期。</summary>
-    private const uint DefaultStage = 1;
-
-    private const uint MinStage = 1;
-    private const uint MaxStage = 5;
-
-    /// <summary>进局内的目标场景与"本局第 1 个场景"的序号（与 GM 的局内生成一致）。</summary>
-    private const string RunSceneName = "WorldScene";
-    private const string LoadingSceneName = "LoadingScene";
-    private const int RunSceneIndex = 1;
-
-    private static readonly string[] StageNames =
-    {
-        "未使用", "战国末期", "秦朝", "秦末起义初期", "楚汉争霸", "汉刘邦时期",
-    };
 
     [Header("点位图标（可留空；留空则运行时生成白色圆点，按 Kind 上色）")]
     [SerializeField] private Sprite[] kindIcons;
@@ -78,11 +64,16 @@ public class WorldMapPanel : BasePanel
     private Button _enterRunBtn;
     private Button _stagePrevBtn;
     private Button _stageNextBtn;
+    private TextMeshProUGUI _retainerEntryLabel;
+    private TextMeshProUGUI _inventoryEntryLabel;
+    private TextMeshProUGUI _marketEntryLabel;
 
     private readonly List<GameObject> _iconObjects = new List<GameObject>();
     private readonly Dictionary<uint, Sprite> _fallbackIcons = new Dictionary<uint, Sprite>();
 
-    private uint _stage = DefaultStage;
+    private WorldMapModel _model;
+    private WorldMapPresenter _presenter;
+    public event System.Action<WorldMapIntent> Intent;
     private WorldMapPoint _selected;
 
     // ══════════════════ 生命周期 ══════════════════
@@ -91,22 +82,31 @@ public class WorldMapPanel : BasePanel
     {
         FindNodes();
         BindButtons();   //⚠ 只在这里绑：OnEnter 每次打开都会跑（见类注释 R3）
+        BuildMetaEntries();
     }
 
     public override void OnEnter()
     {
+        _presenter?.Dispose();
+        _model?.Dispose();
         //节点可能在别的时机被替换/缺失，这里再找一次是廉价的保险（找到就覆盖，找不到保留旧引用）
         FindNodes();
 
-        _stage = ResolveStage();
         _selected = null;
-        RefreshVisuals();
+        RefreshMetaEntryLabels();
+        _model = new WorldMapModel();
+        _presenter = new WorldMapPresenter(_model);
+        _presenter.Attach(this);
     }
 
     public override void OnExit()
     {
-        //本面板没有事件订阅/协程，OnExit 只需要清掉选中态，避免下次打开还留着高亮
+        //绘制资源由 View 缓存；导航与数据订阅随本次显示释放。
         _selected = null;
+        _presenter?.Dispose();
+        _presenter = null;
+        _model?.Dispose();
+        _model = null;
     }
 
     // ══════════════════ 节点与按钮 ══════════════════
@@ -157,47 +157,96 @@ public class WorldMapPanel : BasePanel
         return node as RectTransform;
     }
 
+    /// <summary>局外常用入口放在右上角信息条下方，不改变冻结的地图与底栏节点。</summary>
+    private void BuildMetaEntries()
+    {
+        GameObject toolbar = new GameObject("MetaEntries", typeof(RectTransform));
+        RectTransform rect = (RectTransform)toolbar.transform;
+        rect.SetParent(transform, false);
+        rect.anchorMin = rect.anchorMax = Vector2.one;
+        rect.pivot = Vector2.one;
+        rect.anchoredPosition = new Vector2(-24f, -102f);
+        rect.sizeDelta = new Vector2(384f, 44f);
+
+        _retainerEntryLabel = CreateMetaEntry(rect, "Retainers", 0f, () => OpenMetaPanel(PanelType.RetainerPanel));
+        _inventoryEntryLabel = CreateMetaEntry(rect, "Inventory", 132f, () => OpenMetaPanel(PanelType.InventoryPanel));
+        _marketEntryLabel = CreateMetaEntry(rect, "Market", 264f, () => OpenMetaPanel(PanelType.MarketPanel));
+        RefreshMetaEntryLabels();
+    }
+
+    private TextMeshProUGUI CreateMetaEntry(RectTransform parent, string name, float x, UnityEngine.Events.UnityAction action)
+    {
+        GameObject go = new GameObject(name, typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(Button));
+        RectTransform rect = (RectTransform)go.transform;
+        rect.SetParent(parent, false);
+        rect.anchorMin = rect.anchorMax = new Vector2(0f, 1f);
+        rect.pivot = new Vector2(0f, 1f);
+        rect.anchoredPosition = new Vector2(x, 0f);
+        rect.sizeDelta = new Vector2(120f, 44f);
+
+        Image background = go.GetComponent<Image>();
+        Button button = go.GetComponent<Button>();
+        Image sourceImage = _enterRunBtn == null ? null : _enterRunBtn.targetGraphic as Image;
+        background.color = sourceImage == null ? new Color(0.20f, 0.42f, 0.72f, 1f) : sourceImage.color;
+        if (sourceImage != null)
+        {
+            background.sprite = sourceImage.sprite;
+            background.type = sourceImage.type;
+        }
+        if (_enterRunBtn != null)
+        {
+            button.colors = _enterRunBtn.colors;
+            button.transition = _enterRunBtn.transition == Selectable.Transition.ColorTint
+                ? Selectable.Transition.ColorTint : Selectable.Transition.None;
+        }
+        button.targetGraphic = background;
+        button.onClick.AddListener(action);
+
+        GameObject textGo = new GameObject("Text", typeof(RectTransform));
+        RectTransform textRect = (RectTransform)textGo.transform;
+        textRect.SetParent(rect, false);
+        textRect.anchorMin = Vector2.zero;
+        textRect.anchorMax = Vector2.one;
+        textRect.offsetMin = new Vector2(8f, 0f);
+        textRect.offsetMax = new Vector2(-8f, 0f);
+        TextMeshProUGUI label = textGo.AddComponent<TextMeshProUGUI>();
+        TextMeshProUGUI sourceText = _enterRunBtn == null ? null : _enterRunBtn.GetComponentInChildren<TextMeshProUGUI>();
+        label.font = sourceText != null && sourceText.font != null ? sourceText.font : RunTeamHud.ResolveFont();
+        label.fontSize = 22f;
+        label.color = sourceText == null ? Color.white : sourceText.color;
+        label.alignment = TextAlignmentOptions.Center;
+        label.enableWordWrapping = false;
+        label.enableAutoSizing = true;
+        label.fontSizeMin = 16f;
+        label.fontSizeMax = 22f;
+        label.overflowMode = TextOverflowModes.Ellipsis;
+        label.raycastTarget = false;
+        return label;
+    }
+
+    private void RefreshMetaEntryLabels()
+    {
+        GameplayText.Bind(_retainerEntryLabel, "ui_world_retainer", "门客");
+        GameplayText.Bind(_inventoryEntryLabel, "ui_world_inventory", "库存");
+        GameplayText.Bind(_marketEntryLabel, "ui_world_market", "市场");
+    }
+
+    private void OpenMetaPanel(PanelType type)
+    {
+        Intent?.Invoke(new WorldMapIntent(WorldMapAction.OpenPanel, panel: type));
+    }
+
     // ══════════════════ 数据 → 表现 ══════════════════
 
     /// <summary>时期取存档里的 `era`；取不到 / 越界 → 兜底 1（只 Warn，绝不让面板打不开）。</summary>
-    private uint ResolveStage()
+    public void Render(WorldMapSnapshot state)
     {
-        GameSession session = GameSession.Instance;
-        if (session == null || session.LoadedPayload == null)
-        {
-            ChaosLog.Warn(LogChannel.UI, "[局外地图] 没有存档会话或 payload，时期按 " + DefaultStage + " 处理");
-            return DefaultStage;
-        }
-
-        uint era = session.LoadedPayload.era;
-        if (era < MinStage || era > MaxStage)
-        {
-            ChaosLog.Warn(LogChannel.UI,
-                "[局外地图] 存档 era=" + era + " 越界（" + MinStage + "~" + MaxStage + "），按 " + DefaultStage + " 处理");
-            return DefaultStage;
-        }
-        return era;
+        _selected = state.Selected;
+        ApplyFactionMask(state.Areas);
+        RebuildIcons(state.Points);
+        UpdateSelectionScales();
+        SetInfoText(state.Info);
     }
-
-    private void RefreshVisuals()
-    {
-        WorldMapService service = WorldMapService.Instance;
-        if (service == null)
-        {
-            ChaosLog.Error(LogChannel.UI, "[局外地图] WorldMapService 实例不存在，面板只能显示空图");
-            return;
-        }
-
-        List<WorldFactionArea> areas = service.Areas(_stage);
-        List<WorldMapPoint> points = service.Points(CurrentMapId);
-
-        ApplyFactionMask(areas);
-        RebuildIcons(points);
-
-        SetInfoText("时期 " + _stage + "（" + StageName(_stage) + "）　点位 " + points.Count +
-                    "　势力区域 " + areas.Count + "　—　点击点位查看详情");
-    }
-
     private void ApplyFactionMask(List<WorldFactionArea> areas)
     {
         if (_factionMask == null) return;
@@ -261,7 +310,7 @@ public class WorldMapPanel : BasePanel
 
         for (int i = 0; i < want; i++) ApplyIcon(_iconObjects[i], points[i]);
 
-        ChaosLog.Info(LogChannel.UI, "[局外地图] 点位图标已就绪：" + want + " 个（时期 " + _stage + "）");
+        ChaosLog.Info(LogChannel.UI, "[局外地图] 点位图标已就绪：" + want + " 个");
     }
 
     /// <summary>建一个空的图标对象（位置与精灵由 <see cref="ApplyIcon"/> 填）。</summary>
@@ -370,21 +419,10 @@ public class WorldMapPanel : BasePanel
         return new Color(0.75f, 0.75f, 0.78f, 1f);
     }
 
-    private static string StageName(uint stage)
-    {
-        if (stage >= 1u && stage < (uint)StageNames.Length) return StageNames[stage];
-        return "时期" + stage;
-    }
-
-    // ══════════════════ 交互 ══════════════════
-
     private void OnPointClicked(WorldMapPoint point)
     {
-        _selected = point;
-        UpdateSelectionScales();
-        ShowPointInfo(point);
+        if (point != null) Intent?.Invoke(new WorldMapIntent(WorldMapAction.Select, point: point.index));
     }
-
     private void UpdateSelectionScales()
     {
         for (int i = 0; i < _iconObjects.Count; i++)
@@ -400,26 +438,6 @@ public class WorldMapPanel : BasePanel
         }
     }
 
-    private void ShowPointInfo(WorldMapPoint point)
-    {
-        //⚠ 必须给初值：provider 为 null 时短路不会调用 TryGetMeta，编译器无法证明 out 参数被赋值（CS0165）
-        string metaName = null;
-        Sprite metaIcon = null;
-        IWorldMapMetaProvider provider = WorldMapService.Instance != null ? WorldMapService.Instance.MetaProvider : null;
-        bool hasMeta = provider != null && provider.TryGetMeta(point.kind, point.type, point.refId, out metaName, out metaIcon);
-
-        if (hasMeta && !string.IsNullOrEmpty(metaName))
-        {
-            SetInfoText(metaName);
-            return;
-        }
-
-        //地点表/兴趣点表尚未落地 → 只报三元组（系统文档 §11 的 MVP 约定）
-        string kindName = point.kind == 1u ? "固定地点" : (point.kind == 2u ? "兴趣点" : "预留类别");
-        SetInfoText(kindName + "　Kind=" + point.kind + "　Type=" + point.type + "　RefId=" + point.refId +
-                    "　X=" + point.position.x.ToString("0.0000") + "　Y=" + point.position.y.ToString("0.0000"));
-    }
-
     /// <summary>
     /// 写信息条。⚠ `InfoBar` 上同时挂着 `LocalizedText`：它在语言切换时会**覆盖** TMP 文本，
     /// 所以显示"运行时拼接的三元组"时必须把它禁用，否则切一次语言内容就被冲掉。
@@ -430,73 +448,14 @@ public class WorldMapPanel : BasePanel
         if (_infoText != null) _infoText.text = text;
     }
 
-    private void OnReturnClicked()
-    {
-        UIManager manager = uiManager != null ? uiManager : UIManager.Instance;
-        if (manager == null)
-        {
-            ChaosLog.Error(LogChannel.UI, "[局外地图] UIManager 不存在，返回无效");
-            return;
-        }
-
-        ChaosLog.Info(LogChannel.UI, "[局外地图] 返回（PopPanel）");
-        manager.PopPanel();
-    }
-
-    private void OnEnterRunClicked()
-    {
-        //种子取当前 UTC ticks 的低 32 位（原型阶段够用；将来应由存档决定局内种子）
-        uint seed = (uint)System.DateTime.UtcNow.Ticks;
-
-        ChaosLog.Info(LogChannel.UI,
-            "[局外地图] 进入局内：登记本局种子 seed=" + seed + "（DateTime.UtcNow.Ticks 截断），" +
-            "场景=" + RunSceneName + " 序号=" + RunSceneIndex);
-
-        RunMap.RunMapBootstrap.RequestForScene(RunSceneName, seed, RunSceneIndex);
-
-        if (GameSession.Instance != null) GameSession.Instance.SetTargetScene(RunSceneName);
-
-        if (ScenesLoadManager.Instance == null)
-        {
-            ChaosLog.Error(LogChannel.UI, "[局外地图] ScenesLoadManager 不存在，无法切场景");
-            return;
-        }
-
-        ScenesLoadManager.Instance.LoadScene(LoadingSceneName, () => { });
-    }
-
-    private void OnStagePrevClicked()
-    {
-        ChangeStageForDebug(-1);
-    }
-
-    private void OnStageNextClicked()
-    {
-        ChangeStageForDebug(1);
-    }
-
-    /// <summary>
-    /// **仅调试用**：临时切时期预览（存档里的 `era` 不动）。
-    /// 日志明确带 `[DEBUG]`，免得被误认为正式时期切换。
-    /// </summary>
-    private void ChangeStageForDebug(int delta)
-    {
-        int next = (int)_stage + delta;
-        if (next < (int)MinStage) next = (int)MaxStage;
-        if (next > (int)MaxStage) next = (int)MinStage;
-
-        _stage = (uint)next;
-        _selected = null;
-
-        ChaosLog.Info(LogChannel.UI,
-            "[局外地图][DEBUG] 时期预览切到 " + _stage + "（" + StageName(_stage) + "）" +
-            "　—　仅预览，不写存档（存档 era 不受影响）");
-
-        RefreshVisuals();
-    }
-
+    private void OnReturnClicked() { Intent?.Invoke(new WorldMapIntent(WorldMapAction.Return)); }
+    private void OnEnterRunClicked() { OpenMetaPanel(PanelType.DispatchPanel); }
+    private void OnStagePrevClicked() { ChangeStageForDebug(-1); }
+    private void OnStageNextClicked() { ChangeStageForDebug(1); }
+    private void ChangeStageForDebug(int delta) { Intent?.Invoke(new WorldMapIntent(WorldMapAction.Preview, delta: delta)); }
     private void OnDestroy()
     {
+        OnExit();
         ClearIcons();
 
         //运行时生成的圆点 Sprite/Texture 不是资产，必须自己释放（HideAndDontSave 也不会自动回收）

@@ -1,26 +1,32 @@
+using System;
+using Object = UnityEngine.Object;
+using Chaos.MVP.Presenter.Gameplay;
+using Chaos.MVP.Model.Gameplay;
 using System.Collections.Generic;
 using ChaosDebug;
+using LocalizationSystem;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-/// <summary>
-/// 市场面板（W5.3 / M5）—— **资源 ↔ 物品兑换最小版**。
-///
-/// ══════════════ 布局（与 `RunSettlementPanel` / `InventoryPanel` 同一套坑的解法）══════════════
-/// * prefab 自带的 `Title` 在左上角（会被 GM 悬浮按钮压住）→ **运行时隐藏**，改用内容区里居中的标题；
-/// * 全部内容放进**居中 800×600 的 `ContentBox`**：标题 / 钱财余额 / 结果行 / 列表 / 关闭按钮；
-/// * 文案**纯中文、不挂 `LocalizedText`**（与族人/库存/结算面板一致），杜绝 key 被回填成英文；
-/// * 中文字体走 `RunTeamHud.ResolveFont()`（**公共静态方法，禁止再复制第二份取字体逻辑**）；
-/// * 行 = 名称 + 买价/卖价 + 持有数 + 「买」「卖」两个按钮 + 行尾原因。
-///
-/// ══════════════ 行为（严格按 18_市场.md）══════════════
-/// * 每次成交 **1 个**；货币只认钱财；两列都 0 的物品**不显示**（E5）；
-/// * 按钮 `interactable=false` 时行尾**必须给原因**（钱财不足 / 格位已满 / 已达叠加上限 / 持有 0）；
-/// * 买卖全部走 `MarketService`（买失败退钱也在那一层保证），本类**只负责显示与转发**。
-/// </summary>
-public class MarketPanel : BasePanel
+/// <summary>Passive Market view: builds controls, renders snapshots, and sends typed intents to its presenter.</summary>
+public class MarketPanel : BasePanel, IGameplayView<MarketState>
 {
+    public event Action<PanelIntent> Intent;
+    private MarketPresenter _presenter;
+    private void EnsurePresenter()
+    {
+        if (_presenter != null && !_presenter.IsDisposed) return;
+        _presenter = new MarketPresenter(new MarketModel());
+        _presenter.Attach(this);
+    }
+    private void Send(PanelAction action, uint id = 0)
+    {
+        if (!IsShowing) return;
+        EnsurePresenter();
+        Intent?.Invoke(new PanelIntent(action, id));
+    }
+
     private const float PanelWidth = 800f;
     private const float PanelHeight = 600f;
     private const float RowStep = 36f;
@@ -37,6 +43,8 @@ public class MarketPanel : BasePanel
     private RectTransform _listArea;
     private TMP_FontAsset _font;
     private bool _built;
+    private TextMeshProUGUI _closeLabel;
+    private LocalizationManager _localization;
 
     /// <summary>GM / 其它面板统一入口：Push 之后**显式刷新**（面板已缓存时 OnEnter 不会重跑）。</summary>
     public static void Open()
@@ -62,8 +70,7 @@ public class MarketPanel : BasePanel
             panel.RefreshFromOpen();
         }
 
-        ChaosLog.Info(LogChannel.UI, "[市场] 面板已打开（钱财 " + InventoryService.Instance.GetResource(InventoryService.ResourceKind.Money)
-            + "，库存格位 " + InventoryService.Instance.UsedSlots + "/" + InventoryService.Instance.TotalSlots + "）");
+        ChaosLog.Info(LogChannel.UI, "[市场] 面板已打开");
     }
 
     public void RefreshFromOpen()
@@ -73,7 +80,31 @@ public class MarketPanel : BasePanel
     }
 
     private void Awake() { BuildUi(); }
-    public override void OnEnter() { BuildUi(); Refresh(); }
+    public override void OnEnter()
+    {
+        BuildUi();
+        _localization = LocalizationManager.GetInstance();
+        if (_localization != null)
+        {
+            _localization.OnLanguageChanged.RemoveListener(OnLanguageChanged);
+            _localization.OnLanguageChanged.AddListener(OnLanguageChanged);
+        }
+        Refresh();
+    }
+
+    public override void OnExit()
+    {
+        if (_localization != null) _localization.OnLanguageChanged.RemoveListener(OnLanguageChanged);
+        _presenter?.Dispose();
+        _presenter = null;
+    }
+
+    private void OnDestroy() { OnExit(); }
+    private void OnLanguageChanged(LanguageType language)
+    {
+        if (_result != null) _result.text = "";
+        Refresh();
+    }
 
     // ══════════════════════ UI 构建（居中 800×600）══════════════════════
 
@@ -105,7 +136,7 @@ public class MarketPanel : BasePanel
         bg.color = new Color(0.10f, 0.11f, 0.14f, 0.98f);
         bg.raycastTarget = true;
 
-        //标题（纯中文，不挂 LocalizedText）
+        //标题在 Refresh 中按当前语言填充
         _title = MakeText(boxRect, "Title", "市场", 34f, new Color(0.96f, 0.97f, 1f, 1f));
         RectTransform titleRect = (RectTransform)_title.transform;
         titleRect.anchorMin = new Vector2(0f, 1f);
@@ -143,61 +174,27 @@ public class MarketPanel : BasePanel
         _listArea.offsetMax = new Vector2(-24f, -150f);
 
         //底部：关闭
-        MakeButton(boxRect, "Btn_Close", "关闭", 22f,
+        Button closeButton = MakeButton(boxRect, "Btn_Close", "关闭", 22f,
             new Vector2(0f, 16f), new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(180f, 48f),
             Close);
+        _closeLabel = closeButton.GetComponentInChildren<TextMeshProUGUI>();
     }
 
     // ══════════════════════ 刷新 ══════════════════════
 
     private void Refresh()
     {
-        InventoryService inv = InventoryService.Instance;
-
-        if (_money != null)
-            _money.text = "钱财：" + inv.GetResource(InventoryService.ResourceKind.Money)
-                + "　　格位：" + inv.UsedSlots + "/" + inv.TotalSlots;
-
-        ClearList();
-
-        List<ItemConfig> rows = CollectTradable();
-        if (_result != null && string.IsNullOrEmpty(_result.text))
-        {
-            _result.color = DimColor;
-            _result.text = rows.Count == 0
-                ? "暂无可交易物品（Item 表 BuyPrice/SellPrice 都为 0）"
-                : "每次买 / 卖各 1 个；货币只认钱财。价格来自 Item 表。";
-        }
-
-        float y = -2f;
-        for (int i = 0; i < rows.Count; i++)
-        {
-            MakeRow(inv, rows[i], y);
-            y -= RowStep;
-        }
+        if (_presenter == null || _presenter.IsDisposed) EnsurePresenter();
+        else _presenter.Refresh();
     }
 
     /// <summary>可交易 = 启用 且（买价 &gt; 0 或 卖价 &gt; 0）；按 `Item.Index` 升序（稳定、可预期）。</summary>
-    private static List<ItemConfig> CollectTradable()
-    {
-        List<ItemConfig> all = InventoryService.Instance.GetAllDefinitions();
-        var rows = new List<ItemConfig>();
-        for (int i = 0; i < all.Count; i++)
-        {
-            ItemConfig def = all[i];
-            if (def == null || !def.Enable) continue;
-            if (def.BuyPrice == 0u && def.SellPrice == 0u) continue;
-            rows.Add(def);
-        }
-        rows.Sort((a, b) => a.Index.CompareTo(b.Index));
-        return rows;
-    }
 
-    private void MakeRow(InventoryService inv, ItemConfig def, float y)
+    private void MakeRow(MarketRow def, float y)
     {
         if (_listArea == null || def == null) return;
 
-        GameObject rowGo = new GameObject("Row_" + def.Index, typeof(RectTransform));
+        GameObject rowGo = new GameObject("Row_" + def.Id, typeof(RectTransform));
         RectTransform row = (RectTransform)rowGo.transform;
         row.SetParent(_listArea, false);
         row.anchorMin = new Vector2(0f, 1f);
@@ -207,96 +204,53 @@ public class MarketPanel : BasePanel
         row.offsetMax = new Vector2(0f, y);
 
         //① 名称
-        TextMeshProUGUI name = MakeChildText(row, "Name", MarketService.Instance.GetDisplayName(def.Index), 20f, NormalColor);
-        SetLeftRect((RectTransform)name.transform, 4f, 146f, RowHeight);
+        TextMeshProUGUI name = MakeChildText(row, "Name", def.Name, 20f, NormalColor);
+        SetLeftRect((RectTransform)name.transform, 4f, 142f, RowHeight);
 
         //② 买价 / 卖价
-        TextMeshProUGUI price = MakeChildText(row, "Price", "买 " + def.BuyPrice + " / 卖 " + def.SellPrice, 18f,
-            def.BuyPrice > 0u ? NormalColor : DimColor);
-        SetLeftRect((RectTransform)price.transform, 154f, 166f, RowHeight);
+        TextMeshProUGUI price = MakeChildText(row, "Price", def.Price, 18f,
+            def.HasPrice ? NormalColor : DimColor);
+        SetLeftRect((RectTransform)price.transform, 158f, 158f, RowHeight);
 
         //③ 持有数
-        uint count = MarketService.Instance.GetCount(def.Index);
-        TextMeshProUGUI hold = MakeChildText(row, "Hold", "持有 " + count, 18f,
-            count > 0u ? NormalColor : DimColor);
-        SetLeftRect((RectTransform)hold.transform, 324f, 80f, RowHeight);
+
+        TextMeshProUGUI hold = MakeChildText(row, "Hold", def.Owned, 18f,
+            def.HasOwned ? NormalColor : DimColor);
+        SetLeftRect((RectTransform)hold.transform, 328f, 76f, RowHeight);
 
         //④ 买 / 卖（灰显时行尾给原因）
-        bool canBuy = CanBuy(inv, def);
-        bool canSell = CanSell(def, count);
+        bool canBuy = def.CanBuy;
+        bool canSell = def.CanSell;
 
-        Button buyButton = MakeButton(row, "Btn_Buy", "买", 18f,
+        Button buyButton = MakeButton(row, "Btn_Buy", GameplayText.Text("ui_market_buy", "买"), 18f,
             new Vector2(-100f, 0f), new Vector2(1f, 0.5f), new Vector2(1f, 0.5f),
-            new Vector2(84f, RowHeight - 2f), () => DoBuy(def.Index));
+            new Vector2(84f, RowHeight - 2f), () => DoBuy(def.Id));
         buyButton.interactable = canBuy;
 
-        Button sellButton = MakeButton(row, "Btn_Sell", "卖", 18f,
+        Button sellButton = MakeButton(row, "Btn_Sell", GameplayText.Text("ui_market_sell", "卖"), 18f,
             new Vector2(-8f, 0f), new Vector2(1f, 0.5f), new Vector2(1f, 0.5f),
-            new Vector2(84f, RowHeight - 2f), () => DoSell(def.Index));
+            new Vector2(84f, RowHeight - 2f), () => DoSell(def.Id));
         sellButton.interactable = canSell;
 
-        string why = !canBuy ? BuyBlockReason(inv, def)
-                   : (!canSell ? (def.SellPrice == 0u ? "不可卖" : "无可卖") : "");
+        string why = def.Reason;
         TextMeshProUGUI reason = MakeChildText(row, "Reason", why, 13f, WarnColor);
-        SetLeftRect((RectTransform)reason.transform, 408f, 156f, RowHeight);
+        SetLeftRect((RectTransform)reason.transform, 416f, 140f, RowHeight);
     }
 
     // ══════════════════════ 可买 / 可卖判定（与 MarketService 的失败原因对齐）══════════════════════
 
-    private static bool CanBuy(InventoryService inv, ItemConfig def)
-    {
-        if (def.BuyPrice == 0u) return false;
-        if (inv.GetResource(InventoryService.ResourceKind.Money) < def.BuyPrice) return false;
-
-        uint stackLimit = def.StackLimit == 0u ? 1u : def.StackLimit;
-        return InventoryRules.MaxAddableStacks(inv.GetStacks(), inv.TotalSlots, def.Index, 1u, stackLimit) >= 1u;
-    }
-
-    private static bool CanSell(ItemConfig def, uint count)
-    {
-        return def.SellPrice > 0u && count > 0u;
-    }
-
     /// <summary>买按钮为什么灰：优先给「钱财不足」，再给格位/叠加（与 §5.1 的状态表一致）。</summary>
-    private static string BuyBlockReason(InventoryService inv, ItemConfig def)
-    {
-        if (def.BuyPrice == 0u) return "不可买";
-        if (inv.GetResource(InventoryService.ResourceKind.Money) < def.BuyPrice) return "钱财不足";
-
-        uint stackLimit = def.StackLimit == 0u ? 1u : def.StackLimit;
-        if (InventoryRules.MaxAddableStacks(inv.GetStacks(), inv.TotalSlots, def.Index, 1u, stackLimit) >= 1u)
-            return "";
-
-        uint count = MarketService.Instance.GetCount(def.Index);
-        if (count == 0u && inv.UsedSlots >= inv.TotalSlots)
-            return "格位已满（" + inv.UsedSlots + "/" + inv.TotalSlots + "）";
-        return "已达叠加上限（" + stackLimit + "）";
-    }
 
     // ══════════════════════ 点按 ══════════════════════
 
     private void DoBuy(uint itemId)
     {
-        string reason;
-        bool ok = MarketService.Instance.TryBuy(itemId, out reason);
-        ItemConfig def = InventoryService.Instance.GetDefinition(itemId);
-        SetResult(ok
-                ? ("买入成功：" + MarketService.Instance.GetDisplayName(itemId) + " ×1（-" + (def == null ? 0u : def.BuyPrice) + " 钱财）")
-                : ("买入失败：" + reason),
-            ok ? OkColor : WarnColor);
-        Refresh();
+        Send(PanelAction.Buy, itemId);
     }
 
     private void DoSell(uint itemId)
     {
-        string reason;
-        bool ok = MarketService.Instance.TrySell(itemId, out reason);
-        ItemConfig def = InventoryService.Instance.GetDefinition(itemId);
-        SetResult(ok
-                ? ("卖出成功：" + MarketService.Instance.GetDisplayName(itemId) + " ×1（+" + (def == null ? 0u : def.SellPrice) + " 钱财）")
-                : ("卖出失败：" + reason),
-            ok ? OkColor : WarnColor);
-        Refresh();
+        Send(PanelAction.Sell, itemId);
     }
 
     private void SetResult(string text, Color color)
@@ -312,13 +266,9 @@ public class MarketPanel : BasePanel
     /// 直接 Hide 会把面板留在 `panelStack` 里且 `IsShowing=false`，之后再 `PushPanel` 会命中
     /// “重复打开栈顶面板”的分支直接 return → 面板永远打不开（库存面板就是这么踩过的）。
     /// </summary>
-    private void Close()
-    {
-        if (uiManager != null) uiManager.PopPanel();
-        else Hide();
-    }
+    private void Close() { Send(PanelAction.Close); }
 
-    // ══════════════════════ 通用小工具（纯中文，不挂 LocalizedText）══════════════════════
+    // ══════════════════════ 通用小工具（文本由调用处解析本地化）══════════════════════
 
     private TextMeshProUGUI MakeText(Transform parent, string name, string text, float size, Color color)
     {
@@ -342,6 +292,12 @@ public class MarketPanel : BasePanel
         rect.pivot = new Vector2(0f, 0.5f);
         label.alignment = TextAlignmentOptions.Left;
         label.enableWordWrapping = false;
+        // Each column owns its bounds; longer translations shrink before using an ellipsis.
+        // The 12px gaps keep the name, prices, count, reason and buttons visually separate.
+        label.enableAutoSizing = true;
+        label.fontSizeMin = Mathf.Max(12f, size * 0.8f);
+        label.fontSizeMax = size;
+        label.overflowMode = TextOverflowModes.Ellipsis;
         return label;
     }
 
@@ -406,5 +362,28 @@ public class MarketPanel : BasePanel
     {
         Transform child = transform.Find(childName);
         return child == null ? null : child.GetComponent<TextMeshProUGUI>();
+    }
+
+    public void ClosePanel() { if (UIManager.Instance != null) UIManager.Instance.PopPanel(); else Hide(); }
+    public void ShowMessage(string message, bool success) { SetResult(message, success ? OkColor : WarnColor); }
+    public void Render(MarketState state)
+    {
+        if (_title != null) _title.text = GameplayText.Text("ui_market_title", "市场");
+        if (_closeLabel != null) _closeLabel.text = GameplayText.Text("ui_common_close", "关闭");
+        if (_money != null) _money.text = state.Money;
+        if (_result != null && string.IsNullOrEmpty(_result.text)) { _result.text = state.Hint; _result.color = DimColor; }
+        ClearRows();
+        for (int i = 0; i < state.Rows.Count; i++) MakeRow(state.Rows[i], -2f - i * RowStep);
+    }
+
+    private void ClearRows()
+    {
+        if (_listArea == null) return;
+        for (int i = _listArea.childCount - 1; i >= 0; i--)
+        {
+            Transform row = _listArea.GetChild(i);
+            row.SetParent(null, false);
+            Destroy(row.gameObject);
+        }
     }
 }

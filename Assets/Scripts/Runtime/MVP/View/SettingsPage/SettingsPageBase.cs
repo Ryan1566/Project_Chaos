@@ -12,7 +12,7 @@ using UnityEngine;
 /// 页在 OnBind() 里用 BindSlider / BindSelector / BindToggle / BindButton 声明"这一行改哪个字段"。
 /// 于是"id → 字段"的映射全项目只有这几处，加设置项时改一页即可。
 ///
-/// 玩家改动 → 行回调 → 页写进 SettingsManager.Instance.Pending（暂存区）
+/// 玩家改动 → 行回调 → 页写进 Editing?.Pending（暂存区）
 ///          → NotifyPendingChanged() 让「应用」按钮亮起来。
 /// 数据改回去 → 面板调 RefreshAll() → 页把 Pending 的值灌回各控件（不触发回调）。
 ///
@@ -29,6 +29,8 @@ using UnityEngine;
 /// </summary>
 public abstract class SettingsPageBase : MonoBehaviour
 {
+    protected Chaos.MVP.Presenter.Settings.SettingsPresenter Editing { get; private set; }
+    public void BindEditing(Chaos.MVP.Presenter.Settings.SettingsPresenter presenter) { Editing = presenter; }
     /// <summary>每个刷新动作 = 把 Pending 的某个字段灌回某个控件。</summary>
     private readonly List<Action<SettingsData>> _refreshers = new List<Action<SettingsData>>();
 
@@ -165,7 +167,7 @@ public abstract class SettingsPageBase : MonoBehaviour
     /// <summary>把 Pending 的当前值灌回本页所有控件。切换页面、应用、恢复默认之后都要调。</summary>
     public void RefreshAll()
     {
-        SettingsData data = SettingsManager.Instance.Pending;
+        SettingsData data = Editing?.Pending;
         if (data == null) return;
 
         for (int i = 0; i < _refreshers.Count; i++)
@@ -204,10 +206,11 @@ public abstract class SettingsPageBase : MonoBehaviour
         row.Configure(min, max);
         row.OnValueChanged = value =>
         {
-            SettingsData data = SettingsManager.Instance.Pending;
+            if (Editing == null || Editing.IsDisposed) return;
+            SettingsData data = Editing?.Pending;
             set(data, value);
             if (preview != null) preview(value);
-            SettingsManager.Instance.NotifyPendingChanged();
+            Editing?.NotifyPendingChanged();
         };
 
         AddRefresher(data => row.SetValueWithoutNotify(get(data)));
@@ -250,10 +253,11 @@ public abstract class SettingsPageBase : MonoBehaviour
 
         row.OnValueChanged = index =>
         {
-            SettingsData data = SettingsManager.Instance.Pending;
+            if (Editing == null || Editing.IsDisposed) return;
+            SettingsData data = Editing?.Pending;
             setIndex(data, index);
             if (onChanged != null) onChanged(index);
-            SettingsManager.Instance.NotifyPendingChanged();
+            Editing?.NotifyPendingChanged();
         };
 
         AddRefresher(data => row.SetIndexWithoutNotify(getIndex(data)));
@@ -270,10 +274,11 @@ public abstract class SettingsPageBase : MonoBehaviour
 
         row.OnValueChanged = value =>
         {
-            SettingsData data = SettingsManager.Instance.Pending;
+            if (Editing == null || Editing.IsDisposed) return;
+            SettingsData data = Editing?.Pending;
             set(data, value);
             if (onChanged != null) onChanged(value);
-            SettingsManager.Instance.NotifyPendingChanged();
+            Editing?.NotifyPendingChanged();
         };
 
         AddRefresher(data => row.SetValueWithoutNotify(get(data)));

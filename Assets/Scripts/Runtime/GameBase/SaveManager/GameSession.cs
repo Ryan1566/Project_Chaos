@@ -46,6 +46,7 @@ public class GameSession : SingletonBase<GameSession>
     /// <param name="targetSceneName">读条结束后要进入的场景名（如 "WorldScene"）</param>
     public void Begin(int slot, SavePayload payload, string targetSceneName)
     {
+        EventService.Instance.ResetRuntime();
         SelectedSlot = slot;
         LoadedPayload = payload ?? new SavePayload();
         TargetSceneName = targetSceneName;
@@ -69,6 +70,8 @@ public class GameSession : SingletonBase<GameSession>
     public void Clear()
     {
         if (!HasSession) return;
+
+        EventService.Instance.ResetRuntime();
 
         ChaosLog.Info(LogChannel.Save, "已退出存档会话（原槽位 " + SelectedSlot + "）");
 

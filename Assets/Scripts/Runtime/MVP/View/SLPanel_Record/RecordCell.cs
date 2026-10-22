@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using Chaos.MVP.Presenter.SaveSlots;
 
 /// <summary>
 /// 存档列表里的**一个档位格子**（`RecordCell.prefab` 的脚本）。
@@ -139,26 +140,22 @@ public class RecordCell : MonoBehaviour
     /// </summary>
     public void SetData(SaveSlotInfo info)
     {
+        Render(SaveSlotPresentation.FromInfo(info, _slot));
+    }
+
+    public void Render(SaveSlotCellState state)
+    {
         //第一次调用前若还没走过 Awake（理论上不会，但保持防御），补一次缓存
         if (_titleTmp == null && _titleLocalized == null) CacheNodes();
 
-        int slot = (info != null && info.Slot != 0) ? info.Slot : _slot;
+        int slot = state.Slot;
         if (slot == 0) slot = _slot;
         _slot = slot;
 
         if (_numText != null) _numText.text = slot.ToString();
 
-        bool isEmpty = (info == null) || info.IsEmpty;
-
-        if (isEmpty)
-        {
-            SetTitleKey(EmptyKey);
-            if (_timeText != null) _timeText.text = EmptyTimeText;
-            return;
-        }
-
-        SetTitleKey(TitleKey);
-        if (_timeText != null) _timeText.text = FormatLocalTime(info.LastSaveUtcTicks);
+        SetTitleKey(state.TitleKey);
+        if (_timeText != null) _timeText.text = state.Time;
     }
 
     /// <summary>切换选中高亮。没有 `Selected` 节点时是空操作（不影响功能，只是没有视觉反馈）。</summary>
@@ -170,18 +167,7 @@ public class RecordCell : MonoBehaviour
     /// <summary>把 UTC ticks 转成本地时区的显示串；ticks 非法（&lt;= 0）时给占位符。</summary>
     public static string FormatLocalTime(long utcTicks)
     {
-        if (utcTicks <= 0) return EmptyTimeText;
-
-        try
-        {
-            return new DateTime(utcTicks, DateTimeKind.Utc).ToLocalTime().ToString(TimeFormat);
-        }
-        catch (ArgumentOutOfRangeException)
-        {
-            //存档被手改成天文数字时不要让界面崩掉
-            ChaosLog.Warn(LogChannel.UI, "存档时间戳超出 DateTime 范围，已显示占位符：" + utcTicks);
-            return EmptyTimeText;
-        }
+        return SaveSlotPresentation.FormatLocalTime(utcTicks);
     }
 
     /// <summary>

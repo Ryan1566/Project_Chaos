@@ -53,6 +53,9 @@ public class BasePanel : MonoBehaviour
     /// <summary>当前是否处于"已显示"状态（由 Show / Hide 维护）。</summary>
     public bool IsShowing { get; private set; }
 
+    /// <summary>Closing an in-run overlay resumes gameplay rather than revealing the outside panel beneath it.</summary>
+    public virtual bool ReturnsToGameplayOnClose => false;
+
     /// <summary>当前是否正在播放显隐动画。</summary>
     public bool IsAnimating
     {

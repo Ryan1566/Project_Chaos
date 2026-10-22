@@ -1,4 +1,4 @@
-﻿using ChaosDebug;
+using ChaosDebug;
 using LocalizationSystem;
 
 /// <summary>

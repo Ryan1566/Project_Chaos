@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 /// <summary>
 /// 声音设置页：全局 / 音乐 / 音效 / UI 四路音量，拉条 0~100、步进 1。
@@ -27,24 +27,24 @@ public class AudioSettingsPage : SettingsPageBase
             data => data.masterVolume,
             (data, value) => data.masterVolume = value,
             MinVolume, MaxVolume,
-            value => AudioManager.Instance.SetVolume(AudioChannel.Master, value));
+            value => Editing.PreviewVolume(AudioChannel.Master, value));
 
         BindSlider(SettingIds.MusicVolume,
             data => data.musicVolume,
             (data, value) => data.musicVolume = value,
             MinVolume, MaxVolume,
-            value => AudioManager.Instance.SetVolume(AudioChannel.Music, value));
+            value => Editing.PreviewVolume(AudioChannel.Music, value));
 
         BindSlider(SettingIds.SfxVolume,
             data => data.sfxVolume,
             (data, value) => data.sfxVolume = value,
             MinVolume, MaxVolume,
-            value => AudioManager.Instance.SetVolume(AudioChannel.Sfx, value));
+            value => Editing.PreviewVolume(AudioChannel.Sfx, value));
 
         BindSlider(SettingIds.UiVolume,
             data => data.uiVolume,
             (data, value) => data.uiVolume = value,
             MinVolume, MaxVolume,
-            value => AudioManager.Instance.SetVolume(AudioChannel.UI, value));
+            value => Editing.PreviewVolume(AudioChannel.UI, value));
     }
 }

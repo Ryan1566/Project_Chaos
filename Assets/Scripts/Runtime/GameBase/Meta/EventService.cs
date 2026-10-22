@@ -45,6 +45,10 @@ public class EventService : SingletonBase<EventService>
     /// <summary>本次会话已弹过的**可重复**事件 ID（不落盘；JsonUtility 不支持 HashSet 落盘）。</summary>
     private readonly HashSet<uint> _poppedThisSession = new HashSet<uint>();
 
+    // 已保存、仍在结果页的事件。继续/重复点击不得再次发奖。
+    private uint _resolvedEventIndex;
+    private string _resolvedResult;
+
     // ══════════════════ 表加载 ══════════════════
 
     public void EnsureLoaded()
@@ -149,6 +153,8 @@ public class EventService : SingletonBase<EventService>
     public int RemainingAfterCurrent { get { return _queue.Count > 0 ? _queue.Count - 1 : 0; } }
 
     public bool HasPending { get { return _queue.Count > 0; } }
+    public bool HasResolvedCurrent { get { return Current != null && _resolvedEventIndex == Current.Index; } }
+    public string CurrentResult { get { return HasResolvedCurrent ? _resolvedResult : null; } }
 
     // ══════════════════ 触发判定 ══════════════════
 
@@ -292,25 +298,91 @@ public class EventService : SingletonBase<EventService>
     /// </summary>
     public void MarkFired(uint eventIndex)
     {
-        EventConfig def = GetEvent(eventIndex);
-        SavePayload p = MetaProgressService.Instance.Payload;
-        if (p.firedEvents == null) p.firedEvents = new List<uint>();
+        if (Current == null || Current.Index != eventIndex) return;
+        string reason;
+        if (!TryCompleteCurrent(out reason)) ChaosLog.Warn(LogChannel.Save, "[剧情事件] " + reason);
+    }
 
-        if (def != null && def.Repeatable)
+    /// <summary>选择、奖励和一次性标记作为同一次存档提交；保存失败恢复整个 payload。</summary>
+    public bool TryChooseOption(uint optionIndex, out string reason)
+    {
+        EventConfig current = Current;
+        EventOptionConfig option = GetOption(optionIndex);
+        if (current == null || option == null || !option.Enable || option.EventId != current.Index)
         {
-            ChaosLog.Info(LogChannel.Config,
-                "[剧情事件] 事件 " + eventIndex + " 已处置（可重复，不写 firedEvents）");
+            reason = "该选项不属于当前事件";
+            return false;
         }
-        else
+        if (_resolvedEventIndex == current.Index)
         {
-            if (!p.firedEvents.Contains(eventIndex)) p.firedEvents.Add(eventIndex);
-            ChaosLog.Info(LogChannel.Config,
-                "[剧情事件] 事件 " + eventIndex + " 已处置 → 写入 firedEvents（共 " + p.firedEvents.Count + " 个："
-                + JoinIds(p.firedEvents) + "）");
+            reason = _resolvedResult;
+            return true;
         }
 
-        for (int i = _queue.Count - 1; i >= 0; i--)
-            if (_queue[i] != null && _queue[i].Index == eventIndex) _queue.RemoveAt(i);
+        SavePayload payload = MetaProgressService.Instance.Payload;
+        string before = JsonUtility.ToJson(payload);
+        try
+        {
+            // 单项奖励失败仍允许完成事件，其余奖励保留；IO 失败则整次恢复。
+            ApplyOption(optionIndex, out reason);
+            RecordDisposition(current, payload);
+            string saveReason;
+            if (!MetaProgressService.Instance.SaveProgress(out saveReason))
+            {
+                JsonUtility.FromJsonOverwrite(before, payload);
+                reason = saveReason;
+                return false;
+            }
+            _resolvedEventIndex = current.Index;
+            _resolvedResult = reason;
+            return true;
+        }
+        catch (System.Exception error)
+        {
+            JsonUtility.FromJsonOverwrite(before, payload);
+            reason = "事件未能保存，请重试：" + error.Message;
+            ChaosLog.Error(LogChannel.Save, "[剧情事件] " + reason);
+            return false;
+        }
+    }
+
+    /// <summary>结果页继续，或无奖励关闭。只有保存成功后才移除队首。</summary>
+    public bool TryCompleteCurrent(out string reason)
+    {
+        reason = null;
+        EventConfig current = Current;
+        if (current == null) return true;
+        if (_resolvedEventIndex != current.Index)
+        {
+            SavePayload payload = MetaProgressService.Instance.Payload;
+            string before = JsonUtility.ToJson(payload);
+            RecordDisposition(current, payload);
+            if (!MetaProgressService.Instance.SaveProgress(out reason))
+            {
+                JsonUtility.FromJsonOverwrite(before, payload);
+                return false;
+            }
+        }
+        _queue.RemoveAt(0);
+        _resolvedEventIndex = 0u;
+        _resolvedResult = null;
+        return true;
+    }
+
+    private static void RecordDisposition(EventConfig current, SavePayload payload)
+    {
+        if (payload.firedEvents == null) payload.firedEvents = new List<uint>();
+        if (!current.Repeatable && !payload.firedEvents.Contains(current.Index))
+            payload.firedEvents.Add(current.Index);
+    }
+
+    /// <summary>切换存档仅清运行时队列，绝不清除存档中的一次性记录。</summary>
+    public void ResetRuntime()
+    {
+        _queue.Clear();
+        _poppedThisSession.Clear();
+        _resolvedEventIndex = 0u;
+        _resolvedResult = null;
     }
 
     // ══════════════════ 奖励发放 ══════════════════
@@ -457,8 +529,7 @@ public class EventService : SingletonBase<EventService>
         if (p.firedEvents == null) p.firedEvents = new List<uint>();
         int before = p.firedEvents.Count;
         p.firedEvents.Clear();
-        _poppedThisSession.Clear();
-        _queue.Clear();
+        ResetRuntime();
         ChaosLog.Info(LogChannel.Config, "[剧情事件] 已清空 firedEvents（清掉 " + before + " 个）+ 会话集合 + 队列");
     }
 

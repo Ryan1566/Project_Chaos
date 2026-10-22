@@ -1,3 +1,7 @@
+using System;
+using Object = UnityEngine.Object;
+using Chaos.MVP.Presenter.Gameplay;
+using Chaos.MVP.Model.Gameplay;
 using System.Collections.Generic;
 using ChaosDebug;
 using LocalizationSystem;
@@ -5,12 +9,28 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-/// <summary>
-/// 家族树面板（W1b）：5 板块 × 3 节点；三态（已点亮/可点亮/锁定并显示缺什么）+ 点亮按钮
-/// + 顶部显示当前带出上限/格位/扎营补员是否解锁。
-/// </summary>
-public class FamilyTreePanel : BasePanel
+/// <summary>Passive FamilyTree view: builds controls, renders snapshots, and sends typed intents to its presenter.</summary>
+public class FamilyTreePanel : BasePanel, IGameplayView<FamilyTreeState>
 {
+    private void OnDestroy() { OnExit(); }
+
+    public override void OnExit() { _presenter?.Dispose(); _presenter = null; }
+
+    public event Action<PanelIntent> Intent;
+    private FamilyTreePresenter _presenter;
+    private void EnsurePresenter()
+    {
+        if (_presenter != null && !_presenter.IsDisposed) return;
+        _presenter = new FamilyTreePresenter();
+        _presenter.Attach(this);
+    }
+    private void Send(PanelAction action, uint id = 0)
+    {
+        if (!IsShowing) return;
+        EnsurePresenter();
+        Intent?.Invoke(new PanelIntent(action, id));
+    }
+
     private static readonly Color NormalColor = new Color(0.92f, 0.93f, 0.96f, 1f);
     private static readonly Color DimColor = new Color(0.66f, 0.70f, 0.76f, 1f);
     private static readonly Color UnlockedColor = new Color(0.30f, 0.85f, 0.40f, 1f);
@@ -40,51 +60,8 @@ public class FamilyTreePanel : BasePanel
 
     private void Refresh()
     {
-        if (_title != null) ApplyLocalized(_title, "ui_familytree_title", "家族树");
-
-        FamilyTreeService svc = FamilyTreeService.Instance;
-        svc.EnsureLoaded();
-        MetaEffectSnapshot snap = EffectAggregator.Instance.Snapshot;
-
-        if (_summary != null)
-            ApplyLocalized(_summary, "ui_familytree_summary",
-                "已点亮 " + svc.UnlockedCount + "/15　　带出上限 " + MetaProgressService.Instance.DeployCap
-                + "　　格位 " + InventoryService.Instance.TotalSlots
-                + "　　扎营补员 " + (snap.CampRefillUnlocked ? "已解锁" : "未解锁"));
-
-        if (_hint != null) ApplyLocalized(_hint, "ui_familytree_hint",
-            "（点亮的节点效果会立刻聚合：带出上限/格位/门客属性/扎营补员）");
-
-        ClearRows();
-
-        List<FamilyTreeConfig> defs = svc.GetAll();
-        float y = -8f;
-        uint lastBoard = 0;
-        for (int i = 0; i < defs.Count; i++)
-        {
-            FamilyTreeConfig def = defs[i];
-            if (def == null) continue;
-
-            if (def.Board != lastBoard)
-            {
-                lastBoard = def.Board;
-                AddTextRow(y, "【板块 " + def.Board + "】", ReadyColor, 22f);
-                y -= 34f;
-            }
-
-            bool unlocked = svc.IsUnlocked(def.Index);
-            string why = null;
-            bool canUnlock = !unlocked && svc.CanUnlock(def.Index, out why);
-            string state = unlocked ? "已点亮" : (canUnlock ? "可点亮" : "锁定：" + (why == null ? "" : why));
-
-            AddTextRow(y, "  " + def.Index + " " + def.NameKey + "　消耗 "
-                + InventoryService.ResourceDisplayName(VillageService.ResourceKindOf(def.CostType)) + " " + def.CostValue
-                + "　" + state,
-                unlocked ? UnlockedColor : (canUnlock ? ReadyColor : DimColor), 20f);
-
-            AddLightButton(y, def.Index, canUnlock);
-            y -= 38f;
-        }
+        if (_presenter == null || _presenter.IsDisposed) EnsurePresenter();
+        else _presenter.Refresh();
     }
 
     private void AddTextRow(float y, string text, Color color, float size)
@@ -131,11 +108,7 @@ public class FamilyTreePanel : BasePanel
 
     private void DoUnlock(uint nodeId)
     {
-        string reason;
-        bool ok = FamilyTreeService.Instance.Unlock(nodeId, out reason);
-        if (!ok) Debug.Log("[家族树] 点亮 " + nodeId + " 失败：" + reason);
-        else Debug.Log("[家族树] 点亮 " + nodeId + " 成功：" + EffectAggregator.Instance.Snapshot.Dump());
-        Refresh();
+        Send(PanelAction.Unlock, nodeId);
     }
 
     private TextMeshProUGUI FindChildText(string n) { Transform c = transform.Find(n); return c == null ? null : c.GetComponent<TextMeshProUGUI>(); }
@@ -190,7 +163,7 @@ public class FamilyTreePanel : BasePanel
         tmp.font = _font; tmp.fontSize = 22f; tmp.color = NormalColor;
         tmp.alignment = TextAlignmentOptions.Center; tmp.raycastTarget = false;
         ApplyLocalized(tmp, "ui_common_close", "关闭");
-        go.GetComponent<Button>().onClick.AddListener(() => Hide());
+        go.GetComponent<Button>().onClick.AddListener(() => Send(PanelAction.Close));
     }
 
     private static void ApplyLocalized(TextMeshProUGUI label, string key, string fallback)
@@ -201,5 +174,23 @@ public class FamilyTreePanel : BasePanel
         if (loc == null) loc = label.gameObject.AddComponent<LocalizedText>();
         loc.localizationKey = key; loc.autoUpdateOnStart = false; loc.listenToLanguageChange = false;
     }
-}
 
+    public void ClosePanel() { if (UIManager.Instance != null) UIManager.Instance.PopPanel(); else Hide(); }
+    public void ShowMessage(string message, bool success) { if (_hint != null) _hint.text = message; }
+    public void Render(FamilyTreeState state)
+    {
+        if (_title != null) ApplyLocalized(_title, "ui_familytree_title", "家族树");
+        if (_summary != null) _summary.text = state.Summary;
+        if (_hint != null) _hint.text = "（点亮的节点效果会立刻聚合：带出上限/格位/门客属性/扎营补员）";
+        ClearRows();
+        float y = -8f;
+        uint lastBoard = 0;
+        foreach (var row in state.Rows)
+        {
+            if (row.Group != lastBoard) { lastBoard = row.Group; AddTextRow(y, "【板块 " + row.Group + "】", ReadyColor, 22f); y -= 34f; }
+            AddTextRow(y, row.Text, row.Tone == TextTone.Success ? UnlockedColor : row.Tone == TextTone.Warning ? ReadyColor : DimColor, 20f);
+            AddLightButton(y, row.Id, row.Enabled);
+            y -= 38f;
+        }
+    }
+}

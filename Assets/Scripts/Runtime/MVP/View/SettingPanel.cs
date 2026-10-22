@@ -1,6 +1,8 @@
-﻿using ChaosDebug;
+using ChaosDebug;
 using UnityEngine;
 using UnityEngine.UI;
+using Chaos.MVP.Model.Settings;
+using Chaos.MVP.Presenter.Settings;
 
 /// <summary>
 /// 设置面板：主选列表（左侧分类）与副设置列表（右侧页面）的容器，外加底部按钮条。
@@ -30,7 +32,7 @@ using UnityEngine.UI;
 /// 改动会静默丢弃 —— 而他以为已经生效了。
 /// 若 prefab 里没摆 ConfirmGroup，这里会退化成"直接丢弃 + 一条警告日志"，不会报错卡住。
 /// </summary>
-public class SettingPanel : BasePanel
+public class SettingPanel : BasePanel, ISettingsView
 {
     /// <summary>主选按钮的节点名，下标 = SettingCategory。</summary>
     private static readonly string[] TabNames = { "Btn_Gameplay", "Btn_Keybind", "Btn_Graphics", "Btn_Audio" };
@@ -57,7 +59,12 @@ public class SettingPanel : BasePanel
     /// <summary>当前显示的分类，下标 = SettingCategory。</summary>
     private int _current = (int)SettingCategory.Gameplay;
 
-    private bool _listeningPendingChanged;
+    private SettingsEditingModel _model;
+    private SettingsPresenter _presenter;
+    private bool _hasRendered;
+    public event System.Action<SettingsIntent> Intent;
+    public bool CanShowConfirmation => _confirmGroup != null;
+    public bool IsSubPageOpen => _pages[_current] != null && _pages[_current].IsSubPageOpen;
 
     // ══════════════════ 生命周期 ══════════════════
 
@@ -67,8 +74,6 @@ public class SettingPanel : BasePanel
         FindBottomBar();
         FindConfirmGroup();
 
-        //必须在 Show 之前订阅：面板每次显示都要按当前存档重置一遍按钮状态
-        //（订阅放 OnEnable 是因为面板被关闭时物体失活，这里跟着自动退订，不会漏）
         if (TabNames.Length != SettingsLabels.Category.Length)
         {
             ChaosLog.Error(LogChannel.UI,
@@ -77,57 +82,58 @@ public class SettingPanel : BasePanel
         }
     }
 
-    private void OnEnable()
-    {
-        if (!_listeningPendingChanged)
-        {
-            SettingsManager.Instance.OnPendingChanged += RefreshApplyButton;
-            _listeningPendingChanged = true;
-        }
-    }
-
-    private void OnDisable()
-    {
-        if (_listeningPendingChanged)
-        {
-            SettingsManager.Instance.OnPendingChanged -= RefreshApplyButton;
-            _listeningPendingChanged = false;
-        }
-    }
-
     public override void OnEnter()
     {
-        base.OnEnter();
-
-        //进入编辑态：暂存区 = 已应用的一份。之后所有控件的改动都只写暂存区
-        SettingsManager.Instance.BeginEdit();
-
-        HideConfirm();
-
-        //切到当前分类并强制绑定。这里不能只写"if (index != _current)" ——
-        //面板可能是第二次打开，_current 恰好没变，但页面在关闭时已被失活，
-        //不重新激活就看不到内容
-        ShowCategory(_current);
-
-        RefreshApplyButton();
+        _presenter?.Dispose();
+        if (_model == null || _model.Completed) _model = new SettingsEditingModel { Category = _current };
+        _presenter = new SettingsPresenter(_model);
+        _presenter.Attach(this);
     }
 
     public override void OnExit()
     {
-        base.OnExit();
-
-        //退场动画期间面板还活着，玩家理论上还能点到按钮，所以这里先把确认浮层收掉，
-        //避免它跟着面板一起退场时留下"下次打开就带着浮层"的错觉
         HideConfirm();
-
-        //兜底：面板也可能不是从「返回」退出的（别的流程直接 PopPanel）。
-        //退场动画期间面板仍然激活、行仍然可点，这里再收一次等待中的重绑，
-        //保证"面板关掉之后不会有键被偷偷写进资产"。没有在跑时是空操作
         CancelPendingEdit();
+        _presenter?.Dispose();
+        _presenter = null;
+        bool covered = uiManager != null && uiManager.panelStack.Contains(this);
+        if (_model != null && (_model.Completed || !covered))
+        {
+            if (_pages[_current] != null) _pages[_current].CollapseSubPage();
+            _model.Dispose();
+            _model = null;
+        }
     }
 
+    private void OnDestroy()
+    {
+        OnExit();
+        _model?.Dispose();
+        _model = null;
+    }
+
+    public void BindEditing(SettingsPresenter presenter)
+    {
+        SettingsPageBase[] pages = GetComponentsInChildren<SettingsPageBase>(true);
+        for (int i = 0; i < pages.Length; i++) pages[i].BindEditing(presenter);
+    }
+
+    public void Render(SettingsState state)
+    {
+        if (!_hasRendered || state.Category != _current || (_pages[_current] != null
+            && !_pages[_current].gameObject.activeSelf && !_pages[_current].IsSubPageOpen))
+        {
+            _hasRendered = true;
+            ShowCategory(state.Category);
+        }
+        else if (state.RefreshPage && _pages[_current] != null) _pages[_current].RefreshAll();
+        if (_applyBtn != null) _applyBtn.interactable = state.CanApply;
+        if (_confirmGroup != null) _confirmGroup.SetActive(state.Confirmation);
+    }
+
+    public void CloseSubPage() { if (_pages[_current] != null) _pages[_current].CloseSubPage(); }
     /// <summary>把"收掉未结束的编辑"转给当前页，由它一路传到开着的子页。</summary>
-    private void CancelPendingEdit()
+    public void CancelPendingEdit()
     {
         SettingsPageBase page = _pages[_current];
         if (page != null) page.CancelPendingEdit();
@@ -186,7 +192,7 @@ public class SettingPanel : BasePanel
             if (_tabButtons[i] == null) continue;
 
             int index = i;//局部变量参与闭包才是"每个按钮一个值"
-            _tabButtons[i].onClick.AddListener(() => ShowCategory(index));
+            _tabButtons[i].onClick.AddListener(() => Intent?.Invoke(new SettingsIntent(SettingsAction.Category, index)));
         }
     }
 
@@ -298,124 +304,11 @@ public class SettingPanel : BasePanel
         ChaosLog.Info(LogChannel.UI, "设置面板切换到 '" + SettingsLabels.CategoryName(index) + "'");
     }
 
-    // ══════════════════ 底部按钮 ══════════════════
-
-    private void OnApplyClicked()
-    {
-        //先收掉还没结束的编辑（现在是"等玩家按键"）。不先收的话，提交之后那次重绑仍在采集输入，
-        //玩家随后按下的任意一个键都会写进一个他以为已经提交完的数据里
-        CancelPendingEdit();
-
-        SettingsManager.Instance.CommitEdit();
-
-        //应用后再刷一次当前页：分辨率这类设置可能会被引擎夹到实际可用的值上，
-        //（比如窗口模式下引擎强制改回桌面分辨率）刷新能让界面显示的就是真实生效的值
-        SettingsPageBase page = _pages[_current];
-        if (page != null) page.RefreshAll();
-
-        HideConfirm();
-        RefreshApplyButton();
-    }
-
-    private void OnResetClicked()
-    {
-        //同上：恢复默认会把按键覆盖整体清掉，一个还在等待中的重绑随后写下来的键
-        //会和"已恢复默认"的界面显示对不上
-        CancelPendingEdit();
-
-        //只恢复当前分类，别的分类不动 —— 玩家在"画面"页点恢复默认，
-        //不该把辛苦调好的按键一起清掉
-        SettingsManager.Instance.ResetPendingSection((SettingCategory)_current);
-
-        SettingsPageBase page = _pages[_current];
-        if (page != null) page.RefreshAll();
-
-        RefreshApplyButton();
-    }
-
-    private void OnReturnClicked()
-    {
-        //两条分支都是"玩家想走"：一条回一级界面、一条要退面板。两条都不能留着
-        //一个还在等按键的重绑 —— 他按返回之后按下的第一个键会被当成改键写进资产
-        CancelPendingEdit();
-
-        //停在二级界面时，「返回」先回一级界面，而不是直接退面板 ——
-        //玩家在改键页里按返回，期望的是"回到按键设置"，不是"关掉整个设置面板"。
-        //这一级跳转不弹确认浮层：改动还在暂存区里，没被丢弃，没必要问
-        SettingsPageBase page = _pages[_current];
-        if (page != null && page.IsSubPageOpen)
-        {
-            page.CloseSubPage();
-            RefreshApplyButton();
-            return;
-        }
-
-        if (SettingsManager.Instance.HasPendingChanges)
-        {
-            ShowConfirm();
-            return;
-        }
-
-        OnConfirmDiscardClicked();//没有未应用的改动，直接走"放弃"这条路径（它会关面板）
-    }
-
-    private void RefreshApplyButton()
-    {
-        if (_applyBtn == null) return;
-
-        //「应用」只在真的有差异时可点。一直可点会让玩家以为点了就一定有效果，
-        //而实际上没改任何东西时点它只是白写一次文件
-        _applyBtn.interactable = SettingsManager.Instance.HasPendingChanges;
-    }
-
-    // ══════════════════ 返回确认 ══════════════════
-
-    private void ShowConfirm()
-    {
-        if (_confirmGroup == null)
-        {
-            //没有确认浮层时的退路：直接丢弃并关面板。这条警告是让开发者意识到
-            //"玩家的改动被静默吞掉了"，而不是让它悄悄发生
-            ChaosLog.Warn(LogChannel.UI,
-                "有未应用的设置改动，但 prefab 里没有 ConfirmGroup，改动已被丢弃");
-            OnConfirmDiscardClicked();
-            return;
-        }
-
-        _confirmGroup.SetActive(true);
-    }
-
-    private void HideConfirm()
-    {
-        if (_confirmGroup != null) _confirmGroup.SetActive(false);
-    }
-
-    /// <summary>「应用并退出」：先提交再关面板。</summary>
-    private void OnConfirmApplyClicked()
-    {
-        SettingsManager.Instance.CommitEdit();
-        ClosePanel();
-    }
-
-    /// <summary>
-    /// 「放弃改动」/ 无改动时直接退出。
-    /// 必须调 RevertEdit：按键重绑定是直接写在 InputActionAsset 上的，
-    /// 不像别的设置只躺在数据里，不回滚就会"没点应用但键位已经变了"。
-    /// </summary>
-    private void OnConfirmDiscardClicked()
-    {
-        SettingsManager.Instance.RevertEdit();
-        ClosePanel();
-    }
-
-    private void OnConfirmCancelClicked()
-    {
-        HideConfirm();
-    }
-
-    private void ClosePanel()
-    {
-        HideConfirm();
-        UIManager.Instance.PopPanel();
-    }
+    private void OnApplyClicked() { Intent?.Invoke(new SettingsIntent(SettingsAction.Apply)); }
+    private void OnResetClicked() { Intent?.Invoke(new SettingsIntent(SettingsAction.Reset)); }
+    private void OnReturnClicked() { Intent?.Invoke(new SettingsIntent(SettingsAction.Return)); }
+    private void OnConfirmApplyClicked() { Intent?.Invoke(new SettingsIntent(SettingsAction.ConfirmApply)); }
+    private void OnConfirmDiscardClicked() { Intent?.Invoke(new SettingsIntent(SettingsAction.ConfirmDiscard)); }
+    private void OnConfirmCancelClicked() { Intent?.Invoke(new SettingsIntent(SettingsAction.ConfirmCancel)); }
+    private void HideConfirm() { if (_confirmGroup != null) _confirmGroup.SetActive(false); }
 }

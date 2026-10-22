@@ -17,6 +17,17 @@ public static class RunBounds
     public const float WallThickness = 1f;
     /// <summary>墙高度（覆盖整张图足够）。</summary>
     public const float WallHeight = 400f;
+    public const float FallMargin = 20f;
+
+    /// <summary>以整张地图最低房间为基准，地下合法坐标不能被当成掉出地图。</summary>
+    public static float GetFallThreshold(MapLayout layout, float fallback = -20f)
+    {
+        if (layout == null || layout.Nodes == null) return fallback;
+        int minimum = int.MaxValue;
+        foreach (RoomNode node in layout.Nodes)
+            if (node != null) minimum = Mathf.Min(minimum, node.CellY);
+        return minimum == int.MaxValue ? fallback : minimum * RunMapConst.ChunkH - FallMargin;
+    }
 
     /// <summary>按 layout 的节点范围创建左右两面不可见静态墙。</summary>
     public static void Create(MapLayout layout, SpawnPoint spawnPoint)

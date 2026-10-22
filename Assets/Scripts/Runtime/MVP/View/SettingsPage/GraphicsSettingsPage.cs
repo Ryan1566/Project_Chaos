@@ -44,7 +44,7 @@ public class GraphicsSettingsPage : SettingsPageBase
 
     private void BindResolution()
     {
-        _options = ResolutionHelper.GetAvailableOptions();
+        _options = Editing.GetAvailableResolutions();
 
         string[] texts = new string[_options.Count];
         for (int i = 0; i < _options.Count; i++) texts[i] = _options[i].DisplayText;
@@ -64,21 +64,7 @@ public class GraphicsSettingsPage : SettingsPageBase
     /// <summary>存档里的分辨率在当前显示器上不存在时，吸附到最接近的一档。</summary>
     private void SnapUnavailableResolution()
     {
-        SettingsData data = SettingsManager.Instance.Pending;
-        if (data == null || _options == null || _options.Count == 0) return;
-
-        if (ResolutionHelper.IndexOf(_options, data.resolutionWidth, data.resolutionHeight) >= 0) return;
-
-        ResolutionOption closest = _options[Mathf.Clamp(
-            ResolutionHelper.IndexOfClosest(_options, data.resolutionWidth, data.resolutionHeight),
-            0, _options.Count - 1)];
-
-        ChaosLog.Info(LogChannel.Config,
-            "存档分辨率 " + data.resolutionWidth + "×" + data.resolutionHeight +
-            " 在当前显示器上不可用，已改为最接近的 " + closest.DisplayText);
-
-        data.resolutionWidth = closest.Width;
-        data.resolutionHeight = closest.Height;
+        Editing.SnapResolution(_options);
     }
 
     private void BindWindowMode()

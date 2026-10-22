@@ -108,7 +108,8 @@ public static class PlayerSpawner
         PlayerFallGuard guard = player.GetComponent<PlayerFallGuard>();
         if (guard == null) guard = player.AddComponent<PlayerFallGuard>();
         guard.respawnPoint = spawnPoint.transform;
-        guard.fallThresholdY = spawnPoint.transform.position.y - 20f;
+        guard.fallThresholdY = RunBounds.GetFallThreshold(RunMapBootstrap.CurrentLayout,
+            spawnPoint.transform.position.y - RunBounds.FallMargin);
         ChaosLog.Info(LogChannel.UI, "[局内] 掉落重生阈值 y < " + guard.fallThresholdY);
 
         ChaosLog.Success(LogChannel.UI,
@@ -335,6 +336,7 @@ public static class PlayerSpawner
             {
                 controller.followIndex = i + 1;
                 controller.memberId = runTeam[i + 1];
+                controller.fallThresholdY = RunBounds.GetFallThreshold(RunMapBootstrap.CurrentLayout);
                 //统一命名：Ally_{位序}(id={门客id}) —— 日志/来源全用它
                 ally.name = "Ally_" + (i + 1) + "(id=" + runTeam[i + 1] + ")";
             }

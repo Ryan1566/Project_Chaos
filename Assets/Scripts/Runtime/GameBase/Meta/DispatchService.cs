@@ -37,7 +37,7 @@ public class DispatchService : SingletonBase<DispatchService>
     /// <summary>可以出发：1~4 人 且 不在局内。</summary>
     public bool CanDepart
     {
-        get { return !_isInRun && _selected.Count >= MinTeamSize && _selected.Count <= MaxTeamSize; }
+        get { return !_isInRun && !RunSceneFlow.IsTransitioning && _selected.Count >= MinTeamSize && _selected.Count <= MaxTeamSize; }
     }
 
     /// <summary>存档里的本局队伍（出发时写入）。</summary>
@@ -123,22 +123,15 @@ public class DispatchService : SingletonBase<DispatchService>
     }
 
     /// <summary>
-    /// **出发**：写 `runTeam` → `runs++` → **就地**生成第 1 场景 → `IsInRun = true`。
-    /// 不切场景、不走 LoadingScene、不改 RunMap。
+    /// 出发：写 runTeam / runs；正式入口经 LoadingScene 进入 WorldScene，TestScene 保留就地原型。
+    /// 两条入口共用 RunEncounter，不修改 RunMap 生成器。
     /// </summary>
     public bool Depart(out string reason)
     {
         reason = null;
 
-        ChaosLog.Warn(LogChannel.UI, "[诊断] Depart 进入 frameCount=" + Time.frameCount + " id=" + GetHashCode() + " IsInRun=" + _isInRun + " 选中=" + _selected.Count);
-
-        //W3.1k：幂等 —— 未撤离则先自动撤离再继续（防重复生成）
-        if (_isInRun)
-        {
-            ChaosLog.Warn(LogChannel.UI, "[派遣] 检测到未撤离的局内状态，先自动撤离");
-            string autoReason;
-            ReturnToMeta(out autoReason);
-        }
+        if (_isInRun || RunSceneFlow.IsTransitioning)
+        { reason = "已经出发或正在切换场景，请先返回局外"; return false; }
         if (_selected.Count < MinTeamSize) { reason = "至少选择 " + MinTeamSize + " 位门客"; return false; }
         if (_selected.Count > MaxTeamSize) { reason = "队伍超过上限 " + MaxTeamSize; return false; }
 
@@ -161,14 +154,34 @@ public class DispatchService : SingletonBase<DispatchService>
         }
 
         SavePayload payload = MetaProgressService.Instance.Payload;
+        string beforeDeparture = JsonUtility.ToJson(payload);
         payload.runTeam = new List<uint>(_selected);
         payload.runs++;
 
         PlayerSpawner.CaptureOutsideCameraState();   //必须在生图前记局外相机尺寸
+        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "TestScene")
+        {
+            if (!MetaProgressService.Instance.SaveProgress(out reason))
+            {
+                JsonUtility.FromJsonOverwrite(beforeDeparture, payload);
+                return false;
+            }
+            _isInRun = true;
+            if (RunSceneFlow.Begin(_selected, out reason)) return true;
+            _isInRun = false;
+            JsonUtility.FromJsonOverwrite(beforeDeparture, payload);
+            string rollbackReason;
+            MetaProgressService.Instance.SaveProgress(out rollbackReason);
+            return false;
+        }
+        // 隐藏发生在生成 HUD 之前，避免把新建的局内 HUD 也一起隐藏。
+        if (UIManager.Instance != null) UIManager.Instance.HideAllPanelsForGameplay();
         //W3.1a：统一走 RunEncounter.EnterScene（清旧 → 生图 → 出生点 → 玩家 → 边界 → 敌人）
         if (!RunEncounter.EnterScene(StartSceneIndex, _selected))
         {
             reason = "就地生成局内场景失败（看 Console）";
+            JsonUtility.FromJsonOverwrite(beforeDeparture, payload);
+            if (UIManager.Instance != null) UIManager.Instance.RestoreAfterGameplay();
             return false;
         }
 
@@ -183,22 +196,30 @@ public class DispatchService : SingletonBase<DispatchService>
     /// <summary>**撤离 / 返回局外**：清掉就地生成的地图，`IsInRun = false`。</summary>
     public bool ReturnToMeta(out string reason)
     {
-        RunDepthHud.DisableAndDestroy();   //W4e：关闸 + 销毁
         reason = null;
+        if (RunSceneFlow.IsTransitioning) { reason = "场景切换中，请稍候"; return false; }
         if (!_isInRun)
         {
             reason = "当前不在局内";
             return false;
         }
 
+        RunEncounter.ApplyRunWounds(false);
+        if (!MetaProgressService.Instance.SaveProgress(out reason)) return false;
+        RunDepthHud.DisableAndDestroy();
+
         RunEncounter.Clear();
         PlayerSpawner.Clear();
 
-        //恢复进局前隐藏的局外 UI（集中在这里做：GM 的撤离按钮也走这条路）
-        if (UIManager.Instance != null) UIManager.Instance.RestoreAfterGameplay();
-
         PrototypeMapSpawner.Clear();
         _isInRun = false;
+
+        if (RunSceneFlow.IsFormalRun)
+        {
+            RunSceneFlow.ReturnToMeta();
+            return true;
+        }
+        if (UIManager.Instance != null) UIManager.Instance.RestoreAfterGameplay();
 
         ChaosLog.Info(LogChannel.Config, "[派遣] 已撤离局内：地图已清除，IsInRun=false");
 

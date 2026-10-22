@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using ChaosDebug;
 using UnityEngine;
@@ -177,7 +177,7 @@ public class KeybindBindingsPage : SettingsPageBase
 
     private void SetScheme(bool gamepad)
     {
-        SettingsData data = SettingsManager.Instance.Pending;
+        SettingsData data = Editing?.Pending;
         if (data == null) return;
 
         //页签只是 inputDevice 的一个视图：切键鼠写 Keyboard，切手柄就写回上次选的那个型号。
@@ -186,13 +186,13 @@ public class KeybindBindingsPage : SettingsPageBase
             ? (int)InputScheme.ModelToDevice(data.gamepadModel)
             : (int)InputDeviceType.Keyboard;
 
-        SettingsManager.Instance.NotifyPendingChanged();
+        Editing?.NotifyPendingChanged();
         RefreshAll();
     }
 
     private void SetGamepadModel(int model)
     {
-        SettingsData data = SettingsManager.Instance.Pending;
+        SettingsData data = Editing?.Pending;
         if (data == null) return;
 
         //型号组只在手柄页签下可见，所以点它必然是在手柄方案里。
@@ -201,7 +201,7 @@ public class KeybindBindingsPage : SettingsPageBase
         data.gamepadModel = model;
         data.inputDevice = (int)InputScheme.ModelToDevice(model);
 
-        SettingsManager.Instance.NotifyPendingChanged();
+        Editing?.NotifyPendingChanged();
         RefreshAll();
     }
 
@@ -255,20 +255,20 @@ public class KeybindBindingsPage : SettingsPageBase
     /// 文字与图标一次拿回来（BindingVisual）：两者都源于同一条控制路径，
     /// 分开取等于把路径解析两遍，迟早会出现"文字对了图标却查不到"。
     /// </summary>
-    private static void RefreshRowText(SettingRow_Keybind row, string actionName,
+    private void RefreshRowText(SettingRow_Keybind row, string actionName,
         InputManager.BindingKind kind, bool withMouseSlot, SettingsData data, string partName)
     {
         InputDeviceType device = (InputDeviceType)data.inputDevice;
 
         //手柄行的显示主题跟着当前手柄型号走（PS 显示 ✕○□△，Xbox 显示 A/B/X/Y）；
         //键盘格与鼠标格固定用键盘主题 —— 鼠标键名（左键/右键）本来就不分型号
-        InputManager.BindingVisual key = InputManager.Instance.GetBindingVisual(actionName, kind,
+        InputManager.BindingVisual key = Editing.GetBindingVisual(actionName, kind,
             kind == InputManager.BindingKind.Gamepad ? device : InputDeviceType.Keyboard, partName);
         row.SetKeyDisplay(key.Text, key.Icon, key.IconColor);
 
         if (withMouseSlot)
         {
-            InputManager.BindingVisual second = InputManager.Instance.GetBindingVisual(
+            InputManager.BindingVisual second = Editing.GetBindingVisual(
                 actionName, InputManager.BindingKind.Mouse, InputDeviceType.Keyboard, partName);
             row.SetSecondDisplay(second.Text, second.Icon, second.IconColor);
         }
@@ -347,7 +347,7 @@ public class KeybindBindingsPage : SettingsPageBase
     private void StartRebind(string actionName, InputManager.BindingKind kind,
         SettingRow_Keybind row, bool secondSlot, string partName)
     {
-        if (_rebindRoutine != null || InputManager.Instance.IsRebinding)
+        if (_rebindRoutine != null || Editing.IsRebinding)
         {
             //正常路径下点不到这里（等待期间整页的行与页签都锁着），
             //所以走到这说明有别的入口在发重绑定请求，值得留条日志
@@ -375,7 +375,7 @@ public class KeybindBindingsPage : SettingsPageBase
     private IEnumerator RebindRoutine(string actionName, InputManager.BindingKind kind,
         SettingRow_Keybind row, bool secondSlot, string partName)
     {
-        List<InputManager.RebindStep> steps = InputManager.Instance.GetRebindSteps(actionName, kind, partName);
+        List<InputManager.RebindStep> steps = Editing.GetRebindSteps(actionName, kind, partName);
         if (steps.Count == 0)
         {
             ChaosLog.Warn(LogChannel.Input,
@@ -408,7 +408,7 @@ public class KeybindBindingsPage : SettingsPageBase
             _stepFinished = false;
             _stepResult = InputManager.RebindResult.Aborted;
 
-            InputManager.Instance.BeginRebind(actionName, step.BindingIndex, kind, OnStepFinished);
+            Editing.BeginRebind(actionName, step.BindingIndex, kind, OnStepFinished);
 
             //等这一步收尾（采到键、按取消键、超时都会回调，所以这里不会永久卡住）
             while (!_stepFinished) yield return null;
@@ -476,7 +476,7 @@ public class KeybindBindingsPage : SettingsPageBase
     /// </summary>
     protected override void OnCancelPendingEdit()
     {
-        InputManager.Instance.CancelRebind();
+        Editing?.CancelRebind();
     }
 
     /// <summary>
@@ -495,7 +495,7 @@ public class KeybindBindingsPage : SettingsPageBase
         }
 
         ClearListeningState();
-        InputManager.Instance.CancelRebind();
+        Editing?.CancelRebind();
     }
 
     /// <summary>还原提示文案并解锁。停掉协程后必须显式走这一趟，否则行会停在锁定状态。</summary>
@@ -527,11 +527,11 @@ public class KeybindBindingsPage : SettingsPageBase
     /// </summary>
     private void ResetRow(string actionName, InputManager.BindingKind kind, bool withMouseSlot, string partName)
     {
-        bool any = InputManager.Instance.ResetBinding(actionName, kind, partName);
+        bool any = Editing.ResetBinding(actionName, kind, partName);
         if (withMouseSlot)
         {
             // |= 而不是 ||=：第二个调用必须照常执行（bool 的 |= 不短路，正好）
-            any |= InputManager.Instance.ResetBinding(actionName, InputManager.BindingKind.Mouse, partName);
+            any |= Editing.ResetBinding(actionName, InputManager.BindingKind.Mouse, partName);
         }
 
         if (!any) return;
@@ -546,19 +546,19 @@ public class KeybindBindingsPage : SettingsPageBase
     /// </summary>
     private void ResetScheme()
     {
-        SettingsData data = SettingsManager.Instance.Pending;
+        SettingsData data = Editing?.Pending;
         if (data == null) return;
 
         bool gamepad = InputScheme.IsGamepad(data.inputDevice);
         if (gamepad)
         {
-            InputManager.Instance.ClearOverridesFor(InputManager.BindingKind.Gamepad);
+            Editing.ClearOverridesFor(InputManager.BindingKind.Gamepad);
         }
         else
         {
             //键鼠方案横跨两个组：键盘格在 Keyboard、鼠标格在 Mouse，重置要一起覆盖到
-            InputManager.Instance.ClearOverridesFor(InputManager.BindingKind.Keyboard);
-            InputManager.Instance.ClearOverridesFor(InputManager.BindingKind.Mouse);
+            Editing.ClearOverridesFor(InputManager.BindingKind.Keyboard);
+            Editing.ClearOverridesFor(InputManager.BindingKind.Mouse);
         }
 
         SyncOverridesToPending();
@@ -569,13 +569,13 @@ public class KeybindBindingsPage : SettingsPageBase
     }
 
     /// <summary>把 InputActionAsset 当前的绑定覆盖同步进暂存区，并让「应用」按钮亮起来。</summary>
-    private static void SyncOverridesToPending()
+    private void SyncOverridesToPending()
     {
-        SettingsData data = SettingsManager.Instance.Pending;
+        SettingsData data = Editing?.Pending;
         if (data == null) return;
 
-        data.inputOverridesJson = InputManager.Instance.SaveOverridesJson();
-        SettingsManager.Instance.NotifyPendingChanged();
+        data.inputOverridesJson = Editing.SaveOverridesJson();
+        Editing?.NotifyPendingChanged();
     }
 
     // ══════════════════ 查找节点 ══════════════════

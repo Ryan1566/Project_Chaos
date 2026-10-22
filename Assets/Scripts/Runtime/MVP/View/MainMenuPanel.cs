@@ -1,16 +1,18 @@
-using ChaosDebug;
-using System.Collections;
-using System.Collections.Generic;
+using System;
+using Chaos.MVP.Model.Startup;
+using Chaos.MVP.Presenter.Startup;
 using UnityEngine;
 using UnityEngine.UI;
 
-//主菜单面板
-public class MainMenuPanel : BasePanel
+public class MainMenuPanel : BasePanel, IMainMenuView
 {
     private Button _startBtn;
     private Button _updateBtn;
     private Button _settingBtn;
     private Button _quitBtn;
+    private MainMenuModel _model;
+    private MainMenuPresenter _presenter;
+    public event Action<MainMenuIntent> Intent;
 
     private void Awake()
     {
@@ -18,49 +20,29 @@ public class MainMenuPanel : BasePanel
         _updateBtn = transform.GetChild(1).Find("UpdateBtn").GetComponent<Button>();
         _settingBtn = transform.GetChild(1).Find("SettingBtn").GetComponent<Button>();
         _quitBtn = transform.GetChild(1).Find("QuitBtn").GetComponent<Button>();
-
         _startBtn.onClick.AddListener(StartGame);
-        _startBtn.onClick.AddListener(UpdateEnter);
+        _updateBtn.onClick.AddListener(UpdateEnter);
         _settingBtn.onClick.AddListener(SettingEnter);
         _quitBtn.onClick.AddListener(QuitGame);
     }
-
     public override void OnEnter()
     {
-        base.OnEnter();
+        _presenter?.Dispose();
+        _model?.Dispose();
+        _model = new MainMenuModel();
+        _presenter = new MainMenuPresenter(_model);
+        _presenter.Attach(this);
     }
-
     public override void OnExit()
     {
-        base.OnExit();
+        _presenter?.Dispose();
+        _presenter = null;
+        _model?.Dispose();
+        _model = null;
     }
-
-    /// <summary>
-    /// 开始游戏
-    /// </summary>
-    void StartGame()
-    {
-        uiManager.PushPanel(PanelType.SLPanel);
-        ChaosLog.Info("点击开始游戏按钮");
-    }
-
-    /// <summary>
-    /// 更新公告
-    /// </summary>
-    void UpdateEnter()
-    {
-        ChaosLog.Info("点击更新公告按钮");
-    }
-
-    ///设置按钮
-    void SettingEnter()
-    {
-        UIManager.Instance.PushPanel(PanelType.SettingPanel);
-    }
-
-    ///退出游戏
-    void QuitGame()
-    {
-        Application.Quit();
-    }
+    private void OnDestroy() { OnExit(); }
+    private void StartGame() { Intent?.Invoke(MainMenuIntent.Start); }
+    private void UpdateEnter() { Intent?.Invoke(MainMenuIntent.Updates); }
+    private void SettingEnter() { Intent?.Invoke(MainMenuIntent.Settings); }
+    private void QuitGame() { Intent?.Invoke(MainMenuIntent.Quit); }
 }

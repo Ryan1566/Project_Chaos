@@ -28,6 +28,14 @@ namespace LocalizationSystem
 
         protected override void Awake()
         {
+            // EnterScene can instantiate a duplicate Managers root before its guard destroys it.
+            // Keep the persistent manager as the singleton, including during scene return.
+            var existing = GetInstance();
+            if (existing != null && existing != this)
+            {
+                Destroy(gameObject);
+                return;
+            }
             base.Awake();
             Initialize();
         }

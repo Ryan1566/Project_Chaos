@@ -1,26 +1,34 @@
+using System;
+using Object = UnityEngine.Object;
+using Chaos.MVP.Presenter.Gameplay;
+using Chaos.MVP.Model.Gameplay;
 using System.Collections.Generic;
 using ChaosDebug;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-/// <summary>
-/// 局内结算面板（W3.2h 修整版）。
-///
-/// **本轮修的两个 UI 缺陷**：
-/// 1. 按钮显示原始本地化 key（`ui_settlement_btn_Confirm`）→ 面板内**全部文案改纯中文**，
-///    **不再挂 `LocalizedText`**（与族人/库存面板一致），杜绝 key 被回填；
-/// 2. 布局散、标题被 GM 悬浮按钮压住 → 全部内容放进**居中的 800×600 内容区**：
-///    标题贴顶、提示其下、列表中部、按钮贴底居中。
-///
-/// 结算推进逻辑与 W3.2e 完全一致（未改）：通关按 `带出 → MarkBossCleared → MarkSceneCleared(3)
-/// → clears+1 → TryAdvanceDepth → maxClearedDepth → TryAdvanceEra → Save(3) → ReturnToMeta`；
-/// 失败只写保留条目 + ReturnToMeta；`_settled` 幂等。**存档用槽 3，不动槽 1**。
-/// </summary>
-public class RunSettlementPanel : BasePanel
+/// <summary>Passive RunSettlement view: builds controls, renders snapshots, and sends typed intents to its presenter.</summary>
+public class RunSettlementPanel : BasePanel, IGameplayView<SettlementState>
 {
-    private static bool _settled;
-    private static bool _winMode;
+    private void OnDestroy() { OnExit(); }
+
+    public override void OnExit() { _presenter?.Dispose(); _presenter = null; }
+
+    public event Action<PanelIntent> Intent;
+    private SettlementPresenter _presenter;
+    private void EnsurePresenter()
+    {
+        if (_presenter != null && !_presenter.IsDisposed) return;
+        _presenter = SettlementPresenter.ForCurrentRun();
+        _presenter.Attach(this);
+    }
+    private void Send(PanelAction action, uint id = 0)
+    {
+        if (!IsShowing) return;
+        EnsurePresenter();
+        Intent?.Invoke(new PanelIntent(action, id));
+    }
 
     private const float PanelWidth = 800f;
     private const float PanelHeight = 600f;
@@ -32,21 +40,16 @@ public class RunSettlementPanel : BasePanel
     private TMP_FontAsset _font;
     private bool _built;
 
-    private readonly List<uint> _allItemIds = new List<uint>();
-    private readonly List<uint> _allCounts = new List<uint>();
-    private readonly HashSet<uint> _selected = new HashSet<uint>();
-    private readonly List<uint> _retained = new List<uint>();
-
     public static void Open(bool win)
     {
-        _winMode = win;
-        _settled = false;
+        SettlementPresenter.Begin(win);
         if (UIManager.Instance == null) return;
 
         //缺陷B 修复：局内 Canvas 被隐藏 → 先恢复再加面板
         UIManager.Instance.RestoreAfterGameplay();
         RunDepthHud.SetVisible(false);   //W4e：结算时隐藏 HUD
         RunTeamHud.SetVisible(false);    //W3.3：结算隐藏队伍血条
+        RunTerrainToast.DisableAndDestroy();
         UIManager.Instance.PushPanel(PanelType.RunSettlementPanel);
 
         RunSettlementPanel panel = Object.FindFirstObjectByType<RunSettlementPanel>(FindObjectsInactive.Include);
@@ -111,6 +114,11 @@ public class RunSettlementPanel : BasePanel
 
         //提示（标题下方）
         _hint = MakeText(boxRect, "Hint", "", 20f, new Color(1f, 0.85f, 0.3f, 1f));
+        _hint.enableWordWrapping = true;
+        _hint.enableAutoSizing = true;
+        _hint.fontSizeMin = 16f;
+        _hint.fontSizeMax = 20f;
+        _hint.overflowMode = TextOverflowModes.Ellipsis;
         RectTransform hintRect = (RectTransform)_hint.transform;
         hintRect.anchorMin = new Vector2(0f, 1f);
         hintRect.anchorMax = new Vector2(1f, 1f);
@@ -144,76 +152,8 @@ public class RunSettlementPanel : BasePanel
 
     private void Refresh()
     {
-        PauseWorld(true);
-        //W3.3：失败 = 全员（受控角色 + 全部门客）倒下
-        if (_title != null) _title.text = _winMode ? "局内通关" : "全员倒下 · 本局失败";
-
-        CollectItems();
-        if (_hint != null)
-        {
-            if (_winMode)
-                _hint.text = "可带出 " + MetaProgressService.Instance.DeployCap + " 件（已选 " + _selected.Count + "）";
-            else
-                _hint.text = "失败：保留 50% 掉落（" + _allItemIds.Count + " 条 → 保留 " + _retained.Count + " 条："
-                    + RetainedNames() + "）";
-        }
-
-        //W3.3：重伤行（失败 = 全部门客；通关/撤离 = 仅倒地门客）
-        if (_woundLine != null)
-            _woundLine.text = RunEncounter.LastWoundCount > 0
-                ? RunEncounter.LastWoundCount + " 名门客重伤（30s）"
-                : "";
-
-        ClearList();
-        float y = -4f;
-        for (int i = 0; i < _allItemIds.Count; i++)
-        {
-            uint id = _allItemIds[i];
-            uint count = _allCounts[i];
-            bool selected = _selected.Contains(id);
-            bool retained = _retained.Contains(id);
-
-            string line = (selected ? "【已选】" : (retained ? "【保留】" : "　　")) + "物品 " + id + " ×" + count;
-            Color color = selected || retained ? new Color(0.35f, 0.88f, 0.45f, 1f) : new Color(0.92f, 0.93f, 0.96f, 1f);
-            MakeRow(line, color, y);
-            if (_winMode) MakeSelectButton(id, selected, y);
-            y -= 42f;
-        }
-    }
-
-    private void CollectItems()
-    {
-        _allItemIds.Clear(); _allCounts.Clear(); _retained.Clear();
-        List<RunInventory.Stack> stacks = RunInventory.Stacks;
-        for (int i = 0; i < stacks.Count; i++)
-        {
-            _allItemIds.Add(stacks[i].itemId);
-            _allCounts.Add(stacks[i].count);
-        }
-
-        if (!_winMode && _allItemIds.Count > 0)
-        {
-            int keep = _allItemIds.Count / 2;
-            var indices = new List<int>();
-            for (int i = 0; i < _allItemIds.Count; i++) indices.Add(i);
-            var random = new System.Random(20261018);
-            for (int i = 0; i < keep; i++)
-            {
-                int pick = random.Next(0, indices.Count);
-                _retained.Add(_allItemIds[indices[pick]]);
-                indices.RemoveAt(pick);
-            }
-        }
-
-        var alive = new HashSet<uint>(_allItemIds);
-        _selected.RemoveWhere(x => !alive.Contains(x));
-    }
-
-    private string RetainedNames()
-    {
-        var sb = new System.Text.StringBuilder();
-        for (int i = 0; i < _retained.Count; i++) sb.Append(i == 0 ? "" : "/").Append(_retained[i]);
-        return sb.Length == 0 ? "无" : sb.ToString();
+        if (_presenter == null || _presenter.IsDisposed) EnsurePresenter();
+        else _presenter.Refresh();
     }
 
     private void MakeRow(string text, Color color, float y)
@@ -227,6 +167,8 @@ public class RunSettlementPanel : BasePanel
         rect.offsetMin = new Vector2(8f, y - 34f);
         rect.offsetMax = new Vector2(-150f, y);
         label.alignment = TextAlignmentOptions.Left;
+        label.enableWordWrapping = false;
+        label.overflowMode = TextOverflowModes.Ellipsis;
     }
 
     private void MakeSelectButton(uint itemId, bool selected, float y)
@@ -252,95 +194,18 @@ public class RunSettlementPanel : BasePanel
 
     private void ToggleSelect(uint itemId)
     {
-        if (_selected.Contains(itemId)) { _selected.Remove(itemId); Refresh(); return; }
-
-        int cap = MetaProgressService.Instance.DeployCap;
-        if (_selected.Count >= cap)
-        {
-            if (_hint != null) _hint.text = "最多带出 " + cap + " 件";
-            ChaosLog.Warn(LogChannel.Config, "[结算] 超上限：最多带出 " + cap + " 件，拒绝勾选物品 " + itemId);
-            return;
-        }
-        _selected.Add(itemId);
-        Refresh();
+        Send(PanelAction.Toggle, itemId);
     }
 
     // ══════════════════ 结算推进（与 W3.2e 一致，未改）══════════════════
     private void Confirm()
     {
-        if (_settled)
-        {
-            ChaosLog.Warn(LogChannel.Config, "[结算] 已结算过（幂等），忽略重复确认");
-            return;
-        }
-        _settled = true;
-
-        MetaProgressService meta = MetaProgressService.Instance;
-        SavePayload payload = meta.Payload;
-
-        if (!_winMode)
-        {
-            int added = 0;
-            for (int i = 0; i < _allItemIds.Count; i++)
-            {
-                if (!_retained.Contains(_allItemIds[i])) continue;
-                string reason;
-                if (InventoryService.Instance.AddItem(_allItemIds[i], _allCounts[i], out reason)) added++;
-                else ChaosLog.Warn(LogChannel.Config, "[结算] 失败态保留条目入库失败：" + reason);
-            }
-            ChaosLog.Success(LogChannel.Config, "[结算] 失败结算：保留 " + _retained.Count + " 条，实际入库 " + added
-                + " 条；进度不变（clears=" + payload.clears + " depth=" + meta.Depth + " era=" + meta.Era + "）");
-            Finish();
-            return;
-        }
-
-        int exported = 0;
-        foreach (uint id in _selected)
-        {
-            int index = _allItemIds.IndexOf(id);
-            if (index < 0) continue;
-            string reason;
-            if (InventoryService.Instance.AddItem(id, _allCounts[index], out reason)) exported++;
-            else ChaosLog.Warn(LogChannel.Config, "[结算] 带出入库失败：" + reason);
-        }
-
-        meta.MarkBossCleared();
-        meta.MarkSceneCleared(3);
-        payload.clears++;
-        meta.TryAdvanceDepth();
-        if (payload.depth > payload.maxClearedDepth) payload.maxClearedDepth = payload.depth;
-        meta.TryAdvanceEra();
-
-        bool saved = SaveSlotService.Instance.Save(3, payload);
-        ChaosLog.Success(LogChannel.Config, "[结算] 通关结算：带出 " + exported + "/" + _selected.Count + " 件；clears="
-            + payload.clears + " depth=" + payload.depth + " maxClearedDepth=" + payload.maxClearedDepth
-            + " era=" + payload.era + " Save(3)=" + saved);
-        Finish();
+        Send(PanelAction.Confirm);
     }
 
     private void DiscardAll()
     {
-        if (_settled) { ChaosLog.Warn(LogChannel.Config, "[结算] 已结算过（幂等），忽略"); return; }
-        _selected.Clear();
-        Confirm();
-    }
-
-    private void Finish()
-    {
-        PauseWorld(false);
-        RunInventory.Clear();
-        string reason;
-        DispatchService.Instance.ReturnToMeta(out reason);
-        Hide();
-    }
-
-    private static void PauseWorld(bool paused)
-    {
-        foreach (PlayerLocomotion loco in Object.FindObjectsOfType<PlayerLocomotion>()) loco.enabled = !paused;
-        foreach (PlayerAttack attack in Object.FindObjectsOfType<PlayerAttack>()) attack.enabled = !paused;
-        foreach (AllyController ally in Object.FindObjectsOfType<AllyController>()) ally.enabled = !paused;
-        foreach (EnemyPlaceholder enemy in Object.FindObjectsOfType<EnemyPlaceholder>()) enemy.enabled = !paused;
-        ChaosLog.Info(LogChannel.UI, "[结算] 世界 " + (paused ? "已暂停" : "已恢复"));
+        Send(PanelAction.Discard);
     }
 
     // ── 通用小工具（面板内文案一律纯中文，不挂 LocalizedText）──
@@ -394,5 +259,22 @@ public class RunSettlementPanel : BasePanel
     {
         Transform c = transform.Find(n);
         return c == null ? null : c.GetComponent<TextMeshProUGUI>();
+    }
+
+    public void ClosePanel() { if (UIManager.Instance != null) UIManager.Instance.PopPanel(); else Hide(); }
+    public void ShowMessage(string message, bool success) { if (_hint != null) _hint.text = message; }
+    public void Render(SettlementState state)
+    {
+        if (_title != null) _title.text = state.Title;
+        if (_hint != null) _hint.text = state.Hint;
+        if (_woundLine != null) _woundLine.text = state.Wounds;
+        ClearList();
+        float y = -4f;
+        foreach (var row in state.Rows)
+        {
+            MakeRow(row.Text, row.Tone == TextTone.Success ? new Color(0.35f, 0.88f, 0.45f, 1f) : new Color(0.92f, 0.93f, 0.96f, 1f), y);
+            if (state.Win) MakeSelectButton(row.Id, row.Selected, y);
+            y -= 42f;
+        }
     }
 }

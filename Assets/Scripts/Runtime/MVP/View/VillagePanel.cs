@@ -1,3 +1,7 @@
+using System;
+using Object = UnityEngine.Object;
+using Chaos.MVP.Presenter.Gameplay;
+using Chaos.MVP.Model.Gameplay;
 using System.Collections.Generic;
 using ChaosDebug;
 using LocalizationSystem;
@@ -5,12 +9,28 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-/// <summary>
-/// 村庄面板（W1b）：4 个建筑格（名称/等级/状态/倒计时/按钮）+ 顶部资源栏 + 取消返还提示。
-/// 按钮按状态置灰（未建造→建造；建造中→取消；已建成→升级/收取；满级→只收取）。
-/// </summary>
-public class VillagePanel : BasePanel
+/// <summary>Passive Village view: builds controls, renders snapshots, and sends typed intents to its presenter.</summary>
+public class VillagePanel : BasePanel, IGameplayView<VillageState>
 {
+    private void OnDestroy() { OnExit(); }
+
+    public override void OnExit() { _presenter?.Dispose(); _presenter = null; }
+
+    public event Action<PanelIntent> Intent;
+    private VillagePresenter _presenter;
+    private void EnsurePresenter()
+    {
+        if (_presenter != null && !_presenter.IsDisposed) return;
+        _presenter = new VillagePresenter();
+        _presenter.Attach(this);
+    }
+    private void Send(PanelAction action, uint id = 0)
+    {
+        if (!IsShowing) return;
+        EnsurePresenter();
+        Intent?.Invoke(new PanelIntent(action, id));
+    }
+
     private static readonly Color NormalColor = new Color(0.92f, 0.93f, 0.96f, 1f);
     private static readonly Color DimColor = new Color(0.72f, 0.76f, 0.82f, 1f);
     private static readonly Color WarnColor = new Color(1.00f, 0.72f, 0.25f, 1f);
@@ -39,47 +59,13 @@ public class VillagePanel : BasePanel
 
     private void Refresh()
     {
-        if (_title != null) ApplyLocalized(_title, "ui_village_title", "村庄");
-
-        VillageService svc = VillageService.Instance;
-        svc.EnsureLoaded();
-
-        if (_resources != null)
-            ApplyLocalized(_resources, "ui_village_resources",
-                "物资 " + InventoryService.Instance.GetResource(InventoryService.ResourceKind.Goods)
-                + "　　材料 " + InventoryService.Instance.GetResource(InventoryService.ResourceKind.Material)
-                + "　　图纸 " + InventoryService.Instance.GetResource(InventoryService.ResourceKind.Blueprint)
-                + "　　钱财 " + InventoryService.Instance.GetResource(InventoryService.ResourceKind.Money));
-
-        if (_hint != null)
-            ApplyLocalized(_hint, "ui_village_hint",
-                svc.IsQueueBusy ? "建造队列忙（同时只能建/升 1 个）——取消建造返还 50%" : "");
-
-        ClearRows();
-
-        uint[] ids = { 2001u, 2002u, 2003u, 2004u };
-        for (int i = 0; i < ids.Length; i++) AddBuildingRow(i, ids[i]);
+        if (_presenter == null || _presenter.IsDisposed) EnsurePresenter();
+        else _presenter.Refresh();
     }
 
-    private void AddBuildingRow(int index, uint buildingId)
+    private void AddBuildingRow(int index, TextRow row)
     {
         if (_content == null) return;
-        VillageService svc = VillageService.Instance;
-        BuildingSave save = svc.Find(buildingId);
-        VillageService.BuildingState state = svc.GetState(buildingId);
-        BuildingConfig def = svc.GetDef(buildingId, save == null ? 1u : save.level);
-
-        string name = def == null ? ("建筑" + buildingId) : def.NameKey;
-        string stateText;
-        switch (state)
-        {
-            case VillageService.BuildingState.NotBuilt: stateText = "未建造"; break;
-            case VillageService.BuildingState.Building: stateText = "建造中 剩 " + save.remainSeconds + "s"; break;
-            case VillageService.BuildingState.Built: stateText = "已建成 Lv" + save.level; break;
-            case VillageService.BuildingState.Upgradable: stateText = "已建成 Lv" + save.level + "（可升级）"; break;
-            default: stateText = "已满级 Lv" + save.level; break;
-        }
-
         float y = -8f - index * 76f;
 
         GameObject go = new GameObject("Row" + index, typeof(RectTransform));
@@ -94,34 +80,13 @@ public class VillagePanel : BasePanel
         TextMeshProUGUI label = go.AddComponent<TextMeshProUGUI>();
         label.font = _font;
         label.fontSize = 22f;
-        label.color = state == VillageService.BuildingState.Building ? WarnColor : NormalColor;
+        label.color = row.Tone == TextTone.Warning ? WarnColor : NormalColor;
         label.alignment = TextAlignmentOptions.Left;
         label.raycastTarget = false;
-        label.text = name + "　" + stateText;
+        label.text = row.Text;
 
-        //主按钮
-        string actionLabel;
-        bool actionEnabled = true;
-        System.Action action;
-        switch (state)
-        {
-            case VillageService.BuildingState.NotBuilt:
-                actionLabel = "建造"; action = () => { string why; VillageService.Instance.StartBuild(buildingId, out why); LogWhy("建造", why); Refresh(); };
-                break;
-            case VillageService.BuildingState.Building:
-                actionLabel = "取消（返 50%）"; action = () => { uint refund; string why; VillageService.Instance.CancelBuild(buildingId, out refund, out why); Debug.Log("[村庄] 取消 " + buildingId + "，返还 " + refund); Refresh(); };
-                break;
-            case VillageService.BuildingState.Upgradable:
-                actionLabel = "升级"; action = () => { string why; VillageService.Instance.StartUpgrade(buildingId, out why); LogWhy("升级", why); Refresh(); };
-                break;
-            case VillageService.BuildingState.MaxLevel:
-                actionLabel = "收取"; action = () => { uint amt; string why; VillageService.Instance.Harvest(buildingId, out amt, out why); Debug.Log("[村庄] 收取 " + buildingId + " → " + amt); Refresh(); };
-                break;
-            default:
-                actionLabel = "收取"; action = () => { uint amt; string why; VillageService.Instance.Harvest(buildingId, out amt, out why); Debug.Log("[村庄] 收取 " + buildingId + " → " + amt); Refresh(); };
-                break;
-        }
-        CreateButton("Btn_" + buildingId, actionLabel, new Vector2(0f, -34f), new Vector2(180f, 30f), actionEnabled, action, rect);
+        CreateButton("Btn_" + row.Id, row.ActionLabel, new Vector2(0f, -34f), new Vector2(180f, 30f), row.Enabled,
+            () => Send(row.Action, row.Id), rect);
     }
 
     private static void LogWhy(string what, string why)
@@ -208,7 +173,7 @@ public class VillagePanel : BasePanel
         tmp.font = _font; tmp.fontSize = 22f; tmp.color = NormalColor;
         tmp.alignment = TextAlignmentOptions.Center; tmp.raycastTarget = false;
         ApplyLocalized(tmp, "ui_common_close", "关闭");
-        go.GetComponent<Button>().onClick.AddListener(() => Hide());
+        go.GetComponent<Button>().onClick.AddListener(() => Send(PanelAction.Close));
     }
 
     private static void ApplyLocalized(TextMeshProUGUI label, string key, string fallback)
@@ -218,5 +183,16 @@ public class VillagePanel : BasePanel
         LocalizedText loc = label.GetComponent<LocalizedText>();
         if (loc == null) loc = label.gameObject.AddComponent<LocalizedText>();
         loc.localizationKey = key; loc.autoUpdateOnStart = false; loc.listenToLanguageChange = false;
+    }
+
+    public void ClosePanel() { if (UIManager.Instance != null) UIManager.Instance.PopPanel(); else Hide(); }
+    public void ShowMessage(string message, bool success) { if (_hint != null) _hint.text = message; }
+    public void Render(VillageState state)
+    {
+        if (_title != null) ApplyLocalized(_title, "ui_village_title", "村庄");
+        if (_resources != null) _resources.text = state.Resources;
+        if (_hint != null) _hint.text = state.Hint;
+        ClearRows();
+        for (int i = 0; i < state.Rows.Count; i++) AddBuildingRow(i, state.Rows[i]);
     }
 }

@@ -1,4 +1,5 @@
 using ChaosDebug;
+using LocalizationSystem;
 using TMPro;
 using UnityEngine;
 
@@ -24,40 +25,50 @@ public partial class GMPanel
     {
         AddHint(page, "W5.3（M5）：市场只做“资源 ↔ 物品兑换”——每次买 / 卖各 1 个，货币只认钱财；"
             + "价格全部来自 Item 表的 BuyPrice / SellPrice（0 = 不可交易）。买入失败（格位满 / 叠加满）会退还钱财。");
+        GameplayText.Bind(page.Find("Hint").GetComponent<TextMeshProUGUI>(), "gm_market_hint",
+            "每次买卖 1 个，使用钱财交易。价格来自 Item 配置，买入失败时退还钱财。");
 
         //不用 AddPanelButton：它只做 PushPanel，而面板已在栈顶时 PushPanel 会提前 return（不刷新），
         //于是"关掉 GM 再打开市场"会看到旧的钱财/持有。MarketPanel.Open() 里带了一次显式刷新。
-        AddActionButton(page, "打开市场面板", () =>
+        var openButton = AddActionButton(page, "打开市场面板", () =>
         {
             MarketPanel.Open();
             ClosePanel();   //常规面板盖上来之后 GM 面板就没用了，收掉免得两层 UI 压在一起
         });
+        GameplayText.Bind(openButton.GetComponentInChildren<TextMeshProUGUI>(), "gm_market_open", "打开市场面板");
 
-        AddActionButton(page, "打印价格表", () =>
+        var pricesButton = AddActionButton(page, "打印价格表", () =>
         {
             string text = MarketService.Instance.DumpPrices();
             Debug.Log(text);
             SetMarketStatus(text);
         });
+        GameplayText.Bind(pricesButton.GetComponentInChildren<TextMeshProUGUI>(), "gm_market_prices", "打印价格表");
 
-        AddActionButton(page, "+500 钱财", () =>
+        var moneyButton = AddActionButton(page, "+500 钱财", () =>
         {
             uint now = InventoryService.Instance.AddResource(InventoryService.ResourceKind.Money, 500u);
-            string text = "[市场] 已 +500 钱财 → 当前钱财 " + now
-                + "（局外库存格位 " + InventoryService.Instance.UsedSlots + "/" + InventoryService.Instance.TotalSlots + "）";
+            string text = GameplayText.Text("gm_market_added_money", "[市场] 已 +500 钱财，当前钱财 {0}（库存格位 {1}/{2}）",
+                now, InventoryService.Instance.UsedSlots, InventoryService.Instance.TotalSlots);
             Debug.Log(text);
             SetMarketStatus(text);
         });
+        GameplayText.Bind(moneyButton.GetComponentInChildren<TextMeshProUGUI>(), "gm_market_add_money", "+500 钱财");
 
         _marketStatus = CreateStatusLabel(page);
-        SetMarketStatus("[市场] 当前钱财 " + InventoryService.Instance.GetResource(InventoryService.ResourceKind.Money)
-            + "｜库存格位 " + InventoryService.Instance.UsedSlots + "/" + InventoryService.Instance.TotalSlots
-            + "\n点【打印价格表】可核对 Index / BuyPrice / SellPrice 与“卖价 = 买价 50%”。");
+        string[] args = { InventoryService.Instance.GetResource(InventoryService.ResourceKind.Money).ToString(),
+            InventoryService.Instance.UsedSlots.ToString(), InventoryService.Instance.TotalSlots.ToString() };
+        GameplayText.Bind(_marketStatus, "gm_market_status", "[市场] 当前钱财 {0}｜库存格位 {1}/{2}\n点【打印价格表】核对买卖价格。", args);
     }
 
     private void SetMarketStatus(string text)
     {
-        if (_marketStatus != null) _marketStatus.text = text;
+        if (_marketStatus != null)
+        {
+            LocalizedText localized = _marketStatus.GetComponent<LocalizedText>();
+            if (localized != null) localized.localizationKey = "";
+            _marketStatus.text = text;
+        }
         ChaosLog.Info(LogChannel.UI, "[GM/市场] " + text);
     }
 }

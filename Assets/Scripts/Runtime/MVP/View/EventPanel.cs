@@ -1,29 +1,32 @@
+using System;
+using Object = UnityEngine.Object;
+using Chaos.MVP.Presenter.Gameplay;
+using Chaos.MVP.Model.Gameplay;
 using System.Collections.Generic;
 using ChaosDebug;
+using LocalizationSystem;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-/// <summary>
-/// 剧情事件面板（M4 / W5.1）—— 居中 800×600 内容区：**标题 + 正文 + 1~3 个选项 + 关闭**。
-///
-/// ══════════════ 文案 ══════════════
-/// **纯中文、不挂 `LocalizedText`**（与族人/库存/结算面板一致 —— 挂 key 而本地化表里没有会回填成 key 本身）。
-/// 标题/正文直接来自 `EventConfig.TitleText` / `BodyText`（中文原文，见 16_剧情事件.md §7.1）。
-///
-/// ══════════════ 队列行为（§3.6）══════════════
-/// 事件队列由 <see cref="EventService"/> 持有；本面板**只显示队首**：
-/// * 选一个选项 → 立刻结算奖励（资源→物品→门客→信心）→ 显示逐条结果 →「继续」；
-/// * 「继续」/「关闭」→ `MarkFired`（一次性写 `firedEvents`）→ 队列非空就刷成下一个，空则关面板；
-/// * 标题旁「还有 N 个事件」= 队首之后还剩几个。
-///
-/// ══════════════ 为什么内容运行时构建 ══════════════
-/// prefab 只提供根节点（Image + CanvasGroup + UIPanelAnimator + BasePanel 子类），
-/// 布局全部在 <see cref="BuildUi"/> 里拼 —— 选项数 1~3 是表驱动的，prefab 里写死三个按钮反而要额外隐藏逻辑。
-/// prefab 自带的左上角 `Title` 在运行时隐藏（会被 GM 悬浮按钮压住，与局内结算面板同一处理）。
-/// </summary>
-public class EventPanel : BasePanel
+/// <summary>Passive Event view: builds controls, renders snapshots, and sends typed intents to its presenter.</summary>
+public class EventPanel : BasePanel, IGameplayView<EventState>
 {
+    public event Action<PanelIntent> Intent;
+    private EventPresenter _presenter;
+    private void EnsurePresenter()
+    {
+        if (_presenter != null && !_presenter.IsDisposed) return;
+        _presenter = new EventPresenter();
+        _presenter.Attach(this);
+    }
+    private void Send(PanelAction action, uint id = 0)
+    {
+        if (!IsShowing) return;
+        EnsurePresenter();
+        Intent?.Invoke(new PanelIntent(action, id));
+    }
+
     private const float PanelWidth = 800f;
     private const float PanelHeight = 600f;
 
@@ -38,6 +41,7 @@ public class EventPanel : BasePanel
     private RectTransform _optionArea;
     private TMP_FontAsset _font;
     private bool _built;
+    private LocalizationManager _localization;
 
     /// <summary>是否处于"已选完、等玩家点继续"的状态。</summary>
     private bool _showingResult;
@@ -63,10 +67,25 @@ public class EventPanel : BasePanel
     public override void OnEnter()
     {
         BuildUi();
-        _showingResult = false;
-        _lastResult = "";
+        _localization = LocalizationManager.GetInstance();
+        if (_localization != null)
+        {
+            _localization.OnLanguageChanged.RemoveListener(OnLanguageChanged);
+            _localization.OnLanguageChanged.AddListener(OnLanguageChanged);
+        }
+
         Refresh();
     }
+
+    public override void OnExit()
+    {
+        if (_localization != null) _localization.OnLanguageChanged.RemoveListener(OnLanguageChanged);
+        _presenter?.Dispose();
+        _presenter = null;
+    }
+
+    private void OnDestroy() { OnExit(); }
+    private void OnLanguageChanged(LanguageType language) { Refresh(); }
 
     // ══════════════════ UI 构建（居中 800×600）══════════════════
 
@@ -95,7 +114,7 @@ public class EventPanel : BasePanel
         bg.color = new Color(0.10f, 0.11f, 0.14f, 0.98f);
         bg.raycastTarget = true;
 
-        //标题（顶部居中，纯中文）
+        //标题（顶部居中）
         _title = MakeText(boxRect, "Title2", "", 34f, new Color(0.96f, 0.97f, 1f, 1f));
         RectTransform titleRect = (RectTransform)_title.transform;
         titleRect.anchorMin = new Vector2(0f, 1f);
@@ -148,46 +167,15 @@ public class EventPanel : BasePanel
         //关闭按钮（右上角）
         MakeCornerButton(boxRect, "Btn_Close", "×", OnCloseClicked);
 
-        ChaosLog.Info(LogChannel.UI, "[剧情事件] 面板 UI 已构建（居中 " + PanelWidth + "×" + PanelHeight + "，纯中文，无 LocalizedText）");
+        ChaosLog.Info(LogChannel.UI, "[剧情事件] 面板 UI 已构建（居中 " + PanelWidth + "×" + PanelHeight + "，支持本地化）");
     }
 
     // ══════════════════ 刷新（队首事件）══════════════════
 
     private void Refresh()
     {
-        EventConfig ev = EventService.Instance.Current;
-        if (ev == null) { CloseSelf(); return; }
-
-        _title.text = ev.TitleText;
-        _body.text = ev.BodyText;
-        _result.text = _showingResult ? _lastResult : "";
-
-        int remain = EventService.Instance.RemainingAfterCurrent;
-        _queueHint.text = remain > 0 ? ("还有 " + remain + " 个事件") : "";
-
-        ClearOptions();
-
-        if (_showingResult)
-        {
-            MakeOptionButton("继续", 0, ContinueNext);
-            return;
-        }
-
-        List<EventOptionConfig> options = EventService.Instance.GetOptions(ev.Index);
-        for (int i = 0; i < options.Count; i++)
-        {
-            EventOptionConfig captured = options[i];
-            MakeOptionButton(captured.OptionText, i, () => ChooseOption(captured.Index));
-        }
-        if (options.Count == 0)
-        {
-            //E1：没有选项行 → 只有一个「关闭」，玩家仍能处置掉该事件
-            ChaosLog.Warn(LogChannel.Config, "[剧情事件] 事件 " + ev.Index + " 没有可显示的选项，只显示关闭按钮");
-        }
-
-        ChaosLog.Info(LogChannel.UI,
-            "[剧情事件] 面板刷新：标题《" + ev.TitleText + "》 选项 " + options.Count + " 个"
-            + (remain > 0 ? ("，还有 " + remain + " 个事件") : "，队列已无后续"));
+        if (_presenter == null || _presenter.IsDisposed) EnsurePresenter();
+        else _presenter.Refresh();
     }
 
     // ══════════════════ 玩家操作 ══════════════════
@@ -195,40 +183,13 @@ public class EventPanel : BasePanel
     /// <summary>选一个选项：立刻结算奖励 → 显示结果 →（继续）处置队首。</summary>
     public void ChooseOption(uint optionIndex)
     {
-        if (_showingResult) return;
-
-        EventConfig ev = EventService.Instance.Current;
-        if (ev == null) { CloseSelf(); return; }
-
-        string reason;
-        bool ok = EventService.Instance.ApplyOption(optionIndex, out reason);
-        _lastResult = string.IsNullOrEmpty(reason) ? "（无结果）" : reason;
-        _showingResult = true;
-
-        ChaosLog.Info(LogChannel.UI,
-            "[剧情事件] 面板选择：事件 " + ev.Index + " 选项 " + optionIndex + " → " + (ok ? "成功" : "失败") + "：" + _lastResult);
-
-        Refresh();
+        Send(PanelAction.ChooseOption, optionIndex);
     }
 
     /// <summary>「继续」/「关闭」：处置队首，队列非空就刷下一个，空了就关面板。</summary>
     public void ContinueNext()
     {
-        EventConfig ev = EventService.Instance.Current;
-        if (ev != null) EventService.Instance.MarkFired(ev.Index);
-
-        _showingResult = false;
-        _lastResult = "";
-
-        if (EventService.Instance.Current == null)
-        {
-            ChaosLog.Info(LogChannel.UI, "[剧情事件] 队列已空 → 关闭事件面板");
-            CloseSelf();
-            return;
-        }
-
-        ChaosLog.Info(LogChannel.UI, "[剧情事件] 弹出队列里的下一个（剩余 " + EventService.Instance.PendingCount + " 个）");
-        Refresh();
+        Send(PanelAction.Continue);
     }
 
     private void OnCloseClicked()
@@ -256,7 +217,7 @@ public class EventPanel : BasePanel
     /// <summary>面板当前显示内容的文字快照（GM/自测直接打日志，避免"看截图猜"）。</summary>
     public string DumpUiState()
     {
-        EventConfig ev = EventService.Instance.Current;
+        EventState ev = _rendered;
         var sb = new System.Text.StringBuilder();
         sb.Append("[剧情事件·面板] 标题《").Append(_title == null ? "" : _title.text).Append("》")
           .Append(" 队列提示《").Append(_queueHint == null ? "" : _queueHint.text).Append("》")
@@ -270,12 +231,12 @@ public class EventPanel : BasePanel
             TextMeshProUGUI label = _optionButtons[i].GetComponentInChildren<TextMeshProUGUI>();
             sb.Append(i == 0 ? "[" : " [").Append(label == null ? "?" : label.text).Append("]");
         }
-        sb.Append("\n  队首事件=").Append(ev == null ? "无" : (ev.Index + "《" + ev.TitleText + "》"))
-          .Append(" 队列剩余=").Append(EventService.Instance.PendingCount);
+        sb.Append("\n  队首事件=").Append(ev == null ? "无" : (ev.EventId + "《" + ev.Title + "》"))
+          .Append(" 队列剩余=").Append((ev == null ? 0 : ev.PendingCount));
         return sb.ToString();
     }
 
-    // ══════════════════ 控件小工具（纯中文，不挂 LocalizedText）══════════════════
+    // ══════════════════ 控件小工具（文本由调用处解析本地化）══════════════════
 
     private void ClearOptions()
     {
@@ -365,5 +326,27 @@ public class EventPanel : BasePanel
     {
         Transform c = transform.Find(n);
         return c == null ? null : c.GetComponent<TextMeshProUGUI>();
+    }
+
+    private EventState _rendered;
+    public void ClosePanel() { CloseSelf(); }
+    public void ShowMessage(string message, bool success) { if (_result != null) _result.text = message; }
+    public void Render(EventState state)
+    {
+        _rendered = state;
+        if (!state.HasEvent) { CloseSelf(); return; }
+        _showingResult = state.Resolved;
+        _lastResult = state.Result;
+        _title.text = state.Title;
+        _body.text = state.Body;
+        _result.text = state.Result;
+        _queueHint.text = state.QueueHint;
+        ClearOptions();
+        if (state.Resolved) { MakeOptionButton(GameplayText.Text("ui_common_continue", "继续"), 0, ContinueNext); return; }
+        for (int i = 0; i < state.Options.Count; i++)
+        {
+            var row = state.Options[i];
+            MakeOptionButton(row.Text, i, () => ChooseOption(row.Id));
+        }
     }
 }

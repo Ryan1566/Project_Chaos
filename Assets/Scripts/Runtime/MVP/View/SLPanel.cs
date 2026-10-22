@@ -4,6 +4,8 @@ using LocalizationSystem;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Chaos.MVP.Model.SaveSlots;
+using Chaos.MVP.Presenter.SaveSlots;
 
 /// <summary>
 /// 存档面板（读存档）：固定 3 个档位，1/2/3 顺序永不变。
@@ -35,7 +37,7 @@ using UnityEngine.UI;
 /// 本文件**不得**出现 `Application.persistentDataPath` / `File.` / `JsonUtility` ——
 /// 那些只允许出现在 `SaveSlotService`。这样将来抽 Presenter 只需挪一层，不必改数据访问。
 /// </summary>
-public class SLPanel : BasePanel
+public class SLPanel : BasePanel, ISaveSlotsView
 {
     // ══════════════════ 节点名（硬约定） ══════════════════
 
@@ -62,16 +64,6 @@ public class SLPanel : BasePanel
     /// <summary>删除存档时的询问文案。</summary>
     public const string KeyConfirmDelete = "ui_slpanel_confirm_delete";
 
-    /// <summary>确认浮层当前是为了哪件事弹出来的（没有它就无法在回调里正确分派）。</summary>
-    private enum ConfirmPurpose
-    {
-        None = 0,
-        /// <summary>空档位 → 询问"是否选择该档位开始游戏"（确认后 CreateNew）。</summary>
-        StartFromEmpty = 1,
-        /// <summary>删除选中档位（确认后 Delete）。</summary>
-        Delete = 2,
-    }
-
     // ══════════════════ 字段 ══════════════════
 
     private Transform _recordsList;
@@ -86,15 +78,11 @@ public class SLPanel : BasePanel
     private Button _confirmOkBtn;
     private Button _confirmCancelBtn;
 
-    private ConfirmPurpose _confirmPurpose = ConfirmPurpose.None;
-
-    /// <summary>当前选中的槽位（1..3）。决定"删除"作用于哪一格、以及哪一格高亮。</summary>
-    private int _selectedSlot = 1;
-
-    /// <summary>最近一次 `ReadAllSlots()` 的结果，供点击回调查询而无需重复扫目录。</summary>
-    private List<SaveSlotInfo> _infos;
-
     private bool _cellsReady;
+    private SaveSlotsModel _model;
+    private SaveSlotsPresenter _presenter;
+    public event System.Action<SaveSlotsIntent> Intent;
+    public bool CanShowConfirmation => _confirmGroup != null;
 
     // ══════════════════ 生命周期 ══════════════════
 
@@ -107,25 +95,25 @@ public class SLPanel : BasePanel
 
     public override void OnEnter()
     {
-        base.OnEnter();
-
-        HideConfirm();
-
-        //每次打开都重算默认选中：第一个"有存档文件"的档位；都没有 → 槽 1
-        _selectedSlot = SaveSlotService.Instance.FindFirstNonEmptySlot();
-
-        Refresh();
+        _presenter?.Dispose();
+        _model?.Dispose();
+        _model = new SaveSlotsModel();
+        _presenter = new SaveSlotsPresenter(_model);
+        _presenter.Attach(this);
     }
 
     public override void OnExit()
     {
-        base.OnExit();
-
         //退场动画期间面板还活着、按钮仍可点：先把确认浮层收掉，
         //避免"下次打开就带着浮层"；同时清掉待确认动作，防止迟到的确认回调打错目标
         HideConfirm();
-        _confirmPurpose = ConfirmPurpose.None;
+        _presenter?.Dispose();
+        _presenter = null;
+        _model?.Dispose();
+        _model = null;
     }
+
+    private void OnDestroy() { OnExit(); }
 
     // ══════════════════ 查找节点 / 绑定（只做一次） ══════════════════
 
@@ -261,249 +249,30 @@ public class SLPanel : BasePanel
         return button;
     }
 
-    // ══════════════════ 刷新（OnEnter 只做这个） ══════════════════
-
-    /// <summary>重读 3 个档位并把状态画到界面。幂等、可反复调用。</summary>
-    private void Refresh()
+    public void Render(SaveSlotsState state)
     {
         EnsureCells();
-
-        _infos = SaveSlotService.Instance.ReadAllSlots();
-
         for (int i = 0; i < _cells.Count; i++)
         {
-            _cells[i].SetData(GetInfo(_cells[i].Slot));
+            int slot = _cells[i].Slot;
+            _cells[i].Render(state.Cells.Find(info => info.Slot == slot));
+            _cells[i].SetSelected(slot == state.SelectedSlot);
         }
-
-        ApplySelectionHighlight();
-        RefreshDeleteButton();
+        if (_deleteBtn != null) _deleteBtn.interactable = state.CanDelete;
+        if (_confirmGroup != null) _confirmGroup.SetActive(!string.IsNullOrEmpty(state.ConfirmationKey));
+        if (!string.IsNullOrEmpty(state.ConfirmationKey)) SetConfirmText(state.ConfirmationKey);
     }
 
-    private SaveSlotInfo GetInfo(int slot)
+    private void Refresh() { Intent?.Invoke(new SaveSlotsIntent(SaveSlotsAction.Refresh)); }
+    private void OnCellClicked(int slot) { Intent?.Invoke(new SaveSlotsIntent(SaveSlotsAction.Select, slot)); }
+    private void OnDeleteClicked() { Intent?.Invoke(new SaveSlotsIntent(SaveSlotsAction.Delete)); }
+    private void OnReturnClicked() { Intent?.Invoke(new SaveSlotsIntent(SaveSlotsAction.Return)); }
+    private void OnConfirmOkClicked() { Intent?.Invoke(new SaveSlotsIntent(SaveSlotsAction.Confirm)); }
+    private void OnConfirmCancelClicked() { Intent?.Invoke(new SaveSlotsIntent(SaveSlotsAction.Cancel)); }
+    private void HideConfirm() { if (_confirmGroup != null) _confirmGroup.SetActive(false); }
+    private void SetConfirmText(string key)
     {
-        if (_infos == null) return null;
-
-        for (int i = 0; i < _infos.Count; i++)
-        {
-            if (_infos[i].Slot == slot) return _infos[i];
-        }
-        return null;
-    }
-
-    private void ApplySelectionHighlight()
-    {
-        for (int i = 0; i < _cells.Count; i++)
-        {
-            _cells[i].SetSelected(_cells[i].Slot == _selectedSlot);
-        }
-    }
-
-    /// <summary>
-    /// 删除按钮只在**选中槽位确实有文件**时可用。
-    /// 「有文件」= 有效存档 **或** 损坏存档 —— 损坏槽必须可删（方案 R8：给玩家一个恢复手段），
-    /// 而完全空白的槽位不可删（没什么可删的）。
-    /// </summary>
-    private void RefreshDeleteButton()
-    {
-        if (_deleteBtn == null) return;
-        _deleteBtn.interactable = SaveSlotService.HasSaveFile(GetInfo(_selectedSlot));
-    }
-
-    // ══════════════════ 点击档位 ══════════════════
-
-    private void OnCellClicked(int slot)
-    {
-        if (!SaveSlotService.IsValidSlot(slot)) return;
-
-        SaveSlotInfo info = GetInfo(slot);
-        if (info == null)
-        {
-            //缓存里没有（理论上不会）：刷一次再取
-            Refresh();
-            info = GetInfo(slot);
-        }
-
-        if (info != null && info.HasUsableSave)
-        {
-            //非空档位：直接读取进入（验收标准 5）
-            EnterGame(slot);
-            return;
-        }
-
-        //空档位 / 损坏档位：先把它选中（让删除按钮状态跟着更新），再二次确认（验收标准 6、R8）
-        _selectedSlot = slot;
-        ApplySelectionHighlight();
-        RefreshDeleteButton();
-
-        ShowConfirm(ConfirmPurpose.StartFromEmpty, KeyConfirmStart);
-    }
-
-    private void OnDeleteClicked()
-    {
-        //按钮理论上已被禁用；这里再挡一次，避免"空槽也被问删除"
-        if (!SaveSlotService.HasSaveFile(GetInfo(_selectedSlot)))
-        {
-            RefreshDeleteButton();
-            return;
-        }
-
-        ShowConfirm(ConfirmPurpose.Delete, KeyConfirmDelete);
-    }
-
-    private void OnReturnClicked()
-    {
-        HideConfirm();
-        _confirmPurpose = ConfirmPurpose.None;
-        UIManager.Instance.PopPanel();
-    }
-
-    // ══════════════════ 二次确认（状态机） ══════════════════
-
-    private void ShowConfirm(ConfirmPurpose purpose, string localizeKey)
-    {
-        _confirmPurpose = purpose;
-
-        if (_confirmGroup == null)
-        {
-            //没有确认浮层时的退路：直接执行 + 警告。
-            //不能"什么都不做" —— 那会让玩家觉得点了没反应
-            ChaosLog.Warn(LogChannel.UI,
-                "SLPanel 的 prefab 里没有 ConfirmGroup，本次确认（" + purpose + "）将直接执行、不询问玩家");
-            ExecuteConfirm();
-            return;
-        }
-
-        //时序照 SettingPanel.cs:24 的教训：**先 SetActive(true) 再 SetKey**，
-        //否则在未激活状态下刷文本，可能出现"打开了却显示上一次的文案/空文案"
-        _confirmGroup.SetActive(true);
-        SetConfirmText(localizeKey);
-    }
-
-    private void HideConfirm()
-    {
-        if (_confirmGroup != null) _confirmGroup.SetActive(false);
-    }
-
-    private void SetConfirmText(string localizeKey)
-    {
-        if (_confirmText != null)
-        {
-            _confirmText.SetKey(localizeKey);
-
-            //LocalizedText 在 LocalizationManager 缺席时不会改文本（UpdateText 里直接 return），
-            //这时退化成显示 Key 原文，至少能一眼看出是哪条文案没配
-            if (LocalizationManager.GetInstance() == null && _confirmTextTmp != null)
-                _confirmTextTmp.text = localizeKey;
-            return;
-        }
-
-        if (_confirmTextTmp != null) _confirmTextTmp.text = localizeKey;
-    }
-
-    private void OnConfirmOkClicked()
-    {
-        ExecuteConfirm();
-    }
-
-    private void OnConfirmCancelClicked()
-    {
-        //取消 = 什么都不做：不产生文件、不删文件（验收标准 6）
-        HideConfirm();
-        _confirmPurpose = ConfirmPurpose.None;
-        ChaosLog.Info(LogChannel.Save, "玩家取消了二次确认");
-    }
-
-    /// <summary>按 `ConfirmPurpose` 分派到正确动作 —— 这就是状态机存在的全部意义。</summary>
-    private void ExecuteConfirm()
-    {
-        ConfirmPurpose purpose = _confirmPurpose;
-
-        _confirmPurpose = ConfirmPurpose.None;
-        HideConfirm();
-
-        switch (purpose)
-        {
-            case ConfirmPurpose.StartFromEmpty:
-                StartFromEmpty(_selectedSlot);
-                break;
-
-            case ConfirmPurpose.Delete:
-                DeleteSelected();
-                break;
-
-            case ConfirmPurpose.None:
-            default:
-                //没有待确认动作：按钮被点到也不该误伤任何存档
-                ChaosLog.Warn(LogChannel.UI, "确认回调触发时没有待确认的动作，已忽略");
-                break;
-        }
-    }
-
-    // ══════════════════ 三个业务动作 ══════════════════
-
-    /// <summary>空档位开始游戏：先新建存档文件，**写盘成功才切场景**（验收标准 6、R7）。</summary>
-    private void StartFromEmpty(int slot)
-    {
-        if (!SaveSlotService.Instance.CreateNew(slot))
-        {
-            ChaosLog.Error(LogChannel.Save, "槽 " + slot + " 新建存档失败，已中止进入游戏（不切场景）");
-            Refresh();
-            return;
-        }
-
-        EnterGame(slot);
-    }
-
-    /// <summary>
-    /// 读档 / 新档成功：写入 `GameSession`，并**把局外主界面换成根面板**。
-    ///
-    /// ══════════════ 为什么不再切场景（task-24 语义变更） ══════════════
-    /// 「开始游戏」现在是**进入局外**（世界观地图），不再是进局内：
-    ///   · 局外主界面住在 `EnterScene` 的常驻 UI 里，**不需要切场景**；
-    ///   · 切场景会让刚初始化好的常驻层与本地化重来一遍，纯属浪费；
-    ///   · 真正的"进局内"由局外主界面的【进入局内】按钮触发（读条 → WorldScene）。
-    ///
-    /// 用 `SetRootPanel` 而非 `PushPanel`：这是**替换**语义，
-    /// 否则局外界面底下会留着主菜单/存档面板，按返回会露出主菜单。
-    /// </summary>
-    private void EnterGame(int slot)
-    {
-        SaveSlotFile file;
-        if (!SaveSlotService.Instance.TryLoad(slot, out file))
-        {
-            ChaosLog.Error(LogChannel.Save, "槽 " + slot + " 读取失败，已中止进入游戏");
-            Refresh();
-            return;
-        }
-
-        //目标场景传 null：本面板不再负责切场景，去哪由局外主界面决定
-        GameSession.Instance.Begin(slot, file.payload, null);
-
-        uint era = file.payload != null ? file.payload.era : 1u;
-        ChaosLog.Info(LogChannel.Save,
-            "开始游戏：槽 " + slot + " → 已写入 GameSession（era=" + era + "），进入局外主界面");
-
-        if (UIManager.Instance == null)
-        {
-            ChaosLog.Error(LogChannel.Save, "UIManager 不存在，无法进入局外主界面");
-            return;
-        }
-
-        UIManager.Instance.SetRootPanel(PanelType.WorldMapPanel);
-    }
-
-    /// <summary>删除选中档位；删完重新选（第一个有文件的档位；都没有 → 槽 1）（验收标准 7）。</summary>
-    private void DeleteSelected()
-    {
-        int slot = _selectedSlot;
-
-        if (!SaveSlotService.Instance.Delete(slot))
-        {
-            ChaosLog.Error(LogChannel.Save, "槽 " + slot + " 删除失败");
-        }
-
-        //删除后该槽回到空态：重新落选中，避免"选着一个已经不存在的档位"
-        _selectedSlot = SaveSlotService.Instance.FindFirstNonEmptySlot();
-        Refresh();
+        if (_confirmText != null) _confirmText.SetKey(key);
+        else if (_confirmTextTmp != null) _confirmTextTmp.text = key;
     }
 }

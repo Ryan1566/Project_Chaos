@@ -79,18 +79,15 @@ public class EnemyPlaceholder : MonoBehaviour, IDamageable
     private void ApplyTerrainScaling()
     {
         RunMap.BiomeInfo biome = RunMap.RunMapConfigLoader.GetCurrentBiome();
-        int sceneIndex = RunEncounter.CurrentSceneIndex;
 
         uint era = FactionService.ResolveEra();
         float factionMul = FactionService.GetFactionMul(era);
 
         float hpMul = 1f, dmgMul = 1f;
-        uint dropGroup = 1u;
         if (biome != null)
         {
             hpMul = biome.EnemyHpMul > 0f ? biome.EnemyHpMul : 1f;
             dmgMul = biome.EnemyDmgMul > 0f ? biome.EnemyDmgMul : 1f;
-            dropGroup = biome.DropGroupBase == 0u ? 1u : biome.DropGroupBase;
         }
 
         int hp = Mathf.Max(1, Mathf.RoundToInt(BaseMaxHp * hpMul * factionMul));
@@ -99,11 +96,6 @@ public class EnemyPlaceholder : MonoBehaviour, IDamageable
         maxHp = hp;
         contactDamage = damage;
 
-        ChaosLog.Info(LogChannel.UI,
-            "[地形] 场景" + sceneIndex + " " + (biome == null ? "未知" : biome.NameCN) + "(biome=" + (biome == null ? 0u : biome.Id) + ")"
-            + "：HP倍率=" + hpMul.ToString("F2") + " 伤害倍率=" + dmgMul.ToString("F2") + " 掉落组=" + dropGroup
-            + " 阵营=" + FactionService.GetFactionName(era) + " FactionMul=" + factionMul.ToString("F2")
-            + " → 敌人 HP=" + hp + " 伤害=" + damage);
     }
 
     public void TakeDamage(int amount)

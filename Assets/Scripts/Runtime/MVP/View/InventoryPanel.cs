@@ -1,3 +1,7 @@
+using System;
+using Object = UnityEngine.Object;
+using Chaos.MVP.Presenter.Gameplay;
+using Chaos.MVP.Model.Gameplay;
 using System.Collections.Generic;
 using ChaosDebug;
 using LocalizationSystem;
@@ -5,13 +9,24 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-/// <summary>
-/// 库存面板（W1a）：顶部 4 资源数字 + 格子列表（**色块 + 名称首字 + 数量/上限**）
-/// + `格位 N/M` + 满格/叠加满提示行 + 关闭按钮。
-/// `IconKey` 列保留但**不渲染图标**（W1a 用色块占位，见 Lead 裁决）。
-/// </summary>
-public class InventoryPanel : BasePanel
+/// <summary>Passive Inventory view: builds controls, renders snapshots, and sends typed intents to its presenter.</summary>
+public class InventoryPanel : BasePanel, IGameplayView<InventoryState>
 {
+    public event Action<PanelIntent> Intent;
+    private InventoryPresenter _presenter;
+    private void EnsurePresenter()
+    {
+        if (_presenter != null && !_presenter.IsDisposed) return;
+        _presenter = new InventoryPresenter();
+        _presenter.Attach(this);
+    }
+    private void Send(PanelAction action, uint id = 0)
+    {
+        if (!IsShowing) return;
+        EnsurePresenter();
+        Intent?.Invoke(new PanelIntent(action, id));
+    }
+
     private static readonly Color NormalColor = new Color(0.92f, 0.93f, 0.96f, 1f);
     private static readonly Color WarnColor = new Color(1.00f, 0.72f, 0.25f, 1f);
     private static readonly Color DimColor = new Color(0.72f, 0.76f, 0.82f, 1f);
@@ -37,6 +52,8 @@ public class InventoryPanel : BasePanel
     private RectTransform _content;
     private TMP_FontAsset _font;
     private bool _built;
+    private TextMeshProUGUI _closeLabel;
+    private LocalizationManager _localization;
 
     private void Awake()
     {
@@ -46,8 +63,24 @@ public class InventoryPanel : BasePanel
     public override void OnEnter()
     {
         BuildUi();
+        _localization = LocalizationManager.GetInstance();
+        if (_localization != null)
+        {
+            _localization.OnLanguageChanged.RemoveListener(OnLanguageChanged);
+            _localization.OnLanguageChanged.AddListener(OnLanguageChanged);
+        }
         Refresh();
     }
+
+    public override void OnExit()
+    {
+        if (_localization != null) _localization.OnLanguageChanged.RemoveListener(OnLanguageChanged);
+        _presenter?.Dispose();
+        _presenter = null;
+    }
+
+    private void OnDestroy() { OnExit(); }
+    private void OnLanguageChanged(LanguageType language) { Refresh(); }
 
     private void BuildUi()
     {
@@ -67,49 +100,8 @@ public class InventoryPanel : BasePanel
 
     private void Refresh()
     {
-        if (_title != null) ApplyLocalized(_title, "ui_inventory_panel_title", "库存");
-
-        InventoryService svc = InventoryService.Instance;
-        List<ItemStackSave> stacks = svc.GetStacks();
-
-        if (_resources != null)
-            ApplyLocalized(_resources, "ui_inventory_resources",
-                "物资 " + svc.GetResource(InventoryService.ResourceKind.Goods)
-                + "　　材料 " + svc.GetResource(InventoryService.ResourceKind.Material)
-                + "　　图纸 " + svc.GetResource(InventoryService.ResourceKind.Blueprint)
-                + "　　钱财 " + svc.GetResource(InventoryService.ResourceKind.Money));
-
-        int used = svc.UsedSlots;
-        int total = svc.TotalSlots;
-
-        if (_slots != null)
-        {
-            ApplyLocalized(_slots, "ui_inventory_slots",
-                "格位 " + used + "/" + total + "　（基础 " + InventoryService.BaseSlots + " + 效果 " + svc.SlotBonus + "）");
-            _slots.color = used >= total ? WarnColor : NormalColor;
-        }
-
-        if (_hint != null)
-        {
-            if (used >= total) ApplyLocalized(_hint, "ui_inventory_full", "格位已满（" + used + "/" + total + "）—— 新种类无法入库，已有种类仍可叠到上限");
-            else if (used == 0) ApplyLocalized(_hint, "ui_inventory_empty", "暂无库存（用 GM 发放道具）");
-            else ApplyLocalized(_hint, "ui_inventory_hint", "");
-        }
-
-        ClearRows();
-
-        for (int i = 0; i < stacks.Count; i++)
-        {
-            ItemStackSave stack = stacks[i];
-            if (stack == null || stack.count == 0) continue;
-
-            ItemConfig def = svc.GetDefinition(stack.itemId);
-            string name = def == null ? ("道具#" + stack.itemId) : def.NameKey;
-            string firstChar = name.Length > 0 ? name.Substring(0, 1) : "?";
-            uint limit = def == null ? 0u : def.StackLimit;
-
-            AddRow(i, firstChar, name, stack.count + "/" + limit, CategoryColor(def == null ? 0u : def.Category));
-        }
+        if (_presenter == null || _presenter.IsDisposed) EnsurePresenter();
+        else _presenter.Refresh();
     }
 
     private void ClearRows()
@@ -226,22 +218,26 @@ public class InventoryPanel : BasePanel
         label.color = NormalColor;
         label.alignment = TextAlignmentOptions.Center;
         label.raycastTarget = false;
-        ApplyLocalized(label, "ui_common_close", "关闭");
+        _closeLabel = label;
+        label.text = GameplayText.Text("ui_common_close", "关闭");
 
-        go.GetComponent<Button>().onClick.AddListener(() => Hide());
+        go.GetComponent<Button>().onClick.AddListener(() => Send(PanelAction.Close));
     }
 
-    /// <summary>挂 LocalizedText（key 先给字符串，中文兜底；不自动刷新，避免把兜底中文冲掉）。</summary>
-    private static void ApplyLocalized(TextMeshProUGUI label, string key, string fallback)
+    public void ClosePanel() { if (UIManager.Instance != null) UIManager.Instance.PopPanel(); else Hide(); }
+    public void ShowMessage(string message, bool success) { if (_hint != null) _hint.text = message; }
+    public void Render(InventoryState state)
     {
-        if (label == null) return;
-        label.text = fallback;
-
-        LocalizedText loc = label.GetComponent<LocalizedText>();
-        if (loc == null) loc = label.gameObject.AddComponent<LocalizedText>();
-        loc.localizationKey = key;
-        loc.autoUpdateOnStart = false;
-        loc.listenToLanguageChange = false;
+        if (_title != null) _title.text = GameplayText.Text("ui_inventory_panel_title", "库存");
+        if (_closeLabel != null) _closeLabel.text = GameplayText.Text("ui_common_close", "关闭");
+        if (_resources != null) _resources.text = state.Resources;
+        if (_slots != null) { _slots.text = state.Slots; _slots.color = state.Full ? WarnColor : NormalColor; }
+        if (_hint != null) _hint.text = state.Hint;
+        ClearRows();
+        for (int i = 0; i < state.Rows.Count; i++)
+        {
+            var row = state.Rows[i];
+            AddRow(i, row.Name.Length > 0 ? row.Name.Substring(0, 1) : "?", row.Name, row.Count, CategoryColor(row.Category));
+        }
     }
 }
-

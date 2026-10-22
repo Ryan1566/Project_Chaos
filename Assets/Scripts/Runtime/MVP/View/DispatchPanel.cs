@@ -1,3 +1,7 @@
+using System;
+using Object = UnityEngine.Object;
+using Chaos.MVP.Presenter.Gameplay;
+using Chaos.MVP.Model.Gameplay;
 using System.Collections.Generic;
 using ChaosDebug;
 using LocalizationSystem;
@@ -5,12 +9,28 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-/// <summary>
-/// 派遣编队面板（W2）：选 1~4 位门客 → 出发（就地生成局内地图，不切场景）→ 可撤离返回局外。
-/// 不可出战的门客置灰并显示原因；**不显示任何单人收益/风险提示**（用户 U6）。
-/// </summary>
-public class DispatchPanel : BasePanel
+/// <summary>Passive Dispatch view: builds controls, renders snapshots, and sends typed intents to its presenter.</summary>
+public class DispatchPanel : BasePanel, IGameplayView<DispatchState>
 {
+    private void OnDestroy() { OnExit(); }
+
+    public override void OnExit() { _presenter?.Dispose(); _presenter = null; }
+
+    public event Action<PanelIntent> Intent;
+    private DispatchPresenter _presenter;
+    private void EnsurePresenter()
+    {
+        if (_presenter != null && !_presenter.IsDisposed) return;
+        _presenter = new DispatchPresenter();
+        _presenter.Attach(this);
+    }
+    private void Send(PanelAction action, uint id = 0)
+    {
+        if (!IsShowing) return;
+        EnsurePresenter();
+        Intent?.Invoke(new PanelIntent(action, id));
+    }
+
     private static readonly Color NormalColor = new Color(0.92f, 0.93f, 0.96f, 1f);
     private static readonly Color DimColor = new Color(0.62f, 0.66f, 0.72f, 1f);
     private static readonly Color SelectedColor = new Color(0.30f, 0.85f, 0.40f, 1f);
@@ -33,64 +53,21 @@ public class DispatchPanel : BasePanel
         _built = true;
         _title = FindChildText("Title");
         if (_title != null) _font = _title.font;
+        if (_font == null) _font = RunTeamHud.ResolveFont();
+        if (_title != null) _title.alignment = TextAlignmentOptions.Center;
         _summary = CreateText("Summary", 64f, NormalColor, 22f);
-        _content = CreateRect("Content", 110f);
+        _content = CreateRect("Content", 140f);
         _hint = CreateText("Hint", 96f, DimColor, 20f);
         CreateBottomButtons();
     }
 
     private void Refresh()
     {
-        if (_title != null) ApplyLocalized(_title, "ui_dispatch_title", "派遣");
-
-        DispatchService svc = DispatchService.Instance;
-        RetainerService rs = RetainerService.Instance;
-
-        if (_summary != null)
-            ApplyLocalized(_summary, "ui_dispatch_summary",
-                "已选 " + svc.SelectedCount + "/" + DispatchService.MaxTeamSize
-                + (svc.IsInRun ? "　　（局内）" : ""));
-
-        if (_hint != null)
-        {
-            if (svc.IsInRun) ApplyLocalized(_hint, "ui_dispatch_inrun", "已进入局内（原型：就地生成）——点「撤离」返回局外");
-            else if (svc.SelectedCount == 0) ApplyLocalized(_hint, "ui_dispatch_empty", "点门客名字选择（1~4 位）；不可出战的门客会置灰并显示原因");
-            else ApplyLocalized(_hint, "ui_dispatch_hint", "");
-        }
-
-        ClearRows();
-
-        List<RetainerSave> all = svc.GetCandidates();
-        if (all.Count == 0)
-        {
-            AddRow(0, "暂无门客（用 GM 发放）", DimColor, 0u);
-            return;
-        }
-
-        for (int i = 0; i < all.Count; i++)
-        {
-            RetainerSave retainer = all[i];
-            if (retainer == null) continue;
-
-            RetainerConfig def = rs.GetDefinition(retainer.protoId);
-            string name = def == null ? ("门客#" + retainer.id) : def.NameKey;
-            string unavailable = svc.GetUnavailableReason(retainer);
-            bool selected = svc.SelectedIds.Contains(retainer.id);
-
-            string line = (selected ? "【已选】" : "　　") + name
-                + "　品质 " + retainer.quality + "　信心 " + retainer.confidence;
-            if (!string.IsNullOrEmpty(unavailable)) line += "　（不可出战：" + unavailable + "）";
-
-            Color color;
-            if (!string.IsNullOrEmpty(unavailable))
-                color = rs.GetState(retainer) == RetainerService.DeployState.Wounded ? WoundedColor : LowConfColor;
-            else color = selected ? SelectedColor : NormalColor;
-
-            AddRow(i, line, color, retainer.id);
-        }
+        if (_presenter == null || _presenter.IsDisposed) EnsurePresenter();
+        else _presenter.Refresh();
     }
 
-    private void AddRow(int index, string text, Color color, uint id)
+    private void AddRow(int index, string text, Color color, uint id, bool interactable = true)
     {
         if (_content == null) return;
 
@@ -115,12 +92,18 @@ public class DispatchPanel : BasePanel
         TextMeshProUGUI label = labelGo.AddComponent<TextMeshProUGUI>();
         label.font = _font; label.fontSize = 22f; label.color = color;
         label.alignment = TextAlignmentOptions.Left; label.raycastTarget = false;
+        label.enableWordWrapping = false;
+        label.enableAutoSizing = true;
+        label.fontSizeMin = 16f;
+        label.fontSizeMax = 22f;
+        label.overflowMode = TextOverflowModes.Ellipsis;
         label.text = text;
 
         if (id != 0u)
         {
             Button button = go.GetComponent<Button>();
             button.targetGraphic = bg;
+            button.interactable = interactable;
             button.onClick.AddListener(() => DoToggle(id));
         }
         else
@@ -131,38 +114,27 @@ public class DispatchPanel : BasePanel
 
     private void DoToggle(uint id)
     {
-        string reason;
-        bool ok = DispatchService.Instance.Toggle(id, out reason);
-        if (!ok && !string.IsNullOrEmpty(reason)) Debug.Log("[派遣] " + reason);
-        Refresh();
+        Send(PanelAction.Toggle, id);
     }
 
     private void DoDepart()
     {
-        string reason;
-        bool ok = DispatchService.Instance.Depart(out reason);
-
-        if (ok && UIManager.Instance != null) UIManager.Instance.HideAllPanelsForGameplay();
-        Debug.Log(ok ? "[派遣] 出发成功" : ("[派遣] 出发失败：" + reason));
-        Refresh();
+        Send(PanelAction.Depart);
     }
 
     private void DoReturn()
     {
-        string reason;
-        bool ok = DispatchService.Instance.ReturnToMeta(out reason);
-
-        if (ok && UIManager.Instance != null) UIManager.Instance.RestoreAfterGameplay();
-        Debug.Log(ok ? "[派遣] 已撤离" : ("[派遣] 撤离失败：" + reason));
-        Refresh();
+        Send(PanelAction.Return);
     }
 
     private void CreateBottomButtons()
     {
         CreateButton("Btn_Depart", "出发", new Vector2(-380f, 24f), () => DoDepart());
         CreateButton("Btn_Return", "撤离 / 返回局外", new Vector2(-200f, 24f), () => DoReturn());
-        CreateButton("Btn_Close", "关闭", new Vector2(-24f, 24f), () => Hide());
+        CreateButton("Btn_Close", "关闭", new Vector2(-24f, 24f), Close);
     }
+
+    private void Close() { Send(PanelAction.Close); }
 
     private void CreateButton(string name, string label, Vector2 offset, System.Action onClick)
     {
@@ -205,7 +177,7 @@ public class DispatchPanel : BasePanel
 
     private RectTransform CreateRect(string name, float top)
     {
-        GameObject go = new GameObject(name, typeof(RectTransform));
+        GameObject go = new GameObject(name, typeof(RectTransform), typeof(RectMask2D));
         RectTransform rect = (RectTransform)go.transform;
         rect.SetParent(transform, false);
         rect.anchorMin = new Vector2(0f, 0f); rect.anchorMax = new Vector2(1f, 1f);
@@ -223,9 +195,24 @@ public class DispatchPanel : BasePanel
     private static void ApplyLocalized(TextMeshProUGUI label, string key, string fallback)
     {
         if (label == null) return;
-        label.text = fallback;
-        LocalizedText loc = label.GetComponent<LocalizedText>();
-        if (loc == null) loc = label.gameObject.AddComponent<LocalizedText>();
-        loc.localizationKey = key; loc.autoUpdateOnStart = false; loc.listenToLanguageChange = false;
+        label.text = GameplayText.Text(key, fallback);
+    }
+
+    public void ClosePanel() { if (UIManager.Instance != null) UIManager.Instance.PopPanel(); else Hide(); }
+    public void ShowMessage(string message, bool success) { if (_hint != null) _hint.text = message; }
+    public void Render(DispatchState state)
+    {
+        if (_title != null) ApplyLocalized(_title, "ui_dispatch_title", "派遣");
+        if (_summary != null) _summary.text = state.Summary;
+        if (_hint != null) _hint.text = state.Hint;
+        ClearRows();
+        if (state.Rows.Count == 0) AddRow(0, "暂无门客，请先招募门客。", DimColor, 0u);
+        for (int i = 0; i < state.Rows.Count; i++)
+        {
+            var row = state.Rows[i];
+            Color color = row.Tone == TextTone.Warning ? WoundedColor : row.Tone == TextTone.Dim ? LowConfColor
+                : row.Tone == TextTone.Success ? SelectedColor : NormalColor;
+            AddRow(i, row.Text, color, row.Id, row.Enabled);
+        }
     }
 }

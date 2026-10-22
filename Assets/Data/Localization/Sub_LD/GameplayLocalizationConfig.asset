@@ -1,0 +1,542 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9b7ea5860df0a241b850843c86744ac, type: 3}
+  m_Name: GameplayLocalizationConfig
+  m_EditorClassIdentifier: 
+  configName: GameplayLocalizationConfig
+  description: Gameplay UI and prototype item names; edit this source and merge localization
+    sub-configs.
+  entries:
+  - key: item_01_name
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u836F\u6750"
+    chineseTraditional: 
+    english: Medicinal herbs
+    japanese: 
+    korean: 
+  - key: item_02_name
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u6728\u6599"
+    chineseTraditional: 
+    english: Timber
+    japanese: 
+    korean: 
+  - key: item_03_name
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u77ED\u5200"
+    chineseTraditional: 
+    english: Short blade
+    japanese: 
+    korean: 
+  - key: item_04_name
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u5EFA\u9020\u56FE\u7EB8"
+    chineseTraditional: 
+    english: Building plans
+    japanese: 
+    korean: 
+  - key: item_05_name
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u884C\u519B\u5E72\u7CAE"
+    chineseTraditional: 
+    english: Trail rations
+    japanese: 
+    korean: 
+  - key: item_06_name
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u4F24\u836F"
+    chineseTraditional: 
+    english: Healing salve
+    japanese: 
+    korean: 
+  - key: item_07_name
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u77FF\u6599"
+    chineseTraditional: 
+    english: Ore
+    japanese: 
+    korean: 
+  - key: item_08_name
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u62A4\u7532"
+    chineseTraditional: 
+    english: Armor
+    japanese: 
+    korean: 
+  - key: item_09_name
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u5DE5\u827A\u56FE\u7EB8"
+    chineseTraditional: 
+    english: Crafting plans
+    japanese: 
+    korean: 
+  - key: ui_item_unknown
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u9053\u5177 #{0}"
+    chineseTraditional: 
+    english: Item #{0}
+    japanese: 
+    korean: 
+  - key: ui_common_close
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u5173\u95ED"
+    chineseTraditional: 
+    english: Close
+    japanese: 
+    korean: 
+  - key: ui_common_continue
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u7EE7\u7EED"
+    chineseTraditional: 
+    english: Continue
+    japanese: 
+    korean: 
+  - key: ui_inventory_panel_title
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u5E93\u5B58"
+    chineseTraditional: 
+    english: Inventory
+    japanese: 
+    korean: 
+  - key: ui_inventory_resources
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u7269\u8D44 {0}\u3000\u3000\u6750\u6599 {1}\u3000\u3000\u56FE\u7EB8
+      {2}\u3000\u3000\u94B1\u8D22 {3}"
+    chineseTraditional: 
+    english: Goods {0}   Materials {1}   Plans {2}   Money {3}
+    japanese: 
+    korean: 
+  - key: ui_inventory_slots
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u683C\u4F4D {0}/{1}\u3000\uFF08\u57FA\u7840 {2} + \u6548\u679C
+      {3}\uFF09"
+    chineseTraditional: 
+    english: Slots {0}/{1} (Base {2} + Bonus {3})
+    japanese: 
+    korean: 
+  - key: ui_inventory_full
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u683C\u4F4D\u5DF2\u6EE1\uFF08{0}/{1}\uFF09\uFF0C\u65B0\u79CD\u7C7B\u65E0\u6CD5\u5165\u5E93\uFF0C\u5DF2\u6709\u79CD\u7C7B\u4ECD\u53EF\u53E0\u5230\u4E0A\u9650"
+    chineseTraditional: 
+    english: Slots full ({0}/{1}). Existing items can still stack.
+    japanese: 
+    korean: 
+  - key: ui_inventory_empty
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u6682\u65E0\u5E93\u5B58"
+    chineseTraditional: 
+    english: No items in storage
+    japanese: 
+    korean: 
+  - key: ui_market_title
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u5E02\u573A"
+    chineseTraditional: 
+    english: Market
+    japanese: 
+    korean: 
+  - key: ui_market_balance
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u94B1\u8D22\uFF1A{0}\u3000\u3000\u683C\u4F4D\uFF1A{1}/{2}"
+    chineseTraditional: 
+    english: 'Money: {0}   Slots: {1}/{2}'
+    japanese: 
+    korean: 
+  - key: ui_market_empty
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u6682\u65E0\u53EF\u4EA4\u6613\u7269\u54C1"
+    chineseTraditional: 
+    english: No tradable items
+    japanese: 
+    korean: 
+  - key: ui_market_hint
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u6BCF\u6B21\u4E70 / \u5356\u5404 1 \u4E2A\uFF0C\u4F7F\u7528\u94B1\u8D22\u4EA4\u6613\u3002"
+    chineseTraditional: 
+    english: Buy or sell one item at a time using money.
+    japanese: 
+    korean: 
+  - key: ui_market_price
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u4E70 {0} / \u5356 {1}"
+    chineseTraditional: 
+    english: Buy {0} / Sell {1}
+    japanese: 
+    korean: 
+  - key: ui_market_owned
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u6301\u6709 {0}"
+    chineseTraditional: 
+    english: Own {0}
+    japanese: 
+    korean: 
+  - key: ui_market_buy
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u4E70"
+    chineseTraditional: 
+    english: Buy
+    japanese: 
+    korean: 
+  - key: ui_market_sell
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u5356"
+    chineseTraditional: 
+    english: Sell
+    japanese: 
+    korean: 
+  - key: ui_market_cannot_sell
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u4E0D\u53EF\u5356"
+    chineseTraditional: 
+    english: Cannot sell
+    japanese: 
+    korean: 
+  - key: ui_market_nothing_to_sell
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u65E0\u53EF\u5356"
+    chineseTraditional: 
+    english: None owned
+    japanese: 
+    korean: 
+  - key: ui_market_cannot_buy
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u4E0D\u53EF\u4E70"
+    chineseTraditional: 
+    english: Cannot buy
+    japanese: 
+    korean: 
+  - key: ui_market_insufficient_money
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u94B1\u8D22\u4E0D\u8DB3"
+    chineseTraditional: 
+    english: Not enough money
+    japanese: 
+    korean: 
+  - key: ui_market_slots_full
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u683C\u4F4D\u5DF2\u6EE1\uFF08{0}/{1}\uFF09"
+    chineseTraditional: 
+    english: Slots full ({0}/{1})
+    japanese: 
+    korean: 
+  - key: ui_market_stack_full
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u5DF2\u8FBE\u53E0\u52A0\u4E0A\u9650\uFF08{0}\uFF09"
+    chineseTraditional: 
+    english: Stack full ({0})
+    japanese: 
+    korean: 
+  - key: ui_market_bought
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u4E70\u5165\u6210\u529F\uFF1A{0} \xD71\uFF08-{1} \u94B1\u8D22\uFF09"
+    chineseTraditional: 
+    english: Bought {0} x1 (-{1} money)
+    japanese: 
+    korean: 
+  - key: ui_market_buy_failed
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u4E70\u5165\u5931\u8D25\uFF1A{0}"
+    chineseTraditional: 
+    english: 'Purchase failed: {0}'
+    japanese: 
+    korean: 
+  - key: ui_market_sold
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u5356\u51FA\u6210\u529F\uFF1A{0} \xD71\uFF08+{1} \u94B1\u8D22\uFF09"
+    chineseTraditional: 
+    english: Sold {0} x1 (+{1} money)
+    japanese: 
+    korean: 
+  - key: ui_market_sell_failed
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u5356\u51FA\u5931\u8D25\uFF1A{0}"
+    chineseTraditional: 
+    english: 'Sale failed: {0}'
+    japanese: 
+    korean: 
+  - key: ui_event_remaining
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u8FD8\u6709 {0} \u4E2A\u4E8B\u4EF6"
+    chineseTraditional: 
+    english: '{0} more events'
+    japanese: 
+    korean: 
+  - key: ui_event_no_result
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\uFF08\u65E0\u7ED3\u679C\uFF09"
+    chineseTraditional: 
+    english: (No result)
+    japanese: 
+    korean: 
+  - key: gm_market_hint
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u6BCF\u6B21\u4E70\u5356 1 \u4E2A\uFF0C\u4F7F\u7528\u94B1\u8D22\u4EA4\u6613\u3002\u4EF7\u683C\u6765\u81EA
+      Item \u914D\u7F6E\uFF0C\u4E70\u5165\u5931\u8D25\u65F6\u9000\u8FD8\u94B1\u8D22\u3002"
+    chineseTraditional: 
+    english: Buy or sell one item using money. Item config supplies prices. Failed
+      purchases refund money.
+    japanese: 
+    korean: 
+  - key: gm_market_open
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u6253\u5F00\u5E02\u573A\u9762\u677F"
+    chineseTraditional: 
+    english: Open market
+    japanese: 
+    korean: 
+  - key: gm_market_prices
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u6253\u5370\u4EF7\u683C\u8868"
+    chineseTraditional: 
+    english: Print prices
+    japanese: 
+    korean: 
+  - key: gm_market_add_money
+    description: Gameplay UI / prototype content
+    chineseSimplified: "+500 \u94B1\u8D22"
+    chineseTraditional: 
+    english: +500 money
+    japanese: 
+    korean: 
+  - key: gm_market_added_money
+    description: Gameplay UI / prototype content
+    chineseSimplified: "[\u5E02\u573A] \u5DF2 +500 \u94B1\u8D22\uFF0C\u5F53\u524D\u94B1\u8D22
+      {0}\uFF08\u5E93\u5B58\u683C\u4F4D {1}/{2}\uFF09"
+    chineseTraditional: 
+    english: '[Market] Added 500 money. Balance {0} (Slots {1}/{2})'
+    japanese: 
+    korean: 
+  - key: gm_market_status
+    description: Gameplay UI / prototype content
+    chineseSimplified: "[\u5E02\u573A] \u5F53\u524D\u94B1\u8D22 {0}\uFF0C\u5E93\u5B58\u683C\u4F4D
+      {1}/{2}\u3002\u70B9\u3010\u6253\u5370\u4EF7\u683C\u8868\u3011\u6838\u5BF9\u4E70\u5356\u4EF7\u683C\u3002"
+    chineseTraditional: 
+    english: '[Market] Money {0}, Slots {1}/{2}. Print prices to inspect buy and
+      sell prices.'
+    japanese: 
+    korean: 
+  - key: event_1001_title
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u7B2C\u4E00\u6B21\u51FA\u5F81"
+    chineseTraditional: 
+    english: The first expedition
+    japanese: 
+    korean: 
+  - key: event_1001_body
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u4F60\u5E26\u7740\u95E8\u5BA2\u4ECE\u4F20\u9001\u9635\u5F52\u6765\u3002\u6751\u4E2D\u8001\u8005\u5728\u6751\u53E3\u7B49\u4E86\u8BB8\u4E45\uFF0C\u8BF4\u4F60\u4EEC\u770B\u4E0A\u53BB\u6709\u4E9B\u4E0D\u4E00\u6837\u4E86\u3002"
+    chineseTraditional: 
+    english: You return through the portal with your retainers. An elder has been
+      waiting at the village gate. He says you look different.
+    japanese: 
+    korean: 
+  - key: event_1002_title
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u6DF1\u5C42\u7684\u56DE\u54CD"
+    chineseTraditional: 
+    english: Echoes from below
+    japanese: 
+    korean: 
+  - key: event_1002_body
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u4F60\u4EEC\u4ECE\u66F4\u6DF1\u5904\u5E26\u56DE\u4E86\u4E0D\u5C5E\u4E8E\u8FD9\u4E2A\u65F6\u4EE3\u7684\u4E1C\u897F\u3002\u8001\u65CF\u957F\u6469\u6332\u7740\u5B83\uFF0C\u4E45\u4E45\u6CA1\u6709\u4F5C\u58F0\u3002"
+    chineseTraditional: 
+    english: You bring back something from the depths that does not belong to this
+      era. The old patriarch studies it in silence.
+    japanese: 
+    korean: 
+  - key: event_1003_title
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u95E8\u5BA2\u7684\u8A93\u8A00"
+    chineseTraditional: 
+    english: A retainer's oath
+    japanese: 
+    korean: 
+  - key: event_1003_body
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u95E8\u5BA2\u57F9\u517B\u6709\u6210\u3002\u4E00\u540D\u95E8\u5BA2\u5728\u8425\u524D\u7ACB\u8A93\uFF0C\u613F\u968F\u4F60\u8D70\u66F4\u8FDC\u7684\u8DEF\u3002"
+    chineseTraditional: 
+    english: Your training bears fruit. A retainer swears before the camp to follow
+      you on the road ahead.
+    japanese: 
+    korean: 
+  - key: event_1004_title
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u53C8\u4E00\u8D9F"
+    chineseTraditional: 
+    english: Another journey
+    japanese: 
+    korean: 
+  - key: event_1004_body
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u7B2C\u4E09\u8D9F\u8E0F\u5165\u8FB9\u7F18\u7A7A\u95F4\u540E\uFF0C\u4F60\u5F00\u59CB\u4E60\u60EF\u90A3\u79CD\u5931\u91CD\u611F\u3002"
+    chineseTraditional: 
+    english: After your third journey into the edge space, the weightlessness begins
+      to feel familiar.
+    japanese: 
+    korean: 
+  - key: event_1005_title
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u6751\u53E3\u7684\u964C\u751F\u4EBA"
+    chineseTraditional: 
+    english: A stranger at the gate
+    japanese: 
+    korean: 
+  - key: event_1005_body
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u4E00\u540D\u98CE\u5C18\u4EC6\u4EC6\u7684\u65C5\u4EBA\u6765\u5230\u6751\u53E3\u3002\u4ED6\u5E26\u6765\u4E86\u8865\u7ED9\u548C\u56FE\u7EB8\uFF0C\u8BF7\u4F60\u4ECE\u4E2D\u6536\u4E0B\u4E00\u4EFD\u3002"
+    chineseTraditional: 
+    english: A weathered traveler arrives at the village with provisions and plans.
+      He asks you to accept one of his gifts.
+    japanese: 
+    korean: 
+  - key: event_option_1
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u6536\u4E0B\u8FD9\u4EFD\u793C"
+    chineseTraditional: 
+    english: Accept the gift
+    japanese: 
+    korean: 
+  - key: event_option_2
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u9080\u4ED6\u5165\u4F19"
+    chineseTraditional: 
+    english: Invite him to join
+    japanese: 
+    korean: 
+  - key: event_option_3
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u6536\u4E0B\u53E4\u7269"
+    chineseTraditional: 
+    english: Take the relic
+    japanese: 
+    korean: 
+  - key: event_option_4
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u7528\u5B83\u6362\u836F\u6750"
+    chineseTraditional: 
+    english: Trade it for herbs
+    japanese: 
+    korean: 
+  - key: event_option_5
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u63A5\u8FC7\u4ED6\u7684\u7269\u8D44"
+    chineseTraditional: 
+    english: Accept his supplies
+    japanese: 
+    korean: 
+  - key: event_option_6
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u8D50\u4ED6\u4FE1\u5FC3"
+    chineseTraditional: 
+    english: Bolster his confidence
+    japanese: 
+    korean: 
+  - key: event_option_7
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u5E26\u8D70\u8865\u7ED9"
+    chineseTraditional: 
+    english: Take the supplies
+    japanese: 
+    korean: 
+  - key: event_option_8
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u62DB\u52DF\u4E00\u4EBA"
+    chineseTraditional: 
+    english: Recruit a retainer
+    japanese: 
+    korean: 
+  - key: event_option_9
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u63A5\u8FC7\u4ED6\u7684\u8865\u7ED9"
+    chineseTraditional: 
+    english: Accept his provisions
+    japanese: 
+    korean: 
+  - key: event_option_10
+    description: Gameplay UI / prototype content
+    chineseSimplified: "\u6536\u4E0B\u4ED6\u7684\u56FE\u7EB8"
+    chineseTraditional: 
+    english: Accept his plans
+    japanese: 
+    korean: 
+  - key: ui_world_retainer
+    description: 
+    chineseSimplified: "\u95E8\u5BA2"
+    chineseTraditional: 
+    english: Retainers
+    japanese: 
+    korean: 
+  - key: ui_world_inventory
+    description: 
+    chineseSimplified: "\u5E93\u5B58"
+    chineseTraditional: 
+    english: Inventory
+    japanese: 
+    korean: 
+  - key: ui_world_market
+    description: 
+    chineseSimplified: "\u5E02\u573A"
+    chineseTraditional: 
+    english: Market
+    japanese: 
+    korean: 
+  - key: ui_retainer_panel_title
+    description: 
+    chineseSimplified: "\u95E8\u5BA2"
+    chineseTraditional: 
+    english: Retainers
+    japanese: 
+    korean: 
+  - key: ui_retainer_summary
+    description: 
+    chineseSimplified: "\u5171 {0}/{1} \u4F4D\u3000\u53EF\u51FA\u6218 {2} \u4F4D\uFF08\u4FE1\u5FC3\u81F3\u5C11
+      {3}\uFF09"
+    chineseTraditional: 
+    english: Retainers {0}/{1}   Ready {2} (Confidence at least {3})
+    japanese: 
+    korean: 
+  - key: ui_retainer_empty
+    description: 
+    chineseSimplified: "\u6682\u65E0\u95E8\u5BA2\uFF0C\u70B9\u51FB\u300C\u62DB\u52DF\u95E8\u5BA2\u300D\u7EC4\u5EFA\u961F\u4F0D\u3002"
+    chineseTraditional: 
+    english: No retainers yet. Recruit retainers to form a team.
+    japanese: 
+    korean: 
+  - key: ui_retainer_recruit
+    description: 
+    chineseSimplified: "\u62DB\u52DF\u95E8\u5BA2"
+    chineseTraditional: 
+    english: Recruit
+    japanese: 
+    korean: 
+  - key: ui_retainer_recruited
+    description: 
+    chineseSimplified: "\u62DB\u52DF\u6210\u529F\uFF1A{0}"
+    chineseTraditional: 
+    english: 'Recruited: {0}'
+    japanese: 
+    korean: 
+  - key: ui_retainer_recruit_failed
+    description: 
+    chineseSimplified: "\u62DB\u52DF\u5931\u8D25\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5\u3002"
+    chineseTraditional: 
+    english: Recruitment failed. Please try again.
+    japanese: 
+    korean: 
+  - key: ui_retainer_full
+    description: 
+    chineseSimplified: "\u95E8\u5BA2\u5DF2\u8FBE\u4E0A\u9650 {0} \u4F4D\u3002"
+    chineseTraditional: 
+    english: Retainer limit reached ({0}).
+    japanese: 
+    korean: 

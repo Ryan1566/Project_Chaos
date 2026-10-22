@@ -1,16 +1,41 @@
+using System;
+using Object = UnityEngine.Object;
+using Chaos.MVP.Presenter.Gameplay;
+using Chaos.MVP.Model.Gameplay;
 using ChaosDebug;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-/// <summary>
-/// 扎营面板（W3.2i）：居中 800×600 内容区、**纯中文（不挂 LocalizedText，避免显示 key）**。
-///
-/// 两个动作：「完全治疗（1 药）」「补充减员（2 药）」；条件不满足时**灰显并显示原因**；
-/// 「修甲」本轮不做（无护甲系统）。关闭时恢复玩家输入。
-/// </summary>
-public class RunCampPanel : BasePanel
+/// <summary>Passive RunCamp view: builds controls, renders snapshots, and sends typed intents to its presenter.</summary>
+public class RunCampPanel : BasePanel, IGameplayView<CampState>
 {
+    private bool _returnToGameplay;
+    public override bool ReturnsToGameplayOnClose => _returnToGameplay;
+    private void OnDestroy() { OnExit(); }
+
+    public override void OnExit()
+    {
+        if (uiManager == null || !uiManager.panelStack.Contains(this)) _presenter?.ReleaseControl();
+        _presenter?.Dispose();
+        _presenter = null;
+    }
+
+    public event Action<PanelIntent> Intent;
+    private CampPresenter _presenter;
+    private void EnsurePresenter()
+    {
+        if (_presenter != null && !_presenter.IsDisposed) return;
+        _presenter = new CampPresenter();
+        _presenter.Attach(this);
+    }
+    private void Send(PanelAction action, uint id = 0)
+    {
+        if (!IsShowing) return;
+        EnsurePresenter();
+        Intent?.Invoke(new PanelIntent(action, id));
+    }
+
     private const float PanelWidth = 800f;
     private const float PanelHeight = 600f;
 
@@ -96,65 +121,24 @@ public class RunCampPanel : BasePanel
         Button close = MakeButton(boxRect, "Btn_Close", "关闭", new Vector2(0f, 30f));
         close.onClick.AddListener(() =>
         {
-            SetPlayerInput(true);
-            Hide();
+            Send(PanelAction.Close);
         });
     }
 
     private void Refresh()
     {
-        SetPlayerInput(false);
-
-        string healReason, refillReason;
-        bool canHeal = CampService.CanHeal(out healReason);
-        bool canRefill = CampService.CanRefill(out refillReason);
-
-        if (_title != null) _title.text = "扎营";
-        if (_state != null)
-        {
-            _state.text = "药品：" + CampService.MedicineCount
-                + "　　" + (CampService.IsInSafeRoom ? "安全房间（可扎营）" : "战斗中无法扎营")
-                + (CampService.CampUsed ? "　　本局已扎营" : "");
-        }
-        SetButton(_healButton, canHeal);
-        SetButton(_refillButton, canRefill);
-
-        if (_hint != null)
-        {
-            if (canHeal || canRefill) _hint.text = "选择一项修整（扎营每局 1 次）";
-            else _hint.text = (!CampService.IsInSafeRoom ? "战斗中无法扎营" : (!canHeal ? healReason : refillReason));
-        }
-        ChaosLog.Info(LogChannel.Config, "[扎营] 面板状态 → " + CampService.DumpState());
+        if (_presenter == null || _presenter.IsDisposed) EnsurePresenter();
+        else _presenter.Refresh();
     }
 
     private void OnHeal()
     {
-        string reason;
-        if (CampService.TryHeal(out reason))
-        {
-            if (_hint != null) _hint.text = "完全治疗完成：hp 已回满，消耗 1 药";
-            Refresh();
-        }
-        else if (_hint != null) _hint.text = reason;
+        Send(PanelAction.Heal);
     }
 
     private void OnRefill()
     {
-        string reason;
-        if (CampService.TryRefill(out reason))
-        {
-            if (_hint != null) _hint.text = "已补充减员：倒地门客全部复活到 ceil(MaxHp*0.5)，消耗 2 药";
-            Refresh();
-        }
-        else if (_hint != null) _hint.text = reason;
-    }
-
-    private static void SetPlayerInput(bool enabled)
-    {
-        //W3.3：观战模式（受控角色倒地但门客还活着）下，关面板不能把受控角色放回可操作状态
-        bool allowControl = enabled && !RunEncounter.IsSpectator;
-        foreach (PlayerLocomotion loco in Object.FindObjectsOfType<PlayerLocomotion>()) loco.enabled = allowControl;
-        foreach (PlayerAttack attack in Object.FindObjectsOfType<PlayerAttack>()) attack.enabled = allowControl;
+        Send(PanelAction.Refill);
     }
 
     private static void SetButton(Button button, bool interactable)
@@ -200,5 +184,17 @@ public class RunCampPanel : BasePanel
         tr.offsetMin = Vector2.zero; tr.offsetMax = Vector2.zero;
         tmp.alignment = TextAlignmentOptions.Center;
         return go.GetComponent<Button>();
+    }
+
+    public void ClosePanel() { if (UIManager.Instance != null) UIManager.Instance.PopPanel(); else Hide(); }
+    public void ShowMessage(string message, bool success) { if (_hint != null) _hint.text = message; }
+    public void Render(CampState state)
+    {
+        _returnToGameplay = state.InRun;
+        if (_title != null) _title.text = "扎营";
+        if (_state != null) _state.text = state.State;
+        if (_hint != null) _hint.text = state.Hint;
+        SetButton(_healButton, state.CanHeal);
+        SetButton(_refillButton, state.CanRefill);
     }
 }

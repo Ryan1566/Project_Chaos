@@ -189,7 +189,7 @@ public static class RunTerrainToast
 
     private static void Build()
     {
-        var canvasGo = new GameObject(CanvasName, typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster), typeof(CanvasGroup));
+        var canvasGo = new GameObject(CanvasName, typeof(Canvas), typeof(GameplayCanvas), typeof(CanvasScaler), typeof(GraphicRaycaster), typeof(CanvasGroup));
 
         Canvas canvas = canvasGo.GetComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
