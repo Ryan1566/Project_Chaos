@@ -13,7 +13,7 @@ public sealed class RunMenuPanel : BasePanel, IGameplayView<RunMenuState>
     private RunMenuModel _model;
     private RunMenuPresenter _presenter;
     private TextMeshProUGUI _summary, _bag, _hint;
-    private Button _camp, _retreat, _cancel;
+    private Button _camp, _retreat, _cancel, _settings;
 
     public static void Open()
     {
@@ -37,6 +37,7 @@ public sealed class RunMenuPanel : BasePanel, IGameplayView<RunMenuState>
         _camp = GameplayUi.Button(box, "Camp", "扎营修整", new Vector2(290, -512), new Vector2(240, 52), () => Send(PanelAction.Heal));
         _retreat = GameplayUi.Button(box, "Retreat", "撤离返回局外", new Vector2(556, -512), new Vector2(240, 52), () => Send(PanelAction.Return));
         _cancel = GameplayUi.Button(box, "CancelRetreat", "取消撤离", new Vector2(290, -584), new Vector2(240, 48), () => Send(PanelAction.Cancel));
+        _settings = GameplayUi.Button(box, "Settings", "设置 / 按键绑定", new Vector2(24, -584), new Vector2(240, 48), () => Send(PanelAction.Settings));
     }
 
     private static TextMeshProUGUI Label(Transform parent, string name, string text, float size, Vector2 position, Vector2 dimensions)
@@ -79,5 +80,6 @@ public sealed class RunMenuPanel : BasePanel, IGameplayView<RunMenuState>
         _retreat.GetComponentInChildren<TextMeshProUGUI>().text = state.RetreatLabel;
         _cancel.gameObject.SetActive(state.ConfirmRetreat);
         _camp.interactable = !state.ConfirmRetreat;
+        _settings.interactable = !state.ConfirmRetreat;
     }
 }

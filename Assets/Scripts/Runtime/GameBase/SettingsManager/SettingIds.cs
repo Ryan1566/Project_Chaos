@@ -57,11 +57,15 @@ public static class SettingIds
     public const string MoveRight = "keybind.moveRight";
     public const string Attack = "keybind.attack";
     public const string Jump = "keybind.jump";
+    public const string Camp = "keybind.camp";
+    public const string Menu = "keybind.menu";
 
     /// <summary>手柄方案的三个操作行。每行只有一个格子（手柄按键），结构与上面三个不同。</summary>
     public const string MoveGamepad = "keybind.move.pad";
     public const string AttackGamepad = "keybind.attack.pad";
     public const string JumpGamepad = "keybind.jump.pad";
+    public const string CampGamepad = "keybind.camp.pad";
+    public const string MenuGamepad = "keybind.menu.pad";
 
     /// <summary>把【当前页签那一套】的按键绑定恢复成默认：键鼠页签只清键鼠，手柄那套不动。</summary>
     public const string ResetScheme = "keybind.resetScheme";

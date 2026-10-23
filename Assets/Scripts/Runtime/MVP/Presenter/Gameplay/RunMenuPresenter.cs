@@ -27,6 +27,7 @@ namespace Chaos.MVP.Presenter.Gameplay
         }
         protected override void Execute(PanelIntent intent)
         {
+            if (intent.Action == PanelAction.Settings) { UIManager.Instance.PushPanel(PanelType.SettingPanel); return; }
             if (intent.Action == PanelAction.Cancel) { _model.ConfirmRetreat = false; Refresh(); return; }
             if (intent.Action == PanelAction.Heal)
             {

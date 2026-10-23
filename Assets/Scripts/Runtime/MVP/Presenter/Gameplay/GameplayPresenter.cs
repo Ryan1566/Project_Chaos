@@ -6,7 +6,7 @@ namespace Chaos.MVP.Presenter.Gameplay
     {
         Refresh, Close, Buy, Sell, Recruit, Toggle, Depart, Return, Unlock,
         Build, CancelBuild, Upgrade, Harvest, Advance, Cancel, ChooseOption,
-        Continue, Confirm, Discard, Heal, Refill
+        Continue, Confirm, Discard, Heal, Refill, Settings
     }
 
     public readonly struct PanelIntent

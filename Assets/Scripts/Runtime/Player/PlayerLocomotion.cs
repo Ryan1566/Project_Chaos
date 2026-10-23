@@ -5,11 +5,8 @@ using UnityEngine;
 /// <summary>
 /// 受控角色运动（W3.0 spike）：水平移动 / 跳跃 / 朝向 / 动画切换。
 ///
-/// ══════════════ 输入为什么不走 InputManager ══════════════
-/// `InputManager`（`GameBase/Input/InputManager.cs`）**只提供绑定管理/重绑定**，没有公开的读值 API
-/// （实测：只有 GetBindingDisplay/GetRebindSteps/BeginRebind 等）。本 spike 是原型，
-/// 直接读 `Keyboard.current` 最省事；**重绑定系统本身没有被破坏** —— 等 InputManager 补读值接口
-/// 后把这里换成它的 API 即可（动作名仍是 `Move`/`Attack`/`Jump`）。
+/// 输入统一读取InputManager的Move/Jump动作，和设置面板重绑定共用运行时动作表。
+/// 扎营/菜单快捷键由局级GameplayShortcutDriver处理，角色倒地后仍可打开菜单。
 ///
 /// ══════════════ 动画只有 3 个 ══════════════
 /// `Idle_Normal` / `Run_Normal` / `Walk_Normal` —— **没有跳跃/攻击动画**，
@@ -77,23 +74,9 @@ public class PlayerLocomotion : MonoBehaviour
 
     private void Update()
     {
-        //只在 Update 读输入；物理与位移全部在 FixedUpdate（任务要求）
-        var keyboard = UnityEngine.InputSystem.Keyboard.current;
-        var gamepad = UnityEngine.InputSystem.Gamepad.current;
-
-        float horizontal = 0f;
-        if (keyboard != null)
-        {
-            if (keyboard.aKey.isPressed || keyboard.leftArrowKey.isPressed) horizontal -= 1f;
-            if (keyboard.dKey.isPressed || keyboard.rightArrowKey.isPressed) horizontal += 1f;
-            if (keyboard.kKey.wasPressedThisFrame || keyboard.spaceKey.wasPressedThisFrame) _jumpRequested = true;
-            if (keyboard.cKey.wasPressedThisFrame) RunCampPanel.Open();   //W3.2i：C 键扎营
-        }
-        if (gamepad != null)
-        {
-            horizontal += gamepad.leftStick.x.ReadValue();
-            if (gamepad.buttonSouth.wasPressedThisFrame) _jumpRequested = true;
-        }
+        if (!InputManager.Instance.CanReadGameplayInput) { ClearInput(); UpdateAnimation(); return; }
+        float horizontal = InputManager.Instance.ReadMove();
+        if (InputManager.Instance.WasGameplayPressed(InputManager.ActionJump)) _jumpRequested = true;
 
         if (Time.time < _injectedInputUntil) horizontal = _injectedInput;   //调试注入优先
         horizontal = Mathf.Clamp(horizontal, -1f, 1f);
@@ -108,6 +91,29 @@ public class PlayerLocomotion : MonoBehaviour
         UpdateAnimation();
     }
 
+    private InputManager _inputManager;
+    private void OnEnable()
+    {
+        if (!Application.isPlaying) return;
+        _inputManager = InputManager.Instance;
+        _inputManager.GameplayInputBlockedChanged += OnInputBlocked;
+        ClearInput();
+    }
+    private void OnDisable()
+    {
+        if (_inputManager != null) _inputManager.GameplayInputBlockedChanged -= OnInputBlocked;
+        ClearInput();
+    }
+    private void OnInputBlocked(bool blocked) { if (blocked) ClearInput(); }
+    private void ClearInput()
+    {
+        _horizontalInput = 0;
+        _jumpRequested = false;
+        _injectedInput = 0;
+        _injectedInputUntil = 0;
+        if (_body != null) _body.velocity = new Vector2(0, _body.velocity.y);
+    }
+
     private float _horizontalInput;
 
     //调试注入（GM/自动化验证用：没有真实键盘时也能驱动运动与动画）
@@ -117,6 +123,7 @@ public class PlayerLocomotion : MonoBehaviour
     private void FixedUpdate()
     {
         if (_body == null) return;
+        if (InputManager.Instance.GameplayInputBlocked) { ClearInput(); return; }
 
         _isGrounded = CheckGrounded();
 

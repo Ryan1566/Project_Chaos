@@ -7,15 +7,9 @@ using UnityEngine.InputSystem;
 /// <summary>
 /// 输入管理器：动作映射、按键重绑定、绑定覆盖的存取。
 ///
-/// ══════════ 迁移说明：为什么旧版轮询还在 ══════════
-/// 本类原来是纯旧版输入（Input.GetKeyDown 轮询 Escape 与 W，命中就抛 GetKeyDown/GetKeyUp 事件）。
-/// 现在工程的后端是 Both（见 ProjectSettings 的 activeInputHandler），新输入系统接管
-/// 移动/攻击/跳跃这三个【可自定义】的动作，而 Escape 与 W 的轮询保留不动，原因有三：
-///   1. 事件契约要求保留：EventConstName.GetKeyDown/GetKeyUp 的参数是 KeyCode，
-///      而新输入系统给的是 InputControl，做 KeyCode 翻译等于为了搬而搬；
-///   2. 这两个键不在"可自定义"的范围内，玩家改不到它们，也就没有重绑定的需求；
-///   3. 后端是 Both，旧版 API 依然可用，保留它不产生任何额外成本。
-/// 等以后做 UI 导航/暂停菜单时，Escape 会直接并入新系统的 UI 动作表，那时再删这段。
+/// 正式玩法通过 ReadMove / WasGameplayPressed 读取本类克隆的动作表，和重绑定共用覆盖。
+/// 普通面板、GM和重绑定期间屏蔽玩法输入；菜单关闭使用单独的导航读取接口。
+/// 旧版Escape/W测试事件保留兼容，不承担正式玩法输入。
 ///
 /// ══════════ 绑定组的约定（与 ChaosInputActions.inputactions 强耦合）══════════
 /// 每组下每个动作【只有一条主绑定】，它就是按键界面上可重绑的那一格。
@@ -44,7 +38,7 @@ using UnityEngine.InputSystem;
 /// "KeyboardFixed" 的字符串里含有 "Keyboard"，用 Contains 会把备用键也当成主绑定翻出来
 /// （症状：跳跃行显示"K"却能改到"空格"上去，或者重绑定改了一个看不见的绑定）。
 /// </summary>
-public class InputManager : SingletonBase<InputManager>
+public partial class InputManager : SingletonBase<InputManager>
 {
     // 动作与绑定组的名字，必须与 ChaosInputActions.inputactions 里一致
     public const string MapName = "Player";
@@ -214,6 +208,7 @@ public class InputManager : SingletonBase<InputManager>
         EnsureInited();
         if (_asset == null) return;
 
+        InvalidateGameplayInput();
         _asset.RemoveAllBindingOverrides();
 
         if (string.IsNullOrEmpty(json)) return;
@@ -709,6 +704,8 @@ public class InputManager : SingletonBase<InputManager>
             return;
         }
 
+        InvalidateGameplayInput();
+        GameplayInputBlockedChanged?.Invoke(true);
         _rebindActionName = actionName;
         _rebindBindingIndex = bindingIndex;
         _rebindKind = kind;
@@ -793,6 +790,15 @@ public class InputManager : SingletonBase<InputManager>
             operation = operation.WithControlsExcluding(CancelKeyPaths[i]);
         }
 
+        // Fixed backup controls remain owned by their action; another rebind cannot steal them.
+        foreach (var other in action.actionMap.actions)
+        {
+            if (other == action) continue;
+            foreach (var binding in other.bindings)
+                if (HasGroup(binding, GroupKeyboardFixed) && !string.IsNullOrEmpty(binding.effectivePath))
+                    operation = operation.WithControlsExcluding(binding.effectivePath);
+        }
+
         //按格子限制可采集的控制：每一格只收自己那类设备。
         //不限制的话，给键盘格按个手柄键也会被接受，之后那一格上就躺着一条手柄路径 ——
         //看着是键盘键、按手柄才触发。三个分支是对称的：排除掉"不是本格设备"的那两类。
@@ -836,6 +842,7 @@ public class InputManager : SingletonBase<InputManager>
         }
 
         _rebindOnFinished = null;
+        InvalidateGameplayInput();
 
         //恢复重绑定期间被临时关掉的那条动作（见 BeginRebind 里的 action.Disable）。
         //放在最前面：不管成功还是取消、也不管下面会不会出意外，动作都不能留在禁用状态
@@ -975,7 +982,8 @@ public class InputManager : SingletonBase<InputManager>
     private static void ResolveConflict(InputAction action, int bindingIndex, string previousPath)
     {
         InputActionMap map = action.actionMap;
-        if (map == null || string.IsNullOrEmpty(previousPath)) return;
+        if (map == null) return;
+        previousPath = previousPath ?? string.Empty;
 
         string newPath = action.bindings[bindingIndex].effectivePath;
         if (string.IsNullOrEmpty(newPath) || newPath == previousPath) return;
@@ -1092,6 +1100,7 @@ public class InputManager : SingletonBase<InputManager>
 
     private void Tick()
     {
+        RefreshGameplayInputLatches();
         //⚠ 这一段必须在下面的 isStart 判断【之前】：
         //  那个开关管的是旧版 Escape/W 轮询，跟"正在等玩家按键"是两回事。
         //  放到后面的话，没开旧版轮询的场合按取消键会毫无反应，界面一直卡在"请按键…"

@@ -8,6 +8,7 @@ public class RunEncounterTicker : MonoBehaviour
 
     private void Awake()
     {
+        if (GetComponent<GameplayShortcutDriver>() == null) gameObject.AddComponent<GameplayShortcutDriver>();
         ChaosLog.Warn(LogChannel.UI, "[诊断] RunEncounterTicker 创建 id=" + GetInstanceID() + " frameCount=" + Time.frameCount);
     }
 

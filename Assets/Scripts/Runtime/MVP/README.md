@@ -27,3 +27,5 @@ Presenter不持有Unity控件，不继承MonoBehaviour，不读取Resources、�
 Settings行控件沿用原DTO字段绑定委托，通过Presenter访问编辑区并通知变更；完整不可变字段快照不是本轮已完成的能力。运行时验收见`Assets/Chaos_Story/Story/05_程序/07_MVP分层改造与验收.md`；边界检查：`python Assets/QA/MVP/check_boundaries.py`（从工程根运行）。
 
 正式开发入口为 `Assets/Scenes/EnterScene.unity`。局外地图提供管理、保存和派遣入口；局内右上角行囊/菜单进入 `RunMenuPanel`，其 `RunMenuModel` 在扎营覆盖时继续持有暂停状态，真正关闭时恢复。GM保留测试环境配置入口。迁移与验收见 `Assets/Chaos_Story/Story/05_程序/08_EnterScene正式玩法入口迁移.md`。
+
+玩法输入统一读取`InputManager`克隆的动作表，和Settings编辑区共用绑定覆盖；UIManager和GM分别持有输入屏蔽，角色禁用时清理待处理输入。暂停/观战快捷导航由局级`GameplayShortcutDriver`驱动；View不直接轮询设备。输入重定向与验收见`Assets/Chaos_Story/Story/05_程序/09_玩法输入重定向与验收.md`。

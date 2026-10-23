@@ -37,20 +37,21 @@ public class PlayerAttack : MonoBehaviour
 
     private void Update()
     {
-        //输入：InputManager 无公开读值 API（见 PlayerLocomotion 注释）→ 原型直接读键盘/鼠标
-        var keyboard = UnityEngine.InputSystem.Keyboard.current;
-        var mouse = UnityEngine.InputSystem.Mouse.current;
-        var gamepad = UnityEngine.InputSystem.Gamepad.current;
-
-        bool pressed = false;
-        if (keyboard != null && keyboard.jKey.wasPressedThisFrame) pressed = true;
-        if (mouse != null && mouse.leftButton.wasPressedThisFrame) pressed = true;
-        if (gamepad != null && gamepad.buttonWest.wasPressedThisFrame) pressed = true;
+        RestoreVisual();
+        bool pressed = InputManager.Instance.WasGameplayPressed(InputManager.ActionAttack);
+        if (SettingsManager.Instance.Applied?.attackTriggerMode == (int)MouseTriggerMode.Hold)
+            pressed |= InputManager.Instance.IsPointerAttackHeld();
         if (!pressed) { RestoreVisual(); return; }
 
         if (Time.time < _nextAttackTime) return;   //冷却中
         _nextAttackTime = Time.time + attackCooldown;
         DoAttack();
+    }
+
+    private void OnDisable()
+    {
+        _restoreUntil = 0;
+        if (_skeleton != null) _skeleton.transform.localPosition = _spineBasePosition;
     }
 
     private void RestoreVisual()

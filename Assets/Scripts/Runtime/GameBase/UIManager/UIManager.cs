@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using ChaosDebug;
 using UnityEngine;
 
@@ -134,6 +134,7 @@ public class UIManager : SingletonBase<UIManager>
             }
         }
 
+        InputManager.Instance.SetGameplayInputBlocked(this, true);
         if (topPanel != null) topPanel.Hide();//旧面板的退场动画与新面板的进场动画并发进行
 
         panelStack.Push(panel);//存入到堆栈中，成为堆栈中新的顶部对象
@@ -142,6 +143,7 @@ public class UIManager : SingletonBase<UIManager>
         panel.transform.SetAsLastSibling();
 
         panel.Show();//显示新的ui
+        RefreshGameplayInputBlock();
 
         return panel;
     }
@@ -172,6 +174,7 @@ public class UIManager : SingletonBase<UIManager>
         // Hide the outside canvas only when the last such overlay closes.
         if (topPanel.ReturnsToGameplayOnClose
             && (panelStack.Count == 0 || !panelStack.Peek().ReturnsToGameplayOnClose)) HideAllPanelsForGameplay();
+        RefreshGameplayInputBlock();
     }
 
     /// <summary>
@@ -256,6 +259,7 @@ public class UIManager : SingletonBase<UIManager>
             _hiddenCanvases.Add(canvas.gameObject);
             canvas.gameObject.SetActive(false);
         }
+        RefreshGameplayInputBlock();
         ChaosLog.Info(LogChannel.UI, "[局内] 已隐藏局外 Canvas " + _hiddenCanvases.Count + " 个");
 
         ChaosLog.Info(LogChannel.UI, "[局内] 已隐藏局外面板 " + _hiddenForGameplay.Count + " 个（GM 面板保持可见）："
@@ -284,6 +288,15 @@ public class UIManager : SingletonBase<UIManager>
         ChaosLog.Info(LogChannel.UI, "[局外] 已恢复面板 " + restored + " 个："
             + string.Join(",", _hiddenForGameplay.ConvertAll(t => t.ToString()).ToArray()));
         _hiddenForGameplay.Clear();
+        RefreshGameplayInputBlock();
+    }
+
+    private void RefreshGameplayInputBlock()
+    {
+        bool blocked = false;
+        foreach (var panel in PanelDic.Values)
+            if (panel != null && panel.IsShowing && panel.gameObject.activeInHierarchy) { blocked = true; break; }
+        InputManager.Instance.SetGameplayInputBlocked(this, blocked);
     }
 
     public BasePanel SpawnPanel(PanelType panelType)//实例化生成ui

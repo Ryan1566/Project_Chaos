@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using ChaosDebug;
 using UnityEngine;
@@ -111,14 +111,30 @@ public class KeybindBindingsPage : SettingsPageBase
         BindKeyRow(SettingIds.MoveRight, InputManager.ActionMove, InputManager.BindingKind.Keyboard, true, PartPositive);
         BindKeyRow(SettingIds.Attack, InputManager.ActionAttack, InputManager.BindingKind.Keyboard, true);
         BindKeyRow(SettingIds.Jump, InputManager.ActionJump, InputManager.BindingKind.Keyboard, true);
+        BindKeyRow(SettingIds.Camp, InputManager.ActionCamp, InputManager.BindingKind.Keyboard, true);
+        BindKeyRow(SettingIds.Menu, InputManager.ActionMenu, InputManager.BindingKind.Keyboard, true);
 
         //手柄三行：一个格子。
         //手柄的移动不拆：它是 <Gamepad>/leftStick/x 单轴绑定，没有 negative/positive 段
         BindKeyRow(SettingIds.MoveGamepad, InputManager.ActionMove, InputManager.BindingKind.Gamepad, false);
         BindKeyRow(SettingIds.AttackGamepad, InputManager.ActionAttack, InputManager.BindingKind.Gamepad, false);
         BindKeyRow(SettingIds.JumpGamepad, InputManager.ActionJump, InputManager.BindingKind.Gamepad, false);
+        BindKeyRow(SettingIds.CampGamepad, InputManager.ActionCamp, InputManager.BindingKind.Gamepad, false);
+        BindKeyRow(SettingIds.MenuGamepad, InputManager.ActionMenu, InputManager.BindingKind.Gamepad, false);
+        BindShortcutLabel(SettingIds.Camp, "ui_setting_camp", "扎营");
+        BindShortcutLabel(SettingIds.Menu, "ui_setting_run_menu", "局内菜单");
+        BindShortcutLabel(SettingIds.CampGamepad, "ui_setting_camp", "扎营");
+        BindShortcutLabel(SettingIds.MenuGamepad, "ui_setting_run_menu", "局内菜单");
 
         _resetRow = BindButton(SettingIds.ResetScheme, ResetScheme);
+    }
+
+    private void BindShortcutLabel(string id, string key, string fallback)
+    {
+        var row = FindRow<SettingRow_Keybind>(id);
+        if (row == null) return;
+        var label = row.transform.Find("Label")?.GetComponent<TMPro.TextMeshProUGUI>();
+        LocalizationSystem.GameplayText.Bind(label, key, fallback);
     }
 
     // ══════════════════ 顶部：返回 / 页签 / 手柄型号 ══════════════════

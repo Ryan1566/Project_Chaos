@@ -169,6 +169,9 @@ public partial class GMPanel : MonoBehaviour
         EventManager.Instance.AddListener(EventConstName.CloseGM, ClosePanelEvent);
     }
 
+    private void OnEnable() { if (Application.isPlaying) InputManager.Instance.SetGameplayInputBlocked(this, true); }
+    private void OnDisable() { if (Application.isPlaying) InputManager.Instance.SetGameplayInputBlocked(this, false); }
+
     private void OnDestroy()
     {
         EventManager.Instance.RemoveListener(EventConstName.CloseGM, ClosePanelEvent);
