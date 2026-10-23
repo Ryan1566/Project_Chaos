@@ -14,6 +14,8 @@ namespace Chaos.MVP.Presenter.Gameplay
     {
         private readonly RetainerRecruitmentModel _model;
         public RetainerPresenter(RetainerRecruitmentModel model) { _model = model; }
+        protected override void OnAttach() { base.OnAttach(); MetaRuntimeDriver.Changed += Refresh; }
+        protected override void OnDetach() { MetaRuntimeDriver.Changed -= Refresh; base.OnDetach(); }
         protected override RetainerState CreateState()
         {
             var svc = RetainerService.Instance;

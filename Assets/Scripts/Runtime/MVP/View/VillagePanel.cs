@@ -87,6 +87,9 @@ public class VillagePanel : BasePanel, IGameplayView<VillageState>
 
         CreateButton("Btn_" + row.Id, row.ActionLabel, new Vector2(0f, -34f), new Vector2(180f, 30f), row.Enabled,
             () => Send(row.Action, row.Id), rect);
+        if (!string.IsNullOrEmpty(row.SecondaryActionLabel))
+            CreateButton("Harvest_" + row.Id, row.SecondaryActionLabel, new Vector2(200f, -34f), new Vector2(180f, 30f), true,
+                () => Send(row.SecondaryAction, row.Id), rect);
     }
 
     private static void LogWhy(string what, string why)

@@ -10,6 +10,8 @@ namespace Chaos.MVP.Model.WorldMap
         public List<WorldMapPoint> Points;
         public WorldMapPoint Selected;
         public string Info;
+        public string Status, Hint;
+        public bool ConfirmReturn;
     }
 
     public sealed class WorldMapModel : IDisposable
@@ -17,6 +19,8 @@ namespace Chaos.MVP.Model.WorldMap
         private static readonly string[] StageNames = { "未使用", "战国末期", "秦朝", "秦末起义初期", "楚汉争霸", "汉刘邦时期" };
         private uint _stage;
         private WorldMapPoint _selected;
+        public bool ConfirmReturn { get; private set; }
+        public string Hint { get; private set; }
         public WorldMapModel()
         {
             uint era = GameSession.Instance.LoadedPayload?.era ?? 1u;
@@ -30,7 +34,28 @@ namespace Chaos.MVP.Model.WorldMap
             string info = "时期 " + _stage + "（" + StageNames[_stage] + "）　点位 " + points.Count
                 + "　势力区域 " + areas.Count + "　—　点击点位查看详情";
             if (_selected != null) info = Describe(_selected);
-            return new WorldMapSnapshot { Stage = _stage, Areas = areas, Points = points, Selected = _selected, Info = info };
+            var meta = MetaProgressService.Instance;
+            var inv = InventoryService.Instance;
+            string status = "时代 " + meta.Era + " / 深度 " + meta.Depth + "\n物资 " + inv.GetResource(InventoryService.ResourceKind.Goods)
+                + "　材料 " + inv.GetResource(InventoryService.ResourceKind.Material) + "\n图纸 " + inv.GetResource(InventoryService.ResourceKind.Blueprint)
+                + "　钱财 " + inv.GetResource(InventoryService.ResourceKind.Money);
+            return new WorldMapSnapshot { Stage = _stage, Areas = areas, Points = points, Selected = _selected, Info = info,
+                Status = status, Hint = Hint ?? "选择门客并派遣，开始本次出征。", ConfirmReturn = ConfirmReturn };
+        }
+        public bool Save()
+        {
+            bool ok = MetaProgressService.Instance.SaveProgress(out string reason);
+            Hint = ok ? "已保存到槽 " + MetaProgressService.Instance.SaveSlot : reason;
+            return ok;
+        }
+        public void RequestReturn() { ConfirmReturn = true; Hint = "保存当前进度并返回主菜单？"; }
+        public void CancelReturn() { ConfirmReturn = false; Hint = null; }
+        public bool ReturnToMenu()
+        {
+            if (!Save()) return false;
+            DispatchService.Instance.ResetSelection();
+            GameSession.Instance.Clear();
+            return true;
         }
         public void Select(uint pointId) { _selected = WorldMapService.Instance.Points(1u).Find(p => p.index == pointId); }
         public void Preview(int delta)

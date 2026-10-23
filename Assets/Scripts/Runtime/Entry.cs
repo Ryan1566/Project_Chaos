@@ -50,6 +50,7 @@ public class Entry : MonoBehaviour
             // 喂给它（ApplyToRuntime 里的 ApplyInput 会调 InputManager.LoadOverridesJson）。
             InputManager.Instance.Init();
             SettingsManager.Instance.Init();
+            if (GetComponent<MetaRuntimeDriver>() == null) gameObject.AddComponent<MetaRuntimeDriver>();
 
             UIManager.Instance.PushPanel(PanelType.MainMenuPanel);
             return;

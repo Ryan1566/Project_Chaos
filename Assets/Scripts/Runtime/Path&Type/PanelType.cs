@@ -29,5 +29,6 @@ public enum PanelType
     RunCampPanel,//扎营面板
     EraProgressPanel,//时代进度面板
     EventPanel,//剧情事件面板
-    MarketPanel//市场面板
+    MarketPanel,//市场面板
+    RunMenuPanel // Formal in-run bag and menu
 }

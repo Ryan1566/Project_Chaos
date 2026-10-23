@@ -67,6 +67,9 @@ public class WorldMapPanel : BasePanel, IWorldMapView
     private TextMeshProUGUI _retainerEntryLabel;
     private TextMeshProUGUI _inventoryEntryLabel;
     private TextMeshProUGUI _marketEntryLabel;
+    private TextMeshProUGUI _villageEntryLabel, _familyEntryLabel, _eraEntryLabel, _saveEntryLabel, _settingsEntryLabel;
+    private TextMeshProUGUI _metaStatus, _metaHint, _returnPrompt;
+    private GameObject _returnConfirmation;
 
     private readonly List<GameObject> _iconObjects = new List<GameObject>();
     private readonly Dictionary<uint, Sprite> _fallbackIcons = new Dictionary<uint, Sprite>();
@@ -118,6 +121,17 @@ public class WorldMapPanel : BasePanel, IWorldMapView
         _iconLayer = FindRect(NodeIconLayer);
         _infoText = FindComponent<TextMeshProUGUI>(NodeInfoBar);
         _infoLocalized = FindComponent<LocalizedText>(NodeInfoBar);
+        if (_infoText != null)
+        {
+            // Keep the development GM toggle clear of the normal map information.
+            RectTransform infoRect = _infoText.rectTransform;
+            infoRect.anchorMin = new Vector2(0, 1);
+            infoRect.anchorMax = new Vector2(1, 1);
+            infoRect.pivot = new Vector2(.5f, 1);
+            infoRect.offsetMin = new Vector2(150, -64);
+            infoRect.offsetMax = new Vector2(-24, -18);
+            _infoText.fontSize = 23;
+        }
 
         if (_iconLayer == null) ChaosLog.Error(LogChannel.UI, "[局外地图] 找不到 " + NodeIconLayer + "，点位无法显示");
         if (_baseMap == null) ChaosLog.Warn(LogChannel.UI, "[局外地图] 找不到 " + NodeBaseMap + "，底图不可用（其余功能仍可用）");
@@ -157,71 +171,54 @@ public class WorldMapPanel : BasePanel, IWorldMapView
         return node as RectTransform;
     }
 
-    /// <summary>局外常用入口放在右上角信息条下方，不改变冻结的地图与底栏节点。</summary>
+    /// <summary>Formal outside navigation. The map hierarchy remains available to the map tools.</summary>
     private void BuildMetaEntries()
     {
-        GameObject toolbar = new GameObject("MetaEntries", typeof(RectTransform));
-        RectTransform rect = (RectTransform)toolbar.transform;
-        rect.SetParent(transform, false);
-        rect.anchorMin = rect.anchorMax = Vector2.one;
-        rect.pivot = Vector2.one;
-        rect.anchoredPosition = new Vector2(-24f, -102f);
-        rect.sizeDelta = new Vector2(384f, 44f);
+        RectTransform toolbar = GameplayUi.Rect(transform, "MetaEntries", Vector2.one, Vector2.one,
+            new Vector2(-24, -100), new Vector2(280, 430));
+        toolbar.gameObject.AddComponent<Image>().color = new Color(.07f, .10f, .14f, .96f);
+        RectTransform status = GameplayUi.Rect(toolbar, "StatusArea", new Vector2(0, 1), new Vector2(0, 1),
+            new Vector2(8, -8), new Vector2(264, 98));
+        _metaStatus = GameplayUi.Text(status, "Status", "", 20);
+        _metaStatus.alignment = TextAlignmentOptions.Left;
+        _retainerEntryLabel = Entry(toolbar, "Retainers", "门客", 0, () => OpenMetaPanel(PanelType.RetainerPanel));
+        _inventoryEntryLabel = Entry(toolbar, "Inventory", "库存", 1, () => OpenMetaPanel(PanelType.InventoryPanel));
+        _villageEntryLabel = Entry(toolbar, "Village", "村庄", 2, () => OpenMetaPanel(PanelType.VillagePanel));
+        _familyEntryLabel = Entry(toolbar, "FamilyTree", "家族树", 3, () => OpenMetaPanel(PanelType.FamilyTreePanel));
+        _marketEntryLabel = Entry(toolbar, "Market", "市场", 4, () => OpenMetaPanel(PanelType.MarketPanel));
+        _eraEntryLabel = Entry(toolbar, "EraProgress", "时代进度", 5, () => OpenMetaPanel(PanelType.EraProgressPanel));
+        _saveEntryLabel = Entry(toolbar, "Save", "保存进度", 6, () => Intent?.Invoke(new WorldMapIntent(WorldMapAction.Save)));
+        _settingsEntryLabel = Entry(toolbar, "Settings", "设置", 7, () => OpenMetaPanel(PanelType.SettingPanel));
+        RectTransform hint = GameplayUi.Rect(toolbar, "HintArea", new Vector2(0, 1), new Vector2(0, 1),
+            new Vector2(8, -342), new Vector2(264, 80));
+        _metaHint = GameplayUi.Text(hint, "Hint", "", 19);
+        _metaHint.color = new Color(1, .85f, .5f);
 
-        _retainerEntryLabel = CreateMetaEntry(rect, "Retainers", 0f, () => OpenMetaPanel(PanelType.RetainerPanel));
-        _inventoryEntryLabel = CreateMetaEntry(rect, "Inventory", 132f, () => OpenMetaPanel(PanelType.InventoryPanel));
-        _marketEntryLabel = CreateMetaEntry(rect, "Market", 264f, () => OpenMetaPanel(PanelType.MarketPanel));
+        // Preview controls stay out of the normal player flow; GM retains progress setup tools.
+        if (_stagePrevBtn != null) _stagePrevBtn.gameObject.SetActive(false);
+        if (_stageNextBtn != null) _stageNextBtn.gameObject.SetActive(false);
+        _returnConfirmation = new GameObject("ReturnConfirmation", typeof(RectTransform), typeof(Image));
+        var overlay = (RectTransform)_returnConfirmation.transform;
+        overlay.SetParent(transform, false);
+        overlay.anchorMin = Vector2.zero; overlay.anchorMax = Vector2.one;
+        overlay.offsetMin = overlay.offsetMax = Vector2.zero;
+        overlay.GetComponent<Image>().color = new Color(0, 0, 0, .8f);
+        var box = GameplayUi.Rect(overlay, "Box", new Vector2(.5f, .5f), new Vector2(.5f, .5f), Vector2.zero, new Vector2(620, 230));
+        box.gameObject.AddComponent<Image>().color = new Color(.09f, .13f, .18f, 1);
+        var prompt = GameplayUi.Rect(box, "Prompt", new Vector2(0, 1), new Vector2(0, 1), new Vector2(20, -12), new Vector2(580, 100));
+        _returnPrompt = GameplayUi.Text(prompt, "Text", "保存当前进度并返回主菜单？", 26);
+        GameplayUi.Button(box, "Confirm", "保存并返回", new Vector2(36, -140), new Vector2(250, 56),
+            () => Intent?.Invoke(new WorldMapIntent(WorldMapAction.ConfirmReturn)));
+        GameplayUi.Button(box, "Cancel", "继续游戏", new Vector2(334, -140), new Vector2(250, 56),
+            () => Intent?.Invoke(new WorldMapIntent(WorldMapAction.CancelReturn)));
+        _returnConfirmation.SetActive(false);
         RefreshMetaEntryLabels();
     }
 
-    private TextMeshProUGUI CreateMetaEntry(RectTransform parent, string name, float x, UnityEngine.Events.UnityAction action)
+    private TextMeshProUGUI Entry(RectTransform parent, string name, string label, int index, UnityEngine.Events.UnityAction action)
     {
-        GameObject go = new GameObject(name, typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(Button));
-        RectTransform rect = (RectTransform)go.transform;
-        rect.SetParent(parent, false);
-        rect.anchorMin = rect.anchorMax = new Vector2(0f, 1f);
-        rect.pivot = new Vector2(0f, 1f);
-        rect.anchoredPosition = new Vector2(x, 0f);
-        rect.sizeDelta = new Vector2(120f, 44f);
-
-        Image background = go.GetComponent<Image>();
-        Button button = go.GetComponent<Button>();
-        Image sourceImage = _enterRunBtn == null ? null : _enterRunBtn.targetGraphic as Image;
-        background.color = sourceImage == null ? new Color(0.20f, 0.42f, 0.72f, 1f) : sourceImage.color;
-        if (sourceImage != null)
-        {
-            background.sprite = sourceImage.sprite;
-            background.type = sourceImage.type;
-        }
-        if (_enterRunBtn != null)
-        {
-            button.colors = _enterRunBtn.colors;
-            button.transition = _enterRunBtn.transition == Selectable.Transition.ColorTint
-                ? Selectable.Transition.ColorTint : Selectable.Transition.None;
-        }
-        button.targetGraphic = background;
-        button.onClick.AddListener(action);
-
-        GameObject textGo = new GameObject("Text", typeof(RectTransform));
-        RectTransform textRect = (RectTransform)textGo.transform;
-        textRect.SetParent(rect, false);
-        textRect.anchorMin = Vector2.zero;
-        textRect.anchorMax = Vector2.one;
-        textRect.offsetMin = new Vector2(8f, 0f);
-        textRect.offsetMax = new Vector2(-8f, 0f);
-        TextMeshProUGUI label = textGo.AddComponent<TextMeshProUGUI>();
-        TextMeshProUGUI sourceText = _enterRunBtn == null ? null : _enterRunBtn.GetComponentInChildren<TextMeshProUGUI>();
-        label.font = sourceText != null && sourceText.font != null ? sourceText.font : RunTeamHud.ResolveFont();
-        label.fontSize = 22f;
-        label.color = sourceText == null ? Color.white : sourceText.color;
-        label.alignment = TextAlignmentOptions.Center;
-        label.enableWordWrapping = false;
-        label.enableAutoSizing = true;
-        label.fontSizeMin = 16f;
-        label.fontSizeMax = 22f;
-        label.overflowMode = TextOverflowModes.Ellipsis;
-        label.raycastTarget = false;
-        return label;
+        var button = GameplayUi.Button(parent, name, label, new Vector2(10 + index % 2 * 134, -116 - index / 2 * 54), new Vector2(126, 46), action);
+        return button.GetComponentInChildren<TextMeshProUGUI>();
     }
 
     private void RefreshMetaEntryLabels()
@@ -229,6 +226,11 @@ public class WorldMapPanel : BasePanel, IWorldMapView
         GameplayText.Bind(_retainerEntryLabel, "ui_world_retainer", "门客");
         GameplayText.Bind(_inventoryEntryLabel, "ui_world_inventory", "库存");
         GameplayText.Bind(_marketEntryLabel, "ui_world_market", "市场");
+        GameplayText.Bind(_villageEntryLabel, "ui_village_title", "村庄");
+        GameplayText.Bind(_familyEntryLabel, "ui_familytree_title", "家族树");
+        GameplayText.Bind(_eraEntryLabel, "ui_era_progress_title", "时代进度");
+        GameplayText.Bind(_saveEntryLabel, "ui_world_save", "保存进度");
+        GameplayText.Bind(_settingsEntryLabel, "ui_world_settings", "设置");
     }
 
     private void OpenMetaPanel(PanelType type)
@@ -246,6 +248,15 @@ public class WorldMapPanel : BasePanel, IWorldMapView
         RebuildIcons(state.Points);
         UpdateSelectionScales();
         SetInfoText(state.Info);
+        if (_metaStatus != null) _metaStatus.text = state.Status;
+        if (_metaHint != null) _metaHint.text = state.Hint;
+        if (_returnConfirmation != null) _returnConfirmation.SetActive(state.ConfirmReturn);
+        if (_returnPrompt != null) _returnPrompt.text = state.Hint;
+        if (_returnBtn != null)
+        {
+            var label = _returnBtn.GetComponentInChildren<TextMeshProUGUI>();
+            if (label != null) GameplayText.Bind(label, "ui_world_main_menu", "主菜单");
+        }
     }
     private void ApplyFactionMask(List<WorldFactionArea> areas)
     {

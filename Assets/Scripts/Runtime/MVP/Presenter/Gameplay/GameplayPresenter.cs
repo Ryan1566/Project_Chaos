@@ -55,5 +55,7 @@ namespace Chaos.MVP.Presenter.Gameplay
         public uint Group;
         public string ActionLabel;
         public PanelAction Action;
+        public string SecondaryActionLabel;
+        public PanelAction SecondaryAction;
     }
 }

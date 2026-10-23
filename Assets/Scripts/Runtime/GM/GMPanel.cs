@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using ChaosDebug;
 using LocalizationSystem;
 using TMPro;
@@ -210,6 +210,7 @@ public partial class GMPanel : MonoBehaviour
     {
         return new[]
         {
+            new GmCategory("测试环境", new[] { new GmSection("正式流程准备", BuildFormalSetupPage) }),
             new GmCategory("界面", new[]
             {
                 // 复用现成的 GM_UITestEnter：它自己接按钮，会 PushPanel(MainMenuPanel) 并关掉 GM 面板

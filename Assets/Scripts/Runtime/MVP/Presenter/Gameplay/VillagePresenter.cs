@@ -9,6 +9,8 @@ namespace Chaos.MVP.Presenter.Gameplay
     }
     public sealed class VillagePresenter : GameplayPresenter<VillageState>
     {
+        protected override void OnAttach() { base.OnAttach(); MetaRuntimeDriver.Changed += Refresh; }
+        protected override void OnDetach() { MetaRuntimeDriver.Changed -= Refresh; base.OnDetach(); }
         protected override VillageState CreateState()
         {
             var svc = VillageService.Instance;
@@ -32,7 +34,9 @@ namespace Chaos.MVP.Presenter.Gameplay
                 }
                 rows.Add(new TextRow { Id = id, Text = (def == null ? "建筑" + id : def.NameKey) + "　" + status,
                     Tone = state == VillageService.BuildingState.Building ? TextTone.Warning : TextTone.Normal,
-                    ActionLabel = action, Action = command, Enabled = true });
+                    ActionLabel = action, Action = command, Enabled = true,
+                    SecondaryActionLabel = state == VillageService.BuildingState.Upgradable ? "收取" : null,
+                    SecondaryAction = PanelAction.Harvest });
             }
             return new VillageState { Rows = rows.ToArray(), Hint = svc.IsQueueBusy ? "建造队列忙（同时只能建/升 1 个）——取消建造返还 50%" : "",
                 Resources = "物资 " + inv.GetResource(InventoryService.ResourceKind.Goods) + "　　材料 " + inv.GetResource(InventoryService.ResourceKind.Material)

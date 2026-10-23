@@ -168,7 +168,10 @@ public class UIManager : SingletonBase<UIManager>
             BasePanel panel = panelStack.Peek();
             if (panel != topPanel) panel.Show();
         }
-        if (topPanel.ReturnsToGameplayOnClose) HideAllPanelsForGameplay();
+        // A gameplay overlay can cover another gameplay overlay (camp -> run menu).
+        // Hide the outside canvas only when the last such overlay closes.
+        if (topPanel.ReturnsToGameplayOnClose
+            && (panelStack.Count == 0 || !panelStack.Peek().ReturnsToGameplayOnClose)) HideAllPanelsForGameplay();
     }
 
     /// <summary>

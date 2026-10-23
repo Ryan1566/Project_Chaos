@@ -161,7 +161,14 @@ public static class RunDepthHud
         scaler.matchWidthOrHeight = 0.5f;
 
         GraphicRaycaster raycaster = canvasGo.GetComponent<GraphicRaycaster>();
-        if (raycaster != null) raycaster.enabled = false;
+        if (raycaster != null) raycaster.enabled = true;
+
+        var menu = GameplayUi.Button(canvasGo.transform, "RunMenu", "行囊 / 菜单",
+            Vector2.zero, new Vector2(180, 48), RunMenuPanel.Open);
+        var menuRect = (RectTransform)menu.transform;
+        menuRect.anchorMin = menuRect.anchorMax = Vector2.one;
+        menuRect.pivot = Vector2.one;
+        menuRect.anchoredPosition = new Vector2(-24, -80);
 
         GameObject textGo = new GameObject("Text", typeof(RectTransform));
         RectTransform rect = (RectTransform)textGo.transform;
