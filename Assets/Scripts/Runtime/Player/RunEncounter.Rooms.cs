@@ -3,7 +3,7 @@ using ChaosDebug;
 using RunMap;
 using UnityEngine;
 
-// 房间清理判定与房间空间查询。
+// 遭遇区清理与空间查询；旧 roomId API 在自然地图中代表 EncounterRegion.Id。
 public static partial class RunEncounter
 {
     /// <summary>**按活体重算清房**：每房间统计"存活且在本房间矩形内"的敌人；0 即已清。</summary>
@@ -90,7 +90,25 @@ public static partial class RunEncounter
     }
 
     /// <summary>给定世界坐标，返回它所在房间的矩形（没有则 false）。</summary>
-    public static bool TryGetRoomRect(Vector3 worldPosition, out Rect rect)    {
+    public static bool TryGetRoomRect(Vector3 worldPosition, out Rect rect)
+    {
+        NaturalMapPlan plan = NaturalMapRuntime.Current;
+        if (plan != null)
+        {
+            foreach (EncounterRegion region in plan.Regions)
+            {
+                if (region == null) continue;
+                Rect regionBounds = region.Bounds;
+                if (worldPosition.x >= regionBounds.xMin && worldPosition.x <= regionBounds.xMax
+                    && worldPosition.y >= regionBounds.yMin && worldPosition.y <= regionBounds.yMax)
+                {
+                    rect = regionBounds;
+                    return true;
+                }
+            }
+            rect = new Rect();
+            return false;
+        }
         MapLayout layout = RunMapBootstrap.CurrentLayout;
         rect = new Rect();
         if (layout == null || layout.Nodes == null) return false;
@@ -114,6 +132,14 @@ public static partial class RunEncounter
     private static bool TryGetRoomRectById(ushort roomId, out Rect rect)
     {
         rect = new Rect();
+        NaturalMapPlan plan = NaturalMapRuntime.Current;
+        if (plan != null)
+        {
+            EncounterRegion region = plan.FindRegion(roomId);
+            if (region == null) return false;
+            rect = region.Bounds;
+            return true;
+        }
         MapLayout layout = RunMapBootstrap.CurrentLayout;
         if (layout == null) return false;
         RoomNode node = layout.Find(roomId);

@@ -6,9 +6,8 @@ using UnityEngine;
 /// <summary>
 /// 局内边界 + 掉落重生（W3.0b）。
 ///
-/// ⚠ 名字/容器刻意与地图里的 `CameraBounds` 区分（那个是相机限位用的实心碰撞体，
-///   会被 `PlayerSpawner` 的"禁用非瓦片碰撞体"逻辑禁用）。本类的墙**挂在独立的
-///   `PrototypeBoundaryRoot` 下、且不在地图根内**，不会被误伤。
+/// 硬地图范围来自自然地图计划；旧地图按节点包围矩形回退。
+/// 左、右、顶墙在合法范围外，底部保留掉落判定区域。
 /// </summary>
 public static class RunBounds
 {
@@ -22,6 +21,7 @@ public static class RunBounds
     /// <summary>以整张地图最低房间为基准，地下合法坐标不能被当成掉出地图。</summary>
     public static float GetFallThreshold(MapLayout layout, float fallback = -20f)
     {
+        if (NaturalMapRuntime.Current != null) return NaturalMapRuntime.Current.Bounds.yMin - FallMargin;
         if (layout == null || layout.Nodes == null) return fallback;
         int minimum = int.MaxValue;
         foreach (RoomNode node in layout.Nodes)
@@ -29,41 +29,61 @@ public static class RunBounds
         return minimum == int.MaxValue ? fallback : minimum * RunMapConst.ChunkH - FallMargin;
     }
 
-    /// <summary>按 layout 的节点范围创建左右两面不可见静态墙。</summary>
+    public static bool TryGetMapBounds(out Rect bounds)
+    {
+        NaturalMapPlan plan = NaturalMapRuntime.Current;
+        if (plan != null)
+        {
+            bounds = new Rect(plan.Bounds.xMin, plan.Bounds.yMin, plan.Bounds.width, plan.Bounds.height);
+            return bounds.width > 0f && bounds.height > 0f;
+        }
+        return TryGetLegacyBounds(RunMapBootstrap.CurrentLayout, out bounds);
+    }
+
+    private static bool TryGetLegacyBounds(MapLayout layout, out Rect bounds)
+    {
+        bounds = new Rect();
+        if (layout == null || layout.Nodes == null) return false;
+        bool found = false;
+        foreach (RoomNode node in layout.Nodes)
+        {
+            if (node == null) continue;
+            Rect room = new Rect(node.CellX * RunMapConst.ChunkW, node.CellY * RunMapConst.ChunkH,
+                RunMapConst.ChunkW, RunMapConst.ChunkH);
+            if (!found) { bounds = room; found = true; }
+            else bounds = Rect.MinMaxRect(Mathf.Min(bounds.xMin, room.xMin), Mathf.Min(bounds.yMin, room.yMin),
+                Mathf.Max(bounds.xMax, room.xMax), Mathf.Max(bounds.yMax, room.yMax));
+        }
+        return found;
+    }
+
+    /// <summary>范围外创建左、右、顶三面墙，保持整个合法地图空间可用。</summary>
     public static void Create(MapLayout layout, SpawnPoint spawnPoint)
     {
         Clear();
-        if (layout == null || layout.Nodes == null || layout.Nodes.Count == 0)
+        Rect bounds;
+        if (NaturalMapRuntime.Current != null)
         {
-            ChaosLog.Warn(LogChannel.UI, "[局内] layout 为空，跳过边界墙创建");
+            if (!TryGetMapBounds(out bounds)) return;
+        }
+        else if (!TryGetLegacyBounds(layout, out bounds))
+        {
+            ChaosLog.Warn(LogChannel.UI, "[局内] 无可用地图范围，跳过边界墙创建");
             return;
         }
-
-        int minCellX = int.MaxValue, maxCellX = int.MinValue;
-        for (int i = 0; i < layout.Nodes.Count; i++)
-        {
-            RoomNode node = layout.Nodes[i];
-            if (node == null) continue;
-            if (node.CellX < minCellX) minCellX = node.CellX;
-            if (node.CellX > maxCellX) maxCellX = node.CellX;
-        }
-        if (minCellX == int.MaxValue) { ChaosLog.Warn(LogChannel.UI, "[局内] 没有可用节点，跳过边界墙"); return; }
-
-        float leftX = minCellX * RunMapConst.ChunkW - WallThickness * 0.5f;
-        float rightX = (maxCellX + 1) * RunMapConst.ChunkW + WallThickness * 0.5f;
-        float centerY = spawnPoint == null ? 0f : spawnPoint.transform.position.y;
-
         GameObject root = new GameObject(RootName);
-
-        CreateWall(root.transform, "RunBoundaryWall_Left", new Vector2(leftX, centerY));
-        CreateWall(root.transform, "RunBoundaryWall_Right", new Vector2(rightX, centerY));
-
-        ChaosLog.Info(LogChannel.UI,
-            "[局内] 边界墙已创建：x ∈ [" + leftX + ", " + rightX + "]（cellX " + minCellX + "~" + maxCellX
-            + "，chunkW=" + RunMapConst.ChunkW + "）");
+        float bottom = bounds.yMin - FallMargin;
+        float centerY = (bottom + bounds.yMax) * 0.5f;
+        Vector2 verticalSize = new Vector2(WallThickness, bounds.yMax - bottom + WallThickness);
+        CreateWall(root.transform, "RunBoundaryWall_Left", new Vector2(bounds.xMin - WallThickness * 0.5f, centerY), verticalSize);
+        CreateWall(root.transform, "RunBoundaryWall_Right", new Vector2(bounds.xMax + WallThickness * 0.5f, centerY), verticalSize);
+        CreateWall(root.transform, "RunBoundaryWall_Top", new Vector2(bounds.center.x, bounds.yMax + WallThickness * 0.5f),
+            new Vector2(bounds.width + WallThickness * 2f, WallThickness));
+        Physics2D.SyncTransforms();
+        ChaosLog.Info(LogChannel.UI, "[局内] 硬边界 " + bounds + "，掉落阈值=" + bottom);
     }
 
-    private static void CreateWall(Transform parent, string name, Vector2 center)
+    private static void CreateWall(Transform parent, string name, Vector2 center, Vector2 size)
     {
         GameObject go = new GameObject(name, typeof(BoxCollider2D), typeof(Rigidbody2D));
         go.transform.SetParent(parent, false);
@@ -73,7 +93,7 @@ public static class RunBounds
         body.bodyType = RigidbodyType2D.Static;
 
         BoxCollider2D box = go.GetComponent<BoxCollider2D>();
-        box.size = new Vector2(WallThickness, WallHeight);
+        box.size = size;
         box.isTrigger = false;
     }
 
@@ -83,6 +103,7 @@ public static class RunBounds
         while (root != null)
         {
             root.name = RootName + "_destroying";
+            root.SetActive(false);
             Object.Destroy(root);
             root = GameObject.Find(RootName);
         }

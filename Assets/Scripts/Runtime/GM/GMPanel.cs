@@ -236,6 +236,7 @@ public partial class GMPanel : MonoBehaviour
             new GmCategory("局内生成", new[]
             {
                 new GmSection("生成地图", BuildRunMapPage),
+                new GmSection("自然地图参数", BuildNaturalMapParametersPage),
                 new GmSection("扎营", BuildRunTeamDebugPage),   //W3.3：门客 HP / 倒地调试
                 new GmSection("地形与阵营", BuildTerrainFactionPage),   //W5.2：M14 地形与阵营
             }),
@@ -1389,7 +1390,7 @@ public partial class GMPanel : MonoBehaviour
 
     private void RandomizeRunMapSeed()
     {
-        // 1 ~ int.MaxValue：避开 0（RunMapRng 把 0 当退化值换成固定常量）
+        // This helper picks a fresh positive seed; an explicitly entered zero is valid too.
         uint seed = (uint)UnityEngine.Random.Range(1, int.MaxValue);
         _runMapSeed = seed;
         if (_runMapSeedInput != null) _runMapSeedInput.SetTextWithoutNotify(seed.ToString());
@@ -1400,9 +1401,9 @@ public partial class GMPanel : MonoBehaviour
     {
         uint seed;
         string raw = _runMapSeedInput != null ? _runMapSeedInput.text : null;
-        if (string.IsNullOrEmpty(raw) || !uint.TryParse(raw, out seed) || seed == 0)
+        if (string.IsNullOrEmpty(raw) || !uint.TryParse(raw, out seed))
         {
-            SetRunMapStatus("种子无效：请输入 1 ~ 4294967295 的整数（0 会被当成退化值）。");
+            SetRunMapStatus("种子无效：请输入 0 ~ 4294967295 的整数。");
             return;
         }
         _runMapSeed = seed;

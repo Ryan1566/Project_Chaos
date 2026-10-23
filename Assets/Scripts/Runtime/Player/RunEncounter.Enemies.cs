@@ -3,7 +3,7 @@ using ChaosDebug;
 using RunMap;
 using UnityEngine;
 
-// 敌人生成、地形提示及击杀掉落。地图生成器保持原样。
+// 敌人生成、地形提示及击杀掉落；自然地图消费独立遭遇区与统一投放结果。
 public static partial class RunEncounter
 {
     // ══════════════════ W5.2 / M14：地形与阵营 ══════════════════
@@ -101,17 +101,19 @@ public static partial class RunEncounter
         ChaosLog.Info(LogChannel.Config, "[局内库存] 已清除未捡掉落物");
     }
 
-    private static void SpawnEnemiesForScene()
+    private static bool SpawnEnemiesForScene()
     {
+        NaturalMapPlan plan = NaturalMapRuntime.Current;
+        if (plan != null) return SpawnNaturalEnemies(plan);
         ChaosLog.Warn(LogChannel.UI, "[诊断] SpawnEnemiesForScene 进入 frameCount=" + Time.frameCount);
         MapLayout layout = RunMapBootstrap.CurrentLayout;
-        if (layout == null || layout.Nodes == null) return;
+        if (layout == null || layout.Nodes == null) return false;
 
         GameObject prefab = Resources.Load<GameObject>("Enemy/Enemy_Placeholder");
         if (prefab == null)
         {
             ChaosLog.Warn(LogChannel.UI, "[局内] 找不到 Resources/Enemy/Enemy_Placeholder.prefab");
-            return;
+            return false;
         }
 
         GameObject root = new GameObject("PrototypeEnemyRoot");
@@ -165,6 +167,64 @@ public static partial class RunEncounter
                 ChaosLog.Info(LogChannel.Config, "[地形] 场景 " + CurrentSceneIndex + " 敌人属性汇总：数量="
                     + AllEnemies.Count + " HP=" + sample.maxHp + " 伤害=" + sample.contactDamage);
         }
+        return true;
+    }
+
+    private static bool SpawnNaturalEnemies(NaturalMapPlan plan)
+    {
+        GameObject prefab = Resources.Load<GameObject>("Enemy/Enemy_Placeholder");
+        if (prefab == null || prefab.GetComponent<EnemyPlaceholder>() == null)
+        {
+            ChaosLog.Error(LogChannel.UI, "[局内] 敌人预制体缺失或没有 EnemyPlaceholder，停止遭遇生成");
+            return false;
+        }
+
+        // Required regions must have their complete planned population before gameplay starts.
+        foreach (EncounterRegion region in plan.Regions)
+        {
+            if (region == null || region.IsEntry || !region.Required) continue;
+            int planned = 0;
+            foreach (MapPlacement placement in plan.Placements)
+                if (placement != null && placement.Kind == MapPlacementKind.Enemy && placement.RegionId == region.Id) planned++;
+            int expected = plan.Parameters.enemiesPerRegion;
+            if (planned != expected)
+            {
+                ChaosLog.Error(LogChannel.UI, "[局内] 遭遇区 " + region.StableId + " 敌人投放数 " + planned + "，预期 " + expected);
+                return false;
+            }
+            AliveByRoom[region.Id] = new List<EnemyPlaceholder>();
+            TotalByRoom[region.Id] = planned;
+        }
+        if (TotalByRoom.Count == 0)
+        {
+            ChaosLog.Error(LogChannel.UI, "[局内] 自然地图没有必经遭遇区，停止初始化以免无法结算");
+            return false;
+        }
+
+        GameObject root = new GameObject("PrototypeEnemyRoot");
+        foreach (MapPlacement placement in plan.Placements)
+        {
+            if (placement == null || placement.Kind != MapPlacementKind.Enemy) continue;
+            EncounterRegion region = plan.FindRegion(placement.RegionId);
+            List<EnemyPlaceholder> enemies;
+            if (region == null || !AliveByRoom.TryGetValue(region.Id, out enemies)) continue;
+
+            GameObject go = Object.Instantiate(prefab, (Vector3)placement.Position + Vector3.up * 0.6f,
+                Quaternion.identity, root.transform);
+            go.name = "Enemy_" + placement.StableId;
+            EnemyPlaceholder enemy = go.GetComponent<EnemyPlaceholder>();
+            enemy.roomId = region.Id;
+            enemy.roomX0 = region.Bounds.xMin;
+            enemy.roomY0 = region.Bounds.yMin;
+            enemy.roomW = region.Bounds.width;
+            enemy.roomH = region.Bounds.height;
+            enemy.fallThresholdY = plan.Bounds.yMin - RunBounds.FallMargin;
+            enemies.Add(enemy);
+            AllEnemies.Add(go);
+        }
+        ChaosLog.Info(LogChannel.UI, "[局内] 自然地图遭遇区 " + TotalByRoom.Count + "，计划敌人 " + AllEnemies.Count
+            + "，runSeed=" + plan.RunSeed + " scene=" + plan.SceneIndex);
+        return true;
     }
 
     private static void ClearEnemies()

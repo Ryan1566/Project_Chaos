@@ -33,10 +33,10 @@ public static class PrototypeMapSpawner
     }
 
     /// <summary>
-    /// 生成第 `sceneIndex` 场景（1~3）。`seed == 0` 时用 UTC ticks 当种子并打日志。
+    /// 生成第 sceneIndex 场景（1~3）。不指定种子时自动生成；显式0是有效种子。
     /// 返回容器对象；失败返回 null（不抛异常）。
     /// </summary>
-    public static GameObject Spawn(int sceneIndex, uint seed = 0)
+    public static GameObject Spawn(int sceneIndex, uint? seed = null)
     {
         if (sceneIndex < 1 || sceneIndex > 3)
         {
@@ -46,10 +46,10 @@ public static class PrototypeMapSpawner
 
         Clear();
 
-        if (seed == 0)
+        if (!seed.HasValue)
         {
-            seed = (uint)DateTime.UtcNow.Ticks;
-            ChaosLog.Info(LogChannel.Config, "[原型地图] seed=0 → 用 UTC ticks 当种子：" + seed);
+            seed = RunMap.NaturalMapRuntime.CreateRunSeed();
+            ChaosLog.Info(LogChannel.Config, "[原型地图] 自动种子：" + seed);
         }
 
         GameObject container = new GameObject(ContainerName);
@@ -57,7 +57,7 @@ public static class PrototypeMapSpawner
 
         try
         {
-            root = RunMap.RunMapBootstrap.BuildScene(seed, sceneIndex, container.transform, true);
+            root = RunMap.RunMapBootstrap.BuildScene(seed.Value, sceneIndex, container.transform, true);
         }
         catch (Exception e)
         {
@@ -67,7 +67,9 @@ public static class PrototypeMapSpawner
         if (root == null)
         {
             ChaosLog.Warn(LogChannel.Config,
-                "[原型地图] RunMap 没有产出根对象（可能回退了灰盒名册 / 表缺失）—— 当前生成物是灰盒数据");
+                "[原型地图] 未生成可用地图：" + RunMap.NaturalMapRuntime.LastError);
+            if (Application.isPlaying) UnityEngine.Object.Destroy(container); else UnityEngine.Object.DestroyImmediate(container);
+            return null;
         }
         else
         {
@@ -84,6 +86,7 @@ public static class PrototypeMapSpawner
     /// <summary>销毁已生成的容器（Play 用 Destroy、编辑模式用 DestroyImmediate；可反复调用）。</summary>
     public static void Clear()
     {
+        RunMap.RunMapBootstrap.ClearCurrent();
         GameObject container = FindContainer();
         while (container != null)
         {

@@ -7,8 +7,8 @@ using UnityEngine.Tilemaps;
 /// <summary>
 /// 进局生成器（W3.0 spike）：补地面碰撞 → 放 SpawnPos → 生成受控角色 → 放训练靶 → 挂相机跟随。
 ///
-/// ⚠ **不改 RunMap 源码**：chunk 预制体里没有 Collider2D，所以这里在**原型层**给
-///   `Tilemap_Ground` 补 `TilemapCollider2D + CompositeCollider2D + 静态 Rigidbody2D`。
+/// 自然地图的出生与投放点来自 NaturalMapPlan，地形碰撞由装配器负责。
+/// legacy chunk 缺失地面碰撞时仍保留补齐路径。
 /// 容器：`SpawnRoot`（SpawnPos）与 `PlayerRoot`（角色/靶）都挂在 `PrototypeRunMap` 之外的单例根下，
 /// 撤离时统一销毁。
 /// </summary>
@@ -57,6 +57,17 @@ public static class PlayerSpawner
             return null;
         }
         CurrentSpawnPoint = spawnPoint;
+
+        NaturalMapPlan naturalPlan = NaturalMapRuntime.Current;
+        if (naturalPlan != null && runTeam != null)
+        {
+            for (int i = 0; i < Mathf.Min(runTeam.Count - 1, 3); i++)
+            {
+                if (naturalPlan.FindPlacement(MapPlacementKind.Ally, i) != null) continue;
+                ChaosLog.Error(LogChannel.UI, "[门客] 缺少完整队伍的安全投放点，取消角色生成");
+                return null;
+            }
+        }
 
         PlayerRoot root = GetOrCreate<PlayerRoot>(PlayerRootName);
 
@@ -183,6 +194,12 @@ public static class PlayerSpawner
     /// <summary>给生成根下所有 Tilemap_Ground 补碰撞体（已有就跳过）。</summary>
     private static void EnsureGroundColliders()
     {
+        if (NaturalMapRuntime.Current != null)
+        {
+            // NaturalMap assembler owns collision geometry, including intentional solid props.
+            Physics2D.SyncTransforms();
+            return;
+        }
         GameObject mapRoot = RunMapBootstrap.CurrentMapRoot;
         if (mapRoot == null) mapRoot = GameObject.Find("PrototypeRunMap");
         if (mapRoot == null)
@@ -218,8 +235,8 @@ public static class PlayerSpawner
 
         ChaosLog.Info(LogChannel.UI, "[玩家] 地面碰撞体补齐：新增 " + added + " 个 Tilemap（共扫描 " + tilemaps.Length + " 个 Tilemap）");
 
-        //⚠ 地图里还有别的 Collider2D（例如 R1_Entry_L2/CameraBounds 的 BoxCollider2D）——
-        //  它们是给相机限位用的**实心碰撞体**，会把角色困住。原型层统一**禁用**非瓦片碰撞体。
+        // Legacy CameraBounds is an authoring range, not a physical obstacle.
+        // All other colliders keep their authored behavior.
         Collider2D[] allColliders = mapRoot.GetComponentsInChildren<Collider2D>(true);
         int disabled = 0;
         for (int i = 0; i < allColliders.Length; i++)
@@ -228,12 +245,13 @@ public static class PlayerSpawner
             if (collider == null) continue;
             if (collider is CompositeCollider2D) continue;
             if (collider is TilemapCollider2D) continue;
+            if (collider.name != "CameraBounds") continue;
             if (!collider.enabled) continue;
             collider.enabled = false;
             disabled++;
-            ChaosLog.Warn(LogChannel.UI, "[玩家] 已禁用地图里的非瓦片碰撞体（避免困住角色）：「" + collider.name + "」 " + collider.GetType().Name);
+            ChaosLog.Info(LogChannel.UI, "[玩家] 已忽略旧地图的 CameraBounds 辅助范围");
         }
-        if (disabled > 0) ChaosLog.Info(LogChannel.UI, "[玩家] 共禁用 " + disabled + " 个非瓦片碰撞体");
+        if (disabled > 0) ChaosLog.Info(LogChannel.UI, "[玩家] 已忽略 " + disabled + " 个旧相机辅助范围");
 
         //让新碰撞体立刻对 Physics2D 查询可见
         Physics2D.SyncTransforms();
@@ -268,6 +286,25 @@ public static class PlayerSpawner
     /// <summary>在入口房左侧、**室内地面**上放 SpawnPos（W3.1a 修正）。</summary>
     private static SpawnPoint PlaceSpawnPoint()
     {
+        NaturalMapPlan plan = NaturalMapRuntime.Current;
+        if (plan != null)
+        {
+            MapPlacement placement = plan.FindPlacement(MapPlacementKind.Player);
+            if (placement == null)
+            {
+                ChaosLog.Error(LogChannel.UI, "[玩家] 自然地图计划缺少玩家安全出生点");
+                return null;
+            }
+            PlayerRoot naturalRoot = GetOrCreate<PlayerRoot>(SpawnRootName);
+            GameObject naturalSpawn = new GameObject("SpawnPos");
+            naturalSpawn.transform.SetParent(naturalRoot.transform, false);
+            naturalSpawn.transform.position = placement.Position;
+            SpawnPoint naturalPoint = naturalSpawn.AddComponent<SpawnPoint>();
+            naturalPoint.facing = placement.Facing < 0 ? -1 : 1;
+            naturalPoint.hasGround = true;
+            ChaosLog.Info(LogChannel.UI, "[玩家] 自然地图出生点 " + placement.StableId + " @" + placement.Position);
+            return naturalPoint;
+        }
         MapLayout layout = RunMapBootstrap.CurrentLayout;
         if (layout == null) { ChaosLog.Warn(LogChannel.UI, "[玩家] CurrentLayout 为 null，无法定位入口房"); return null; }
         RoomNode entry = layout.Find(layout.EntryId);
@@ -330,6 +367,17 @@ public static class PlayerSpawner
         for (int i = 0; i < count; i++)
         {
             Vector3 position = spawnPoint.transform.position + new Vector3(-1.2f * (i + 1), 1f, 0f);
+            NaturalMapPlan plan = NaturalMapRuntime.Current;
+            if (plan != null)
+            {
+                MapPlacement placement = plan.FindPlacement(MapPlacementKind.Ally, i);
+                if (placement == null)
+                {
+                    ChaosLog.Error(LogChannel.UI, "[门客] 自然地图缺少第 " + (i + 1) + " 个门客安全投放点，停止生成");
+                    break;
+                }
+                position = (Vector3)placement.Position + Vector3.up;
+            }
             GameObject ally = Object.Instantiate(allyPrefab, position, Quaternion.identity, parent);
             AllyController controller = ally.GetComponent<AllyController>();
             if (controller != null)

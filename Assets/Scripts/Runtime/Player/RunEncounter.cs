@@ -55,7 +55,13 @@ public static partial class RunEncounter
     /// <summary>**唯一入口**：进入指定场景（1~3）。</summary>
     public static bool EnterScene(int sceneIndex, List<uint> runTeam = null)
     {
-        return EnterSceneInternal(sceneIndex, runTeam, false, 0u);
+        return EnterSceneInternal(sceneIndex, runTeam, false, null);
+    }
+
+    /// <summary>GM 重现入口：显式种子包含合法的 0，整个场景链沿用同一本局种子。</summary>
+    public static bool EnterSceneWithSeed(int sceneIndex, List<uint> runTeam, uint seed)
+    {
+        return EnterSceneInternal(sceneIndex, runTeam, false, seed);
     }
 
     public static bool EnterPreparedScene(int sceneIndex, List<uint> runTeam, uint seed)
@@ -63,7 +69,7 @@ public static partial class RunEncounter
         return EnterSceneInternal(sceneIndex, runTeam, true, seed);
     }
 
-    private static bool EnterSceneInternal(int sceneIndex, List<uint> runTeam, bool prepared, uint seed)
+    private static bool EnterSceneInternal(int sceneIndex, List<uint> runTeam, bool prepared, uint? seed)
     {
         if (sceneIndex < 1 || sceneIndex > MaxSceneIndex)
         {
@@ -83,9 +89,10 @@ public static partial class RunEncounter
                 RunInventory.Clear();
                 CampService.ResetForNewRun();
                 _killSeq = 0u;
-                _runSeed = seed == 0u ? (uint)(Time.frameCount * 7919 + sceneIndex * 131) : seed;
+                _runSeed = seed ?? NaturalMapRuntime.PreviewSeed ?? NaturalMapRuntime.CreateRunSeed();
                 RunCleared = false;
             }
+            else if (seed.HasValue) _runSeed = seed.Value;
             ClearGroundDrops();
             RunDepthHud.DisableAndDestroy();   //W4e：关闸 + 销毁   //W4c：撤离销毁 HUD
             RunTeamHud.DisableAndDestroy();    //W3.3：队伍血条关闸 + 销毁
@@ -125,10 +132,19 @@ public static partial class RunEncounter
             PlayerSpawner.Clear(false);
             if (!prepared) PrototypeMapSpawner.Clear();
 
-            GameObject container = prepared ? PrototypeMapSpawner.AdoptPreparedMap() : PrototypeMapSpawner.Spawn(sceneIndex);
+            GameObject container = prepared ? PrototypeMapSpawner.AdoptPreparedMap() : PrototypeMapSpawner.Spawn(sceneIndex, _runSeed);
             if (container == null)
             {
                 ChaosLog.Error(LogChannel.UI, "[局内] 场景 " + sceneIndex + " 生成失败");
+                return false;
+            }
+
+            NaturalMapPlan naturalPlan = NaturalMapRuntime.Current;
+            if (naturalPlan != null && (!NaturalMapRuntime.IsReady || naturalPlan.RunSeed != _runSeed
+                || naturalPlan.SceneIndex != sceneIndex))
+            {
+                ChaosLog.Error(LogChannel.UI, "[局内] 自然地图尚未就绪或种子/场景不匹配：计划 " + naturalPlan.RunSeed
+                    + "/" + naturalPlan.SceneIndex + "，遭遇 " + _runSeed + "/" + sceneIndex);
                 return false;
             }
 
@@ -150,7 +166,13 @@ public static partial class RunEncounter
             }
 
             HideStrayCitizen();
-            SpawnEnemiesForScene();
+            if (!SpawnEnemiesForScene())
+            {
+                ChaosLog.Error(LogChannel.UI, "[局内] 敌人投放失败，停止本场景初始化");
+                ClearEnemies();
+                PlayerSpawner.Clear(false);
+                return false;
+            }
             EnsureTicker();
 
             _sceneReady = true;
@@ -216,7 +238,27 @@ public static partial class RunEncounter
         int next = _pendingNextScene;
         _pendingNextScene = -1;
         _sceneReady = false;
+        if (RunSceneFlow.IsFormalRun)
+        {
+            RunSceneFlow.BeginNextStage(next, Team, _runSeed);
+            return;
+        }
         EnterScene(next, Team);
+    }
+
+    /// <summary>正式阶段切换只清本场景对象；整局背包、扎营、队伍和种子保留。</summary>
+    public static void SuspendForSceneTransition()
+    {
+        _sceneReady = false;
+        _pendingNextScene = -1;
+        RunDepthHud.DisableAndDestroy();
+        RunTeamHud.DisableAndDestroy();
+        RunTerrainToast.DisableAndDestroy();
+        ClearGroundDrops();
+        PurgeAllRuntimeObjects();
+        ClearEnemies();
+        PlayerSpawner.Clear(false);
+        PrototypeMapSpawner.Clear();
     }
 
     public static string DumpDiagState()

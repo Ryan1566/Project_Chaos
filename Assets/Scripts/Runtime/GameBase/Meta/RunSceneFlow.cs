@@ -12,6 +12,8 @@ public static class RunSceneFlow
     private static string _returnScene;
     private static List<uint> _team;
     private static uint _seed;
+    private static int _stageIndex;
+    private static int _transitionVersion;
 
     public const string GameplayScene = "WorldScene";
     public const string LoadingScene = "LoadingScene";
@@ -25,6 +27,8 @@ public static class RunSceneFlow
         _phase = Phase.Idle;
         _team = null;
         _returnScene = null;
+        _stageIndex = 0;
+        _transitionVersion = 0;
     }
 
     public static bool Begin(List<uint> team, out string reason)
@@ -37,11 +41,13 @@ public static class RunSceneFlow
 
         _returnScene = SceneManager.GetActiveScene().name;
         _team = new List<uint>(team);
-        _seed = (uint)System.DateTime.UtcNow.Ticks;
+        _seed = RunMap.NaturalMapRuntime.PreviewSeed ?? RunMap.NaturalMapRuntime.CreateRunSeed();
+        _stageIndex = 1;
+        _transitionVersion++;
         _phase = Phase.LoadingRun;
         SceneManager.sceneLoaded -= OnSceneLoaded;
         SceneManager.sceneLoaded += OnSceneLoaded;
-        RunMap.RunMapBootstrap.RequestForScene(GameplayScene, _seed, 1);
+        RunMap.RunMapBootstrap.RequestForScene(GameplayScene, _seed, _stageIndex);
         GameSession.Instance.SetTargetScene(GameplayScene);
         try
         {
@@ -52,8 +58,42 @@ public static class RunSceneFlow
         catch (System.Exception error)
         {
             _phase = Phase.Idle;
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+            GameSession.Instance.SetTargetScene(null);
             if (UIManager.Instance != null) UIManager.Instance.RestoreAfterGameplay();
             reason = "无法进入读条场景：" + error.Message;
+            return false;
+        }
+    }
+
+    /// <summary>正式第 2/3 阶段重新走读条分帧构建，保留整局的返回场景与种子。</summary>
+    public static bool BeginNextStage(int index, List<uint> team, uint seed)
+    {
+        if (_phase != Phase.Active) return false;
+        if (index < 2 || index > RunEncounter.MaxSceneIndex || team == null || team.Count == 0)
+        {
+            FailFormalRun("下一阶段或队伍无效");
+            return false;
+        }
+        _team = new List<uint>(team);
+        _seed = seed;
+        _stageIndex = index;
+        _phase = Phase.LoadingRun;
+        _transitionVersion++;
+        try
+        {
+            // Clear the old map before registering/building its replacement. The loader
+            // publishes the new CurrentPlan only after assembly has completed.
+            RunEncounter.SuspendForSceneTransition();
+            RunMap.RunMapBootstrap.RequestForScene(GameplayScene, _seed, _stageIndex);
+            GameSession.Instance.SetTargetScene(GameplayScene);
+            // Outside UI was hidden at departure; hiding it again would lose its restore list.
+            ScenesLoadManager.Instance.LoadScene(LoadingScene, () => { });
+            return true;
+        }
+        catch (System.Exception error)
+        {
+            FailFormalRun("无法加载下一阶段：" + error.Message);
             return false;
         }
     }
@@ -61,6 +101,7 @@ public static class RunSceneFlow
     public static void ReturnToMeta()
     {
         _phase = Phase.Returning;
+        _transitionVersion++;
         SceneManager.LoadScene(_returnScene);
     }
 
@@ -68,25 +109,27 @@ public static class RunSceneFlow
     {
         if ((_phase == Phase.LoadingRun && scene.name == GameplayScene)
             || (_phase == Phase.Returning && scene.name == _returnScene))
-            MonoManager.Instance.StartCoroutine(CompleteTransition(scene.name));
+            MonoManager.Instance.StartCoroutine(CompleteTransition(scene.name, _transitionVersion));
     }
 
-    private static IEnumerator CompleteTransition(string sceneName)
+    private static IEnumerator CompleteTransition(string sceneName, int version)
     {
         // sceneLoaded 在 Start 之前发生；下一帧再接管，等加载器搬入地图、Entry 初始化完毕。
         yield return null;
+        if (version != _transitionVersion) yield break;
         if (_phase == Phase.LoadingRun && sceneName == GameplayScene)
         {
-            bool started = RunEncounter.EnterPreparedScene(1, _team, _seed);
+            bool started = false;
+            string error = null;
+            try { started = RunEncounter.EnterPreparedScene(_stageIndex, _team, _seed); }
+            catch (System.Exception exception) { error = exception.Message; }
             _phase = Phase.Active;
             if (!started)
             {
-                ChaosLog.Error(LogChannel.Scene, "[正式流程] 局内初始化失败，返回局外");
-                string reason;
-                DispatchService.Instance.ReturnToMeta(out reason);
+                FailFormalRun("第 " + _stageIndex + " 阶段初始化失败" + (error == null ? "" : "：" + error));
                 yield break;
             }
-            ChaosLog.Info(LogChannel.Scene, "[正式流程] WorldScene 已接入战斗：队伍=" + _team.Count + " seed=" + _seed);
+            ChaosLog.Info(LogChannel.Scene, "[正式流程] WorldScene 已接入战斗：阶段=" + _stageIndex + " 队伍=" + _team.Count + " seed=" + _seed);
         }
         else if (_phase == Phase.Returning && sceneName == _returnScene)
         {
@@ -99,7 +142,23 @@ public static class RunSceneFlow
                 UIManager.Instance.SetRootPanel(PanelType.WorldMapPanel);
             }
             EventService.Instance.CheckAndShowOnReturnToMeta();
+            _team = null;
+            _stageIndex = 0;
             ChaosLog.Info(LogChannel.Scene, "[正式流程] 已返回 " + sceneName + " 的局外地图");
+        }
+    }
+
+    private static void FailFormalRun(string failure)
+    {
+        ChaosLog.Error(LogChannel.Scene, "[正式流程] " + failure + "，返回局外");
+        // Dispatch saves and cleans the run before returning. It must see Active rather
+        // than LoadingRun, otherwise its transition guard would reject this recovery.
+        _phase = Phase.Active;
+        string reason;
+        if (!DispatchService.Instance.ReturnToMeta(out reason))
+        {
+            if (UIManager.Instance != null) UIManager.Instance.RestoreAfterGameplay();
+            ChaosLog.Error(LogChannel.Scene, "[正式流程] 返回局外未完成，可重试：" + reason);
         }
     }
 }

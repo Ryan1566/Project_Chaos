@@ -371,7 +371,7 @@ public class LoadingController : MonoBehaviour
                 if (!_mapPrepared && _async.progress >= ProgressCeiling - 0.001f)
                 {
                     _mapPrepared = true;
-                    PrepareTargetScene();
+                    yield return PrepareTargetScene();
                 }
 
                 // ── 显示进度：单调不减，取两者较小值 ──
@@ -434,13 +434,13 @@ public class LoadingController : MonoBehaviour
     /// 现在：先建到 `DontDestroyOnLoad` 容器，目标场景激活时再 `MoveGameObjectToScene` 搬进去
     /// （见 `OnAnySceneLoaded`）。顺带**不需要任何场景对象探查**，读条功能与本地化完全解耦。
     /// </summary>
-    private void PrepareTargetScene()
+    private IEnumerator PrepareTargetScene()
     {
         uint seed;
         int idx;
         if (!RunMap.RunMapBootstrap.TryTakeRequest(_targetScene, out seed, out idx))
         {
-            return;   // 没人登记 → 这个场景不需要程序化生成地图（普通场景零影响）
+            yield break;   // 普通场景不需要程序化地图。
         }
 
         var holder = new GameObject("RunMap_Pending");
@@ -453,11 +453,23 @@ public class LoadingController : MonoBehaviour
         RunMap.RunMapBootstrap.StageChanged += OnRunMapStage;
         try
         {
-            RunMap.RunMapBootstrap.BuildIntoPending(holder.transform, seed, idx);
-        }
-        catch (System.Exception e)
-        {
-            ChaosLog.Error(LogChannel.Scene, "读条期生成局内地图失败（不阻塞进场）：" + e.Message);
+            foreach (var step in RunMap.RunMapBootstrap.BuildIntoPendingSteps(holder.transform, seed, idx))
+            {
+                yield return null;
+                float dt = Time.unscaledDeltaTime;
+                LoadingFrameCount++;
+                if (dt > MaxFrameDeltaSeconds) { MaxFrameDeltaSeconds = dt; MaxFrameDeltaFrameIndex = LoadingFrameCount; }
+                if (LoadingFrameCount > FrameWarmupForMetric && dt > MaxFrameDeltaBeforeActivationSeconds) MaxFrameDeltaBeforeActivationSeconds = dt;
+                AdvanceCarousel(dt);
+            }
+            if (RunMap.RunMapBootstrap.CurrentMapRoot == null)
+            {
+                LastRunFailed = true;
+                SetStageText("地图生成失败，正在返回局外");
+                ChaosLog.Error(LogChannel.Scene, "地图生成失败，目标场景接管后将返回局外：" + RunMap.NaturalMapRuntime.LastError);
+                UnityEngine.Object.Destroy(holder);
+                _pendingMapRoot = null;
+            }
         }
         finally
         {

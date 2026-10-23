@@ -15,6 +15,15 @@ public class PlayerCameraFollow : MonoBehaviour
         if (target == null) return;
 
         Vector3 wanted = target.position + offset;
+        var map = RunMap.NaturalMapRuntime.Current;
+        var camera = GetComponent<Camera>();
+        if (map != null && camera != null && camera.orthographic)
+        {
+            float hy = camera.orthographicSize, hx = hy * camera.aspect;
+            var bounds = map.Bounds;
+            wanted.x = bounds.width <= hx * 2f ? bounds.center.x : Mathf.Clamp(wanted.x, bounds.xMin + hx, bounds.xMax - hx);
+            wanted.y = bounds.height <= hy * 2f ? bounds.center.y : Mathf.Clamp(wanted.y, bounds.yMin + hy, bounds.yMax - hy);
+        }
         transform.position = Vector3.Lerp(transform.position, wanted, 1f - Mathf.Exp(-smooth * Time.deltaTime));
     }
 

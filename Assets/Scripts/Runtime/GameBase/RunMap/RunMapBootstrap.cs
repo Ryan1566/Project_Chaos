@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
@@ -47,6 +49,9 @@ namespace RunMap
 
         /// <summary>最近一次装配出的根物体。</summary>
         public static GameObject CurrentMapRoot { get; private set; }
+        public static double LastPlanningStepMs { get; private set; }
+        public static double LastAssemblyStepMs { get; private set; }
+        public static double LastPreparationMs { get; private set; }
 
         /// <summary>本实例是否已生成过（单开场景调试走这条）。</summary>
         private bool _built;
@@ -92,6 +97,7 @@ namespace RunMap
             if (string.IsNullOrEmpty(sceneName) || _pendingScene != sceneName) return false;
             runSeed = _pendingSeed;
             sceneIndex = _pendingSceneIndex;
+            _pendingScene = null;
             return true;
         }
 
@@ -103,8 +109,15 @@ namespace RunMap
         /// </summary>
         public static GameObject BuildIntoPending(Transform parent, uint runSeed, int sceneIndex)
         {
+            GameObject root = BuildScene(runSeed, sceneIndex, parent, false);
             _builtByLoader = true;
-            return BuildScene(runSeed, sceneIndex, parent, false);
+            return root;
+        }
+
+        public static IEnumerable<string> BuildIntoPendingSteps(Transform parent, uint seed, int index)
+        {
+            foreach (var step in BuildSceneSteps(seed, index, parent, false)) yield return step;
+            _builtByLoader = true;
         }
 
         /// <summary>
@@ -120,6 +133,16 @@ namespace RunMap
             if (container == null) return;
             container.SetActive(true);
             if (target.IsValid() && container.scene != target) SceneManager.MoveGameObjectToScene(container, target);
+            foreach (var tiles in container.GetComponentsInChildren<TilemapCollider2D>()) tiles.ProcessTilemapChanges();
+            foreach (var composite in container.GetComponentsInChildren<CompositeCollider2D>()) composite.GenerateGeometry();
+            Physics2D.SyncTransforms();
+            if (NaturalMapRuntime.Current != null && !NaturalMapAssembler.VerifyActive(NaturalMapRuntime.Current, CurrentMapRoot))
+            {
+                container.SetActive(false);
+                GenerationFailed("激活后的地形碰撞校验失败");
+                UnityEngine.Object.Destroy(container);
+                return;
+            }
             FrameCameraOnEntry(CurrentLayout, Camera.main);
         }
 
@@ -141,44 +164,81 @@ namespace RunMap
         /// <summary>生成并装配"本局第 sceneIndex 个场景"的地图。返回拼好的根物体（失败为 null）。</summary>
         public static GameObject BuildScene(uint runSeed, int sceneIndex, Transform parent, bool frameCamera = true)
         {
-            Tell(RunMapLoadingText.StagePrepare);
+            foreach (var unused in BuildSceneSteps(runSeed, sceneIndex, parent, frameCamera)) { }
+            return CurrentMapRoot;
+        }
 
-            // 名录：优先配置表；表读不到就退回代码内置的灰盒名录（§10 E12）
-            RunMapCatalog cat = RunMapConfigLoader.LoadFromConfigs();
-            if (cat == null)
+        public static void ClearCurrent()
+        { CurrentMapRoot = null; CurrentLayout = null; NaturalMapRuntime.Clear(); }
+
+        public static IEnumerable<string> BuildSceneSteps(uint seed, int index, Transform parent, bool frameCamera = true)
+        {
+            ClearCurrent();
+            LastPlanningStepMs = LastAssemblyStepMs = LastPreparationMs = 0;
+            NaturalMapBuild job = null;
+            string error = null;
+            var prepareClock = System.Diagnostics.Stopwatch.StartNew();
+            try
             {
-                ChaosLog.Warn(LogChannel.General, "[RunMap] 配置表名录不可用，退回内置灰盒名录：" + RunMapConfigLoader.LastReport);
-                cat = RunMapCatalog.CreateGreybox();
+                var p = NaturalMapRuntime.LoadParameters(index);
+                var actor = NaturalMapRuntime.CaptureActorProfile();
+                var problems = p.Validate(actor);
+                if (problems.Count > 0) throw new ArgumentException(string.Join("；", problems));
+                job = new NaturalMapBuild(seed, index, p, NaturalMapRuntime.LoadStructures(p),
+                    actor, NaturalMapRuntime.PopulationPasses.ToArray());
             }
+            catch (Exception exception) { error = exception.Message; }
+            LastPreparationMs = prepareClock.Elapsed.TotalMilliseconds;
+            if (error != null) { GenerationFailed(error); yield break; }
+            foreach (var step in SafeSteps(job.Steps().GetEnumerator(), value => error = value,
+                ms => LastPlanningStepMs = Math.Max(LastPlanningStepMs, ms)))
+            { if (step != null) TellNatural(step); yield return step; }
+            if (error != null || job.Plan == null) { GenerationFailed(error ?? job.Error); yield break; }
+            var assembler = new NaturalMapAssembler(job.Plan);
+            foreach (var step in SafeSteps(assembler.Steps(parent).GetEnumerator(), value => error = value,
+                ms => LastAssemblyStepMs = Math.Max(LastAssemblyStepMs, ms)))
+            { if (step != null) TellNatural(step); yield return step; }
+            if (error != null || assembler.Root == null)
+            { assembler.Dispose(); GenerationFailed(error ?? assembler.Error); yield break; }
+            CurrentMapRoot = assembler.Root;
+            CurrentLayout = NaturalMapRuntime.LegacyMetadata(job.Plan);
+            NaturalMapRuntime.Publish(job.Plan);
+            if (frameCamera) FrameCameraOnEntry(CurrentLayout, null);
+            TellNatural("局内地图就绪");
+            ChaosLog.Info(LogChannel.General, "[RunMap] " + job.Plan.Report);
+        }
 
-            var ctx = new RunMapContext { RunSeed = runSeed, SceneIndex = sceneIndex, Era = 1, Depth = 1 };
-            System.Collections.Generic.List<PresetDef> presets = cat.AllocateRunPresets();
-            PresetDef preset = (sceneIndex - 1 >= 0 && sceneIndex - 1 < presets.Count && presets[sceneIndex - 1] != null)
-                ? presets[sceneIndex - 1]
-                : cat.FindSingleLayerPreset(MapLayer.Surface);
-
-            RunMapResult res = RunMapGenerator.Generate(ctx, preset, cat, RunMapGenerator.ThemeKeyOf(preset), Tell);
-            if (res == null || res.Layout == null)
+        private static IEnumerable<string> SafeSteps(IEnumerator<string> steps, Action<string> failed, Action<double> measured)
+        {
+            using (steps)
             {
-                ChaosLog.Error(LogChannel.General, "[RunMap] 生成失败，连保底布局都没出来");
-                return null;
+                while (true)
+                {
+                    bool next = false; string step = null, error = null;
+                    var watch = System.Diagnostics.Stopwatch.StartNew();
+                    try { next = steps.MoveNext(); if (next) step = steps.Current; }
+                    catch (Exception exception) { error = exception.ToString(); }
+                    measured(watch.Elapsed.TotalMilliseconds);
+                    if (error != null) { failed(error); yield break; }
+                    if (!next) yield break;
+                    yield return step;
+                }
             }
-            CurrentLayout = res.Layout;
-
-            Tell(RunMapLoadingText.StageInstantiate);
-            GameObject root = RunMapAssembler.Assemble(res.Layout, cat, parent);
-            Tell(RunMapLoadingText.StageSealAndPopulate);
-
-            Tell(RunMapLoadingText.StageValidate);
-            string report = VerifyAssembled(root, res.Layout, cat);
-
-            if (frameCamera) FrameCameraOnEntry(res.Layout, null);
-
-            CurrentMapRoot = root;
-            Tell(RunMapLoadingText.StageReady);
-            ChaosLog.Info(LogChannel.General, "[RunMap] 场景 " + sceneIndex + " 就绪：" + report +
-                (res.Degraded ? "（降级布局）" : ""));
-            return root;
+        }
+        private static void GenerationFailed(string error)
+        {
+            ClearCurrent(); NaturalMapRuntime.Fail(error ?? "地图生成失败");
+            TellNatural("地图生成失败：" + NaturalMapRuntime.LastError);
+            ChaosLog.Error(LogChannel.General, "[RunMap] " + NaturalMapRuntime.LastError);
+        }
+        private static readonly string[] NaturalStages = { "规划区域与边界", "生成连续地表", "雕刻地下与连接通路", "嵌入手工结构",
+            "校验角色通行与生成锚点", "规划NPC、交互物与杂物", "地图计划校验完成", "创建地形瓦片", "落地手工结构", "建立地形碰撞",
+            "创建内容占位物", "场景地图校验完成", "局内地图就绪" };
+        private static void TellNatural(string message)
+        {
+            int index = Array.IndexOf(NaturalStages, message);
+            if (index >= 0) message = RunMapLoadingText.ForStage((uint)(index + 9));
+            CurrentStageText = message; if (StageChanged != null) StageChanged(message);
         }
 
         /// <summary>
@@ -188,6 +248,17 @@ namespace RunMap
         /// </summary>
         public static void FrameCameraOnEntry(MapLayout layout, Camera cam)
         {
+            if (NaturalMapRuntime.Current != null)
+            {
+                if (cam == null) cam = Camera.main;
+                var anchor = NaturalMapRuntime.Current.FindPlacement(MapPlacementKind.Player);
+                if (cam != null && anchor != null)
+                {
+                    if (cam.orthographic) cam.orthographicSize = 12f;
+                    cam.transform.position = new Vector3(anchor.Position.x, anchor.Position.y + 3f, cam.transform.position.z);
+                }
+                return;
+            }
             if (layout == null) return;
             RoomNode entry = layout.Find(layout.EntryId);
             if (entry == null) return;

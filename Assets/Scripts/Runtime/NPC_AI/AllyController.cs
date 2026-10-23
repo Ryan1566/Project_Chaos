@@ -19,13 +19,15 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class AllyController : MonoBehaviour
 {
+    public const float DefaultMoveSpeed = 5f;
+    public const float DefaultJumpForce = 11f;
     public static readonly List<AllyController> All = new List<AllyController>();
 
     public int followIndex;
     public uint memberId;
-    public float moveSpeed = 5.0f;
+    public float moveSpeed = DefaultMoveSpeed;
     public float acceleration = 30f;
-    public float jumpForce = 11f;
+    public float jumpForce = DefaultJumpForce;
     public float attackRange = 2.5f;
     public float attackCooldown = 0.6f;
     public int damage = 6;
@@ -169,6 +171,8 @@ public class AllyController : MonoBehaviour
         float wantedX = playerAbove
             ? controlled.transform.position.x
             : controlled.transform.position.x + FollowOffsets[Mathf.Clamp(followIndex - 1, 0, FollowOffsets.Length - 1)];
+        RunMap.NaturalMapPlan plan = RunMap.NaturalMapRuntime.Current;
+        if (plan != null) wantedX = Mathf.Clamp(wantedX, plan.Bounds.xMin + 0.6f, plan.Bounds.xMax - 0.6f);
 
         Rect room;
         if (RunEncounter.TryGetRoomRect(controlled.transform.position, out room))
@@ -254,7 +258,11 @@ public class AllyController : MonoBehaviour
     private void TeleportNear(GameObject player, string reason)
     {
         float offset = followIndex == 3 ? 1.2f : (followIndex == 2 ? 0f : -1.2f);
-        transform.position = player.transform.position + new Vector3(offset, 0.8f, 0f);
+        // The natural terrain can have walls or ceilings beside the player. The player's
+        // current position is safe for the ally, and character collisions are ignored.
+        transform.position = RunMap.NaturalMapRuntime.Current != null
+            ? player.transform.position
+            : player.transform.position + new Vector3(offset, 0.8f, 0f);
         if (_body != null) _body.velocity = Vector2.zero;
         _lostSince = -1f;
         _highDySince = -1f;

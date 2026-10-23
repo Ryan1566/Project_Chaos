@@ -79,6 +79,136 @@
             "descEN": "Terrain ready. Proceeding…",
             "descJP": "地形の生成が完了しました…",
             "descKR": "지형 생성이 완료되었습니다…"
+        },
+        {
+            "Id": 9,
+            "stage": 9,
+            "sort": 9,
+            "descCN": "规划区域与边界",
+            "descTW": "規劃區域與邊界",
+            "descEN": "Planning regions and boundaries",
+            "descJP": "エリアと境界を計画中",
+            "descKR": "구역과 경계 계획 중"
+        },
+        {
+            "Id": 10,
+            "stage": 10,
+            "sort": 10,
+            "descCN": "生成连续地表",
+            "descTW": "生成連續地表",
+            "descEN": "Generating continuous terrain",
+            "descJP": "連続した地表を生成中",
+            "descKR": "연속 지표 생성 중"
+        },
+        {
+            "Id": 11,
+            "stage": 11,
+            "sort": 11,
+            "descCN": "雕刻地下与连接通路",
+            "descTW": "雕刻地下與連接通路",
+            "descEN": "Carving underground terrain and connecting passages",
+            "descJP": "地下地形と接続通路を掘削中",
+            "descKR": "지하 지형과 연결 통로 조성 중"
+        },
+        {
+            "Id": 12,
+            "stage": 12,
+            "sort": 12,
+            "descCN": "嵌入手工结构",
+            "descTW": "嵌入手工結構",
+            "descEN": "Embedding handcrafted structures",
+            "descJP": "手作り構造物を組み込み中",
+            "descKR": "수제 구조물 배치 중"
+        },
+        {
+            "Id": 13,
+            "stage": 13,
+            "sort": 13,
+            "descCN": "校验角色通行与生成锚点",
+            "descTW": "檢查角色通行與生成錨點",
+            "descEN": "Validating character traversal and spawn anchors",
+            "descJP": "キャラクターの通行と生成アンカーを検証中",
+            "descKR": "캐릭터 이동 경로와 생성 기준점 검증 중"
+        },
+        {
+            "Id": 14,
+            "stage": 14,
+            "sort": 14,
+            "descCN": "规划NPC、交互物与杂物",
+            "descTW": "規劃NPC、互動物件與雜物",
+            "descEN": "Planning NPCs and interactive objects and props",
+            "descJP": "NPCとインタラクション用オブジェクトと小物を配置計画中",
+            "descKR": "NPC와 상호작용 오브젝트 및 소품 배치 계획 중"
+        },
+        {
+            "Id": 15,
+            "stage": 15,
+            "sort": 15,
+            "descCN": "地图计划校验完成",
+            "descTW": "地圖計畫檢查完成",
+            "descEN": "Map plan validation complete",
+            "descJP": "マップ計画の検証完了",
+            "descKR": "맵 계획 검증 완료"
+        },
+        {
+            "Id": 16,
+            "stage": 16,
+            "sort": 16,
+            "descCN": "创建地形瓦片",
+            "descTW": "建立地形圖塊",
+            "descEN": "Creating terrain tiles",
+            "descJP": "地形タイルを作成中",
+            "descKR": "지형 타일 생성 중"
+        },
+        {
+            "Id": 17,
+            "stage": 17,
+            "sort": 17,
+            "descCN": "落地手工结构",
+            "descTW": "放置手工結構",
+            "descEN": "Placing handcrafted structures",
+            "descJP": "手作り構造物を配置中",
+            "descKR": "수제 구조물 설치 중"
+        },
+        {
+            "Id": 18,
+            "stage": 18,
+            "sort": 18,
+            "descCN": "建立地形碰撞",
+            "descTW": "建立地形碰撞",
+            "descEN": "Building terrain collision",
+            "descJP": "地形の当たり判定を構築中",
+            "descKR": "지형 충돌 구성 중"
+        },
+        {
+            "Id": 19,
+            "stage": 19,
+            "sort": 19,
+            "descCN": "创建内容占位物",
+            "descTW": "建立內容占位物",
+            "descEN": "Creating content placeholders",
+            "descJP": "コンテンツの仮オブジェクトを作成中",
+            "descKR": "콘텐츠 임시 오브젝트 생성 중"
+        },
+        {
+            "Id": 20,
+            "stage": 20,
+            "sort": 20,
+            "descCN": "场景地图校验完成",
+            "descTW": "場景地圖檢查完成",
+            "descEN": "Scene map validation complete",
+            "descJP": "シーンマップの検証完了",
+            "descKR": "씬 맵 검증 완료"
+        },
+        {
+            "Id": 21,
+            "stage": 21,
+            "sort": 21,
+            "descCN": "局内地图就绪",
+            "descTW": "局內地圖就緒",
+            "descEN": "Run map ready",
+            "descJP": "探索マップの準備完了",
+            "descKR": "탐험 맵 준비 완료"
         }
     ]
 }
