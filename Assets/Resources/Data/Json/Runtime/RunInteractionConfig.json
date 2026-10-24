@@ -1,0 +1,94 @@
+{
+    "datas": [
+        {
+            "Id": 1,
+            "key": "Prompt",
+            "zhCN": "{0}：{1}",
+            "enUS": "{0}: {1}",
+            "zhTW": "{0}：{1}",
+            "jaJP": "{0}：{1}",
+            "koKR": "{0}: {1}"
+        },
+        {
+            "Id": 2,
+            "key": "Unavailable",
+            "zhCN": "暂不可交互",
+            "enUS": "Unavailable",
+            "zhTW": "暫不可互動",
+            "jaJP": "現在は操作できません",
+            "koKR": "지금은 상호작용할 수 없습니다"
+        },
+        {
+            "Id": 3,
+            "key": "Completed",
+            "zhCN": "已查看",
+            "enUS": "Inspected",
+            "zhTW": "已查看",
+            "jaJP": "確認済み",
+            "koKR": "확인 완료"
+        },
+        {
+            "Id": 4,
+            "key": "Npc",
+            "zhCN": "路人",
+            "enUS": "Passerby",
+            "zhTW": "路人",
+            "jaJP": "通行人",
+            "koKR": "행인"
+        },
+        {
+            "Id": 5,
+            "key": "Interactive",
+            "zhCN": "交互物",
+            "enUS": "Interactive object",
+            "zhTW": "互動物",
+            "jaJP": "操作対象",
+            "koKR": "상호작용 대상"
+        },
+        {
+            "Id": 6,
+            "key": "Inspect",
+            "zhCN": "查看",
+            "enUS": "Inspect",
+            "zhTW": "查看",
+            "jaJP": "確認",
+            "koKR": "확인"
+        },
+        {
+            "Id": 7,
+            "key": "OutOfRange",
+            "zhCN": "距离过远",
+            "enUS": "Out of range",
+            "zhTW": "距離過遠",
+            "jaJP": "距離が遠すぎます",
+            "koKR": "거리가 너무 멉니다"
+        },
+        {
+            "Id": 8,
+            "key": "Blocked",
+            "zhCN": "前方有遮挡",
+            "enUS": "Obstructed",
+            "zhTW": "前方有遮擋",
+            "jaJP": "障害物があります",
+            "koKR": "장애물에 가로막혔습니다"
+        },
+        {
+            "Id": 9,
+            "key": "Inactive",
+            "zhCN": "目标已失效",
+            "enUS": "Target inactive",
+            "zhTW": "目標已失效",
+            "jaJP": "対象は無効です",
+            "koKR": "대상이 비활성화되었습니다"
+        },
+        {
+            "Id": 10,
+            "key": "ActionName",
+            "zhCN": "交互",
+            "enUS": "Interact",
+            "zhTW": "互動",
+            "jaJP": "インタラクト",
+            "koKR": "상호작용"
+        }
+    ]
+}

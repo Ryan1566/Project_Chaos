@@ -4,17 +4,8 @@ using Spine.Unity;
 using UnityEngine;
 
 /// <summary>
-/// AI 门客（W3.1q 换设计版）。
-///
-/// **本轮把"玩家在上方就跳"整条删掉**（W3.1p 实测：17 次起跳、0 次防抖生效、靠传送才上去）。
-/// 新设计：
-/// 1. **跳跃只剩一个理由**：前方有墙挡路（`FindWall`）**且**墙顶上方 0.6×0.6 的严格 OverlapBox 命中真实地面；
-/// 2. **玩家在上方** → 门客**贴到玩家正下方**（目标 x = 玩家 x），每 1s 一条低频日志；
-/// 3. **短传送兜底**：`dy > 1.5` 持续 1.5s / 卡在平台下（`|dx|<0.8 且 dy>1.0`）持续 1.5s / 跟丢 >2s → 传送 + Warn；
-/// 4. 起跳间隔 ≥ 0.8s；`_futileJumps >= 3` → **停跳 3s** + Warn。
-///
-/// 其它保持：跟随偏移 `{-2.6,+2.6,-4.3}`、死区 1.6/1.4、速度 5.0 + 加速度、目标 x 钳制房间内、
-/// 攻击 2.5 格内每 0.6s 打 6（同房间）、**AI 门客不掉血**、掉落兜底回玩家身边。
+/// AI retainer: terrain-aware following and single-target melee; recovery warps need verified ground.
+/// Existing team, health and QA counters remain available.
 /// </summary>
 [RequireComponent(typeof(Rigidbody2D))]
 public class AllyController : MonoBehaviour
@@ -43,13 +34,11 @@ public class AllyController : MonoBehaviour
     private SkeletonAnimation _skeleton;
     private float _nextAttack;
     private float _nextJump;
-    private float _nextNearLog;
     private float _stopJumpUntil;
     private string _currentAnimation;
     private int _facing = 1;
     private EnemyPlaceholder _target;
-    private float _lostSince = -1f;
-    private float _highDySince = -1f;
+    private float _nextRecoveryAttempt;
     private float _stuckSince = -1f;
     private float _jumpCheckAt = -1f;
     private float _jumpStartY;
@@ -77,137 +66,287 @@ public class AllyController : MonoBehaviour
     //   统一只在 OnDestroy 移除。
     private void OnDestroy() { All.Remove(this); }
 
+    private RunMap.RunBehaviorSettings _settings;
+    private RunMap.RunMapNavigator _navigator;
+    private RunCombatFeedback _feedback;
+    private EnemyPlaceholder _attackTarget;
+    private float _attackAt;
+    private float _recoverUntil;
+    private float _lastTargetSeen;
+    private Vector2 _targetFeet;
+    private Vector2 _progressFeet;
+    private float _progressAt;
+    private int _observedNavigationJumps;
+    private bool _belowFallThreshold;
+
+    public EnemyPlaceholder CurrentTarget { get { return _target; } }
+    public bool IsWindingUp { get { return _attackTarget != null; } }
+
+    private void Start()
+    {
+        try { _settings = RunMap.RunBehaviorSettings.Load("Ally"); }
+        catch (System.Exception exception)
+        {
+            Debug.LogError("[Ally] RunBehaviorConfig Ally is unavailable: " + exception.Message, this);
+            enabled = false;
+            return;
+        }
+        if (_settings == null)
+        {
+            Debug.LogError("[Ally] RunBehaviorConfig has no Ally row.", this);
+            enabled = false;
+            return;
+        }
+        moveSpeed = _settings.moveSpeed;
+        acceleration = _settings.acceleration;
+        jumpForce = _settings.jumpForce;
+        attackRange = _settings.attackRange;
+        attackCooldown = _settings.attackCooldown;
+        _feedback = RunCombatFeedback.For(this);
+        if (RunMap.NaturalMapRuntime.Current != null)
+        {
+            _navigator = GetComponent<RunMap.RunMapNavigator>();
+            if (_navigator == null) _navigator = gameObject.AddComponent<RunMap.RunMapNavigator>();
+            _navigator.Configure(moveSpeed, jumpForce, acceleration);
+        }
+        _progressFeet = CombatQuery.Feet(transform);
+        _progressAt = Time.time;
+    }
+
+    private void OnDisable()
+    {
+        StopMoving();
+        CancelAttack();
+    }
+
     private void Update()
     {
+        if (IsDowned || _settings == null) return;
         GameObject controlled = PlayerSpawner.CurrentPlayer;
-        if (controlled == null) return;
-
+        if (controlled == null) { StopMoving(); CancelAttack(); return; }
         if (transform.position.y < fallThresholdY)
         {
-            FallCount++;
-            TeleportNear(controlled, "掉出地图");
+            if (!_belowFallThreshold) FallCount++;
+            _belowFallThreshold = true;
+            TryRecover(controlled, "掉出地图");
+            return;
+        }
+        _belowFallThreshold = false;
+
+        if (_attackTarget != null)
+        {
+            StopMoving();
+            if (_attackTarget.IsDead) { CancelAttack(); return; }
+            SetFacing(_attackTarget.transform.position.x >= transform.position.x ? 1 : -1);
+            _feedback.Windup(CombatQuery.Center(transform), CombatQuery.Center(_attackTarget.transform));
+            if (Time.time < _attackAt) return;
+            EnemyPlaceholder victim = _attackTarget;
+            _attackTarget = null;
+            _feedback.Clear();
+            _recoverUntil = Time.time + _settings.attackRecovery;
+            if (CanHit(victim))
+            {
+                _feedback.Strike(CombatQuery.Center(transform), CombatQuery.Center(victim.transform));
+                victim.TakeDamage(damage);
+                ChaosLog.Info(LogChannel.UI, "[门客] 「" + AllyName + "」攻击「" + victim.name + "」，伤害 " + damage);
+            }
+            return;
+        }
+        if (Time.time < _recoverUntil) { StopMoving(); return; }
+
+        if (!IsEligibleEnemy(_target)
+            || Vector2.Distance(CombatQuery.Center(transform), CombatQuery.Center(_target.transform)) > _settings.loseRange)
+            _target = null;
+        if (_target != null && CombatQuery.HasLineOfSight(transform, _target.transform))
+        {
+            _targetFeet = CombatQuery.Feet(_target.transform);
+            _lastTargetSeen = Time.time;
+        }
+        else if (_target != null && Time.time - _lastTargetSeen > _settings.memorySeconds)
+            _target = null;
+        if (_target == null)
+        {
+            _target = FindNearestEnemy();
+            if (_target != null)
+            {
+                _targetFeet = CombatQuery.Feet(_target.transform);
+                _lastTargetSeen = Time.time;
+            }
+        }
+        if (CanHit(_target))
+        {
+            StopMoving();
+            SetFacing(_target.transform.position.x >= transform.position.x ? 1 : -1);
+            if (Time.time >= _nextAttack)
+            {
+                _nextAttack = Time.time + attackCooldown;
+                _attackTarget = _target;
+                _attackAt = Time.time + _settings.attackWindup;
+                _feedback.Windup(CombatQuery.Center(transform), CombatQuery.Center(_target.transform));
+            }
             return;
         }
 
-        float dx = controlled.transform.position.x - transform.position.x;
-        float dy = controlled.transform.position.y - transform.position.y;
+        Vector2 playerFeet = CombatQuery.Feet(controlled.transform);
+        float offset = FollowOffsets[Mathf.Clamp(followIndex - 1, 0, FollowOffsets.Length - 1)];
+        Vector2 destination = _target != null ? _targetFeet : playerFeet + Vector2.right * offset;
+        if (_navigator != null)
+        {
+            // A formation offset may fall inside a wall or over a cave opening. Resolve it
+            // onto graph ground before asking for a path, preserving the player's floor.
+            if (_target == null)
+            {
+                Vector2 safe;
+                if (_navigator.TryFindSafePosition(destination, out safe, _settings.searchRadius)) destination = safe;
+                else destination = playerFeet;
+            }
+            _navigator.MoveTo(destination, _target != null ? _settings.waypointTolerance : 1.4f);
+            int jumps = _navigator.JumpCount;
+            JumpCount += Mathf.Max(0, jumps - _observedNavigationJumps);
+            _observedNavigationJumps = jumps;
+            float speed = _body != null ? Mathf.Abs(_body.velocity.x) : 0f;
+            if (speed > 0.1f) SetFacing(_body.velocity.x >= 0f ? 1 : -1);
+            UpdateAnimation(speed);
+            if (_navigator.IsStuck)
+            {
+                if (_stuckSince < 0f) _stuckSince = Time.time - _settings.stuckSeconds;
+                if (Time.time - _stuckSince >= _settings.recoverySeconds)
+                    TryRecover(controlled, "导航持续卡住");
+            }
+            else _stuckSince = -1f;
+            return;
+        }
+        MoveLegacy(destination, controlled);
+    }
 
-        //复查上次起跳是否"白跳"（起跳后 1s 比较 y）
+    private bool IsEligibleEnemy(EnemyPlaceholder enemy)
+    {
+        return enemy != null && !enemy.IsDead && enemy.Hp > 0
+            && RunEncounter.IsPlayerInRoom(enemy.roomId);
+    }
+
+    private bool CanHit(EnemyPlaceholder enemy)
+    {
+        return IsEligibleEnemy(enemy)
+            && CombatQuery.CanMelee(transform, enemy.transform, attackRange, _settings.attackHeight);
+    }
+
+    private void CancelAttack()
+    {
+        if (_attackTarget != null && _settings != null)
+        {
+            _nextAttack = Mathf.Max(_nextAttack, Time.time + attackCooldown);
+            _recoverUntil = Time.time + _settings.attackRecovery;
+        }
+        _attackTarget = null;
+        if (_feedback != null) _feedback.Clear();
+    }
+
+    private void StopMoving()
+    {
+        if (_navigator != null) _navigator.Stop();
+        if (_body != null) _body.velocity = new Vector2(0f, _body.velocity.y);
+        _stuckSince = -1f;
+        _progressAt = Time.time;
+        _progressFeet = CombatQuery.Feet(transform);
+        UpdateAnimation(0f);
+    }
+
+    private void MoveLegacy(Vector2 destination, GameObject controlled)
+    {
         if (_jumpCheckAt > 0f && Time.time >= _jumpCheckAt)
         {
             _jumpCheckAt = -1f;
             if (Mathf.Abs(transform.position.y - _jumpStartY) < 0.3f)
             {
                 _futileJumps++;
-                ChaosLog.Warn(LogChannel.UI, "[门客] 「" + AllyName + "」起跳无效（Δy<0.3），累计 " + _futileJumps + "/3");
                 if (_futileJumps >= 3)
                 {
                     _stopJumpUntil = Time.time + 3f;
                     StopJumpWarnCount++;
-                    ChaosLog.Warn(LogChannel.UI, "[门客] 「" + AllyName + "」连续 3 次起跳没升高，停跳 3s");
                     _futileJumps = 0;
+                    ChaosLog.Warn(LogChannel.UI, "[门客] 「" + AllyName + "」旧地图连续起跳无效，暂缓重试");
                 }
             }
             else _futileJumps = 0;
         }
-
-        bool playerAbove = dy > teleportDy;
-
-        //② 玩家在上方 → 贴正下方（1s 一条低频日志）
-        if (playerAbove && Time.time >= _nextNearLog)
+        Vector2 feet = CombatQuery.Feet(transform);
+        float delta = destination.x - feet.x;
+        int direction = delta >= 0f ? 1 : -1;
+        bool moving = _body != null && Mathf.Abs(_body.velocity.x) > 0.1f;
+        bool needsMovement = Mathf.Abs(delta) > (moving ? 1.4f : 1.6f)
+            || Mathf.Abs(destination.y - feet.y) > 1f;
+        if (needsMovement)
         {
-            _nextNearLog = Time.time + 1f;
-            NearBelowCount++;
-            ChaosLog.Info(LogChannel.UI, "[门客] 「" + AllyName + "」贴近玩家正下方（dx=" + dx.ToString("F2")
-                + " dy=" + dy.ToString("F2") + "）");
-        }
-
-        //③ 短传送兜底
-        if (playerAbove) { if (_highDySince < 0f) _highDySince = Time.time; }
-        else _highDySince = -1f;
-
-        bool stuckUnderPlatform = Mathf.Abs(dx) < 0.8f && dy > 1.0f;
-        if (stuckUnderPlatform) { if (_stuckSince < 0f) _stuckSince = Time.time; }
-        else _stuckSince = -1f;
-
-        if ((_highDySince > 0f && Time.time - _highDySince > teleportHoldSeconds)
-            || (_stuckSince > 0f && Time.time - _stuckSince > teleportHoldSeconds))
-        {
-            TeleportCount++;
-            TeleportNear(controlled, "垂直差 " + dy.ToString("F2") + " 持续 >" + teleportHoldSeconds + "s");
-            return;
-        }
-
-        if (Mathf.Abs(dx) > 10f || Mathf.Abs(dy) > 6f)
-        {
-            if (_lostSince < 0f) _lostSince = Time.time;
-            else if (Time.time - _lostSince > 2f)
-            {
-                TeleportCount++;
-                TeleportNear(controlled, "跟丢 >2s");
-                return;
-            }
-        }
-        else _lostSince = -1f;
-
-        //攻击
-        if (_target == null || _target.IsDead) _target = FindNearestEnemy();
-        if (_target != null && Vector2.Distance(_target.transform.position, transform.position) > attackRange * 1.6f) _target = null;
-        if (_target != null)
-        {
-            if (_body != null) _body.velocity = new Vector2(0f, _body.velocity.y);
-            SetFacing(_target.transform.position.x >= transform.position.x ? 1 : -1);
-            if (Time.time >= _nextAttack)
-            {
-                _nextAttack = Time.time + attackCooldown;
-                _target.TakeDamage(damage);
-                ChaosLog.Info(LogChannel.UI, "[门客] 「" + AllyName + "」攻击「" + _target.name + "」，伤害 " + damage + "（来源=" + AllyName + "）");
-            }
-            UpdateAnimation(0f);
-            return;
-        }
-
-        //① 目标位置：玩家在上方 → 正下方；否则按队形偏移
-        float wantedX = playerAbove
-            ? controlled.transform.position.x
-            : controlled.transform.position.x + FollowOffsets[Mathf.Clamp(followIndex - 1, 0, FollowOffsets.Length - 1)];
-        RunMap.NaturalMapPlan plan = RunMap.NaturalMapRuntime.Current;
-        if (plan != null) wantedX = Mathf.Clamp(wantedX, plan.Bounds.xMin + 0.6f, plan.Bounds.xMax - 0.6f);
-
-        Rect room;
-        if (RunEncounter.TryGetRoomRect(controlled.transform.position, out room))
-            wantedX = Mathf.Clamp(wantedX, room.xMin + 1f, room.xMax - 1f);
-
-        float targetDx = wantedX - transform.position.x;
-        int dir = targetDx >= 0f ? 1 : -1;
-
-        bool alreadyMoving = _body != null && Mathf.Abs(_body.velocity.x) > 0.1f;
-        float deadZone = alreadyMoving ? 1.4f : 1.6f;
-
-        if (Mathf.Abs(targetDx) > deadZone)
-        {
-            if (!GroundAhead(dir))
-            {
-                if (_body != null) _body.velocity = new Vector2(0f, _body.velocity.y);
-                UpdateAnimation(0f);
-                TryJumpIfBlocked(dir);
-                return;
-            }
             if (_body != null)
             {
-                float vx = Mathf.MoveTowards(_body.velocity.x, dir * moveSpeed, acceleration * Time.deltaTime);
-                _body.velocity = new Vector2(vx, _body.velocity.y);
+                float desiredSpeed = GroundAhead(direction) ? direction * moveSpeed : 0f;
+                _body.velocity = new Vector2(Mathf.MoveTowards(_body.velocity.x,
+                    desiredSpeed, acceleration * Time.deltaTime), _body.velocity.y);
             }
-            SetFacing(dir);
-            UpdateAnimation(moveSpeed);
-            TryJumpIfBlocked(dir);
+            SetFacing(direction);
+            TryJumpIfBlocked(direction);
+            if (Vector2.Distance(feet, _progressFeet) > 0.22f)
+            { _progressFeet = feet; _progressAt = Time.time; }
+            else if (Time.time - _progressAt > _settings.recoverySeconds)
+                TryRecover(controlled, "旧地图持续卡住");
+        }
+        else { StopMoving(); _progressAt = Time.time; _progressFeet = feet; }
+        UpdateAnimation(_body != null ? Mathf.Abs(_body.velocity.x) : 0f);
+    }
+
+    private bool TryRecover(GameObject controlled, string reason)
+    {
+        // No warp on height difference or distance alone. Natural-map recovery requires
+        // Navigator.IsStuck (except falling), a sustained timeout and a verified footprint.
+        if (Time.time < _nextRecoveryAttempt) return false;
+        Vector2 playerFeet = CombatQuery.Feet(controlled.transform);
+        Vector2 desired = playerFeet + Vector2.right * FollowOffsets[Mathf.Clamp(followIndex - 1, 0, FollowOffsets.Length - 1)];
+        Vector2 safe;
+        bool found = false;
+        if (_navigator != null)
+        {
+            found = _navigator.TryFindSafePosition(desired, out safe, _settings.searchRadius)
+                || _navigator.TryFindSafePosition(playerFeet, out safe, _settings.searchRadius);
+            if (found) _navigator.WarpToFeet(safe);
         }
         else
         {
-            if (_body != null) _body.velocity = new Vector2(0f, _body.velocity.y);
-            UpdateAnimation(0f);
-            TryJumpIfBlocked(dir);
+            safe = default(Vector2);
+            Collider2D shape = CombatQuery.Body(transform);
+            if (shape != null)
+            {
+                for (int x = 0; x <= _settings.searchRadius * 2 && !found; x++)
+                {
+                    float dx = x == 0 ? 0f : (x % 2 == 0 ? 1f : -1f) * ((x + 1) / 2);
+                    Vector2 origin = playerFeet + new Vector2(dx, 2f);
+                    RaycastHit2D[] hits = Physics2D.RaycastAll(origin, Vector2.down, 4f);
+                    for (int i = 0; i < hits.Length; i++)
+                    {
+                        if (!RunMap.RunMapPhysics.IsTerrain(hits[i].collider) || hits[i].normal.y < 0.5f) continue;
+                        Vector2 candidate = hits[i].point + Vector2.up * 0.03f;
+                        if (!RunMap.RunMapPhysics.CanOccupy(candidate, shape.bounds.size)) continue;
+                        safe = candidate; found = true; break;
+                    }
+                }
+                if (found)
+                {
+                    Vector2 offset = (Vector2)transform.position - RunMap.RunMapPhysics.Feet(shape);
+                    _body.position = safe + offset;
+                    _body.velocity = Vector2.zero;
+                    Physics2D.SyncTransforms();
+                }
+            }
         }
+        _nextRecoveryAttempt = Time.time + _settings.recoverySeconds;
+        if (!found) return false;
+        TeleportCount++;
+        _stuckSince = -1f;
+        _progressFeet = CombatQuery.Feet(transform);
+        _progressAt = Time.time;
+        CancelAttack();
+        ChaosLog.Warn(LogChannel.UI, "[门客] 「" + AllyName + "」回到已验证的安全地面（" + reason + "）");
+        return true;
     }
 
     /// <summary>
@@ -227,7 +366,7 @@ public class AllyController : MonoBehaviour
         bool groundAbove = false;
         for (int i = 0; i < hits.Length; i++)
         {
-            if (hits[i] == null || hits[i].isTrigger) continue;
+            if (!RunMap.RunMapPhysics.IsTerrain(hits[i])) continue;
             if (hits[i].transform == transform || hits[i].transform.IsChildOf(transform)) continue;
             groundAbove = true;
             break;
@@ -247,27 +386,12 @@ public class AllyController : MonoBehaviour
         RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, new Vector2(dir, 0f), probeDistance);
         for (int i = 0; i < hits.Length; i++)
         {
-            if (hits[i].collider == null || hits[i].collider.isTrigger) continue;
+            if (!RunMap.RunMapPhysics.IsTerrain(hits[i].collider)) continue;
             if (hits[i].collider.transform == transform || hits[i].collider.transform.IsChildOf(transform)) continue;
             float relative = hits[i].point.y - transform.position.y;
             if (relative > 0.3f && relative < 1.8f) return hits[i];
         }
         return default(RaycastHit2D);
-    }
-
-    private void TeleportNear(GameObject player, string reason)
-    {
-        float offset = followIndex == 3 ? 1.2f : (followIndex == 2 ? 0f : -1.2f);
-        // The natural terrain can have walls or ceilings beside the player. The player's
-        // current position is safe for the ally, and character collisions are ignored.
-        transform.position = RunMap.NaturalMapRuntime.Current != null
-            ? player.transform.position
-            : player.transform.position + new Vector3(offset, 0.8f, 0f);
-        if (_body != null) _body.velocity = Vector2.zero;
-        _lostSince = -1f;
-        _highDySince = -1f;
-        _stuckSince = -1f;
-        ChaosLog.Warn(LogChannel.UI, "[门客] 「" + AllyName + "」传送回玩家身边（" + reason + "）");
     }
 
     private bool IsGrounded()
@@ -280,7 +404,7 @@ public class AllyController : MonoBehaviour
         RaycastHit2D[] hits = Physics2D.BoxCastAll(origin, size, 0f, Vector2.down, 0.12f);
         for (int i = 0; i < hits.Length; i++)
         {
-            if (hits[i].collider == null || hits[i].collider.isTrigger) continue;
+            if (!RunMap.RunMapPhysics.IsTerrain(hits[i].collider)) continue;
             if (hits[i].collider.transform == transform || hits[i].collider.transform.IsChildOf(transform)) continue;
             return true;
         }
@@ -294,7 +418,7 @@ public class AllyController : MonoBehaviour
         RaycastHit2D[] hits = Physics2D.RaycastAll(origin, Vector2.down, 2.0f);
         for (int i = 0; i < hits.Length; i++)
         {
-            if (hits[i].collider == null || hits[i].collider.isTrigger) continue;
+            if (!RunMap.RunMapPhysics.IsTerrain(hits[i].collider)) continue;
             if (hits[i].collider.transform == transform || hits[i].collider.transform.IsChildOf(transform)) continue;
             return true;
         }
@@ -305,12 +429,12 @@ public class AllyController : MonoBehaviour
     {
         EnemyPlaceholder[] enemies = Object.FindObjectsOfType<EnemyPlaceholder>();
         EnemyPlaceholder best = null;
-        float bestDistance = attackRange;
+        float bestDistance = _settings.detectRange;
         for (int i = 0; i < enemies.Length; i++)
         {
             EnemyPlaceholder enemy = enemies[i];
-            if (enemy == null || enemy.IsDead) continue;
-            if (!RunEncounter.IsPlayerInRoom(enemy.roomId)) continue;
+            if (!IsEligibleEnemy(enemy)) continue;
+            if (!CombatQuery.HasLineOfSight(transform, enemy.transform)) continue;
             float distance = Vector2.Distance(enemy.transform.position, transform.position);
             if (distance < bestDistance) { bestDistance = distance; best = enemy; }
         }
@@ -411,6 +535,7 @@ public class AllyController : MonoBehaviour
         if (IsDowned || damage <= 0) return;
         if (Time.time < _invulnUntil) return;
         _invulnUntil = Time.time + 0.5f;
+        CancelAttack();
         if (!_hpInited) { _hp = MaxHp; _hpInited = true; }
         _hp -= damage;
         ChaosLog.Info(LogChannel.UI, "[门客] " + AllyName + " 受伤 -" + damage + " → HP " + _hp + "/" + MaxHp);
@@ -421,6 +546,7 @@ public class AllyController : MonoBehaviour
     public void TakeDamageDirect(int damage)
     {
         if (IsDowned || damage <= 0) return;
+        CancelAttack();
         int before = Hp;   //触发懒初始化
         _hp = Mathf.Max(0, before - damage);
         _hpInited = true;
@@ -446,6 +572,8 @@ public class AllyController : MonoBehaviour
         IsDowned = true;
         _hp = 0;
         _hpInited = true;
+        StopMoving();
+        CancelAttack();
         if (_body != null) _body.velocity = Vector2.zero;
         SetDownedVisual(true);
         enabled = false;   //停掉 Update（不跟随、不攻击）

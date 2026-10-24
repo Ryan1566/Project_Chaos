@@ -8,6 +8,12 @@ namespace RunMap
         public string StableId;
         public MapPlacementKind Kind;
         public int EnterCount { get; private set; }
+        private void Start()
+        {
+            if (Kind != MapPlacementKind.Npc && Kind != MapPlacementKind.Interactive) return;
+            var inspectable = gameObject.AddComponent<Chaos.Gameplay.Interaction.MapInspectable>();
+            inspectable.Kind = Kind; inspectable.Configure(StableId);
+        }
         private static Sprite whiteSprite;
         public static Sprite WhiteSprite
         {

@@ -2,15 +2,8 @@ using ChaosDebug;
 using UnityEngine;
 
 /// <summary>
-/// 局内敌人占位（W3.1d 修正版）。
-///
-/// **本轮修的三件事**（W3.1c 实测：敌人频繁走出平台掉图 → 房间"0/2 但已清 0"）：
-/// 1. 巡逻范围改用**所属房间矩形**（`roomX0/roomW`），不再固定 ±3；
-/// 2. 前方 **0.6 格做"向下探地 + 水平探墙"** 两条 Raycast：没地面或遇墙就折返；
-/// 3. 真掉出地图 → 走 **`Die()`（算掉落死亡，计入房间清零）**，不再"销毁不计入"。
-///
-/// 接触伤害见 `OnCollisionStay2D`（W3.1b / **W3.3 改**：受控角色与未倒地门客都会被打）。
-/// **W3.3 目标选择**：最近者（受控角色 + 未倒地门客），**同距时受控角色优先**；倒地单位不进候选。
+/// Enemy with visible melee windup and a region-bound patrol/chase/return lifecycle.
+/// Public health, damage and encounter APIs remain compatible with existing saves and QA.
 /// </summary>
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(BoxCollider2D))]
@@ -57,6 +50,76 @@ public class EnemyPlaceholder : MonoBehaviour, IDamageable
     private float _knockUntil;
     private float _deathStart = -1f;
     private float _nextContactDamage;
+    private RunMap.RunBehaviorSettings _settings;
+    private RunMap.RunMapNavigator _navigator;
+    private RunCombatFeedback _feedback;
+    private Vector2 _homeFeet;
+    private Vector2 _patrolFeet;
+    private Vector2 _lastSeenFeet;
+    private float _lastSeenAt;
+    private float _stateUntil;
+    private bool _patrolDestinationReady;
+    private Transform _windupTarget;
+
+    public enum BehaviorState { Patrol, Chase, Windup, Recover, Return }
+    public BehaviorState State { get; private set; }
+    public int AttackCount { get; private set; }
+    public int InterruptedAttackCount { get; private set; }
+
+    private void Start()
+    {
+        try { _settings = RunMap.RunBehaviorSettings.Load("Enemy"); }
+        catch (System.Exception exception)
+        {
+            Debug.LogError("[Enemy] RunBehaviorConfig Enemy is unavailable: " + exception.Message, this);
+            enabled = false;
+            return;
+        }
+        if (_settings == null)
+        {
+            Debug.LogError("[Enemy] RunBehaviorConfig has no Enemy row.", this);
+            enabled = false;
+            return;
+        }
+        chaseRange = _settings.detectRange;
+        chaseSpeed = _settings.moveSpeed;
+        patrolSpeed = _settings.patrolSpeed;
+        contactDamageInterval = _settings.attackCooldown;
+        _homeFeet = CombatQuery.Feet(transform);
+        _feedback = RunCombatFeedback.For(this);
+        if (RunMap.NaturalMapRuntime.Current != null)
+        {
+            _navigator = GetComponent<RunMap.RunMapNavigator>();
+            if (_navigator == null) _navigator = gameObject.AddComponent<RunMap.RunMapNavigator>();
+            _navigator.Configure(chaseSpeed, _settings.jumpForce, _settings.acceleration);
+            Vector2 safe;
+            if (_navigator.TryFindSafePosition(_homeFeet, out safe, _settings.searchRadius)
+                && AllowedBounds.Contains(safe)) _homeFeet = safe;
+        }
+        State = BehaviorState.Patrol;
+    }
+
+    private Rect AllowedBounds
+    {
+        get
+        {
+            float padding = _settings != null ? _settings.leashPadding : 0f;
+            return new Rect(roomX0 - padding, roomY0 - padding,
+                roomW + padding * 2f, roomH + padding * 2f);
+        }
+    }
+
+    private void OnDisable()
+    {
+        StopMoving();
+        if (_feedback != null) _feedback.Clear();
+        if (State == BehaviorState.Windup)
+        {
+            _windupTarget = null;
+            State = BehaviorState.Recover;
+            _stateUntil = Time.time + (_settings != null ? _settings.attackRecovery : 0f);
+        }
+    }
 
     private void Awake()
     {
@@ -103,6 +166,12 @@ public class EnemyPlaceholder : MonoBehaviour, IDamageable
         if (IsDead || amount <= 0) return;
 
         Hp -= amount;
+        if (State == BehaviorState.Windup)
+        {
+            InterruptedAttackCount++;
+            _nextContactDamage = Mathf.Max(_nextContactDamage, Time.time + contactDamageInterval);
+            BeginRecovery();
+        }
         _flashUntil = Time.time + 0.08f;
         if (_renderer != null) _renderer.color = Color.white;
 
@@ -124,6 +193,10 @@ public class EnemyPlaceholder : MonoBehaviour, IDamageable
     {
         if (IsDead) return;
         IsDead = true;
+        CurrentTarget = null;
+        _windupTarget = null;
+        StopMoving();
+        if (_feedback != null) _feedback.Clear();
         DeathReason = reason;
         _deathStart = Time.time;
         bool allowDrop = reason != "掉落死亡";
@@ -162,39 +235,170 @@ public class EnemyPlaceholder : MonoBehaviour, IDamageable
 
     private void UpdateAi()
     {
-        if (_body == null) return;
-        if (Time.time < _knockUntil) return;
-
-        Transform target = SelectTarget();
-        CurrentTarget = target;
-        bool chasing = false;
-        int dir = _patrolDir;
-
-        if (target != null)
+        if (_body == null || _settings == null || Time.time < _knockUntil) return;
+        if (State == BehaviorState.Windup)
         {
-            chasing = true;
-            dir = target.position.x >= transform.position.x ? 1 : -1;
+            StopMoving();
+            if (!ValidTarget(_windupTarget)) { BeginRecovery(); return; }
+            _feedback.Windup(CombatQuery.Center(transform), CombatQuery.Center(_windupTarget));
+            if (Time.time < _stateUntil) return;
+            Transform victim = _windupTarget;
+            if (CanHit(victim))
+            {
+                _feedback.Strike(CombatQuery.Center(transform), CombatQuery.Center(victim));
+                // The windup owns one target. No collision callback can add a second hit.
+                AllyController ally = victim.GetComponent<AllyController>();
+                if (ally != null) ally.TakeDamage(contactDamage);
+                else
+                {
+                    PlayerHealth health = victim.GetComponent<PlayerHealth>();
+                    if (health != null) health.ApplyContactDamage(contactDamage);
+                }
+                AttackCount++;
+            }
+            BeginRecovery(false);
+            return;
+        }
+        if (State == BehaviorState.Recover)
+        {
+            StopMoving();
+            if (Time.time < _stateUntil) return;
+            State = CurrentTarget != null ? BehaviorState.Chase : BehaviorState.Return;
         }
 
-        //巡逻：限制在所属房间矩形内（不再用固定 ±3）
-        if (!chasing)
+        Transform visible = SelectTarget();
+        if (visible != null)
         {
-            float left = roomX0 + 1.5f;
-            float right = roomX0 + roomW - 1.5f;
-            if (transform.position.x <= left) _patrolDir = 1;
-            else if (transform.position.x >= right) _patrolDir = -1;
-            dir = _patrolDir;
+            CurrentTarget = visible;
+            _lastSeenFeet = CombatQuery.Feet(visible);
+            _lastSeenAt = Time.time;
+            State = BehaviorState.Chase;
+        }
+        else if (CurrentTarget != null)
+        {
+            bool valid = ValidTarget(CurrentTarget)
+                && Vector2.Distance(CombatQuery.Center(transform), CombatQuery.Center(CurrentTarget)) <= _settings.loseRange;
+            if (valid && CombatQuery.HasLineOfSight(transform, CurrentTarget))
+            {
+                _lastSeenFeet = CombatQuery.Feet(CurrentTarget);
+                _lastSeenAt = Time.time;
+            }
+            if (!valid || Time.time - _lastSeenAt > _settings.memorySeconds)
+            {
+                CurrentTarget = null;
+                State = BehaviorState.Return;
+            }
+        }
+        else if (State == BehaviorState.Chase) State = BehaviorState.Return;
+
+        if (State == BehaviorState.Chase && CurrentTarget != null)
+        {
+            if (CanHit(CurrentTarget))
+            {
+                StopMoving();
+                if (Time.time >= _nextContactDamage)
+                {
+                    _windupTarget = CurrentTarget;
+                    _nextContactDamage = Time.time + contactDamageInterval;
+                    _stateUntil = Time.time + _settings.attackWindup;
+                    State = BehaviorState.Windup;
+                    _feedback.Windup(CombatQuery.Center(transform), CombatQuery.Center(_windupTarget));
+                }
+                return;
+            }
+            MoveTo(_lastSeenFeet, chaseSpeed, _settings.waypointTolerance);
+            return;
         }
 
-        //边缘/墙检测：没地面或遇墙就折返
-        if (!GroundAhead(dir) || WallAhead(dir))
+        if (State == BehaviorState.Return)
         {
-            dir = -dir;
-            if (!chasing) _patrolDir = dir;
+            if (MoveTo(_homeFeet, chaseSpeed, _settings.returnTolerance))
+            {
+                State = BehaviorState.Patrol;
+                _stateUntil = Time.time + _settings.patrolWait;
+                _patrolDestinationReady = false;
+            }
+            return;
         }
+        Patrol();
+    }
 
-        float speed = chasing ? chaseSpeed : patrolSpeed;
-        _body.velocity = new Vector2(dir * speed, _body.velocity.y);
+    private bool ValidTarget(Transform target)
+    {
+        return CombatQuery.IsStandingTarget(target)
+            && RunEncounter.IsPositionInRoom(roomId, target.position);
+    }
+
+    private bool CanHit(Transform target)
+    {
+        return ValidTarget(target)
+            && CombatQuery.CanMelee(transform, target, _settings.attackRange, _settings.attackHeight);
+    }
+
+    private void BeginRecovery(bool clearFeedback = true)
+    {
+        _windupTarget = null;
+        State = BehaviorState.Recover;
+        _stateUntil = Time.time + (_settings != null ? _settings.attackRecovery : 0f);
+        StopMoving();
+        if (clearFeedback && _feedback != null) _feedback.Clear();
+    }
+
+    private void StopMoving()
+    {
+        if (_navigator != null) _navigator.Stop();
+        if (_body != null) _body.velocity = new Vector2(0f, _body.velocity.y);
+    }
+
+    private bool MoveTo(Vector2 feet, float speed, float tolerance)
+    {
+        if (_navigator != null)
+        {
+            _navigator.Configure(speed, _settings.jumpForce, _settings.acceleration);
+            _navigator.MoveTo(feet, tolerance, AllowedBounds);
+            return _navigator.Reached;
+        }
+        Vector2 current = CombatQuery.Feet(transform);
+        if (Mathf.Abs(feet.x - current.x) <= tolerance) { StopMoving(); return true; }
+        int direction = feet.x >= current.x ? 1 : -1;
+        if (!GroundAhead(direction) || WallAhead(direction)) { StopMoving(); return false; }
+        _body.velocity = new Vector2(direction * speed, _body.velocity.y);
+        return false;
+    }
+
+    private void Patrol()
+    {
+        if (Time.time < _stateUntil) { StopMoving(); return; }
+        if (!_patrolDestinationReady)
+        {
+            Rect bounds = AllowedBounds;
+            Vector2 desired = new Vector2(Mathf.Clamp(_homeFeet.x + _patrolDir * roomW * 0.35f,
+                bounds.xMin + 0.6f, bounds.xMax - 0.6f), _homeFeet.y);
+            if (_navigator != null)
+            {
+                Vector2 safe;
+                if (!_navigator.TryFindSafePosition(desired, out safe, _settings.searchRadius)
+                    || !bounds.Contains(safe))
+                {
+                    _patrolDir = -_patrolDir;
+                    _stateUntil = Time.time + _settings.patrolWait;
+                    StopMoving();
+                    return;
+                }
+                desired = safe;
+            }
+            _patrolFeet = desired;
+            _patrolDestinationReady = true;
+        }
+        bool arrived = MoveTo(_patrolFeet, patrolSpeed, _settings.waypointTolerance);
+        if (arrived || (_navigator != null && _navigator.IsStuck)
+            || (_navigator == null && Mathf.Abs(_body.velocity.x) < 0.01f))
+        {
+            StopMoving();
+            _patrolDestinationReady = false;
+            _patrolDir = -_patrolDir;
+            _stateUntil = Time.time + _settings.patrolWait;
+        }
     }
 
     /// <summary>
@@ -212,10 +416,11 @@ public class EnemyPlaceholder : MonoBehaviour, IDamageable
         for (int i = 0; i < allies.Count; i++)
         {
             AllyController ally = allies[i];
-            if (ally == null || ally.IsDowned) continue;
+            if (ally == null || !ValidTarget(ally.transform)) continue;
             if (!RunEncounter.IsPositionInRoom(roomId, ally.transform.position)) continue;
             float distance = Vector2.Distance(ally.transform.position, transform.position);
             if (distance > bestDistance) continue;
+            if (!CombatQuery.HasLineOfSight(transform, ally.transform)) continue;
             bestDistance = distance;
             best = ally.transform;
         }
@@ -225,11 +430,11 @@ public class EnemyPlaceholder : MonoBehaviour, IDamageable
         if (player != null)
         {
             PlayerHealth health = player.GetComponent<PlayerHealth>();
-            bool playerDowned = health != null && health.IsDowned;
+            bool playerDowned = health == null || health.IsDowned;
             if (!playerDowned && RunEncounter.IsPositionInRoom(roomId, player.transform.position))
             {
                 float distance = Vector2.Distance(player.transform.position, transform.position);
-                if (distance <= bestDistance)
+                if (distance <= bestDistance && CombatQuery.HasLineOfSight(transform, player.transform))
                 {
                     bestDistance = distance;
                     best = player.transform;
@@ -248,7 +453,7 @@ public class EnemyPlaceholder : MonoBehaviour, IDamageable
         RaycastHit2D[] hits = Physics2D.RaycastAll(origin, Vector2.down, 2.0f);
         for (int i = 0; i < hits.Length; i++)
         {
-            if (hits[i].collider == null || hits[i].collider.isTrigger) continue;
+            if (!RunMap.RunMapPhysics.IsTerrain(hits[i].collider)) continue;
             if (hits[i].collider.transform == transform || hits[i].collider.transform.IsChildOf(transform)) continue;
             return true;
         }
@@ -262,35 +467,11 @@ public class EnemyPlaceholder : MonoBehaviour, IDamageable
         RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, new Vector2(dir, 0f), probeDistance);
         for (int i = 0; i < hits.Length; i++)
         {
-            if (hits[i].collider == null || hits[i].collider.isTrigger) continue;
+            if (!RunMap.RunMapPhysics.IsTerrain(hits[i].collider)) continue;
             if (hits[i].collider.transform == transform || hits[i].collider.transform.IsChildOf(transform)) continue;
             if (hits[i].point.y > transform.position.y + 0.3f) return true;
         }
         return false;
     }
 
-    /// <summary>接触伤害：受控角色与**未倒地门客**都打（倒地门客不可被攻击）。</summary>
-    private void OnCollisionStay2D(Collision2D collision)
-    {
-        if (IsDead) return;
-        if (Time.time < _nextContactDamage) return;
-        if (collision.collider == null) return;
-
-        //① 门客（倒地则跳过；门客自己还有 0.5s 无敌帧）
-        AllyController ally = collision.collider.GetComponentInParent<AllyController>();
-        if (ally != null)
-        {
-            if (ally.IsDowned) return;
-            ally.TakeDamage(contactDamage);
-            _nextContactDamage = Time.time + contactDamageInterval;
-            return;
-        }
-
-        //② 受控角色
-        PlayerHealth health = collision.collider.GetComponentInParent<PlayerHealth>();
-        if (health == null) return;
-
-        if (health.ApplyContactDamage(contactDamage))
-            _nextContactDamage = Time.time + contactDamageInterval;
-    }
 }

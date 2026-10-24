@@ -95,6 +95,7 @@ public static class PlayerSpawner
 
         //血量（W3.1b）
         if (player.GetComponent<PlayerHealth>() == null) player.AddComponent<PlayerHealth>();
+        if (player.GetComponent<RunInteractionHud>() == null) player.AddComponent<RunInteractionHud>();
 
         //AI 门客（W3.1b）：runTeam[1..] 最多 3 个
         SpawnAllies(root.transform, runTeam, spawnPoint);

@@ -1,4 +1,5 @@
 using ChaosDebug;
+using System.Collections.Generic;
 using Spine.Unity;
 using UnityEngine;
 
@@ -20,6 +21,8 @@ public class PlayerAttack : MonoBehaviour
     private float _nextAttackTime;
     private float _restoreUntil;
     private Vector3 _spineBasePosition;
+    private readonly HashSet<IDamageable> _hitTargets = new HashSet<IDamageable>();
+    public int LastHitCount { get; private set; }
 
     private void Awake()
     {
@@ -64,21 +67,28 @@ public class PlayerAttack : MonoBehaviour
     private void DoAttack()
     {
         int facing = _locomotion == null ? 1 : _locomotion.Facing;
-        Vector2 center = (Vector2)transform.position + new Vector2(hitBoxOffsetX * facing, 0f);
+        Vector2 center = CombatQuery.Center(transform) + new Vector2(hitBoxOffsetX * facing, 0f);
 
         Collider2D[] hits = Physics2D.OverlapBoxAll(center, hitBoxSize, 0f);
         int damaged = 0;
+        _hitTargets.Clear();
         for (int i = 0; i < hits.Length; i++)
         {
             Collider2D hit = hits[i];
-            if (hit == null || hit.transform == transform) continue;
+            if (hit == null || hit.transform == transform || hit.transform.IsChildOf(transform)) continue;
 
             IDamageable target = hit.GetComponentInParent<IDamageable>();
-            if (target == null || target is PlayerAttack) continue;
+            if (target == null || !_hitTargets.Add(target)) continue;
+            Component actor = target as Component;
+            if (actor == null || !CombatQuery.HasLineOfSight(transform, actor.transform)) continue;
+            EnemyPlaceholder enemy = target as EnemyPlaceholder;
+            if (enemy != null && enemy.IsDead) continue;
 
             target.TakeDamage(damage);
             damaged++;
         }
+        LastHitCount = damaged;
+        RunCombatFeedback.For(this).Strike(CombatQuery.Center(transform), center + Vector2.right * (hitBoxSize.x * 0.5f * facing));
 
         //占位表现：前移 + 变色（无攻击动画）
         if (_skeleton != null) _skeleton.transform.localPosition = _spineBasePosition + new Vector3(0.12f * facing, 0f, 0f);

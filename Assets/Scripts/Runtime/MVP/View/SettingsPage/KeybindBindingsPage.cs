@@ -93,6 +93,7 @@ public class KeybindBindingsPage : SettingsPageBase
 
     protected override void OnBind()
     {
+        EnsureInteractionRows();
         //【必须第一个注册】刷新动作是按注册顺序跑的（SettingsPageBase.RefreshAll），
         //而本动作负责 SetActive 两套行 —— 手柄行在 prefab 里是关着的，它们的 Awake
         //要等这一刻才跑，也才把 _keyText / _secondText 这些引用找出来。
@@ -113,6 +114,7 @@ public class KeybindBindingsPage : SettingsPageBase
         BindKeyRow(SettingIds.Jump, InputManager.ActionJump, InputManager.BindingKind.Keyboard, true);
         BindKeyRow(SettingIds.Camp, InputManager.ActionCamp, InputManager.BindingKind.Keyboard, true);
         BindKeyRow(SettingIds.Menu, InputManager.ActionMenu, InputManager.BindingKind.Keyboard, true);
+        BindKeyRow(SettingIds.Interact, InputManager.ActionInteract, InputManager.BindingKind.Keyboard, true);
 
         //手柄三行：一个格子。
         //手柄的移动不拆：它是 <Gamepad>/leftStick/x 单轴绑定，没有 negative/positive 段
@@ -121,6 +123,7 @@ public class KeybindBindingsPage : SettingsPageBase
         BindKeyRow(SettingIds.JumpGamepad, InputManager.ActionJump, InputManager.BindingKind.Gamepad, false);
         BindKeyRow(SettingIds.CampGamepad, InputManager.ActionCamp, InputManager.BindingKind.Gamepad, false);
         BindKeyRow(SettingIds.MenuGamepad, InputManager.ActionMenu, InputManager.BindingKind.Gamepad, false);
+        BindKeyRow(SettingIds.InteractGamepad, InputManager.ActionInteract, InputManager.BindingKind.Gamepad, false);
         BindShortcutLabel(SettingIds.Camp, "ui_setting_camp", "扎营");
         BindShortcutLabel(SettingIds.Menu, "ui_setting_run_menu", "局内菜单");
         BindShortcutLabel(SettingIds.CampGamepad, "ui_setting_camp", "扎营");
@@ -135,6 +138,33 @@ public class KeybindBindingsPage : SettingsPageBase
         if (row == null) return;
         var label = row.transform.Find("Label")?.GetComponent<TMPro.TextMeshProUGUI>();
         LocalizationSystem.GameplayText.Bind(label, key, fallback);
+    }
+
+    private void EnsureInteractionRows()
+    {
+        var rows = GetComponentsInChildren<SettingRow_Keybind>(true);
+        foreach (var source in rows)
+        {
+            string id = source.settingId == SettingIds.Menu ? SettingIds.Interact
+                : source.settingId == SettingIds.MenuGamepad ? SettingIds.InteractGamepad : null;
+            if (id == null || System.Array.Exists(rows, r => r.settingId == id)) continue;
+            var clone = Instantiate(source, source.transform.parent);
+            clone.name = id; clone.settingId = id;
+            clone.transform.SetSiblingIndex(source.transform.GetSiblingIndex() + 1);
+            var rect = clone.transform as RectTransform;
+            if (rect != null && source.transform.parent.GetComponent<UnityEngine.UI.LayoutGroup>() == null)
+                rect.anchoredPosition += Vector2.down * (rect.rect.height + 8);
+            var localized = clone.transform.Find("Label")?.GetComponent<LocalizationSystem.LocalizedText>();
+            if (localized != null) DestroyImmediate(localized);
+        }
+        AddRefresher(_ => {
+            foreach (string id in new[] { SettingIds.Interact, SettingIds.InteractGamepad })
+            {
+                var row = FindRow<SettingRow_Keybind>(id);
+                var label = row == null ? null : row.transform.Find("Label")?.GetComponent<TMPro.TextMeshProUGUI>();
+                if (label != null) label.text = Chaos.Gameplay.Interaction.RunInteractionText.Get("ActionName");
+            }
+        });
     }
 
     // ══════════════════ 顶部：返回 / 页签 / 手柄型号 ══════════════════

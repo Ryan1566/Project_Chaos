@@ -8,6 +8,7 @@ public partial class InputManager
 {
     public const string ActionCamp = "Camp";
     public const string ActionMenu = "Menu";
+    public const string ActionInteract = "Interact";
     public const string GroupKeyboardFixed = "KeyboardFixed";
     private readonly HashSet<object> _gameplayBlockers = new HashSet<object>();
     private readonly List<RaycastResult> _pointerHits = new List<RaycastResult>();
