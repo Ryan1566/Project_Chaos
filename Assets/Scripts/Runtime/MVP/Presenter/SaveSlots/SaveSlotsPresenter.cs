@@ -4,12 +4,14 @@ using Chaos.MVP.Model.SaveSlots;
 
 namespace Chaos.MVP.Presenter.SaveSlots
 {
-    public enum SaveSlotsAction { Select, Delete, Return, Confirm, Cancel, Refresh }
+    public enum SaveSlotsAction { Select, Delete, Return, Confirm, Cancel, Refresh, EntryFailure }
     public readonly struct SaveSlotsIntent
     {
         public readonly SaveSlotsAction Action;
         public readonly int Slot;
-        public SaveSlotsIntent(SaveSlotsAction action, int slot = 0) { Action = action; Slot = slot; }
+        public readonly string Message;
+        public SaveSlotsIntent(SaveSlotsAction action, int slot = 0, string message = null)
+        { Action = action; Slot = slot; Message = message; }
     }
     public sealed class SaveSlotsState
     {
@@ -17,6 +19,7 @@ namespace Chaos.MVP.Presenter.SaveSlots
         public int SelectedSlot;
         public bool CanDelete;
         public string ConfirmationKey;
+        public string Error;
     }
     public sealed class SaveSlotCellState
     {
@@ -49,6 +52,7 @@ namespace Chaos.MVP.Presenter.SaveSlots
         protected override void OnDetach() { if (View != null) View.Intent -= Handle; _model.Cancel(); }
         private void Handle(SaveSlotsIntent intent)
         {
+            if (VillageSceneFlow.IsLoading && intent.Action != SaveSlotsAction.EntryFailure) return;
             bool entered = false;
             switch (intent.Action)
             {
@@ -62,13 +66,17 @@ namespace Chaos.MVP.Presenter.SaveSlots
                 case SaveSlotsAction.Confirm: entered = _model.Execute(); break;
                 case SaveSlotsAction.Cancel: _model.Cancel(); break;
                 case SaveSlotsAction.Refresh: _model.Refresh(); break;
+                case SaveSlotsAction.EntryFailure: _model.ReportEntryFailure(intent.Message); break;
             }
             if (IsDisposed) return;
             if (_model.Confirmation != 0 && !View.CanShowConfirmation) entered = _model.Execute();
             if (entered)
             {
-                if (UIManager.Instance != null) UIManager.Instance.SetRootPanel(PanelType.WorldMapPanel);
-                return;
+                try { VillageSceneFlow.EnterFromSave(); return; }
+                catch (Exception exception)
+                {
+                    _model.ReportEntryFailure("进入村庄失败，槽 " + _model.SelectedSlot + " 已保留，可重试：" + exception.Message);
+                }
             }
             if (!IsDisposed) Render();
         }
@@ -76,7 +84,7 @@ namespace Chaos.MVP.Presenter.SaveSlots
         {
             var cells = new List<SaveSlotCellState>();
             foreach (SaveSlotInfo slot in _model.Slots) cells.Add(SaveSlotPresentation.FromInfo(slot));
-            View.Render(new SaveSlotsState { Cells = cells, SelectedSlot = _model.SelectedSlot,
+            View.Render(new SaveSlotsState { Cells = cells, SelectedSlot = _model.SelectedSlot, Error = _model.Error,
                 CanDelete = _model.CanDelete, ConfirmationKey = _model.Confirmation == 1 ? "ui_slpanel_confirm_start"
                     : _model.Confirmation == 2 ? "ui_slpanel_confirm_delete" : null });
         }

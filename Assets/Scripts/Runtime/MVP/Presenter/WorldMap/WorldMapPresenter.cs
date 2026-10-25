@@ -28,7 +28,9 @@ namespace Chaos.MVP.Presenter.WorldMap
                 case WorldMapAction.Preview: _model.Preview(intent.Delta); break;
                 case WorldMapAction.OpenPanel: if (UIManager.Instance != null) UIManager.Instance.PushPanel(intent.Panel); return;
                 case WorldMapAction.Save: _model.Save(); break;
-                case WorldMapAction.Return: _model.RequestReturn(); break;
+                case WorldMapAction.Return:
+                    if (UIManager.Instance != null) UIManager.Instance.PopPanel();
+                    return;
                 case WorldMapAction.CancelReturn: _model.CancelReturn(); break;
                 case WorldMapAction.ConfirmReturn:
                     if (_model.ReturnToMenu()) { UIManager.Instance.SetRootPanel(PanelType.MainMenuPanel); return; }

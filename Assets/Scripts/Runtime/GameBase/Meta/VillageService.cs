@@ -33,6 +33,29 @@ public class VillageService : SingletonBase<VillageService>
 
     private List<BuildingConfig> _defs;
     private bool _loaded;
+    private SavePayload _timerPayload;
+    private float _buildRemainder;
+    public enum Command { Build, Upgrade, Cancel, Harvest }
+
+    /// <summary>Formal commands commit resources and building state together, or restore the same payload on failure.</summary>
+    public bool Execute(Command command, uint id, out uint amount, out string reason)
+    {
+        var payload = MetaProgressService.Instance.Payload;
+        string before = JsonUtility.ToJson(payload); amount = 0;
+        bool ok;
+        switch (command)
+        {
+            case Command.Build: ok = StartBuild(id, out reason); break;
+            case Command.Upgrade: ok = StartUpgrade(id, out reason); break;
+            case Command.Cancel: ok = CancelBuild(id, out amount, out reason); break;
+            case Command.Harvest: ok = Harvest(id, out amount, out reason); break;
+            default: reason = "未知村庄命令"; return false;
+        }
+        if (!ok) return false;
+        if (!MetaProgressService.Instance.SaveProgress(out reason))
+        { JsonUtility.FromJsonOverwrite(before, payload); amount = 0; MetaRuntimeDriver.NotifyChanged(); return false; }
+        MetaRuntimeDriver.NotifyChanged(); return true;
+    }
 
     public void EnsureLoaded()
     {
@@ -132,7 +155,7 @@ public class VillageService : SingletonBase<VillageService>
         all.Add(new BuildingSave
         {
             id = nextId, buildingType = buildingId, level = 1u, completed = false,
-            remainSeconds = lv1.BuildSeconds, finishUtcTicks = 0L,
+            remainSeconds = BuildDuration(lv1), finishUtcTicks = 0L,
         });
 
         ChaosLog.Info(LogChannel.Config,
@@ -165,7 +188,7 @@ public class VillageService : SingletonBase<VillageService>
 
         save.level = targetLevel;
         save.completed = false;
-        save.remainSeconds = def.BuildSeconds;
+        save.remainSeconds = BuildDuration(def);
 
         ChaosLog.Info(LogChannel.Config,
             "[村庄] 开始升级 " + buildingId + " → Lv" + targetLevel + "，扣 "
@@ -201,7 +224,14 @@ public class VillageService : SingletonBase<VillageService>
     /// <summary>逐帧推进（**仅运行中时间**）；归零 → `completed = true`。</summary>
     public void Tick(float deltaTime)
     {
-        if (deltaTime <= 0f) return;
+        if (deltaTime <= 0f || float.IsNaN(deltaTime) || float.IsInfinity(deltaTime)) return;
+        var payload = MetaProgressService.Instance.Payload;
+        if (!ReferenceEquals(payload, _timerPayload)) { _timerPayload = payload; _buildRemainder = 0; }
+        _buildRemainder += deltaTime;
+        int seconds = Mathf.FloorToInt(_buildRemainder);
+        if (seconds < 1) return;
+        _buildRemainder -= seconds;
+        deltaTime = seconds;
         List<BuildingSave> all = GetAll();
         for (int i = 0; i < all.Count; i++)
         {
@@ -217,7 +247,7 @@ public class VillageService : SingletonBase<VillageService>
         }
     }
 
-    /// <summary>收取产出（按一个周期结算；**全部收取、不设待收取上限**）。</summary>
+    /// <summary>Withdraw only accumulated, worked output. Repeated clicks never create a new cycle.</summary>
     public bool Harvest(uint buildingId, out uint amount, out string reason)
     {
         amount = 0u;
@@ -229,19 +259,43 @@ public class VillageService : SingletonBase<VillageService>
         BuildingConfig def = GetDef(buildingId, save.level);
         if (def == null) { reason = "表里没有 " + buildingId + " Lv" + save.level; return false; }
 
-        int output = (int)def.OutputAmount;
-        //家族树 EffectType=7（收获产量）只作用于农田 2001
-        if (buildingId == 2001u) output += EffectAggregator.Instance.Snapshot.FarmOutputDelta;
-        if (output <= 0) { reason = "产出为 0"; return false; }
-
-        amount = (uint)output;
-        InventoryService.ResourceKind kind = ResourceKindOf(def.OutputResourceType);
+        if (save.pendingOutput == 0) { reason = VillageText.Get("NoYield"); return false; }
+        InventoryService.ResourceKind kind = ResourceKindOf(save.pendingResourceType == 0 ? def.OutputResourceType : save.pendingResourceType);
+        uint capacity = uint.MaxValue - InventoryService.Instance.GetResource(kind);
+        amount = System.Math.Min(capacity, save.pendingOutput);
+        if (amount == 0) { reason = "资源已达到上限"; return false; }
         uint now = InventoryService.Instance.AddResource(kind, amount);
+        save.pendingOutput -= amount;
 
         ChaosLog.Info(LogChannel.Config,
             "[村庄] 收取 " + buildingId + "（Lv" + save.level + "）→ "
             + InventoryService.ResourceDisplayName(kind) + " +" + amount + "，当前 " + now);
         return true;
+    }
+
+    public void TickProduction(uint buildingId, float deltaTime, object worker)
+    {
+        if (deltaTime <= 0 || float.IsNaN(deltaTime) || float.IsInfinity(deltaTime)
+            || !VillageWorkforce.CanProduce(buildingId, worker)) return;
+        var save = Find(buildingId);
+        if (save == null || !save.completed) return;
+        var def = GetDef(buildingId, save.level);
+        if (def == null || !def.Enable || def.HarvestSeconds == 0) return;
+        if (save.pendingOutput > 0 && save.pendingResourceType != def.OutputResourceType) return;
+        double total = System.Math.Max(0, save.productionSeconds) + deltaTime;
+        double cycles = System.Math.Floor(total / def.HarvestSeconds);
+        save.productionSeconds = (float)(total % def.HarvestSeconds);
+        if (cycles < 1) return;
+        int bonus = buildingId == 2001u ? EffectAggregator.Instance.Snapshot.FarmOutputDelta : 0;
+        double output = System.Math.Max(0, (double)def.OutputAmount + bonus) * cycles;
+        save.pendingOutput = (uint)System.Math.Min(uint.MaxValue, save.pendingOutput + output);
+        save.pendingResourceType = def.OutputResourceType;
+        MetaRuntimeDriver.NotifyChanged();
+    }
+    private static uint BuildDuration(BuildingConfig definition)
+    {
+        int change = definition.BuildingId == 2001u ? EffectAggregator.Instance.Snapshot.FarmBuildSecondsDelta : 0;
+        return (uint)System.Math.Max(1L, (long)definition.BuildSeconds + change);
     }
 
     public string DumpState()

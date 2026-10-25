@@ -193,6 +193,10 @@ public class BuildingSave
 
     /// <summary>建造/升级剩余秒数（**原型期真正读写的字段**；只按运行中时间递减）。</summary>
     public uint remainSeconds;
+    /// <summary>Only seconds actually worked by an on-site production NPC. No offline catch-up.</summary>
+    public float productionSeconds;
+    public uint pendingOutput;
+    public uint pendingResourceType;
 }
 
 /// <summary>库存堆叠（**W1a 新增**）：一种道具占一格，count 是该种的数量。</summary>

@@ -1,0 +1,274 @@
+{
+    "datas": [
+        {
+            "Id": 1,
+            "key": "MapAction",
+            "zhCN": "世界地图",
+            "enUS": "World map",
+            "zhTW": "世界地圖",
+            "jaJP": "ワールドマップ",
+            "koKR": "세계 지도"
+        },
+        {
+            "Id": 2,
+            "key": "MapHint",
+            "zhCN": "{0}：世界地图",
+            "enUS": "{0}: World map",
+            "zhTW": "{0}：世界地圖",
+            "jaJP": "{0}：ワールドマップ",
+            "koKR": "{0}: 세계 지도"
+        },
+        {
+            "Id": 3,
+            "key": "BuildHint",
+            "zhCN": "{0}：管理地块",
+            "enUS": "{0}: Manage plot",
+            "zhTW": "{0}：管理地塊",
+            "jaJP": "{0}：区画を管理",
+            "koKR": "{0}: 부지 관리"
+        },
+        {
+            "Id": 4,
+            "key": "VillageTitle",
+            "zhCN": "村庄",
+            "enUS": "Village",
+            "zhTW": "村莊",
+            "jaJP": "村",
+            "koKR": "마을"
+        },
+        {
+            "Id": 5,
+            "key": "Building",
+            "zhCN": "建造中",
+            "enUS": "Under construction",
+            "zhTW": "建造中",
+            "jaJP": "建設中",
+            "koKR": "건설 중"
+        },
+        {
+            "Id": 6,
+            "key": "Working",
+            "zhCN": "工作中",
+            "enUS": "Working",
+            "zhTW": "工作中",
+            "jaJP": "作業中",
+            "koKR": "작업 중"
+        },
+        {
+            "Id": 7,
+            "key": "Idle",
+            "zhCN": "待命",
+            "enUS": "Idle",
+            "zhTW": "待命",
+            "jaJP": "待機中",
+            "koKR": "대기 중"
+        },
+        {
+            "Id": 8,
+            "key": "Wander",
+            "zhCN": "闲逛",
+            "enUS": "Wandering",
+            "zhTW": "閒逛",
+            "jaJP": "散策中",
+            "koKR": "산책 중"
+        },
+        {
+            "Id": 9,
+            "key": "Rest",
+            "zhCN": "休息",
+            "enUS": "Resting",
+            "zhTW": "休息",
+            "jaJP": "休憩中",
+            "koKR": "휴식 중"
+        },
+        {
+            "Id": 10,
+            "key": "Build",
+            "zhCN": "建造",
+            "enUS": "Build",
+            "zhTW": "建造",
+            "jaJP": "建設",
+            "koKR": "건설"
+        },
+        {
+            "Id": 11,
+            "key": "Upgrade",
+            "zhCN": "升级",
+            "enUS": "Upgrade",
+            "zhTW": "升級",
+            "jaJP": "強化",
+            "koKR": "업그레이드"
+        },
+        {
+            "Id": 12,
+            "key": "Harvest",
+            "zhCN": "收获",
+            "enUS": "Harvest",
+            "zhTW": "收穫",
+            "jaJP": "収穫",
+            "koKR": "수확"
+        },
+        {
+            "Id": 13,
+            "key": "Cancel",
+            "zhCN": "取消建造",
+            "enUS": "Cancel construction",
+            "zhTW": "取消建造",
+            "jaJP": "建設を取り消す",
+            "koKR": "건설 취소"
+        },
+        {
+            "Id": 14,
+            "key": "Level",
+            "zhCN": "等级 {0}",
+            "enUS": "Level {0}",
+            "zhTW": "等級 {0}",
+            "jaJP": "レベル {0}",
+            "koKR": "레벨 {0}"
+        },
+        {
+            "Id": 15,
+            "key": "Queue",
+            "zhCN": "建造剩余 {0} 秒",
+            "enUS": "Construction: {0}s remaining",
+            "zhTW": "建造剩餘 {0} 秒",
+            "jaJP": "建設完了まで {0} 秒",
+            "koKR": "건설 완료까지 {0}초"
+        },
+        {
+            "Id": 16,
+            "key": "Production",
+            "zhCN": "待收获 {0}",
+            "enUS": "Ready to harvest: {0}",
+            "zhTW": "待收穫 {0}",
+            "jaJP": "収穫可能：{0}",
+            "koKR": "수확 가능: {0}"
+        },
+        {
+            "Id": 17,
+            "key": "PressToBuild",
+            "zhCN": "{0}：建造",
+            "enUS": "{0}: Build",
+            "zhTW": "{0}：建造",
+            "jaJP": "{0}：建設",
+            "koKR": "{0}: 건설"
+        },
+        {
+            "Id": 18,
+            "key": "NoWorker",
+            "zhCN": "无工人工作",
+            "enUS": "No worker on duty",
+            "zhTW": "無工人工作",
+            "jaJP": "作業中の労働者がいません",
+            "koKR": "작업 중인 일꾼이 없습니다"
+        },
+        {
+            "Id": 19,
+            "key": "Producing",
+            "zhCN": "生产进度 {0}/{1} 秒",
+            "enUS": "Production: {0}/{1}s",
+            "zhTW": "生產進度 {0}/{1} 秒",
+            "jaJP": "生産進捗 {0}/{1} 秒",
+            "koKR": "생산 진행: {0}/{1}초"
+        },
+        {
+            "Id": 20,
+            "key": "NoYield",
+            "zhCN": "暂无产出",
+            "enUS": "Nothing to harvest",
+            "zhTW": "暫無產出",
+            "jaJP": "収穫物がありません",
+            "koKR": "수확물이 없습니다"
+        },
+        {
+            "Id": 21,
+            "key": "SaveFailed",
+            "zhCN": "保存失败：{0}",
+            "enUS": "Save failed: {0}",
+            "zhTW": "儲存失敗：{0}",
+            "jaJP": "保存に失敗しました：{0}",
+            "koKR": "저장 실패: {0}"
+        },
+        {
+            "Id": 22,
+            "key": "MapDisabled",
+            "zhCN": "当前无法打开世界地图",
+            "enUS": "World map is unavailable",
+            "zhTW": "目前無法開啟世界地圖",
+            "jaJP": "現在はワールドマップを開けません",
+            "koKR": "지금은 세계 지도를 열 수 없습니다"
+        },
+        {
+            "Id": 23,
+            "key": "Building2001",
+            "zhCN": "农田",
+            "enUS": "Farm",
+            "zhTW": "農田",
+            "jaJP": "農地",
+            "koKR": "농지"
+        },
+        {
+            "Id": 24,
+            "key": "Worker2001",
+            "zhCN": "农夫",
+            "enUS": "Farmer",
+            "zhTW": "農夫",
+            "jaJP": "農夫",
+            "koKR": "농부"
+        },
+        {
+            "Id": 25,
+            "key": "Building2002",
+            "zhCN": "工坊",
+            "enUS": "Workshop",
+            "zhTW": "工坊",
+            "jaJP": "工房",
+            "koKR": "공방"
+        },
+        {
+            "Id": 26,
+            "key": "Worker2002",
+            "zhCN": "工匠",
+            "enUS": "Artisan",
+            "zhTW": "工匠",
+            "jaJP": "職人",
+            "koKR": "장인"
+        },
+        {
+            "Id": 27,
+            "key": "Building2003",
+            "zhCN": "书斋",
+            "enUS": "Study",
+            "zhTW": "書齋",
+            "jaJP": "書斎",
+            "koKR": "서재"
+        },
+        {
+            "Id": 28,
+            "key": "Worker2003",
+            "zhCN": "学者",
+            "enUS": "Scholar",
+            "zhTW": "學者",
+            "jaJP": "学者",
+            "koKR": "학자"
+        },
+        {
+            "Id": 29,
+            "key": "Building2004",
+            "zhCN": "集市",
+            "enUS": "Market",
+            "zhTW": "集市",
+            "jaJP": "市場",
+            "koKR": "시장"
+        },
+        {
+            "Id": 30,
+            "key": "Worker2004",
+            "zhCN": "商贩",
+            "enUS": "Merchant",
+            "zhTW": "商販",
+            "jaJP": "商人",
+            "koKR": "상인"
+        }
+    ]
+}

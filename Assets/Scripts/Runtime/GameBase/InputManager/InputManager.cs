@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using ChaosDebug;
 using UnityEngine;
@@ -104,8 +104,8 @@ public partial class InputManager : SingletonBase<InputManager>
     /// （Keyboard.escape 与 Gamepad.buttonEast 的 usages 都是 {"Back","Cancel"}），
     /// 而 buttonEast 的别名正是 {"b","circle"} —— 也就是 Xbox 的 B 与 PS 的圆圈本来就是同一个控制，
     /// 不需要为两个平台各写一条。
-    /// 剩下的三种没有 usage，只能按显式路径列出来：Delete、Backspace（键盘的"返回键"）、
-    /// 以及手柄的 select（Xbox 的 View / PS 的 Share，Unity 没给它任何 usage）。
+    /// Delete、Backspace（键盘的"返回键"）用显式路径列出；
+    /// select 用于地图动作，可参与重绑定。
     /// </summary>
     private static readonly string[] CancelKeyPaths =
     {
@@ -113,7 +113,6 @@ public partial class InputManager : SingletonBase<InputManager>
         "<Keyboard>/delete",
         "<Keyboard>/backspace",
         "<Gamepad>/buttonEast",
-        "<Gamepad>/select",
     };
 
     /// <summary>等待按键的超时。不设超时的话玩家误点后界面会一直卡在"请按键…"。</summary>
@@ -1101,6 +1100,7 @@ public partial class InputManager : SingletonBase<InputManager>
     private void Tick()
     {
         RefreshGameplayInputLatches();
+        TickVillageMapNavigation();
         //⚠ 这一段必须在下面的 isStart 判断【之前】：
         //  那个开关管的是旧版 Escape/W 轮询，跟"正在等玩家按键"是两回事。
         //  放到后面的话，没开旧版轮询的场合按取消键会毫无反应，界面一直卡在"请按键…"
@@ -1164,7 +1164,6 @@ public partial class InputManager : SingletonBase<InputManager>
         {
             Gamepad pad = gamepads[i];
             if (pad.buttonEast.isPressed) return true;   //Xbox B / PS 圆圈
-            if (pad.selectButton.isPressed) return true; //Xbox View / PS Share
         }
 
         return false;

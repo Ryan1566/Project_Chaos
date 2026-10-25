@@ -28,10 +28,30 @@ using UnityEngine;
 /// </summary>
 public class SaveSlotService : SingletonBase<SaveSlotService>
 {
+#if UNITY_EDITOR
+    private static string editorTestDirectory;
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetEditorTestDirectory() { editorTestDirectory = null; }
+    /// <summary>Editor fixtures may use a fresh owned temp directory; never a user's real Saves directory.</summary>
+    public static void UseEditorTestDirectory(string directory)
+    {
+        if (!Application.isPlaying) throw new InvalidOperationException("Test storage is scoped to a Play session");
+        string full = Path.GetFullPath(directory);
+        string prefix = Path.Combine(Path.GetFullPath(Path.GetTempPath()), "ChaosVillageIsolated-");
+        if (!full.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)) throw new ArgumentException("Use an owned ChaosVillageIsolated temp directory");
+        Directory.CreateDirectory(full); editorTestDirectory = full;
+    }
+#endif
     /// <summary>存档目录的完整路径：`persistentDataPath/Saves`（Windows 例：`%USERPROFILE%\AppData\LocalLow\DefaultCompany\Project_Chaos\Saves`）。</summary>
     public static string SavesDirectory
     {
-        get { return Path.Combine(Application.persistentDataPath, GlobalPath.save_SlotDir); }
+        get
+        {
+#if UNITY_EDITOR
+            if (editorTestDirectory != null) return editorTestDirectory;
+#endif
+            return Path.Combine(Application.persistentDataPath, GlobalPath.save_SlotDir);
+        }
     }
 
     /// <summary>槽位号是否合法（1..GlobalPath.save_SlotCount）。</summary>

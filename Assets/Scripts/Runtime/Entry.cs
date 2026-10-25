@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using ChaosDebug;
 using UnityEngine;
@@ -11,7 +11,7 @@ using UnityEngine.SceneManagement;
 /// ① **首次启动**：做一次性的框架初始化（UIManager / InputManager / SettingsManager），并推主菜单；
 /// ② **二次进入**：从局内读完条回到 `EnterScene` —— 初始化**不能再来一遍**
 ///    （`SettingsManager.Init` 会重复订阅、`InputManager.Init` 会重复加载动作表），
-///    只按 `GameSession.HasSession` 路由面板（有会话 → 局外主界面；没有 → 主菜单）。
+///    只按 `GameSession.HasSession` 路由（有会话 → MainScene 村庄；没有 → 主菜单）。
 ///
 /// ══════════════════ ⚠ 为什么二次路由不写在 Start 里（实测层级决定的） ══════════════════
 /// `EnterScene` 的实际层级是：
@@ -69,7 +69,7 @@ public class Entry : MonoBehaviour
         RouteBySession("sceneLoaded(" + scene.name + ")");
     }
 
-    /// <summary>按会话状态决定根面板：有存档会话 → 局外主界面；没有 → 主菜单。</summary>
+    /// <summary>按会话状态选择村庄场景或主菜单；地图只由玩家主动打开。</summary>
     private static void RouteBySession(string reason)
     {
         if (UIManager.Instance == null)
@@ -79,13 +79,19 @@ public class Entry : MonoBehaviour
         }
 
         bool hasSession = GameSession.Instance != null && GameSession.Instance.HasSession;
-        PanelType target = hasSession ? PanelType.WorldMapPanel : PanelType.MainMenuPanel;
-
-        ChaosLog.Info(LogChannel.UI,
-            "[Entry] 回到 " + EnterSceneName + " 路由：HasSession=" + hasSession +
-            " → " + target + "（" + reason + "）");
-
-        //SetRootPanel 是替换语义且幂等：即使 Start 与 sceneLoaded 都跑到，也不会压出两层
-        UIManager.Instance.SetRootPanel(target);
+        if (VillageSceneFlow.RecoveringToSaveSlots) { VillageSceneFlow.ShowEntryFailure(); return; }
+        if (hasSession)
+        {
+            if (VillageSceneFlow.IsLoading) return;
+            try { VillageSceneFlow.EnterFromSave(); }
+            catch (System.Exception exception)
+            {
+                ChaosLog.Error(LogChannel.Scene, "[Entry] 返回村庄失败，已保留当前存档会话，可重新选择槽位重试：" + exception.Message);
+                UIManager.Instance.SetRootPanel(PanelType.SLPanel);
+            }
+            return;
+        }
+        ChaosLog.Info(LogChannel.UI, "[Entry] 无存档会话 → 主菜单（" + reason + "）");
+        UIManager.Instance.SetRootPanel(PanelType.MainMenuPanel);
     }
 }

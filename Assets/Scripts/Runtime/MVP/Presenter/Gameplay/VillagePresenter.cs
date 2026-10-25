@@ -9,6 +9,8 @@ namespace Chaos.MVP.Presenter.Gameplay
     }
     public sealed class VillagePresenter : GameplayPresenter<VillageState>
     {
+        private uint focus;
+        public void Focus(uint id) { focus = id; Refresh(); }
         protected override void OnAttach() { base.OnAttach(); MetaRuntimeDriver.Changed += Refresh; }
         protected override void OnDetach() { MetaRuntimeDriver.Changed -= Refresh; base.OnDetach(); }
         protected override VillageState CreateState()
@@ -19,6 +21,7 @@ namespace Chaos.MVP.Presenter.Gameplay
             var rows = new List<TextRow>();
             foreach (uint id in new[] { 2001u, 2002u, 2003u, 2004u })
             {
+                if (focus != 0 && id != focus) continue;
                 var save = svc.Find(id);
                 var state = svc.GetState(id);
                 var def = svc.GetDef(id, save == null ? 1u : save.level);
@@ -32,9 +35,14 @@ namespace Chaos.MVP.Presenter.Gameplay
                     case VillageService.BuildingState.MaxLevel: status = "已满级 Lv" + save.level; action = "收取"; command = PanelAction.Harvest; break;
                     default: status = "已建成 Lv" + save.level; action = "收取"; command = PanelAction.Harvest; break;
                 }
-                rows.Add(new TextRow { Id = id, Text = (def == null ? "建筑" + id : def.NameKey) + "　" + status,
+                bool enabled = command == PanelAction.Build || command == PanelAction.Upgrade ? !svc.IsQueueBusy
+                    : command != PanelAction.Harvest || (save != null && save.pendingOutput > 0);
+                string production = save != null && save.completed ? "　" + VillageText.Get("Production", save.pendingOutput)
+                    + "　" + VillageText.Get("Producing", save.productionSeconds.ToString("F1"), def.HarvestSeconds) : string.Empty;
+                rows.Add(new TextRow { Id = id, Text = VillageText.Get("Building" + id) + "　" + status + production,
                     Tone = state == VillageService.BuildingState.Building ? TextTone.Warning : TextTone.Normal,
-                    ActionLabel = action, Action = command, Enabled = true,
+                    ActionLabel = action, Action = command, Enabled = enabled,
+                    SecondaryEnabled = save != null && save.pendingOutput > 0,
                     SecondaryActionLabel = state == VillageService.BuildingState.Upgradable ? "收取" : null,
                     SecondaryAction = PanelAction.Harvest });
             }
@@ -48,10 +56,10 @@ namespace Chaos.MVP.Presenter.Gameplay
             bool ok; string reason;
             switch (intent.Action)
             {
-                case PanelAction.Build: ok = svc.StartBuild(intent.Id, out reason); break;
-                case PanelAction.CancelBuild: ok = svc.CancelBuild(intent.Id, out uint refund, out reason); break;
-                case PanelAction.Upgrade: ok = svc.StartUpgrade(intent.Id, out reason); break;
-                case PanelAction.Harvest: ok = svc.Harvest(intent.Id, out uint amount, out reason); break;
+                case PanelAction.Build: ok = svc.Execute(VillageService.Command.Build, intent.Id, out _, out reason); break;
+                case PanelAction.CancelBuild: ok = svc.Execute(VillageService.Command.Cancel, intent.Id, out _, out reason); break;
+                case PanelAction.Upgrade: ok = svc.Execute(VillageService.Command.Upgrade, intent.Id, out _, out reason); break;
+                case PanelAction.Harvest: ok = svc.Execute(VillageService.Command.Harvest, intent.Id, out _, out reason); break;
                 default: return;
             }
             Refresh(); Message(ok ? "操作成功" : reason, ok);

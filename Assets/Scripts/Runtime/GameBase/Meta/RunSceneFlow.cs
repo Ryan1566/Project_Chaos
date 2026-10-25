@@ -35,11 +35,14 @@ public static class RunSceneFlow
     {
         reason = null;
         if (_phase != Phase.Idle) { reason = "正在出征或返回，请稍候"; return false; }
+        if (!VillageSceneFlow.IsVillageScene || VillageSceneFlow.IsLoading || !GameSession.Instance.HasSession)
+        { reason = "请先读取存档进入村庄，再从地图选择队伍出征"; return false; }
         if (SceneUtility.GetBuildIndexByScenePath("Assets/Scenes/" + GameplayScene + ".unity") < 0
-            || SceneUtility.GetBuildIndexByScenePath("Assets/Scenes/" + LoadingScene + ".unity") < 0)
-        { reason = "局内或读条场景未加入构建列表"; return false; }
+            || SceneUtility.GetBuildIndexByScenePath("Assets/Scenes/" + LoadingScene + ".unity") < 0
+            || SceneUtility.GetBuildIndexByScenePath("Assets/Scenes/" + VillageSceneFlow.SceneName + ".unity") < 0)
+        { reason = "村庄、局内或读条场景未加入构建列表"; return false; }
 
-        _returnScene = SceneManager.GetActiveScene().name;
+        _returnScene = VillageSceneFlow.SceneName;
         _team = new List<uint>(team);
         _seed = RunMap.NaturalMapRuntime.PreviewSeed ?? RunMap.NaturalMapRuntime.CreateRunSeed();
         _stageIndex = 1;
@@ -100,9 +103,25 @@ public static class RunSceneFlow
 
     public static void ReturnToMeta()
     {
+        if (!CanReturnToMeta(out string reason)) throw new System.InvalidOperationException(reason);
+        _returnScene = VillageSceneFlow.SceneName;
         _phase = Phase.Returning;
         _transitionVersion++;
-        SceneManager.LoadScene(_returnScene);
+        try { SceneManager.LoadScene(_returnScene); }
+        catch
+        {
+            _phase = Phase.Active;
+            throw;
+        }
+    }
+
+    public static bool CanReturnToMeta(out string reason)
+    {
+        reason = null;
+        if (_phase != Phase.Active) { reason = "当前不在可返回的正式出征中"; return false; }
+        if (SceneUtility.GetBuildIndexByScenePath("Assets/Scenes/" + VillageSceneFlow.SceneName + ".unity") < 0)
+        { reason = "村庄场景未加入构建列表，可修复后重试返回"; return false; }
+        return true;
     }
 
     private static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -136,15 +155,17 @@ public static class RunSceneFlow
             _phase = Phase.Idle;
             SceneManager.sceneLoaded -= OnSceneLoaded;
             GameSession.Instance.SetTargetScene(null);
-            if (UIManager.Instance != null)
+            if (!VillageSceneFlow.IsVillageScene || !VillageSceneBootstrap.IsReady)
             {
-                UIManager.Instance.RestoreAfterGameplay();
-                UIManager.Instance.SetRootPanel(PanelType.WorldMapPanel);
+                _team = null; _stageIndex = 0;
+                if (VillageSceneFlow.IsVillageScene) VillageSceneFlow.ReportEntryFailure(VillageSceneBootstrap.LastError ?? "村庄未初始化");
+                yield break;
             }
+            VillageSceneFlow.OnReturnedToVillage();
             EventService.Instance.CheckAndShowOnReturnToMeta();
             _team = null;
             _stageIndex = 0;
-            ChaosLog.Info(LogChannel.Scene, "[正式流程] 已返回 " + sceneName + " 的局外地图");
+            ChaosLog.Info(LogChannel.Scene, "[正式流程] 已返回 " + sceneName + " 村庄；地图保持关闭");
         }
     }
 

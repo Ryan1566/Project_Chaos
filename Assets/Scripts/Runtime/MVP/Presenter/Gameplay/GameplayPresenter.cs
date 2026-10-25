@@ -57,5 +57,6 @@ namespace Chaos.MVP.Presenter.Gameplay
         public PanelAction Action;
         public string SecondaryActionLabel;
         public PanelAction SecondaryAction;
+        public bool SecondaryEnabled = true;
     }
 }

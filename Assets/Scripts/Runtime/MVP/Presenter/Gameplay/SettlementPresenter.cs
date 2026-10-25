@@ -32,6 +32,7 @@ namespace Chaos.MVP.Presenter.Gameplay
             string hint = _model.Win ? "可带出 " + MetaProgressService.Instance.DeployCap + " 件（已选 " + _model.SelectedCount + "）"
                 : "失败：保留 50% 掉落（" + rows.Count + " 条 → 保留 " + _model.RetainedCount + " 条：" + (retainedNames.Count == 0 ? "无" : string.Join("/", retainedNames)) + "）";
             if (_model.PendingSave) hint += "；保存待重试，点击确认不会重复结算";
+            if (_model.Completed) hint = "结算已保存，点击确认重试返回，不会重复发放奖励。";
             return new SettlementState { Win = _model.Win, Rows = rows.ToArray(), Title = _model.Win ? "局内通关" : "全员倒下 · 本局失败", Hint = hint,
                 Wounds = RunEncounter.LastWoundCount > 0 ? RunEncounter.LastWoundCount + " 名门客重伤（30s）" : "" };
         }
@@ -42,14 +43,25 @@ namespace Chaos.MVP.Presenter.Gameplay
                 bool ok = _model.Toggle(intent.Id, out string reason); Refresh(); if (!ok && reason != null) Message(reason); return;
             }
             if (intent.Action != PanelAction.Confirm && intent.Action != PanelAction.Discard) return;
-            if (!_model.Confirm(intent.Action == PanelAction.Discard, out string saveReason))
+            if (!_model.Completed && !_model.Confirm(intent.Action == PanelAction.Discard, out string saveReason))
             {
                 if (saveReason != null) Message(saveReason + "；点击确认重试，不会重复结算");
                 return;
             }
-            // Remove the old settlement before a return can push a story event on top of it.
-            View.ClosePanel();
-            _model.ReturnToMeta(out string returnReason);
+            bool formalRun = RunSceneFlow.IsFormalRun;
+            // Formal scene return owns removal of its old UI. Keep the settlement available
+            // until that return starts successfully, so a failed load can be retried.
+            // The in-place test path must pop first because it may push an event synchronously.
+            if (!formalRun) View.ClosePanel();
+            if (_model.ReturnToMeta(out string returnReason)) return;
+            if (!formalRun)
+            {
+                var reopened = UIManager.Instance.PushPanel(PanelType.RunSettlementPanel) as IGameplayView<SettlementState>;
+                reopened?.ShowMessage(returnReason + "；结算已保存，点击确认重试返回。", false);
+                return;
+            }
+            Refresh();
+            Message(returnReason + "；结算已保存，点击确认重试返回。");
         }
     }
 }

@@ -756,6 +756,8 @@ public class LoadingController : MonoBehaviour
         if (_fadeImage != null) _fadeImage.color = new Color(1f, 1f, 1f, 0f);
         if (_progressFill != null) _progressFill.color = FailureBarColor;
         SetProgressVisual(1f);
+        if (VillageSceneFlow.IsLoading && GameSession.Instance.TargetSceneName == VillageSceneFlow.SceneName)
+            VillageSceneFlow.ReportEntryFailure(reason);
     }
 
     /// <summary>

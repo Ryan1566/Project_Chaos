@@ -99,9 +99,10 @@ namespace Chaos.MVP.Model.Gameplay
         }
         public bool ReturnToMeta(out string reason)
         {
+            if (!DispatchService.Instance.ReturnToMeta(out reason)) return false;
             RunControlModel.PauseWorld(false);
             RunInventory.Clear();
-            return DispatchService.Instance.ReturnToMeta(out reason);
+            return true;
         }
     }
 }

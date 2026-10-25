@@ -218,6 +218,20 @@ public class UIManager : SingletonBase<UIManager>
         return panel;
     }
 
+    /// <summary>Scene gameplay may be the root without any full-screen panel.</summary>
+    public void CloseAllPanels()
+    {
+        panelStack.Clear();
+        foreach (var panel in PanelDic.Values)
+            if (panel != null && panel.IsShowing) panel.Hide();
+        RefreshGameplayInputBlock();
+    }
+    public void SetSceneBackgroundVisible(bool visible)
+    {
+        if (_canvas == null) return;
+        var background = _canvas.Find("Base_BG"); if (background != null) background.gameObject.SetActive(visible);
+    }
+
     // ══════════════════════ 局内：隐藏/恢复局外面板（W3.0b）══════════════════════
 
     /// <summary>进局时被隐藏的面板（按发现顺序，恢复时按原序 SetActive 回来）。</summary>

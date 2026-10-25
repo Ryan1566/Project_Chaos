@@ -8,7 +8,7 @@ using Chaos.MVP.Model.WorldMap;
 using Chaos.MVP.Presenter.WorldMap;
 
 /// <summary>
-/// 局外世界观地图面板（常驻 UI 层的"局外主界面"）。
+/// 村庄中的世界地图子界面；地图上的正式派遣按钮连接出征流程。
 ///
 /// ══════════════════ 层级契约（**冻结**，task-26 会照这些名字搭 prefab，改名字会直接失效） ══════════════════
 /// WorldMapPanel
@@ -255,7 +255,7 @@ public class WorldMapPanel : BasePanel, IWorldMapView
         if (_returnBtn != null)
         {
             var label = _returnBtn.GetComponentInChildren<TextMeshProUGUI>();
-            if (label != null) GameplayText.Bind(label, "ui_world_main_menu", "主菜单");
+            if (label != null) GameplayText.Bind(label, "ui_return", "返回村庄");
         }
     }
     private void ApplyFactionMask(List<WorldFactionArea> areas)

@@ -9,6 +9,7 @@ public partial class InputManager
     public const string ActionCamp = "Camp";
     public const string ActionMenu = "Menu";
     public const string ActionInteract = "Interact";
+    public const string ActionMap = "Map";
     public const string GroupKeyboardFixed = "KeyboardFixed";
     private readonly HashSet<object> _gameplayBlockers = new HashSet<object>();
     private readonly List<RaycastResult> _pointerHits = new List<RaycastResult>();
@@ -91,5 +92,23 @@ public partial class InputManager
         foreach (var hit in _pointerHits)
             if (hit.module is UnityEngine.UI.GraphicRaycaster) return true;
         return false;
+    }
+
+    private void TickVillageMapNavigation()
+    {
+        if (!VillageSceneFlow.IsVillageScene || VillageSceneFlow.IsLoading
+            || !GameSession.Instance.HasSession || DispatchService.Instance.IsInRun
+            || RunSceneFlow.IsTransitioning) return;
+        UIManager ui = UIManager.Instance;
+        if (ui == null) return;
+        BasePanel top = ui.panelStack.Count > 0 ? ui.panelStack.Peek() : null;
+        if (top is WorldMapPanel)
+        {
+            // The map's own UI block can be bypassed only to close this exact top panel.
+            // GM, rebinding and any other input owner remain authoritative.
+            if (!HasGameplayBlockerOtherThan(ui) && WasNavigationPressed(ActionMap)) ui.PopPanel();
+        }
+        else if (ui.panelStack.Count == 0 && WasGameplayPressed(ActionMap))
+            ui.PushPanel(PanelType.WorldMapPanel);
     }
 }

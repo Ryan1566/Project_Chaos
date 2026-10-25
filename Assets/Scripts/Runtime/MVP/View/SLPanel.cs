@@ -53,9 +53,8 @@ public class SLPanel : BasePanel, ISaveSlotsView
     /// <summary>`RecordCell` 预制体路径（`Resources` 相对、不带扩展名）。</summary>
     private const string CellPrefabPath = "UIPanels/SubUI_Prefab/RecordCell";
 
-    //注：原来的 `GameSceneName` / `LoadingSceneName` 已随 task-24 移除。
-    //「开始游戏」现在的语义是**进入局外**（世界观地图），局外主界面就在 EnterScene 的常驻 UI 里，
-    //不需要切场景；「进局内」由局外主界面的【进入局内】按钮负责（读条 → WorldScene）。
+    // A usable slot enters the physical village through VillageSceneFlow.
+    // Expedition loading remains available from the world map's dispatch button.
 
     // ══════════════════ 本地化 Key ══════════════════
 
@@ -81,8 +80,13 @@ public class SLPanel : BasePanel, ISaveSlotsView
     private bool _cellsReady;
     private SaveSlotsModel _model;
     private SaveSlotsPresenter _presenter;
+    private TextMeshProUGUI _errorText;
     public event System.Action<SaveSlotsIntent> Intent;
     public bool CanShowConfirmation => _confirmGroup != null;
+    public void ShowEntryFailure(string reason)
+    {
+        Intent?.Invoke(new SaveSlotsIntent(SaveSlotsAction.EntryFailure, message: reason));
+    }
 
     // ══════════════════ 生命周期 ══════════════════
 
@@ -261,6 +265,18 @@ public class SLPanel : BasePanel, ISaveSlotsView
         if (_deleteBtn != null) _deleteBtn.interactable = state.CanDelete;
         if (_confirmGroup != null) _confirmGroup.SetActive(!string.IsNullOrEmpty(state.ConfirmationKey));
         if (!string.IsNullOrEmpty(state.ConfirmationKey)) SetConfirmText(state.ConfirmationKey);
+        if (_errorText == null && !string.IsNullOrEmpty(state.Error))
+        {
+            RectTransform error = GameplayUi.Rect(transform, "LoadError", new Vector2(.5f, 0), new Vector2(.5f, 0),
+                new Vector2(0, 155), new Vector2(900, 80));
+            _errorText = GameplayUi.Text(error, "Text", "", 22);
+            _errorText.color = new Color(1f, .55f, .45f);
+        }
+        if (_errorText != null)
+        {
+            _errorText.text = state.Error ?? "";
+            _errorText.gameObject.SetActive(!string.IsNullOrEmpty(state.Error));
+        }
     }
 
     private void Refresh() { Intent?.Invoke(new SaveSlotsIntent(SaveSlotsAction.Refresh)); }

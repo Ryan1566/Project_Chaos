@@ -15,6 +15,11 @@ public class VillagePanel : BasePanel, IGameplayView<VillageState>
     private void OnDestroy() { OnExit(); }
 
     public override void OnExit() { _presenter?.Dispose(); _presenter = null; }
+    public static void OpenForBuilding(uint id)
+    {
+        var panel = UIManager.Instance.PushPanel(PanelType.VillagePanel) as VillagePanel;
+        panel?.EnsurePresenter(); panel?._presenter?.Focus(id);
+    }
 
     public event Action<PanelIntent> Intent;
     private VillagePresenter _presenter;
@@ -88,7 +93,7 @@ public class VillagePanel : BasePanel, IGameplayView<VillageState>
         CreateButton("Btn_" + row.Id, row.ActionLabel, new Vector2(0f, -34f), new Vector2(180f, 30f), row.Enabled,
             () => Send(row.Action, row.Id), rect);
         if (!string.IsNullOrEmpty(row.SecondaryActionLabel))
-            CreateButton("Harvest_" + row.Id, row.SecondaryActionLabel, new Vector2(200f, -34f), new Vector2(180f, 30f), true,
+            CreateButton("Harvest_" + row.Id, row.SecondaryActionLabel, new Vector2(200f, -34f), new Vector2(180f, 30f), row.SecondaryEnabled,
                 () => Send(row.SecondaryAction, row.Id), rect);
     }
 

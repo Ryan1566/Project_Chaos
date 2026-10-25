@@ -204,6 +204,9 @@ public class DispatchService : SingletonBase<DispatchService>
             return false;
         }
 
+        bool formalRun = RunSceneFlow.IsFormalRun;
+        if (formalRun && !RunSceneFlow.CanReturnToMeta(out reason)) return false;
+
         RunEncounter.ApplyRunWounds(false);
         if (!MetaProgressService.Instance.SaveProgress(out reason)) return false;
         RunDepthHud.DisableAndDestroy();
@@ -214,10 +217,16 @@ public class DispatchService : SingletonBase<DispatchService>
         PrototypeMapSpawner.Clear();
         _isInRun = false;
 
-        if (RunSceneFlow.IsFormalRun)
+        if (formalRun)
         {
-            RunSceneFlow.ReturnToMeta();
-            return true;
+            try { RunSceneFlow.ReturnToMeta(); return true; }
+            catch (System.Exception exception)
+            {
+                _isInRun = true;
+                reason = "返回村庄失败，可重试：" + exception.Message;
+                ChaosLog.Error(LogChannel.Scene, "[派遣] " + reason);
+                return false;
+            }
         }
         if (UIManager.Instance != null) UIManager.Instance.RestoreAfterGameplay();
 

@@ -9,8 +9,15 @@ namespace Chaos.MVP.Model.SaveSlots
         public int SelectedSlot { get; private set; } = 1;
         public List<SaveSlotInfo> Slots { get; private set; } = new List<SaveSlotInfo>();
         public int Confirmation { get; private set; }
+        public string Error { get; private set; }
         public int SlotCount => GlobalPath.save_SlotCount;
-        public void Open() { Confirmation = 0; SelectedSlot = SaveSlotService.Instance.FindFirstNonEmptySlot(); Refresh(); }
+        public void Open()
+        {
+            Confirmation = 0; Error = null;
+            SelectedSlot = GameSession.Instance.HasSession && SaveSlotService.IsValidSlot(GameSession.Instance.SelectedSlot)
+                ? GameSession.Instance.SelectedSlot : SaveSlotService.Instance.FindFirstNonEmptySlot();
+            Refresh();
+        }
         public void Refresh() { Slots = SaveSlotService.Instance.ReadAllSlots(); }
         public SaveSlotInfo GetInfo(int slot) { return Slots.Find(info => info.Slot == slot); }
         public bool CanDelete => SaveSlotService.HasSaveFile(GetInfo(SelectedSlot));
@@ -18,10 +25,11 @@ namespace Chaos.MVP.Model.SaveSlots
         {
             if (!SaveSlotService.IsValidSlot(slot)) return false;
             SelectedSlot = slot;
-            if (GetInfo(slot) == null) Refresh();
+            Error = null;
+            Refresh();
             return true;
         }
-        public void ConfirmStart() { Confirmation = 1; }
+        public void ConfirmStart() { Error = null; Confirmation = 1; }
         public void ConfirmDelete() { if (CanDelete) Confirmation = 2; }
         public void Cancel() { Confirmation = 0; }
         public bool Execute()
@@ -31,12 +39,13 @@ namespace Chaos.MVP.Model.SaveSlots
             if (purpose == 1)
             {
                 if (SaveSlotService.Instance.CreateNew(SelectedSlot)) return Enter(SelectedSlot);
-                else ChaosLog.Error(LogChannel.Save, "新建存档失败，已取消进入游戏");
+                else ReportEntryFailure("新建槽 " + SelectedSlot + " 失败，请检查存档目录后重试。");
             }
             else if (purpose == 2)
             {
-                SaveSlotService.Instance.Delete(SelectedSlot);
-                SelectedSlot = SaveSlotService.Instance.FindFirstNonEmptySlot();
+                if (SaveSlotService.Instance.Delete(SelectedSlot))
+                    SelectedSlot = SaveSlotService.Instance.FindFirstNonEmptySlot();
+                else ReportEntryFailure("删除槽 " + SelectedSlot + " 失败，可重试。");
             }
             Refresh();
             return false;
@@ -44,9 +53,19 @@ namespace Chaos.MVP.Model.SaveSlots
         public bool Enter(int slot)
         {
             SaveSlotFile file;
-            if (!SaveSlotService.Instance.TryLoad(slot, out file)) { Refresh(); return false; }
+            if (!SaveSlotService.Instance.TryLoad(slot, out file))
+            {
+                ReportEntryFailure("读取槽 " + slot + " 失败，请检查存档后重试。");
+                Refresh(); return false;
+            }
             GameSession.Instance.Begin(slot, file.payload, null);
+            Error = null;
             return true;
+        }
+        public void ReportEntryFailure(string reason)
+        {
+            Error = reason;
+            ChaosLog.Error(LogChannel.Save, reason);
         }
         public void Dispose() { Cancel(); }
     }
