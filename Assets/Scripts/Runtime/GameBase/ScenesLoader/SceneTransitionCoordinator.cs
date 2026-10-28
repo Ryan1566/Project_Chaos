@@ -69,7 +69,7 @@ public static class SceneTransitionCoordinator
     private static void ContextChanged()
     {
         if (Active != null && Active.ContextId != GameSession.Instance.ContextId) Fail(Active.Id, "存档会话已切换，旧加载已取消");
-        else if (Active == null && !GameSession.Instance.HasSession) Phase = GamePhase.Outside;
+        else if (Active == null) Phase = GamePhase.Outside;
     }
 
     private static void Loaded(Scene scene, LoadSceneMode mode)
@@ -94,7 +94,11 @@ public static class SceneTransitionCoordinator
         Phase = request.Kind == TransitionKind.EnterRun || request.Kind == TransitionKind.NextRunStage ? GamePhase.Run : GamePhase.Village;
         // The receiver now adopts the prepared root into its scene/run scope.
         try { request.Ready?.Invoke(); }
-        catch (Exception error) { request.Failed?.Invoke("目标场景接管失败：" + error.Message); }
+        catch (Exception error)
+        {
+            Cleanup(request);
+            request.Failed?.Invoke("目标场景接管失败：" + error.Message);
+        }
         return true;
     }
 

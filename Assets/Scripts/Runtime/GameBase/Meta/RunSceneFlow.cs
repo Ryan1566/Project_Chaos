@@ -35,14 +35,17 @@ public static class RunSceneFlow
     private static bool LoadStage(SceneTransitionCoordinator.TransitionKind kind, out string reason)
     {
         RunMap.RunMapBootstrap.RequestForScene(GameplayScene, seed, stage);
-        UIManager.Instance.HideAllPanelsForGameplay();
+        if (kind == SceneTransitionCoordinator.TransitionKind.EnterRun && UIManager.Instance != null)
+            UIManager.Instance.HideAllPanelsForGameplay();
         bool started = SceneTransitionCoordinator.TryBegin(kind, GameplayScene, true, AdoptStage, FailFormalRun, out reason);
-        if (!started) UIManager.Instance.RestoreAfterGameplay();
+        if (!started && kind == SceneTransitionCoordinator.TransitionKind.EnterRun && UIManager.Instance != null)
+            UIManager.Instance.RestoreAfterGameplay();
         return started;
     }
     private static void AdoptStage()
     {
-        if (!RunEncounter.EnterPreparedScene(stage, team, seed)) FailFormalRun("第 " + stage + " 阶段无法接管已准备地图");
+        if (!RunEncounter.EnterPreparedScene(stage, team, seed))
+            throw new System.InvalidOperationException("第 " + stage + " 阶段无法接管已准备地图");
     }
     public static bool CanReturnToMeta(out string reason)
     {

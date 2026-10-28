@@ -345,8 +345,7 @@ public static partial class RunEncounter
     /// <summary>撤离：全清。</summary>
     public static void Clear()
     {
-        //W3.3：撤离 → 只把**本局倒地**的门客结算成重伤（必须在 Purge 之前读 AllyController.All）
-        ApplyRunWounds(false);
+        // Wounds are a gameplay transaction owned by Dispatch.Return, never a cleanup side effect.
         RunTeamHud.DisableAndDestroy();   //W3.3：撤离销毁队伍血条
         RunTerrainToast.DisableAndDestroy();   //W5.2：撤离销毁地形/阵营提示（验收：撤离后实例=0）
         FactionService.ResetRunFaction();      //W5.2：撤离清掉本局阵营锁定（下次出发重新定格）

@@ -57,7 +57,7 @@ public class Entry : MonoBehaviour
         }
 
         //兜底路径：二次进入且本对象仍存活时（正常情况它已被常驻守卫连带销毁，见类注释）
-        RouteBySession("Entry.Start 兜底");
+        if (gameObject.scene.name == EnterSceneName) RouteBySession("Entry.Start 兜底");
     }
 
     /// <summary>场景加载完成的**静态**回调：只关心"回到 EnterScene"这一件事。</summary>

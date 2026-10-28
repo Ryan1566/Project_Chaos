@@ -8,18 +8,37 @@ public sealed class MetaRuntimeDriver : MonoBehaviour
     private SavePayload _payload;
     private float _elapsed, _saveElapsed;
     private string _savedSnapshot;
+    private int _contextId;
+    private static bool _publishing;
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-    private static void ResetListeners() { Changed = null; }
-    public static void NotifyChanged() { if (!MetaCommandRunner.IsExecuting) Changed?.Invoke(); }
+    private static void ResetListeners() { Changed = null; _publishing = false; }
+    public static void NotifyChanged() { if (!MetaCommandRunner.IsExecuting) PublishChanged(); }
+    internal static void PublishChanged()
+    {
+        if (_publishing) return;
+        _publishing = true;
+        try
+        {
+            var handlers = Changed;
+            if (handlers == null) return;
+            foreach (Action handler in handlers.GetInvocationList())
+            {
+                try { handler(); }
+                catch (Exception error) { Debug.LogError("[MetaRuntime] 状态监听失败：" + error); }
+            }
+        }
+        finally { _publishing = false; }
+    }
 
     private void Update()
     {
         if (!GameSession.Instance.HasSession) { _payload = null; return; }
         var current = GameSession.Instance.LoadedPayload;
-        if (!ReferenceEquals(_payload, current))
+        if (!ReferenceEquals(_payload, current) || _contextId != GameSession.Instance.ContextId)
         {
             _payload = current;
+            _contextId = GameSession.Instance.ContextId;
             _elapsed = _saveElapsed = 0;
             _savedSnapshot = JsonUtility.ToJson(current);
         }
@@ -33,7 +52,7 @@ public sealed class MetaRuntimeDriver : MonoBehaviour
             var before = JsonUtility.ToJson(current);
             RetainerService.Instance.Tick(seconds);
             VillageService.Instance.Tick(seconds);
-            if (before != JsonUtility.ToJson(current)) Changed?.Invoke();
+            if (before != JsonUtility.ToJson(current)) NotifyChanged();
         }
         if (_saveElapsed >= 30) { _saveElapsed = 0; SaveIfChanged(); }
     }

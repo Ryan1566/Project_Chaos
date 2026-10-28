@@ -3,15 +3,8 @@ using ChaosDebug;
 using UnityEngine;
 
 /// <summary>
-/// 派遣编队（W2）：选 1~4 位**门客**，出发即**就地**生成局内地图（不切场景、不改 RunMap）。
-///
-/// ══════════════ 口径 ══════════════
-/// * 队伍上限 **4**、最少 **1**；单选/取消；
-/// * **不可出战**（重伤 / 信心不足）不可选，并给出原因；
-/// * **不显示任何单人收益/风险提示**（用户 U6）；
-/// * 出发：写 `SavePayload.runTeam`、`runs++`、`PrototypeMapSpawner.Spawn(1)`、`IsInRun=true`；
-///   撤离：`PrototypeMapSpawner.Clear()`、`IsInRun=false`；
-/// * 无会话（未读档）也能用 —— 进度读写统一走 `MetaProgressService.Payload`（内存态兜底）。
+/// 派遣规则与保存命令。正式会话由村庄经读条进入局内，TestScene 显式使用沙盒就地生成。
+/// 队伍为1～4位可出战门客；切图状态只读SceneTransitionCoordinator，保存失败不进入/退出场景。
 /// </summary>
 public class DispatchService : SingletonBase<DispatchService>
 {
@@ -24,10 +17,9 @@ public class DispatchService : SingletonBase<DispatchService>
     public const int StartSceneIndex = 1;
 
     private readonly List<uint> _selected = new List<uint>();
-    private bool _isInRun;
 
-    /// <summary>是否在局内（原型：地图就地生成中）。</summary>
-    public bool IsInRun { get { return _isInRun; } }
+    /// <summary>由唯一流程所有者确认是否存在出征。</summary>
+    public bool IsInRun => SceneTransitionCoordinator.HasRun;
 
     /// <summary>当前选中的门客 id（只读视图）。</summary>
     public List<uint> SelectedIds { get { return _selected; } }
@@ -37,7 +29,7 @@ public class DispatchService : SingletonBase<DispatchService>
     /// <summary>可以出发：1~4 人 且 不在局内。</summary>
     public bool CanDepart
     {
-        get { return !_isInRun && !RunSceneFlow.IsTransitioning && _selected.Count >= MinTeamSize && _selected.Count <= MaxTeamSize; }
+        get { return GameSession.Instance.HasSession && !IsInRun && !RunSceneFlow.IsTransitioning && _selected.Count >= MinTeamSize && _selected.Count <= MaxTeamSize; }
     }
 
     /// <summary>存档里的本局队伍（出发时写入）。</summary>
@@ -77,7 +69,7 @@ public class DispatchService : SingletonBase<DispatchService>
     {
         reason = null;
 
-        if (_isInRun)
+        if (IsInRun || RunSceneFlow.IsTransitioning)
         {
             reason = "已经在局内，先在面板里「撤离」再编队";
             return false;
@@ -130,8 +122,11 @@ public class DispatchService : SingletonBase<DispatchService>
     {
         reason = null;
 
-        if (_isInRun || RunSceneFlow.IsTransitioning)
+        if (IsInRun || RunSceneFlow.IsTransitioning)
         { reason = "已经出发或正在切换场景，请先返回局外"; return false; }
+        bool prototype = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "TestScene";
+        if (prototype ? !GameSession.Instance.IsSandbox : !GameSession.Instance.IsPersistent || !VillageSceneBootstrap.IsReady || !VillageSceneFlow.IsVillageScene)
+        { reason = prototype ? "TestScene 需要显式测试会话" : "请先读档并进入已就绪的村庄"; return false; }
         if (_selected.Count < MinTeamSize) { reason = "至少选择 " + MinTeamSize + " 位门客"; return false; }
         if (_selected.Count > MaxTeamSize) { reason = "队伍超过上限 " + MaxTeamSize; return false; }
 
@@ -155,37 +150,32 @@ public class DispatchService : SingletonBase<DispatchService>
 
         SavePayload payload = MetaProgressService.Instance.Payload;
         string beforeDeparture = JsonUtility.ToJson(payload);
-        payload.runTeam = new List<uint>(_selected);
-        payload.runs++;
+        var selected = new List<uint>(_selected);
+        if (!MetaCommandRunner.Execute("Dispatch.Depart", (out string why) =>
+        {
+            payload.runTeam = new List<uint>(selected); payload.runs++;
+            why = null; return true;
+        }, out reason)) return false;
 
         PlayerSpawner.CaptureOutsideCameraState();   //必须在生图前记局外相机尺寸
-        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "TestScene")
+        if (!prototype)
         {
-            if (!MetaProgressService.Instance.SaveProgress(out reason))
-            {
-                JsonUtility.FromJsonOverwrite(beforeDeparture, payload);
-                return false;
-            }
-            _isInRun = true;
-            if (RunSceneFlow.Begin(_selected, out reason)) return true;
-            _isInRun = false;
-            JsonUtility.FromJsonOverwrite(beforeDeparture, payload);
-            string rollbackReason;
-            MetaProgressService.Instance.SaveProgress(out rollbackReason);
+            if (RunSceneFlow.Begin(selected, out reason)) return true;
+            CompensateDeparture(beforeDeparture, payload, ref reason);
             return false;
         }
         // 隐藏发生在生成 HUD 之前，避免把新建的局内 HUD 也一起隐藏。
         if (UIManager.Instance != null) UIManager.Instance.HideAllPanelsForGameplay();
         //W3.1a：统一走 RunEncounter.EnterScene（清旧 → 生图 → 出生点 → 玩家 → 边界 → 敌人）
-        if (!RunEncounter.EnterScene(StartSceneIndex, _selected))
+        if (!RunEncounter.EnterScene(StartSceneIndex, selected))
         {
             reason = "就地生成局内场景失败（看 Console）";
-            JsonUtility.FromJsonOverwrite(beforeDeparture, payload);
+            CompensateDeparture(beforeDeparture, payload, ref reason);
             if (UIManager.Instance != null) UIManager.Instance.RestoreAfterGameplay();
             return false;
         }
 
-        _isInRun = true;
+        SceneTransitionCoordinator.SetPrototypeRun(true);
         ChaosLog.Success(LogChannel.Config,
             "[派遣] 出发：队伍 [" + string.Join(",", System.Array.ConvertAll(_selected.ToArray(), x => x.ToString())) + "]"
             + "（" + _selected.Count + " 人），runs=" + payload.runs
@@ -193,12 +183,20 @@ public class DispatchService : SingletonBase<DispatchService>
         return true;
     }
 
+    private static void CompensateDeparture(string before, SavePayload payload, ref string reason)
+    {
+        // If compensation cannot be saved, the runner restores the already committed departure.
+        if (!MetaCommandRunner.Execute("Dispatch.CancelDeparture", (out string why) =>
+            { JsonUtility.FromJsonOverwrite(before, payload); why = null; return true; }, out string failure))
+            reason += "；出发记录回退未保存：" + failure;
+    }
+
     /// <summary>**撤离 / 返回局外**：清掉就地生成的地图，`IsInRun = false`。</summary>
     public bool ReturnToMeta(out string reason)
     {
         reason = null;
         if (RunSceneFlow.IsTransitioning) { reason = "场景切换中，请稍候"; return false; }
-        if (!_isInRun)
+        if (!IsInRun)
         {
             reason = "当前不在局内";
             return false;
@@ -207,27 +205,28 @@ public class DispatchService : SingletonBase<DispatchService>
         bool formalRun = RunSceneFlow.IsFormalRun;
         if (formalRun && !RunSceneFlow.CanReturnToMeta(out reason)) return false;
 
-        RunEncounter.ApplyRunWounds(false);
-        if (!MetaProgressService.Instance.SaveProgress(out reason)) return false;
+        var wounds = RunEncounter.CaptureWounds();
+        if (!MetaCommandRunner.Execute("Dispatch.Return", (out string why) =>
+            { RunEncounter.ApplyRunWounds(false); why = null; return true; }, out reason,
+            onRolledBack: () => RunEncounter.RestoreWounds(wounds))) return false;
         RunDepthHud.DisableAndDestroy();
 
         RunEncounter.Clear();
         PlayerSpawner.Clear();
 
         PrototypeMapSpawner.Clear();
-        _isInRun = false;
 
         if (formalRun)
         {
             try { RunSceneFlow.ReturnToMeta(); return true; }
             catch (System.Exception exception)
             {
-                _isInRun = true;
                 reason = "返回村庄失败，可重试：" + exception.Message;
                 ChaosLog.Error(LogChannel.Scene, "[派遣] " + reason);
                 return false;
             }
         }
+        SceneTransitionCoordinator.SetPrototypeRun(false);
         if (UIManager.Instance != null) UIManager.Instance.RestoreAfterGameplay();
 
         ChaosLog.Info(LogChannel.Config, "[派遣] 已撤离局内：地图已清除，IsInRun=false");
@@ -242,7 +241,7 @@ public class DispatchService : SingletonBase<DispatchService>
     {
         SavePayload p = MetaProgressService.Instance.Payload;
         var sb = new System.Text.StringBuilder();
-        sb.Append("[派遣] IsInRun=").Append(_isInRun)
+        sb.Append("[派遣] IsInRun=").Append(IsInRun)
           .Append("  已选 ").Append(_selected.Count).Append("/").Append(MaxTeamSize)
           .Append("  CanDepart=").Append(CanDepart)
           .Append("  选中=[");

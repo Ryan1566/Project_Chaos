@@ -79,6 +79,9 @@ public class FamilyTreeService : SingletonBase<FamilyTreeService>
 
     /// <summary>点亮节点：扣资源 → 写入存档 → 触发效果重算。</summary>
     public bool Unlock(uint nodeId, out string reason)
+    { return MetaCommandRunner.Execute("FamilyTree.Unlock", (out string why) => UnlockCore(nodeId, out why), out reason); }
+
+    private bool UnlockCore(uint nodeId, out string reason)
     {
         if (!CanUnlock(nodeId, out reason)) return false;
 

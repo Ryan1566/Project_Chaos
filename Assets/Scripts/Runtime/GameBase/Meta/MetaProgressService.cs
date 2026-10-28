@@ -69,7 +69,7 @@ public class MetaProgressService : SingletonBase<MetaProgressService>
         return GameSession.Instance.SaveCurrent(out reason);
     }
 
-    internal void ResetSessionRuntime() { _memoryPayload = null; _bossClearedThisRun = false; }
+    internal void ResetSessionRuntime() { _memoryPayload = null; _bossClearedThisRun = false; EffectAggregator.Instance.MarkDirty(); }
     internal void RestoreBossCleared(bool value) { _bossClearedThisRun = value; }
 
     /// <summary>标记「本局打过第 3 场景 boss」。GM 与将来的结算流程都调它。</summary>

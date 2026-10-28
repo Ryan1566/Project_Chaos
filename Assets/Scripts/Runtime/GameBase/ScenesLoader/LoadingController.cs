@@ -141,6 +141,16 @@ public class LoadingController : MonoBehaviour
 
     /// <summary>读条期生成好的地图容器（DontDestroyOnLoad）；目标场景激活时搬进去。</summary>
     private static GameObject _pendingMapRoot;
+    private static int _pendingMapRequestId;
+    private int _transitionId;
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetTransitionTracking()
+    {
+        SceneManager.sceneLoaded -= OnAnySceneLoaded;
+        _sceneLoadedHooked = false;
+        _pendingMapRoot = null; _pendingMapRequestId = 0; LastTargetScene = null;
+    }
 
     [Tooltip("阶段文案的字体映射表。显式指定，用于和本地化系统解耦：读条不依赖 LocalizationManager。")]
     public LocalizationSystem.LanguageFontMap stageFontMap;
@@ -263,9 +273,15 @@ public class LoadingController : MonoBehaviour
         // 读条期生成好的地图：此刻目标场景已激活，从跨场景容器搬进目标场景并重新取景
         if (_pendingMapRoot != null)
         {
-            RunMap.RunMapBootstrap.FinalizePendingInto(_pendingMapRoot, scene);
-            _pendingMapRoot = null;
-            ChaosLog.Info(LogChannel.Scene, "读条期生成的地图已搬入 '" + scene.name + "'");
+            var pending = _pendingMapRoot;
+            int requestId = _pendingMapRequestId;
+            _pendingMapRoot = null; _pendingMapRequestId = 0;
+            if (requestId == 0 || SceneTransitionCoordinator.IsCurrent(requestId))
+            {
+                RunMap.RunMapBootstrap.FinalizePendingInto(pending, scene);
+                ChaosLog.Info(LogChannel.Scene, "读条期生成的地图已搬入 '" + scene.name + "'");
+            }
+            else UnityEngine.Object.Destroy(pending);
         }
 
         float delta = (ProgressFullRealtime >= 0f)
@@ -295,6 +311,8 @@ public class LoadingController : MonoBehaviour
         {
             // ── ① 目标场景名（由 SLPanel 通过跨场景单例传来） ──
             _targetScene = GameSession.Instance != null ? GameSession.Instance.TargetSceneName : null;
+            var transition = SceneTransitionCoordinator.Active;
+            _transitionId = transition != null && transition.Target == _targetScene ? transition.Id : 0;
             LastTargetScene = _targetScene;
 
             if (string.IsNullOrEmpty(_targetScene))
@@ -315,6 +333,7 @@ public class LoadingController : MonoBehaviour
 
             // ── ③ 开始流式加载目标场景（先不激活） ──
             _async = ScenesLoadManager.Instance.BeginLoadSceneAsync(_targetScene, false);
+            if (_transitionId != 0) SceneTransitionCoordinator.RegisterOperation(_transitionId, _async);
             if (_async == null)
             {
                 TryFail("BeginLoadSceneAsync('" + _targetScene + "') 返回 null，加载未启动");
@@ -342,6 +361,7 @@ public class LoadingController : MonoBehaviour
 
             while (true)
             {
+                if (StopCancelledLoad()) yield break;
                 float dt = Time.unscaledDeltaTime;
 
                 LoadingFrameCount++;
@@ -372,6 +392,7 @@ public class LoadingController : MonoBehaviour
                 {
                     _mapPrepared = true;
                     yield return PrepareTargetScene();
+                    if (StopCancelledLoad()) yield break;
                 }
 
                 // ── 显示进度：单调不减，取两者较小值 ──
@@ -447,6 +468,8 @@ public class LoadingController : MonoBehaviour
         holder.SetActive(false);   // DDOL 物体照样渲染：不隐藏就会出现在读条画面上（实测踩到）
         UnityEngine.Object.DontDestroyOnLoad(holder);
         _pendingMapRoot = holder;
+        _pendingMapRequestId = _transitionId;
+        if (_transitionId != 0) SceneTransitionCoordinator.RegisterPendingRoot(_transitionId, holder);
 
         ChaosLog.Info(LogChannel.Scene, "读条期开始生成局内地图（目标 '" + _targetScene + "'，种子 " + seed + "，第 " + idx + " 个场景）");
 
@@ -455,6 +478,7 @@ public class LoadingController : MonoBehaviour
         {
             foreach (var step in RunMap.RunMapBootstrap.BuildIntoPendingSteps(holder.transform, seed, idx))
             {
+                if (_transitionId != 0 && !SceneTransitionCoordinator.IsCurrent(_transitionId)) yield break;
                 yield return null;
                 float dt = Time.unscaledDeltaTime;
                 LoadingFrameCount++;
@@ -464,17 +488,22 @@ public class LoadingController : MonoBehaviour
             }
             if (RunMap.RunMapBootstrap.CurrentMapRoot == null)
             {
-                LastRunFailed = true;
                 SetStageText("地图生成失败，正在返回局外");
-                ChaosLog.Error(LogChannel.Scene, "地图生成失败，目标场景接管后将返回局外：" + RunMap.NaturalMapRuntime.LastError);
-                UnityEngine.Object.Destroy(holder);
-                _pendingMapRoot = null;
+                TryFail("地图生成失败：" + RunMap.NaturalMapRuntime.LastError);
             }
         }
         finally
         {
             RunMap.RunMapBootstrap.StageChanged -= OnRunMapStage;
         }
+    }
+
+    private bool StopCancelledLoad()
+    {
+        if (_transitionId == 0 || SceneTransitionCoordinator.IsCurrent(_transitionId)) return false;
+        RestorePriority("旧场景请求已取消");
+        if (_async != null) _async.allowSceneActivation = true;
+        return true;
     }
 
     /// <summary>阶段文案回调：把地图生成的当前阶段显示到读条上。</summary>
@@ -756,7 +785,8 @@ public class LoadingController : MonoBehaviour
         if (_fadeImage != null) _fadeImage.color = new Color(1f, 1f, 1f, 0f);
         if (_progressFill != null) _progressFill.color = FailureBarColor;
         SetProgressVisual(1f);
-        if (VillageSceneFlow.IsLoading && GameSession.Instance.TargetSceneName == VillageSceneFlow.SceneName)
+        if (_transitionId != 0) SceneTransitionCoordinator.Fail(_transitionId, reason);
+        else if (VillageSceneFlow.IsLoading && GameSession.Instance.TargetSceneName == VillageSceneFlow.SceneName)
             VillageSceneFlow.ReportEntryFailure(reason);
     }
 

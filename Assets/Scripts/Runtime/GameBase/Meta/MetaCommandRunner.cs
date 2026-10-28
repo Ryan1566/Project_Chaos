@@ -47,16 +47,19 @@ public static class MetaCommandRunner
                 {
                     JsonUtility.FromJsonOverwrite(before, payload);
                     MetaProgressService.Instance.RestoreBossCleared(bossBefore);
+                    EffectAggregator.Instance.MarkDirty();
                     UnityEngine.Random.state = randomBefore;
                     try { onRolledBack?.Invoke(); }
                     catch (Exception error) { Debug.LogError("[MetaCommand] 数据已回滚，回滚后状态回调失败：" + error); }
                 }
             }
-            finally { IsExecuting = false; CurrentCommand = null; }
+            finally
+            {
+                // Keep the command guard through callbacks: observers cannot mutate this final state.
+                try { MetaRuntimeDriver.PublishChanged(); }
+                finally { IsExecuting = false; CurrentCommand = null; }
+            }
         }
-        // Observers only see the committed state or the completed rollback, never an intermediate mutation.
-        try { MetaRuntimeDriver.NotifyChanged(); }
-        catch (Exception error) { Debug.LogError("[MetaCommand] 最终状态通知失败：" + error); }
         return committed;
     }
 }

@@ -6,6 +6,14 @@ using UnityEngine;
 // 队伍生命、观战和重伤结算。保留 RunEncounter 对外 API。
 public static partial class RunEncounter
 {
+    internal readonly struct WoundCheckpoint
+    {
+        internal readonly bool Applied;
+        internal readonly int Count;
+        internal WoundCheckpoint(bool applied, int count) { Applied = applied; Count = count; }
+    }
+    internal static WoundCheckpoint CaptureWounds() => new WoundCheckpoint(_woundsApplied, LastWoundCount);
+    internal static void RestoreWounds(WoundCheckpoint value) { _woundsApplied = value.Applied; LastWoundCount = value.Count; }
     /// <summary>诊断状态串（W3.1n）。</summary>
     /// <summary>W3.2d：本局是否已判负（HP 归零）。</summary>
     public static bool Defeated { get; private set; }

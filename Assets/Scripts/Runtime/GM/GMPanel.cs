@@ -496,7 +496,7 @@ public partial class GMPanel : MonoBehaviour
 
     private void BuildPrototypeSavePage(Transform page)
     {
-        AddHint(page, "写槽位 1 → 读回并打印。⚠ 会覆盖槽位 1 的现有存档（自测请先备份）。");
+        AddHint(page, "仅提交当前会话：正式会话保存选中槽位；TestScene 沙盒只改内存，不覆盖玩家档。");
 
         AddActionButton(page, "打印当前 payload", () =>
         {
@@ -511,27 +511,30 @@ public partial class GMPanel : MonoBehaviour
             Debug.Log(text);
         });
 
-        AddActionButton(page, "写入槽位 1", () =>
+        AddActionButton(page, "提交当前会话", () =>
         {
-            bool ok = SaveSlotService.Instance.Save(1, MetaProgressService.Instance.Payload);
-            string text = "[原型·存档] 写槽位1 " + (ok ? "成功" : "失败");
+            bool ok = GameSession.Instance.SaveCurrent(out string reason);
+            string text = "[原型·存档] " + (ok ? (GameSession.Instance.IsSandbox ? "内存提交成功" : "当前槽保存成功") : reason);
             SetProtoStatus(_protoSaveStatus, text);
             Debug.Log(text);
         });
 
-        AddActionButton(page, "读回槽位 1 并打印", () =>
+        AddActionButton(page, "读回当前会话并打印", () =>
         {
+            if (!GameSession.Instance.IsPersistent)
+            { SetProtoStatus(_protoSaveStatus, GameSession.Instance.IsSandbox ? JsonUtility.ToJson(GameSession.Instance.LoadedPayload) : "请先读档或进入测试会话"); return; }
+            int slot = GameSession.Instance.SelectedSlot;
             SaveSlotFile file;
-            if (!SaveSlotService.Instance.TryLoad(1, out file) || file == null || file.payload == null)
+            if (!SaveSlotService.Instance.TryLoad(slot, out file) || file == null || file.payload == null)
             {
-                string failText = "[原型·存档] 读槽位1 失败（空槽或损坏）";
+                string failText = "[原型·存档] 读取当前槽失败（空槽或损坏）";
                 SetProtoStatus(_protoSaveStatus, failText);
                 Debug.Log(failText);
                 return;
             }
 
             SavePayload p = file.payload;
-            string text = "[原型·存档] 读回槽位1：era=" + p.era + " depth=" + p.depth
+            string text = "[原型·存档] 读回槽位" + slot + "：era=" + p.era + " depth=" + p.depth
                 + " 资源(材料/图纸/货物/钱)=" + p.resMaterial + "/" + p.resBlueprint + "/" + p.resGoods + "/" + p.resMoney
                 + " runs=" + p.runs + " clears=" + p.clears + " scenesCleared=" + p.scenesCleared
                 + " version=" + p.version;
@@ -540,7 +543,7 @@ public partial class GMPanel : MonoBehaviour
         });
 
         _protoSaveStatus = CreateStatusLabel(page);
-        SetProtoStatus(_protoSaveStatus, "槽位 1 路径：" + SaveSlotService.Instance.GetSlotPath(1));
+        SetProtoStatus(_protoSaveStatus, "当前会话：" + GameSession.Instance.Kind);
     }
 
     private void BuildPrototypeMapPage(Transform page)

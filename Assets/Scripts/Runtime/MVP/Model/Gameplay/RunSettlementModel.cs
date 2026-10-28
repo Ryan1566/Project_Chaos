@@ -21,6 +21,7 @@ namespace Chaos.MVP.Model.Gameplay
         private readonly HashSet<uint> _selected = new HashSet<uint>();
         private readonly HashSet<uint> _retained = new HashSet<uint>();
         private SavePayload _owner;
+        private int _ownerContext;
         private bool _applied;
         public bool Win { get; private set; }
         public bool PendingSave { get; private set; }
@@ -36,9 +37,10 @@ namespace Chaos.MVP.Model.Gameplay
         public static void Begin(bool win)
         {
             var owner = MetaProgressService.Instance.Payload;
-            if (Current != null && ReferenceEquals(Current._owner, owner) && Current.Seed == RunEncounter.RunSeed && Current.RunCount == owner.runs && Current.Win == win)
+            int context = GameSession.Instance.ContextId;
+            if (Current != null && Current._ownerContext == context && ReferenceEquals(Current._owner, owner) && Current.Seed == RunEncounter.RunSeed && Current.RunCount == owner.runs && Current.Win == win)
                 return;
-            var model = new RunSettlementModel { Win = win, Seed = RunEncounter.RunSeed, RunCount = owner.runs, _owner = owner };
+            var model = new RunSettlementModel { Win = win, Seed = RunEncounter.RunSeed, RunCount = owner.runs, _owner = owner, _ownerContext = context };
             foreach (var stack in RunInventory.Stacks) { model._ids.Add(stack.itemId); model._counts.Add(stack.count); }
             if (!win)
             {
@@ -63,7 +65,7 @@ namespace Chaos.MVP.Model.Gameplay
         public bool Toggle(uint id, out string reason)
         {
             reason = null;
-            if (!ReferenceEquals(_owner, MetaProgressService.Instance.Payload)) { reason = "存档会话已切换，请重新打开结算"; return false; }
+            if (_ownerContext != GameSession.Instance.ContextId || !ReferenceEquals(_owner, MetaProgressService.Instance.Payload)) { reason = "存档会话已切换，请重新打开结算"; return false; }
             if (_applied || !Win || !_ids.Contains(id)) return false;
             if (_selected.Remove(id)) return true;
             if (_selected.Count >= MetaProgressService.Instance.DeployCap) { reason = "最多带出 " + MetaProgressService.Instance.DeployCap + " 件"; return false; }
@@ -72,7 +74,7 @@ namespace Chaos.MVP.Model.Gameplay
         public bool Confirm(bool discard, out string reason)
         {
             reason = null;
-            if (!ReferenceEquals(_owner, MetaProgressService.Instance.Payload)) { reason = "存档会话已切换，请重新打开结算"; return false; }
+            if (_ownerContext != GameSession.Instance.ContextId || !ReferenceEquals(_owner, MetaProgressService.Instance.Payload)) { reason = "存档会话已切换，请重新打开结算"; return false; }
             if (Completed) return false;
             bool committed = MetaCommandRunner.Execute("Run.Settle", (out string why) => {
                 for (int i = 0; i < _ids.Count; i++)
@@ -94,6 +96,8 @@ namespace Chaos.MVP.Model.Gameplay
         }
         public bool ReturnToMeta(out string reason)
         {
+            if (_ownerContext != GameSession.Instance.ContextId || !ReferenceEquals(_owner, MetaProgressService.Instance.Payload))
+            { reason = "存档会话已切换，请重新打开结算"; return false; }
             if (!DispatchService.Instance.ReturnToMeta(out reason)) return false;
             RunControlModel.PauseWorld(false);
             RunInventory.Clear();
