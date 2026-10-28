@@ -11,6 +11,8 @@ using UnityEngine;
 /// </summary>
 public static class RunBounds
 {
+    private static GameObject _ownedRoot;
+    private static RunObjectScope _owner;
     public const string RootName = "PrototypeBoundaryRoot";
     /// <summary>墙厚度。</summary>
     public const float WallThickness = 1f;
@@ -71,7 +73,8 @@ public static class RunBounds
             ChaosLog.Warn(LogChannel.UI, "[局内] 无可用地图范围，跳过边界墙创建");
             return;
         }
-        GameObject root = new GameObject(RootName);
+        _owner = RunEncounter.EnsureObjectScope();
+        GameObject root = _ownedRoot = _owner.GetOrCreateRoot(RootName);
         float bottom = bounds.yMin - FallMargin;
         float centerY = (bottom + bounds.yMax) * 0.5f;
         Vector2 verticalSize = new Vector2(WallThickness, bounds.yMax - bottom + WallThickness);
@@ -99,14 +102,20 @@ public static class RunBounds
 
     public static void Clear()
     {
-        GameObject root = GameObject.Find(RootName);
-        while (root != null)
-        {
-            root.name = RootName + "_destroying";
-            root.SetActive(false);
-            Object.Destroy(root);
-            root = GameObject.Find(RootName);
-        }
+        ClearForScope(_owner);
+    }
+
+    internal static void ClearForScope(RunObjectScope scope)
+    {
+        if (scope == null || !ReferenceEquals(scope, _owner)) return;
+        scope.DestroyOwned(_ownedRoot);
+        _ownedRoot = null; _owner = null;
+    }
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetOwnership()
+    {
+        _ownedRoot = null; _owner = null;
     }
 }
 

@@ -38,7 +38,7 @@ public static partial class RunEncounter
         for (int i = 0; i < AllyController.All.Count; i++)
         {
             AllyController ally = AllyController.All[i];
-            if (ally != null && !ally.IsDowned) aliveAllies++;
+            if (ally != null && OwnsRuntimeObject(ally.gameObject) && !ally.IsDowned) aliveAllies++;
         }
 
         if (aliveAllies == 0)
@@ -68,7 +68,7 @@ public static partial class RunEncounter
         for (int i = 0; i < AllyController.All.Count; i++)
         {
             AllyController ally = AllyController.All[i];
-            if (ally != null && !ally.IsDowned) aliveAllies++;
+            if (ally != null && OwnsRuntimeObject(ally.gameObject) && !ally.IsDowned) aliveAllies++;
         }
         if (aliveAllies > 0) return;
 
@@ -137,7 +137,7 @@ public static partial class RunEncounter
             for (int i = 0; i < AllyController.All.Count; i++)
             {
                 AllyController ally = AllyController.All[i];
-                if (ally == null || !ally.IsDowned) continue;
+                if (ally == null || !OwnsRuntimeObject(ally.gameObject) || !ally.IsDowned) continue;
                 if (service.Wound(ally.memberId, RetainerService.DefaultWoundSeconds)) wounded++;
             }
         }
@@ -177,7 +177,7 @@ public static partial class RunEncounter
         for (int i = 0; i < AllyController.All.Count; i++)
         {
             AllyController ally = AllyController.All[i];
-            if (ally == null) continue;
+            if (ally == null || !OwnsRuntimeObject(ally.gameObject)) continue;
             sb.Append("\n    ").Append(ally.AllyName)
               .Append("  HP=").Append(ally.Hp).Append("/").Append(ally.MaxHp)
               .Append(ally.IsDowned ? "  倒地" : "  可用")

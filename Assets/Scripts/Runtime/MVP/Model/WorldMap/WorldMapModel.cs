@@ -45,7 +45,7 @@ namespace Chaos.MVP.Model.WorldMap
         public bool Save()
         {
             bool ok = MetaProgressService.Instance.SaveProgress(out string reason);
-            Hint = ok ? "已保存到槽 " + MetaProgressService.Instance.SaveSlot : reason;
+            Hint = ok ? (GameSession.Instance.IsSandbox ? "测试会话已在内存提交" : "已保存到槽 " + MetaProgressService.Instance.SaveSlot) : reason;
             return ok;
         }
         public void RequestReturn() { ConfirmReturn = true; Hint = "保存当前进度并返回主菜单？"; }

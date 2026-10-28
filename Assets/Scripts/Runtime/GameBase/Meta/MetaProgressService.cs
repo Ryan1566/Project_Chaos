@@ -61,15 +61,16 @@ public class MetaProgressService : SingletonBase<MetaProgressService>
 
     public bool BossClearedThisRun { get { return _bossClearedThisRun; } }
 
-    /// <summary>原型无存档会话时只使用槽 3；正式流程使用玩家选择的槽位。</summary>
-    public int SaveSlot { get { return HasSession ? GameSession.Instance.SelectedSlot : 3; } }
+    /// <summary>Only a persistent session has a slot. Prototype/scratch data never selects slot 3.</summary>
+    public int SaveSlot { get { return GameSession.Instance.IsPersistent ? GameSession.Instance.SelectedSlot : 0; } }
 
     public bool SaveProgress(out string reason)
     {
-        bool saved = SaveSlotService.Instance.Save(SaveSlot, Payload);
-        reason = saved ? null : "保存失败，请检查磁盘后重试（槽 " + SaveSlot + "）";
-        return saved;
+        return GameSession.Instance.SaveCurrent(out reason);
     }
+
+    internal void ResetSessionRuntime() { _memoryPayload = null; _bossClearedThisRun = false; }
+    internal void RestoreBossCleared(bool value) { _bossClearedThisRun = value; }
 
     /// <summary>标记「本局打过第 3 场景 boss」。GM 与将来的结算流程都调它。</summary>
     public void MarkBossCleared()

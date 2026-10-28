@@ -65,6 +65,9 @@ public sealed class VillageSceneBootstrap : MonoBehaviour
             var follow = camera.GetComponent<VillageCamera>(); if (follow == null) follow = camera.gameObject.AddComponent<VillageCamera>();
             follow.enabled = true; follow.Initialize(Avatar.transform, Settings);
             gameObject.AddComponent<VillageHud>(); Physics2D.SyncTransforms(); IsReady = true;
+            var request = SceneTransitionCoordinator.Active;
+            if (request != null && request.Target == VillageSceneFlow.SceneName)
+                SceneTransitionCoordinator.ReportReady(request.Id, gameObject.scene);
         }
         catch (Exception error)
         {

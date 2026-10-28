@@ -88,6 +88,9 @@ public class MarketService : SingletonBase<MarketService>
     /// 顺序（§3.4 规则优先级）：价格可买 → 钱财足够 → 扣钱 → 入库 → 入库失败**退钱**。
     /// </summary>
     public bool TryBuy(uint itemId, out string reason)
+    { return MetaCommandRunner.Execute("Market.Buy", (out string why) => TryBuyCore(itemId, out why), out reason); }
+
+    private bool TryBuyCore(uint itemId, out string reason)
     {
         reason = null;
         InventoryService inv = InventoryService.Instance;
@@ -123,7 +126,6 @@ public class MarketService : SingletonBase<MarketService>
             return false;
         }
 
-        string beforeTrade = JsonUtility.ToJson(MetaProgressService.Instance.Payload);
         string spendReason;
         if (!inv.SpendResource(InventoryService.ResourceKind.Money, price, out spendReason))
         {
@@ -149,7 +151,6 @@ public class MarketService : SingletonBase<MarketService>
             return false;
         }
 
-        if (!SaveTrade(beforeTrade, out reason)) return false;
         ChaosLog.Info(LogChannel.Config, Tag + " 买入 " + name + "（itemId=" + itemId + "）×1：钱财 "
             + moneyBefore + " → " + inv.GetResource(InventoryService.ResourceKind.Money) + "（-" + price + "），持有 "
             + countBefore + " → " + countAfter + "，格位 " + inv.UsedSlots + "/" + inv.TotalSlots);
@@ -170,6 +171,9 @@ public class MarketService : SingletonBase<MarketService>
 
     /// <summary>卖 1 个：价格可卖 → 持有 ≥1 → 出库成功 → 加钱财（顺序不可换，避免"钱到手货还在"）。</summary>
     public bool TrySell(uint itemId, out string reason)
+    { return MetaCommandRunner.Execute("Market.Sell", (out string why) => TrySellCore(itemId, out why), out reason); }
+
+    private bool TrySellCore(uint itemId, out string reason)
     {
         reason = null;
         InventoryService inv = InventoryService.Instance;
@@ -206,7 +210,6 @@ public class MarketService : SingletonBase<MarketService>
         }
 
         uint moneyBefore = inv.GetResource(InventoryService.ResourceKind.Money);
-        string beforeTrade = JsonUtility.ToJson(MetaProgressService.Instance.Payload);
         string removeReason;
         if (!inv.RemoveItem(itemId, 1u, out removeReason))
         {
@@ -216,17 +219,9 @@ public class MarketService : SingletonBase<MarketService>
         }
 
         uint moneyNow = inv.AddResource(InventoryService.ResourceKind.Money, price);
-        if (!SaveTrade(beforeTrade, out reason)) return false;
         ChaosLog.Info(LogChannel.Config, Tag + " 卖出 " + name + "（itemId=" + itemId + "）×1：持有 "
             + have + " → " + GetCount(itemId) + "，钱财 " + moneyBefore + " → " + moneyNow + "（+" + price + "）");
         return true;
-    }
-
-    private static bool SaveTrade(string beforeTrade, out string reason)
-    {
-        if (MetaProgressService.Instance.SaveProgress(out reason)) return true;
-        JsonUtility.FromJsonOverwrite(beforeTrade, MetaProgressService.Instance.Payload);
-        return false;
     }
 
     // ══════════════════════ 打印（GM / 验收）══════════════════════

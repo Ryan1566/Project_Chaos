@@ -40,22 +40,24 @@ public class VillageService : SingletonBase<VillageService>
     /// <summary>Formal commands commit resources and building state together, or restore the same payload on failure.</summary>
     public bool Execute(Command command, uint id, out uint amount, out string reason)
     {
-        var payload = MetaProgressService.Instance.Payload;
-        string before = JsonUtility.ToJson(payload); amount = 0;
-        bool ok;
-        switch (command)
-        {
-            case Command.Build: ok = StartBuild(id, out reason); break;
-            case Command.Upgrade: ok = StartUpgrade(id, out reason); break;
-            case Command.Cancel: ok = CancelBuild(id, out amount, out reason); break;
-            case Command.Harvest: ok = Harvest(id, out amount, out reason); break;
-            default: reason = "未知村庄命令"; return false;
-        }
-        if (!ok) return false;
-        if (!MetaProgressService.Instance.SaveProgress(out reason))
-        { JsonUtility.FromJsonOverwrite(before, payload); amount = 0; MetaRuntimeDriver.NotifyChanged(); return false; }
-        MetaRuntimeDriver.NotifyChanged(); return true;
+        uint earned = 0;
+        bool ok = MetaCommandRunner.Execute("Village." + command, (out string why) => {
+            switch (command)
+            {
+                case Command.Build: return StartBuildCore(id, out why);
+                case Command.Upgrade: return StartUpgradeCore(id, out why);
+                case Command.Cancel: return CancelBuildCore(id, out earned, out why);
+                case Command.Harvest: return HarvestCore(id, out earned, out why);
+                default: why = "未知村庄命令"; return false;
+            }
+        }, out reason);
+        amount = ok ? earned : 0; return ok;
     }
+
+    public bool StartBuild(uint id, out string reason) => Execute(Command.Build, id, out _, out reason);
+    public bool StartUpgrade(uint id, out string reason) => Execute(Command.Upgrade, id, out _, out reason);
+    public bool CancelBuild(uint id, out uint amount, out string reason) => Execute(Command.Cancel, id, out amount, out reason);
+    public bool Harvest(uint id, out uint amount, out string reason) => Execute(Command.Harvest, id, out amount, out reason);
 
     public void EnsureLoaded()
     {
@@ -132,7 +134,7 @@ public class VillageService : SingletonBase<VillageService>
     }
 
     /// <summary>开始建造（Lv1）；扣资源、占队列。</summary>
-    public bool StartBuild(uint buildingId, out string reason)
+    private bool StartBuildCore(uint buildingId, out string reason)
     {
         reason = null;
         BuildingConfig lv1 = GetDef(buildingId, 1u);
@@ -165,7 +167,7 @@ public class VillageService : SingletonBase<VillageService>
     }
 
     /// <summary>升级到下一级；扣资源、占队列。</summary>
-    public bool StartUpgrade(uint buildingId, out string reason)
+    private bool StartUpgradeCore(uint buildingId, out string reason)
     {
         reason = null;
         BuildingSave save = Find(buildingId);
@@ -197,7 +199,7 @@ public class VillageService : SingletonBase<VillageService>
     }
 
     /// <summary>取消建造/升级，返还 50%（向下取整）。</summary>
-    public bool CancelBuild(uint buildingId, out uint refunded, out string reason)
+    private bool CancelBuildCore(uint buildingId, out uint refunded, out string reason)
     {
         refunded = 0u;
         reason = null;
@@ -248,7 +250,7 @@ public class VillageService : SingletonBase<VillageService>
     }
 
     /// <summary>Withdraw only accumulated, worked output. Repeated clicks never create a new cycle.</summary>
-    public bool Harvest(uint buildingId, out uint amount, out string reason)
+    private bool HarvestCore(uint buildingId, out uint amount, out string reason)
     {
         amount = 0u;
         reason = null;

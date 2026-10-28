@@ -17,30 +17,16 @@ namespace Chaos.MVP.Model.Gameplay
             if (_busy || _lastFrame == Time.frameCount) { reason = "招募处理中，请稍候"; return false; }
             _lastFrame = Time.frameCount;
             _busy = true;
-            SavePayload payload = MetaProgressService.Instance.Payload;
-            string before = null;
             try
             {
-                before = JsonUtility.ToJson(payload);
-                RetainerSave recruited = RetainerService.Instance.RecruitRandom();
-                if (recruited == null)
-                {
-                    reason = RetainerService.Instance.Count >= RetainerService.MaxRetainers ? "门客已达上限" : "招募失败，请稍后重试";
-                    return false;
-                }
-                if (!MetaProgressService.Instance.SaveProgress(out reason))
-                {
-                    JsonUtility.FromJsonOverwrite(before, payload);
-                    return false;
-                }
-                recruitedId = recruited.id;
-                return true;
-            }
-            catch (Exception error)
-            {
-                if (before != null) JsonUtility.FromJsonOverwrite(before, payload);
-                reason = "招募失败：" + error.Message;
-                return false;
+                uint id = 0;
+                bool ok = MetaCommandRunner.Execute("Retainer.Recruit", (out string why) => {
+                    var recruited = RetainerService.Instance.RecruitRandom();
+                    why = recruited == null ? (RetainerService.Instance.Count >= RetainerService.MaxRetainers ? "门客已达上限" : "招募失败，请稍后重试") : null;
+                    if (recruited != null) id = recruited.id;
+                    return recruited != null;
+                }, out reason);
+                recruitedId = ok ? id : 0; return ok;
             }
             finally { _busy = false; }
         }

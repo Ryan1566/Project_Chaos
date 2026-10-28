@@ -77,6 +77,15 @@ public static partial class RunEncounter
             return false;
         }
 
+        // Reject a stale loader callback before retiring any live stage or claiming its map.
+        NaturalMapPlan preparedPlan = prepared ? NaturalMapRuntime.Current : null;
+        if (preparedPlan != null && (!NaturalMapRuntime.IsReady || !seed.HasValue
+            || preparedPlan.RunSeed != seed.Value || preparedPlan.SceneIndex != sceneIndex))
+        {
+            ChaosLog.Warn(LogChannel.UI, "[局内] 忽略与当前准备地图不匹配的阶段请求");
+            return false;
+        }
+
         // 重入检查必须早于清场，否则被拒绝的调用也会清掉正在生成的对象。
         if (_entering) return false;
         _entering = true;
@@ -99,8 +108,9 @@ public static partial class RunEncounter
             RunTerrainToast.DisableAndDestroy();   //W5.2：地形/阵营提示（进新场景先彻底清掉旧的）
             ChaosLog.Info(LogChannel.Config, "[局内库存] 场景 " + sceneIndex + " runSeed=" + _runSeed);
 
-            //★W3.1l：进场景第一步先按类型全场景清理（防残留叠加）
+            // Retire only the previous registered stage; unrelated actors remain untouched.
             PurgeAllRuntimeObjects();
+            EnsureObjectScope();
             _clearedRooms = 0;
             _clearedCurrentScene = false;
             Defeated = false;
@@ -139,6 +149,7 @@ public static partial class RunEncounter
                 return false;
             }
 
+            EnsureObjectScope().Register(container);
             NaturalMapPlan naturalPlan = NaturalMapRuntime.Current;
             if (naturalPlan != null && (!NaturalMapRuntime.IsReady || naturalPlan.RunSeed != _runSeed
                 || naturalPlan.SceneIndex != sceneIndex))
@@ -165,7 +176,6 @@ public static partial class RunEncounter
                 return false;
             }
 
-            HideStrayCitizen();
             if (!SpawnEnemiesForScene())
             {
                 ChaosLog.Error(LogChannel.UI, "[局内] 敌人投放失败，停止本场景初始化");
@@ -175,10 +185,10 @@ public static partial class RunEncounter
             }
             EnsureTicker();
 
-            _sceneReady = true;
             RunDepthHud.EnableForRun();   //W4e：进局开闸 + 建 HUD（CurrentSceneIndex 已就位）
             RunTeamHud.EnableForRun();    //W3.3：队伍血条（左侧，独立 Canvas）
             ShowTerrainToast(sceneIndex);   //W5.2：进场提示「地形：X · 阵营：Y」，3 秒淡出
+            _sceneReady = true;
 
             ChaosLog.Success(LogChannel.UI,
                 "[局内] 场景" + sceneIndex + " 生成完成：房间 " + TotalRooms + " / 敌人 " + AllEnemies.Count
@@ -189,7 +199,16 @@ public static partial class RunEncounter
                 + "，房间 " + TotalRooms + " 个，敌人 " + AllEnemies.Count + " 个");
             return true;
         }
-        finally { _entering = false; }
+        finally
+        {
+            if (!_sceneReady)
+            {
+                // Partial creation owns the same scope, so every failure uses the same teardown.
+                RunDepthHud.DisableAndDestroy(); RunTeamHud.DisableAndDestroy(); RunTerrainToast.DisableAndDestroy();
+                PurgeAllRuntimeObjects();
+            }
+            _entering = false;
+        }
     }
 
     /// <summary>清空当前场景（GM 调试用）。</summary>
@@ -298,76 +317,29 @@ public static partial class RunEncounter
 
     private static void EnsureTicker()
     {
-        int sceneTickers = UnityEngine.Object.FindObjectsOfType<RunEncounterTicker>().Length;
-        ChaosLog.Warn(LogChannel.UI, "[诊断] EnsureTicker：场景 ticker 数=" + sceneTickers + " 缓存=" + (_ticker == null ? "null" : _ticker.GetInstanceID().ToString()) + " frameCount=" + Time.frameCount);
-        if (_ticker != null) return;                       //W3.1n B：缓存优先
-        _ticker = UnityEngine.Object.FindObjectOfType<RunEncounterTicker>();
+        // This service creates and owns its ticker; it never adopts another scene's ticker.
         if (_ticker != null) return;
         GameObject go = new GameObject("RunEncounterTicker");
         _ticker = go.AddComponent<RunEncounterTicker>();
-        ChaosLog.Warn(LogChannel.UI, "[诊断] EnsureTicker 新建 ticker id=" + _ticker.GetInstanceID() + " frameCount=" + Time.frameCount);
     }
 
-    private static void HideStrayCitizen()
-    {
-        if (_hiddenCitizen != null) return;
-        GameObject citizen = GameObject.Find("citizen");
-        if (citizen == null) return;
-        _hiddenCitizen = citizen;
-        citizen.SetActive(false);
-        ChaosLog.Info(LogChannel.UI, "[局内] 已隐藏场景中遗留的 citizen 对象（撤离恢复）");
-    }
-
-    private static void RestoreStrayCitizen()
-    {
-        if (_hiddenCitizen == null) return;
-        _hiddenCitizen.SetActive(true);
-        ChaosLog.Info(LogChannel.UI, "[局外] 已恢复场景中的 citizen 对象");
-        _hiddenCitizen = null;
-    }
-
-    private static GameObject _hiddenCitizen;
-
-    /// <summary>
-    /// 按标记类型全场景清掉本系统的运行时对象（W3.1k）。
-    /// 不依赖自己维护的 List —— 即使有未登记的残留也能清掉。
-    /// 注意 Destroy 帧末生效：同帧统计会偏大，请等下一帧。
-    /// </summary>
+    /// <summary>Compatibility entry point: retire only objects explicitly owned by this stage.</summary>
     public static void PurgeAllRuntimeObjects()
     {
-        int removed = 0;
-        removed += DestroyAllOf<AllyController>();
-        removed += DestroyAllOf<EnemyPlaceholder>();
-        removed += DestroyAllOf<EnemyDummy>();
-        removed += DestroyAllOf<SpawnPoint>();
-        //W3.1n（A）：ticker 是系统单例，**不参与 purge**（否则帧末被销毁 → ProcessPendingScene 没人调）
-        removed += DestroyAllOf<PlayerLocomotion>();
-
-        string[] roots = { "PrototypePlayerRoot", "PrototypeEnemyRoot", "PrototypeSpawnRoot", "PrototypeBoundaryRoot" };
-        for (int i = 0; i < roots.Length; i++)
+        _sceneReady = false;
+        _pendingNextScene = -1;
+        RunObjectScope retired = _objectScope;
+        _objectScope = null;
+        if (retired != null)
         {
-            GameObject go = GameObject.Find(roots[i]);
-            while (go != null)
-            {
-                go.name = roots[i] + "_purging";
-                Object.Destroy(go);
-                removed++;
-                go = GameObject.Find(roots[i]);
-            }
+            PlayerSpawner.ClearForScope(retired, false);
+            // Loading may already have published the next map. Clear metadata only for ours.
+            GameObject map = RunMapBootstrap.CurrentMapRoot;
+            if (map != null && retired.Owns(map)) RunMapBootstrap.ClearCurrent();
+            PrototypeMapSpawner.ClearForScope(retired);
+            retired.Dispose();
         }
-
-        AllEnemies.Clear();
-        AliveByRoom.Clear();
-        TotalByRoom.Clear();
-        ChaosLog.Warn(LogChannel.UI, "[局内] PurgeAllRuntimeObjects 清理 " + removed + " 个运行时对象 frameCount=" + Time.frameCount);
-    }
-
-    private static int DestroyAllOf<T>() where T : Component
-    {
-        T[] items = Object.FindObjectsOfType<T>(true);
-        for (int i = 0; i < items.Length; i++)
-            if (items[i] != null) Object.Destroy(items[i].gameObject);
-        return items.Length;
+        AllEnemies.Clear(); AliveByRoom.Clear(); TotalByRoom.Clear();
     }
 
     /// <summary>撤离：全清。</summary>
@@ -380,23 +352,27 @@ public static partial class RunEncounter
         FactionService.ResetRunFaction();      //W5.2：撤离清掉本局阵营锁定（下次出发重新定格）
         IsSpectator = false;
 
-        RestoreStrayCitizen();
         RunInventory.Clear();
         ClearGroundDrops();
         RunDepthHud.DisableAndDestroy();   //W4e：关闸 + 销毁   //W4c：撤离销毁 HUD
+        PlayerSpawner.Clear();
         PurgeAllRuntimeObjects();
         ClearEnemies();
         _sceneReady = false;
         _pendingNextScene = -1;
         _entering = false;
+        RunEncounterTicker ticker = _ticker;
         _ticker = null;
+        if (ticker != null)
+        {
+            ticker.gameObject.SetActive(false);
+            if (Application.isPlaying) Object.Destroy(ticker.gameObject); else Object.DestroyImmediate(ticker.gameObject);
+        }
         Team.Clear();
         CampService.ResetForNewRun();
         _clearedRooms = 0;
         CurrentSceneIndex = 0;
         RunCleared = false;
         _clearedCurrentScene = false;
-        GameObject ticker = GameObject.Find("RunEncounterTicker");
-        if (ticker != null) Object.Destroy(ticker);
     }
 }

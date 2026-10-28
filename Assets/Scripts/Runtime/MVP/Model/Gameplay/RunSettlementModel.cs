@@ -74,12 +74,9 @@ namespace Chaos.MVP.Model.Gameplay
             reason = null;
             if (!ReferenceEquals(_owner, MetaProgressService.Instance.Payload)) { reason = "存档会话已切换，请重新打开结算"; return false; }
             if (Completed) return false;
-            if (!_applied)
-            {
-                _applied = true;
-                if (discard) _selected.Clear();
+            bool committed = MetaCommandRunner.Execute("Run.Settle", (out string why) => {
                 for (int i = 0; i < _ids.Count; i++)
-                    if (Win ? _selected.Contains(_ids[i]) : _retained.Contains(_ids[i]))
+                    if (Win ? (!discard && _selected.Contains(_ids[i])) : _retained.Contains(_ids[i]))
                         InventoryService.Instance.AddItem(_ids[i], _counts[i], out string unused);
                 if (Win)
                 {
@@ -90,11 +87,9 @@ namespace Chaos.MVP.Model.Gameplay
                     if (payload.depth > payload.maxClearedDepth) payload.maxClearedDepth = payload.depth;
                     meta.TryAdvanceEra();
                 }
-            }
-            PendingSave = true;
-            if (!MetaProgressService.Instance.SaveProgress(out reason)) return false;
-            PendingSave = false;
-            Completed = true;
+                why = null; return true;
+            }, out reason, () => { _applied = true; PendingSave = false; Completed = true; if (discard) _selected.Clear(); }, () => PendingSave = true);
+            if (!committed) return false;
             return true;
         }
         public bool ReturnToMeta(out string reason)

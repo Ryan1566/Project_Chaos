@@ -16,7 +16,11 @@ public static class PrototypeMapSpawner
     /// <summary>用后即弃的名字后缀：Play 模式下 Destroy 要到帧末才生效，先改名避免"新旧同名"。 </summary>
     private const string DestroyingSuffix = "_destroying";
 
-    public static bool IsSpawned { get { return FindContainer() != null; } }
+    private static GameObject _currentContainer;
+    public static bool IsSpawned { get { return _currentContainer != null && _currentContainer.activeInHierarchy; } }
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetOwnership() { _currentContainer = null; }
 
     /// <summary>接管读条期间已生成的地图容器，不重新生成。后续换场景/撤离沿用 Clear。</summary>
     public static GameObject AdoptPreparedMap()
@@ -27,7 +31,8 @@ public static class PrototypeMapSpawner
         if (holder != null && holder.name == "RunMap_Pending")
         {
             holder.name = ContainerName;
-            return holder.gameObject;
+            _currentContainer = holder.gameObject;
+            return _currentContainer;
         }
         return null;
     }
@@ -52,7 +57,7 @@ public static class PrototypeMapSpawner
             ChaosLog.Info(LogChannel.Config, "[原型地图] 自动种子：" + seed);
         }
 
-        GameObject container = new GameObject(ContainerName);
+        GameObject container = _currentContainer = new GameObject(ContainerName);
         GameObject root = null;
 
         try
@@ -68,7 +73,7 @@ public static class PrototypeMapSpawner
         {
             ChaosLog.Warn(LogChannel.Config,
                 "[原型地图] 未生成可用地图：" + RunMap.NaturalMapRuntime.LastError);
-            if (Application.isPlaying) UnityEngine.Object.Destroy(container); else UnityEngine.Object.DestroyImmediate(container);
+            Clear();
             return null;
         }
         else
@@ -86,26 +91,20 @@ public static class PrototypeMapSpawner
     /// <summary>销毁已生成的容器（Play 用 Destroy、编辑模式用 DestroyImmediate；可反复调用）。</summary>
     public static void Clear()
     {
-        RunMap.RunMapBootstrap.ClearCurrent();
-        GameObject container = FindContainer();
-        while (container != null)
-        {
-            if (Application.isPlaying)
-            {
-                //Destroy 到帧末才生效 → 先改名，保证紧接着 Find 到的是"新容器"而不是这个待销毁的
-                container.name = ContainerName + DestroyingSuffix;
-                UnityEngine.Object.Destroy(container);
-            }
-            else
-            {
-                UnityEngine.Object.DestroyImmediate(container);
-            }
-            container = FindContainer();
-        }
+        GameObject container = _currentContainer;
+        _currentContainer = null;
+        if (container == null) return;
+        GameObject map = RunMap.RunMapBootstrap.CurrentMapRoot;
+        if (map != null && (map == container || map.transform.IsChildOf(container.transform)))
+            RunMap.RunMapBootstrap.ClearCurrent();
+        container.name = ContainerName + DestroyingSuffix;
+        container.SetActive(false);
+        if (Application.isPlaying) UnityEngine.Object.Destroy(container);
+        else UnityEngine.Object.DestroyImmediate(container);
     }
 
-    private static GameObject FindContainer()
+    internal static void ClearForScope(RunMap.RunObjectScope scope)
     {
-        return GameObject.Find(ContainerName);
+        if (scope != null && scope.Owns(_currentContainer)) Clear();
     }
 }

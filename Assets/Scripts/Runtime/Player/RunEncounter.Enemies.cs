@@ -48,7 +48,8 @@ public static partial class RunEncounter
     public static void NotifyEnemyKilled(ushort roomId, EnemyPlaceholder enemy, bool allowDrop = true)
     {
         List<EnemyPlaceholder> list;
-        if (AliveByRoom.TryGetValue(roomId, out list)) list.Remove(enemy);
+        if (enemy == null || !OwnsRuntimeObject(enemy.gameObject)
+            || !AliveByRoom.TryGetValue(roomId, out list) || !list.Remove(enemy)) return;
 
         //W3.2d：掉落死亡不触发掉落（防引诱跳崖刷装备 / 进局凭空多掉落）
         if (!allowDrop) return;
@@ -70,8 +71,7 @@ public static partial class RunEncounter
     /// <summary>在指定位置生成可捡掉落物（挂在 PrototypeDropRoot 下）。</summary>
     private static void SpawnGroundDrop(uint itemId, uint count, Vector3 position, string reason)
     {
-        GameObject root = GameObject.Find(DropRootName);
-        if (root == null) root = new GameObject(DropRootName);
+        GameObject root = _dropRoot = EnsureObjectScope().GetOrCreateRoot(DropRootName);
 
         GameObject go = new GameObject("Drop_" + itemId + "x" + count, typeof(BoxCollider2D), typeof(SpriteRenderer));
         go.transform.SetParent(root.transform, false);
@@ -83,6 +83,7 @@ public static partial class RunEncounter
         sr.color = new Color(1f, 0.85f, 0.2f, 1f);
         sr.sortingOrder = 12;
 
+        EnsureObjectScope().Register(go);
         RunDropItem drop = go.AddComponent<RunDropItem>();
         drop.itemId = itemId;
         drop.count = count;
@@ -94,11 +95,9 @@ public static partial class RunEncounter
     /// <summary>清掉所有未捡的掉落物（切场景/撤离）。</summary>
     public static void ClearGroundDrops()
     {
-        GameObject root = GameObject.Find(DropRootName);
-        if (root == null) return;
-        root.name = DropRootName + "_purging";
-        Object.Destroy(root);
-        ChaosLog.Info(LogChannel.Config, "[局内库存] 已清除未捡掉落物");
+        if (_objectScope == null || _objectScope.IsDisposed) return;
+        _objectScope.DestroyOwned(_dropRoot);
+        _dropRoot = null;
     }
 
     private static bool SpawnEnemiesForScene()
@@ -116,7 +115,7 @@ public static partial class RunEncounter
             return false;
         }
 
-        GameObject root = new GameObject("PrototypeEnemyRoot");
+        GameObject root = _enemyRoot = EnsureObjectScope().GetOrCreateRoot("PrototypeEnemyRoot");
 
         for (int i = 0; i < layout.Nodes.Count; i++)
         {
@@ -142,6 +141,7 @@ public static partial class RunEncounter
                 }
 
                 GameObject go = Object.Instantiate(prefab, new Vector3(point.x, point.y + 0.6f, 0f), Quaternion.identity, root.transform);
+                EnsureObjectScope().Register(go);
                 go.name = "Enemy_" + node.Id + "_" + k;
                 EnemyPlaceholder enemy = go.GetComponent<EnemyPlaceholder>();
                 if (enemy != null)
@@ -201,7 +201,7 @@ public static partial class RunEncounter
             return false;
         }
 
-        GameObject root = new GameObject("PrototypeEnemyRoot");
+        GameObject root = _enemyRoot = EnsureObjectScope().GetOrCreateRoot("PrototypeEnemyRoot");
         foreach (MapPlacement placement in plan.Placements)
         {
             if (placement == null || placement.Kind != MapPlacementKind.Enemy) continue;
@@ -211,6 +211,7 @@ public static partial class RunEncounter
 
             GameObject go = Object.Instantiate(prefab, (Vector3)placement.Position + Vector3.up * 0.6f,
                 Quaternion.identity, root.transform);
+            EnsureObjectScope().Register(go);
             go.name = "Enemy_" + placement.StableId;
             EnemyPlaceholder enemy = go.GetComponent<EnemyPlaceholder>();
             enemy.roomId = region.Id;
@@ -229,12 +230,12 @@ public static partial class RunEncounter
 
     private static void ClearEnemies()
     {
-        for (int i = 0; i < AllEnemies.Count; i++) if (AllEnemies[i] != null) Object.Destroy(AllEnemies[i]);
-        AllEnemies.Clear();
-        AliveByRoom.Clear();
-        TotalByRoom.Clear();
-        GameObject root = GameObject.Find("PrototypeEnemyRoot");
-        if (root != null) Object.Destroy(root);
+        if (_objectScope != null)
+        {
+            for (int i = 0; i < AllEnemies.Count; i++) _objectScope.DestroyOwned(AllEnemies[i]);
+            _objectScope.DestroyOwned(_enemyRoot);
+        }
+        _enemyRoot = null;
+        AllEnemies.Clear(); AliveByRoom.Clear(); TotalByRoom.Clear();
     }
-
 }

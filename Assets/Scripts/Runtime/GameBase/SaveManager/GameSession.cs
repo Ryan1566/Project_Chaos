@@ -1,4 +1,6 @@
+using System;
 using ChaosDebug;
+using UnityEngine;
 
 /// <summary>
 /// 当前存档会话：「玩家选了哪个档位、这份存档里有什么」，供**切场景之后**的玩法场景读取。
@@ -15,6 +17,22 @@ using ChaosDebug;
 /// </summary>
 public class GameSession : SingletonBase<GameSession>
 {
+    public enum SessionKind { None, Persistent, Sandbox }
+    public SessionKind Kind { get; private set; }
+    public int ContextId { get; private set; }
+    public bool IsPersistent => Kind == SessionKind.Persistent;
+    public bool IsSandbox => Kind == SessionKind.Sandbox;
+    private string saveDirectory;
+    public event Action ContextChanged;
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetForPlay()
+    {
+        var state = Instance;
+        state.Kind = SessionKind.None; state.HasSession = false; state.SelectedSlot = 0;
+        state.LoadedPayload = null; state.TargetSceneName = null; state.saveDirectory = null;
+        state.ContextId++; state.ContextChanged = null;
+        MetaProgressService.Instance.ResetSessionRuntime();
+    }
     /// <summary>当前选中的槽位（1..3）；未开始会话时为 0。</summary>
     public int SelectedSlot { get; private set; }
 
@@ -46,15 +64,51 @@ public class GameSession : SingletonBase<GameSession>
     /// <param name="targetSceneName">读条结束后要进入的场景名（如 "WorldScene"）</param>
     public void Begin(int slot, SavePayload payload, string targetSceneName)
     {
+        if (MetaCommandRunner.IsExecuting) throw new InvalidOperationException("玩法命令执行中不能切换存档");
+        if (!SaveSlotService.IsValidSlot(slot) || payload == null) throw new ArgumentException("正式会话需要有效槽位和已读取的数据");
+        Kind = SessionKind.Persistent;
+        saveDirectory = SaveSlotService.SavesDirectory;
+        ContextId++;
         EventService.Instance.ResetRuntime();
+        MetaProgressService.Instance.ResetSessionRuntime();
+        DispatchService.Instance.ResetSelection();
         SelectedSlot = slot;
         LoadedPayload = payload ?? new SavePayload();
         TargetSceneName = targetSceneName;
         HasSession = true;
+        ContextChanged?.Invoke();
 
         ChaosLog.Info(LogChannel.Save,
             "已进入存档会话：槽 " + slot + "，payload.version=" + LoadedPayload.version +
             "，目标场景=" + (string.IsNullOrEmpty(targetSceneName) ? "(未指定)" : targetSceneName));
+    }
+
+    /// <summary>Explicit prototype context. Its data never writes a player slot or aliases a real payload.</summary>
+    public void BeginSandbox(SavePayload initial = null)
+    {
+        if (MetaCommandRunner.IsExecuting) throw new InvalidOperationException("玩法命令执行中不能切换会话");
+        EventService.Instance.ResetRuntime(); MetaProgressService.Instance.ResetSessionRuntime(); DispatchService.Instance.ResetSelection();
+        Kind = SessionKind.Sandbox; SelectedSlot = 0; saveDirectory = null; TargetSceneName = null;
+        LoadedPayload = initial == null ? new SavePayload() : JsonUtility.FromJson<SavePayload>(JsonUtility.ToJson(initial));
+        HasSession = true; ContextId++; ContextChanged?.Invoke();
+    }
+
+    public bool CanCommit(out string reason)
+    {
+        reason = null;
+        if (!HasSession || LoadedPayload == null) { reason = "没有活动会话，请先读档或显式开始测试会话"; return false; }
+        if (IsPersistent && (!SaveSlotService.IsValidSlot(SelectedSlot) || saveDirectory != SaveSlotService.SavesDirectory))
+        { reason = "存档目录或槽位已改变，请重新读取存档"; return false; }
+        return true;
+    }
+
+    public bool SaveCurrent(out string reason)
+    {
+        if (!CanCommit(out reason)) return false;
+        if (IsSandbox) return true; // An in-memory commit, never an implicit slot 3 save.
+        bool saved = SaveSlotService.Instance.Save(SelectedSlot, LoadedPayload);
+        reason = saved ? null : "保存失败，请检查磁盘后重试（槽 " + SelectedSlot + "）";
+        return saved;
     }
 
     /// <summary>
@@ -69,6 +123,7 @@ public class GameSession : SingletonBase<GameSession>
     /// <summary>清掉会话（例如将来「返回主菜单」时）。没有会话时调用是空操作。</summary>
     public void Clear()
     {
+        if (MetaCommandRunner.IsExecuting) throw new InvalidOperationException("玩法命令执行中不能退出会话");
         if (!HasSession) return;
 
         EventService.Instance.ResetRuntime();
@@ -79,5 +134,9 @@ public class GameSession : SingletonBase<GameSession>
         LoadedPayload = null;
         TargetSceneName = null;
         HasSession = false;
+        Kind = SessionKind.None; saveDirectory = null; ContextId++;
+        MetaProgressService.Instance.ResetSessionRuntime();
+        DispatchService.Instance.ResetSelection();
+        ContextChanged?.Invoke();
     }
 }

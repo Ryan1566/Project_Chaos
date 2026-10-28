@@ -11,7 +11,7 @@ public sealed class MetaRuntimeDriver : MonoBehaviour
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     private static void ResetListeners() { Changed = null; }
-    public static void NotifyChanged() { Changed?.Invoke(); }
+    public static void NotifyChanged() { if (!MetaCommandRunner.IsExecuting) Changed?.Invoke(); }
 
     private void Update()
     {

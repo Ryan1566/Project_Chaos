@@ -21,6 +21,11 @@ public static class PlayerSpawner
     public const float GameplayOrthoSize = 6f;
 
     private static float _savedOrthoSize = -1f;
+    private static Camera _savedCamera, _followCamera;
+    private static PlayerCameraFollow _ownedFollow;
+    private static Transform _followTarget;
+    private static RunObjectScope _spawnScope;
+    private static PlayerRoot _spawnRoot, _playerRoot;
 
     /// <summary>
     /// **必须在生图之前调用**：记下局外相机 orthoSize。
@@ -30,7 +35,7 @@ public static class PlayerSpawner
     public static void CaptureOutsideCameraState()
     {
         Camera camera = Camera.main;
-        if (camera != null && _savedOrthoSize < 0f) _savedOrthoSize = camera.orthographicSize;
+        if (camera != null && _savedOrthoSize < 0f) { _savedOrthoSize = camera.orthographicSize; _savedCamera = camera; }
     }
 
     private static readonly List<GameObject> Spawned = new List<GameObject>();
@@ -44,7 +49,8 @@ public static class PlayerSpawner
     /// </summary>
     public static GameObject SpawnForTeam(List<uint> runTeam)
     {
-        Clear();
+        Clear(false);
+        _spawnScope = RunEncounter.EnsureObjectScope();
 
         ChaosLog.Warn(LogChannel.UI, "[诊断] SpawnForTeam 进入 frameCount=" + Time.frameCount + " 队伍=" + (runTeam == null ? 0 : runTeam.Count));
 
@@ -80,17 +86,10 @@ public static class PlayerSpawner
         }
 
         Vector3 spawnPosition = spawnPoint.transform.position + new Vector3(0f, 1.0f, 0f);
-        //防重复：先清掉场景里已有的受控玩家（W3.1b 遗留2）
-        PlayerLocomotion[] existingPlayers = Object.FindObjectsOfType<PlayerLocomotion>();
-        if (existingPlayers.Length > 0)
-        {
-            ChaosLog.Warn(LogChannel.UI, "[玩家] 生成前发现已存在的玩家 " + existingPlayers.Length + " 个，先清理（防重复）");
-            for (int i = 0; i < existingPlayers.Length; i++) if (existingPlayers[i] != null) Object.Destroy(existingPlayers[i].gameObject);
-        }
-
         GameObject player = Object.Instantiate(playerPrefab, spawnPosition, Quaternion.identity, root.transform);
         player.name = "Player";
         CurrentPlayer = player;
+        _spawnScope.Register(player);
         Spawned.Add(player);
 
         //血量（W3.1b）
@@ -104,13 +103,15 @@ public static class PlayerSpawner
         if (locomotion != null) locomotion.SetFacing(spawnPoint.facing);
 
         //相机跟随
-        PlayerCameraFollow.Attach(Camera.main, player.transform);
+        _followCamera = Camera.main;
+        _followTarget = player.transform;
+        _ownedFollow = PlayerCameraFollow.Attach(_followCamera, _followTarget);
 
         //局内相机拉近（记录原值，撤离时恢复）
         Camera camera = Camera.main;
         if (camera != null)
         {
-            if (_savedOrthoSize < 0f) _savedOrthoSize = camera.orthographicSize;
+            if (_savedOrthoSize < 0f) { _savedOrthoSize = camera.orthographicSize; _savedCamera = camera; }
             camera.orthographicSize = GameplayOrthoSize;
             ChaosLog.Info(LogChannel.UI, "[局内] 相机 orthographicSize " + _savedOrthoSize + " → " + GameplayOrthoSize);
         }
@@ -133,6 +134,9 @@ public static class PlayerSpawner
     /// <summary>只做"补地面 + 放 SpawnPos"（GM 调试按钮用，不生成角色）。</summary>
     public static SpawnPoint PlaceSpawnPointAndGround()
     {
+        _spawnScope = RunEncounter.EnsureObjectScope();
+        if (CurrentSpawnPoint != null && _spawnScope.Owns(CurrentSpawnPoint.gameObject))
+            _spawnScope.DestroyOwned(CurrentSpawnPoint.gameObject);
         EnsureGroundColliders();
         SpawnPoint point = PlaceSpawnPoint();
         CurrentSpawnPoint = point;
@@ -142,54 +146,51 @@ public static class PlayerSpawner
     /// <summary>撤离：清掉玩家/训练靶/SpawnPos/相机跟随。</summary>
     public static void Clear(bool restoreCamera = true)
     {
-        for (int i = 0; i < Spawned.Count; i++)
-            if (Spawned[i] != null) Object.Destroy(Spawned[i]);
-        Spawned.Clear();
-        CurrentPlayer = null;
-
-        AllyController.ClearAll();
-        PlayerCameraFollow.Detach();
-
-        //恢复局外相机尺寸（切场景时不恢复）
-        if (restoreCamera && _savedOrthoSize >= 0f)
-        {
-            Camera camera = Camera.main;
-            if (camera != null)
-            {
-                camera.orthographicSize = _savedOrthoSize;
-                ChaosLog.Info(LogChannel.UI, "[局外] 相机 orthographicSize 已恢复为 " + _savedOrthoSize);
-            }
-            _savedOrthoSize = -1f;
-        }
-
-        RunBounds.Clear();
-
-        DestroyRoot(SpawnRootName);
-        DestroyRoot(PlayerRootName);
-        CurrentSpawnPoint = null;
+        ClearForScope(_spawnScope, restoreCamera);
+        if (restoreCamera && _spawnScope == null) { _savedOrthoSize = -1f; _savedCamera = null; }
     }
 
-    // ══════════════════ 内部 ══════════════════
-
-    private static void DestroyRoot(string rootName)
+    internal static void ClearForScope(RunObjectScope scope, bool restoreCamera)
     {
-        GameObject root = GameObject.Find(rootName);
-        while (root != null)
+        if (scope == null || !ReferenceEquals(scope, _spawnScope)) return;
+        // The persistent camera is borrowed, never owned. A later camera target wins.
+        bool ownsFollow = _ownedFollow != null && _followTarget != null && _ownedFollow.target == _followTarget;
+        if (ownsFollow)
         {
-            //Destroy 到帧末才生效 → 先改名，避免同一帧里再次 Find 到旧对象
-            root.name = rootName + "_destroying";
-            Object.Destroy(root);
-            root = GameObject.Find(rootName);
+            _ownedFollow.target = null;
+            _ownedFollow.enabled = false;
+            if (restoreCamera && _savedOrthoSize >= 0f && _savedCamera != null && _savedCamera == _followCamera)
+                _savedCamera.orthographicSize = _savedOrthoSize;
         }
+        _ownedFollow = null; _followTarget = null; _followCamera = null;
+        for (int i = 0; i < Spawned.Count; i++) scope.DestroyOwned(Spawned[i]);
+        Spawned.Clear();
+        if (_spawnRoot != null) scope.DestroyOwned(_spawnRoot.gameObject);
+        if (_playerRoot != null) scope.DestroyOwned(_playerRoot.gameObject);
+        RunBounds.ClearForScope(scope);
+        _spawnRoot = _playerRoot = null;
+        CurrentPlayer = null; CurrentSpawnPoint = null; _spawnScope = null;
+        if (restoreCamera) { _savedOrthoSize = -1f; _savedCamera = null; }
+    }
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetOwnership()
+    {
+        Spawned.Clear(); _spawnScope = null; _spawnRoot = _playerRoot = null;
+        CurrentPlayer = null; CurrentSpawnPoint = null; _savedOrthoSize = -1f;
+        _savedCamera = _followCamera = null; _ownedFollow = null; _followTarget = null;
     }
 
     private static T GetOrCreate<T>(string rootName) where T : Component
     {
-        GameObject existing = GameObject.Find(rootName);
-        if (existing != null) return existing.GetComponent<T>() ?? existing.AddComponent<T>();
-
-        GameObject go = new GameObject(rootName);
-        return go.AddComponent<T>();
+        RunObjectScope scope = RunEncounter.EnsureObjectScope();
+        if (!ReferenceEquals(_spawnScope, scope)) { ClearForScope(_spawnScope, false); _spawnScope = scope; }
+        GameObject go = scope.GetOrCreateRoot(rootName);
+        PlayerRoot root = go.GetComponent<PlayerRoot>();
+        if (root == null) root = go.AddComponent<PlayerRoot>();
+        if (rootName == SpawnRootName) _spawnRoot = root;
+        if (rootName == PlayerRootName) _playerRoot = root;
+        return go.GetComponent<T>() ?? go.AddComponent<T>();
     }
 
     /// <summary>给生成根下所有 Tilemap_Ground 补碰撞体（已有就跳过）。</summary>
@@ -202,7 +203,6 @@ public static class PlayerSpawner
             return;
         }
         GameObject mapRoot = RunMapBootstrap.CurrentMapRoot;
-        if (mapRoot == null) mapRoot = GameObject.Find("PrototypeRunMap");
         if (mapRoot == null)
         {
             ChaosLog.Warn(LogChannel.UI, "[玩家] 找不到地图根，跳过地面碰撞体补齐");
@@ -300,6 +300,7 @@ public static class PlayerSpawner
             GameObject naturalSpawn = new GameObject("SpawnPos");
             naturalSpawn.transform.SetParent(naturalRoot.transform, false);
             naturalSpawn.transform.position = placement.Position;
+            _spawnScope.Register(naturalSpawn);
             SpawnPoint naturalPoint = naturalSpawn.AddComponent<SpawnPoint>();
             naturalPoint.facing = placement.Facing < 0 ? -1 : 1;
             naturalPoint.hasGround = true;
@@ -339,6 +340,7 @@ public static class PlayerSpawner
         go.transform.SetParent(root.transform, false);
         go.transform.position = new Vector3(spawnX, spawnY, 0f);
 
+        _spawnScope.Register(go);
         SpawnPoint point = go.AddComponent<SpawnPoint>();
         point.facing = 1;
         point.hasGround = hasGround;
@@ -402,6 +404,7 @@ public static class PlayerSpawner
                     if (other != null && allyCollider != null) Physics2D.IgnoreCollision(other, allyCollider, true);
                 }
             }
+            _spawnScope.Register(ally);
             Spawned.Add(ally);
         }
         ChaosLog.Info(LogChannel.UI, "[门客] 已生成 AI 门客 " + count + " 个（队伍 " + runTeam.Count + " 人）");
@@ -422,6 +425,7 @@ public static class PlayerSpawner
 
         GameObject dummy = Object.Instantiate(prefab, position, Quaternion.identity, parent);
         dummy.name = "TrainingDummy";
+        _spawnScope.Register(dummy);
         Spawned.Add(dummy);
         ChaosLog.Info(LogChannel.UI, "[玩家] 训练靶已放在 " + position);
     }

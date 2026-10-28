@@ -78,7 +78,8 @@ public class Entry : MonoBehaviour
             return;
         }
 
-        bool hasSession = GameSession.Instance != null && GameSession.Instance.HasSession;
+        if (GameSession.Instance.IsSandbox) GameSession.Instance.Clear();
+        bool hasSession = GameSession.Instance.IsPersistent;
         if (VillageSceneFlow.RecoveringToSaveSlots) { VillageSceneFlow.ShowEntryFailure(); return; }
         if (hasSession)
         {
