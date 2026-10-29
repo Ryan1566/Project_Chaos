@@ -12,10 +12,12 @@ namespace Chaos.MVP.Model.Gameplay
     /// <summary>A menu owns the pause across temporary panel covers.</summary>
     public sealed class RunMenuModel : IDisposable
     {
+        private readonly int _context = GameSession.Instance.ContextId;
+        public bool IsCurrent => _context == GameSession.Instance.ContextId;
         private bool _paused;
         private float _previousScale;
         public bool ConfirmRetreat { get; set; }
-        public bool InRun => DispatchService.Instance.IsInRun;
+        public bool InRun => IsCurrent && DispatchService.Instance.IsInRun;
         public int UsedSlots => RunInventory.UsedSlots;
         public int TotalSlots => RunInventory.TotalSlots;
         public int Medicine => CampService.MedicineCount;

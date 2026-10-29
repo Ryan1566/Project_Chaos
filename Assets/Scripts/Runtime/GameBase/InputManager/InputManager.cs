@@ -5,38 +5,10 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 /// <summary>
-/// 输入管理器：动作映射、按键重绑定、绑定覆盖的存取。
-///
-/// 正式玩法通过 ReadMove / WasGameplayPressed 读取本类克隆的动作表，和重绑定共用覆盖。
-/// 普通面板、GM和重绑定期间屏蔽玩法输入；菜单关闭使用单独的导航读取接口。
-/// 旧版Escape/W测试事件保留兼容，不承担正式玩法输入。
-///
-/// ══════════ 绑定组的约定（与 ChaosInputActions.inputactions 强耦合）══════════
-/// 每组下每个动作【只有一条主绑定】，它就是按键界面上可重绑的那一格。
-/// 键鼠方案的三个操作各有两格（键盘 + 鼠标），所以比手柄方案多用到 "Mouse" 组：
-///     Move   : Keyboard = 1DAxis 复合（A/D）      Mouse = 1DAxis 复合（两段都空）Gamepad = &lt;Gamepad&gt;/leftStick/x
-///     Attack : Keyboard = J                       Mouse = &lt;Mouse&gt;/leftButton  Gamepad = &lt;Gamepad&gt;/buttonWest
-///     Jump   : Keyboard = K                       Mouse = 无                  Gamepad = &lt;Gamepad&gt;/buttonSouth
-/// 两格【同时生效】：点鼠标左键和按 J 都能触发攻击，不存在"二选一"。这就是为什么鼠标键要有自己的组，
-/// 而不是塞进 Keyboard 组当第二条绑定 —— 那样界面就没法把"键盘格"和"鼠标格"分开显示与重绑定。
-///
-/// ══════════ 为什么 Move 的两个组都是 1DAxis 复合 ══════════
-/// 移动在键鼠方案里是有【方向】的：一条复合绑定含 negative（左）与 positive（右）两段，
-/// 界面上它被拆成"左移""右移"两行，每行只认自己那一段（见 SettingIds.MoveLeft）。
-/// 两个组都摆成同构，拆出来的两行才各自都有"键盘格 + 鼠标格"可填 ——
-/// 只把 Keyboard 组做成复合的话，右移那行的鼠标格就没有对应绑定可编辑了。
-/// 鼠标组的两段默认都是空路径（未绑定），玩家想用鼠标改方向时点那一格即可。
-///
-/// ⚠ 游戏里【没有任何动作】的键盘兜底方向键了（KeyboardFixed 组现在只剩跳跃的空格）。
-///
-/// 空路径 = 官方支持的"未绑定"态（InputBindingResolver 里 "Disabled if path is empty"），
-/// 静默不生效、不报日志，玩家点了那一格就能绑上。复合绑定的空段同理：两段都空时这条复合什么也不产生。
-///
-/// 另有 "KeyboardFixed" 组的固定备用键（空格），它【不参与重绑定】，只作为打不掉的兜底。
-///
-/// ⚠ 组名比较必须按分号切分后逐项比对，不能用 Contains ——
-/// "KeyboardFixed" 的字符串里含有 "Keyboard"，用 Contains 会把备用键也当成主绑定翻出来
-/// （症状：跳跃行显示"K"却能改到"空格"上去，或者重绑定改了一个看不见的绑定）。
+/// One replaceable button binding per keyboard/mouse action, plus an independent gamepad scheme.
+/// Move is a 1DAxis whose left/right parts have separate setting rows. There are no hidden backups.
+/// Runtime input and rebinding share a cloned asset; saved overrides never mutate the source asset.
+/// Gameplay blockers and navigation boundaries prevent held input from leaking through overlays.
 /// </summary>
 public partial class InputManager : SingletonBase<InputManager>
 {
@@ -789,23 +761,16 @@ public partial class InputManager : SingletonBase<InputManager>
             operation = operation.WithControlsExcluding(CancelKeyPaths[i]);
         }
 
-        // Fixed backup controls remain owned by their action; another rebind cannot steal them.
-        foreach (var other in action.actionMap.actions)
-        {
-            if (other == action) continue;
-            foreach (var binding in other.bindings)
-                if (HasGroup(binding, GroupKeyboardFixed) && !string.IsNullOrEmpty(binding.effectivePath))
-                    operation = operation.WithControlsExcluding(binding.effectivePath);
-        }
-
         //按格子限制可采集的控制：每一格只收自己那类设备。
         //不限制的话，给键盘格按个手柄键也会被接受，之后那一格上就躺着一条手柄路径 ——
         //看着是键盘键、按手柄才触发。三个分支是对称的：排除掉"不是本格设备"的那两类。
         switch (kind)
         {
             case BindingKind.Keyboard:
-                operation = operation.WithControlsExcluding("<Gamepad>/*")
-                                     .WithControlsExcluding("<Mouse>/*");
+                // One keyboard/mouse slot: rebinding replaces its path instead of adding a second trigger.
+                operation = operation.WithControlsExcluding("<Gamepad>/*");
+                if (action.bindings[bindingIndex].isPartOfComposite)
+                    operation = operation.WithExpectedControlType("Button");
                 break;
 
             case BindingKind.Mouse:

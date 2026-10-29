@@ -8,6 +8,26 @@ public sealed class GameplayShortcutDriver : MonoBehaviour
         if (!DispatchService.Instance.IsInRun || RunSceneFlow.IsTransitioning || RunEncounter.Defeated || RunEncounter.RunCleared) return;
         var input = InputManager.Instance;
         var ui = UIManager.Instance;
+        if (!input.HasGameplayBlockerOtherThan(ui))
+        {
+            var collection = ui.panelStack.Count == 0 ? null : ui.panelStack.Peek() as RunMenuPanel;
+            if (input.WasNavigationPressed(InputManager.ActionFunctions))
+            {
+                if (collection != null && collection.IsShowing) ui.PopPanel();
+                else if (input.CanReadGameplayInput) RunMenuPanel.Open();
+                return;
+            }
+            if (input.WasNavigationPressed(InputManager.ActionMap))
+            {
+                if (collection != null && collection.IsShowing)
+                {
+                    if (collection.SelectedTab == RunFunctionTab.Map) ui.PopPanel();
+                    else collection.SelectTab(RunFunctionTab.Map);
+                }
+                else if (input.CanReadGameplayInput) RunMenuPanel.Open(RunFunctionTab.Map);
+                return;
+            }
+        }
         if (input.WasNavigationPressed(InputManager.ActionMenu) && !input.HasGameplayBlockerOtherThan(ui))
         {
             var top = ui.panelStack.Count == 0 ? null : ui.panelStack.Peek();

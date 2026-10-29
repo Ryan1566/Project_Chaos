@@ -173,7 +173,14 @@ public class InventoryService : SingletonBase<InventoryService>
         if (def == null) { reason = "道具表里没有 itemId=" + itemId; ChaosLog.Warn(LogChannel.Config, "[库存] " + reason); return false; }
         if (!def.Enable) { reason = "道具 itemId=" + itemId + " 已禁用（Enable=false）"; ChaosLog.Warn(LogChannel.Config, "[库存] " + reason); return false; }
 
-        uint stackLimit = def.StackLimit == 0 ? 1u : def.StackLimit;
+        if (def.RunCategory == 1)
+        {
+            if (MetaCommandRunner.IsMutating)
+            { RunBagProgression.RegisterImportantInCommand(itemId); return true; }
+            return RunBagProgression.AcquireImportant(itemId, out reason);
+        }
+
+        uint stackLimit = def.IsUnique ? 1u : (def.StackLimit == 0 ? 1u : def.StackLimit);
         List<ItemStackSave> stacks = GetStacks();
 
         //★W3.2c 裁决 C：局外保留"部分成功" —— 只加能加的部分，>0 就返回 true
@@ -205,6 +212,7 @@ public class InventoryService : SingletonBase<InventoryService>
     public bool RemoveItem(uint itemId, uint count, out string reason)
     {
         reason = null;
+        if (RunInventory.IsImportant(itemId)) { reason = "重要道具永久保留，不能消耗或出售"; return false; }
         List<ItemStackSave> stacks = GetStacks();
         for (int i = 0; i < stacks.Count; i++)
         {

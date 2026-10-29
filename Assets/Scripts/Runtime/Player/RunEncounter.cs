@@ -95,7 +95,7 @@ public static partial class RunEncounter
             // 已入库存的物品及扎营次数属于整局；只有未捡掉落物随场景清除。
             if (sceneIndex == 1)
             {
-                RunInventory.Clear();
+                RunInventory.BeginRun();
                 CampService.ResetForNewRun();
                 _killSeq = 0u;
                 _runSeed = seed ?? NaturalMapRuntime.PreviewSeed ?? NaturalMapRuntime.CreateRunSeed();

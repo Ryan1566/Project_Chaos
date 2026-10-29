@@ -61,6 +61,7 @@ public static class SettingIds
     public const string Menu = "keybind.menu";
     public const string Interact = "keybind.interact";
     public const string Map = "keybind.map";
+    public const string Functions = "keybind.functions";
 
     /// <summary>手柄方案的三个操作行。每行只有一个格子（手柄按键），结构与上面三个不同。</summary>
     public const string MoveGamepad = "keybind.move.pad";
@@ -70,6 +71,7 @@ public static class SettingIds
     public const string MenuGamepad = "keybind.menu.pad";
     public const string InteractGamepad = "keybind.interact.pad";
     public const string MapGamepad = "keybind.map.pad";
+    public const string FunctionsGamepad = "keybind.functions.pad";
 
     /// <summary>把【当前页签那一套】的按键绑定恢复成默认：键鼠页签只清键鼠，手柄那套不动。</summary>
     public const string ResetScheme = "keybind.resetScheme";

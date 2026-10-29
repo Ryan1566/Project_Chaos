@@ -10,7 +10,7 @@ public partial class InputManager
     public const string ActionMenu = "Menu";
     public const string ActionInteract = "Interact";
     public const string ActionMap = "Map";
-    public const string GroupKeyboardFixed = "KeyboardFixed";
+    public const string ActionFunctions = "Functions";
     private readonly HashSet<object> _gameplayBlockers = new HashSet<object>();
     private readonly List<RaycastResult> _pointerHits = new List<RaycastResult>();
     private int _inputBoundaryFrame = -1;

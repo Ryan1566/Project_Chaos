@@ -13,5 +13,7 @@ public class ItemConfig
 	public bool Enable;//是否启用
 	public uint BuyPrice;//买价
 	public uint SellPrice;//卖价
+	public uint RunCategory;//局内用途
+	public bool IsUnique;//唯一道具
 }
 

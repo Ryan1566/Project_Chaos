@@ -10,7 +10,9 @@
             "IconKey": "UI/Items/icon_potion_01",
             "Enable": true,
             "BuyPrice": 10,
-            "SellPrice": 5
+            "SellPrice": 5,
+            "RunCategory": 3,
+            "IsUnique": false
         },
         {
             "Index": 2,
@@ -22,7 +24,9 @@
             "IconKey": "UI/Items/icon_material_01",
             "Enable": true,
             "BuyPrice": 8,
-            "SellPrice": 4
+            "SellPrice": 4,
+            "RunCategory": 0,
+            "IsUnique": false
         },
         {
             "Index": 3,
@@ -34,7 +38,9 @@
             "IconKey": "UI/Items/icon_gear_01",
             "Enable": true,
             "BuyPrice": 30,
-            "SellPrice": 15
+            "SellPrice": 15,
+            "RunCategory": 0,
+            "IsUnique": false
         },
         {
             "Index": 4,
@@ -46,7 +52,9 @@
             "IconKey": "UI/Items/icon_blueprint_01",
             "Enable": true,
             "BuyPrice": 20,
-            "SellPrice": 10
+            "SellPrice": 10,
+            "RunCategory": 0,
+            "IsUnique": false
         },
         {
             "Index": 5,
@@ -58,7 +66,9 @@
             "IconKey": "UI/Items/icon_consumable_01",
             "Enable": true,
             "BuyPrice": 10,
-            "SellPrice": 5
+            "SellPrice": 5,
+            "RunCategory": 3,
+            "IsUnique": false
         },
         {
             "Index": 6,
@@ -70,7 +80,9 @@
             "IconKey": "UI/Items/icon_potion_02",
             "Enable": true,
             "BuyPrice": 10,
-            "SellPrice": 5
+            "SellPrice": 5,
+            "RunCategory": 3,
+            "IsUnique": false
         },
         {
             "Index": 7,
@@ -82,7 +94,9 @@
             "IconKey": "UI/Items/icon_material_02",
             "Enable": true,
             "BuyPrice": 8,
-            "SellPrice": 4
+            "SellPrice": 4,
+            "RunCategory": 0,
+            "IsUnique": false
         },
         {
             "Index": 8,
@@ -94,7 +108,9 @@
             "IconKey": "UI/Items/icon_gear_02",
             "Enable": true,
             "BuyPrice": 30,
-            "SellPrice": 15
+            "SellPrice": 15,
+            "RunCategory": 0,
+            "IsUnique": false
         },
         {
             "Index": 9,
@@ -106,7 +122,9 @@
             "IconKey": "UI/Items/icon_blueprint_02",
             "Enable": true,
             "BuyPrice": 20,
-            "SellPrice": 10
+            "SellPrice": 10,
+            "RunCategory": 0,
+            "IsUnique": false
         }
     ]
 }

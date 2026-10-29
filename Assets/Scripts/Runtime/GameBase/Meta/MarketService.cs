@@ -49,6 +49,7 @@ public class MarketService : SingletonBase<MarketService>
     /// <summary>当前持有数（同一 itemId 的堆叠相加）。</summary>
     public uint GetCount(uint itemId)
     {
+        if (RunInventory.IsImportant(itemId)) return RunBagProgression.Owns(itemId) ? 1u : 0u;
         List<ItemStackSave> stacks = InventoryService.Instance.GetStacks();
         uint total = 0u;
         for (int i = 0; i < stacks.Count; i++)
@@ -108,6 +109,9 @@ public class MarketService : SingletonBase<MarketService>
             ChaosLog.Warn(LogChannel.Config, Tag + " 买入失败：" + GetDisplayName(itemId) + " " + reason);
             return false;
         }
+
+        if (def.RunCategory == 1 && RunBagProgression.Owns(itemId))
+        { reason = "已永久拥有该重要道具，不能重复购买"; return false; }
 
         uint price = def.BuyPrice;
         if (price == 0u)

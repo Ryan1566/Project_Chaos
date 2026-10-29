@@ -49,6 +49,7 @@ public static class RunTerrainToast
 
     /// <summary>调试 / 验收：当前提示文字（没建出来时为空串）。</summary>
     public static string CurrentText { get { return _text == null ? "" : _text.text; } }
+    public static void SetVisible(bool visible) { if (_root != null) _root.SetActive(visible); }
 
     // ────────────────────────── 对外 API ──────────────────────────
 

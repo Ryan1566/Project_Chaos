@@ -6,9 +6,10 @@ public static class MetaCommandRunner
 {
     public delegate bool Mutation(out string reason);
     public static bool IsExecuting { get; private set; }
+    public static bool IsMutating { get; private set; }
     public static string CurrentCommand { get; private set; }
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-    private static void Reset() { IsExecuting = false; CurrentCommand = null; }
+    private static void Reset() { IsExecuting = false; IsMutating = false; CurrentCommand = null; }
 
     public static bool Execute(string command, Mutation mutation, out string reason, Action onCommitted = null, Action onRolledBack = null)
     {
@@ -26,7 +27,10 @@ public static class MetaCommandRunner
         IsExecuting = true; CurrentCommand = command;
         try
         {
-            if (mutation(out reason))
+            bool accepted;
+            try { IsMutating = true; accepted = mutation(out reason); }
+            finally { IsMutating = false; }
+            if (accepted)
             {
                 if (owner != session.ContextId || !ReferenceEquals(payload, session.LoadedPayload))
                     reason = "会话已改变，命令不能保存";

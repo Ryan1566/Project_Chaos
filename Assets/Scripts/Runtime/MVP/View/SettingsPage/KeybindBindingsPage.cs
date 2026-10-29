@@ -15,7 +15,7 @@ using UnityEngine.UI;
 ///
 /// ══════════ 键鼠方案的行有两个格子 ══════════
 /// 键鼠方案的每个操作要能【同时】绑键盘和鼠标（点鼠标左键和按 J 都能攻击），
-/// 所以键鼠行都是双格（KeyButton 键盘格 + MouseButton 鼠标格），手柄三行是单格。
+/// 键鼠与手柄各用单格；键鼠格可替换为键盘或鼠标按钮。
 /// 两套行是两个独立的节点集合，按页签 SetActive 切换，而不是一套行里藏半个格子 ——
 /// 这样每套行都能按自己的列宽摆整齐，行控件也保持"只管自己那几个子节点"的单一职责。
 ///
@@ -116,6 +116,7 @@ public class KeybindBindingsPage : SettingsPageBase
         BindKeyRow(SettingIds.Menu, InputManager.ActionMenu, InputManager.BindingKind.Keyboard, true);
         BindKeyRow(SettingIds.Interact, InputManager.ActionInteract, InputManager.BindingKind.Keyboard, true);
         BindKeyRow(SettingIds.Map, InputManager.ActionMap, InputManager.BindingKind.Keyboard, true);
+        BindKeyRow(SettingIds.Functions, InputManager.ActionFunctions, InputManager.BindingKind.Keyboard, true);
 
         //手柄三行：一个格子。
         //手柄的移动不拆：它是 <Gamepad>/leftStick/x 单轴绑定，没有 negative/positive 段
@@ -126,6 +127,7 @@ public class KeybindBindingsPage : SettingsPageBase
         BindKeyRow(SettingIds.MenuGamepad, InputManager.ActionMenu, InputManager.BindingKind.Gamepad, false);
         BindKeyRow(SettingIds.InteractGamepad, InputManager.ActionInteract, InputManager.BindingKind.Gamepad, false);
         BindKeyRow(SettingIds.MapGamepad, InputManager.ActionMap, InputManager.BindingKind.Gamepad, false);
+        BindKeyRow(SettingIds.FunctionsGamepad, InputManager.ActionFunctions, InputManager.BindingKind.Gamepad, false);
         BindShortcutLabel(SettingIds.Camp, "ui_setting_camp", "扎营");
         BindShortcutLabel(SettingIds.Menu, "ui_setting_run_menu", "局内菜单");
         BindShortcutLabel(SettingIds.CampGamepad, "ui_setting_camp", "扎营");
@@ -151,12 +153,15 @@ public class KeybindBindingsPage : SettingsPageBase
             if (!keyboard && source.settingId != SettingIds.MenuGamepad) continue;
             EnsureShortcutRow(source, keyboard ? SettingIds.Interact : SettingIds.InteractGamepad, 1);
             EnsureShortcutRow(source, keyboard ? SettingIds.Map : SettingIds.MapGamepad, 2);
+            EnsureShortcutRow(source, keyboard ? SettingIds.Functions : SettingIds.FunctionsGamepad, 3);
         }
         AddRefresher(_ => {
             foreach (string id in new[] { SettingIds.Interact, SettingIds.InteractGamepad })
                 SetShortcutText(id, Chaos.Gameplay.Interaction.RunInteractionText.Get("ActionName"));
             foreach (string id in new[] { SettingIds.Map, SettingIds.MapGamepad })
-                SetShortcutText(id, VillageText.Get("MapAction"));
+                SetShortcutText(id, "地图（按所在场景打开）");
+            foreach (string id in new[] { SettingIds.Functions, SettingIds.FunctionsGamepad })
+                SetShortcutText(id, "功能集合");
         });
     }
 
@@ -195,6 +200,9 @@ public class KeybindBindingsPage : SettingsPageBase
         }
 
         Transform modelGroup = header.Find("ModelGroup");
+        // The legacy prefab's fixed-space hint describes a removed second binding.
+        var reservedHint = header.Find("ReservedKeyHint");
+        if (reservedHint != null) reservedHint.gameObject.SetActive(false);
         _modelGroup = modelGroup != null ? modelGroup.gameObject : null;
         if (modelGroup == null)
         {
@@ -267,43 +275,23 @@ public class KeybindBindingsPage : SettingsPageBase
 
     // ══════════════════ 行 ══════════════════
 
-    /// <summary>
-    /// 一行按键控件。行只抛意图（"想重绑这一格"×2、"想恢复这一行"），
-    /// 重绑定与恢复默认都在本页处理 —— 行不必知道 Action 名与绑定序号这些输入域概念。
-    ///
-    /// withMouseSlot：这一行有没有鼠标格。键鼠行有，手柄三行没有，
-    /// 后者上的 OnSecondRebindRequested 永远不会被触发（那个按钮不存在）。
-    ///
-    /// partName：这条行只认复合绑定里的哪一段（null = 整条绑定，不拆）。
-    /// 两个格子共用同一个 partName —— 资产里 Mouse 组被摆成与 Keyboard 组同构，
-    /// 所以"左移的键盘格"和"左移的鼠标格"都是各自组里的 negative。
-    /// </summary>
-    private void BindKeyRow(string id, string actionName, InputManager.BindingKind kind, bool withMouseSlot,
+    /// <summary>One replaceable binding per row; keyboardRow selects the keyboard/mouse display scheme.</summary>
+    private void BindKeyRow(string id, string actionName, InputManager.BindingKind kind, bool keyboardRow,
         string partName = null)
     {
         SettingRow_Keybind row = FindRow<SettingRow_Keybind>(id);
         if (row == null) return;
 
-        if (withMouseSlot && !row.HasSecondSlot)
-        {
-            ChaosLog.Warn(LogChannel.UI,
-                row.name + " 是键鼠行，但 prefab 里没有 MouseButton/MouseText 子节点，" +
-                "鼠标格不会显示也无法重绑");
-        }
+        // A keyboard/mouse action has one replaceable button binding.
+        foreach (var node in row.GetComponentsInChildren<Transform>(true))
+            if (node.name == "MouseButton" || node.name == "MouseText") node.gameObject.SetActive(false);
+        row.OnRebindRequested = () => StartRebind(actionName, kind, row, partName);
+        row.OnResetRequested = () => ResetRow(actionName, kind, partName);
 
-        row.OnRebindRequested = () => StartRebind(actionName, kind, row, false, partName);
-        if (withMouseSlot)
-        {
-            //键鼠行的第二格固定是鼠标组：第一格是 Keyboard，第二格就是 Mouse
-            row.OnSecondRebindRequested =
-                () => StartRebind(actionName, InputManager.BindingKind.Mouse, row, true, partName);
-        }
-        row.OnResetRequested = () => ResetRow(actionName, kind, withMouseSlot, partName);
-
-        if (withMouseSlot) _kmRows.Add(row);
+        if (keyboardRow) _kmRows.Add(row);
         else _padRows.Add(row);
 
-        AddRefresher(data => RefreshRowText(row, actionName, kind, withMouseSlot, data, partName));
+        AddRefresher(data => RefreshRowText(row, actionName, kind, data, partName));
     }
 
     /// <summary>
@@ -316,7 +304,7 @@ public class KeybindBindingsPage : SettingsPageBase
     /// 分开取等于把路径解析两遍，迟早会出现"文字对了图标却查不到"。
     /// </summary>
     private void RefreshRowText(SettingRow_Keybind row, string actionName,
-        InputManager.BindingKind kind, bool withMouseSlot, SettingsData data, string partName)
+        InputManager.BindingKind kind, SettingsData data, string partName)
     {
         InputDeviceType device = (InputDeviceType)data.inputDevice;
 
@@ -326,12 +314,7 @@ public class KeybindBindingsPage : SettingsPageBase
             kind == InputManager.BindingKind.Gamepad ? device : InputDeviceType.Keyboard, partName);
         row.SetKeyDisplay(key.Text, key.Icon, key.IconColor);
 
-        if (withMouseSlot)
-        {
-            InputManager.BindingVisual second = Editing.GetBindingVisual(
-                actionName, InputManager.BindingKind.Mouse, InputDeviceType.Keyboard, partName);
-            row.SetSecondDisplay(second.Text, second.Icon, second.IconColor);
-        }
+
     }
 
     /// <summary>
@@ -405,7 +388,7 @@ public class KeybindBindingsPage : SettingsPageBase
     /// partName = 这一行只改复合绑定的哪一段（null = 整条），拆行之后由它决定"只问一个方向"。
     /// </summary>
     private void StartRebind(string actionName, InputManager.BindingKind kind,
-        SettingRow_Keybind row, bool secondSlot, string partName)
+        SettingRow_Keybind row, string partName)
     {
         if (_rebindRoutine != null || Editing.IsRebinding)
         {
@@ -415,7 +398,7 @@ public class KeybindBindingsPage : SettingsPageBase
             return;
         }
 
-        _rebindRoutine = StartCoroutine(RebindRoutine(actionName, kind, row, secondSlot, partName));
+        _rebindRoutine = StartCoroutine(RebindRoutine(actionName, kind, row, partName));
     }
 
     /// <summary>
@@ -433,7 +416,7 @@ public class KeybindBindingsPage : SettingsPageBase
     /// 各段的提示词由 InputManager.GetRebindSteps 给出。
     /// </summary>
     private IEnumerator RebindRoutine(string actionName, InputManager.BindingKind kind,
-        SettingRow_Keybind row, bool secondSlot, string partName)
+        SettingRow_Keybind row, string partName)
     {
         List<InputManager.RebindStep> steps = Editing.GetRebindSteps(actionName, kind, partName);
         if (steps.Count == 0)
@@ -461,8 +444,7 @@ public class KeybindBindingsPage : SettingsPageBase
 
             if (row != null)
             {
-                if (secondSlot) row.SetSecondListening(true, prompt);
-                else row.SetListening(true, prompt);
+                row.SetListening(true, prompt);
             }
 
             _stepFinished = false;
@@ -475,8 +457,7 @@ public class KeybindBindingsPage : SettingsPageBase
 
             if (row != null)
             {
-                if (secondSlot) row.SetSecondListening(false);
-                else row.SetListening(false);
+                row.SetListening(false);
             }
 
             if (_stepResult == InputManager.RebindResult.Cleared)
@@ -572,7 +553,6 @@ public class KeybindBindingsPage : SettingsPageBase
         //必须先恢复文案再解锁：SetListening(false) 自己会按 Clickable 重算一次可点性，
         //顺序反过来的话最后一步又被它按旧的 Clickable 覆盖回去
         row.SetListening(false);
-        row.SetSecondListening(false);
     }
 
     // ══════════════════ 恢复默认 ══════════════════
@@ -585,14 +565,10 @@ public class KeybindBindingsPage : SettingsPageBase
     /// partName 非空时【只复位那一段】：拆行之后"左移"与"右移"是两行两格，
     /// 点"左移"的重置却把右移也一起复位，那是顺手毁掉另一格 —— 与按钮上写的意思不符。
     /// </summary>
-    private void ResetRow(string actionName, InputManager.BindingKind kind, bool withMouseSlot, string partName)
+    private void ResetRow(string actionName, InputManager.BindingKind kind, string partName)
     {
         bool any = Editing.ResetBinding(actionName, kind, partName);
-        if (withMouseSlot)
-        {
-            // |= 而不是 ||=：第二个调用必须照常执行（bool 的 |= 不短路，正好）
-            any |= Editing.ResetBinding(actionName, InputManager.BindingKind.Mouse, partName);
-        }
+
 
         if (!any) return;
 

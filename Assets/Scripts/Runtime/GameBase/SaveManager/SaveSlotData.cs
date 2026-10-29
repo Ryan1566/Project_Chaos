@@ -105,6 +105,14 @@ public class SavePayload
     /// <summary>库存堆叠（itemId → count）。**不用 Dictionary**（JsonUtility 不支持）。</summary>
     public List<ItemStackSave> items = new List<ItemStackSave>();
 
+    // Run inventory progression is independent of the outside warehouse's EffectType=2.
+    public int runImportantSlots = 0;
+    public int runEngineeringSlots = 1;
+    public int runRecoverySlots = 2;
+    public int runMiscSlots = 5;
+    public List<string> runSlotGrants = new List<string>();
+    public List<uint> ownedImportantItems = new List<uint>();
+
     /// <summary>
     /// **W5.1 新增（M4 剧情事件）**：已处置的**一次性**事件 ID 列表（存的是 `EventConfig.Index`）。
     ///

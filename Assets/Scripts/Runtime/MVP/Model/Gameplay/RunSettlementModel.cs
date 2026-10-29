@@ -41,7 +41,11 @@ namespace Chaos.MVP.Model.Gameplay
             if (Current != null && Current._ownerContext == context && ReferenceEquals(Current._owner, owner) && Current.Seed == RunEncounter.RunSeed && Current.RunCount == owner.runs && Current.Win == win)
                 return;
             var model = new RunSettlementModel { Win = win, Seed = RunEncounter.RunSeed, RunCount = owner.runs, _owner = owner, _ownerContext = context };
-            foreach (var stack in RunInventory.Stacks) { model._ids.Add(stack.itemId); model._counts.Add(stack.count); }
+            foreach (var stack in RunInventory.Stacks)
+            {
+                if (RunInventory.IsImportant(stack.itemId)) continue;
+                model._ids.Add(stack.itemId); model._counts.Add(stack.count);
+            }
             if (!win)
             {
                 var indices = new List<int>();
