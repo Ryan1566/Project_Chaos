@@ -167,7 +167,9 @@ public partial class InputManager : SingletonBase<InputManager>
     {
         EnsureInited();
         if (_asset == null) return "";
-        return _asset.SaveBindingOverridesAsJson();
+        // Version only the binding payload: older saves shared gameplay bindings with the village.
+        string json = _asset.SaveBindingOverridesAsJson();
+        return json.Insert(json.IndexOf('{') + 1, "\"chaosScopeVersion\":1,");
     }
 
     /// <summary>
@@ -187,6 +189,7 @@ public partial class InputManager : SingletonBase<InputManager>
         try
         {
             _asset.LoadBindingOverridesFromJson(json);
+            if (!json.Contains("\"chaosScopeVersion\"")) MigrateSharedVillageOverrides();
         }
         catch (Exception e)
         {
@@ -955,7 +958,7 @@ public partial class InputManager : SingletonBase<InputManager>
         for (int a = 0; a < map.actions.Count; a++)
         {
             InputAction other = map.actions[a];
-            if (other == action) continue;
+            if (other == action || !ScopesOverlap(action.name, other.name)) continue;
 
             for (int i = 0; i < other.bindings.Count; i++)
             {
@@ -1064,6 +1067,7 @@ public partial class InputManager : SingletonBase<InputManager>
 
     private void Tick()
     {
+        RefreshInputScope();
         RefreshGameplayInputLatches();
         TickVillageMapNavigation();
         //⚠ 这一段必须在下面的 isStart 判断【之前】：

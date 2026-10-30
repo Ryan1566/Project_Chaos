@@ -27,7 +27,7 @@ public sealed class VillagePlot : MonoBehaviour
         if (house == null) return;
         var save = VillageService.Instance.Find(BuildingId); bool built = save != null && save.completed;
         house.SetActive(built); foundation.SetActive(!built);
-        string state = save == null ? VillageText.Get("PressToBuild", VillageSceneBootstrap.BindingText(InputManager.ActionInteract)) : !built ? VillageText.Get("Queue", save.remainSeconds)
+        string state = save == null ? VillageText.Get("PressToBuild", VillageSceneBootstrap.BindingText(InputManager.ActionVillageInteract)) : !built ? VillageText.Get("Queue", save.remainSeconds)
             : VillageText.Get("Level", save.level) + " · " + (VillageWorkforce.ActiveWorkers(BuildingId) > 0 ? VillageText.Get("Working") : VillageText.Get("Idle"))
                 + "\n" + VillageText.Get("Production", save.pendingOutput);
         label.text = VillageText.Get("Building" + BuildingId) + "\n" + state;

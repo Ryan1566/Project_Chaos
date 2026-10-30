@@ -76,6 +76,42 @@
           "processors": "",
           "interactions": "",
           "initialStateCheck": false
+        },
+        {
+          "name": "VillageMove",
+          "type": "Value",
+          "id": "baa680de-1549-4047-b7b5-549c50d1fc51",
+          "expectedControlType": "Axis",
+          "processors": "",
+          "interactions": "",
+          "initialStateCheck": true
+        },
+        {
+          "name": "VillageJump",
+          "type": "Button",
+          "id": "3400e0f6-2845-42e8-9c7f-4ebabdd6d729",
+          "expectedControlType": "Button",
+          "processors": "",
+          "interactions": "",
+          "initialStateCheck": false
+        },
+        {
+          "name": "VillageInteract",
+          "type": "Button",
+          "id": "a992c22c-24a0-4252-b6f3-fdc4da465451",
+          "expectedControlType": "Button",
+          "processors": "",
+          "interactions": "",
+          "initialStateCheck": false
+        },
+        {
+          "name": "VillageMap",
+          "type": "Button",
+          "id": "a31d3f96-5d7e-437b-8fdc-e6b52eca0d68",
+          "expectedControlType": "Button",
+          "processors": "",
+          "interactions": "",
+          "initialStateCheck": false
         }
       ],
       "bindings": [
@@ -274,6 +310,116 @@
           "processors": "",
           "groups": "Gamepad",
           "action": "Functions",
+          "isComposite": false,
+          "isPartOfComposite": false
+        },
+        {
+          "name": "1DAxis",
+          "id": "ddeb5edb-2ed9-4c3d-9cce-a970f19aa0fc",
+          "path": "1DAxis",
+          "interactions": "",
+          "processors": "",
+          "groups": "Keyboard",
+          "action": "VillageMove",
+          "isComposite": true,
+          "isPartOfComposite": false
+        },
+        {
+          "name": "negative",
+          "id": "c64fc4c4-be54-4a12-a756-a493c268640c",
+          "path": "<Keyboard>/a",
+          "interactions": "",
+          "processors": "",
+          "groups": "Keyboard",
+          "action": "VillageMove",
+          "isComposite": false,
+          "isPartOfComposite": true
+        },
+        {
+          "name": "positive",
+          "id": "0031aeee-6ad1-4e09-acf8-c6cdd76dac09",
+          "path": "<Keyboard>/d",
+          "interactions": "",
+          "processors": "",
+          "groups": "Keyboard",
+          "action": "VillageMove",
+          "isComposite": false,
+          "isPartOfComposite": true
+        },
+        {
+          "name": "",
+          "id": "db29646c-8329-4882-8bce-b36480091005",
+          "path": "<Gamepad>/leftStick/x",
+          "interactions": "",
+          "processors": "",
+          "groups": "Gamepad",
+          "action": "VillageMove",
+          "isComposite": false,
+          "isPartOfComposite": false
+        },
+        {
+          "name": "",
+          "id": "2c3a906c-739b-474e-b5a6-a5fb272e7808",
+          "path": "<Keyboard>/space",
+          "interactions": "",
+          "processors": "",
+          "groups": "Keyboard",
+          "action": "VillageJump",
+          "isComposite": false,
+          "isPartOfComposite": false
+        },
+        {
+          "name": "",
+          "id": "1a6ed678-14c9-4d86-8ade-3a47070b9c75",
+          "path": "<Gamepad>/buttonSouth",
+          "interactions": "",
+          "processors": "",
+          "groups": "Gamepad",
+          "action": "VillageJump",
+          "isComposite": false,
+          "isPartOfComposite": false
+        },
+        {
+          "name": "",
+          "id": "25989baf-422d-4cfb-956e-d235f5fd5582",
+          "path": "<Keyboard>/e",
+          "interactions": "",
+          "processors": "",
+          "groups": "Keyboard",
+          "action": "VillageInteract",
+          "isComposite": false,
+          "isPartOfComposite": false
+        },
+        {
+          "name": "",
+          "id": "4ee0a3d4-bf5e-40a1-b751-24de3274869a",
+          "path": "<Gamepad>/buttonEast",
+          "interactions": "",
+          "processors": "",
+          "groups": "Gamepad",
+          "action": "VillageInteract",
+          "isComposite": false,
+          "isPartOfComposite": false
+        },
+        {
+          "name": "",
+          "id": "297db34e-50e4-42fb-99c7-46893e316e24",
+          "path": "<Keyboard>/m",
+          "interactions": "",
+          "processors": "",
+          "groups": "Keyboard",
+          "action": "VillageMap",
+          "isComposite": false,
+          "isPartOfComposite": false
+        },
+        {
+          "name": "",
+          "id": "9ce2ed78-d293-4dcf-8360-2593326058e5",
+          "path": "<Gamepad>/select",
+          "interactions": "",
+          "processors": "",
+          "groups": "Gamepad",
+          "action": "VillageMap",
           "isComposite": false,
           "isPartOfComposite": false
         }

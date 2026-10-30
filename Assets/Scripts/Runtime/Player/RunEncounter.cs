@@ -20,6 +20,17 @@ public static partial class RunEncounter
     private static readonly Dictionary<ushort, List<EnemyPlaceholder>> AliveByRoom = new Dictionary<ushort, List<EnemyPlaceholder>>();
     private static readonly Dictionary<ushort, int> TotalByRoom = new Dictionary<ushort, int>();
     private static readonly List<GameObject> AllEnemies = new List<GameObject>();
+    /// <summary>Caller-owned snapshot for read-only UI consumers; never exposes the combat registry for mutation.</summary>
+    public static void CopyMapEnemies(List<EnemyPlaceholder> destination)
+    {
+        destination.Clear();
+        foreach (var actor in AllEnemies)
+        {
+            if (actor == null || !OwnsRuntimeObject(actor)) continue;
+            var enemy = actor.GetComponent<EnemyPlaceholder>();
+            if (enemy != null && !enemy.IsDead) destination.Add(enemy);
+        }
+    }
     private static readonly List<uint> Team = new List<uint>();
     private static bool _clearedCurrentScene;
     /// <summary>本场景是否**已生成完成**（未完成前 RefreshRooms 不许判清房，否则会提前切场景）。</summary>

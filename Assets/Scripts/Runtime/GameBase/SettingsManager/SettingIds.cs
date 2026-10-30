@@ -72,6 +72,15 @@ public static class SettingIds
     public const string InteractGamepad = "keybind.interact.pad";
     public const string MapGamepad = "keybind.map.pad";
     public const string FunctionsGamepad = "keybind.functions.pad";
+    public const string VillageMoveLeft = "keybind.village.moveLeft";
+    public const string VillageMoveRight = "keybind.village.moveRight";
+    public const string VillageJump = "keybind.village.jump";
+    public const string VillageInteract = "keybind.village.interact";
+    public const string VillageMap = "keybind.village.map";
+    public const string VillageMoveGamepad = "keybind.village.move.pad";
+    public const string VillageJumpGamepad = "keybind.village.jump.pad";
+    public const string VillageInteractGamepad = "keybind.village.interact.pad";
+    public const string VillageMapGamepad = "keybind.village.map.pad";
 
     /// <summary>把【当前页签那一套】的按键绑定恢复成默认：键鼠页签只清键鼠，手柄那套不动。</summary>
     public const string ResetScheme = "keybind.resetScheme";

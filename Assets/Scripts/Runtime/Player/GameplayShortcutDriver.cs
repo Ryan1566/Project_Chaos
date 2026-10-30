@@ -13,7 +13,8 @@ public sealed class GameplayShortcutDriver : MonoBehaviour
             var collection = ui.panelStack.Count == 0 ? null : ui.panelStack.Peek() as RunMenuPanel;
             if (input.WasNavigationPressed(InputManager.ActionFunctions))
             {
-                if (collection != null && collection.IsShowing) ui.PopPanel();
+                if (collection != null && collection.IsShowing)
+                { if (!collection.TryCloseSecondaryWindow()) ui.PopPanel(); }
                 else if (input.CanReadGameplayInput) RunMenuPanel.Open();
                 return;
             }
@@ -21,6 +22,7 @@ public sealed class GameplayShortcutDriver : MonoBehaviour
             {
                 if (collection != null && collection.IsShowing)
                 {
+                    if (collection.TryCloseSecondaryWindow()) return;
                     if (collection.SelectedTab == RunFunctionTab.Map) ui.PopPanel();
                     else collection.SelectTab(RunFunctionTab.Map);
                 }
@@ -31,6 +33,7 @@ public sealed class GameplayShortcutDriver : MonoBehaviour
         if (input.WasNavigationPressed(InputManager.ActionMenu) && !input.HasGameplayBlockerOtherThan(ui))
         {
             var top = ui.panelStack.Count == 0 ? null : ui.panelStack.Peek();
+            if (top is RunMenuPanel menu && menu.TryCloseSecondaryWindow()) return;
             if (top != null && top.IsShowing && top.gameObject.activeInHierarchy && top.ReturnsToGameplayOnClose)
             { ui.PopPanel(); return; }
             if (input.CanReadGameplayInput) { RunMenuPanel.Open(); return; }

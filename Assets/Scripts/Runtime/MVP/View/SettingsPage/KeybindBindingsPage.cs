@@ -61,6 +61,8 @@ public class KeybindBindingsPage : SettingsPageBase
 
     /// <summary>手柄方案的三行（单格）。</summary>
     private readonly List<SettingRow_Keybind> _padRows = new List<SettingRow_Keybind>();
+    private readonly List<GameObject> _keyboardHeaders = new List<GameObject>();
+    private readonly List<GameObject> _gamepadHeaders = new List<GameObject>();
 
     private Button _backButton;
     private Button _tabKeyboard;
@@ -94,6 +96,7 @@ public class KeybindBindingsPage : SettingsPageBase
     protected override void OnBind()
     {
         EnsureShortcutRows();
+        EnsureVillageRows();
         //【必须第一个注册】刷新动作是按注册顺序跑的（SettingsPageBase.RefreshAll），
         //而本动作负责 SetActive 两套行 —— 手柄行在 prefab 里是关着的，它们的 Awake
         //要等这一刻才跑，也才把 _keyText / _secondText 这些引用找出来。
@@ -128,10 +131,19 @@ public class KeybindBindingsPage : SettingsPageBase
         BindKeyRow(SettingIds.InteractGamepad, InputManager.ActionInteract, InputManager.BindingKind.Gamepad, false);
         BindKeyRow(SettingIds.MapGamepad, InputManager.ActionMap, InputManager.BindingKind.Gamepad, false);
         BindKeyRow(SettingIds.FunctionsGamepad, InputManager.ActionFunctions, InputManager.BindingKind.Gamepad, false);
+        BindKeyRow(SettingIds.VillageMoveLeft, InputManager.ActionVillageMove, InputManager.BindingKind.Keyboard, true, PartNegative);
+        BindKeyRow(SettingIds.VillageMoveRight, InputManager.ActionVillageMove, InputManager.BindingKind.Keyboard, true, PartPositive);
+        BindKeyRow(SettingIds.VillageJump, InputManager.ActionVillageJump, InputManager.BindingKind.Keyboard, true);
+        BindKeyRow(SettingIds.VillageInteract, InputManager.ActionVillageInteract, InputManager.BindingKind.Keyboard, true);
+        BindKeyRow(SettingIds.VillageMap, InputManager.ActionVillageMap, InputManager.BindingKind.Keyboard, true);
+        BindKeyRow(SettingIds.VillageMoveGamepad, InputManager.ActionVillageMove, InputManager.BindingKind.Gamepad, false);
+        BindKeyRow(SettingIds.VillageJumpGamepad, InputManager.ActionVillageJump, InputManager.BindingKind.Gamepad, false);
+        BindKeyRow(SettingIds.VillageInteractGamepad, InputManager.ActionVillageInteract, InputManager.BindingKind.Gamepad, false);
+        BindKeyRow(SettingIds.VillageMapGamepad, InputManager.ActionVillageMap, InputManager.BindingKind.Gamepad, false);
         BindShortcutLabel(SettingIds.Camp, "ui_setting_camp", "扎营");
-        BindShortcutLabel(SettingIds.Menu, "ui_setting_run_menu", "局内菜单");
         BindShortcutLabel(SettingIds.CampGamepad, "ui_setting_camp", "扎营");
-        BindShortcutLabel(SettingIds.MenuGamepad, "ui_setting_run_menu", "局内菜单");
+
+        ArrangeScopeSections();
 
         _resetRow = BindButton(SettingIds.ResetScheme, ResetScheme);
     }
@@ -159,10 +171,59 @@ public class KeybindBindingsPage : SettingsPageBase
             foreach (string id in new[] { SettingIds.Interact, SettingIds.InteractGamepad })
                 SetShortcutText(id, Chaos.Gameplay.Interaction.RunInteractionText.Get("ActionName"));
             foreach (string id in new[] { SettingIds.Map, SettingIds.MapGamepad })
-                SetShortcutText(id, "地图（按所在场景打开）");
+                SetShortcutText(id, "局内地图");
             foreach (string id in new[] { SettingIds.Functions, SettingIds.FunctionsGamepad })
                 SetShortcutText(id, "功能集合");
         });
+    }
+
+    private void EnsureVillageRows()
+    {
+        string[] sources = { SettingIds.MoveLeft, SettingIds.MoveRight, SettingIds.Jump, SettingIds.Interact, SettingIds.Map,
+            SettingIds.MoveGamepad, SettingIds.JumpGamepad, SettingIds.InteractGamepad, SettingIds.MapGamepad };
+        string[] targets = { SettingIds.VillageMoveLeft, SettingIds.VillageMoveRight, SettingIds.VillageJump,
+            SettingIds.VillageInteract, SettingIds.VillageMap, SettingIds.VillageMoveGamepad, SettingIds.VillageJumpGamepad,
+            SettingIds.VillageInteractGamepad, SettingIds.VillageMapGamepad };
+        for (int i = 0; i < sources.Length; i++)
+        {
+            var source = FindRow<SettingRow_Keybind>(sources[i]);
+            if (source != null) EnsureShortcutRow(source, targets[i], 1);
+        }
+        AddRefresher(_ => {
+            foreach (var id in new[] { SettingIds.Menu, SettingIds.MenuGamepad }) SetShortcutText(id, "菜单 / 返回");
+            foreach (var id in new[] { SettingIds.VillageMap, SettingIds.VillageMapGamepad }) SetShortcutText(id, "世界观地图");
+            foreach (var id in new[] { SettingIds.VillageInteract, SettingIds.VillageInteractGamepad })
+                SetShortcutText(id, Chaos.Gameplay.Interaction.RunInteractionText.Get("ActionName"));
+        });
+    }
+
+    private void ArrangeScopeSections()
+    {
+        var rows = GetComponentsInChildren<SettingRow_Keybind>(true);
+        if (rows.Length == 0) return;
+        var parent = rows[0].transform.parent;
+        int index = 0;
+        // Keep rows under the existing scrolling Content, so the prefab's layout and scrollbar remain authoritative.
+        for (int scope = 0; scope < 3; scope++)
+        {
+            foreach (bool keyboard in new[] { true, false })
+            {
+                var header = GameplayUi.Text(parent, "Scope_" + scope + (keyboard ? "_Keyboard" : "_Gamepad"),
+                    scope == 0 ? "全局" : scope == 1 ? "局内" : "局外", 26);
+                header.alignment = TMPro.TextAlignmentOptions.MidlineLeft;
+                header.color = new Color(.95f, .78f, .35f);
+                var layout = header.gameObject.AddComponent<LayoutElement>();
+                layout.preferredHeight = 44; layout.minHeight = 44;
+                header.transform.SetSiblingIndex(index++);
+                (keyboard ? _keyboardHeaders : _gamepadHeaders).Add(header.gameObject);
+                foreach (var row in keyboard ? _kmRows : _padRows)
+                {
+                    bool global = row.settingId == SettingIds.Menu || row.settingId == SettingIds.MenuGamepad;
+                    bool outside = row.settingId.StartsWith("keybind.village.", System.StringComparison.Ordinal);
+                    if ((global ? 0 : outside ? 2 : 1) == scope) row.transform.SetSiblingIndex(index++);
+                }
+            }
+        }
     }
 
     private void EnsureShortcutRow(SettingRow_Keybind source, string id, int offset)
@@ -340,6 +401,8 @@ public class KeybindBindingsPage : SettingsPageBase
         //两套行按页签切换。只留一套在场，VerticalLayoutGroup 会自动重排，不会留下空洞
         for (int i = 0; i < _kmRows.Count; i++) _kmRows[i].gameObject.SetActive(!gamepad);
         for (int i = 0; i < _padRows.Count; i++) _padRows[i].gameObject.SetActive(gamepad);
+        foreach (var header in _keyboardHeaders) header.SetActive(!gamepad);
+        foreach (var header in _gamepadHeaders) header.SetActive(gamepad);
 
         //页签文案换成图标。放在最后：它只依赖上面算出的 model，与行的显隐无关
         ApplyTabIcons(model);

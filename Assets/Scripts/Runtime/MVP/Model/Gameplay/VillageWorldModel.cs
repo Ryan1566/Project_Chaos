@@ -19,10 +19,10 @@ namespace Chaos.MVP.Model.Gameplay
             return new VillageWorldState { Title = VillageText.Get("VillageTitle"),
                 Resources = string.Join("　", Enum.GetValues(typeof(InventoryService.ResourceKind)).Cast<InventoryService.ResourceKind>()
                     .Select(k => InventoryService.ResourceDisplayName(k) + " " + inventory.GetResource(k))),
-                MapLabel = VillageText.Get("MapHint", VillageSceneBootstrap.BindingText(InputManager.ActionMap)),
+                MapLabel = VillageText.Get("MapHint", VillageSceneBootstrap.BindingText(InputManager.ActionVillageMap)),
                 SettingsLabel = GameplayText.Text("ui_mainmenu_settingbtn", "ui_mainmenu_settingbtn"),
                 MainMenuLabel = GameplayText.Text("ui_mainmenu_title", "ui_mainmenu_title"),
-                Hint = available ? VillageText.Get("Building" + near.BuildingId) + "　" + VillageText.Get("BuildHint", VillageSceneBootstrap.BindingText(InputManager.ActionInteract)) : string.Empty,
+                Hint = available ? VillageText.Get("Building" + near.BuildingId) + "　" + VillageText.Get("BuildHint", VillageSceneBootstrap.BindingText(InputManager.ActionVillageInteract)) : string.Empty,
                 NearbyPlot = available ? near.BuildingId : 0 };
         }
         public bool CanManage(uint id)

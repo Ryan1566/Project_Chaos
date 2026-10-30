@@ -16,6 +16,8 @@ public sealed class RunMenuPanel : BasePanel, IGameplayView<RunMenuState>, IRunB
     public RunFunctionTab SelectedTab { get; private set; } = RunFunctionTab.Inventory;
     private RunMenuModel _model;
     private RunMenuPresenter _presenter;
+    private RunMapView _mapView;
+    private RunMapPresenter _mapPresenter;
     private RectTransform _box, _inventory, _catalog;
     private TextMeshProUGUI _summary, _hint, _placeholder;
     private readonly List<RunBagSlotView> _slots = new List<RunBagSlotView>();
@@ -31,7 +33,8 @@ public sealed class RunMenuPanel : BasePanel, IGameplayView<RunMenuState>, IRunB
         var panel = UIManager.Instance.PushPanel(PanelType.RunMenuPanel) as RunMenuPanel;
         if (panel != null) panel.SelectTab(tab);
     }
-    public void SelectTab(RunFunctionTab tab) { _presenter?.SelectTab(tab); }
+    public void SelectTab(RunFunctionTab tab) { _mapView?.CloseSecondary(); _presenter?.SelectTab(tab); }
+    public bool TryCloseSecondaryWindow() { return _mapView != null && _mapView.CloseSecondary(); }
 
     private void Awake()
     {
@@ -76,6 +79,10 @@ public sealed class RunMenuPanel : BasePanel, IGameplayView<RunMenuState>, IRunB
         _settings = GameplayUi.Button(_box, "Settings", "设置", new Vector2(380, -640), new Vector2(160, 44), () => Send(PanelAction.Settings));
         _retreat = GameplayUi.Button(_box, "Retreat", "撤离", new Vector2(736, -640), new Vector2(160, 44), () => Send(PanelAction.Return));
         _cancel = GameplayUi.Button(_box, "CancelRetreat", "取消撤离", new Vector2(914, -640), new Vector2(160, 44), () => Send(PanelAction.Cancel));
+        var mapRect = GameplayUi.Rect(_box, "LocalMap", Vector2.up, Vector2.up, new Vector2(0, -110), new Vector2(BoxWidth, 475));
+        _mapView = mapRect.gameObject.AddComponent<RunMapView>(); _mapView.Initialize();
+        _mapPresenter = new RunMapPresenter(_mapView);
+        mapRect.gameObject.SetActive(false);
     }
     private void LateUpdate()
     {
@@ -104,6 +111,7 @@ public sealed class RunMenuPanel : BasePanel, IGameplayView<RunMenuState>, IRunB
     public override void OnExit()
     {
         CancelDrag();
+        _mapView.CloseSecondary(); _mapView.gameObject.SetActive(false);
         _presenter?.Dispose(); _presenter = null;
         if (uiManager == null || !uiManager.panelStack.Contains(this))
         {
@@ -113,8 +121,8 @@ public sealed class RunMenuPanel : BasePanel, IGameplayView<RunMenuState>, IRunB
             if (resumeHud && _terrainWasVisible) RunTerrainToast.SetVisible(true);
         }
     }
-    private void OnDisable() { CancelDrag(); }
-    private void OnDestroy() { CancelDrag(); _presenter?.Dispose(); _model?.Dispose(); }
+    private void OnDisable() { CancelDrag(); _mapView?.CloseSecondary(); }
+    private void OnDestroy() { CancelDrag(); _presenter?.Dispose(); _model?.Dispose(); _mapPresenter?.Dispose(); }
     private void Send(PanelAction action, uint id = 0) { if (IsShowing) Intent?.Invoke(new PanelIntent(action, id)); }
     public void ClosePanel() { UIManager.Instance.PopPanel(); }
     public void ShowMessage(string message, bool success) { _hint.text = message; }
@@ -143,7 +151,10 @@ public sealed class RunMenuPanel : BasePanel, IGameplayView<RunMenuState>, IRunB
         _summary.text = state.Summary;
         _hint.text = state.Hint;
         _inventory.gameObject.SetActive(state.Tab == RunFunctionTab.Inventory);
-        _placeholder.transform.parent.gameObject.SetActive(state.Tab != RunFunctionTab.Inventory);
+        _placeholder.transform.parent.gameObject.SetActive(state.Tab == RunFunctionTab.Team);
+        _mapView.gameObject.SetActive(state.Tab == RunFunctionTab.Map);
+        if (state.Tab == RunFunctionTab.Map) _mapPresenter.Refresh();
+        else _mapView.CloseSecondary();
         _placeholder.text = state.Placeholder;
         for (int i = 0; i < _tabs.Count; i++) _tabs[i].image.color =
             i == (int)state.Tab ? new Color(.28f, .49f, .62f) : new Color(.12f, .20f, .28f);

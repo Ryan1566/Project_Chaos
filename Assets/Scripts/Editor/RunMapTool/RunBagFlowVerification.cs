@@ -106,7 +106,9 @@ public static class RunBagFlowVerification
         Click("EnterRunBtn");yield return new WaitForSecondsRealtime(.6f);
         Isolation();foreach(var r in RetainerService.Instance.GetAll())DispatchService.Instance.Toggle(r.id,out reason);
         Click("Btn_Depart");
-        yield return new WaitForSecondsRealtime(5);
+        float readyDeadline=Time.realtimeSinceStartup+30;
+        while((RunEncounter.CurrentSceneIndex!=1||!RunMap.NaturalMapRuntime.IsReady||RunSceneFlow.IsTransitioning)
+            &&Time.realtimeSinceStartup<readyDeadline)yield return null;
         Check(RunEncounter.CurrentSceneIndex==1&&RunMap.NaturalMapRuntime.IsReady,"formal WorldScene stage1 ready");
         Key(UnityEngine.InputSystem.Key.Tab);yield return new WaitForSecondsRealtime(.6f);Key();yield return null;
         Check(Top is RunMenuPanel bag&&bag.SelectedTab==RunFunctionTab.Inventory&&Time.timeScale==0,"Tab opens bag and pauses");
@@ -164,7 +166,12 @@ public static class RunBagFlowVerification
             Check(RunEncounter.CurrentSceneIndex==scene,"stage index "+scene);
             Check(RunInventory.GetSlot(RunBagSection.Engineering,0)?.itemId==990001&&RunInventory.GetCount(990001)==7,"bag layout/count retained stage "+scene);
             RunEncounter.KillAllEnemiesInScene();RunEncounter.RefreshNow();
-            if(scene<3) {RunEncounter.ProcessPendingScene();yield return new WaitForSecondsRealtime(4);}
+            if(scene<3)
+            {
+                RunEncounter.ProcessPendingScene();readyDeadline=Time.realtimeSinceStartup+30;
+                while((RunEncounter.CurrentSceneIndex!=scene+1||!RunMap.NaturalMapRuntime.IsReady||RunSceneFlow.IsTransitioning)
+                    &&Time.realtimeSinceStartup<readyDeadline)yield return null;
+            }
         }
         yield return new WaitForSecondsRealtime(.3f);
         Check(RunEncounter.RunCleared&&Top is RunSettlementPanel,"stage3 reaches formal settlement");

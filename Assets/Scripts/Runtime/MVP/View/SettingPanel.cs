@@ -66,6 +66,17 @@ public class SettingPanel : BasePanel, ISettingsView
     public bool CanShowConfirmation => _confirmGroup != null;
     public bool IsSubPageOpen => _pages[_current] != null && _pages[_current].IsSubPageOpen;
 
+    private void Update()
+    {
+        if (!IsShowing || _presenter == null) return;
+        var ui = UIManager.Instance; var input = InputManager.Instance;
+        if (ui.panelStack.Count == 0 || ui.panelStack.Peek() != this || input.HasGameplayBlockerOtherThan(ui)
+            || !input.WasNavigationPressed(InputManager.ActionMenu)) return;
+        // Reuse the existing presenter path so back never bypasses pending-edit confirmation.
+        Intent?.Invoke(new SettingsIntent(_confirmGroup != null && _confirmGroup.activeSelf
+            ? SettingsAction.ConfirmCancel : SettingsAction.Return));
+    }
+
     // ══════════════════ 生命周期 ══════════════════
 
     private void Awake()

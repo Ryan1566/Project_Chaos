@@ -42,7 +42,7 @@ public sealed class VillageHud : MonoBehaviour, IVillageWorldView
     {
         if (presenter == null) return;
         if (Time.unscaledTime >= nextRefresh) { nextRefresh = Time.unscaledTime + .15f; presenter.Refresh(); }
-        if (InputManager.Instance.WasGameplayPressed(InputManager.ActionInteract)) presenter.Handle(VillageIntent.Manage);
+        if (InputManager.Instance.WasGameplayPressed(InputManager.ActionVillageInteract)) presenter.Handle(VillageIntent.Manage);
         // World UI owns input and rendering while open; this HUD never claims an input blocker.
         if (root != null)
         { var group = root.GetComponent<CanvasGroup>(); bool visible = UIManager.Instance.panelStack.Count == 0; group.alpha = visible ? 1 : 0; group.interactable = group.blocksRaycasts = visible; }
