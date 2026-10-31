@@ -77,6 +77,21 @@ public class WorldMapToolWindow : EditorWindow
     private Texture2D _sourceTexture;
     private string _textureLoadedFor;
     private bool _initialized;
+    private WorldMapToolPolygonOverlay _polygonOverlay;
+    private bool _showAllVertices;
+    public bool HasUnsavedDraft => _draft != null && _draft.dirty;
+
+    /// <summary>Reload externally generated authoring data without discarding unsaved edits.</summary>
+    public void ReloadSavedDraft()
+    {
+        if (HasUnsavedDraft) throw new InvalidOperationException("绘制工具中有未保存改动，请先保存或另存备份");
+        var loaded = WorldMapToolDataIO.Load(out string message);
+        if (loaded == null) throw new InvalidOperationException(message);
+        _draft = loaded; _undoStack.Clear();
+        _selectedPoint = _selectedRegion = _selectedVertexIndex = _dragIndex = -1;
+        ResetPenHead(null); _polygonOverlay?.Dispose(); _polygonOverlay = null;
+        RefreshSourceTexture(); ValidateNow(); _statusMessage = message; Repaint();
+    }
 
     private ToolMode _mode = ToolMode.Select;
 
@@ -188,6 +203,7 @@ public class WorldMapToolWindow : EditorWindow
     private void OnDisable()
     {
         SaveSidebarPrefs();
+        _polygonOverlay?.Dispose(); _polygonOverlay = null;
         //注：不做自动保存 —— 草稿是"作者的东西"，静默写盘容易覆盖掉别人的意图。
         //未保存状态在工具条上以醒目颜色提示，关窗后下次打开会提示"有未保存改动"。
     }
@@ -472,6 +488,23 @@ public class WorldMapToolWindow : EditorWindow
             GUILayout.Width(150f));
         EditorGUILayout.EndHorizontal();
 
+        // Period selection belongs to the preview in every editing mode.
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("预览时期", GUILayout.Width(64f));
+        uint previewStage = (uint)EditorGUILayout.IntPopup((int)_stage,
+            new[] { "1 战国末期", "2 秦朝", "3 秦末起义初期", "4 楚汉争霸", "5 汉刘邦时期" },
+            new[] { 1, 2, 3, 4, 5 }, GUILayout.Width(165f));
+        if (previewStage != _stage)
+        {
+            _stage = previewStage; _selectedRegion = -1; _selectedVertexIndex = -1; _dragIndex = -1;
+            OnFactionContextChanged(); Repaint();
+        }
+        _showAllVertices = EditorGUILayout.ToggleLeft("全部顶点", _showAllVertices, GUILayout.Width(90f));
+        var historicalStage = WorldMapHistoricalAtlas.Read(_stage);
+        EditorGUILayout.LabelField(historicalStage == null ? "仅显示当前时期的势力区域" : historicalStage.title,
+            EditorStyles.miniLabel);
+        EditorGUILayout.EndHorizontal();
+
         // ── 第 2 行：模式 ──
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("模式", GUILayout.Width(34f));
@@ -498,11 +531,7 @@ public class WorldMapToolWindow : EditorWindow
         }
         else if (_mode == ToolMode.DrawFactionPolygon)
         {
-            EditorGUILayout.LabelField("时期", GUILayout.Width(34f));
             uint prevStage = _stage;
-            _stage = (uint)EditorGUILayout.IntPopup((int)_stage,
-                new[] { "1 战国末期", "2 秦朝", "3 秦末起义初期", "4 楚汉争霸", "5 汉刘邦时期" },
-                new[] { 1, 2, 3, 4, 5 }, GUILayout.Width(140f));
 
             EditorGUILayout.LabelField("FactionId", GUILayout.Width(64f));
             uint prevFaction = _factionId;
@@ -1240,7 +1269,7 @@ public class WorldMapToolWindow : EditorWindow
         for (int i = 0; i < _draft.factionVertices.Count; i++)
         {
             WorldMapFactionVertex v = _draft.factionVertices[i];
-            if (v == null) continue;
+            if (v == null || v.stage != _stage || !v.enable) continue;
             float distance = Vector2.Distance(v.Position, normalized);
             if (distance < vertexDistance) { vertexDistance = distance; vertexIndex = i; }
         }
@@ -1308,7 +1337,7 @@ public class WorldMapToolWindow : EditorWindow
         for (int i = 0; i < _draft.factionVertices.Count; i++)
         {
             WorldMapFactionVertex v = _draft.factionVertices[i];
-            if (v == null) continue;
+            if (v == null || v.stage != _stage || !v.enable) continue;
             float distance = Vector2.Distance(v.Position, normalized);
             if (distance < bestDistance) { bestDistance = distance; best = i; bestIsPoint = false; }
         }
@@ -1384,21 +1413,17 @@ public class WorldMapToolWindow : EditorWindow
     {
         List<WorldMapFactionRegion> regions = WorldMapToolDataIO.GroupRegions(_draft);
         int penHead = EffectivePenHeadIndex();   //-1 = 当前区域没有顶点
+        if (_polygonOverlay == null) _polygonOverlay = new WorldMapToolPolygonOverlay();
+        GUI.DrawTexture(imageRect, _polygonOverlay.Get(_draft, _stage), ScaleMode.StretchToFill, true);
 
         for (int r = 0; r < regions.Count; r++)
         {
             WorldMapFactionRegion region = regions[r];
-            if (region.vertices.Count == 0) continue;
+            if (region.stage != _stage || region.vertices.Count == 0) continue;
 
             Color fill;
             if (!ColorUtility.TryParseHtmlString(region.color, out fill)) fill = Color.magenta;
             fill.a = 0.18f;
-
-            //区域包围盒填充（轻量、不依赖三角化）
-            Rect bounds = WorldMapToolGeometry.Bounds(region.vertices);
-            Vector2 min = WorldMapToolGeometry.NormalizedToCanvas(new Vector2(bounds.xMin, bounds.yMax), imageRect);
-            Vector2 max = WorldMapToolGeometry.NormalizedToCanvas(new Vector2(bounds.xMax, bounds.yMin), imageRect);
-            EditorGUI.DrawRect(new Rect(min.x, min.y, max.x - min.x, max.y - min.y), fill);
 
             Color lineColor = r == _selectedRegion ? new Color(1f, 0.3f, 0.3f, 1f) : fill;
             lineColor.a = 1f;
@@ -1429,12 +1454,14 @@ public class WorldMapToolWindow : EditorWindow
             //顶点把手（笔尖那个跳过，下面单独用醒目样式画）
             for (int k = 0; k < canvasVertices.Count; k++)
             {
+                if (!_showAllVertices && r != _selectedRegion
+                    && !(_mode == ToolMode.DrawFactionPolygon && region.factionId == _factionId && region.regionId == _regionId)) continue;
                 if (k < region.sourceIndices.Count && region.sourceIndices[k] == penHead) continue;
                 DrawDisc(canvasVertices[k], 4f, lineColor, false);
             }
 
             //选区标签
-            if (canvasVertices.Count > 0)
+            if (canvasVertices.Count > 0 && r == _selectedRegion)
             {
                 GUI.Label(new Rect(canvasVertices[0].x + 6f, canvasVertices[0].y - 18f, 220f, 18f),
                     region.Label, EditorStyles.miniLabel);
@@ -1455,6 +1482,8 @@ public class WorldMapToolWindow : EditorWindow
                     "笔尖（下一个点从这里连）", EditorStyles.miniLabel);
             }
         }
+
+        WorldMapHistoricalAtlas.Draw(_draft, _stage, imageRect);
 
         //★ 橡皮筋：当前笔尖 → 鼠标位置（只有"画势力"模式 + 鼠标在画布内 + 笔尖有效时才画）
         if (_mode == ToolMode.DrawFactionPolygon && _mouseInsideCanvas
@@ -2018,7 +2047,7 @@ private string TreeRowText(WorldMapTreeNode node)
         {
             int vertexCount = 0;
             for (int k = 0; k < node.children.Count; k++) vertexCount += node.children[k].vertexCount;
-            return "势力 " + node.factionId + "    " + node.children.Count + " 区域 / " + vertexCount + " 顶点";
+            return WorldMapHistoricalAtlas.Name(node.stage, node.factionId) + " [" + node.factionId + "]    " + node.children.Count + " 区域 / " + vertexCount + " 顶点";
         }
 
         string ready = node.vertexCount >= 3 ? "✔ 满3" : "⚠ 不足3（导出会被跳过）";
