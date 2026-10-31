@@ -121,7 +121,7 @@ namespace Chaos.MVP.Model.Gameplay
                 {
                     var marker = new RunMapMarkerState { Id = id, Name = target.DisplayName, Position = target.InteractionPoint,
                         Kind = npc ? RunMapMarkerKind.Npc : RunMapMarkerKind.Interactive, Portrait = PortraitFor(target.gameObject),
-                        Dimmed = inspectable != null && inspectable.Inspected };
+                        Dimmed = target.Completed };
                     Markers.Add(marker);
                     if (remember) _remembered[id] = new RunMapMarkerState { Id = marker.Id, Name = marker.Name, Position = marker.Position,
                         Kind = marker.Kind, Portrait = marker.Portrait, Dimmed = true };

@@ -10,6 +10,8 @@ namespace Chaos.Gameplay.Interaction
         public static IEnumerable<RunInteractable> Active => Registry.Values;
         public string StableId { get; private set; }
         public abstract string DisplayName { get; }
+        public virtual string ActionLabel => RunInteractionText.Get("Inspect");
+        public virtual bool Completed => false;
         public virtual Vector2 InteractionPoint => transform.position;
         public int ExecutionCount { get; private set; }
 

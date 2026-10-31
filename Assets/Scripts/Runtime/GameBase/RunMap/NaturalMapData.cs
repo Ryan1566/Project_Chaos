@@ -22,6 +22,8 @@ namespace RunMap
         public int buildingCountMin = 1, buildingCountMax = 2, buildingMinSpacing = 16;
         public string buildingPool = "Building";
         public int enemiesPerRegion = 2, npcCount = 1, propCount = 3, interactiveCount = 1, decorationCount = 24;
+        public int gatherableCount;
+        public string contentFingerprint;
         public int contentMinSpacing = 3, entrySafetyRadius = 8;
         public int retryMax = 6, repairMax = 8, maxTileCells = 262144, maxContentObjects = 256;
         public int workColumnsPerFrame = 16;
@@ -58,7 +60,7 @@ namespace RunMap
             if (loopChance < 0 || loopChance > 100 || buildingCountMin < 0 || buildingCountMax < buildingCountMin
                 || buildingCountMax > 12 || buildingMinSpacing < 0 || string.IsNullOrEmpty(buildingPool)) e.Add("回环或结构参数不合法");
             if (enemiesPerRegion < 1 || enemiesPerRegion > 20 || npcCount < 0 || propCount < 0 || interactiveCount < 0
-                || decorationCount < 0 || maxContentObjects < 1 || maxContentObjects > 4096 || contentMinSpacing < 1
+                || decorationCount < 0 || gatherableCount < 0 || gatherableCount > maxContentObjects || maxContentObjects < 1 || maxContentObjects > 4096 || contentMinSpacing < 1
                 || entrySafetyRadius < 6 || entrySafetyRadius * 4 >= widthTiles) e.Add("内容预算或入口安全参数不合法");
             if (retryMax < 1 || retryMax > 30 || repairMax < 0 || repairMax > 32 || workColumnsPerFrame < 1
                 || workColumnsPerFrame > 128 || float.IsNaN(frameBudgetMs) || frameBudgetMs < 1 || frameBudgetMs > 30)
@@ -71,7 +73,7 @@ namespace RunMap
     }
 
     public enum MapSpaceKind : byte { Outdoor, Underground, Building }
-    public enum MapPlacementKind : byte { Player, Ally, Npc, Enemy, Interactive, Prop, Decoration, Exit }
+    public enum MapPlacementKind : byte { Player, Ally, Npc, Enemy, Interactive, Prop, Decoration, Exit, Gatherable }
     [Flags]
     public enum MapCellTags
     {

@@ -28,7 +28,7 @@ namespace Chaos.MVP.Model.Gameplay
             var kind = device == InputDeviceType.Keyboard ? InputManager.BindingKind.Keyboard : InputManager.BindingKind.Gamepad;
             string binding = InputManager.Instance.GetBindingDisplay(InputManager.ActionInteract, kind, device);
             return new RunInteractionState { Visible = true, Available = available, TargetId = target.StableId,
-                Text = available ? RunInteractionText.Get("Prompt", binding, target.DisplayName + " · " + RunInteractionText.Get("Inspect"))
+                Text = available ? RunInteractionText.Get("Prompt", binding, target.DisplayName + " · " + target.ActionLabel)
                     : target.DisplayName + " · " + reason };
         }
         public bool Interact()

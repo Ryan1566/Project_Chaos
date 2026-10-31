@@ -112,6 +112,8 @@ namespace RunMap
             foreach (var p in plan.Placements)
             {
                 if (p.Kind == MapPlacementKind.Player || p.Kind == MapPlacementKind.Ally || p.Kind == MapPlacementKind.Enemy) continue;
+                if (p.Kind == MapPlacementKind.Npc || p.Kind == MapPlacementKind.Interactive || p.Kind == MapPlacementKind.Gatherable)
+                { Chaos.Gameplay.Interaction.RunContentWorldFactory.Create(plan, p, Root.transform); continue; }
                 CreatePlaceholder(p);
             }
             Root.SetActive(true);

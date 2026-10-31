@@ -42,6 +42,9 @@ namespace RunMap
             var row = rows == null ? null : rows.datas.Find(r => r.enable && r.presetId == preset);
             if (row == null) throw new InvalidOperationException("MapGeneration缺少预设" + preset + "的启用参数");
             var p = JsonUtility.FromJson<NaturalMapParameters>(JsonUtility.ToJson(row));
+            var content = Chaos.Gameplay.Interaction.RunContentCatalog.Load();
+            p.gatherableCount = content.gatherableCount;
+            p.contentFingerprint = MapRandom.Hash(JsonUtility.ToJson(content)).ToString("X8");
             if (applyPreview && DebugOverrides != null)
             { p.widthTiles = DebugOverrides.widthTiles; p.heightTiles = DebugOverrides.heightTiles; }
             return p;

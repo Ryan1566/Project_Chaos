@@ -8,6 +8,7 @@ namespace Chaos.Gameplay.Interaction
     {
         public MapPlacementKind Kind;
         public bool Inspected { get; private set; }
+        public override bool Completed => Inspected;
         public override string DisplayName => RunInteractionText.Get(Kind == MapPlacementKind.Npc ? "Npc" : "Interactive");
         public override bool CanInteract(GameObject actor, out string reason)
         { reason = Inspected ? RunInteractionText.Get("Completed") : string.Empty; return !Inspected; }

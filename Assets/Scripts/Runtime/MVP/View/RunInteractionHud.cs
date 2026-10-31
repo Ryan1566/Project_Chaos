@@ -1,5 +1,6 @@
 using Chaos.MVP.Model.Gameplay;
 using Chaos.MVP.Presenter.Gameplay;
+using Chaos.Gameplay.Interaction;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,6 +22,8 @@ public sealed class RunInteractionHud : MonoBehaviour, IRunInteractionView
         label = GameplayUi.Text(box, "Text", "", 26);
         presenter = new RunInteractionPresenter(new RunInteractionModel(gameObject)); presenter.Attach(this);
     }
+    private void OpenContent(RunContentSession session)
+    { if (session.Actor == gameObject && isActiveAndEnabled) RunContentPanel.Open(session); }
     private void Update()
     { presenter?.Tick(InputManager.Instance.WasGameplayPressed(InputManager.ActionInteract)); }
     public void Render(RunInteractionState state)
@@ -29,7 +32,10 @@ public sealed class RunInteractionHud : MonoBehaviour, IRunInteractionView
         label.gameObject.SetActive(state.Visible); label.text = state.Text ?? string.Empty;
         label.color = state.Available ? Color.white : new Color(.8f, .8f, .8f);
     }
-    private void OnDisable() { if (canvasRoot != null) canvasRoot.SetActive(false); }
-    private void OnEnable() { if (canvasRoot != null) canvasRoot.SetActive(true); }
-    private void OnDestroy() { presenter?.Dispose(); if (canvasRoot != null) Destroy(canvasRoot); }
+    private void OnDisable()
+    { RunContentService.OpenRequested -= OpenContent; if (RunContentService.Current?.Actor == gameObject) RunContentService.Current.Close(); if (canvasRoot != null) canvasRoot.SetActive(false); }
+    private void OnEnable()
+    { RunContentService.OpenRequested -= OpenContent; RunContentService.OpenRequested += OpenContent; if (canvasRoot != null) canvasRoot.SetActive(true); }
+    private void OnDestroy()
+    { RunContentService.OpenRequested -= OpenContent; if (RunContentService.Current?.Actor == gameObject) RunContentService.Current.Close(); presenter?.Dispose(); if (canvasRoot != null) Destroy(canvasRoot); }
 }

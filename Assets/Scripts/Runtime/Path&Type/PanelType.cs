@@ -30,5 +30,6 @@ public enum PanelType
     EraProgressPanel,//时代进度面板
     EventPanel,//剧情事件面板
     MarketPanel,//市场面板
-    RunMenuPanel // Formal in-run bag and menu
+    RunMenuPanel, // Formal in-run bag and menu
+    RunContentPanel // Run NPC, chest and gathering dialogue
 }

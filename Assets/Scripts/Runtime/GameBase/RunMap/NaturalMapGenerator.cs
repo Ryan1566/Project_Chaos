@@ -544,6 +544,7 @@ namespace RunMap
             var passes = new List<IMapPopulationPass> {
                 new CountPopulationPass(MapPlacementKind.Npc, settings.npcCount, 20),
                 new CountPopulationPass(MapPlacementKind.Interactive, settings.interactiveCount, 30),
+                new CountPopulationPass(MapPlacementKind.Gatherable, settings.gatherableCount, 35),
                 new CountPopulationPass(MapPlacementKind.Prop, settings.propCount, 40),
                 new CountPopulationPass(MapPlacementKind.Decoration, settings.decorationCount, 50) };
             if (extensions != null) passes.AddRange(extensions);
