@@ -17,7 +17,7 @@ public static class PlayerSpawner
     public const string SpawnRootName = "PrototypeSpawnRoot";
     public const string PlayerRootName = "PrototypePlayerRoot";
 
-    /// <summary>局内相机正交尺寸（比局外取景拉近）。</summary>
+    /// <summary>旧接口的默认尺寸；实际取景由 GameplayCameraSettings 配置。</summary>
     public const float GameplayOrthoSize = 6f;
 
     private static float _savedOrthoSize = -1f;
@@ -107,14 +107,8 @@ public static class PlayerSpawner
         _followTarget = player.transform;
         _ownedFollow = PlayerCameraFollow.Attach(_followCamera, _followTarget);
 
-        //局内相机拉近（记录原值，撤离时恢复）
-        Camera camera = Camera.main;
-        if (camera != null)
-        {
-            if (_savedOrthoSize < 0f) { _savedOrthoSize = camera.orthographicSize; _savedCamera = camera; }
-            camera.orthographicSize = GameplayOrthoSize;
-            ChaosLog.Info(LogChannel.UI, "[局内] 相机 orthographicSize " + _savedOrthoSize + " → " + GameplayOrthoSize);
-        }
+        // GameplayCameraSettings is the single source of the active lens.
+        // CaptureOutsideCameraState runs before generation; no Camera writes while Cinemachine owns it.
 
         //边界墙 + 掉落重生（W3.0b）
         RunBounds.Create(RunMapBootstrap.CurrentLayout, spawnPoint);
@@ -159,7 +153,8 @@ public static class PlayerSpawner
         {
             _ownedFollow.target = null;
             _ownedFollow.enabled = false;
-            if (restoreCamera && _savedOrthoSize >= 0f && _savedCamera != null && _savedCamera == _followCamera)
+            if (restoreCamera && _savedOrthoSize >= 0f && _savedCamera != null && _savedCamera == _followCamera
+                && !GameplayCameraRig.IsFollowing(_savedCamera))
                 _savedCamera.orthographicSize = _savedOrthoSize;
         }
         _ownedFollow = null; _followTarget = null; _followCamera = null;

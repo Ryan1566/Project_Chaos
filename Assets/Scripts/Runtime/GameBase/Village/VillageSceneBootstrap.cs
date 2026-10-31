@@ -59,7 +59,7 @@ public sealed class VillageSceneBootstrap : MonoBehaviour
             foreach (var other in cameras)
                 if (other != camera && other.CompareTag("MainCamera"))
                 { other.enabled = false; var listener = other.GetComponent<AudioListener>(); if (listener != null) listener.enabled = false; }
-            camera.orthographic = true; camera.orthographicSize = 8;
+            // Lens/projection are owned by GameplayCameraSettings and Cinemachine.
             camera.backgroundColor = new Color(.48f, .65f, .8f);
             camera.clearFlags = CameraClearFlags.SolidColor;
             var follow = camera.GetComponent<VillageCamera>(); if (follow == null) follow = camera.gameObject.AddComponent<VillageCamera>();
@@ -114,7 +114,9 @@ public sealed class VillageSceneBootstrap : MonoBehaviour
         if (!IsReady || Avatar == null) return;
         if (Avatar.transform.position.y < Settings.groundY - Settings.groundDepth)
         {
+            Vector3 before = Avatar.transform.position;
             Avatar.transform.position = new Vector2(Settings.playerSpawnX, Settings.groundY + .05f);
+            GameplayCameraRig.NotifyTargetWarped(Avatar.transform, Avatar.transform.position - before);
             var body = Avatar.GetComponent<Rigidbody2D>(); body.position = Avatar.transform.position; body.velocity = Vector2.zero;
         }
     }
@@ -123,19 +125,5 @@ public sealed class VillageSceneBootstrap : MonoBehaviour
         if (Current != this) return;
         var camera = Camera.main; var follow = camera == null ? null : camera.GetComponent<VillageCamera>(); if (follow != null) follow.enabled = false;
         Current = null; IsReady = false; VillageWorkforce.Clear();
-    }
-}
-
-public sealed class VillageCamera : MonoBehaviour
-{
-    private Transform target;
-    private VillageSceneSettings config;
-    public void Initialize(Transform target, VillageSceneSettings config) { this.target = target; this.config = config; LateUpdate(); }
-    private void LateUpdate()
-    {
-        if (target == null) return;
-        var camera = GetComponent<Camera>(); float half = Mathf.Min(config.widthTiles * .5f, camera.orthographicSize * camera.aspect);
-        float x = Mathf.Clamp(target.position.x, -config.widthTiles * .5f + half, config.widthTiles * .5f - half);
-        transform.position = new Vector3(x, config.groundY + 4.5f, -10);
     }
 }

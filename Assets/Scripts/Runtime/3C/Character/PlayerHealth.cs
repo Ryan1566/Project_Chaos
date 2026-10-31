@@ -68,6 +68,7 @@ public class PlayerHealth : MonoBehaviour
         Hp -= amount;
         _invulnUntil = Time.time + invulnSeconds;
         _flashUntil = Time.time + flashSeconds;
+        CombatCameraShake.NotifyHurt(transform, CombatQuery.Center(transform));
 
         ChaosLog.Info(LogChannel.UI, "[玩家] 受到接触伤害 " + amount + "，HP=" + Mathf.Max(0, Hp) + "/" + maxHp
             + "（无敌帧 " + invulnSeconds + "s）");

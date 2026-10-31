@@ -248,6 +248,8 @@ namespace RunMap
         /// </summary>
         public static void FrameCameraOnEntry(MapLayout layout, Camera cam)
         {
+            if (cam == null) cam = Camera.main;
+            if (GameplayCameraRig.IsFollowing(cam)) return;
             if (NaturalMapRuntime.Current != null)
             {
                 if (cam == null) cam = Camera.main;

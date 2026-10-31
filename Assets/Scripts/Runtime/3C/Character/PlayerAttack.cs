@@ -88,7 +88,9 @@ public class PlayerAttack : MonoBehaviour
             damaged++;
         }
         LastHitCount = damaged;
-        RunCombatFeedback.For(this).Strike(CombatQuery.Center(transform), center + Vector2.right * (hitBoxSize.x * 0.5f * facing));
+        Vector2 hitPoint = center + Vector2.right * (hitBoxSize.x * 0.5f * facing);
+        if (damaged > 0) CombatCameraShake.NotifyHit(transform, hitPoint);
+        RunCombatFeedback.For(this).Strike(CombatQuery.Center(transform), hitPoint);
 
         //占位表现：前移 + 变色（无攻击动画）
         if (_skeleton != null) _skeleton.transform.localPosition = _spineBasePosition + new Vector3(0.12f * facing, 0f, 0f);
