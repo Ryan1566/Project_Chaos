@@ -9,20 +9,20 @@
         "repository": "https://github.com/Ryan1566/Project_Chaos.git"
       }
     ],
-    "compiled_at": "2026-10-31T09:04:13.505Z",
+    "compiled_at": "2026-10-31T16:29:35.425Z",
     "stats": {
       "tree_count": 1,
-      "module_count": 437,
-      "leaf_count": 351,
-      "api_count": 960,
-      "dep_count": 227,
+      "module_count": 453,
+      "leaf_count": 362,
+      "api_count": 1003,
+      "dep_count": 236,
       "cross_tree_dep_count": 0,
       "max_depth": 7,
-      "layout_count": 86,
+      "layout_count": 91,
       "planned_count": 0,
       "deprecated_count": 0,
       "policy_rule_count": 5,
-      "change_count": 7,
+      "change_count": 8,
       "open_change_count": 0
     }
   },
@@ -52,9 +52,9 @@
       "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "repository": "https://github.com/Ryan1566/Project_Chaos.git",
       "aggregate": {
-        "descendant_count": 436,
+        "descendant_count": 452,
         "own_api_count": 0,
-        "inherited_api_count": 960,
+        "inherited_api_count": 1003,
         "dep_out": 0,
         "dep_in": 0
       }
@@ -1659,9 +1659,9 @@
           "path": "Assets/Fonts/cn/XiangcuiDengcusong.ttf"
         }
       ],
-      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
-      "updated_at": "2026-10-31T08:56:27.179Z",
-      "fingerprint": "58301ec63206a4f10bb41f5b08d840996f2d4d17105a3bac19daa86643d652d5",
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:20:37.038Z",
+      "fingerprint": "55eccd9145a58707705f29bc5bc712c3d346d031279982d3c89000d53c07963f",
       "apis": [
         {
           "protocol": "file",
@@ -3473,9 +3473,9 @@
           "path": "Assets/Resources/UIPanels/SubUI_Prefab/RecordCell.prefab"
         }
       ],
-      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
-      "updated_at": "2026-10-31T08:56:40.596Z",
-      "fingerprint": "70275525deb162c04d741be0de972332fdc8f96de513122119b65b8e9f94e675",
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:20:37.048Z",
+      "fingerprint": "708e969c069989ddcfa347289970d8fc6936410d9a07edbff45537e55e5c307e",
       "apis": [
         {
           "protocol": "file",
@@ -4587,9 +4587,9 @@
           "end_line": 1003
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:30:54.570Z",
-      "fingerprint": "44e298ce80946d527efd8c7ff3ed077a26bdf2f9bfcf56b3c2dd49dc7256c37d",
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:20:37.049Z",
+      "fingerprint": "51fa724dae4a11316bf65bbce38899bed2e9f49de840af68b95bfef233636cf4",
       "apis": [
         {
           "protocol": "file",
@@ -5147,9 +5147,9 @@
           "path": "Assets/Scripts/Runtime/MVP/View/VillageHud.cs"
         }
       ],
-      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
-      "updated_at": "2026-10-31T09:03:54.711Z",
-      "fingerprint": "5343da48b7730ef09e8ef487c1ab237954a062330917c96af77fa23a80e8c768",
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:20:37.063Z",
+      "fingerprint": "348a3319dc545ea75f0c67e1355904b3dcec31047d9804c4b67f2fecf3cea472",
       "aggregate": {
         "descendant_count": 6,
         "own_api_count": 0,
@@ -5203,9 +5203,9 @@
           "path": "Assets/Scripts/Runtime/Combat/CombatQuery.cs"
         }
       ],
-      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
-      "updated_at": "2026-10-31T09:03:54.690Z",
-      "fingerprint": "90afa486d15658612762d5d1ebc2000b55a6e30fe26ac66c022d01bc701ae25e",
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:20:37.053Z",
+      "fingerprint": "a5500bf418c4e55fbbe651ca09a19e1f4f12ed6ea88eca89d7393361ca6609d3",
       "apis": [
         {
           "protocol": "rpc",
@@ -5558,7 +5558,7 @@
         "own_api_count": 4,
         "inherited_api_count": 0,
         "dep_out": 2,
-        "dep_in": 1
+        "dep_in": 2
       }
     },
     "project-chaos.bootstrap.w5-gameplay.team-supply": {
@@ -5682,9 +5682,9 @@
           "path": "Assets/Scripts/Runtime/MVP/View/VillageHud.cs"
         }
       ],
-      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
-      "updated_at": "2026-10-31T09:03:54.696Z",
-      "fingerprint": "c3d84053d4d5dc2cc0c6383691b380ddd25713e50f105871f4561958ca0b0417",
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:20:37.066Z",
+      "fingerprint": "b37c532502666ae471df42da0c1385caecbf1b6b10f601f8432a65507bdd2bc4",
       "apis": [
         {
           "protocol": "rpc",
@@ -8988,9 +8988,9 @@
         }
       ],
       "aggregate": {
-        "descendant_count": 41,
+        "descendant_count": 44,
         "own_api_count": 0,
-        "inherited_api_count": 146,
+        "inherited_api_count": 155,
         "dep_out": 2,
         "dep_in": 0
       }
@@ -9190,6 +9190,232 @@
         "inherited_api_count": 0,
         "dep_out": 0,
         "dep_in": 1
+      }
+    },
+    "project-chaos.editor-tools.camera-tool": {
+      "uid": "b7c00001",
+      "id": "project-chaos.editor-tools.camera-tool",
+      "parent": "project-chaos.editor-tools",
+      "tree": "project-chaos",
+      "depth": 3,
+      "tags": [
+        "editor",
+        "camera",
+        "verification"
+      ],
+      "name": {
+        "zh": "镜头工具（Cinemachine）",
+        "en": "Camera Tool (Cinemachine)"
+      },
+      "description": {
+        "zh": "3C 镜头栈的编辑器工具：菜单/批处理触发的验证器会在临时场景里搭出局内/村庄镜头，运行时探针则在游戏运行时监视 Cinemachine 跟随、构图与 Impulse 抖动。工具读取已发布的 rig 与抖动组件，不重新实现一遍。\n",
+        "en": "Editor tooling for the 3C camera stack: menu- and batch-driven verifications that build the run/village camera rig in a scratch scene and runtime probes that watch Cinemachine follow, framing and impulse shake while the game runs. Reads the shipped rig and shake components rather than reimplementing them.\n"
+      },
+      "source": [],
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:28:28.981Z",
+      "fingerprint": "pending",
+      "aggregate": {
+        "descendant_count": 2,
+        "own_api_count": 0,
+        "inherited_api_count": 9,
+        "dep_out": 0,
+        "dep_in": 0
+      }
+    },
+    "project-chaos.editor-tools.camera-tool.runtime-probes": {
+      "uid": "b7c00003",
+      "id": "project-chaos.editor-tools.camera-tool.runtime-probes",
+      "parent": "project-chaos.editor-tools.camera-tool",
+      "tree": "project-chaos",
+      "depth": 4,
+      "tags": [
+        "editor",
+        "camera",
+        "probe"
+      ],
+      "name": {
+        "zh": "镜头运行时探针",
+        "en": "Camera Runtime Probes"
+      },
+      "description": {
+        "zh": "Play 模式探针：挂到正在跑的游戏上，报告 Cinemachine 跟随/构图与 Impulse 抖动是否真的在移动相机；含一个假受击目标，用于在没有玩法输入的情况下触发命中。\n",
+        "en": "Play-mode probes that attach to the running game and report whether Cinemachine follow/framing and impulse shake actually move the camera, including a dummy damage target used to trigger hits without gameplay input.\n"
+      },
+      "source": [
+        {
+          "path": "Assets/Scripts/Editor/CameraTool/CinemachineFramingRuntimeProbe.cs"
+        },
+        {
+          "path": "Assets/Scripts/Editor/CameraTool/CinemachineShakeRuntimeProbe.cs"
+        }
+      ],
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:29:20.167Z",
+      "fingerprint": "ed745838cd648486fcde9926513eb44841a03d71ede572f482f40c7c0a40cd3a",
+      "apis": [
+        {
+          "protocol": "rpc",
+          "path": "CinemachineFramingRuntimeProbe.Start",
+          "description": {
+            "zh": "Start()：开始构图运行时探针。\n",
+            "en": "Start(): begins the framing runtime probe.\n"
+          },
+          "key": "rpc:CinemachineFramingRuntimeProbe.Start"
+        },
+        {
+          "protocol": "rpc",
+          "path": "CinemachineFramingRuntimeProbe.Status",
+          "description": {
+            "zh": "Status：最新的探针状态串。\n",
+            "en": "Status: latest probe status string.\n"
+          },
+          "key": "rpc:CinemachineFramingRuntimeProbe.Status"
+        },
+        {
+          "protocol": "rpc",
+          "path": "CinemachineShakeRuntimeProbe.Start",
+          "description": {
+            "zh": "Start()：开始 Impulse 抖动运行时探针。\n",
+            "en": "Start(): begins the impulse-shake runtime probe.\n"
+          },
+          "key": "rpc:CinemachineShakeRuntimeProbe.Start"
+        },
+        {
+          "protocol": "rpc",
+          "path": "CinemachineProbeDamageTarget.TakeDamage",
+          "description": {
+            "zh": "TakeDamage(amount)：给探针计命中的假目标。\n",
+            "en": "TakeDamage(amount): dummy target that counts hits for the probe.\n"
+          },
+          "key": "rpc:CinemachineProbeDamageTarget.TakeDamage"
+        }
+      ],
+      "deps": [
+        {
+          "kind": "reference",
+          "to": "project-chaos.gameplay-3c.camera.shake",
+          "from_api": "rpc:CinemachineShakeRuntimeProbe.Start",
+          "label": {
+            "zh": "探测线上抖动",
+            "en": "Probes the live shake"
+          },
+          "cross_tree": false
+        }
+      ],
+      "aggregate": {
+        "descendant_count": 0,
+        "own_api_count": 4,
+        "inherited_api_count": 0,
+        "dep_out": 1,
+        "dep_in": 0
+      }
+    },
+    "project-chaos.editor-tools.camera-tool.verification": {
+      "uid": "b7c00002",
+      "id": "project-chaos.editor-tools.camera-tool.verification",
+      "parent": "project-chaos.editor-tools.camera-tool",
+      "tree": "project-chaos",
+      "depth": 4,
+      "tags": [
+        "editor",
+        "camera",
+        "verification"
+      ],
+      "name": {
+        "zh": "镜头验证器",
+        "en": "Camera Verifications"
+      },
+      "description": {
+        "zh": "对已发布镜头栈的行为验证：CombatCameraShakeVerification 校验命中/受击/重击抖动、强度上限与最小触发间隔；CinemachineFlowVerification 走一遍跟随、构图与村庄模式切换。两者都在 Tools/Project Chaos/验证 下加临时菜单项。\n",
+        "en": "Verifications that assert the shipped camera stack behaves: CombatCameraShakeVerification checks hit/hurt/heavy impulses, the intensity cap and the min trigger interval; CinemachineFlowVerification walks follow, framing and village-mode switching. Both add a temporary menu entry under Tools/Project Chaos/验证.\n"
+      },
+      "source": [
+        {
+          "path": "Assets/Scripts/Editor/CameraTool/CombatCameraShakeVerification.cs"
+        },
+        {
+          "path": "Assets/Scripts/Editor/CameraTool/CinemachineFlowVerification.cs"
+        }
+      ],
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:29:20.166Z",
+      "fingerprint": "dd421110442033b87b259048dd0c52be9cd5df6cdd589e1088c57f132ac95ab2",
+      "apis": [
+        {
+          "protocol": "rpc",
+          "path": "CombatCameraShakeVerification.Verify",
+          "description": {
+            "zh": "Verify()：在临时场景跑一遍验证并返回报告串。\n",
+            "en": "Verify(): builds a scratch scene and returns the report string.\n"
+          },
+          "key": "rpc:CombatCameraShakeVerification.Verify"
+        },
+        {
+          "protocol": "rpc",
+          "path": "CombatCameraShakeVerification.VerifyBatch",
+          "description": {
+            "zh": "VerifyBatch()：给 CI / batchmode 的无头入口。\n",
+            "en": "VerifyBatch(): headless entry for CI and batchmode.\n"
+          },
+          "key": "rpc:CombatCameraShakeVerification.VerifyBatch"
+        },
+        {
+          "protocol": "rpc",
+          "path": "CombatCameraShakeVerification.LastPassed",
+          "description": {
+            "zh": "LastPassed：最近一次验证的结果。\n",
+            "en": "LastPassed: result of the most recent verification run.\n"
+          },
+          "key": "rpc:CombatCameraShakeVerification.LastPassed"
+        },
+        {
+          "protocol": "rpc",
+          "path": "CinemachineFlowVerification.Start",
+          "description": {
+            "zh": "Start()：跑跟随/构图/村庄模式的流程验证。\n",
+            "en": "Start(): runs the follow/framing/village-mode flow verification.\n"
+          },
+          "key": "rpc:CinemachineFlowVerification.Start"
+        },
+        {
+          "protocol": "rpc",
+          "path": "CinemachineFlowVerification.Status",
+          "description": {
+            "zh": "Status：运行中验证的可读状态串。\n",
+            "en": "Status: human-readable status of the running verification.\n"
+          },
+          "key": "rpc:CinemachineFlowVerification.Status"
+        }
+      ],
+      "deps": [
+        {
+          "kind": "reference",
+          "to": "project-chaos.gameplay-3c.camera.rig",
+          "from_api": "rpc:CombatCameraShakeVerification.Verify",
+          "label": {
+            "zh": "验证已发布的控制器",
+            "en": "Verifies the shipped rig"
+          },
+          "cross_tree": false
+        },
+        {
+          "kind": "reference",
+          "to": "project-chaos.gameplay-3c.camera.shake",
+          "from_api": "rpc:CombatCameraShakeVerification.Verify",
+          "label": {
+            "zh": "验证抖动栈",
+            "en": "Verifies the shake stack"
+          },
+          "cross_tree": false
+        }
+      ],
+      "aggregate": {
+        "descendant_count": 0,
+        "own_api_count": 5,
+        "inherited_api_count": 0,
+        "dep_out": 2,
+        "dep_in": 0
       }
     },
     "project-chaos.editor-tools.dialogue-editor": {
@@ -11866,9 +12092,9 @@
         }
       ],
       "aggregate": {
-        "descendant_count": 120,
+        "descendant_count": 106,
         "own_api_count": 0,
-        "inherited_api_count": 330,
+        "inherited_api_count": 292,
         "dep_out": 1,
         "dep_in": 4
       }
@@ -12422,9 +12648,9 @@
           "end_line": 468
         }
       ],
-      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
-      "updated_at": "2026-10-31T08:54:22.614Z",
-      "fingerprint": "255736699a608b0d4c4a4d5756dd5e2ffa04756b7559541748789d167612db08",
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:20:37.066Z",
+      "fingerprint": "ff6d43a6c38a0a5e5a7eb3d7a4ca8b2488e488c1481911b835bf5e81898295f8",
       "apis": [
         {
           "protocol": "rpc",
@@ -12544,9 +12770,9 @@
           "end_line": 454
         }
       ],
-      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
-      "updated_at": "2026-10-31T08:54:22.615Z",
-      "fingerprint": "255736699a608b0d4c4a4d5756dd5e2ffa04756b7559541748789d167612db08",
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:20:37.067Z",
+      "fingerprint": "ff6d43a6c38a0a5e5a7eb3d7a4ca8b2488e488c1481911b835bf5e81898295f8",
       "apis": [
         {
           "protocol": "file",
@@ -12690,7 +12916,7 @@
       "deps": [
         {
           "kind": "call",
-          "to": "project-chaos.framework.input.tick",
+          "to": "project-chaos.gameplay-3c.control.input.tick",
           "from_api": "file:Assets/Scripts/Runtime/GameTest/InputTest/InputTest.cs",
           "to_api": "rpc:InputManager.StartTickOrNot",
           "label": {
@@ -13558,945 +13784,6 @@
         "inherited_api_count": 0,
         "dep_out": 0,
         "dep_in": 3
-      }
-    },
-    "project-chaos.framework.input": {
-      "uid": "f1c00005",
-      "id": "project-chaos.framework.input",
-      "parent": "project-chaos.framework",
-      "tree": "project-chaos",
-      "depth": 3,
-      "name": {
-        "zh": "输入与改键",
-        "en": "Input & Rebinding"
-      },
-      "description": {
-        "zh": "InputManager：加载 InputActionAsset（Player 映射，Move/Attack/Jump），覆盖项 JSON 存取、单键/组合键重置、按键显示名与控制键解析、改键（Interaction Rebinding）全流程（步骤拆分、监听、冲突清空、取消）、以及按键事件轮询。\n",
-        "en": "InputManager: loads the InputActionAsset (Player map, Move/Attack/Jump), override JSON persistence, per-part reset, key display names and control-key parsing, the full rebinding flow (step split, listening, conflict clearing, cancel), and key-event polling.\n"
-      },
-      "source": [],
-      "revision": "75df668e8bb1abec0b4352190c3082c585e2deef",
-      "updated_at": "2026-10-06T12:10:00Z",
-      "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "aggregate": {
-        "descendant_count": 8,
-        "own_api_count": 0,
-        "inherited_api_count": 23,
-        "dep_out": 0,
-        "dep_in": 0
-      }
-    },
-    "project-chaos.framework.input-icons": {
-      "uid": "f1c00006",
-      "id": "project-chaos.framework.input-icons",
-      "parent": "project-chaos.framework",
-      "tree": "project-chaos",
-      "depth": 3,
-      "name": {
-        "zh": "按键图标映射",
-        "en": "Key Icon Map"
-      },
-      "description": {
-        "zh": "KeyIconMap ScriptableObject：按控制键路径 + 设备家族（键盘/鼠标/PS/Xbox）查图标与颜色，含缓存加载、精确/模糊查找、缺项自动补录、条目排序与精灵收集；供改键行显示手柄/键鼠图标。\n",
-        "en": "KeyIconMap ScriptableObject: resolves icons and colors by control-key path and device family (keyboard/mouse/PS/Xbox), with cached loading, exact/fuzzy lookup, auto-added missing entries, entry sorting and sprite collection for keybinding rows.\n"
-      },
-      "source": [],
-      "revision": "75df668e8bb1abec0b4352190c3082c585e2deef",
-      "updated_at": "2026-10-06T12:10:00Z",
-      "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "aggregate": {
-        "descendant_count": 4,
-        "own_api_count": 0,
-        "inherited_api_count": 15,
-        "dep_out": 0,
-        "dep_in": 0
-      }
-    },
-    "project-chaos.framework.input-icons.cache": {
-      "uid": "f1c00029",
-      "id": "project-chaos.framework.input-icons.cache",
-      "parent": "project-chaos.framework.input-icons",
-      "tree": "project-chaos",
-      "depth": 4,
-      "name": {
-        "zh": "图标映射缓存",
-        "en": "Icon Map Cache"
-      },
-      "description": {
-        "zh": "KeyIconMap 缓存：Active 懒加载访问、Load 显式加载、ResetCache 清缓存。\n",
-        "en": "KeyIconMap caching: Active accessor with lazy Resources loading, Load and ResetCache.\n"
-      },
-      "source": [
-        {
-          "path": "Assets/Scripts/Runtime/GameBase/InputManager/KeyIconMap.cs",
-          "line": 121,
-          "end_line": 163
-        }
-      ],
-      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
-      "updated_at": "2026-10-31T08:56:40.599Z",
-      "fingerprint": "dce2712ad67121c6bd9ec2cabd8da2255fe257ba39608aa239a2482f97fe189e",
-      "apis": [
-        {
-          "protocol": "rpc",
-          "path": "KeyIconMap.Active",
-          "description": {
-            "zh": "当前生效的映射表实例（自动从 Resources 加载）。\n",
-            "en": "The active map instance (auto-loads from Resources).\n"
-          },
-          "key": "rpc:KeyIconMap.Active"
-        },
-        {
-          "protocol": "rpc",
-          "path": "KeyIconMap.Load",
-          "description": {
-            "zh": "从 Resources/Data/Input/KeyIconMap 加载映射表。\n",
-            "en": "Loads the KeyIconMap asset from Resources.\n"
-          },
-          "key": "rpc:KeyIconMap.Load"
-        },
-        {
-          "protocol": "rpc",
-          "path": "KeyIconMap.ResetCache",
-          "description": {
-            "zh": "清空缓存实例。\n",
-            "en": "Clears the cached instance.\n"
-          },
-          "key": "rpc:KeyIconMap.ResetCache"
-        }
-      ],
-      "deps": [
-        {
-          "kind": "reference",
-          "to": "project-chaos.framework.input-icons.map-asset",
-          "from_api": "rpc:KeyIconMap.Load",
-          "to_api": "rpc:KeyIconMap.style",
-          "label": {
-            "zh": "图标映射表",
-            "en": "Icon map asset"
-          },
-          "cross_tree": false
-        },
-        {
-          "kind": "call",
-          "to": "project-chaos.framework.logging.core",
-          "from_api": "rpc:KeyIconMap.Load",
-          "to_api": "rpc:ChaosLog.Write",
-          "label": {
-            "zh": "加载告警日志",
-            "en": "Load warning log"
-          },
-          "cross_tree": false
-        }
-      ],
-      "aggregate": {
-        "descendant_count": 0,
-        "own_api_count": 3,
-        "inherited_api_count": 0,
-        "dep_out": 2,
-        "dep_in": 0
-      }
-    },
-    "project-chaos.framework.input-icons.edit": {
-      "uid": "f1c0002b",
-      "id": "project-chaos.framework.input-icons.edit",
-      "parent": "project-chaos.framework.input-icons",
-      "tree": "project-chaos",
-      "depth": 4,
-      "name": {
-        "zh": "映射表维护",
-        "en": "Icon Map Maintenance"
-      },
-      "description": {
-        "zh": "映射表维护：精确查找、缺项补录、条目排序与精灵收集（供编辑器窗口与图集构建）。\n",
-        "en": "Icon map maintenance: exact lookup, get-or-add entry for backfilling, deterministic sorting and sprite collection.\n"
-      },
-      "source": [
-        {
-          "path": "Assets/Scripts/Runtime/GameBase/InputManager/KeyIconMap.cs",
-          "line": 216,
-          "end_line": 285
-        }
-      ],
-      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
-      "updated_at": "2026-10-31T08:56:40.599Z",
-      "fingerprint": "dce2712ad67121c6bd9ec2cabd8da2255fe257ba39608aa239a2482f97fe189e",
-      "apis": [
-        {
-          "protocol": "rpc",
-          "path": "KeyIconMap.FindEntryExact",
-          "description": {
-            "zh": "严格匹配查找（不降级）。\n",
-            "en": "Exact-match lookup without fallback.\n"
-          },
-          "key": "rpc:KeyIconMap.FindEntryExact"
-        },
-        {
-          "protocol": "rpc",
-          "path": "KeyIconMap.GetOrAddEntry",
-          "description": {
-            "zh": "取条目，不存在则新建（供编辑器工具补录）。\n",
-            "en": "Gets or creates an entry (used by editor tooling).\n"
-          },
-          "key": "rpc:KeyIconMap.GetOrAddEntry"
-        },
-        {
-          "protocol": "rpc",
-          "path": "KeyIconMap.SortEntries",
-          "description": {
-            "zh": "按规则排序条目。\n",
-            "en": "Sorts entries deterministically.\n"
-          },
-          "key": "rpc:KeyIconMap.SortEntries"
-        },
-        {
-          "protocol": "rpc",
-          "path": "KeyIconMap.CollectSprites",
-          "description": {
-            "zh": "收集全部条目引用的精灵。\n",
-            "en": "Collects all sprites referenced by entries.\n"
-          },
-          "key": "rpc:KeyIconMap.CollectSprites"
-        }
-      ],
-      "deps": [
-        {
-          "kind": "reference",
-          "to": "project-chaos.framework.input-icons.map-asset",
-          "from_api": "rpc:KeyIconMap.SortEntries",
-          "to_api": "rpc:KeyIconMap.style",
-          "label": {
-            "zh": "图标映射表",
-            "en": "Icon map asset"
-          },
-          "cross_tree": false
-        }
-      ],
-      "aggregate": {
-        "descendant_count": 0,
-        "own_api_count": 4,
-        "inherited_api_count": 0,
-        "dep_out": 1,
-        "dep_in": 0
-      }
-    },
-    "project-chaos.framework.input-icons.map-asset": {
-      "uid": "f1c00028",
-      "id": "project-chaos.framework.input-icons.map-asset",
-      "parent": "project-chaos.framework.input-icons",
-      "tree": "project-chaos",
-      "depth": 4,
-      "name": {
-        "zh": "按键图标映射表",
-        "en": "Key Icon Map Asset"
-      },
-      "description": {
-        "zh": "KeyIconMap 资产数据：IconStyle 枚举、Entry 条目（控制键/设备家族/图标/来源）、页签图标与着色设置。\n",
-        "en": "KeyIconMap asset data: IconStyle enum, Entry list (controlKey/family/icon), tab icons and tint settings.\n"
-      },
-      "source": [
-        {
-          "path": "Assets/Scripts/Runtime/GameBase/InputManager/KeyIconMap.cs",
-          "line": 1,
-          "end_line": 120
-        }
-      ],
-      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
-      "updated_at": "2026-10-31T08:56:40.600Z",
-      "fingerprint": "dce2712ad67121c6bd9ec2cabd8da2255fe257ba39608aa239a2482f97fe189e",
-      "apis": [
-        {
-          "protocol": "rpc",
-          "path": "KeyIconMap.style",
-          "description": {
-            "zh": "图标样式（实心/描边）。\n",
-            "en": "Icon rendering style (filled/outline).\n"
-          },
-          "key": "rpc:KeyIconMap.style"
-        },
-        {
-          "protocol": "rpc",
-          "path": "KeyIconMap.preferGlyphVariant",
-          "description": {
-            "zh": "优先使用字形变体图标。\n",
-            "en": "Prefer glyph variant icons when available.\n"
-          },
-          "key": "rpc:KeyIconMap.preferGlyphVariant"
-        },
-        {
-          "protocol": "rpc",
-          "path": "KeyIconMap.tint",
-          "description": {
-            "zh": "未使用原色图标时的着色。\n",
-            "en": "Tint color applied to raw-color icons.\n"
-          },
-          "key": "rpc:KeyIconMap.tint"
-        },
-        {
-          "protocol": "rpc",
-          "path": "KeyIconMap.keyboardTabIcon",
-          "description": {
-            "zh": "键鼠页签图标。\n",
-            "en": "Keyboard/mouse tab icon.\n"
-          },
-          "key": "rpc:KeyIconMap.keyboardTabIcon"
-        }
-      ],
-      "deps": [
-        {
-          "kind": "reference",
-          "to": "project-chaos.framework.paths.global-path",
-          "from_api": "rpc:KeyIconMap.style",
-          "to_api": "rpc:GlobalPath.res_KeyIconMapPath",
-          "label": {
-            "zh": "图标表路径",
-            "en": "Icon map path"
-          },
-          "cross_tree": false
-        }
-      ],
-      "aggregate": {
-        "descendant_count": 0,
-        "own_api_count": 4,
-        "inherited_api_count": 0,
-        "dep_out": 1,
-        "dep_in": 3
-      }
-    },
-    "project-chaos.framework.input-icons.query": {
-      "uid": "f1c0002a",
-      "id": "project-chaos.framework.input-icons.query",
-      "parent": "project-chaos.framework.input-icons",
-      "tree": "project-chaos",
-      "depth": 4,
-      "name": {
-        "zh": "图标查询",
-        "en": "Icon Lookup"
-      },
-      "description": {
-        "zh": "图标查询：按控制键 + 设备家族查条目，取图标与颜色，取键鼠/手柄页签图标。\n",
-        "en": "Icon lookup: FindEntry by control key plus device family, GetIcon/GetIconColor, and GetTabIcon for keyboard/gamepad tabs.\n"
-      },
-      "source": [
-        {
-          "path": "Assets/Scripts/Runtime/GameBase/InputManager/KeyIconMap.cs",
-          "line": 164,
-          "end_line": 215
-        }
-      ],
-      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
-      "updated_at": "2026-10-31T08:56:40.600Z",
-      "fingerprint": "dce2712ad67121c6bd9ec2cabd8da2255fe257ba39608aa239a2482f97fe189e",
-      "apis": [
-        {
-          "protocol": "rpc",
-          "path": "KeyIconMap.FindEntry",
-          "description": {
-            "zh": "按控制键与设备家族查找条目。\n",
-            "en": "Finds an entry by control key and device family.\n"
-          },
-          "key": "rpc:KeyIconMap.FindEntry"
-        },
-        {
-          "protocol": "rpc",
-          "path": "KeyIconMap.GetIcon",
-          "description": {
-            "zh": "取控制键对应的图标。\n",
-            "en": "Gets the sprite for a control key.\n"
-          },
-          "key": "rpc:KeyIconMap.GetIcon"
-        },
-        {
-          "protocol": "rpc",
-          "path": "KeyIconMap.GetIconColor",
-          "description": {
-            "zh": "取控制键图标的颜色。\n",
-            "en": "Gets the tint color for a control key.\n"
-          },
-          "key": "rpc:KeyIconMap.GetIconColor"
-        },
-        {
-          "protocol": "rpc",
-          "path": "KeyIconMap.GetTabIcon",
-          "description": {
-            "zh": "取键盘/手柄页签图标。\n",
-            "en": "Gets the keyboard/gamepad tab icon.\n"
-          },
-          "key": "rpc:KeyIconMap.GetTabIcon"
-        }
-      ],
-      "deps": [
-        {
-          "kind": "reference",
-          "to": "project-chaos.framework.input-icons.map-asset",
-          "from_api": "rpc:KeyIconMap.GetIcon",
-          "to_api": "rpc:KeyIconMap.style",
-          "label": {
-            "zh": "图标映射表",
-            "en": "Icon map asset"
-          },
-          "cross_tree": false
-        }
-      ],
-      "aggregate": {
-        "descendant_count": 0,
-        "own_api_count": 4,
-        "inherited_api_count": 0,
-        "dep_out": 1,
-        "dep_in": 1
-      }
-    },
-    "project-chaos.framework.input.display": {
-      "uid": "f1c00023",
-      "id": "project-chaos.framework.input.display",
-      "parent": "project-chaos.framework.input",
-      "tree": "project-chaos",
-      "depth": 4,
-      "name": {
-        "zh": "绑定显示解析",
-        "en": "Binding Display"
-      },
-      "description": {
-        "zh": "绑定显示解析：取槽位的文本/图标/颜色、有效控制路径、稳定查表键、图标家族与可读按键名。\n",
-        "en": "Binding display: resolves text/icon/tint for a slot, effective control paths, stable lookup keys, icon family and human-readable names.\n"
-      },
-      "source": [
-        {
-          "path": "Assets/Scripts/Runtime/GameBase/InputManager/InputManager.cs",
-          "line": 357,
-          "end_line": 604
-        }
-      ],
-      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
-      "updated_at": "2026-10-31T08:54:22.615Z",
-      "fingerprint": "91856414ec49bb874cc0c264ab798d341f2263a768ae022c2cef522278480ccd",
-      "apis": [
-        {
-          "protocol": "rpc",
-          "path": "InputManager.GetBindingVisual",
-          "description": {
-            "zh": "取绑定的显示文本/图标/颜色（供设置行渲染）。\n",
-            "en": "Gets text, sprite and tint for a binding display slot.\n"
-          },
-          "key": "rpc:InputManager.GetBindingVisual"
-        },
-        {
-          "protocol": "rpc",
-          "path": "InputManager.GetBindingPath",
-          "description": {
-            "zh": "取绑定的有效控制路径。\n",
-            "en": "Gets the effective control path of a binding.\n"
-          },
-          "key": "rpc:InputManager.GetBindingPath"
-        },
-        {
-          "protocol": "rpc",
-          "path": "InputManager.ControlKey",
-          "description": {
-            "zh": "把控制路径转为稳定的查表键。\n",
-            "en": "Converts a control path into a stable lookup key.\n"
-          },
-          "key": "rpc:InputManager.ControlKey"
-        },
-        {
-          "protocol": "rpc",
-          "path": "InputManager.IconFamily",
-          "description": {
-            "zh": "判定路径所属的图标家族（键盘/鼠标/PS/Xbox）。\n",
-            "en": "Resolves which icon family a path belongs to.\n"
-          },
-          "key": "rpc:InputManager.IconFamily"
-        },
-        {
-          "protocol": "rpc",
-          "path": "InputManager.DescribePath",
-          "description": {
-            "zh": "把控制路径转为可读的按键名。\n",
-            "en": "Human-readable description of a control path.\n"
-          },
-          "key": "rpc:InputManager.DescribePath"
-        }
-      ],
-      "deps": [
-        {
-          "kind": "call",
-          "to": "project-chaos.framework.input-icons.query",
-          "from_api": "rpc:InputManager.GetBindingVisual",
-          "to_api": "rpc:KeyIconMap.GetIcon",
-          "label": {
-            "zh": "按键图标查询",
-            "en": "Key icon lookup"
-          },
-          "cross_tree": false
-        },
-        {
-          "kind": "reference",
-          "to": "project-chaos.framework.settings.enums",
-          "from_api": "rpc:InputManager.DescribePath",
-          "to_api": "rpc:SettingsLabels.GamepadButtonName",
-          "label": {
-            "zh": "手柄按键名",
-            "en": "Gamepad key names"
-          },
-          "cross_tree": false
-        }
-      ],
-      "aggregate": {
-        "descendant_count": 0,
-        "own_api_count": 5,
-        "inherited_api_count": 0,
-        "dep_out": 2,
-        "dep_in": 0
-      }
-    },
-    "project-chaos.framework.input.manager-core": {
-      "uid": "f1c00020",
-      "id": "project-chaos.framework.input.manager-core",
-      "parent": "project-chaos.framework.input",
-      "tree": "project-chaos",
-      "depth": 4,
-      "name": {
-        "zh": "输入管理器核心",
-        "en": "InputManager Core"
-      },
-      "description": {
-        "zh": "InputManager 核心：Player 映射与 Move/Attack/Jump 动作常量、Init 加载 InputActionAsset、设备族转换、改键中判定。\n",
-        "en": "InputManager core: Player map constants, Init loading the InputActionAsset, device-family conversion and the IsRebinding flag.\n"
-      },
-      "source": [
-        {
-          "path": "Assets/Scripts/Runtime/GameBase/InputManager/InputManager.cs",
-          "line": 1,
-          "end_line": 200
-        }
-      ],
-      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
-      "updated_at": "2026-10-31T08:54:22.616Z",
-      "fingerprint": "91856414ec49bb874cc0c264ab798d341f2263a768ae022c2cef522278480ccd",
-      "apis": [
-        {
-          "protocol": "rpc",
-          "path": "InputManager.MapName",
-          "description": {
-            "zh": "输入映射名常量 Player。\n",
-            "en": "Input action map name constant (\"Player\").\n"
-          },
-          "key": "rpc:InputManager.MapName"
-        },
-        {
-          "protocol": "rpc",
-          "path": "InputManager.KindOf",
-          "description": {
-            "zh": "把设备类型映射为按键组（键盘/鼠标/手柄）。\n",
-            "en": "Maps an InputDeviceType to a binding group kind.\n"
-          },
-          "key": "rpc:InputManager.KindOf"
-        },
-        {
-          "protocol": "rpc",
-          "path": "InputManager.Init",
-          "description": {
-            "zh": "初始化管理器并加载 InputActions 资源。\n",
-            "en": "Initializes the manager and loads the InputActionAsset.\n"
-          },
-          "key": "rpc:InputManager.Init"
-        },
-        {
-          "protocol": "rpc",
-          "path": "InputManager.IsRebinding",
-          "description": {
-            "zh": "当前是否处于改键监听中。\n",
-            "en": "Whether a rebinding operation is running.\n"
-          },
-          "key": "rpc:InputManager.IsRebinding"
-        }
-      ],
-      "deps": [
-        {
-          "kind": "call",
-          "to": "project-chaos.framework.resources.manager",
-          "from_api": "rpc:InputManager.Init",
-          "to_api": "rpc:ResManager.Load",
-          "label": {
-            "zh": "加载输入资源",
-            "en": "Load input asset"
-          },
-          "cross_tree": false
-        },
-        {
-          "kind": "reference",
-          "to": "project-chaos.framework.paths.global-path",
-          "from_api": "rpc:InputManager.Init",
-          "to_api": "rpc:GlobalPath.res_InputActionsPath",
-          "label": {
-            "zh": "输入资源路径",
-            "en": "Input asset path"
-          },
-          "cross_tree": false
-        }
-      ],
-      "aggregate": {
-        "descendant_count": 0,
-        "own_api_count": 4,
-        "inherited_api_count": 0,
-        "dep_out": 2,
-        "dep_in": 0
-      }
-    },
-    "project-chaos.framework.input.overrides": {
-      "uid": "f1c00021",
-      "id": "project-chaos.framework.input.overrides",
-      "parent": "project-chaos.framework.input",
-      "tree": "project-chaos",
-      "depth": 4,
-      "name": {
-        "zh": "改键覆盖存取",
-        "en": "Binding Overrides"
-      },
-      "description": {
-        "zh": "改键覆盖项持久化：序列化/反序列化为 JSON（由设置系统存盘）与按组清空。\n",
-        "en": "Binding override persistence: save/load overrides as JSON (stored inside settings) and clear all or one group.\n"
-      },
-      "source": [
-        {
-          "path": "Assets/Scripts/Runtime/GameBase/InputManager/InputManager.cs",
-          "line": 201,
-          "end_line": 277
-        }
-      ],
-      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
-      "updated_at": "2026-10-31T08:54:22.616Z",
-      "fingerprint": "91856414ec49bb874cc0c264ab798d341f2263a768ae022c2cef522278480ccd",
-      "apis": [
-        {
-          "protocol": "rpc",
-          "path": "InputManager.SaveOverridesJson",
-          "description": {
-            "zh": "把全部改键覆盖项序列化为 JSON 字符串。\n",
-            "en": "Serializes all binding overrides to a JSON string.\n"
-          },
-          "key": "rpc:InputManager.SaveOverridesJson"
-        },
-        {
-          "protocol": "rpc",
-          "path": "InputManager.LoadOverridesJson",
-          "description": {
-            "zh": "从 JSON 字符串恢复改键覆盖项。\n",
-            "en": "Restores binding overrides from a JSON string.\n"
-          },
-          "key": "rpc:InputManager.LoadOverridesJson"
-        },
-        {
-          "protocol": "rpc",
-          "path": "InputManager.ClearAllOverrides",
-          "description": {
-            "zh": "清空全部改键覆盖项。\n",
-            "en": "Clears all binding overrides.\n"
-          },
-          "key": "rpc:InputManager.ClearAllOverrides"
-        },
-        {
-          "protocol": "rpc",
-          "path": "InputManager.ClearOverridesFor",
-          "description": {
-            "zh": "清空指定按键组（键鼠/手柄）的覆盖项。\n",
-            "en": "Clears overrides for one binding group.\n"
-          },
-          "key": "rpc:InputManager.ClearOverridesFor"
-        }
-      ],
-      "aggregate": {
-        "descendant_count": 0,
-        "own_api_count": 4,
-        "inherited_api_count": 0,
-        "dep_out": 0,
-        "dep_in": 1
-      }
-    },
-    "project-chaos.framework.input.rebind-conflict": {
-      "uid": "f1c00026",
-      "id": "project-chaos.framework.input.rebind-conflict",
-      "parent": "project-chaos.framework.input",
-      "tree": "project-chaos",
-      "depth": 4,
-      "name": {
-        "zh": "改键冲突处理",
-        "en": "Rebind Conflict"
-      },
-      "description": {
-        "zh": "改键冲突处理：新按键已被其它绑定占用时自动解绑冲突项，并含 Action/绑定索引/按键组查找等辅助实现。\n",
-        "en": "Rebind conflict handling: clears the duplicate binding that already owns the newly pressed control, plus action/binding lookup helpers.\n"
-      },
-      "source": [
-        {
-          "path": "Assets/Scripts/Runtime/GameBase/InputManager/InputManager.cs",
-          "line": 951,
-          "end_line": 1087
-        }
-      ],
-      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
-      "updated_at": "2026-10-31T08:54:22.617Z",
-      "fingerprint": "91856414ec49bb874cc0c264ab798d341f2263a768ae022c2cef522278480ccd",
-      "apis": [
-        {
-          "protocol": "file",
-          "path": "Assets/Scripts/Runtime/GameBase/InputManager/InputManager.cs#L951-L1087",
-          "description": {
-            "zh": "冲突解绑、Action/绑定索引查找与覆盖项移除等内部实现段。\n",
-            "en": "Conflict resolution, action lookup and override removal internals.\n"
-          },
-          "key": "file:Assets/Scripts/Runtime/GameBase/InputManager/InputManager.cs#L951-L1087"
-        }
-      ],
-      "aggregate": {
-        "descendant_count": 0,
-        "own_api_count": 1,
-        "inherited_api_count": 0,
-        "dep_out": 0,
-        "dep_in": 0
-      }
-    },
-    "project-chaos.framework.input.rebind-flow": {
-      "uid": "f1c00025",
-      "id": "project-chaos.framework.input.rebind-flow",
-      "parent": "project-chaos.framework.input",
-      "tree": "project-chaos",
-      "depth": 4,
-      "name": {
-        "zh": "改键流程",
-        "en": "Rebind Flow"
-      },
-      "description": {
-        "zh": "改键流程：BeginRebind 启动监听（超时自动取消、取消键边沿判定）、结果回调分发与 CancelRebind 手动取消。\n",
-        "en": "Rebind operation flow: BeginRebind with per-binding timeout and cancel-key handling, result callback and CancelRebind, plus override application.\n"
-      },
-      "source": [
-        {
-          "path": "Assets/Scripts/Runtime/GameBase/InputManager/InputManager.cs",
-          "line": 691,
-          "end_line": 950
-        }
-      ],
-      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
-      "updated_at": "2026-10-31T08:54:34.935Z",
-      "fingerprint": "91856414ec49bb874cc0c264ab798d341f2263a768ae022c2cef522278480ccd",
-      "apis": [
-        {
-          "protocol": "rpc",
-          "path": "InputManager.BeginRebind",
-          "description": {
-            "zh": "对指定绑定索引开始改键监听。\n",
-            "en": "Starts a rebinding operation for one binding index.\n"
-          },
-          "key": "rpc:InputManager.BeginRebind"
-        },
-        {
-          "protocol": "rpc",
-          "path": "InputManager.CancelRebind",
-          "description": {
-            "zh": "取消正在进行的改键监听。\n",
-            "en": "Cancels the running rebinding operation.\n"
-          },
-          "key": "rpc:InputManager.CancelRebind"
-        },
-        {
-          "protocol": "file",
-          "path": "Assets/Scripts/Runtime/GameBase/InputManager/InputManager.cs#L691-L950",
-          "description": {
-            "zh": "改键开始、结束与取消的流程实现段。\n",
-            "en": "Rebind start/finish/cancel flow internals.\n"
-          },
-          "key": "file:Assets/Scripts/Runtime/GameBase/InputManager/InputManager.cs#L691-L950"
-        }
-      ],
-      "deps": [
-        {
-          "kind": "call",
-          "to": "project-chaos.framework.logging.core",
-          "from_api": "rpc:InputManager.BeginRebind",
-          "to_api": "rpc:ChaosLog.Write",
-          "label": {
-            "zh": "改键日志",
-            "en": "Rebind logging"
-          },
-          "cross_tree": false
-        }
-      ],
-      "aggregate": {
-        "descendant_count": 0,
-        "own_api_count": 3,
-        "inherited_api_count": 0,
-        "dep_out": 1,
-        "dep_in": 0
-      }
-    },
-    "project-chaos.framework.input.rebind-steps": {
-      "uid": "f1c00024",
-      "id": "project-chaos.framework.input.rebind-steps",
-      "parent": "project-chaos.framework.input",
-      "tree": "project-chaos",
-      "depth": 4,
-      "name": {
-        "zh": "改键步骤拆分",
-        "en": "Rebind Steps"
-      },
-      "description": {
-        "zh": "改键步骤拆分：把一条绑定（含 1DAxis/2DVector 组合键）拆为带标签的 RebindStep 列表，使每个方向可独立改键。\n",
-        "en": "Rebind step splitting: turns a binding (including 1D/2D composites) into per-part RebindStep records with labels.\n"
-      },
-      "source": [
-        {
-          "path": "Assets/Scripts/Runtime/GameBase/InputManager/InputManager.cs",
-          "line": 605,
-          "end_line": 690
-        }
-      ],
-      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
-      "updated_at": "2026-10-31T08:54:34.936Z",
-      "fingerprint": "91856414ec49bb874cc0c264ab798d341f2263a768ae022c2cef522278480ccd",
-      "apis": [
-        {
-          "protocol": "rpc",
-          "path": "InputManager.GetRebindSteps",
-          "description": {
-            "zh": "把一条绑定拆成可分别改键的步骤（组合键分部）。\n",
-            "en": "Splits a binding into rebindable steps (composite parts).\n"
-          },
-          "key": "rpc:InputManager.GetRebindSteps"
-        },
-        {
-          "protocol": "file",
-          "path": "Assets/Scripts/Runtime/GameBase/InputManager/InputManager.cs#L605-L690",
-          "description": {
-            "zh": "改键步骤拆分与分部标签实现段。\n",
-            "en": "Rebind step splitting internals.\n"
-          },
-          "key": "file:Assets/Scripts/Runtime/GameBase/InputManager/InputManager.cs#L605-L690"
-        }
-      ],
-      "aggregate": {
-        "descendant_count": 0,
-        "own_api_count": 2,
-        "inherited_api_count": 0,
-        "dep_out": 0,
-        "dep_in": 0
-      }
-    },
-    "project-chaos.framework.input.reset": {
-      "uid": "f1c00022",
-      "id": "project-chaos.framework.input.reset",
-      "parent": "project-chaos.framework.input",
-      "tree": "project-chaos",
-      "depth": 4,
-      "name": {
-        "zh": "绑定重置",
-        "en": "Binding Reset"
-      },
-      "description": {
-        "zh": "绑定重置与显示文本：ResetBinding 支持整条绑定或组合键分部重置，GetBindingDisplay 取显示名。\n",
-        "en": "Binding reset and display text: ResetBinding for a whole binding or one composite part, plus GetBindingDisplay.\n"
-      },
-      "source": [
-        {
-          "path": "Assets/Scripts/Runtime/GameBase/InputManager/InputManager.cs",
-          "line": 278,
-          "end_line": 356
-        }
-      ],
-      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
-      "updated_at": "2026-10-31T08:54:34.937Z",
-      "fingerprint": "91856414ec49bb874cc0c264ab798d341f2263a768ae022c2cef522278480ccd",
-      "apis": [
-        {
-          "protocol": "rpc",
-          "path": "InputManager.ResetBinding",
-          "description": {
-            "zh": "把某绑定（或组合键的一个分部）重置为默认路径。\n",
-            "en": "Resets a binding (or one composite part) to its default path.\n"
-          },
-          "key": "rpc:InputManager.ResetBinding"
-        },
-        {
-          "protocol": "rpc",
-          "path": "InputManager.GetBindingDisplay",
-          "description": {
-            "zh": "取某绑定的显示文本。\n",
-            "en": "Gets the display text for a binding.\n"
-          },
-          "key": "rpc:InputManager.GetBindingDisplay"
-        }
-      ],
-      "aggregate": {
-        "descendant_count": 0,
-        "own_api_count": 2,
-        "inherited_api_count": 0,
-        "dep_out": 0,
-        "dep_in": 0
-      }
-    },
-    "project-chaos.framework.input.tick": {
-      "uid": "f1c00027",
-      "id": "project-chaos.framework.input.tick",
-      "parent": "project-chaos.framework.input",
-      "tree": "project-chaos",
-      "depth": 4,
-      "name": {
-        "zh": "按键轮询",
-        "en": "Key Polling"
-      },
-      "description": {
-        "zh": "按键轮询：StartTickOrNot 开关每帧检测，轮询到按下/松开时抛出事件中心的 GetKeyDown/GetKeyUp 事件，同时服务改键取消键判定。\n",
-        "en": "Key polling: StartTickOrNot toggles the per-frame tick that raises GetKeyDown/GetKeyUp events and serves rebind cancel detection.\n"
-      },
-      "source": [
-        {
-          "path": "Assets/Scripts/Runtime/GameBase/InputManager/InputManager.cs",
-          "line": 1088,
-          "end_line": 1183
-        }
-      ],
-      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
-      "updated_at": "2026-10-31T08:54:34.938Z",
-      "fingerprint": "91856414ec49bb874cc0c264ab798d341f2263a768ae022c2cef522278480ccd",
-      "apis": [
-        {
-          "protocol": "rpc",
-          "path": "InputManager.StartTickOrNot",
-          "description": {
-            "zh": "开启/关闭按帧的按键轮询。\n",
-            "en": "Enables or disables per-frame key polling.\n"
-          },
-          "key": "rpc:InputManager.StartTickOrNot"
-        },
-        {
-          "protocol": "file",
-          "path": "Assets/Scripts/Runtime/GameBase/InputManager/InputManager.cs#L1088-L1183",
-          "description": {
-            "zh": "按键轮询 Tick、取消键边沿与 KeyCode 检查实现段。\n",
-            "en": "Key polling loop and cancel-key edge detection.\n"
-          },
-          "key": "file:Assets/Scripts/Runtime/GameBase/InputManager/InputManager.cs#L1088-L1183"
-        }
-      ],
-      "deps": [
-        {
-          "kind": "event",
-          "to": "project-chaos.framework.events.const-names",
-          "from_api": "rpc:InputManager.StartTickOrNot",
-          "to_api": "rpc:EventConstName.GetKeyDown",
-          "label": {
-            "zh": "按键按下事件",
-            "en": "Key down event"
-          },
-          "cross_tree": false
-        }
-      ],
-      "aggregate": {
-        "descendant_count": 0,
-        "own_api_count": 2,
-        "inherited_api_count": 0,
-        "dep_out": 1,
-        "dep_in": 1
       }
     },
     "project-chaos.framework.localization": {
@@ -16445,7 +15732,7 @@
         "own_api_count": 0,
         "inherited_api_count": 14,
         "dep_out": 0,
-        "dep_in": 2
+        "dep_in": 3
       }
     },
     "project-chaos.framework.runmap.assembler": {
@@ -16529,9 +15816,9 @@
           "end_line": 141
         }
       ],
-      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
-      "updated_at": "2026-10-31T08:54:34.941Z",
-      "fingerprint": "49a489e6a54ac37eafb4ac9dc5c710de40ef2403339c63ea9199963d5da55efa",
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:20:37.067Z",
+      "fingerprint": "87e9265042d906b3a43da83b48de665bb13965d3fd1b837fee98efa8757990f3",
       "apis": [
         {
           "protocol": "file",
@@ -18732,7 +18019,7 @@
         },
         {
           "kind": "call",
-          "to": "project-chaos.framework.input.overrides",
+          "to": "project-chaos.gameplay-3c.control.input.overrides",
           "from_api": "rpc:SettingsManager.ApplyToRuntime",
           "to_api": "rpc:InputManager.LoadOverridesJson",
           "label": {
@@ -19524,9 +18811,9 @@
           "end_line": 113
         }
       ],
-      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
-      "updated_at": "2026-10-31T08:54:47.489Z",
-      "fingerprint": "12e65e87641cb322ea210e0c11f8ee7f7cc3eef99bd353328e85b9c0cc5d75eb",
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:20:37.068Z",
+      "fingerprint": "ebb1fa882d35195590c780bc18136eef7d893cae33ecdea1ab78c58c6e32b01b",
       "apis": [
         {
           "protocol": "rpc",
@@ -19616,9 +18903,9 @@
           "end_line": 155
         }
       ],
-      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
-      "updated_at": "2026-10-31T08:54:47.489Z",
-      "fingerprint": "12e65e87641cb322ea210e0c11f8ee7f7cc3eef99bd353328e85b9c0cc5d75eb",
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:20:37.067Z",
+      "fingerprint": "ebb1fa882d35195590c780bc18136eef7d893cae33ecdea1ab78c58c6e32b01b",
       "apis": [
         {
           "protocol": "rpc",
@@ -19770,9 +19057,9 @@
           "end_line": 200
         }
       ],
-      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
-      "updated_at": "2026-10-31T08:54:47.490Z",
-      "fingerprint": "c0b2348612e030518d4b0b11be03508212120c6632226b827e88ff56f2fb99ab",
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:20:37.069Z",
+      "fingerprint": "fa7517ff023cb8595845081564c5baa22ed66f44a1f10b616a493c2cdcda0e55",
       "apis": [
         {
           "protocol": "rpc",
@@ -19930,9 +19217,9 @@
           "path": "Assets/Scripts/Runtime/GameBase/WorldMap/WorldFactionMask.cs"
         }
       ],
-      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
-      "updated_at": "2026-10-31T08:57:59.773Z",
-      "fingerprint": "5a53a1c03de37e2775fbd6ac742270bab49879db66c19ce57411bf12fd1daf22",
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:20:37.069Z",
+      "fingerprint": "884ccc5089191643045fe464d4d111e47df6def3d8324a3c880f9ae843706df6",
       "apis": [
         {
           "protocol": "file",
@@ -20074,9 +19361,9 @@
           "path": "Assets/Scripts/Runtime/GameBase/WorldMap/WorldMapService.cs"
         }
       ],
-      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
-      "updated_at": "2026-10-31T08:57:59.775Z",
-      "fingerprint": "4f83d72c7e03da5dae78972dd16b4eb8a261006a517914b189c6442a2126805e",
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:20:47.032Z",
+      "fingerprint": "a368bd83d4426e2b11b2c7448dc4386e260007c90c29b1173bdbe0fa2b79cf55",
       "apis": [
         {
           "protocol": "file",
@@ -20111,6 +19398,1797 @@
         "own_api_count": 3,
         "inherited_api_count": 0,
         "dep_out": 0,
+        "dep_in": 0
+      }
+    },
+    "project-chaos.gameplay-3c": {
+      "uid": "a3c00001",
+      "id": "project-chaos.gameplay-3c",
+      "parent": "project-chaos",
+      "tree": "project-chaos",
+      "depth": 2,
+      "tags": [
+        "gameplay",
+        "3c",
+        "runtime"
+      ],
+      "name": {
+        "zh": "3C 层（相机 / 角色 / 控制）",
+        "en": "3C Layer: Camera, Character & Control"
+      },
+      "description": {
+        "zh": "承载 Assets/Scripts/Runtime/3C/ 下的相机、角色与控制三个子系统（19 个 .cs）。职责边界：镜头只由 Camera/ 统一控制，界面层不直接改相机跟随；Character/ 只负责角色自身的移动、曲面物理、坠落保护、攻击与生命；Control/ 只读取输入意图，不承载库存与结算规则。整局地图生成、对象作用域、地图边界与结算不归 3C。\n",
+        "en": "Owns the camera, character and control subsystems under Assets/Scripts/Runtime/3C (19 C# files). Boundaries: only Camera/ drives the gameplay camera (the UI layer never moves it); Character/ handles locomotion, surface physics, fall guard, attacks and health; Control/ only turns raw input into intent and carries no inventory or settlement rules. Whole-run map generation, object scopes, map bounds and settlement stay outside 3C.\n"
+      },
+      "source": [
+        {
+          "path": "Assets/Scripts/Runtime/3C/README.md"
+        }
+      ],
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:29:20.157Z",
+      "fingerprint": "1d705376bf0134ac9c1376b3dbda0daa4e0616015019a162640302f56267bbcc",
+      "aggregate": {
+        "descendant_count": 26,
+        "own_api_count": 0,
+        "inherited_api_count": 72,
+        "dep_out": 0,
+        "dep_in": 0
+      }
+    },
+    "project-chaos.gameplay-3c.camera": {
+      "uid": "a3c00002",
+      "id": "project-chaos.gameplay-3c.camera",
+      "parent": "project-chaos.gameplay-3c",
+      "tree": "project-chaos",
+      "depth": 3,
+      "tags": [
+        "camera",
+        "cinemachine"
+      ],
+      "name": {
+        "zh": "镜头：Cinemachine 跟随、构图与抖动",
+        "en": "Camera: Cinemachine Follow, Framing & Shake"
+      },
+      "description": {
+        "zh": "镜头归属：Cinemachine 跟随、构图、边界约束与战斗抖动。GameplayCameraRig 是输出相机的唯一控制器（For/BindRun/BindVillage/SnapToTarget/NotifyTargetWarped/Release）；VillageCamera 与 PlayerCameraFollow 只是兼容与生命周期门面，不再实现独立的相机位姿算法；抖动走 Cinemachine Impulse（独立 channel），CameraViewportBounds 在 Cinemachine 最终阶段夹紧视口。\n",
+        "en": "Sole owner of the camera: Cinemachine follow, framing, boundary constraints and combat shake. GameplayCameraRig is the only controller of the output camera; VillageCamera and PlayerCameraFollow are compatibility/lifecycle facades only, and shake runs through Cinemachine Impulse on its own channel while CameraViewportBounds clamps the viewport at Cinemachine's final stage.\n"
+      },
+      "source": [],
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:26:06.518Z",
+      "fingerprint": "pending",
+      "aggregate": {
+        "descendant_count": 4,
+        "own_api_count": 0,
+        "inherited_api_count": 16,
+        "dep_out": 0,
+        "dep_in": 0
+      }
+    },
+    "project-chaos.gameplay-3c.camera.facade": {
+      "uid": "a3c00014",
+      "id": "project-chaos.gameplay-3c.camera.facade",
+      "parent": "project-chaos.gameplay-3c.camera",
+      "tree": "project-chaos",
+      "depth": 4,
+      "tags": [
+        "camera",
+        "facade"
+      ],
+      "name": {
+        "zh": "镜头门面与设置",
+        "en": "Camera Facades & Settings"
+      },
+      "description": {
+        "zh": "兼容与生命周期门面，加上镜头设置资产：PlayerCameraFollow 仍由 PlayerSpawner 实例化，但只负责取控制器并调 BindRun（smooth/offset 已是死字段）；VillageCamera 是纯门面，把调用转给控制器。\n",
+        "en": "Compatibility and lifecycle facades plus the camera settings asset: PlayerCameraFollow is still instantiated by PlayerSpawner but only resolves the rig and calls BindRun (its smooth/offset fields are dead), and VillageCamera is a pure facade that forwards to the rig.\n"
+      },
+      "source": [
+        {
+          "path": "Assets/Scripts/Runtime/3C/Camera/PlayerCameraFollow.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/3C/Camera/VillageCamera.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/3C/Camera/GameplayCameraSettings.cs"
+        }
+      ],
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:29:20.161Z",
+      "fingerprint": "93a7e5bd7ebaebdae97ba9168cf8884757b0977c0ad8d846348816336fea3795",
+      "apis": [
+        {
+          "protocol": "rpc",
+          "path": "PlayerCameraFollow.Attach",
+          "description": {
+            "zh": "Attach(camera, target)：兼容租约，经控制器绑定局内相机。\n",
+            "en": "Attach(camera, target): compatibility lease that binds the run camera via the rig.\n"
+          },
+          "key": "rpc:PlayerCameraFollow.Attach"
+        },
+        {
+          "protocol": "rpc",
+          "path": "PlayerCameraFollow.Detach",
+          "description": {
+            "zh": "Detach()：释放兼容租约。\n",
+            "en": "Detach(): releases the compatibility lease.\n"
+          },
+          "key": "rpc:PlayerCameraFollow.Detach"
+        },
+        {
+          "protocol": "rpc",
+          "path": "VillageCamera.Initialize",
+          "description": {
+            "zh": "Initialize(target, config)：村庄侧门面，自身不实现位姿算法。\n",
+            "en": "Initialize(target, config): village-side facade, no positioning algorithm of its own.\n"
+          },
+          "key": "rpc:VillageCamera.Initialize"
+        },
+        {
+          "protocol": "rpc",
+          "path": "GameplayCameraSettings.Size",
+          "description": {
+            "zh": "Size(village)：默认正交尺寸，村庄 8、局内 6。\n",
+            "en": "Size(village): default ortho size, 8 for village and 6 for a run.\n"
+          },
+          "key": "rpc:GameplayCameraSettings.Size"
+        }
+      ],
+      "deps": [
+        {
+          "kind": "call",
+          "to": "project-chaos.gameplay-3c.camera.rig",
+          "from_api": "rpc:PlayerCameraFollow.Attach",
+          "to_api": "rpc:GameplayCameraRig.For",
+          "label": {
+            "zh": "委托给唯一控制器",
+            "en": "Delegates to the single rig"
+          },
+          "cross_tree": false
+        }
+      ],
+      "aggregate": {
+        "descendant_count": 0,
+        "own_api_count": 4,
+        "inherited_api_count": 0,
+        "dep_out": 1,
+        "dep_in": 0
+      }
+    },
+    "project-chaos.gameplay-3c.camera.rig": {
+      "uid": "a3c00011",
+      "id": "project-chaos.gameplay-3c.camera.rig",
+      "parent": "project-chaos.gameplay-3c.camera",
+      "tree": "project-chaos",
+      "depth": 4,
+      "tags": [
+        "camera",
+        "cinemachine"
+      ],
+      "name": {
+        "zh": "镜头控制器",
+        "en": "Gameplay Camera Rig"
+      },
+      "description": {
+        "zh": "输出相机的唯一控制器。在 CinemachineBrain 下包装一个 CinemachineVirtualCamera（FramingTransposer + Confiner2D），在村庄与局内两种模式间切换；手写逻辑只剩锚点位置计算与 LateUpdate 里的 manual brain 更新。\n",
+        "en": "The only controller of the output camera. Wraps a CinemachineVirtualCamera (FramingTransposer + Confiner2D) under a CinemachineBrain, switching between village and run modes; the only hand-written logic left is the anchor position and the manual brain update in LateUpdate.\n"
+      },
+      "source": [
+        {
+          "path": "Assets/Scripts/Runtime/3C/Camera/GameplayCameraRig.cs"
+        }
+      ],
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:29:20.158Z",
+      "fingerprint": "1540b8dd18954287d815272e5d91d443176f084237baf3fc2a22f401089b74c4",
+      "apis": [
+        {
+          "protocol": "rpc",
+          "path": "GameplayCameraRig.For",
+          "description": {
+            "zh": "For(camera)：返回该输出相机对应的控制器，需要时创建。\n",
+            "en": "For(camera): returns the rig that owns this output camera, creating it if needed.\n"
+          },
+          "key": "rpc:GameplayCameraRig.For"
+        },
+        {
+          "protocol": "rpc",
+          "path": "GameplayCameraRig.BindRun",
+          "description": {
+            "zh": "BindRun(target, bounds)：在矩形范围内跟随局内目标。\n",
+            "en": "BindRun(target, bounds): follow a run target inside a rectangle.\n"
+          },
+          "key": "rpc:GameplayCameraRig.BindRun"
+        },
+        {
+          "protocol": "rpc",
+          "path": "GameplayCameraRig.BindVillage",
+          "description": {
+            "zh": "BindVillage(target, width, fixedY)：以固定纵向锚点跟随村庄目标。\n",
+            "en": "BindVillage(target, width, fixedY): follow a village target with fixed vertical anchor.\n"
+          },
+          "key": "rpc:GameplayCameraRig.BindVillage"
+        },
+        {
+          "protocol": "rpc",
+          "path": "GameplayCameraRig.SnapToTarget",
+          "description": {
+            "zh": "SnapToTarget()：把虚拟相机直接跳到当前锚点，无缓动。\n",
+            "en": "SnapToTarget(): teleports the virtual camera to the current anchor with no easing.\n"
+          },
+          "key": "rpc:GameplayCameraRig.SnapToTarget"
+        },
+        {
+          "protocol": "rpc",
+          "path": "GameplayCameraRig.NotifyTargetWarped",
+          "description": {
+            "zh": "NotifyTargetWarped(target, delta)：重生/传送后重置锚点、阻尼与同帧缓存。\n",
+            "en": "NotifyTargetWarped(target, delta): resets anchor, damping and frame caches after a respawn or teleport.\n"
+          },
+          "key": "rpc:GameplayCameraRig.NotifyTargetWarped"
+        },
+        {
+          "protocol": "rpc",
+          "path": "GameplayCameraRig.Release",
+          "description": {
+            "zh": "Release(expectedTarget)：仅当相机仍由该目标持有时才释放。\n",
+            "en": "Release(expectedTarget): releases the camera only if it is still held by that target.\n"
+          },
+          "key": "rpc:GameplayCameraRig.Release"
+        }
+      ],
+      "deps": [
+        {
+          "kind": "reference",
+          "to": "project-chaos.project-infra.packages",
+          "label": {
+            "zh": "依赖 Cinemachine 2.10.3 包",
+            "en": "Cinemachine 2.10.3 package"
+          },
+          "cross_tree": false
+        }
+      ],
+      "aggregate": {
+        "descendant_count": 0,
+        "own_api_count": 6,
+        "inherited_api_count": 0,
+        "dep_out": 1,
+        "dep_in": 2
+      }
+    },
+    "project-chaos.gameplay-3c.camera.shake": {
+      "uid": "a3c00012",
+      "id": "project-chaos.gameplay-3c.camera.shake",
+      "parent": "project-chaos.gameplay-3c.camera",
+      "tree": "project-chaos",
+      "depth": 4,
+      "tags": [
+        "camera",
+        "shake",
+        "impulse"
+      ],
+      "name": {
+        "zh": "战斗镜头抖动",
+        "en": "Combat Camera Shake"
+      },
+      "description": {
+        "zh": "基于 Cinemachine Impulse 的战斗镜头抖动：玩家侧 CinemachineImpulseSource + 相机侧 ImpulseListener，走独立 channel 与自定义抖动曲线，不再手写位置偏移。CombatCameraShakeSettings 是保存幅度、上限与触发间隔的 ScriptableObject。\n",
+        "en": "Combat camera shake built on Cinemachine Impulse: a CinemachineImpulseSource on the player plus an ImpulseListener on the camera, driven on an independent channel with a custom shake curve, so no hand-written positional offset remains. CombatCameraShakeSettings is the ScriptableObject holding amplitudes, limits and trigger interval.\n"
+      },
+      "source": [
+        {
+          "path": "Assets/Scripts/Runtime/3C/Camera/CombatCameraShake.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/3C/Camera/CombatCameraShakeSettings.cs"
+        }
+      ],
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:29:20.159Z",
+      "fingerprint": "830a427836c2f81709b80aa6152163137524ba1278a4dde17735e0241addb0a2",
+      "apis": [
+        {
+          "protocol": "rpc",
+          "path": "CombatCameraShake.Attach",
+          "description": {
+            "zh": "Attach(transform)：给指定目标挂上一个抖动源。\n",
+            "en": "Attach(transform): adds a shake source to the given target.\n"
+          },
+          "key": "rpc:CombatCameraShake.Attach"
+        },
+        {
+          "protocol": "rpc",
+          "path": "CombatCameraShake.Detach",
+          "description": {
+            "zh": "Detach(expectedTarget)：移除抖动源，目标已变则拒绝。\n",
+            "en": "Detach(expectedTarget): removes the source, refusing if the target changed.\n"
+          },
+          "key": "rpc:CombatCameraShake.Detach"
+        },
+        {
+          "protocol": "rpc",
+          "path": "CombatCameraShake.NotifyHit",
+          "description": {
+            "zh": "NotifyHit(from, dir, heavy)：触发命中抖动。\n",
+            "en": "NotifyHit(from, dir, heavy): fires the hit impulse.\n"
+          },
+          "key": "rpc:CombatCameraShake.NotifyHit"
+        },
+        {
+          "protocol": "rpc",
+          "path": "CombatCameraShake.NotifyHurt",
+          "description": {
+            "zh": "NotifyHurt(from, dir)：触发受击抖动。\n",
+            "en": "NotifyHurt(from, dir): fires the hurt impulse.\n"
+          },
+          "key": "rpc:CombatCameraShake.NotifyHurt"
+        }
+      ],
+      "aggregate": {
+        "descendant_count": 0,
+        "own_api_count": 4,
+        "inherited_api_count": 0,
+        "dep_out": 0,
+        "dep_in": 2
+      }
+    },
+    "project-chaos.gameplay-3c.camera.viewport": {
+      "uid": "a3c00013",
+      "id": "project-chaos.gameplay-3c.camera.viewport",
+      "parent": "project-chaos.gameplay-3c.camera",
+      "tree": "project-chaos",
+      "depth": 4,
+      "tags": [
+        "camera",
+        "cinemachine"
+      ],
+      "name": {
+        "zh": "相机视口边界",
+        "en": "Camera Viewport Bounds"
+      },
+      "description": {
+        "zh": "CinemachineExtension：在 Cinemachine 的最终阶段 Stage.Finalize 才夹紧相机位置（抖动之后），并在地图小于视口时保持居中。\n",
+        "en": "A CinemachineExtension that clamps the camera position at Cinemachine's final Stage.Finalize, after shake is applied, and keeps a map smaller than the viewport centred.\n"
+      },
+      "source": [
+        {
+          "path": "Assets/Scripts/Runtime/3C/Camera/CameraViewportBounds.cs"
+        }
+      ],
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:29:20.159Z",
+      "fingerprint": "f992f279e78ff9e430234118aa909a5325f3cb68145e914fe460f3aa2b33c624",
+      "apis": [
+        {
+          "protocol": "rpc",
+          "path": "CameraViewportBounds.Bounds",
+          "description": {
+            "zh": "Bounds：视口被夹紧到的矩形。\n",
+            "en": "Bounds: the rectangle the viewport is clamped to.\n"
+          },
+          "key": "rpc:CameraViewportBounds.Bounds"
+        },
+        {
+          "protocol": "rpc",
+          "path": "CameraViewportBounds.Output",
+          "description": {
+            "zh": "Output：该扩展读取的 Cinemachine 输出相机。\n",
+            "en": "Output: the Cinemachine output camera this extension reads.\n"
+          },
+          "key": "rpc:CameraViewportBounds.Output"
+        }
+      ],
+      "aggregate": {
+        "descendant_count": 0,
+        "own_api_count": 2,
+        "inherited_api_count": 0,
+        "dep_out": 0,
+        "dep_in": 0
+      }
+    },
+    "project-chaos.gameplay-3c.character": {
+      "uid": "a3c00003",
+      "id": "project-chaos.gameplay-3c.character",
+      "parent": "project-chaos.gameplay-3c",
+      "tree": "project-chaos",
+      "depth": 3,
+      "tags": [
+        "character",
+        "physics"
+      ],
+      "name": {
+        "zh": "角色：移动、曲面物理、攻击与生命",
+        "en": "Character: Locomotion, Physics, Attack & Health"
+      },
+      "description": {
+        "zh": "角色自身行为：移动与跳跃、地面/侧墙曲面物理与低摩擦滑落、坠落保护、近战攻击与生命、道具使用动画与职业表现数据。输入由 Control 层的 InputManager 提供，伤害查询遵守 Runtime/Combat 的协议，界面表现全部留在 Runtime/MVP。\n",
+        "en": "The player character itself: locomotion and jumping, ground/side-wall surface physics with low friction, fall guard, melee attack and health, item-use animation and profession presentation data. Input comes from InputManager in Control, damage queries follow the Runtime/Combat protocol, and all UI stays in Runtime/MVP.\n"
+      },
+      "source": [],
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:26:06.522Z",
+      "fingerprint": "pending",
+      "aggregate": {
+        "descendant_count": 3,
+        "own_api_count": 0,
+        "inherited_api_count": 10,
+        "dep_out": 0,
+        "dep_in": 0
+      }
+    },
+    "project-chaos.gameplay-3c.character.combat": {
+      "uid": "a3c00022",
+      "id": "project-chaos.gameplay-3c.character.combat",
+      "parent": "project-chaos.gameplay-3c.character",
+      "tree": "project-chaos",
+      "depth": 4,
+      "tags": [
+        "character",
+        "combat",
+        "health"
+      ],
+      "name": {
+        "zh": "攻击与生命",
+        "en": "Attack & Health"
+      },
+      "description": {
+        "zh": "带盒形重叠查询的近战攻击，与玩家生命：道具/局内加成、无敌帧、接触伤害、倒地态与满血重置。受击反馈转发给战斗镜头抖动，不再改写角色缩放与朝向。\n",
+        "en": "Melee attack with a box overlap query and the player's health: item and run bonuses, invulnerability window, contact damage, downed state and refill. Hit feedback is forwarded to the combat camera shake rather than rewriting the character's scale or facing.\n"
+      },
+      "source": [
+        {
+          "path": "Assets/Scripts/Runtime/3C/Character/PlayerAttack.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/3C/Character/PlayerHealth.cs"
+        }
+      ],
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:29:20.163Z",
+      "fingerprint": "726bc182e93a35267335fa4afb68dea9266dd6eb0905861237af9bec338d8a7e",
+      "apis": [
+        {
+          "protocol": "rpc",
+          "path": "PlayerAttack.LastHitCount",
+          "description": {
+            "zh": "LastHitCount：上一帧挥击命中的目标数。\n",
+            "en": "LastHitCount: how many targets the last swing hit.\n"
+          },
+          "key": "rpc:PlayerAttack.LastHitCount"
+        },
+        {
+          "protocol": "rpc",
+          "path": "PlayerHealth.ApplyContactDamage",
+          "description": {
+            "zh": "ApplyContactDamage(amount)：受击入口，尊重无敌帧与倒地态。\n",
+            "en": "ApplyContactDamage(amount): damage entry that respects invulnerability and downed state.\n"
+          },
+          "key": "rpc:PlayerHealth.ApplyContactDamage"
+        },
+        {
+          "protocol": "rpc",
+          "path": "PlayerHealth.ForceDown",
+          "description": {
+            "zh": "ForceDown()：强制进入倒地态。\n",
+            "en": "ForceDown(): forces the downed state.\n"
+          },
+          "key": "rpc:PlayerHealth.ForceDown"
+        },
+        {
+          "protocol": "rpc",
+          "path": "PlayerHealth.RestoreHealth",
+          "description": {
+            "zh": "RestoreHealth(amount)：治疗并返回实际生效量。\n",
+            "en": "RestoreHealth(amount): heals and returns the applied amount.\n"
+          },
+          "key": "rpc:PlayerHealth.RestoreHealth"
+        },
+        {
+          "protocol": "rpc",
+          "path": "PlayerHealth.RefillFullHp",
+          "description": {
+            "zh": "RefillFullHp()：把生命重置为当前有效上限。\n",
+            "en": "RefillFullHp(): resets health to the effective maximum.\n"
+          },
+          "key": "rpc:PlayerHealth.RefillFullHp"
+        }
+      ],
+      "aggregate": {
+        "descendant_count": 0,
+        "own_api_count": 5,
+        "inherited_api_count": 0,
+        "dep_out": 0,
+        "dep_in": 0
+      }
+    },
+    "project-chaos.gameplay-3c.character.locomotion": {
+      "uid": "a3c00021",
+      "id": "project-chaos.gameplay-3c.character.locomotion",
+      "parent": "project-chaos.gameplay-3c.character",
+      "tree": "project-chaos",
+      "depth": 4,
+      "tags": [
+        "character",
+        "physics",
+        "movement"
+      ],
+      "name": {
+        "zh": "移动与曲面物理",
+        "en": "Locomotion & Surface Physics"
+      },
+      "description": {
+        "zh": "地面移动与跳跃、地面/侧墙曲面物理与低摩擦处理（空中推墙不再攀住而是自然下落）、以及低于阈值 Y 时将角色重生的坠落保护。\n",
+        "en": "Ground movement and jumping, ground/side-wall surface physics with low-friction handling (a wall push in the air now drops instead of sticking), and the fall guard that respawns the player below a threshold Y.\n"
+      },
+      "source": [
+        {
+          "path": "Assets/Scripts/Runtime/3C/Character/PlayerLocomotion.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/3C/Character/PlayerSurfacePhysics.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/3C/Character/PlayerFallGuard.cs"
+        }
+      ],
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:29:20.162Z",
+      "fingerprint": "1f58b8583cc7eea79d00626ae60d16bbf083659be59732bcbb7798d9ee6adb16",
+      "apis": [
+        {
+          "protocol": "rpc",
+          "path": "PlayerLocomotion.InjectInput",
+          "description": {
+            "zh": "InjectInput(horizontal, jump, duration)：注入脚本化移动意图。\n",
+            "en": "InjectInput(horizontal, jump, duration): feeds a scripted move intent.\n"
+          },
+          "key": "rpc:PlayerLocomotion.InjectInput"
+        },
+        {
+          "protocol": "rpc",
+          "path": "PlayerLocomotion.SetFacing",
+          "description": {
+            "zh": "SetFacing(facing)：强制设定朝向。\n",
+            "en": "SetFacing(facing): forces the facing direction.\n"
+          },
+          "key": "rpc:PlayerLocomotion.SetFacing"
+        },
+        {
+          "protocol": "rpc",
+          "path": "PlayerSurfacePhysics.ProbeGround",
+          "description": {
+            "zh": "ProbeGround(terrainOnly)：侧墙物理使用的地面探测。\n",
+            "en": "ProbeGround(terrainOnly): ground probe used by the side-wall physics.\n"
+          },
+          "key": "rpc:PlayerSurfacePhysics.ProbeGround"
+        },
+        {
+          "protocol": "rpc",
+          "path": "PlayerSurfacePhysics.SetSlideMaterial",
+          "description": {
+            "zh": "SetSlideMaterial(active)：开关低摩擦接触，推墙时会自然下落。\n",
+            "en": "SetSlideMaterial(active): toggles low-friction contact so a pushing fall drops naturally.\n"
+          },
+          "key": "rpc:PlayerSurfacePhysics.SetSlideMaterial"
+        }
+      ],
+      "deps": [
+        {
+          "kind": "call",
+          "to": "project-chaos.gameplay-3c.control.input.gameplay-scope",
+          "from_api": "rpc:PlayerLocomotion.InjectInput",
+          "to_api": "rpc:InputManager.ReadMove",
+          "label": {
+            "zh": "注入移动意图",
+            "en": "Injects move intent"
+          },
+          "cross_tree": false
+        }
+      ],
+      "aggregate": {
+        "descendant_count": 0,
+        "own_api_count": 4,
+        "inherited_api_count": 0,
+        "dep_out": 1,
+        "dep_in": 0
+      }
+    },
+    "project-chaos.gameplay-3c.character.presentation": {
+      "uid": "a3c00023",
+      "id": "project-chaos.gameplay-3c.character.presentation",
+      "parent": "project-chaos.gameplay-3c.character",
+      "tree": "project-chaos",
+      "depth": 4,
+      "tags": [
+        "character",
+        "presentation"
+      ],
+      "name": {
+        "zh": "角色表现",
+        "en": "Character Presentation"
+      },
+      "description": {
+        "zh": "角色表现数据与道具使用动画：局内角色的职业、立绘与预览皮肤，以及道具被使用时播放的动画。\n",
+        "en": "Character presentation data and item-use animation: profession, portrait and preview skin for the run character, plus the animation played when an item is used.\n"
+      },
+      "source": [
+        {
+          "path": "Assets/Scripts/Runtime/3C/Character/ItemUseAnimation.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/3C/Character/RunCharacterPresentation.cs"
+        }
+      ],
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:29:20.164Z",
+      "fingerprint": "3014c64c687b29466e490f090bcbb40f90049c276f678752305a0f3d57b1cc4a",
+      "apis": [
+        {
+          "protocol": "rpc",
+          "path": "ItemUseAnimation.Play",
+          "description": {
+            "zh": "Play(item)：播放与道具匹配的使用动画。\n",
+            "en": "Play(item): plays the item-use animation matching the given item.\n"
+          },
+          "key": "rpc:ItemUseAnimation.Play"
+        }
+      ],
+      "aggregate": {
+        "descendant_count": 0,
+        "own_api_count": 1,
+        "inherited_api_count": 0,
+        "dep_out": 0,
+        "dep_in": 0
+      }
+    },
+    "project-chaos.gameplay-3c.control": {
+      "uid": "a3c00004",
+      "id": "project-chaos.gameplay-3c.control",
+      "parent": "project-chaos.gameplay-3c",
+      "tree": "project-chaos",
+      "depth": 3,
+      "tags": [
+        "input",
+        "control"
+      ],
+      "name": {
+        "zh": "控制：输入、重绑与快捷键",
+        "en": "Control: Input, Rebinding & Shortcuts"
+      },
+      "description": {
+        "zh": "输入意图层：本机绑定与重绑（InputManager 主类 + Gameplay 分部）、键图标资源与查询（KeyIconMap）、局内快捷键与道具轮盘驱动。只负责读取和转换输入，不承载库存、结算或存档规则。\n",
+        "en": "The input-intent layer: local bindings and rebinding (InputManager plus its Gameplay partial), key-icon assets and lookup (KeyIconMap), in-run shortcuts and the item-wheel driver. It only reads and translates input; it holds no inventory, settlement or save rules.\n"
+      },
+      "source": [],
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:26:19.798Z",
+      "fingerprint": "pending",
+      "aggregate": {
+        "descendant_count": 16,
+        "own_api_count": 0,
+        "inherited_api_count": 46,
+        "dep_out": 0,
+        "dep_in": 0
+      }
+    },
+    "project-chaos.gameplay-3c.control.input": {
+      "uid": "f1c00005",
+      "id": "project-chaos.gameplay-3c.control.input",
+      "parent": "project-chaos.gameplay-3c.control",
+      "tree": "project-chaos",
+      "depth": 4,
+      "name": {
+        "zh": "输入与改键",
+        "en": "Input & Rebinding"
+      },
+      "description": {
+        "zh": "InputManager：加载 InputActionAsset（Player 映射，Move/Attack/Jump），覆盖项 JSON 存取、单键/组合键重置、按键显示名与控制键解析、改键（Interaction Rebinding）全流程（步骤拆分、监听、冲突清空、取消）、以及按键事件轮询。\n",
+        "en": "InputManager: loads the InputActionAsset (Player map, Move/Attack/Jump), override JSON persistence, per-part reset, key display names and control-key parsing, the full rebinding flow (step split, listening, conflict clearing, cancel), and key-event polling.\n"
+      },
+      "source": [],
+      "revision": "75df668e8bb1abec0b4352190c3082c585e2deef",
+      "updated_at": "2026-10-06T12:10:00Z",
+      "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "aggregate": {
+        "descendant_count": 9,
+        "own_api_count": 0,
+        "inherited_api_count": 28,
+        "dep_out": 0,
+        "dep_in": 1
+      }
+    },
+    "project-chaos.gameplay-3c.control.input-icons": {
+      "uid": "f1c00006",
+      "id": "project-chaos.gameplay-3c.control.input-icons",
+      "parent": "project-chaos.gameplay-3c.control",
+      "tree": "project-chaos",
+      "depth": 4,
+      "name": {
+        "zh": "按键图标映射",
+        "en": "Key Icon Map"
+      },
+      "description": {
+        "zh": "KeyIconMap ScriptableObject：按控制键路径 + 设备家族（键盘/鼠标/PS/Xbox）查图标与颜色，含缓存加载、精确/模糊查找、缺项自动补录、条目排序与精灵收集；供改键行显示手柄/键鼠图标。\n",
+        "en": "KeyIconMap ScriptableObject: resolves icons and colors by control-key path and device family (keyboard/mouse/PS/Xbox), with cached loading, exact/fuzzy lookup, auto-added missing entries, entry sorting and sprite collection for keybinding rows.\n"
+      },
+      "source": [],
+      "revision": "75df668e8bb1abec0b4352190c3082c585e2deef",
+      "updated_at": "2026-10-06T12:10:00Z",
+      "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "aggregate": {
+        "descendant_count": 4,
+        "own_api_count": 0,
+        "inherited_api_count": 15,
+        "dep_out": 0,
+        "dep_in": 0
+      }
+    },
+    "project-chaos.gameplay-3c.control.input-icons.cache": {
+      "uid": "f1c00029",
+      "id": "project-chaos.gameplay-3c.control.input-icons.cache",
+      "parent": "project-chaos.gameplay-3c.control.input-icons",
+      "tree": "project-chaos",
+      "depth": 5,
+      "name": {
+        "zh": "图标映射缓存",
+        "en": "Icon Map Cache"
+      },
+      "description": {
+        "zh": "KeyIconMap 缓存：Active 懒加载访问、Load 显式加载、ResetCache 清缓存。\n",
+        "en": "KeyIconMap caching: Active accessor with lazy Resources loading, Load and ResetCache.\n"
+      },
+      "source": [
+        {
+          "path": "Assets/Scripts/Runtime/3C/Control/InputManager/KeyIconMap.cs",
+          "line": 121,
+          "end_line": 163
+        }
+      ],
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:26:25.547Z",
+      "fingerprint": "2023bd6e048d39c1e0e4e46f86e528400a6368e0a22057657e7f1dfae14dab60",
+      "apis": [
+        {
+          "protocol": "rpc",
+          "path": "KeyIconMap.Active",
+          "description": {
+            "zh": "当前生效的映射表实例（自动从 Resources 加载）。\n",
+            "en": "The active map instance (auto-loads from Resources).\n"
+          },
+          "key": "rpc:KeyIconMap.Active"
+        },
+        {
+          "protocol": "rpc",
+          "path": "KeyIconMap.Load",
+          "description": {
+            "zh": "从 Resources/Data/Input/KeyIconMap 加载映射表。\n",
+            "en": "Loads the KeyIconMap asset from Resources.\n"
+          },
+          "key": "rpc:KeyIconMap.Load"
+        },
+        {
+          "protocol": "rpc",
+          "path": "KeyIconMap.ResetCache",
+          "description": {
+            "zh": "清空缓存实例。\n",
+            "en": "Clears the cached instance.\n"
+          },
+          "key": "rpc:KeyIconMap.ResetCache"
+        }
+      ],
+      "deps": [
+        {
+          "kind": "reference",
+          "to": "project-chaos.gameplay-3c.control.input-icons.map-asset",
+          "from_api": "rpc:KeyIconMap.Load",
+          "to_api": "rpc:KeyIconMap.style",
+          "label": {
+            "zh": "图标映射表",
+            "en": "Icon map asset"
+          },
+          "cross_tree": false
+        },
+        {
+          "kind": "call",
+          "to": "project-chaos.framework.logging.core",
+          "from_api": "rpc:KeyIconMap.Load",
+          "to_api": "rpc:ChaosLog.Write",
+          "label": {
+            "zh": "加载告警日志",
+            "en": "Load warning log"
+          },
+          "cross_tree": false
+        }
+      ],
+      "aggregate": {
+        "descendant_count": 0,
+        "own_api_count": 3,
+        "inherited_api_count": 0,
+        "dep_out": 2,
+        "dep_in": 0
+      }
+    },
+    "project-chaos.gameplay-3c.control.input-icons.edit": {
+      "uid": "f1c0002b",
+      "id": "project-chaos.gameplay-3c.control.input-icons.edit",
+      "parent": "project-chaos.gameplay-3c.control.input-icons",
+      "tree": "project-chaos",
+      "depth": 5,
+      "name": {
+        "zh": "映射表维护",
+        "en": "Icon Map Maintenance"
+      },
+      "description": {
+        "zh": "映射表维护：精确查找、缺项补录、条目排序与精灵收集（供编辑器窗口与图集构建）。\n",
+        "en": "Icon map maintenance: exact lookup, get-or-add entry for backfilling, deterministic sorting and sprite collection.\n"
+      },
+      "source": [
+        {
+          "path": "Assets/Scripts/Runtime/3C/Control/InputManager/KeyIconMap.cs",
+          "line": 216,
+          "end_line": 284
+        }
+      ],
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:26:25.548Z",
+      "fingerprint": "2023bd6e048d39c1e0e4e46f86e528400a6368e0a22057657e7f1dfae14dab60",
+      "apis": [
+        {
+          "protocol": "rpc",
+          "path": "KeyIconMap.FindEntryExact",
+          "description": {
+            "zh": "严格匹配查找（不降级）。\n",
+            "en": "Exact-match lookup without fallback.\n"
+          },
+          "key": "rpc:KeyIconMap.FindEntryExact"
+        },
+        {
+          "protocol": "rpc",
+          "path": "KeyIconMap.GetOrAddEntry",
+          "description": {
+            "zh": "取条目，不存在则新建（供编辑器工具补录）。\n",
+            "en": "Gets or creates an entry (used by editor tooling).\n"
+          },
+          "key": "rpc:KeyIconMap.GetOrAddEntry"
+        },
+        {
+          "protocol": "rpc",
+          "path": "KeyIconMap.SortEntries",
+          "description": {
+            "zh": "按规则排序条目。\n",
+            "en": "Sorts entries deterministically.\n"
+          },
+          "key": "rpc:KeyIconMap.SortEntries"
+        },
+        {
+          "protocol": "rpc",
+          "path": "KeyIconMap.CollectSprites",
+          "description": {
+            "zh": "收集全部条目引用的精灵。\n",
+            "en": "Collects all sprites referenced by entries.\n"
+          },
+          "key": "rpc:KeyIconMap.CollectSprites"
+        }
+      ],
+      "deps": [
+        {
+          "kind": "reference",
+          "to": "project-chaos.gameplay-3c.control.input-icons.map-asset",
+          "from_api": "rpc:KeyIconMap.SortEntries",
+          "to_api": "rpc:KeyIconMap.style",
+          "label": {
+            "zh": "图标映射表",
+            "en": "Icon map asset"
+          },
+          "cross_tree": false
+        }
+      ],
+      "aggregate": {
+        "descendant_count": 0,
+        "own_api_count": 4,
+        "inherited_api_count": 0,
+        "dep_out": 1,
+        "dep_in": 0
+      }
+    },
+    "project-chaos.gameplay-3c.control.input-icons.map-asset": {
+      "uid": "f1c00028",
+      "id": "project-chaos.gameplay-3c.control.input-icons.map-asset",
+      "parent": "project-chaos.gameplay-3c.control.input-icons",
+      "tree": "project-chaos",
+      "depth": 5,
+      "name": {
+        "zh": "按键图标映射表",
+        "en": "Key Icon Map Asset"
+      },
+      "description": {
+        "zh": "KeyIconMap 资产数据：IconStyle 枚举、Entry 条目（控制键/设备家族/图标/来源）、页签图标与着色设置。\n",
+        "en": "KeyIconMap asset data: IconStyle enum, Entry list (controlKey/family/icon), tab icons and tint settings.\n"
+      },
+      "source": [
+        {
+          "path": "Assets/Scripts/Runtime/3C/Control/InputManager/KeyIconMap.cs",
+          "line": 1,
+          "end_line": 120
+        }
+      ],
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:26:25.547Z",
+      "fingerprint": "2023bd6e048d39c1e0e4e46f86e528400a6368e0a22057657e7f1dfae14dab60",
+      "apis": [
+        {
+          "protocol": "rpc",
+          "path": "KeyIconMap.style",
+          "description": {
+            "zh": "图标样式（实心/描边）。\n",
+            "en": "Icon rendering style (filled/outline).\n"
+          },
+          "key": "rpc:KeyIconMap.style"
+        },
+        {
+          "protocol": "rpc",
+          "path": "KeyIconMap.preferGlyphVariant",
+          "description": {
+            "zh": "优先使用字形变体图标。\n",
+            "en": "Prefer glyph variant icons when available.\n"
+          },
+          "key": "rpc:KeyIconMap.preferGlyphVariant"
+        },
+        {
+          "protocol": "rpc",
+          "path": "KeyIconMap.tint",
+          "description": {
+            "zh": "未使用原色图标时的着色。\n",
+            "en": "Tint color applied to raw-color icons.\n"
+          },
+          "key": "rpc:KeyIconMap.tint"
+        },
+        {
+          "protocol": "rpc",
+          "path": "KeyIconMap.keyboardTabIcon",
+          "description": {
+            "zh": "键鼠页签图标。\n",
+            "en": "Keyboard/mouse tab icon.\n"
+          },
+          "key": "rpc:KeyIconMap.keyboardTabIcon"
+        }
+      ],
+      "deps": [
+        {
+          "kind": "reference",
+          "to": "project-chaos.framework.paths.global-path",
+          "from_api": "rpc:KeyIconMap.style",
+          "to_api": "rpc:GlobalPath.res_KeyIconMapPath",
+          "label": {
+            "zh": "图标表路径",
+            "en": "Icon map path"
+          },
+          "cross_tree": false
+        }
+      ],
+      "aggregate": {
+        "descendant_count": 0,
+        "own_api_count": 4,
+        "inherited_api_count": 0,
+        "dep_out": 1,
+        "dep_in": 3
+      }
+    },
+    "project-chaos.gameplay-3c.control.input-icons.query": {
+      "uid": "f1c0002a",
+      "id": "project-chaos.gameplay-3c.control.input-icons.query",
+      "parent": "project-chaos.gameplay-3c.control.input-icons",
+      "tree": "project-chaos",
+      "depth": 5,
+      "name": {
+        "zh": "图标查询",
+        "en": "Icon Lookup"
+      },
+      "description": {
+        "zh": "图标查询：按控制键 + 设备家族查条目，取图标与颜色，取键鼠/手柄页签图标。\n",
+        "en": "Icon lookup: FindEntry by control key plus device family, GetIcon/GetIconColor, and GetTabIcon for keyboard/gamepad tabs.\n"
+      },
+      "source": [
+        {
+          "path": "Assets/Scripts/Runtime/3C/Control/InputManager/KeyIconMap.cs",
+          "line": 164,
+          "end_line": 215
+        }
+      ],
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:26:25.548Z",
+      "fingerprint": "2023bd6e048d39c1e0e4e46f86e528400a6368e0a22057657e7f1dfae14dab60",
+      "apis": [
+        {
+          "protocol": "rpc",
+          "path": "KeyIconMap.FindEntry",
+          "description": {
+            "zh": "按控制键与设备家族查找条目。\n",
+            "en": "Finds an entry by control key and device family.\n"
+          },
+          "key": "rpc:KeyIconMap.FindEntry"
+        },
+        {
+          "protocol": "rpc",
+          "path": "KeyIconMap.GetIcon",
+          "description": {
+            "zh": "取控制键对应的图标。\n",
+            "en": "Gets the sprite for a control key.\n"
+          },
+          "key": "rpc:KeyIconMap.GetIcon"
+        },
+        {
+          "protocol": "rpc",
+          "path": "KeyIconMap.GetIconColor",
+          "description": {
+            "zh": "取控制键图标的颜色。\n",
+            "en": "Gets the tint color for a control key.\n"
+          },
+          "key": "rpc:KeyIconMap.GetIconColor"
+        },
+        {
+          "protocol": "rpc",
+          "path": "KeyIconMap.GetTabIcon",
+          "description": {
+            "zh": "取键盘/手柄页签图标。\n",
+            "en": "Gets the keyboard/gamepad tab icon.\n"
+          },
+          "key": "rpc:KeyIconMap.GetTabIcon"
+        }
+      ],
+      "deps": [
+        {
+          "kind": "reference",
+          "to": "project-chaos.gameplay-3c.control.input-icons.map-asset",
+          "from_api": "rpc:KeyIconMap.GetIcon",
+          "to_api": "rpc:KeyIconMap.style",
+          "label": {
+            "zh": "图标映射表",
+            "en": "Icon map asset"
+          },
+          "cross_tree": false
+        }
+      ],
+      "aggregate": {
+        "descendant_count": 0,
+        "own_api_count": 4,
+        "inherited_api_count": 0,
+        "dep_out": 1,
+        "dep_in": 1
+      }
+    },
+    "project-chaos.gameplay-3c.control.input.display": {
+      "uid": "f1c00023",
+      "id": "project-chaos.gameplay-3c.control.input.display",
+      "parent": "project-chaos.gameplay-3c.control.input",
+      "tree": "project-chaos",
+      "depth": 5,
+      "name": {
+        "zh": "绑定显示解析",
+        "en": "Binding Display"
+      },
+      "description": {
+        "zh": "绑定显示解析：取槽位的文本/图标/颜色、有效控制路径、稳定查表键、图标家族与可读按键名。\n",
+        "en": "Binding display: resolves text/icon/tint for a slot, effective control paths, stable lookup keys, icon family and human-readable names.\n"
+      },
+      "source": [
+        {
+          "path": "Assets/Scripts/Runtime/3C/Control/InputManager/InputManager.cs",
+          "line": 295,
+          "end_line": 572
+        }
+      ],
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:26:25.544Z",
+      "fingerprint": "a3e7fdcf7243984b01ff23825e8d60d83ccd36aee697222dab345f0bff3f3cb3",
+      "apis": [
+        {
+          "protocol": "rpc",
+          "path": "InputManager.GetBindingVisual",
+          "description": {
+            "zh": "取绑定的显示文本/图标/颜色（供设置行渲染）。\n",
+            "en": "Gets text, sprite and tint for a binding display slot.\n"
+          },
+          "key": "rpc:InputManager.GetBindingVisual"
+        },
+        {
+          "protocol": "rpc",
+          "path": "InputManager.GetBindingPath",
+          "description": {
+            "zh": "取绑定的有效控制路径。\n",
+            "en": "Gets the effective control path of a binding.\n"
+          },
+          "key": "rpc:InputManager.GetBindingPath"
+        },
+        {
+          "protocol": "rpc",
+          "path": "InputManager.ControlKey",
+          "description": {
+            "zh": "把控制路径转为稳定的查表键。\n",
+            "en": "Converts a control path into a stable lookup key.\n"
+          },
+          "key": "rpc:InputManager.ControlKey"
+        },
+        {
+          "protocol": "rpc",
+          "path": "InputManager.IconFamily",
+          "description": {
+            "zh": "判定路径所属的图标家族（键盘/鼠标/PS/Xbox）。\n",
+            "en": "Resolves which icon family a path belongs to.\n"
+          },
+          "key": "rpc:InputManager.IconFamily"
+        },
+        {
+          "protocol": "rpc",
+          "path": "InputManager.DescribePath",
+          "description": {
+            "zh": "把控制路径转为可读的按键名。\n",
+            "en": "Human-readable description of a control path.\n"
+          },
+          "key": "rpc:InputManager.DescribePath"
+        }
+      ],
+      "deps": [
+        {
+          "kind": "call",
+          "to": "project-chaos.gameplay-3c.control.input-icons.query",
+          "from_api": "rpc:InputManager.GetBindingVisual",
+          "to_api": "rpc:KeyIconMap.GetIcon",
+          "label": {
+            "zh": "按键图标查询",
+            "en": "Key icon lookup"
+          },
+          "cross_tree": false
+        },
+        {
+          "kind": "reference",
+          "to": "project-chaos.framework.settings.enums",
+          "from_api": "rpc:InputManager.DescribePath",
+          "to_api": "rpc:SettingsLabels.GamepadButtonName",
+          "label": {
+            "zh": "手柄按键名",
+            "en": "Gamepad key names"
+          },
+          "cross_tree": false
+        }
+      ],
+      "aggregate": {
+        "descendant_count": 0,
+        "own_api_count": 5,
+        "inherited_api_count": 0,
+        "dep_out": 2,
+        "dep_in": 0
+      }
+    },
+    "project-chaos.gameplay-3c.control.input.gameplay-scope": {
+      "uid": "a3c00031",
+      "id": "project-chaos.gameplay-3c.control.input.gameplay-scope",
+      "parent": "project-chaos.gameplay-3c.control.input",
+      "tree": "project-chaos",
+      "depth": 5,
+      "tags": [
+        "input",
+        "scope",
+        "gameplay"
+      ],
+      "name": {
+        "zh": "局内输入作用域",
+        "en": "Gameplay Input Scope"
+      },
+      "description": {
+        "zh": "InputManager 的局内分期（独立文件的 partial class）：按 action 划分绑定作用域（Global/InRun/Outside，局外时 Move 重定向到 VillageMove）、多所有者的局内输入阻断（允许多个 UI 各自加锁）、输入闩锁刷新，以及玩法侧读取原语（ReadMove、WasGameplayPressed、IsPointerAttackHeld、导航按下/消费）。\n",
+        "en": "The gameplay half of InputManager (a partial class in its own file): per-action binding scopes (Global/InRun/Outside) with Move redirected to VillageMove outside a run, multi-owner gameplay input blocking for overlapping UI, latch refreshing and the read primitives gameplay code uses (ReadMove, WasGameplayPressed, IsPointerAttackHeld, navigation press/consume).\n"
+      },
+      "source": [
+        {
+          "path": "Assets/Scripts/Runtime/3C/Control/InputManager/InputManager.Gameplay.cs"
+        }
+      ],
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:29:20.165Z",
+      "fingerprint": "aade8b9e315bd9227b5456add5985258dbbe10702cef2419b59bc94203c877f9",
+      "apis": [
+        {
+          "protocol": "rpc",
+          "path": "InputManager.ReadMove",
+          "description": {
+            "zh": "ReadMove()：当前作用域下的横向移动意图。\n",
+            "en": "ReadMove(): horizontal move intent for the current scope.\n"
+          },
+          "key": "rpc:InputManager.ReadMove"
+        },
+        {
+          "protocol": "rpc",
+          "path": "InputManager.WasGameplayPressed",
+          "description": {
+            "zh": "WasGameplayPressed(action)：受阻断所有者约束的局内按键边沿。\n",
+            "en": "WasGameplayPressed(action): edge-detected gameplay press that respects the blocking owners.\n"
+          },
+          "key": "rpc:InputManager.WasGameplayPressed"
+        },
+        {
+          "protocol": "rpc",
+          "path": "InputManager.SetGameplayInputBlocked",
+          "description": {
+            "zh": "SetGameplayInputBlocked(owner, blocked)：UI 各自阻断并只释放自己的锁。\n",
+            "en": "SetGameplayInputBlocked(owner, blocked): UI owners block independently and release only their own block.\n"
+          },
+          "key": "rpc:InputManager.SetGameplayInputBlocked"
+        },
+        {
+          "protocol": "rpc",
+          "path": "InputManager.BindingScope",
+          "description": {
+            "zh": "BindingScope：Global / InRun / Outside 三分作用域，按 action 解析。\n",
+            "en": "BindingScope: Global, InRun or Outside, resolved per action.\n"
+          },
+          "key": "rpc:InputManager.BindingScope"
+        },
+        {
+          "protocol": "rpc",
+          "path": "InputManager.CanReadGameplayInput",
+          "description": {
+            "zh": "CanReadGameplayInput：被阻断或处于输入边界帧时为 false。\n",
+            "en": "CanReadGameplayInput: false while blocked or within the input-boundary frame.\n"
+          },
+          "key": "rpc:InputManager.CanReadGameplayInput"
+        }
+      ],
+      "deps": [
+        {
+          "kind": "reference",
+          "to": "project-chaos.bootstrap.w5-gameplay.run-flow",
+          "label": {
+            "zh": "读切图门控",
+            "en": "Reads the transition gate"
+          },
+          "cross_tree": false
+        },
+        {
+          "kind": "reference",
+          "to": "project-chaos.framework.runmap",
+          "label": {
+            "zh": "读地图就绪状态",
+            "en": "Reads map readiness"
+          },
+          "cross_tree": false
+        }
+      ],
+      "aggregate": {
+        "descendant_count": 0,
+        "own_api_count": 5,
+        "inherited_api_count": 0,
+        "dep_out": 2,
+        "dep_in": 1
+      }
+    },
+    "project-chaos.gameplay-3c.control.input.manager-core": {
+      "uid": "f1c00020",
+      "id": "project-chaos.gameplay-3c.control.input.manager-core",
+      "parent": "project-chaos.gameplay-3c.control.input",
+      "tree": "project-chaos",
+      "depth": 5,
+      "name": {
+        "zh": "输入管理器核心",
+        "en": "InputManager Core"
+      },
+      "description": {
+        "zh": "InputManager 核心：Player 映射与 Move/Attack/Jump 动作常量、Init 加载 InputActionAsset、设备族转换、改键中判定。\n",
+        "en": "InputManager core: Player map constants, Init loading the InputActionAsset, device-family conversion and the IsRebinding flag.\n"
+      },
+      "source": [
+        {
+          "path": "Assets/Scripts/Runtime/3C/Control/InputManager/InputManager.cs",
+          "line": 1,
+          "end_line": 164
+        }
+      ],
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:26:25.542Z",
+      "fingerprint": "a3e7fdcf7243984b01ff23825e8d60d83ccd36aee697222dab345f0bff3f3cb3",
+      "apis": [
+        {
+          "protocol": "rpc",
+          "path": "InputManager.MapName",
+          "description": {
+            "zh": "输入映射名常量 Player。\n",
+            "en": "Input action map name constant (\"Player\").\n"
+          },
+          "key": "rpc:InputManager.MapName"
+        },
+        {
+          "protocol": "rpc",
+          "path": "InputManager.KindOf",
+          "description": {
+            "zh": "把设备类型映射为按键组（键盘/鼠标/手柄）。\n",
+            "en": "Maps an InputDeviceType to a binding group kind.\n"
+          },
+          "key": "rpc:InputManager.KindOf"
+        },
+        {
+          "protocol": "rpc",
+          "path": "InputManager.Init",
+          "description": {
+            "zh": "初始化管理器并加载 InputActions 资源。\n",
+            "en": "Initializes the manager and loads the InputActionAsset.\n"
+          },
+          "key": "rpc:InputManager.Init"
+        },
+        {
+          "protocol": "rpc",
+          "path": "InputManager.IsRebinding",
+          "description": {
+            "zh": "当前是否处于改键监听中。\n",
+            "en": "Whether a rebinding operation is running.\n"
+          },
+          "key": "rpc:InputManager.IsRebinding"
+        }
+      ],
+      "deps": [
+        {
+          "kind": "call",
+          "to": "project-chaos.framework.resources.manager",
+          "from_api": "rpc:InputManager.Init",
+          "to_api": "rpc:ResManager.Load",
+          "label": {
+            "zh": "加载输入资源",
+            "en": "Load input asset"
+          },
+          "cross_tree": false
+        },
+        {
+          "kind": "reference",
+          "to": "project-chaos.framework.paths.global-path",
+          "from_api": "rpc:InputManager.Init",
+          "to_api": "rpc:GlobalPath.res_InputActionsPath",
+          "label": {
+            "zh": "输入资源路径",
+            "en": "Input asset path"
+          },
+          "cross_tree": false
+        }
+      ],
+      "aggregate": {
+        "descendant_count": 0,
+        "own_api_count": 4,
+        "inherited_api_count": 0,
+        "dep_out": 2,
+        "dep_in": 0
+      }
+    },
+    "project-chaos.gameplay-3c.control.input.overrides": {
+      "uid": "f1c00021",
+      "id": "project-chaos.gameplay-3c.control.input.overrides",
+      "parent": "project-chaos.gameplay-3c.control.input",
+      "tree": "project-chaos",
+      "depth": 5,
+      "name": {
+        "zh": "改键覆盖存取",
+        "en": "Binding Overrides"
+      },
+      "description": {
+        "zh": "改键覆盖项持久化：序列化/反序列化为 JSON（由设置系统存盘）与按组清空。\n",
+        "en": "Binding override persistence: save/load overrides as JSON (stored inside settings) and clear all or one group.\n"
+      },
+      "source": [
+        {
+          "path": "Assets/Scripts/Runtime/3C/Control/InputManager/InputManager.cs",
+          "line": 165,
+          "end_line": 245
+        }
+      ],
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:26:25.543Z",
+      "fingerprint": "a3e7fdcf7243984b01ff23825e8d60d83ccd36aee697222dab345f0bff3f3cb3",
+      "apis": [
+        {
+          "protocol": "rpc",
+          "path": "InputManager.SaveOverridesJson",
+          "description": {
+            "zh": "把全部改键覆盖项序列化为 JSON 字符串。\n",
+            "en": "Serializes all binding overrides to a JSON string.\n"
+          },
+          "key": "rpc:InputManager.SaveOverridesJson"
+        },
+        {
+          "protocol": "rpc",
+          "path": "InputManager.LoadOverridesJson",
+          "description": {
+            "zh": "从 JSON 字符串恢复改键覆盖项。\n",
+            "en": "Restores binding overrides from a JSON string.\n"
+          },
+          "key": "rpc:InputManager.LoadOverridesJson"
+        },
+        {
+          "protocol": "rpc",
+          "path": "InputManager.ClearAllOverrides",
+          "description": {
+            "zh": "清空全部改键覆盖项。\n",
+            "en": "Clears all binding overrides.\n"
+          },
+          "key": "rpc:InputManager.ClearAllOverrides"
+        },
+        {
+          "protocol": "rpc",
+          "path": "InputManager.ClearOverridesFor",
+          "description": {
+            "zh": "清空指定按键组（键鼠/手柄）的覆盖项。\n",
+            "en": "Clears overrides for one binding group.\n"
+          },
+          "key": "rpc:InputManager.ClearOverridesFor"
+        }
+      ],
+      "aggregate": {
+        "descendant_count": 0,
+        "own_api_count": 4,
+        "inherited_api_count": 0,
+        "dep_out": 0,
+        "dep_in": 1
+      }
+    },
+    "project-chaos.gameplay-3c.control.input.rebind-conflict": {
+      "uid": "f1c00026",
+      "id": "project-chaos.gameplay-3c.control.input.rebind-conflict",
+      "parent": "project-chaos.gameplay-3c.control.input",
+      "tree": "project-chaos",
+      "depth": 5,
+      "name": {
+        "zh": "改键冲突处理",
+        "en": "Rebind Conflict"
+      },
+      "description": {
+        "zh": "改键冲突处理：新按键已被其它绑定占用时自动解绑冲突项，并含 Action/绑定索引/按键组查找等辅助实现。\n",
+        "en": "Rebind conflict handling: clears the duplicate binding that already owns the newly pressed control, plus action/binding lookup helpers.\n"
+      },
+      "source": [
+        {
+          "path": "Assets/Scripts/Runtime/3C/Control/InputManager/InputManager.cs",
+          "line": 949,
+          "end_line": 1061
+        }
+      ],
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:26:25.546Z",
+      "fingerprint": "a3e7fdcf7243984b01ff23825e8d60d83ccd36aee697222dab345f0bff3f3cb3",
+      "apis": [
+        {
+          "protocol": "file",
+          "path": "Assets/Scripts/Runtime/3C/Control/InputManager/InputManager.cs#L949-L1061",
+          "description": {
+            "zh": "本模块在 InputManager.cs 中的源码区段（ResolveConflict 及其辅助）。\n",
+            "en": "Source region of this module inside InputManager.cs (ResolveConflict and helpers).\n"
+          },
+          "key": "file:Assets/Scripts/Runtime/3C/Control/InputManager/InputManager.cs#L949-L1061"
+        }
+      ],
+      "aggregate": {
+        "descendant_count": 0,
+        "own_api_count": 1,
+        "inherited_api_count": 0,
+        "dep_out": 0,
+        "dep_in": 0
+      }
+    },
+    "project-chaos.gameplay-3c.control.input.rebind-flow": {
+      "uid": "f1c00025",
+      "id": "project-chaos.gameplay-3c.control.input.rebind-flow",
+      "parent": "project-chaos.gameplay-3c.control.input",
+      "tree": "project-chaos",
+      "depth": 5,
+      "name": {
+        "zh": "改键流程",
+        "en": "Rebind Flow"
+      },
+      "description": {
+        "zh": "改键流程：BeginRebind 启动监听（超时自动取消、取消键边沿判定）、结果回调分发与 CancelRebind 手动取消。\n",
+        "en": "Rebind operation flow: BeginRebind with per-binding timeout and cancel-key handling, result callback and CancelRebind, plus override application.\n"
+      },
+      "source": [
+        {
+          "path": "Assets/Scripts/Runtime/3C/Control/InputManager/InputManager.cs",
+          "line": 660,
+          "end_line": 948
+        }
+      ],
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:26:25.545Z",
+      "fingerprint": "a3e7fdcf7243984b01ff23825e8d60d83ccd36aee697222dab345f0bff3f3cb3",
+      "apis": [
+        {
+          "protocol": "rpc",
+          "path": "InputManager.BeginRebind",
+          "description": {
+            "zh": "BeginRebind(actionName, bindingIndex, kind, onFinished)：开始监听新绑定。\n",
+            "en": "BeginRebind(actionName, bindingIndex, kind, onFinished): starts listening for a new binding.\n"
+          },
+          "key": "rpc:InputManager.BeginRebind"
+        },
+        {
+          "protocol": "rpc",
+          "path": "InputManager.CancelRebind",
+          "description": {
+            "zh": "CancelRebind()：中断进行中的改键并恢复原绑定。\n",
+            "en": "CancelRebind(): aborts the running rebind and restores the previous path.\n"
+          },
+          "key": "rpc:InputManager.CancelRebind"
+        },
+        {
+          "protocol": "file",
+          "path": "Assets/Scripts/Runtime/3C/Control/InputManager/InputManager.cs#L660-L948",
+          "description": {
+            "zh": "本模块在 InputManager.cs 中的源码区段。\n",
+            "en": "Source region of this module inside InputManager.cs.\n"
+          },
+          "key": "file:Assets/Scripts/Runtime/3C/Control/InputManager/InputManager.cs#L660-L948"
+        }
+      ],
+      "deps": [
+        {
+          "kind": "call",
+          "to": "project-chaos.framework.logging.core",
+          "from_api": "rpc:InputManager.BeginRebind",
+          "to_api": "rpc:ChaosLog.Write",
+          "label": {
+            "zh": "改键日志",
+            "en": "Rebind logging"
+          },
+          "cross_tree": false
+        }
+      ],
+      "aggregate": {
+        "descendant_count": 0,
+        "own_api_count": 3,
+        "inherited_api_count": 0,
+        "dep_out": 1,
+        "dep_in": 0
+      }
+    },
+    "project-chaos.gameplay-3c.control.input.rebind-steps": {
+      "uid": "f1c00024",
+      "id": "project-chaos.gameplay-3c.control.input.rebind-steps",
+      "parent": "project-chaos.gameplay-3c.control.input",
+      "tree": "project-chaos",
+      "depth": 5,
+      "name": {
+        "zh": "改键步骤拆分",
+        "en": "Rebind Steps"
+      },
+      "description": {
+        "zh": "改键步骤拆分：把一条绑定（含 1DAxis/2DVector 组合键）拆为带标签的 RebindStep 列表，使每个方向可独立改键。\n",
+        "en": "Rebind step splitting: turns a binding (including 1D/2D composites) into per-part RebindStep records with labels.\n"
+      },
+      "source": [
+        {
+          "path": "Assets/Scripts/Runtime/3C/Control/InputManager/InputManager.cs",
+          "line": 573,
+          "end_line": 659
+        }
+      ],
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:26:25.545Z",
+      "fingerprint": "a3e7fdcf7243984b01ff23825e8d60d83ccd36aee697222dab345f0bff3f3cb3",
+      "apis": [
+        {
+          "protocol": "rpc",
+          "path": "InputManager.GetRebindSteps",
+          "description": {
+            "zh": "GetRebindSteps(actionName, kind)：把复合绑定拆成每个部一条记录。\n",
+            "en": "GetRebindSteps(actionName, kind): splits a composite binding into one step per part.\n"
+          },
+          "key": "rpc:InputManager.GetRebindSteps"
+        },
+        {
+          "protocol": "file",
+          "path": "Assets/Scripts/Runtime/3C/Control/InputManager/InputManager.cs#L573-L659",
+          "description": {
+            "zh": "本模块在 InputManager.cs 中的源码区段。\n",
+            "en": "Source region of this module inside InputManager.cs.\n"
+          },
+          "key": "file:Assets/Scripts/Runtime/3C/Control/InputManager/InputManager.cs#L573-L659"
+        }
+      ],
+      "aggregate": {
+        "descendant_count": 0,
+        "own_api_count": 2,
+        "inherited_api_count": 0,
+        "dep_out": 0,
+        "dep_in": 0
+      }
+    },
+    "project-chaos.gameplay-3c.control.input.reset": {
+      "uid": "f1c00022",
+      "id": "project-chaos.gameplay-3c.control.input.reset",
+      "parent": "project-chaos.gameplay-3c.control.input",
+      "tree": "project-chaos",
+      "depth": 5,
+      "name": {
+        "zh": "绑定重置",
+        "en": "Binding Reset"
+      },
+      "description": {
+        "zh": "绑定重置与显示文本：ResetBinding 支持整条绑定或组合键分部重置，GetBindingDisplay 取显示名。\n",
+        "en": "Binding reset and display text: ResetBinding for a whole binding or one composite part, plus GetBindingDisplay.\n"
+      },
+      "source": [
+        {
+          "path": "Assets/Scripts/Runtime/3C/Control/InputManager/InputManager.cs",
+          "line": 246,
+          "end_line": 294
+        }
+      ],
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:26:25.544Z",
+      "fingerprint": "a3e7fdcf7243984b01ff23825e8d60d83ccd36aee697222dab345f0bff3f3cb3",
+      "apis": [
+        {
+          "protocol": "rpc",
+          "path": "InputManager.ResetBinding",
+          "description": {
+            "zh": "把某绑定（或组合键的一个分部）重置为默认路径。\n",
+            "en": "Resets a binding (or one composite part) to its default path.\n"
+          },
+          "key": "rpc:InputManager.ResetBinding"
+        },
+        {
+          "protocol": "rpc",
+          "path": "InputManager.GetBindingDisplay",
+          "description": {
+            "zh": "取某绑定的显示文本。\n",
+            "en": "Gets the display text for a binding.\n"
+          },
+          "key": "rpc:InputManager.GetBindingDisplay"
+        }
+      ],
+      "aggregate": {
+        "descendant_count": 0,
+        "own_api_count": 2,
+        "inherited_api_count": 0,
+        "dep_out": 0,
+        "dep_in": 0
+      }
+    },
+    "project-chaos.gameplay-3c.control.input.tick": {
+      "uid": "f1c00027",
+      "id": "project-chaos.gameplay-3c.control.input.tick",
+      "parent": "project-chaos.gameplay-3c.control.input",
+      "tree": "project-chaos",
+      "depth": 5,
+      "name": {
+        "zh": "按键轮询",
+        "en": "Key Polling"
+      },
+      "description": {
+        "zh": "按键轮询：StartTickOrNot 开关每帧检测，轮询到按下/松开时抛出事件中心的 GetKeyDown/GetKeyUp 事件，同时服务改键取消键判定。\n",
+        "en": "Key polling: StartTickOrNot toggles the per-frame tick that raises GetKeyDown/GetKeyUp events and serves rebind cancel detection.\n"
+      },
+      "source": [
+        {
+          "path": "Assets/Scripts/Runtime/3C/Control/InputManager/InputManager.cs",
+          "line": 1062,
+          "end_line": 1164
+        }
+      ],
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:26:25.546Z",
+      "fingerprint": "a3e7fdcf7243984b01ff23825e8d60d83ccd36aee697222dab345f0bff3f3cb3",
+      "apis": [
+        {
+          "protocol": "rpc",
+          "path": "InputManager.StartTickOrNot",
+          "description": {
+            "zh": "StartTickOrNot(openFlag)：开关每帧按键轮询。\n",
+            "en": "StartTickOrNot(openFlag): enables or disables per-frame key polling.\n"
+          },
+          "key": "rpc:InputManager.StartTickOrNot"
+        },
+        {
+          "protocol": "file",
+          "path": "Assets/Scripts/Runtime/3C/Control/InputManager/InputManager.cs#L1062-L1164",
+          "description": {
+            "zh": "本模块在 InputManager.cs 中的源码区段。\n",
+            "en": "Source region of this module inside InputManager.cs.\n"
+          },
+          "key": "file:Assets/Scripts/Runtime/3C/Control/InputManager/InputManager.cs#L1062-L1164"
+        }
+      ],
+      "deps": [
+        {
+          "kind": "event",
+          "to": "project-chaos.framework.events.const-names",
+          "from_api": "rpc:InputManager.StartTickOrNot",
+          "to_api": "rpc:EventConstName.GetKeyDown",
+          "label": {
+            "zh": "按键按下事件",
+            "en": "Key down event"
+          },
+          "cross_tree": false
+        }
+      ],
+      "aggregate": {
+        "descendant_count": 0,
+        "own_api_count": 2,
+        "inherited_api_count": 0,
+        "dep_out": 1,
+        "dep_in": 1
+      }
+    },
+    "project-chaos.gameplay-3c.control.shortcuts": {
+      "uid": "a3c00032",
+      "id": "project-chaos.gameplay-3c.control.shortcuts",
+      "parent": "project-chaos.gameplay-3c.control",
+      "tree": "project-chaos",
+      "depth": 4,
+      "tags": [
+        "input",
+        "shortcut",
+        "wheel"
+      ],
+      "name": {
+        "zh": "局内快捷键与道具轮盘",
+        "en": "Gameplay Shortcuts & Item Wheel"
+      },
+      "description": {
+        "zh": "局内控制驱动：把菜单/背包/队伍/地图等按键翻译成 UI 请求的快捷驱动，以及开关道具轮盘的轮盘驱动。\n",
+        "en": "In-run control drivers: the gameplay shortcut driver that turns menu/inventory/team/map keys into UI requests, and the item-wheel driver that opens and closes the radial item wheel.\n"
+      },
+      "source": [
+        {
+          "path": "Assets/Scripts/Runtime/3C/Control/GameplayShortcutDriver.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/3C/Control/RunItemWheelDriver.cs"
+        }
+      ],
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:29:20.165Z",
+      "fingerprint": "48f0f9aab4bfea991a53df2465d6056c831984280f1969aacfa56b6ea957f08f",
+      "apis": [
+        {
+          "protocol": "rpc",
+          "path": "RunItemWheelDriver.Open",
+          "description": {
+            "zh": "Open()：打开道具轮盘。\n",
+            "en": "Open(): opens the item wheel.\n"
+          },
+          "key": "rpc:RunItemWheelDriver.Open"
+        },
+        {
+          "protocol": "rpc",
+          "path": "RunItemWheelDriver.Close",
+          "description": {
+            "zh": "Close()：关闭道具轮盘。\n",
+            "en": "Close(): closes the item wheel.\n"
+          },
+          "key": "rpc:RunItemWheelDriver.Close"
+        },
+        {
+          "protocol": "rpc",
+          "path": "RunItemWheelDriver.IsOpen",
+          "description": {
+            "zh": "IsOpen：轮盘当前是否打开。\n",
+            "en": "IsOpen: whether the wheel is currently open.\n"
+          },
+          "key": "rpc:RunItemWheelDriver.IsOpen"
+        }
+      ],
+      "deps": [
+        {
+          "kind": "reference",
+          "to": "project-chaos.gameplay-3c.control.input",
+          "label": {
+            "zh": "读取快捷键输入",
+            "en": "Reads shortcut input"
+          },
+          "cross_tree": false
+        }
+      ],
+      "aggregate": {
+        "descendant_count": 0,
+        "own_api_count": 3,
+        "inherited_api_count": 0,
+        "dep_out": 1,
         "dep_in": 0
       }
     },
@@ -20375,9 +21453,9 @@
           "end_line": 66
         }
       ],
-      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
-      "updated_at": "2026-10-31T08:54:47.490Z",
-      "fingerprint": "e0b481d5ae63291d0f2a159384394500ae88aa817333375bf4a93e6070d15580",
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:20:47.033Z",
+      "fingerprint": "093f1461c2b58c43cb26681293612708f17384a72a2f4e429ea7b5033518a954",
       "apis": [
         {
           "protocol": "file",
@@ -20535,9 +21613,9 @@
           "end_line": 509
         }
       ],
-      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
-      "updated_at": "2026-10-31T08:54:47.490Z",
-      "fingerprint": "cac4aab04c917cfe98e29bcdc0566e6d3adaeb58e9b8923482f66acdb1acd514",
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:20:47.034Z",
+      "fingerprint": "8764e7ed4dd67258938b541f97356744a3fff520f4a047557c4ef8eb1f7199cc",
       "apis": [
         {
           "protocol": "file",
@@ -20614,9 +21692,9 @@
           "end_line": 450
         }
       ],
-      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
-      "updated_at": "2026-10-31T08:54:47.491Z",
-      "fingerprint": "cac4aab04c917cfe98e29bcdc0566e6d3adaeb58e9b8923482f66acdb1acd514",
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:20:47.035Z",
+      "fingerprint": "8764e7ed4dd67258938b541f97356744a3fff520f4a047557c4ef8eb1f7199cc",
       "apis": [
         {
           "protocol": "file",
@@ -20684,9 +21762,9 @@
           "end_line": 138
         }
       ],
-      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
-      "updated_at": "2026-10-31T08:54:47.491Z",
-      "fingerprint": "cac4aab04c917cfe98e29bcdc0566e6d3adaeb58e9b8923482f66acdb1acd514",
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:20:47.035Z",
+      "fingerprint": "8764e7ed4dd67258938b541f97356744a3fff520f4a047557c4ef8eb1f7199cc",
       "apis": [
         {
           "protocol": "rpc",
@@ -20774,9 +21852,9 @@
           "end_line": 272
         }
       ],
-      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
-      "updated_at": "2026-10-31T08:54:47.492Z",
-      "fingerprint": "cac4aab04c917cfe98e29bcdc0566e6d3adaeb58e9b8923482f66acdb1acd514",
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:20:47.036Z",
+      "fingerprint": "8764e7ed4dd67258938b541f97356744a3fff520f4a047557c4ef8eb1f7199cc",
       "apis": [
         {
           "protocol": "file",
@@ -20853,9 +21931,9 @@
           "end_line": 368
         }
       ],
-      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
-      "updated_at": "2026-10-31T08:54:47.492Z",
-      "fingerprint": "cac4aab04c917cfe98e29bcdc0566e6d3adaeb58e9b8923482f66acdb1acd514",
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:20:47.036Z",
+      "fingerprint": "8764e7ed4dd67258938b541f97356744a3fff520f4a047557c4ef8eb1f7199cc",
       "apis": [
         {
           "protocol": "file",
@@ -22024,9 +23102,9 @@
           "end_line": 421
         }
       ],
-      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
-      "updated_at": "2026-10-31T08:58:29.744Z",
-      "fingerprint": "888e6ac95db88b7e0ff338fe63c68dfc9be7f391634466415f8a96dddc392858",
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:20:47.036Z",
+      "fingerprint": "562ff5b68872e2094ec1b7e0832cd8c8b6afe79fb01d04ae4cac3156c6cb1be5",
       "apis": [
         {
           "protocol": "file",
@@ -22099,9 +23177,9 @@
           "end_line": 300
         }
       ],
-      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
-      "updated_at": "2026-10-31T08:58:29.745Z",
-      "fingerprint": "888e6ac95db88b7e0ff338fe63c68dfc9be7f391634466415f8a96dddc392858",
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:20:47.037Z",
+      "fingerprint": "562ff5b68872e2094ec1b7e0832cd8c8b6afe79fb01d04ae4cac3156c6cb1be5",
       "apis": [
         {
           "protocol": "rpc",
@@ -22187,9 +23265,9 @@
           "end_line": 248
         }
       ],
-      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
-      "updated_at": "2026-10-31T08:58:29.745Z",
-      "fingerprint": "888e6ac95db88b7e0ff338fe63c68dfc9be7f391634466415f8a96dddc392858",
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:20:47.037Z",
+      "fingerprint": "562ff5b68872e2094ec1b7e0832cd8c8b6afe79fb01d04ae4cac3156c6cb1be5",
       "apis": [
         {
           "protocol": "file",
@@ -22275,9 +23353,9 @@
           "path": "Assets/Scripts/Runtime/MVP/View/WorldMapPanel.cs"
         }
       ],
-      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
-      "updated_at": "2026-10-31T08:58:40.812Z",
-      "fingerprint": "d9e200b35faee8bd357db17115e34412c3be51c496d9116dedb04a8a2d792ee7",
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:20:47.037Z",
+      "fingerprint": "b7b24dd20f3d89e2ac0b90d1dbc530e1f226a8ce499a1601bba4731c92b2d99b",
       "apis": [
         {
           "protocol": "file",
@@ -23030,7 +24108,7 @@
         "own_api_count": 2,
         "inherited_api_count": 0,
         "dep_out": 0,
-        "dep_in": 0
+        "dep_in": 1
       }
     },
     "project-chaos.project-infra.plugins-dlls": {
@@ -24736,9 +25814,9 @@
           "path": ".vs/Assembly-CSharp-Editor.csproj.dtbcache.json"
         }
       ],
-      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
-      "updated_at": "2026-10-31T09:03:54.716Z",
-      "fingerprint": "5725c6e0a30b4aca830989a749c4292cdc7f04a9737d12ce1ab318fd5b26b007",
+      "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
+      "updated_at": "2026-10-31T16:20:47.046Z",
+      "fingerprint": "69d131723f161fb28c168784167985a752d73a368a701618aa74f54cfe09f614",
       "apis": [
         {
           "protocol": "file",
@@ -27866,6 +28944,10 @@
     "file:Assets/Scripts/Editor/WorldMapTool/WorldMapToolValidator.cs": "project-chaos.editor-tools.worldmap-tool.validator",
     "file:Assets/Scripts/Editor/WorldMapTool/WorldMapToolWindow.cs": "project-chaos.editor-tools.worldmap-tool.window",
     "file:Assets/Scripts/Editor/WorldMapTool/WorldMapToolXlsxExporter.cs": "project-chaos.editor-tools.worldmap-tool.xlsx-exporter",
+    "file:Assets/Scripts/Runtime/3C/Control/InputManager/InputManager.cs#L1062-L1164": "project-chaos.gameplay-3c.control.input.tick",
+    "file:Assets/Scripts/Runtime/3C/Control/InputManager/InputManager.cs#L573-L659": "project-chaos.gameplay-3c.control.input.rebind-steps",
+    "file:Assets/Scripts/Runtime/3C/Control/InputManager/InputManager.cs#L660-L948": "project-chaos.gameplay-3c.control.input.rebind-flow",
+    "file:Assets/Scripts/Runtime/3C/Control/InputManager/InputManager.cs#L949-L1061": "project-chaos.gameplay-3c.control.input.rebind-conflict",
     "file:Assets/Scripts/Runtime/DontDestroy.cs": "project-chaos.framework.dont-destroy",
     "file:Assets/Scripts/Runtime/Entry.cs#L5-L18": "project-chaos.bootstrap.entry",
     "file:Assets/Scripts/Runtime/GameBase/AudioManager/AudioManager.cs#L1-L126": "project-chaos.framework.audio.channel-volume",
@@ -27885,10 +28967,6 @@
     "file:Assets/Scripts/Runtime/GameBase/DialogueManager/DialogueManager.cs#L220-L416": "project-chaos.framework.dialogue.typing",
     "file:Assets/Scripts/Runtime/GameBase/EventCenter/CustomEventArgs.cs": "project-chaos.framework.events.args",
     "file:Assets/Scripts/Runtime/GameBase/EventCenter/EventManager.cs#L1-L23": "project-chaos.framework.events.extension",
-    "file:Assets/Scripts/Runtime/GameBase/InputManager/InputManager.cs#L1088-L1183": "project-chaos.framework.input.tick",
-    "file:Assets/Scripts/Runtime/GameBase/InputManager/InputManager.cs#L605-L690": "project-chaos.framework.input.rebind-steps",
-    "file:Assets/Scripts/Runtime/GameBase/InputManager/InputManager.cs#L691-L950": "project-chaos.framework.input.rebind-flow",
-    "file:Assets/Scripts/Runtime/GameBase/InputManager/InputManager.cs#L951-L1087": "project-chaos.framework.input.rebind-conflict",
     "file:Assets/Scripts/Runtime/GameBase/LocalizationManager/LocalizationData.cs#L1-L155": "project-chaos.framework.localization.entry",
     "file:Assets/Scripts/Runtime/GameBase/LocalizationManager/LocalizedTextFont.cs#L137-L264": "project-chaos.framework.localization.text-font-apply",
     "file:Assets/Scripts/Runtime/GameBase/LogManager/ChaosLog.cs#L116-L298": "project-chaos.framework.logging.core",
@@ -28088,6 +29166,8 @@
     "rpc:BasePanel.PauseTime": "project-chaos.framework.ui.base-panel-controls",
     "rpc:BasePanel.ResumeTime": "project-chaos.framework.ui.base-panel-controls",
     "rpc:BasePanel.Show": "project-chaos.framework.ui.base-panel",
+    "rpc:CameraViewportBounds.Bounds": "project-chaos.gameplay-3c.camera.viewport",
+    "rpc:CameraViewportBounds.Output": "project-chaos.gameplay-3c.camera.viewport",
     "rpc:Chaos.Gameplay.Interaction.RunInteractionService.TryExecute": "project-chaos.bootstrap.w5-gameplay.interaction",
     "rpc:ChaosLog.Debug": "project-chaos.framework.logging.levels",
     "rpc:ChaosLog.Enabled": "project-chaos.framework.logging.config",
@@ -28105,6 +29185,19 @@
     "rpc:check_docx.find_font_assets": "project-chaos.project-infra.python-docs.check-docx",
     "rpc:check_docx.glyph_coverage": "project-chaos.project-infra.python-docs.check-docx",
     "rpc:check_docx.main": "project-chaos.project-infra.python-docs.check-docx",
+    "rpc:CinemachineFlowVerification.Start": "project-chaos.editor-tools.camera-tool.verification",
+    "rpc:CinemachineFlowVerification.Status": "project-chaos.editor-tools.camera-tool.verification",
+    "rpc:CinemachineFramingRuntimeProbe.Start": "project-chaos.editor-tools.camera-tool.runtime-probes",
+    "rpc:CinemachineFramingRuntimeProbe.Status": "project-chaos.editor-tools.camera-tool.runtime-probes",
+    "rpc:CinemachineProbeDamageTarget.TakeDamage": "project-chaos.editor-tools.camera-tool.runtime-probes",
+    "rpc:CinemachineShakeRuntimeProbe.Start": "project-chaos.editor-tools.camera-tool.runtime-probes",
+    "rpc:CombatCameraShake.Attach": "project-chaos.gameplay-3c.camera.shake",
+    "rpc:CombatCameraShake.Detach": "project-chaos.gameplay-3c.camera.shake",
+    "rpc:CombatCameraShake.NotifyHit": "project-chaos.gameplay-3c.camera.shake",
+    "rpc:CombatCameraShake.NotifyHurt": "project-chaos.gameplay-3c.camera.shake",
+    "rpc:CombatCameraShakeVerification.LastPassed": "project-chaos.editor-tools.camera-tool.verification",
+    "rpc:CombatCameraShakeVerification.Verify": "project-chaos.editor-tools.camera-tool.verification",
+    "rpc:CombatCameraShakeVerification.VerifyBatch": "project-chaos.editor-tools.camera-tool.verification",
     "rpc:ConfigLoader.LoadData": "project-chaos.config-pipeline.runtime-load.config-loader",
     "rpc:ConfigLoader.LoadDataAsync": "project-chaos.config-pipeline.runtime-load.config-loader",
     "rpc:ConfigManager.Convert": "project-chaos.config-pipeline.type-whitelist",
@@ -28172,6 +29265,13 @@
     "rpc:EventTriggerExt.TriggerEvent": "project-chaos.framework.events.extension",
     "rpc:FileUtil.LoadFiles": "project-chaos.config-pipeline.exporter.file-io",
     "rpc:FileUtil.SaveFile": "project-chaos.config-pipeline.exporter.file-io",
+    "rpc:GameplayCameraRig.BindRun": "project-chaos.gameplay-3c.camera.rig",
+    "rpc:GameplayCameraRig.BindVillage": "project-chaos.gameplay-3c.camera.rig",
+    "rpc:GameplayCameraRig.For": "project-chaos.gameplay-3c.camera.rig",
+    "rpc:GameplayCameraRig.NotifyTargetWarped": "project-chaos.gameplay-3c.camera.rig",
+    "rpc:GameplayCameraRig.Release": "project-chaos.gameplay-3c.camera.rig",
+    "rpc:GameplayCameraRig.SnapToTarget": "project-chaos.gameplay-3c.camera.rig",
+    "rpc:GameplayCameraSettings.Size": "project-chaos.gameplay-3c.camera.facade",
     "rpc:GameplaySettingsPage.OnBind": "project-chaos.mvp.view.settings.pages.gameplay",
     "rpc:GameSession.Begin": "project-chaos.framework.save.session",
     "rpc:GameSession.Clear": "project-chaos.framework.save.session",
@@ -28222,47 +29322,53 @@
     "rpc:IconNaming.TryParse": "project-chaos.editor-tools.input-icon.icon-naming",
     "rpc:IModel": "project-chaos.config-pipeline.runtime-load.record-cache",
     "rpc:InputArgs.keyCodeValue": "project-chaos.framework.events.args",
-    "rpc:InputManager.BeginRebind": "project-chaos.framework.input.rebind-flow",
-    "rpc:InputManager.CancelRebind": "project-chaos.framework.input.rebind-flow",
-    "rpc:InputManager.ClearAllOverrides": "project-chaos.framework.input.overrides",
-    "rpc:InputManager.ClearOverridesFor": "project-chaos.framework.input.overrides",
-    "rpc:InputManager.ControlKey": "project-chaos.framework.input.display",
-    "rpc:InputManager.DescribePath": "project-chaos.framework.input.display",
-    "rpc:InputManager.GetBindingDisplay": "project-chaos.framework.input.reset",
-    "rpc:InputManager.GetBindingPath": "project-chaos.framework.input.display",
-    "rpc:InputManager.GetBindingVisual": "project-chaos.framework.input.display",
-    "rpc:InputManager.GetRebindSteps": "project-chaos.framework.input.rebind-steps",
-    "rpc:InputManager.IconFamily": "project-chaos.framework.input.display",
-    "rpc:InputManager.Init": "project-chaos.framework.input.manager-core",
-    "rpc:InputManager.IsRebinding": "project-chaos.framework.input.manager-core",
-    "rpc:InputManager.KindOf": "project-chaos.framework.input.manager-core",
-    "rpc:InputManager.LoadOverridesJson": "project-chaos.framework.input.overrides",
-    "rpc:InputManager.MapName": "project-chaos.framework.input.manager-core",
-    "rpc:InputManager.ResetBinding": "project-chaos.framework.input.reset",
-    "rpc:InputManager.SaveOverridesJson": "project-chaos.framework.input.overrides",
-    "rpc:InputManager.StartTickOrNot": "project-chaos.framework.input.tick",
+    "rpc:InputManager.BeginRebind": "project-chaos.gameplay-3c.control.input.rebind-flow",
+    "rpc:InputManager.BindingScope": "project-chaos.gameplay-3c.control.input.gameplay-scope",
+    "rpc:InputManager.CancelRebind": "project-chaos.gameplay-3c.control.input.rebind-flow",
+    "rpc:InputManager.CanReadGameplayInput": "project-chaos.gameplay-3c.control.input.gameplay-scope",
+    "rpc:InputManager.ClearAllOverrides": "project-chaos.gameplay-3c.control.input.overrides",
+    "rpc:InputManager.ClearOverridesFor": "project-chaos.gameplay-3c.control.input.overrides",
+    "rpc:InputManager.ControlKey": "project-chaos.gameplay-3c.control.input.display",
+    "rpc:InputManager.DescribePath": "project-chaos.gameplay-3c.control.input.display",
+    "rpc:InputManager.GetBindingDisplay": "project-chaos.gameplay-3c.control.input.reset",
+    "rpc:InputManager.GetBindingPath": "project-chaos.gameplay-3c.control.input.display",
+    "rpc:InputManager.GetBindingVisual": "project-chaos.gameplay-3c.control.input.display",
+    "rpc:InputManager.GetRebindSteps": "project-chaos.gameplay-3c.control.input.rebind-steps",
+    "rpc:InputManager.IconFamily": "project-chaos.gameplay-3c.control.input.display",
+    "rpc:InputManager.Init": "project-chaos.gameplay-3c.control.input.manager-core",
+    "rpc:InputManager.IsRebinding": "project-chaos.gameplay-3c.control.input.manager-core",
+    "rpc:InputManager.KindOf": "project-chaos.gameplay-3c.control.input.manager-core",
+    "rpc:InputManager.LoadOverridesJson": "project-chaos.gameplay-3c.control.input.overrides",
+    "rpc:InputManager.MapName": "project-chaos.gameplay-3c.control.input.manager-core",
+    "rpc:InputManager.ReadMove": "project-chaos.gameplay-3c.control.input.gameplay-scope",
+    "rpc:InputManager.ResetBinding": "project-chaos.gameplay-3c.control.input.reset",
+    "rpc:InputManager.SaveOverridesJson": "project-chaos.gameplay-3c.control.input.overrides",
+    "rpc:InputManager.SetGameplayInputBlocked": "project-chaos.gameplay-3c.control.input.gameplay-scope",
+    "rpc:InputManager.StartTickOrNot": "project-chaos.gameplay-3c.control.input.tick",
+    "rpc:InputManager.WasGameplayPressed": "project-chaos.gameplay-3c.control.input.gameplay-scope",
     "rpc:InputScheme.DeviceToModel": "project-chaos.framework.settings.enums",
     "rpc:InputScheme.IsGamepad": "project-chaos.framework.settings.enums",
     "rpc:InputScheme.ModelToDevice": "project-chaos.framework.settings.enums",
+    "rpc:ItemUseAnimation.Play": "project-chaos.gameplay-3c.character.presentation",
     "rpc:KeybindBindingsPage.OnBind": "project-chaos.mvp.view.settings.pages.keybind-bindings.header-tabs",
     "rpc:KeybindBindingsPage.PageNodeName": "project-chaos.mvp.view.settings.pages.keybind-bindings.header-tabs",
     "rpc:KeybindSettingsPage.BindingsPageName": "project-chaos.mvp.view.settings.pages.keybind",
     "rpc:KeybindSettingsPage.OnBind": "project-chaos.mvp.view.settings.pages.keybind",
-    "rpc:KeyIconMap.Active": "project-chaos.framework.input-icons.cache",
-    "rpc:KeyIconMap.CollectSprites": "project-chaos.framework.input-icons.edit",
-    "rpc:KeyIconMap.FindEntry": "project-chaos.framework.input-icons.query",
-    "rpc:KeyIconMap.FindEntryExact": "project-chaos.framework.input-icons.edit",
-    "rpc:KeyIconMap.GetIcon": "project-chaos.framework.input-icons.query",
-    "rpc:KeyIconMap.GetIconColor": "project-chaos.framework.input-icons.query",
-    "rpc:KeyIconMap.GetOrAddEntry": "project-chaos.framework.input-icons.edit",
-    "rpc:KeyIconMap.GetTabIcon": "project-chaos.framework.input-icons.query",
-    "rpc:KeyIconMap.keyboardTabIcon": "project-chaos.framework.input-icons.map-asset",
-    "rpc:KeyIconMap.Load": "project-chaos.framework.input-icons.cache",
-    "rpc:KeyIconMap.preferGlyphVariant": "project-chaos.framework.input-icons.map-asset",
-    "rpc:KeyIconMap.ResetCache": "project-chaos.framework.input-icons.cache",
-    "rpc:KeyIconMap.SortEntries": "project-chaos.framework.input-icons.edit",
-    "rpc:KeyIconMap.style": "project-chaos.framework.input-icons.map-asset",
-    "rpc:KeyIconMap.tint": "project-chaos.framework.input-icons.map-asset",
+    "rpc:KeyIconMap.Active": "project-chaos.gameplay-3c.control.input-icons.cache",
+    "rpc:KeyIconMap.CollectSprites": "project-chaos.gameplay-3c.control.input-icons.edit",
+    "rpc:KeyIconMap.FindEntry": "project-chaos.gameplay-3c.control.input-icons.query",
+    "rpc:KeyIconMap.FindEntryExact": "project-chaos.gameplay-3c.control.input-icons.edit",
+    "rpc:KeyIconMap.GetIcon": "project-chaos.gameplay-3c.control.input-icons.query",
+    "rpc:KeyIconMap.GetIconColor": "project-chaos.gameplay-3c.control.input-icons.query",
+    "rpc:KeyIconMap.GetOrAddEntry": "project-chaos.gameplay-3c.control.input-icons.edit",
+    "rpc:KeyIconMap.GetTabIcon": "project-chaos.gameplay-3c.control.input-icons.query",
+    "rpc:KeyIconMap.keyboardTabIcon": "project-chaos.gameplay-3c.control.input-icons.map-asset",
+    "rpc:KeyIconMap.Load": "project-chaos.gameplay-3c.control.input-icons.cache",
+    "rpc:KeyIconMap.preferGlyphVariant": "project-chaos.gameplay-3c.control.input-icons.map-asset",
+    "rpc:KeyIconMap.ResetCache": "project-chaos.gameplay-3c.control.input-icons.cache",
+    "rpc:KeyIconMap.SortEntries": "project-chaos.gameplay-3c.control.input-icons.edit",
+    "rpc:KeyIconMap.style": "project-chaos.gameplay-3c.control.input-icons.map-asset",
+    "rpc:KeyIconMap.tint": "project-chaos.gameplay-3c.control.input-icons.map-asset",
     "rpc:KeyIconMapWindow.ApplyTabIcons": "project-chaos.editor-tools.input-icon.keymap-prefab-patch",
     "rpc:KeyIconMapWindow.AutoMatchInternal": "project-chaos.editor-tools.input-icon.keymap-window",
     "rpc:KeyIconMapWindow.CreateMap": "project-chaos.editor-tools.input-icon.keymap-prefab-patch",
@@ -28380,6 +29486,17 @@
     "rpc:ObjPoolDeleteTest.PushObj": "project-chaos.framework.dev-tests.pool-probes",
     "rpc:OtherUIManagerBasePanel.OnEnter": "project-chaos.framework.ui.legacy-tanglaushi",
     "rpc:OtherUIManagerBasePanel.OnExit": "project-chaos.framework.ui.legacy-tanglaushi",
+    "rpc:PlayerAttack.LastHitCount": "project-chaos.gameplay-3c.character.combat",
+    "rpc:PlayerCameraFollow.Attach": "project-chaos.gameplay-3c.camera.facade",
+    "rpc:PlayerCameraFollow.Detach": "project-chaos.gameplay-3c.camera.facade",
+    "rpc:PlayerHealth.ApplyContactDamage": "project-chaos.gameplay-3c.character.combat",
+    "rpc:PlayerHealth.ForceDown": "project-chaos.gameplay-3c.character.combat",
+    "rpc:PlayerHealth.RefillFullHp": "project-chaos.gameplay-3c.character.combat",
+    "rpc:PlayerHealth.RestoreHealth": "project-chaos.gameplay-3c.character.combat",
+    "rpc:PlayerLocomotion.InjectInput": "project-chaos.gameplay-3c.character.locomotion",
+    "rpc:PlayerLocomotion.SetFacing": "project-chaos.gameplay-3c.character.locomotion",
+    "rpc:PlayerSurfacePhysics.ProbeGround": "project-chaos.gameplay-3c.character.locomotion",
+    "rpc:PlayerSurfacePhysics.SetSlideMaterial": "project-chaos.gameplay-3c.character.locomotion",
     "rpc:PoolData.fatherObj": "project-chaos.framework.pool.data",
     "rpc:PoolData.GetPool": "project-chaos.framework.pool.data",
     "rpc:PoolData.PushObj": "project-chaos.framework.pool.data",
@@ -28425,6 +29542,9 @@
     "rpc:RunEncounter.EnterPreparedScene": "project-chaos.bootstrap.w5-gameplay.encounter",
     "rpc:RunEncounter.Team.GetHealth": "project-chaos.bootstrap.w5-gameplay.team-supply",
     "rpc:RunEncounter.Tick": "project-chaos.bootstrap.w5-gameplay.encounter",
+    "rpc:RunItemWheelDriver.Close": "project-chaos.gameplay-3c.control.shortcuts",
+    "rpc:RunItemWheelDriver.IsOpen": "project-chaos.gameplay-3c.control.shortcuts",
+    "rpc:RunItemWheelDriver.Open": "project-chaos.gameplay-3c.control.shortcuts",
     "rpc:RunMap.RunMapNavigator.MoveTo": "project-chaos.bootstrap.w5-gameplay.interaction",
     "rpc:RunMap.RunMapPathfinder.FindPath": "project-chaos.bootstrap.w5-gameplay.interaction",
     "rpc:RunMapAssembler.Assemble": "project-chaos.framework.runmap.assembler",
@@ -28570,6 +29690,7 @@
     "rpc:UIPanelAnimatorTool.AddAnimatorToAllPanelPrefabs": "project-chaos.editor-tools.ui-animator",
     "rpc:UIPanelAnimatorTool.ValidateAddAnimatorToAllPanelPrefabs": "project-chaos.editor-tools.ui-animator",
     "rpc:UIPanelStaggerItem.order": "project-chaos.framework.ui-animation.stagger-item",
+    "rpc:VillageCamera.Initialize": "project-chaos.gameplay-3c.camera.facade",
     "rpc:VillagePlot.Snapshot": "project-chaos.bootstrap.w5-gameplay.village",
     "rpc:VillageSceneFlow.EnterFromSave": "project-chaos.bootstrap.w5-gameplay.village",
     "rpc:VillageService.Execute": "project-chaos.bootstrap.w5-gameplay.village",
@@ -29392,6 +30513,39 @@
       }
     },
     {
+      "from": "project-chaos.editor-tools.camera-tool.runtime-probes",
+      "from_api": "rpc:CinemachineShakeRuntimeProbe.Start",
+      "to": "project-chaos.gameplay-3c.camera.shake",
+      "kind": "reference",
+      "cross_tree": false,
+      "label": {
+        "zh": "探测线上抖动",
+        "en": "Probes the live shake"
+      }
+    },
+    {
+      "from": "project-chaos.editor-tools.camera-tool.verification",
+      "from_api": "rpc:CombatCameraShakeVerification.Verify",
+      "to": "project-chaos.gameplay-3c.camera.rig",
+      "kind": "reference",
+      "cross_tree": false,
+      "label": {
+        "zh": "验证已发布的控制器",
+        "en": "Verifies the shipped rig"
+      }
+    },
+    {
+      "from": "project-chaos.editor-tools.camera-tool.verification",
+      "from_api": "rpc:CombatCameraShakeVerification.Verify",
+      "to": "project-chaos.gameplay-3c.camera.shake",
+      "kind": "reference",
+      "cross_tree": false,
+      "label": {
+        "zh": "验证抖动栈",
+        "en": "Verifies the shake stack"
+      }
+    },
+    {
       "from": "project-chaos.editor-tools.dialogue-editor.entry-editor",
       "from_api": "rpc:DialogueEditorWindow.SaveDialogue",
       "to": "project-chaos.editor-tools.dialogue-editor.data-model",
@@ -29741,7 +30895,7 @@
     {
       "from": "project-chaos.framework.dev-tests.input-probe",
       "from_api": "file:Assets/Scripts/Runtime/GameTest/InputTest/InputTest.cs",
-      "to": "project-chaos.framework.input.tick",
+      "to": "project-chaos.gameplay-3c.control.input.tick",
       "to_api": "rpc:InputManager.StartTickOrNot",
       "kind": "call",
       "cross_tree": false,
@@ -29844,138 +30998,6 @@
       "label": {
         "zh": "触发事件",
         "en": "Trigger event"
-      }
-    },
-    {
-      "from": "project-chaos.framework.input-icons.cache",
-      "from_api": "rpc:KeyIconMap.Load",
-      "to": "project-chaos.framework.input-icons.map-asset",
-      "to_api": "rpc:KeyIconMap.style",
-      "kind": "reference",
-      "cross_tree": false,
-      "label": {
-        "zh": "图标映射表",
-        "en": "Icon map asset"
-      }
-    },
-    {
-      "from": "project-chaos.framework.input-icons.cache",
-      "from_api": "rpc:KeyIconMap.Load",
-      "to": "project-chaos.framework.logging.core",
-      "to_api": "rpc:ChaosLog.Write",
-      "kind": "call",
-      "cross_tree": false,
-      "label": {
-        "zh": "加载告警日志",
-        "en": "Load warning log"
-      }
-    },
-    {
-      "from": "project-chaos.framework.input-icons.edit",
-      "from_api": "rpc:KeyIconMap.SortEntries",
-      "to": "project-chaos.framework.input-icons.map-asset",
-      "to_api": "rpc:KeyIconMap.style",
-      "kind": "reference",
-      "cross_tree": false,
-      "label": {
-        "zh": "图标映射表",
-        "en": "Icon map asset"
-      }
-    },
-    {
-      "from": "project-chaos.framework.input-icons.map-asset",
-      "from_api": "rpc:KeyIconMap.style",
-      "to": "project-chaos.framework.paths.global-path",
-      "to_api": "rpc:GlobalPath.res_KeyIconMapPath",
-      "kind": "reference",
-      "cross_tree": false,
-      "label": {
-        "zh": "图标表路径",
-        "en": "Icon map path"
-      }
-    },
-    {
-      "from": "project-chaos.framework.input-icons.query",
-      "from_api": "rpc:KeyIconMap.GetIcon",
-      "to": "project-chaos.framework.input-icons.map-asset",
-      "to_api": "rpc:KeyIconMap.style",
-      "kind": "reference",
-      "cross_tree": false,
-      "label": {
-        "zh": "图标映射表",
-        "en": "Icon map asset"
-      }
-    },
-    {
-      "from": "project-chaos.framework.input.display",
-      "from_api": "rpc:InputManager.GetBindingVisual",
-      "to": "project-chaos.framework.input-icons.query",
-      "to_api": "rpc:KeyIconMap.GetIcon",
-      "kind": "call",
-      "cross_tree": false,
-      "label": {
-        "zh": "按键图标查询",
-        "en": "Key icon lookup"
-      }
-    },
-    {
-      "from": "project-chaos.framework.input.display",
-      "from_api": "rpc:InputManager.DescribePath",
-      "to": "project-chaos.framework.settings.enums",
-      "to_api": "rpc:SettingsLabels.GamepadButtonName",
-      "kind": "reference",
-      "cross_tree": false,
-      "label": {
-        "zh": "手柄按键名",
-        "en": "Gamepad key names"
-      }
-    },
-    {
-      "from": "project-chaos.framework.input.manager-core",
-      "from_api": "rpc:InputManager.Init",
-      "to": "project-chaos.framework.paths.global-path",
-      "to_api": "rpc:GlobalPath.res_InputActionsPath",
-      "kind": "reference",
-      "cross_tree": false,
-      "label": {
-        "zh": "输入资源路径",
-        "en": "Input asset path"
-      }
-    },
-    {
-      "from": "project-chaos.framework.input.manager-core",
-      "from_api": "rpc:InputManager.Init",
-      "to": "project-chaos.framework.resources.manager",
-      "to_api": "rpc:ResManager.Load",
-      "kind": "call",
-      "cross_tree": false,
-      "label": {
-        "zh": "加载输入资源",
-        "en": "Load input asset"
-      }
-    },
-    {
-      "from": "project-chaos.framework.input.rebind-flow",
-      "from_api": "rpc:InputManager.BeginRebind",
-      "to": "project-chaos.framework.logging.core",
-      "to_api": "rpc:ChaosLog.Write",
-      "kind": "call",
-      "cross_tree": false,
-      "label": {
-        "zh": "改键日志",
-        "en": "Rebind logging"
-      }
-    },
-    {
-      "from": "project-chaos.framework.input.tick",
-      "from_api": "rpc:InputManager.StartTickOrNot",
-      "to": "project-chaos.framework.events.const-names",
-      "to_api": "rpc:EventConstName.GetKeyDown",
-      "kind": "event",
-      "cross_tree": false,
-      "label": {
-        "zh": "按键按下事件",
-        "en": "Key down event"
       }
     },
     {
@@ -30557,18 +31579,6 @@
     {
       "from": "project-chaos.framework.settings.manager-apply",
       "from_api": "rpc:SettingsManager.ApplyToRuntime",
-      "to": "project-chaos.framework.input.overrides",
-      "to_api": "rpc:InputManager.LoadOverridesJson",
-      "kind": "call",
-      "cross_tree": false,
-      "label": {
-        "zh": "应用改键",
-        "en": "Apply bindings"
-      }
-    },
-    {
-      "from": "project-chaos.framework.settings.manager-apply",
-      "from_api": "rpc:SettingsManager.ApplyToRuntime",
       "to": "project-chaos.framework.localization.manager",
       "to_api": "rpc:LocalizationManager.ChangeLanguage",
       "kind": "call",
@@ -30612,6 +31622,18 @@
       "label": {
         "zh": "分辨率选项",
         "en": "Resolution options"
+      }
+    },
+    {
+      "from": "project-chaos.framework.settings.manager-apply",
+      "from_api": "rpc:SettingsManager.ApplyToRuntime",
+      "to": "project-chaos.gameplay-3c.control.input.overrides",
+      "to_api": "rpc:InputManager.LoadOverridesJson",
+      "kind": "call",
+      "cross_tree": false,
+      "label": {
+        "zh": "应用改键",
+        "en": "Apply bindings"
       }
     },
     {
@@ -30791,6 +31813,202 @@
       "label": {
         "zh": "面板栈元素",
         "en": "Panel stack item"
+      }
+    },
+    {
+      "from": "project-chaos.gameplay-3c.camera.facade",
+      "from_api": "rpc:PlayerCameraFollow.Attach",
+      "to": "project-chaos.gameplay-3c.camera.rig",
+      "to_api": "rpc:GameplayCameraRig.For",
+      "kind": "call",
+      "cross_tree": false,
+      "label": {
+        "zh": "委托给唯一控制器",
+        "en": "Delegates to the single rig"
+      }
+    },
+    {
+      "from": "project-chaos.gameplay-3c.camera.rig",
+      "to": "project-chaos.project-infra.packages",
+      "kind": "reference",
+      "cross_tree": false,
+      "label": {
+        "zh": "依赖 Cinemachine 2.10.3 包",
+        "en": "Cinemachine 2.10.3 package"
+      }
+    },
+    {
+      "from": "project-chaos.gameplay-3c.character.locomotion",
+      "from_api": "rpc:PlayerLocomotion.InjectInput",
+      "to": "project-chaos.gameplay-3c.control.input.gameplay-scope",
+      "to_api": "rpc:InputManager.ReadMove",
+      "kind": "call",
+      "cross_tree": false,
+      "label": {
+        "zh": "注入移动意图",
+        "en": "Injects move intent"
+      }
+    },
+    {
+      "from": "project-chaos.gameplay-3c.control.input-icons.cache",
+      "from_api": "rpc:KeyIconMap.Load",
+      "to": "project-chaos.framework.logging.core",
+      "to_api": "rpc:ChaosLog.Write",
+      "kind": "call",
+      "cross_tree": false,
+      "label": {
+        "zh": "加载告警日志",
+        "en": "Load warning log"
+      }
+    },
+    {
+      "from": "project-chaos.gameplay-3c.control.input-icons.cache",
+      "from_api": "rpc:KeyIconMap.Load",
+      "to": "project-chaos.gameplay-3c.control.input-icons.map-asset",
+      "to_api": "rpc:KeyIconMap.style",
+      "kind": "reference",
+      "cross_tree": false,
+      "label": {
+        "zh": "图标映射表",
+        "en": "Icon map asset"
+      }
+    },
+    {
+      "from": "project-chaos.gameplay-3c.control.input-icons.edit",
+      "from_api": "rpc:KeyIconMap.SortEntries",
+      "to": "project-chaos.gameplay-3c.control.input-icons.map-asset",
+      "to_api": "rpc:KeyIconMap.style",
+      "kind": "reference",
+      "cross_tree": false,
+      "label": {
+        "zh": "图标映射表",
+        "en": "Icon map asset"
+      }
+    },
+    {
+      "from": "project-chaos.gameplay-3c.control.input-icons.map-asset",
+      "from_api": "rpc:KeyIconMap.style",
+      "to": "project-chaos.framework.paths.global-path",
+      "to_api": "rpc:GlobalPath.res_KeyIconMapPath",
+      "kind": "reference",
+      "cross_tree": false,
+      "label": {
+        "zh": "图标表路径",
+        "en": "Icon map path"
+      }
+    },
+    {
+      "from": "project-chaos.gameplay-3c.control.input-icons.query",
+      "from_api": "rpc:KeyIconMap.GetIcon",
+      "to": "project-chaos.gameplay-3c.control.input-icons.map-asset",
+      "to_api": "rpc:KeyIconMap.style",
+      "kind": "reference",
+      "cross_tree": false,
+      "label": {
+        "zh": "图标映射表",
+        "en": "Icon map asset"
+      }
+    },
+    {
+      "from": "project-chaos.gameplay-3c.control.input.display",
+      "from_api": "rpc:InputManager.DescribePath",
+      "to": "project-chaos.framework.settings.enums",
+      "to_api": "rpc:SettingsLabels.GamepadButtonName",
+      "kind": "reference",
+      "cross_tree": false,
+      "label": {
+        "zh": "手柄按键名",
+        "en": "Gamepad key names"
+      }
+    },
+    {
+      "from": "project-chaos.gameplay-3c.control.input.display",
+      "from_api": "rpc:InputManager.GetBindingVisual",
+      "to": "project-chaos.gameplay-3c.control.input-icons.query",
+      "to_api": "rpc:KeyIconMap.GetIcon",
+      "kind": "call",
+      "cross_tree": false,
+      "label": {
+        "zh": "按键图标查询",
+        "en": "Key icon lookup"
+      }
+    },
+    {
+      "from": "project-chaos.gameplay-3c.control.input.gameplay-scope",
+      "to": "project-chaos.bootstrap.w5-gameplay.run-flow",
+      "kind": "reference",
+      "cross_tree": false,
+      "label": {
+        "zh": "读切图门控",
+        "en": "Reads the transition gate"
+      }
+    },
+    {
+      "from": "project-chaos.gameplay-3c.control.input.gameplay-scope",
+      "to": "project-chaos.framework.runmap",
+      "kind": "reference",
+      "cross_tree": false,
+      "label": {
+        "zh": "读地图就绪状态",
+        "en": "Reads map readiness"
+      }
+    },
+    {
+      "from": "project-chaos.gameplay-3c.control.input.manager-core",
+      "from_api": "rpc:InputManager.Init",
+      "to": "project-chaos.framework.paths.global-path",
+      "to_api": "rpc:GlobalPath.res_InputActionsPath",
+      "kind": "reference",
+      "cross_tree": false,
+      "label": {
+        "zh": "输入资源路径",
+        "en": "Input asset path"
+      }
+    },
+    {
+      "from": "project-chaos.gameplay-3c.control.input.manager-core",
+      "from_api": "rpc:InputManager.Init",
+      "to": "project-chaos.framework.resources.manager",
+      "to_api": "rpc:ResManager.Load",
+      "kind": "call",
+      "cross_tree": false,
+      "label": {
+        "zh": "加载输入资源",
+        "en": "Load input asset"
+      }
+    },
+    {
+      "from": "project-chaos.gameplay-3c.control.input.rebind-flow",
+      "from_api": "rpc:InputManager.BeginRebind",
+      "to": "project-chaos.framework.logging.core",
+      "to_api": "rpc:ChaosLog.Write",
+      "kind": "call",
+      "cross_tree": false,
+      "label": {
+        "zh": "改键日志",
+        "en": "Rebind logging"
+      }
+    },
+    {
+      "from": "project-chaos.gameplay-3c.control.input.tick",
+      "from_api": "rpc:InputManager.StartTickOrNot",
+      "to": "project-chaos.framework.events.const-names",
+      "to_api": "rpc:EventConstName.GetKeyDown",
+      "kind": "event",
+      "cross_tree": false,
+      "label": {
+        "zh": "按键按下事件",
+        "en": "Key down event"
+      }
+    },
+    {
+      "from": "project-chaos.gameplay-3c.control.shortcuts",
+      "to": "project-chaos.gameplay-3c.control.input",
+      "kind": "reference",
+      "cross_tree": false,
+      "label": {
+        "zh": "读取快捷键输入",
+        "en": "Reads shortcut input"
       }
     },
     {
@@ -31245,16 +32463,17 @@
     "project-chaos": {
       "schema_version": 1,
       "id": "project-chaos",
-      "updated_at": "2026-10-06T11:50:56.745Z",
+      "updated_at": "2026-10-31T16:27:26.039Z",
       "mode": "groups",
       "max_columns": 4,
       "reading": {
-        "zh": "第一组是运行时代码：启动骨架 → 框架服务 → MVP 视图（调用方向从左到右）；第二组是数据与工具（配置表管线、编辑器工具）；第三组是资产与工程基建；第四组是团队协作契约与文档。箭头代表调用/引用。",
-        "en": "Left to right: runtime code (bootstrap → framework services → MVP views), data & tooling (config pipeline, editor tools), assets & project infra, then team process docs. Arrows are call/reference direction."
+        "zh": "从左到右：运行时代码（启动骨架 → 框架服务 → 3C 游戏操控 → MVP 视图）、数据与工具（配置表管线、编辑器工具）、资产与工程基建，最后一组是团队协作契约与文档。箭头代表调用/引用方向。",
+        "en": "Left to right: runtime code (bootstrap skeleton, framework services, gameplay 3C and MVP views), data and tooling, assets and project infra, then team process docs. Arrows are call/reference direction."
       },
       "order": [
         "project-chaos.bootstrap",
         "project-chaos.framework",
+        "project-chaos.gameplay-3c",
         "project-chaos.mvp",
         "project-chaos.config-pipeline",
         "project-chaos.editor-tools",
@@ -31272,6 +32491,7 @@
           "children": [
             "project-chaos.bootstrap",
             "project-chaos.framework",
+            "project-chaos.gameplay-3c",
             "project-chaos.mvp"
           ]
         },
@@ -32311,12 +33531,12 @@
     "project-chaos.editor-tools": {
       "schema_version": 1,
       "id": "project-chaos.editor-tools",
-      "updated_at": "2026-10-31T09:01:08.398Z",
+      "updated_at": "2026-10-31T16:28:39.481Z",
       "mode": "groups",
       "max_columns": 3,
       "reading": {
-        "zh": "四簇，从左到右读：内容编辑（本地化合并、对话编辑器），工作流工具（Git、场景 UI 总览、世界地图编辑窗口），美术/图标/局内地图工具，最后是预制体与插件设置。",
-        "en": "Four clusters, read left to right: content editing (localization merge, dialogue editor), workflow tools (git, scene UI overview, world-map editor window), art/icon/run-map utilities, and finally prefab & plugin settings."
+        "zh": "四簇，从左到右读：内容编辑（本地化合并、对话编辑器），工作流工具（Git、场景 UI 总览、世界地图编辑窗口），美术/图标/局内地图工具，最后一簇是验证与预制体/插件设置——镜头工具是 3C Cinemachine 重构时新增的成员。",
+        "en": "Four clusters, read left to right: content editing (localization merge, dialogue editor), workflow tools (git, scene UI overview, world-map editor window), art/icon/run-map utilities, and finally verification plus prefab & plugin settings — the camera tool is the newest member, added with the 3C Cinemachine refactor."
       },
       "order": [
         "project-chaos.editor-tools.localization",
@@ -32328,6 +33548,7 @@
         "project-chaos.editor-tools.runmap-placeholder",
         "project-chaos.editor-tools.runmap-verify",
         "project-chaos.editor-tools.input-icon",
+        "project-chaos.editor-tools.camera-tool",
         "project-chaos.editor-tools.ui-animator",
         "project-chaos.editor-tools.spine-settings"
       ],
@@ -32369,12 +33590,13 @@
           ]
         },
         {
-          "id": "prefab-plugin",
+          "id": "verify-plugin",
           "title": {
-            "zh": "预制体与插件设置",
-            "en": "Prefab and Plugin Settings"
+            "zh": "验证、预制体与插件设置",
+            "en": "Verification, Prefab & Plugin"
           },
           "children": [
+            "project-chaos.editor-tools.camera-tool",
             "project-chaos.editor-tools.ui-animator",
             "project-chaos.editor-tools.spine-settings"
           ]
@@ -32401,6 +33623,21 @@
           "to": "project-chaos.editor-tools.art-pipeline.icon-import-policy",
           "lane": 1
         }
+      ]
+    },
+    "project-chaos.editor-tools.camera-tool": {
+      "schema_version": 1,
+      "id": "project-chaos.editor-tools.camera-tool",
+      "updated_at": "2026-10-31T16:28:42.611Z",
+      "mode": "grid",
+      "max_columns": 2,
+      "reading": {
+        "zh": "左：从菜单或 batchmode 跑的临时场景验证器。右：接管运行中游戏、观测线上 Cinemachine 输出的 Play 模式探针。",
+        "en": "Left: scratch-scene verifications run from a menu item or batchmode. Right: play-mode probes that attach to the running game and watch the live Cinemachine output."
+      },
+      "order": [
+        "project-chaos.editor-tools.camera-tool.verification",
+        "project-chaos.editor-tools.camera-tool.runtime-probes"
       ]
     },
     "project-chaos.editor-tools.dialogue-editor": {
@@ -32659,12 +33896,12 @@
     "project-chaos.framework": {
       "schema_version": 1,
       "id": "project-chaos.framework",
-      "updated_at": "2026-10-31T09:00:55.381Z",
+      "updated_at": "2026-10-31T16:27:31.859Z",
       "mode": "groups",
-      "max_columns": 3,
+      "max_columns": 4,
       "reading": {
-        "zh": "按“先用后玩”读：左组是路径/跨场景常驻/日志/事件/资源/对象池等全局底座，第二组是 UI 与输入，第三组是本地化与设置，最后一组是面向玩法的层——局外世界地图服务加局内地图生成、音频、存档、对话与自测；箭头是子模块之间的调用/引用关系。",
-        "en": "Read left to right: global foundations (paths, cross-scene persistence, logging, events, resources, pool), then UI & input, then localization & settings, and finally the gameplay-facing layer - the world map service plus in-run map generation, audio, save, dialogue and dev-test probes. Arrows are call/reference links between submodules."
+        "zh": "只放框架级服务。输入、键图标、局内快捷键与轮盘已随 3C 重构迁到 gameplay-3c 树，与相机/角色代码放在一起；本层保留 bootstrap 与 MVP 都会调用的通用基础设施服务。",
+        "en": "Framework services only. Input, key icons, gameplay shortcuts and the item wheel moved to the gameplay-3c tree next to the 3C camera/character code; this layer holds the reusable infrastructure services that both bootstrap and MVP call into."
       },
       "order": [
         "project-chaos.framework.paths",
@@ -32675,8 +33912,6 @@
         "project-chaos.framework.pool",
         "project-chaos.framework.ui",
         "project-chaos.framework.ui-animation",
-        "project-chaos.framework.input",
-        "project-chaos.framework.input-icons",
         "project-chaos.framework.localization",
         "project-chaos.framework.settings",
         "project-chaos.framework.setting-rows",
@@ -32691,8 +33926,8 @@
         {
           "id": "base",
           "title": {
-            "zh": "常量与基础设施",
-            "en": "Constants & Infrastructure"
+            "zh": "基础服务",
+            "en": "Base services"
           },
           "children": [
             "project-chaos.framework.paths",
@@ -32704,23 +33939,21 @@
           ]
         },
         {
-          "id": "ui-input",
+          "id": "ui",
           "title": {
-            "zh": "UI 与输入",
-            "en": "UI & Input"
+            "zh": "界面",
+            "en": "UI"
           },
           "children": [
             "project-chaos.framework.ui",
-            "project-chaos.framework.ui-animation",
-            "project-chaos.framework.input",
-            "project-chaos.framework.input-icons"
+            "project-chaos.framework.ui-animation"
           ]
         },
         {
           "id": "data",
           "title": {
-            "zh": "本地化与设置",
-            "en": "Localization & Settings"
+            "zh": "数据与设置",
+            "en": "Data & settings"
           },
           "children": [
             "project-chaos.framework.localization",
@@ -32731,8 +33964,8 @@
         {
           "id": "gameplay",
           "title": {
-            "zh": "局外地图、局内玩法、音频、存档与自测",
-            "en": "World Map, Run, Audio, Save & Tests"
+            "zh": "玩法服务",
+            "en": "Gameplay services"
           },
           "children": [
             "project-chaos.framework.world-map",
@@ -32873,88 +34106,6 @@
             "project-chaos.framework.events.legacy-center"
           ]
         }
-      ]
-    },
-    "project-chaos.framework.input": {
-      "schema_version": 1,
-      "id": "project-chaos.framework.input",
-      "updated_at": "2026-10-06T12:00:22.590Z",
-      "mode": "groups",
-      "reading": {
-        "zh": "按使用顺序读：Init 加载 InputActions → 覆盖项 JSON 存取 → 绑定的显示与重置 → 改键（步骤拆分 → 监听流程 → 冲突解绑）→ 每帧按键轮询抛出事件。",
-        "en": "Read in usage order: Init loads the InputActions, overrides are persisted as JSON, bindings are displayed/reset, rebinding runs (step split, listening, conflict clearing) and finally per-frame polling raises key events."
-      },
-      "order": [
-        "project-chaos.framework.input.manager-core",
-        "project-chaos.framework.input.overrides",
-        "project-chaos.framework.input.reset",
-        "project-chaos.framework.input.display",
-        "project-chaos.framework.input.rebind-steps",
-        "project-chaos.framework.input.rebind-flow",
-        "project-chaos.framework.input.rebind-conflict",
-        "project-chaos.framework.input.tick"
-      ],
-      "groups": [
-        {
-          "id": "init",
-          "title": {
-            "zh": "初始化与覆盖项",
-            "en": "Init & Overrides"
-          },
-          "children": [
-            "project-chaos.framework.input.manager-core",
-            "project-chaos.framework.input.overrides"
-          ]
-        },
-        {
-          "id": "display",
-          "title": {
-            "zh": "显示与重置",
-            "en": "Display & Reset"
-          },
-          "children": [
-            "project-chaos.framework.input.reset",
-            "project-chaos.framework.input.display"
-          ]
-        },
-        {
-          "id": "rebind",
-          "title": {
-            "zh": "改键流程",
-            "en": "Rebinding"
-          },
-          "children": [
-            "project-chaos.framework.input.rebind-steps",
-            "project-chaos.framework.input.rebind-flow",
-            "project-chaos.framework.input.rebind-conflict"
-          ]
-        },
-        {
-          "id": "tick",
-          "title": {
-            "zh": "按键轮询",
-            "en": "Key Polling"
-          },
-          "children": [
-            "project-chaos.framework.input.tick"
-          ]
-        }
-      ]
-    },
-    "project-chaos.framework.input-icons": {
-      "schema_version": 1,
-      "id": "project-chaos.framework.input-icons",
-      "updated_at": "2026-10-06T12:00:33.286Z",
-      "mode": "grid",
-      "reading": {
-        "zh": "从左到右：映射表资产结构 → 缓存加载（Active/Load/ResetCache）→ 查询取图 → 维护补录，右侧三个都指回资产定义。",
-        "en": "Left to right: the asset structure, the cached loading layer, icon lookup, and maintenance/backfill; the three right-hand boxes all point back to the asset definition."
-      },
-      "order": [
-        "project-chaos.framework.input-icons.map-asset",
-        "project-chaos.framework.input-icons.cache",
-        "project-chaos.framework.input-icons.query",
-        "project-chaos.framework.input-icons.edit"
       ]
     },
     "project-chaos.framework.localization": {
@@ -33468,6 +34619,220 @@
         "project-chaos.framework.world-map.runtime-model",
         "project-chaos.framework.world-map.faction-mask",
         "project-chaos.framework.world-map.meta-provider"
+      ]
+    },
+    "project-chaos.gameplay-3c": {
+      "schema_version": 1,
+      "id": "project-chaos.gameplay-3c",
+      "updated_at": "2026-10-31T16:27:35.535Z",
+      "mode": "grid",
+      "max_columns": 3,
+      "reading": {
+        "zh": "三个平级子系统，与代码目录一一对应：Camera 拥有 Cinemachine 输出链，Character 拥有角色本体与其物理，Control 把原始输入翻译成玩法意图。三者都在 Assets/Scripts/Runtime/3C 下且同属全局命名空间，因此这里的模块与目录里的文件是 1:1 对应的。",
+        "en": "Three sibling subsystems, one per code folder: Camera owns the Cinemachine output chain, Character owns the player body and its physics, Control turns raw input into gameplay intent. All three live under Assets/Scripts/Runtime/3C and share the global namespace, so a module here maps 1:1 to a file in that folder."
+      },
+      "order": [
+        "project-chaos.gameplay-3c.camera",
+        "project-chaos.gameplay-3c.character",
+        "project-chaos.gameplay-3c.control"
+      ]
+    },
+    "project-chaos.gameplay-3c.camera": {
+      "schema_version": 1,
+      "id": "project-chaos.gameplay-3c.camera",
+      "updated_at": "2026-10-31T16:27:38.865Z",
+      "mode": "groups",
+      "max_columns": 3,
+      "reading": {
+        "zh": "GameplayCameraRig 是唯一的控制器；视口边界扩展与 Impulse 抖动挂在同一条 Cinemachine 输出链上；门面与设置资产只负责喂入或包装它。",
+        "en": "GameplayCameraRig is the single controller; the boundary extension and the impulse-based shake hang off the same Cinemachine output chain; the facades and the settings asset only feed or wrap it."
+      },
+      "order": [
+        "project-chaos.gameplay-3c.camera.rig",
+        "project-chaos.gameplay-3c.camera.viewport",
+        "project-chaos.gameplay-3c.camera.shake",
+        "project-chaos.gameplay-3c.camera.facade"
+      ],
+      "groups": [
+        {
+          "id": "core",
+          "title": {
+            "zh": "控制器",
+            "en": "Controller"
+          },
+          "children": [
+            "project-chaos.gameplay-3c.camera.rig"
+          ]
+        },
+        {
+          "id": "limits",
+          "title": {
+            "zh": "约束与反馈",
+            "en": "Limits & feedback"
+          },
+          "children": [
+            "project-chaos.gameplay-3c.camera.viewport",
+            "project-chaos.gameplay-3c.camera.shake"
+          ]
+        },
+        {
+          "id": "compat",
+          "title": {
+            "zh": "门面与设置",
+            "en": "Facades & settings"
+          },
+          "children": [
+            "project-chaos.gameplay-3c.camera.facade"
+          ]
+        }
+      ]
+    },
+    "project-chaos.gameplay-3c.character": {
+      "schema_version": 1,
+      "id": "project-chaos.gameplay-3c.character",
+      "updated_at": "2026-10-31T16:27:42.632Z",
+      "mode": "groups",
+      "max_columns": 3,
+      "reading": {
+        "zh": "按角色每帧的顺序从左往右读：移动与曲面物理决定身体去向，攻击与生命结算命中与伤害，表现模块只承载数据与动画。",
+        "en": "Read left to right as the player's frame loop: locomotion and surface physics decide where the body goes, combat resolves hits and health, presentation only carries data and animation."
+      },
+      "order": [
+        "project-chaos.gameplay-3c.character.locomotion",
+        "project-chaos.gameplay-3c.character.combat",
+        "project-chaos.gameplay-3c.character.presentation"
+      ],
+      "groups": [
+        {
+          "id": "motion",
+          "title": {
+            "zh": "移动与物理",
+            "en": "Motion & physics"
+          },
+          "children": [
+            "project-chaos.gameplay-3c.character.locomotion"
+          ]
+        },
+        {
+          "id": "fight",
+          "title": {
+            "zh": "战斗与表现",
+            "en": "Fight & looks"
+          },
+          "children": [
+            "project-chaos.gameplay-3c.character.combat",
+            "project-chaos.gameplay-3c.character.presentation"
+          ]
+        }
+      ]
+    },
+    "project-chaos.gameplay-3c.control": {
+      "schema_version": 1,
+      "id": "project-chaos.gameplay-3c.control",
+      "updated_at": "2026-10-31T16:27:46.569Z",
+      "mode": "grid",
+      "max_columns": 3,
+      "reading": {
+        "zh": "InputManager 是入口；键图标表只为 InputManager 的显示服务；快捷键与轮盘驱动从两者读取局内意图。3C 重构前这整个子树挂在 framework 下，重构把代码物理迁到 Assets/Scripts/Runtime/3C/Control 后，模块树也跟着搬过来。",
+        "en": "InputManager is the entry point, the key-icon map only renders what InputManager displays, and the shortcut/wheel drivers read gameplay intent from both. All of it lived under framework before the 3C refactor moved the code to Assets/Scripts/Runtime/3C/Control."
+      },
+      "order": [
+        "project-chaos.gameplay-3c.control.input",
+        "project-chaos.gameplay-3c.control.input-icons",
+        "project-chaos.gameplay-3c.control.shortcuts"
+      ]
+    },
+    "project-chaos.gameplay-3c.control.input": {
+      "schema_version": 1,
+      "id": "project-chaos.gameplay-3c.control.input",
+      "updated_at": "2026-10-31T16:27:51.685Z",
+      "mode": "groups",
+      "reading": {
+        "zh": "按使用顺序读：Init 加载 InputActions → Gameplay 分部补上作用域读取与多所有者阻断 → 覆盖项 JSON 存取 → 绑定的显示与重置 → 改键（步骤拆分 → 监听流程 → 冲突解绑）→ 每帧按键轮询抛出事件。",
+        "en": "Read in usage order: Init loads the InputActions, the gameplay partial adds scoped reads and multi-owner blocking, overrides are persisted as JSON, bindings are displayed and reset, rebinding runs (step split, listening, conflict clearing) and finally per-frame polling raises key events."
+      },
+      "order": [
+        "project-chaos.gameplay-3c.control.input.manager-core",
+        "project-chaos.gameplay-3c.control.input.gameplay-scope",
+        "project-chaos.gameplay-3c.control.input.overrides",
+        "project-chaos.gameplay-3c.control.input.reset",
+        "project-chaos.gameplay-3c.control.input.display",
+        "project-chaos.gameplay-3c.control.input.rebind-steps",
+        "project-chaos.gameplay-3c.control.input.rebind-flow",
+        "project-chaos.gameplay-3c.control.input.rebind-conflict",
+        "project-chaos.gameplay-3c.control.input.tick"
+      ],
+      "groups": [
+        {
+          "id": "init",
+          "title": {
+            "zh": "初始化与覆盖项",
+            "en": "Init & Overrides"
+          },
+          "children": [
+            "project-chaos.gameplay-3c.control.input.manager-core",
+            "project-chaos.gameplay-3c.control.input.overrides"
+          ]
+        },
+        {
+          "id": "scope",
+          "title": {
+            "zh": "局内作用域",
+            "en": "Gameplay scope"
+          },
+          "children": [
+            "project-chaos.gameplay-3c.control.input.gameplay-scope"
+          ]
+        },
+        {
+          "id": "display",
+          "title": {
+            "zh": "显示与重置",
+            "en": "Display & Reset"
+          },
+          "children": [
+            "project-chaos.gameplay-3c.control.input.reset",
+            "project-chaos.gameplay-3c.control.input.display"
+          ]
+        },
+        {
+          "id": "rebind",
+          "title": {
+            "zh": "改键流程",
+            "en": "Rebinding"
+          },
+          "children": [
+            "project-chaos.gameplay-3c.control.input.rebind-steps",
+            "project-chaos.gameplay-3c.control.input.rebind-flow",
+            "project-chaos.gameplay-3c.control.input.rebind-conflict"
+          ]
+        },
+        {
+          "id": "tick",
+          "title": {
+            "zh": "按键轮询",
+            "en": "Key Polling"
+          },
+          "children": [
+            "project-chaos.gameplay-3c.control.input.tick"
+          ]
+        }
+      ]
+    },
+    "project-chaos.gameplay-3c.control.input-icons": {
+      "schema_version": 1,
+      "id": "project-chaos.gameplay-3c.control.input-icons",
+      "updated_at": "2026-10-31T16:26:43.973Z",
+      "mode": "grid",
+      "reading": {
+        "zh": "从左到右：映射表资产结构 → 缓存加载（Active/Load/ResetCache）→ 查询取图 → 维护补录，右侧三个都指回资产定义。",
+        "en": "Left to right: the asset structure, the cached loading layer, icon lookup, and maintenance/backfill; the three right-hand boxes all point back to the asset definition."
+      },
+      "order": [
+        "project-chaos.gameplay-3c.control.input-icons.map-asset",
+        "project-chaos.gameplay-3c.control.input-icons.cache",
+        "project-chaos.gameplay-3c.control.input-icons.query",
+        "project-chaos.gameplay-3c.control.input-icons.edit"
       ]
     },
     "project-chaos.mvp": {
@@ -34405,6 +35770,15 @@
         "zh": "世界观地图工具：可拖宽的势力区域主从树与拖放"
       },
       "updated_at": "2026-10-17T09:59:33.469Z"
+    },
+    {
+      "id": "2026-10-31-3c-architecture-tree-sync",
+      "status": "verified",
+      "title": {
+        "en": "Architecture tree sync after the 3C refactor: gameplay-3c tree, Cinemachine camera and input relocation",
+        "zh": "3C 重构后的架构树同步：新建 gameplay-3c 树、Cinemachine 镜头与输入迁移"
+      },
+      "updated_at": "2026-10-31T16:29:33.386Z"
     },
     {
       "id": "2026-10-31-architecture-tree-sync",

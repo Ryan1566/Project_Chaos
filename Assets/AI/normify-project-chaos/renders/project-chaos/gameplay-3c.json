@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.gameplay-3c",
+  "updated_at": "2026-10-31T16:27:35.535Z",
+  "mode": "grid",
+  "max_columns": 3,
+  "reading": {
+    "zh": "三个平级子系统，与代码目录一一对应：Camera 拥有 Cinemachine 输出链，Character 拥有角色本体与其物理，Control 把原始输入翻译成玩法意图。三者都在 Assets/Scripts/Runtime/3C 下且同属全局命名空间，因此这里的模块与目录里的文件是 1:1 对应的。",
+    "en": "Three sibling subsystems, one per code folder: Camera owns the Cinemachine output chain, Character owns the player body and its physics, Control turns raw input into gameplay intent. All three live under Assets/Scripts/Runtime/3C and share the global namespace, so a module here maps 1:1 to a file in that folder."
+  },
+  "order": [
+    "project-chaos.gameplay-3c.camera",
+    "project-chaos.gameplay-3c.character",
+    "project-chaos.gameplay-3c.control"
+  ]
+}

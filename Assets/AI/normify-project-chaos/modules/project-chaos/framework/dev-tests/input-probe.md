@@ -29,7 +29,7 @@ apis:
           
 deps:
   - kind: call
-    to: project-chaos.framework.input.tick
+    to: project-chaos.gameplay-3c.control.input.tick
     from_api: "file:Assets/Scripts/Runtime/GameTest/InputTest/InputTest.cs"
     to_api: "rpc:InputManager.StartTickOrNot"
     label: {zh: "按键轮询", en: "Key polling"}

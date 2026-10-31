@@ -11,9 +11,9 @@ description:
   en: >
       Dispatch enters WorldScene through LoadingScene, adopts the prepared map, and spawns the team. Encounter responsibilities are split into team health, room progression, and enemies/drops. Run inventory, camping use, and seed survive stage transitions. Event, trade, and settlement saves support safe retry.
       
-revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
-updated_at: "2026-10-31T09:03:54.711Z"
-fingerprint: 5343da48b7730ef09e8ef487c1ab237954a062330917c96af77fa23a80e8c768
+revision: 3e9431e3172f8f81c73452994a04db100947fac0
+updated_at: "2026-10-31T16:20:37.063Z"
+fingerprint: 348a3319dc545ea75f0c67e1355904b3dcec31047d9804c4b67f2fecf3cea472
 source:
   - path: "Assets/Scripts/Runtime/GameBase/Meta/RunSceneFlow.cs"
   - path: "Assets/Scripts/Runtime/GameBase/Meta/DispatchService.cs"

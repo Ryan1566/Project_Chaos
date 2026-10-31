@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.gameplay-3c.character",
+  "updated_at": "2026-10-31T16:27:42.632Z",
+  "mode": "groups",
+  "max_columns": 3,
+  "reading": {
+    "zh": "按角色每帧的顺序从左往右读：移动与曲面物理决定身体去向，攻击与生命结算命中与伤害，表现模块只承载数据与动画。",
+    "en": "Read left to right as the player's frame loop: locomotion and surface physics decide where the body goes, combat resolves hits and health, presentation only carries data and animation."
+  },
+  "order": [
+    "project-chaos.gameplay-3c.character.locomotion",
+    "project-chaos.gameplay-3c.character.combat",
+    "project-chaos.gameplay-3c.character.presentation"
+  ],
+  "groups": [
+    {
+      "id": "motion",
+      "title": {
+        "zh": "移动与物理",
+        "en": "Motion & physics"
+      },
+      "children": [
+        "project-chaos.gameplay-3c.character.locomotion"
+      ]
+    },
+    {
+      "id": "fight",
+      "title": {
+        "zh": "战斗与表现",
+        "en": "Fight & looks"
+      },
+      "children": [
+        "project-chaos.gameplay-3c.character.combat",
+        "project-chaos.gameplay-3c.character.presentation"
+      ]
+    }
+  ]
+}

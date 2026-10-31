@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "id": "2026-10-31-3c-architecture-tree-sync",
+  "title": {
+    "en": "Architecture tree sync after the 3C refactor: gameplay-3c tree, Cinemachine camera and input relocation",
+    "zh": "3C 重构后的架构树同步：新建 gameplay-3c 树、Cinemachine 镜头与输入迁移"
+  },
+  "status": "verified",
+  "intent": {
+    "en": "Commit 20034a1 moved camera/character/control code into Assets/Scripts/Runtime/3C and swapped the hand-rolled camera for Cinemachine 2.10.3; commit 3e9431e then fixed map collision, hit feedback and side-wall friction. The module tree still pointed at the deleted GameBase/InputManager paths (12 source-missing modules) and had no representation for the 3C layer at all, so the diagram no longer matched the code.",
+    "zh": "提交 20034a1 把相机/角色/控制代码迁进 Assets/Scripts/Runtime/3C 并用 Cinemachine 2.10.3 替换手写相机；提交 3e9431e 又修了地图碰撞、受击反馈与侧墙摩擦。模块树仍指向已删除的 GameBase/InputManager 路径（12 个 source-missing 模块），且完全没有 3C 层的表达，图谱与代码已经对不上。"
+  },
+  "modules": {
+    "api_add": [
+      {
+        "key": "rpc:GameplayCameraRig.For",
+        "module": "project-chaos.gameplay-3c.camera.rig"
+      },
+      {
+        "key": "rpc:CombatCameraShake.NotifyHit",
+        "module": "project-chaos.gameplay-3c.camera.shake"
+      },
+      {
+        "key": "rpc:CameraViewportBounds.Bounds",
+        "module": "project-chaos.gameplay-3c.camera.viewport"
+      },
+      {
+        "key": "rpc:PlayerCameraFollow.Attach",
+        "module": "project-chaos.gameplay-3c.camera.facade"
+      },
+      {
+        "key": "rpc:PlayerLocomotion.InjectInput",
+        "module": "project-chaos.gameplay-3c.character.locomotion"
+      },
+      {
+        "key": "rpc:PlayerHealth.ApplyContactDamage",
+        "module": "project-chaos.gameplay-3c.character.combat"
+      },
+      {
+        "key": "rpc:ItemUseAnimation.Play",
+        "module": "project-chaos.gameplay-3c.character.presentation"
+      },
+      {
+        "key": "rpc:InputManager.ReadMove",
+        "module": "project-chaos.gameplay-3c.control.input.gameplay-scope"
+      },
+      {
+        "key": "rpc:RunItemWheelDriver.Open",
+        "module": "project-chaos.gameplay-3c.control.shortcuts"
+      },
+      {
+        "key": "rpc:CombatCameraShakeVerification.Verify",
+        "module": "project-chaos.editor-tools.camera-tool.verification"
+      }
+    ],
+    "create": [
+      "project-chaos.gameplay-3c",
+      "project-chaos.gameplay-3c.camera",
+      "project-chaos.gameplay-3c.camera.rig",
+      "project-chaos.gameplay-3c.camera.shake",
+      "project-chaos.gameplay-3c.camera.viewport",
+      "project-chaos.gameplay-3c.camera.facade",
+      "project-chaos.gameplay-3c.character",
+      "project-chaos.gameplay-3c.character.locomotion",
+      "project-chaos.gameplay-3c.character.combat",
+      "project-chaos.gameplay-3c.character.presentation",
+      "project-chaos.gameplay-3c.control",
+      "project-chaos.gameplay-3c.control.shortcuts",
+      "project-chaos.gameplay-3c.control.input.gameplay-scope",
+      "project-chaos.editor-tools.camera-tool",
+      "project-chaos.editor-tools.camera-tool.verification",
+      "project-chaos.editor-tools.camera-tool.runtime-probes"
+    ],
+    "modify": [
+      "project-chaos",
+      "project-chaos.framework",
+      "project-chaos.editor-tools",
+      "project-chaos.gameplay-3c.control.input"
+    ]
+  },
+  "acceptance": [
+    "新增顶层 project-chaos.gameplay-3c（camera/character/control 三支），与 Assets/Scripts/Runtime/3C 目录一一对应",
+    "framework.input 与 framework.input-icons 已整棵迁到 gameplay-3c.control，uid 保持不变，全项目 deps.to 已重写",
+    "12 个 input/input-icons 模块的 source 指向 Assets/Scripts/Runtime/3C/Control/InputManager/ 且行段按实测 1164/284 行重算，4 条 file API 同步更新",
+    "新增 InputManager.Gameplay.cs 的 gameplay-scope 叶子与 shortcuts 叶子，覆盖此前无模块覆盖的 3C/Control 代码",
+    "新增 editor-tools.camera-tool（verification / runtime-probes）覆盖 Editor/CameraTool 4 个脚本",
+    "根 / framework / gameplay-3c / camera / character / control / input / editor-tools / camera-tool 各层渲染数据已写入",
+    "normify_validate 0 error"
+  ],
+  "note": "3C 重构（20034a1 + 3e9431e）后的架构树对齐：迁入 Cinemachine 镜头/角色/控制三层，并把 input 与 input-icons 从 framework 搬到 gameplay-3c.control；同时补建 Editor/CameraTool 覆盖。\n3C 重构后对齐完成：新增 gameplay-3c 顶层树（camera/character/control），input 与 input-icons 整棵从 framework 迁入 gameplay-3c.control 并改指 3C/Control/InputManager/，补建 gameplay-scope 与 shortcuts，新增 editor-tools.camera-tool。validate 0 error / 20 warning。",
+  "revision": {
+    "before": null,
+    "after": "3e9431e3172f8f81c73452994a04db100947fac0"
+  },
+  "created_at": "2026-10-31T16:29:10.340Z",
+  "updated_at": "2026-10-31T16:29:33.386Z",
+  "closed_at": "2026-10-31T16:29:33.386Z"
+}

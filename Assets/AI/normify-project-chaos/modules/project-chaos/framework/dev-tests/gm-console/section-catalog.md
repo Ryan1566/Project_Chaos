@@ -11,9 +11,9 @@ description:
   en: >
       GM panel catalogue of debug sections/actions. 2026-10-12 added a “return to meta” entry (SetTargetScene("EnterScene") + LoadingScene) — with the save panel no longer switching scenes, this GM item is the minimal in-run way back to the meta layer.
       
-revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
-updated_at: "2026-10-31T08:54:22.615Z"
-fingerprint: 255736699a608b0d4c4a4d5756dd5e2ffa04756b7559541748789d167612db08
+revision: 3e9431e3172f8f81c73452994a04db100947fac0
+updated_at: "2026-10-31T16:20:37.067Z"
+fingerprint: ff6d43a6c38a0a5e5a7eb3d7a4ca8b2488e488c1481911b835bf5e81898295f8
 source:
   - path: "Assets/Scripts/Runtime/GM/GMPanel.cs"
     line: 161

@@ -11,9 +11,9 @@ description:
   en: >
       RunEncounter is split by team health (Team), room progression (Rooms), and enemies/drops (Enemies), with RunEncounterTicker as the per-frame driver and the ground drop owned by the settlement module. Combat query plus placeholder enemy and ally controllers back in-run fighting.
       
-revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
-updated_at: "2026-10-31T09:03:54.690Z"
-fingerprint: 90afa486d15658612762d5d1ebc2000b55a6e30fe26ac66c022d01bc701ae25e
+revision: 3e9431e3172f8f81c73452994a04db100947fac0
+updated_at: "2026-10-31T16:20:37.053Z"
+fingerprint: a5500bf418c4e55fbbe651ca09a19e1f4f12ed6ea88eca89d7393361ca6609d3
 source:
   - path: "Assets/Scripts/Runtime/Player/RunEncounter.cs"
   - path: "Assets/Scripts/Runtime/Player/RunEncounter.Team.cs"

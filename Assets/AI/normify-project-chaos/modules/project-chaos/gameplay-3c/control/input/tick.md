@@ -1,7 +1,7 @@
 ---
 uid: f1c00027
-id: project-chaos.framework.input.tick
-parent: project-chaos.framework.input
+id: project-chaos.gameplay-3c.control.input.tick
+parent: project-chaos.gameplay-3c.control.input
 name: {zh: "按键轮询", en: "Key Polling"}
 description:
   zh: >
@@ -10,31 +10,31 @@ description:
   en: >
       Key polling: StartTickOrNot toggles the per-frame tick that raises GetKeyDown/GetKeyUp events and serves rebind cancel detection.
       
-revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
-updated_at: "2026-10-31T08:54:34.938Z"
-fingerprint: 91856414ec49bb874cc0c264ab798d341f2263a768ae022c2cef522278480ccd
+revision: 3e9431e3172f8f81c73452994a04db100947fac0
+updated_at: "2026-10-31T16:26:25.546Z"
+fingerprint: a3e7fdcf7243984b01ff23825e8d60d83ccd36aee697222dab345f0bff3f3cb3
 source:
-  - path: "Assets/Scripts/Runtime/GameBase/InputManager/InputManager.cs"
-    line: 1088
-    end_line: 1183
+  - path: "Assets/Scripts/Runtime/3C/Control/InputManager/InputManager.cs"
+    line: 1062
+    end_line: 1164
 apis:
   - protocol: rpc
     path: "InputManager.StartTickOrNot"
     description:
       zh: >
-          开启/关闭按帧的按键轮询。
+          StartTickOrNot(openFlag)：开关每帧按键轮询。
           
       en: >
-          Enables or disables per-frame key polling.
+          StartTickOrNot(openFlag): enables or disables per-frame key polling.
           
   - protocol: file
-    path: "Assets/Scripts/Runtime/GameBase/InputManager/InputManager.cs#L1088-L1183"
+    path: "Assets/Scripts/Runtime/3C/Control/InputManager/InputManager.cs#L1062-L1164"
     description:
       zh: >
-          按键轮询 Tick、取消键边沿与 KeyCode 检查实现段。
+          本模块在 InputManager.cs 中的源码区段。
           
       en: >
-          Key polling loop and cancel-key edge detection.
+          Source region of this module inside InputManager.cs.
           
 deps:
   - kind: event

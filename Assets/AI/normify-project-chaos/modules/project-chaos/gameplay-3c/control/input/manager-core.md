@@ -1,7 +1,7 @@
 ---
 uid: f1c00020
-id: project-chaos.framework.input.manager-core
-parent: project-chaos.framework.input
+id: project-chaos.gameplay-3c.control.input.manager-core
+parent: project-chaos.gameplay-3c.control.input
 name: {zh: "输入管理器核心", en: "InputManager Core"}
 description:
   zh: >
@@ -10,13 +10,13 @@ description:
   en: >
       InputManager core: Player map constants, Init loading the InputActionAsset, device-family conversion and the IsRebinding flag.
       
-revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
-updated_at: "2026-10-31T08:54:22.616Z"
-fingerprint: 91856414ec49bb874cc0c264ab798d341f2263a768ae022c2cef522278480ccd
+revision: 3e9431e3172f8f81c73452994a04db100947fac0
+updated_at: "2026-10-31T16:26:25.542Z"
+fingerprint: a3e7fdcf7243984b01ff23825e8d60d83ccd36aee697222dab345f0bff3f3cb3
 source:
-  - path: "Assets/Scripts/Runtime/GameBase/InputManager/InputManager.cs"
+  - path: "Assets/Scripts/Runtime/3C/Control/InputManager/InputManager.cs"
     line: 1
-    end_line: 200
+    end_line: 164
 apis:
   - protocol: rpc
     path: "InputManager.MapName"

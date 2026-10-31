@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.editor-tools.camera-tool",
+  "updated_at": "2026-10-31T16:28:42.611Z",
+  "mode": "grid",
+  "max_columns": 2,
+  "reading": {
+    "zh": "左：从菜单或 batchmode 跑的临时场景验证器。右：接管运行中游戏、观测线上 Cinemachine 输出的 Play 模式探针。",
+    "en": "Left: scratch-scene verifications run from a menu item or batchmode. Right: play-mode probes that attach to the running game and watch the live Cinemachine output."
+  },
+  "order": [
+    "project-chaos.editor-tools.camera-tool.verification",
+    "project-chaos.editor-tools.camera-tool.runtime-probes"
+  ]
+}

@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "id": "project-chaos.editor-tools",
-  "updated_at": "2026-10-31T09:01:08.398Z",
+  "updated_at": "2026-10-31T16:28:39.481Z",
   "mode": "groups",
   "max_columns": 3,
   "reading": {
-    "zh": "四簇，从左到右读：内容编辑（本地化合并、对话编辑器），工作流工具（Git、场景 UI 总览、世界地图编辑窗口），美术/图标/局内地图工具，最后是预制体与插件设置。",
-    "en": "Four clusters, read left to right: content editing (localization merge, dialogue editor), workflow tools (git, scene UI overview, world-map editor window), art/icon/run-map utilities, and finally prefab & plugin settings."
+    "zh": "四簇，从左到右读：内容编辑（本地化合并、对话编辑器），工作流工具（Git、场景 UI 总览、世界地图编辑窗口），美术/图标/局内地图工具，最后一簇是验证与预制体/插件设置——镜头工具是 3C Cinemachine 重构时新增的成员。",
+    "en": "Four clusters, read left to right: content editing (localization merge, dialogue editor), workflow tools (git, scene UI overview, world-map editor window), art/icon/run-map utilities, and finally verification plus prefab & plugin settings — the camera tool is the newest member, added with the 3C Cinemachine refactor."
   },
   "order": [
     "project-chaos.editor-tools.localization",
@@ -18,6 +18,7 @@
     "project-chaos.editor-tools.runmap-placeholder",
     "project-chaos.editor-tools.runmap-verify",
     "project-chaos.editor-tools.input-icon",
+    "project-chaos.editor-tools.camera-tool",
     "project-chaos.editor-tools.ui-animator",
     "project-chaos.editor-tools.spine-settings"
   ],
@@ -59,12 +60,13 @@
       ]
     },
     {
-      "id": "prefab-plugin",
+      "id": "verify-plugin",
       "title": {
-        "zh": "预制体与插件设置",
-        "en": "Prefab and Plugin Settings"
+        "zh": "验证、预制体与插件设置",
+        "en": "Verification, Prefab & Plugin"
       },
       "children": [
+        "project-chaos.editor-tools.camera-tool",
         "project-chaos.editor-tools.ui-animator",
         "project-chaos.editor-tools.spine-settings"
       ]

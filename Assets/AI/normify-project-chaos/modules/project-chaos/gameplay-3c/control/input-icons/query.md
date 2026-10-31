@@ -1,7 +1,7 @@
 ---
 uid: f1c0002a
-id: project-chaos.framework.input-icons.query
-parent: project-chaos.framework.input-icons
+id: project-chaos.gameplay-3c.control.input-icons.query
+parent: project-chaos.gameplay-3c.control.input-icons
 name: {zh: "图标查询", en: "Icon Lookup"}
 description:
   zh: >
@@ -10,11 +10,11 @@ description:
   en: >
       Icon lookup: FindEntry by control key plus device family, GetIcon/GetIconColor, and GetTabIcon for keyboard/gamepad tabs.
       
-revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
-updated_at: "2026-10-31T08:56:40.600Z"
-fingerprint: dce2712ad67121c6bd9ec2cabd8da2255fe257ba39608aa239a2482f97fe189e
+revision: 3e9431e3172f8f81c73452994a04db100947fac0
+updated_at: "2026-10-31T16:26:25.548Z"
+fingerprint: 2023bd6e048d39c1e0e4e46f86e528400a6368e0a22057657e7f1dfae14dab60
 source:
-  - path: "Assets/Scripts/Runtime/GameBase/InputManager/KeyIconMap.cs"
+  - path: "Assets/Scripts/Runtime/3C/Control/InputManager/KeyIconMap.cs"
     line: 164
     end_line: 215
 apis:
@@ -56,7 +56,7 @@ apis:
           
 deps:
   - kind: reference
-    to: project-chaos.framework.input-icons.map-asset
+    to: project-chaos.gameplay-3c.control.input-icons.map-asset
     from_api: "rpc:KeyIconMap.GetIcon"
     to_api: "rpc:KeyIconMap.style"
     label: {zh: "图标映射表", en: "Icon map asset"}

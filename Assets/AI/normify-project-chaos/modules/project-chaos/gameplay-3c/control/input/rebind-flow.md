@@ -1,7 +1,7 @@
 ---
 uid: f1c00025
-id: project-chaos.framework.input.rebind-flow
-parent: project-chaos.framework.input
+id: project-chaos.gameplay-3c.control.input.rebind-flow
+parent: project-chaos.gameplay-3c.control.input
 name: {zh: "改键流程", en: "Rebind Flow"}
 description:
   zh: >
@@ -10,40 +10,40 @@ description:
   en: >
       Rebind operation flow: BeginRebind with per-binding timeout and cancel-key handling, result callback and CancelRebind, plus override application.
       
-revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
-updated_at: "2026-10-31T08:54:34.935Z"
-fingerprint: 91856414ec49bb874cc0c264ab798d341f2263a768ae022c2cef522278480ccd
+revision: 3e9431e3172f8f81c73452994a04db100947fac0
+updated_at: "2026-10-31T16:26:25.545Z"
+fingerprint: a3e7fdcf7243984b01ff23825e8d60d83ccd36aee697222dab345f0bff3f3cb3
 source:
-  - path: "Assets/Scripts/Runtime/GameBase/InputManager/InputManager.cs"
-    line: 691
-    end_line: 950
+  - path: "Assets/Scripts/Runtime/3C/Control/InputManager/InputManager.cs"
+    line: 660
+    end_line: 948
 apis:
   - protocol: rpc
     path: "InputManager.BeginRebind"
     description:
       zh: >
-          对指定绑定索引开始改键监听。
+          BeginRebind(actionName, bindingIndex, kind, onFinished)：开始监听新绑定。
           
       en: >
-          Starts a rebinding operation for one binding index.
+          BeginRebind(actionName, bindingIndex, kind, onFinished): starts listening for a new binding.
           
   - protocol: rpc
     path: "InputManager.CancelRebind"
     description:
       zh: >
-          取消正在进行的改键监听。
+          CancelRebind()：中断进行中的改键并恢复原绑定。
           
       en: >
-          Cancels the running rebinding operation.
+          CancelRebind(): aborts the running rebind and restores the previous path.
           
   - protocol: file
-    path: "Assets/Scripts/Runtime/GameBase/InputManager/InputManager.cs#L691-L950"
+    path: "Assets/Scripts/Runtime/3C/Control/InputManager/InputManager.cs#L660-L948"
     description:
       zh: >
-          改键开始、结束与取消的流程实现段。
+          本模块在 InputManager.cs 中的源码区段。
           
       en: >
-          Rebind start/finish/cancel flow internals.
+          Source region of this module inside InputManager.cs.
           
 deps:
   - kind: call

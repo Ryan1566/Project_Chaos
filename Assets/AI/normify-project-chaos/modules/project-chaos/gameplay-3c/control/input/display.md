@@ -1,7 +1,7 @@
 ---
 uid: f1c00023
-id: project-chaos.framework.input.display
-parent: project-chaos.framework.input
+id: project-chaos.gameplay-3c.control.input.display
+parent: project-chaos.gameplay-3c.control.input
 name: {zh: "绑定显示解析", en: "Binding Display"}
 description:
   zh: >
@@ -10,13 +10,13 @@ description:
   en: >
       Binding display: resolves text/icon/tint for a slot, effective control paths, stable lookup keys, icon family and human-readable names.
       
-revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
-updated_at: "2026-10-31T08:54:22.615Z"
-fingerprint: 91856414ec49bb874cc0c264ab798d341f2263a768ae022c2cef522278480ccd
+revision: 3e9431e3172f8f81c73452994a04db100947fac0
+updated_at: "2026-10-31T16:26:25.544Z"
+fingerprint: a3e7fdcf7243984b01ff23825e8d60d83ccd36aee697222dab345f0bff3f3cb3
 source:
-  - path: "Assets/Scripts/Runtime/GameBase/InputManager/InputManager.cs"
-    line: 357
-    end_line: 604
+  - path: "Assets/Scripts/Runtime/3C/Control/InputManager/InputManager.cs"
+    line: 295
+    end_line: 572
 apis:
   - protocol: rpc
     path: "InputManager.GetBindingVisual"
@@ -65,7 +65,7 @@ apis:
           
 deps:
   - kind: call
-    to: project-chaos.framework.input-icons.query
+    to: project-chaos.gameplay-3c.control.input-icons.query
     from_api: "rpc:InputManager.GetBindingVisual"
     to_api: "rpc:KeyIconMap.GetIcon"
     label: {zh: "按键图标查询", en: "Key icon lookup"}

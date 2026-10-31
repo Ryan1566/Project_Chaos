@@ -11,9 +11,9 @@ description:
   en: >
       GM panel shell (scene object, not pushed through the UIManager stack): section list plus a content area, toggled by EnterGM. Its canvas sits above the UI canvas, so it overlaps the top-left of the world map panel (known cosmetic issue).
       
-revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
-updated_at: "2026-10-31T08:54:22.614Z"
-fingerprint: 255736699a608b0d4c4a4d5756dd5e2ffa04756b7559541748789d167612db08
+revision: 3e9431e3172f8f81c73452994a04db100947fac0
+updated_at: "2026-10-31T16:20:37.066Z"
+fingerprint: ff6d43a6c38a0a5e5a7eb3d7a4ca8b2488e488c1481911b835bf5e81898295f8
 source:
   - path: "Assets/Scripts/Runtime/GM/GMPanel.cs"
     line: 1

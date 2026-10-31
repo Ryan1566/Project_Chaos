@@ -8,8 +8,10 @@ name: {zh: "Project_Chaos 游戏工程", en: "Project_Chaos Game Project"}
 description:
   zh: >
       Unity 2022.3.57f1c2 的 2D 横板 Roguelite 工程总览（仓库根 D:\Unity Projects\Project_Chaos）。8 个一级域：启动与场景骨架、运行时框架、MVP 视图层、配置表管线、编辑器工具集、资源库、工程基建与第三方、团队协作与文档契约。这是全队开发前必查的架构树。
+      
   en: >
       Architecture overview of the Unity 2022.3.57f1c2 side-scrolling 2D roguelite project at D:\Unity Projects\Project_Chaos. Eight top-level domains: bootstrap & scene shell, runtime framework, MVP view layer, config-table pipeline, editor tooling, asset library, project infra & third-party, and team process/docs.
+      
 revision: 75df668e8bb1abec0b4352190c3082c585e2deef
 updated_at: "2026-10-06T11:55:00Z"
 fingerprint: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855

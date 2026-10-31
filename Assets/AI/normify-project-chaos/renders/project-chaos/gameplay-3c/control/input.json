@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.gameplay-3c.control.input",
+  "updated_at": "2026-10-31T16:27:51.685Z",
+  "mode": "groups",
+  "reading": {
+    "zh": "按使用顺序读：Init 加载 InputActions → Gameplay 分部补上作用域读取与多所有者阻断 → 覆盖项 JSON 存取 → 绑定的显示与重置 → 改键（步骤拆分 → 监听流程 → 冲突解绑）→ 每帧按键轮询抛出事件。",
+    "en": "Read in usage order: Init loads the InputActions, the gameplay partial adds scoped reads and multi-owner blocking, overrides are persisted as JSON, bindings are displayed and reset, rebinding runs (step split, listening, conflict clearing) and finally per-frame polling raises key events."
+  },
+  "order": [
+    "project-chaos.gameplay-3c.control.input.manager-core",
+    "project-chaos.gameplay-3c.control.input.gameplay-scope",
+    "project-chaos.gameplay-3c.control.input.overrides",
+    "project-chaos.gameplay-3c.control.input.reset",
+    "project-chaos.gameplay-3c.control.input.display",
+    "project-chaos.gameplay-3c.control.input.rebind-steps",
+    "project-chaos.gameplay-3c.control.input.rebind-flow",
+    "project-chaos.gameplay-3c.control.input.rebind-conflict",
+    "project-chaos.gameplay-3c.control.input.tick"
+  ],
+  "groups": [
+    {
+      "id": "init",
+      "title": {
+        "zh": "初始化与覆盖项",
+        "en": "Init & Overrides"
+      },
+      "children": [
+        "project-chaos.gameplay-3c.control.input.manager-core",
+        "project-chaos.gameplay-3c.control.input.overrides"
+      ]
+    },
+    {
+      "id": "scope",
+      "title": {
+        "zh": "局内作用域",
+        "en": "Gameplay scope"
+      },
+      "children": [
+        "project-chaos.gameplay-3c.control.input.gameplay-scope"
+      ]
+    },
+    {
+      "id": "display",
+      "title": {
+        "zh": "显示与重置",
+        "en": "Display & Reset"
+      },
+      "children": [
+        "project-chaos.gameplay-3c.control.input.reset",
+        "project-chaos.gameplay-3c.control.input.display"
+      ]
+    },
+    {
+      "id": "rebind",
+      "title": {
+        "zh": "改键流程",
+        "en": "Rebinding"
+      },
+      "children": [
+        "project-chaos.gameplay-3c.control.input.rebind-steps",
+        "project-chaos.gameplay-3c.control.input.rebind-flow",
+        "project-chaos.gameplay-3c.control.input.rebind-conflict"
+      ]
+    },
+    {
+      "id": "tick",
+      "title": {
+        "zh": "按键轮询",
+        "en": "Key Polling"
+      },
+      "children": [
+        "project-chaos.gameplay-3c.control.input.tick"
+      ]
+    }
+  ]
+}

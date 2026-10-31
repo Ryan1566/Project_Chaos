@@ -11,9 +11,9 @@ description:
   en: >
       The three save actions: create a new save in an empty slot, load a slot, delete the selected slot. Since 2026-10-12 loading or creating a save writes GameSession.Begin(slot, payload, null) and then UIManager.SetRootPanel(WorldMapPanel) — it no longer switches to LoadingScene/WorldScene, so reading a save enters the meta layer instead of generating the run map.
       
-revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
-updated_at: "2026-10-31T08:54:47.490Z"
-fingerprint: cac4aab04c917cfe98e29bcdc0566e6d3adaeb58e9b8923482f66acdb1acd514
+revision: 3e9431e3172f8f81c73452994a04db100947fac0
+updated_at: "2026-10-31T16:20:47.034Z"
+fingerprint: 8764e7ed4dd67258938b541f97356744a3fff520f4a047557c4ef8eb1f7199cc
 source:
   - path: "Assets/Scripts/Runtime/MVP/View/SLPanel.cs"
     line: 451

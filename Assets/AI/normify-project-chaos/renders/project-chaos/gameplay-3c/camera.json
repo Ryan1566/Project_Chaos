@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.gameplay-3c.camera",
+  "updated_at": "2026-10-31T16:27:38.865Z",
+  "mode": "groups",
+  "max_columns": 3,
+  "reading": {
+    "zh": "GameplayCameraRig 是唯一的控制器；视口边界扩展与 Impulse 抖动挂在同一条 Cinemachine 输出链上；门面与设置资产只负责喂入或包装它。",
+    "en": "GameplayCameraRig is the single controller; the boundary extension and the impulse-based shake hang off the same Cinemachine output chain; the facades and the settings asset only feed or wrap it."
+  },
+  "order": [
+    "project-chaos.gameplay-3c.camera.rig",
+    "project-chaos.gameplay-3c.camera.viewport",
+    "project-chaos.gameplay-3c.camera.shake",
+    "project-chaos.gameplay-3c.camera.facade"
+  ],
+  "groups": [
+    {
+      "id": "core",
+      "title": {
+        "zh": "控制器",
+        "en": "Controller"
+      },
+      "children": [
+        "project-chaos.gameplay-3c.camera.rig"
+      ]
+    },
+    {
+      "id": "limits",
+      "title": {
+        "zh": "约束与反馈",
+        "en": "Limits & feedback"
+      },
+      "children": [
+        "project-chaos.gameplay-3c.camera.viewport",
+        "project-chaos.gameplay-3c.camera.shake"
+      ]
+    },
+    {
+      "id": "compat",
+      "title": {
+        "zh": "门面与设置",
+        "en": "Facades & settings"
+      },
+      "children": [
+        "project-chaos.gameplay-3c.camera.facade"
+      ]
+    }
+  ]
+}

@@ -11,9 +11,9 @@ description:
   en: >
       EnterScene is the boot scene (Build Settings index 0) and the host of the whole meta layer: UIRoot (Canvas with the panel prefab instances plus GM_Canvas), CameraRoot and Managers (GameManager with Entry, LocalizationManager, AudioManager) all carry the idempotent DontDestroy guard so that returning from a run does not duplicate them.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:30:54.570Z"
-fingerprint: 44e298ce80946d527efd8c7ff3ed077a26bdf2f9bfcf56b3c2dd49dc7256c37d
+revision: 3e9431e3172f8f81c73452994a04db100947fac0
+updated_at: "2026-10-31T16:20:37.049Z"
+fingerprint: 51fa724dae4a11316bf65bbce38899bed2e9f49de840af68b95bfef233636cf4
 source:
   - path: "Assets/Scenes/EnterScene.unity"
     line: 1

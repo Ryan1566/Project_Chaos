@@ -10,9 +10,9 @@ description:
   en: >
       MaskableGraphic that rasterises every faction polygon into a single translucent texture (about 512 px wide, image aspect, 2x2 supersampling, source-over blending) and renders it as one quad; concave polygons are supported because rasterisation replaces triangulation.
       
-revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
-updated_at: "2026-10-31T08:57:59.773Z"
-fingerprint: 5a53a1c03de37e2775fbd6ac742270bab49879db66c19ce57411bf12fd1daf22
+revision: 3e9431e3172f8f81c73452994a04db100947fac0
+updated_at: "2026-10-31T16:20:37.069Z"
+fingerprint: 884ccc5089191643045fe464d4d111e47df6def3d8324a3c880f9ae843706df6
 source:
   - path: "Assets/Scripts/Runtime/GameBase/WorldMap/WorldFactionMask.cs"
 apis:

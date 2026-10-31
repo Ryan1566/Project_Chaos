@@ -11,9 +11,9 @@ description:
   en: >
       Runtime entry point for in-run map generation: a drop-in MonoBehaviour plus a static BuildScene API. Drives generate → assemble → post-assembly invariant check (shaft channel must stay clear) and publishes stage text for the loading screen.
       
-revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
-updated_at: "2026-10-31T08:54:34.941Z"
-fingerprint: 49a489e6a54ac37eafb4ac9dc5c710de40ef2403339c63ea9199963d5da55efa
+revision: 3e9431e3172f8f81c73452994a04db100947fac0
+updated_at: "2026-10-31T16:20:37.067Z"
+fingerprint: 87e9265042d906b3a43da83b48de665bb13965d3fd1b837fee98efa8757990f3
 source:
   - path: "Assets/Scripts/Runtime/GameBase/RunMap/RunMapBootstrap.cs"
     line: 1

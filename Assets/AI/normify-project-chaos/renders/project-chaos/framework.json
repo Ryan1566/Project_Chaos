@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "id": "project-chaos.framework",
-  "updated_at": "2026-10-31T09:00:55.381Z",
+  "updated_at": "2026-10-31T16:27:31.859Z",
   "mode": "groups",
-  "max_columns": 3,
+  "max_columns": 4,
   "reading": {
-    "zh": "按“先用后玩”读：左组是路径/跨场景常驻/日志/事件/资源/对象池等全局底座，第二组是 UI 与输入，第三组是本地化与设置，最后一组是面向玩法的层——局外世界地图服务加局内地图生成、音频、存档、对话与自测；箭头是子模块之间的调用/引用关系。",
-    "en": "Read left to right: global foundations (paths, cross-scene persistence, logging, events, resources, pool), then UI & input, then localization & settings, and finally the gameplay-facing layer - the world map service plus in-run map generation, audio, save, dialogue and dev-test probes. Arrows are call/reference links between submodules."
+    "zh": "只放框架级服务。输入、键图标、局内快捷键与轮盘已随 3C 重构迁到 gameplay-3c 树，与相机/角色代码放在一起；本层保留 bootstrap 与 MVP 都会调用的通用基础设施服务。",
+    "en": "Framework services only. Input, key icons, gameplay shortcuts and the item wheel moved to the gameplay-3c tree next to the 3C camera/character code; this layer holds the reusable infrastructure services that both bootstrap and MVP call into."
   },
   "order": [
     "project-chaos.framework.paths",
@@ -17,8 +17,6 @@
     "project-chaos.framework.pool",
     "project-chaos.framework.ui",
     "project-chaos.framework.ui-animation",
-    "project-chaos.framework.input",
-    "project-chaos.framework.input-icons",
     "project-chaos.framework.localization",
     "project-chaos.framework.settings",
     "project-chaos.framework.setting-rows",
@@ -33,8 +31,8 @@
     {
       "id": "base",
       "title": {
-        "zh": "常量与基础设施",
-        "en": "Constants & Infrastructure"
+        "zh": "基础服务",
+        "en": "Base services"
       },
       "children": [
         "project-chaos.framework.paths",
@@ -46,23 +44,21 @@
       ]
     },
     {
-      "id": "ui-input",
+      "id": "ui",
       "title": {
-        "zh": "UI 与输入",
-        "en": "UI & Input"
+        "zh": "界面",
+        "en": "UI"
       },
       "children": [
         "project-chaos.framework.ui",
-        "project-chaos.framework.ui-animation",
-        "project-chaos.framework.input",
-        "project-chaos.framework.input-icons"
+        "project-chaos.framework.ui-animation"
       ]
     },
     {
       "id": "data",
       "title": {
-        "zh": "本地化与设置",
-        "en": "Localization & Settings"
+        "zh": "数据与设置",
+        "en": "Data & settings"
       },
       "children": [
         "project-chaos.framework.localization",
@@ -73,8 +69,8 @@
     {
       "id": "gameplay",
       "title": {
-        "zh": "局外地图、局内玩法、音频、存档与自测",
-        "en": "World Map, Run, Audio, Save & Tests"
+        "zh": "玩法服务",
+        "en": "Gameplay services"
       },
       "children": [
         "project-chaos.framework.world-map",

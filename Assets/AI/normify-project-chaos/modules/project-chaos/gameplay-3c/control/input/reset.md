@@ -1,7 +1,7 @@
 ---
 uid: f1c00022
-id: project-chaos.framework.input.reset
-parent: project-chaos.framework.input
+id: project-chaos.gameplay-3c.control.input.reset
+parent: project-chaos.gameplay-3c.control.input
 name: {zh: "绑定重置", en: "Binding Reset"}
 description:
   zh: >
@@ -10,13 +10,13 @@ description:
   en: >
       Binding reset and display text: ResetBinding for a whole binding or one composite part, plus GetBindingDisplay.
       
-revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
-updated_at: "2026-10-31T08:54:34.937Z"
-fingerprint: 91856414ec49bb874cc0c264ab798d341f2263a768ae022c2cef522278480ccd
+revision: 3e9431e3172f8f81c73452994a04db100947fac0
+updated_at: "2026-10-31T16:26:25.544Z"
+fingerprint: a3e7fdcf7243984b01ff23825e8d60d83ccd36aee697222dab345f0bff3f3cb3
 source:
-  - path: "Assets/Scripts/Runtime/GameBase/InputManager/InputManager.cs"
-    line: 278
-    end_line: 356
+  - path: "Assets/Scripts/Runtime/3C/Control/InputManager/InputManager.cs"
+    line: 246
+    end_line: 294
 apis:
   - protocol: rpc
     path: "InputManager.ResetBinding"

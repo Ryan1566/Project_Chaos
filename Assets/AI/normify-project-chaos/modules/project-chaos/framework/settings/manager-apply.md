@@ -57,7 +57,7 @@ deps:
     to_api: "rpc:LocalizationManager.ChangeLanguage"
     label: {zh: "应用语言", en: "Apply language"}
   - kind: call
-    to: project-chaos.framework.input.overrides
+    to: project-chaos.gameplay-3c.control.input.overrides
     from_api: "rpc:SettingsManager.ApplyToRuntime"
     to_api: "rpc:InputManager.LoadOverridesJson"
     label: {zh: "应用改键", en: "Apply bindings"}

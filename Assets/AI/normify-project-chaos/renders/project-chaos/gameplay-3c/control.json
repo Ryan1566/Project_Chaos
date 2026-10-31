@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.gameplay-3c.control",
+  "updated_at": "2026-10-31T16:27:46.569Z",
+  "mode": "grid",
+  "max_columns": 3,
+  "reading": {
+    "zh": "InputManager 是入口；键图标表只为 InputManager 的显示服务；快捷键与轮盘驱动从两者读取局内意图。3C 重构前这整个子树挂在 framework 下，重构把代码物理迁到 Assets/Scripts/Runtime/3C/Control 后，模块树也跟着搬过来。",
+    "en": "InputManager is the entry point, the key-icon map only renders what InputManager displays, and the shortcut/wheel drivers read gameplay intent from both. All of it lived under framework before the 3C refactor moved the code to Assets/Scripts/Runtime/3C/Control."
+  },
+  "order": [
+    "project-chaos.gameplay-3c.control.input",
+    "project-chaos.gameplay-3c.control.input-icons",
+    "project-chaos.gameplay-3c.control.shortcuts"
+  ]
+}
