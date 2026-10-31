@@ -471,7 +471,16 @@ public class AllyController : MonoBehaviour
     /// **懒解析**：`memberId` 是 Instantiate 之后由 `PlayerSpawner.SpawnAllies` 写入的，Awake 里还是 0。
     /// 取不到模板 / 服务异常 → Warn 并用 100。
     /// </summary>
-    public int MaxHp { get { EnsureMaxHp(); return _maxHp; } }
+    public int MaxHp { get { EnsureMaxHp(); return _maxHp + _runHealthBonus; } }
+
+    private int _runHealthBonus;
+    /// <summary>Freeze lazy current HP first. Raising maximum never heals or revives.</summary>
+    public void SetRunHealthBonus(int bonus)
+    {
+        int current = Hp;
+        _runHealthBonus = Mathf.Max(0, bonus);
+        _hp = Mathf.Min(current, MaxHp); _hpInited = true;
+    }
 
     /// <summary>倒地时的半透明 alpha（Spine 材质没有 `_Color`，用 `skeleton.A`）。</summary>
     public const float DownedAlpha = 0.4f;

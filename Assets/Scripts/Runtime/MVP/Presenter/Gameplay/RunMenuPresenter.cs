@@ -88,8 +88,9 @@ namespace Chaos.MVP.Presenter.Gameplay
                 }
             return new RunMenuState { Slots = slots, Tab = _tab, Uncarried = RunInventory.GetUncarriedImportant(),
                 ConfirmRetreat = _model.ConfirmRetreat,
-                Summary = _tab == RunFunctionTab.Map ? "局内地图" : "局内背包  " + _model.UsedSlots + "/" + _model.TotalSlots + " 格",
+                Summary = _tab == RunFunctionTab.Team ? "派遣队伍 · 本局成长" : _tab == RunFunctionTab.Map ? "局内地图" : "局内背包  " + _model.UsedSlots + "/" + _model.TotalSlots + " 格",
                 Hint = _model.ConfirmRetreat ? "撤离将放弃普通行囊；已获得的重要道具永久保留。"
+                    : _tab == RunFunctionTab.Team ? "击杀经验由全队共享 · 每级 1 属性点 · 生命加点不治疗 · 成长仅本局有效。"
                     : _tab == RunFunctionTab.Map ? "滚轮缩放 · 拖动平移 · 队伍共享视野；敌人仅在当前视野显示。"
                     : "拖拽物品到对应专用行或杂物格；已有物品时交换。专用行快捷选用待开放。",
                 Placeholder = _tab == RunFunctionTab.Team ? "队伍状态页签预留，后续接入。"

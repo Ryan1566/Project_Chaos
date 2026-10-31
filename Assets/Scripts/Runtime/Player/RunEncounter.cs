@@ -49,6 +49,7 @@ public static partial class RunEncounter
 
     public static int CurrentSceneIndex { get; private set; }
     public static bool RunCleared { get; private set; }
+    public static bool IsSceneReady => _sceneReady && !_entering;
     /// <summary>W3.3：观战模式 —— 受控角色倒地但门客还活着（不做控制权转移）。</summary>
     public static bool IsSpectator { get; private set; }
     /// <summary>W3.3：最近一次结算导致重伤（wounded=true，30s）的门客数（结算面板显示用）。</summary>
@@ -149,6 +150,8 @@ public static partial class RunEncounter
                 ChaosLog.Warn(LogChannel.UI, "[局内] EnterScene 收到的队伍为空且 Team 也为空 → 门客将不会生成");
             }
 
+            if (sceneIndex == 1) Chaos.Gameplay.RunTeam.RunTeamProgress.BeginRun(Team);
+
             ClearEnemies();
             PlayerSpawner.Clear(false);
             if (!prepared) PrototypeMapSpawner.Clear();
@@ -194,6 +197,7 @@ public static partial class RunEncounter
                 PlayerSpawner.Clear(false);
                 return false;
             }
+            Chaos.Gameplay.RunTeam.RunTeamProgress.ApplyToSpawnedTeam();
             EnsureTicker();
 
             RunDepthHud.EnableForRun();   //W4e：进局开闸 + 建 HUD（CurrentSceneIndex 已就位）
@@ -363,6 +367,7 @@ public static partial class RunEncounter
         IsSpectator = false;
 
         RunInventory.Clear();
+        Chaos.Gameplay.RunTeam.RunTeamProgress.Clear();
         ClearGroundDrops();
         RunDepthHud.DisableAndDestroy();   //W4e：关闸 + 销毁   //W4c：撤离销毁 HUD
         PlayerSpawner.Clear();

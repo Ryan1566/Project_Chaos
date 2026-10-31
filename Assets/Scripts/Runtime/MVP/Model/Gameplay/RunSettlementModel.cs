@@ -96,6 +96,7 @@ namespace Chaos.MVP.Model.Gameplay
                 why = null; return true;
             }, out reason, () => { _applied = true; PendingSave = false; Completed = true; if (discard) _selected.Clear(); }, () => PendingSave = true);
             if (!committed) return false;
+            Chaos.Gameplay.RunTeam.RunTeamProgress.Clear();
             return true;
         }
         public bool ReturnToMeta(out string reason)

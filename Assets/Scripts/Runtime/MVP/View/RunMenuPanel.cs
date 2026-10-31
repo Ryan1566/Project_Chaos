@@ -18,6 +18,9 @@ public sealed class RunMenuPanel : BasePanel, IGameplayView<RunMenuState>, IRunB
     private RunMenuPresenter _presenter;
     private RunMapView _mapView;
     private RunMapPresenter _mapPresenter;
+    private RunTeamView _teamView;
+    private RunTeamPresenter _teamPresenter;
+    private CanvasGroup _teamActions;
     private RectTransform _box, _inventory, _catalog;
     private TextMeshProUGUI _summary, _hint, _placeholder;
     private readonly List<RunBagSlotView> _slots = new List<RunBagSlotView>();
@@ -83,6 +86,11 @@ public sealed class RunMenuPanel : BasePanel, IGameplayView<RunMenuState>, IRunB
         _mapView = mapRect.gameObject.AddComponent<RunMapView>(); _mapView.Initialize();
         _mapPresenter = new RunMapPresenter(_mapView);
         mapRect.gameObject.SetActive(false);
+        var teamRect = GameplayUi.Rect(_box, "Team", Vector2.up, Vector2.up, new Vector2(0, -110), new Vector2(BoxWidth, 475));
+        _teamActions = teamRect.gameObject.AddComponent<CanvasGroup>();
+        _teamView = teamRect.gameObject.AddComponent<RunTeamView>(); _teamView.Initialize();
+        _teamPresenter = new RunTeamPresenter(_teamView);
+        teamRect.gameObject.SetActive(false);
     }
     private void LateUpdate()
     {
@@ -103,6 +111,7 @@ public sealed class RunMenuPanel : BasePanel, IGameplayView<RunMenuState>, IRunB
         { _model?.Dispose(); _model = new RunMenuModel(); _terrainWasVisible = RunTerrainToast.IsShowing; }
         RunTerrainToast.SetVisible(false);
         var selectedTab = SelectedTab;
+        _teamPresenter.BeginVisit();
         _presenter?.Dispose();
         _presenter = new RunMenuPresenter(_model);
         _presenter.Attach(this);
@@ -112,6 +121,7 @@ public sealed class RunMenuPanel : BasePanel, IGameplayView<RunMenuState>, IRunB
     {
         CancelDrag();
         _mapView.CloseSecondary(); _mapView.gameObject.SetActive(false);
+        _teamPresenter.SetActive(false); _teamView.gameObject.SetActive(false);
         _presenter?.Dispose(); _presenter = null;
         if (uiManager == null || !uiManager.panelStack.Contains(this))
         {
@@ -121,8 +131,8 @@ public sealed class RunMenuPanel : BasePanel, IGameplayView<RunMenuState>, IRunB
             if (resumeHud && _terrainWasVisible) RunTerrainToast.SetVisible(true);
         }
     }
-    private void OnDisable() { CancelDrag(); _mapView?.CloseSecondary(); }
-    private void OnDestroy() { CancelDrag(); _presenter?.Dispose(); _model?.Dispose(); _mapPresenter?.Dispose(); }
+    private void OnDisable() { CancelDrag(); _mapView?.CloseSecondary(); _teamPresenter?.SetActive(false); }
+    private void OnDestroy() { CancelDrag(); _presenter?.Dispose(); _model?.Dispose(); _mapPresenter?.Dispose(); _teamPresenter?.Dispose(); }
     private void Send(PanelAction action, uint id = 0) { if (IsShowing) Intent?.Invoke(new PanelIntent(action, id)); }
     public void ClosePanel() { UIManager.Instance.PopPanel(); }
     public void ShowMessage(string message, bool success) { _hint.text = message; }
@@ -151,7 +161,10 @@ public sealed class RunMenuPanel : BasePanel, IGameplayView<RunMenuState>, IRunB
         _summary.text = state.Summary;
         _hint.text = state.Hint;
         _inventory.gameObject.SetActive(state.Tab == RunFunctionTab.Inventory);
-        _placeholder.transform.parent.gameObject.SetActive(state.Tab == RunFunctionTab.Team);
+        _placeholder.transform.parent.gameObject.SetActive(false);
+        _teamView.gameObject.SetActive(state.Tab == RunFunctionTab.Team);
+        _teamActions.interactable = !state.ConfirmRetreat;
+        _teamPresenter.SetActive(state.Tab == RunFunctionTab.Team);
         _mapView.gameObject.SetActive(state.Tab == RunFunctionTab.Map);
         if (state.Tab == RunFunctionTab.Map) _mapPresenter.Refresh();
         else _mapView.CloseSecondary();

@@ -27,6 +27,16 @@ public class PlayerHealth : MonoBehaviour
     private float _flashUntil;
     private Vector3 _baseScale;
     private Rigidbody2D _body;
+    private int _runHealthBonus;
+
+    /// <summary>Adjust maximum only; never heal, revive or reset invulnerability.</summary>
+    public void SetRunHealthBonus(int bonus)
+    {
+        bonus = Mathf.Max(0, bonus);
+        maxHp = Mathf.Max(1, maxHp - _runHealthBonus + bonus);
+        _runHealthBonus = bonus;
+        Hp = Mathf.Min(Hp, maxHp);
+    }
 
     private void Awake()
     {
