@@ -364,7 +364,7 @@ public class MarketPanel : BasePanel, IGameplayView<MarketState>
         return child == null ? null : child.GetComponent<TextMeshProUGUI>();
     }
 
-    public void ClosePanel() { if (UIManager.Instance != null) UIManager.Instance.PopPanel(); else Hide(); }
+    public override void ClosePanel() { if (UIManager.Instance != null) UIManager.Instance.PopPanel(); else Hide(); }
     public void ShowMessage(string message, bool success) { SetResult(message, success ? OkColor : WarnColor); }
     public void Render(MarketState state)
     {

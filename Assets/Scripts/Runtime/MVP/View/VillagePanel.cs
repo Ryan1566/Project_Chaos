@@ -193,7 +193,7 @@ public class VillagePanel : BasePanel, IGameplayView<VillageState>
         loc.localizationKey = key; loc.autoUpdateOnStart = false; loc.listenToLanguageChange = false;
     }
 
-    public void ClosePanel() { if (UIManager.Instance != null) UIManager.Instance.PopPanel(); else Hide(); }
+    public override void ClosePanel() { if (UIManager.Instance != null) UIManager.Instance.PopPanel(); else Hide(); }
     public void ShowMessage(string message, bool success) { if (_hint != null) _hint.text = message; }
     public void Render(VillageState state)
     {

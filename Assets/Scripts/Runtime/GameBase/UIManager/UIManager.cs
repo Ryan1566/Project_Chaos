@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using ChaosDebug;
 using UnityEngine;
 
@@ -151,6 +151,18 @@ public class UIManager : SingletonBase<UIManager>
     /// <summary>
     /// 关闭当前ui
     /// </summary>
+    /// <summary>Only the visible top panel receives one back press, before other shortcut drivers.</summary>
+    public bool TryHandleBackNavigation()
+    {
+        if (panelStack.Count == 0 || RunSceneFlow.IsTransitioning || VillageSceneFlow.IsLoading) return false;
+        var top = panelStack.Peek(); var input = InputManager.Instance;
+        if (top == null || !top.IsShowing || !top.gameObject.activeInHierarchy
+            || input.HasGameplayBlockerOtherThan(this) || !input.WasNavigationPressed(InputManager.ActionMenu)) return false;
+        input.ConsumeNavigationPress();
+        top.HandleBack();
+        return true;
+    }
+
     public void PopPanel()//移除最上层的ui，因为是动态管理ui，所以移除相当于关闭
     {
         if (panelStack.Count == 0)//堆栈为空，即不存在ui

@@ -3,10 +3,19 @@ using System.Collections.Generic;
 
 namespace Chaos.MVP.Model.WorldMap
 {
+    /// <summary>Runtime label supplied by the model; normalized map coordinates, Y upward.</summary>
+    public sealed class WorldFactionLabel
+    {
+        public uint FactionId;
+        public string Name;
+        public UnityEngine.Vector2 Position;
+    }
+
     public sealed class WorldMapSnapshot
     {
         public uint Stage;
         public List<WorldFactionArea> Areas;
+        public List<WorldFactionLabel> Labels;
         public List<WorldMapPoint> Points;
         public WorldMapPoint Selected;
         public string Info;
@@ -39,7 +48,7 @@ namespace Chaos.MVP.Model.WorldMap
             string status = "时代 " + meta.Era + " / 深度 " + meta.Depth + "\n物资 " + inv.GetResource(InventoryService.ResourceKind.Goods)
                 + "　材料 " + inv.GetResource(InventoryService.ResourceKind.Material) + "\n图纸 " + inv.GetResource(InventoryService.ResourceKind.Blueprint)
                 + "　钱财 " + inv.GetResource(InventoryService.ResourceKind.Money);
-            return new WorldMapSnapshot { Stage = _stage, Areas = areas, Points = points, Selected = _selected, Info = info,
+            return new WorldMapSnapshot { Stage = _stage, Areas = areas, Labels = WorldFactionLabelCatalog.Read(_stage, areas), Points = points, Selected = _selected, Info = info,
                 Status = status, Hint = Hint ?? "选择门客并派遣，开始本次出征。", ConfirmReturn = ConfirmReturn };
         }
         public bool Save()

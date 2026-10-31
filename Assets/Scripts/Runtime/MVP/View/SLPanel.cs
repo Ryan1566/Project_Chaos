@@ -83,6 +83,12 @@ public class SLPanel : BasePanel, ISaveSlotsView
     private TextMeshProUGUI _errorText;
     public event System.Action<SaveSlotsIntent> Intent;
     public bool CanShowConfirmation => _confirmGroup != null;
+    public override void HandleBack()
+    {
+        if (_confirmGroup != null && _confirmGroup.activeSelf)
+        { if (_confirmCancelBtn != null) _confirmCancelBtn.onClick.Invoke(); }
+        else OnReturnClicked();
+    }
     public void ShowEntryFailure(string reason)
     {
         Intent?.Invoke(new SaveSlotsIntent(SaveSlotsAction.EntryFailure, message: reason));

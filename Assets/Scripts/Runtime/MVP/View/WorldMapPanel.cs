@@ -74,6 +74,7 @@ public class WorldMapPanel : BasePanel, IWorldMapView
     private readonly List<GameObject> _iconObjects = new List<GameObject>();
     private readonly Dictionary<uint, Sprite> _fallbackIcons = new Dictionary<uint, Sprite>();
 
+    private WorldMapFactionLabelView _factionLabels;
     private WorldMapModel _model;
     private WorldMapPresenter _presenter;
     public event System.Action<WorldMapIntent> Intent;
@@ -104,6 +105,7 @@ public class WorldMapPanel : BasePanel, IWorldMapView
 
     public override void OnExit()
     {
+        _factionLabels?.Clear();
         //绘制资源由 View 缓存；导航与数据订阅随本次显示释放。
         _selected = null;
         _presenter?.Dispose();
@@ -245,6 +247,7 @@ public class WorldMapPanel : BasePanel, IWorldMapView
     {
         _selected = state.Selected;
         ApplyFactionMask(state.Areas);
+        RenderFactionLabels(state.Labels);
         RebuildIcons(state.Points);
         UpdateSelectionScales();
         SetInfoText(state.Info);
@@ -258,6 +261,26 @@ public class WorldMapPanel : BasePanel, IWorldMapView
             if (label != null) GameplayText.Bind(label, "ui_return", "返回村庄");
         }
     }
+    private void RenderFactionLabels(List<WorldFactionLabel> labels)
+    {
+        if (_iconLayer == null) return;
+        if (_factionLabels == null)
+        {
+            var layer = GameplayUi.Rect(_iconLayer, "FactionNames", Vector2.zero, Vector2.one * .5f, Vector2.zero, Vector2.zero);
+            layer.anchorMin = Vector2.zero; layer.anchorMax = Vector2.one;
+            layer.offsetMin = layer.offsetMax = Vector2.zero;
+            layer.SetAsFirstSibling(); // POI children remain above this display-only layer.
+            _factionLabels = layer.gameObject.AddComponent<WorldMapFactionLabelView>();
+        }
+        _factionLabels.Render(labels);
+    }
+    public override void HandleBack()
+    {
+        if (_returnConfirmation != null && _returnConfirmation.activeSelf)
+            Intent?.Invoke(new WorldMapIntent(WorldMapAction.CancelReturn));
+        else ClosePanel();
+    }
+
     private void ApplyFactionMask(List<WorldFactionArea> areas)
     {
         if (_factionMask == null) return;

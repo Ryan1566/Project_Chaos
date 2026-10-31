@@ -104,6 +104,7 @@ public class WorldMapService : SingletonBase<WorldMapService>
     /// <summary>强制重新读表（改完配表后调试用）。</summary>
     public void Reload()
     {
+        WorldFactionLabelCatalog.Reload();
         _loaded = false;
         _pointsByMap = null;
         _areasByStage = null;

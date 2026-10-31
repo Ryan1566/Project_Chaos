@@ -250,7 +250,7 @@ public class RetainerPanel : BasePanel, IGameplayView<RetainerState>
         label.text = GameplayText.Text(key, fallback, args);
     }
 
-    public void ClosePanel() { if (UIManager.Instance != null) UIManager.Instance.PopPanel(); else Hide(); }
+    public override void ClosePanel() { if (UIManager.Instance != null) UIManager.Instance.PopPanel(); else Hide(); }
     public void ShowMessage(string message, bool success) { if (_hint != null) _hint.text = message; }
     public void Render(RetainerState state)
     {

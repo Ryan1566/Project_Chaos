@@ -19,18 +19,22 @@ namespace Chaos.Gameplay.Items
                 var children = new List<RadialMenuOption>();
                 for (int i = 0; i < capacity; i++)
                 {
+                    //二级只暴露真实占用格；地址和快捷键仍绑定物理 slotIndex，不压缩编号。
                     var stack = RunInventory.GetSlot(section, i);
-                    var item = stack == null ? null : ItemBase.Create(stack.itemId);
-                    string reason = "空格子";
+                    if (stack == null || stack.count == 0) continue;
+                    var item = ItemBase.Create(stack.itemId);
+                    string reason = item == null ? "道具不存在或已停用" : null;
                     bool usable = item != null && RunItemUseService.CanUse(item, out reason);
                     string id = row + ":" + i;
                     if (item != null) _addresses[id] = (section, i, item.Id);
-                    children.Add(new RadialMenuOption { Id = id, Name = item?.Name ?? "空格子", IconKey = item?.IconKey,
-                        CountText = stack == null ? "" : "×" + stack.count, ShortcutText = (i + 1).ToString(), ShortcutNumber = i + 1,
+                    children.Add(new RadialMenuOption { Id = id, Name = item?.Name ?? "未知道具", IconKey = item?.IconKey,
+                        CountText = "×" + stack.count, ShortcutText = (i + 1).ToString(), ShortcutNumber = i + 1,
                         Enabled = usable, DisabledReason = reason });
                 }
+                bool unlocked = capacity > 0;
+                bool hasItems = children.Count > 0;
                 roots.Add(new RadialMenuOption { Id = "category:" + row, Name = names[row], Children = children,
-                    Enabled = capacity > 0, DisabledReason = "该行尚未开放格位" });
+                    Enabled = unlocked && hasItems, DisabledReason = unlocked ? "暂无道具" : "未解锁" });
             }
             return roots;
         }

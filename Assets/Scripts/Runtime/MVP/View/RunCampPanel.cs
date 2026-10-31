@@ -186,7 +186,7 @@ public class RunCampPanel : BasePanel, IGameplayView<CampState>
         return go.GetComponent<Button>();
     }
 
-    public void ClosePanel() { if (UIManager.Instance != null) UIManager.Instance.PopPanel(); else Hide(); }
+    public override void ClosePanel() { if (UIManager.Instance != null) UIManager.Instance.PopPanel(); else Hide(); }
     public void ShowMessage(string message, bool success) { if (_hint != null) _hint.text = message; }
     public void Render(CampState state)
     {

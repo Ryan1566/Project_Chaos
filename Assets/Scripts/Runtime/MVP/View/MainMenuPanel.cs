@@ -14,6 +14,12 @@ public class MainMenuPanel : BasePanel, IMainMenuView
     private MainMenuPresenter _presenter;
     public event Action<MainMenuIntent> Intent;
 
+    public override void HandleBack()
+    {
+        // The last main menu is the application root, not a dismissible overlay.
+        if (UIManager.Instance.panelStack.Count > 1) ClosePanel();
+    }
+
     private void Awake()
     {
         _startBtn = transform.GetChild(1).Find("StartBtn").GetComponent<Button>();

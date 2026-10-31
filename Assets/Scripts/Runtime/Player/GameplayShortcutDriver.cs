@@ -47,10 +47,9 @@ public sealed class GameplayShortcutDriver : MonoBehaviour
         if (input.WasNavigationPressed(InputManager.ActionMenu) && !input.HasGameplayBlockerOtherThan(ui))
         {
             var top = ui.panelStack.Count == 0 ? null : ui.panelStack.Peek();
-            if (top is RunMenuPanel menu && menu.TryCloseSecondaryWindow()) return;
-            if (top != null && top.IsShowing && top.gameObject.activeInHierarchy && top.ReturnsToGameplayOnClose)
-            { ui.PopPanel(); return; }
-            if (input.CanReadGameplayInput) { RunMenuPanel.Open(); return; }
+            // Visible panels and their secondary dialogs are handled once by UIManager.
+            if (top != null && top.IsShowing && top.gameObject.activeInHierarchy) return;
+            if (input.CanReadGameplayInput) { input.ConsumeNavigationPress(); RunMenuPanel.Open(); return; }
         }
         if (input.WasGameplayPressed(InputManager.ActionCamp)) RunCampPanel.Open();
     }

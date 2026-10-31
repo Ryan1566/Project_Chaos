@@ -329,7 +329,7 @@ public class EventPanel : BasePanel, IGameplayView<EventState>
     }
 
     private EventState _rendered;
-    public void ClosePanel() { CloseSelf(); }
+    public override void ClosePanel() { CloseSelf(); }
     public void ShowMessage(string message, bool success) { if (_result != null) _result.text = message; }
     public void Render(EventState state)
     {

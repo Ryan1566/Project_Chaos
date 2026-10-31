@@ -25,6 +25,7 @@ public class PlayerLocomotion : MonoBehaviour
     private const float IdleThreshold = 0.1f;
 
     private Rigidbody2D _body;
+    private PlayerSurfacePhysics _surface;
     private SkeletonAnimation _skeleton;
     private int _facing = 1;
     private bool _isGrounded;
@@ -60,6 +61,8 @@ public class PlayerLocomotion : MonoBehaviour
     private void Awake()
     {
         _body = GetComponent<Rigidbody2D>();
+        _surface = GetComponent<PlayerSurfacePhysics>();
+        if (_surface == null) _surface = gameObject.AddComponent<PlayerSurfacePhysics>();
         _skeleton = GetComponentInChildren<SkeletonAnimation>(true);
         if (_skeleton != null)
         {
@@ -111,6 +114,7 @@ public class PlayerLocomotion : MonoBehaviour
         _jumpRequested = false;
         _injectedInput = 0;
         _injectedInputUntil = 0;
+        if (_surface != null) _surface.SetSlideMaterial(false);
         if (_body != null) _body.velocity = new Vector2(0, _body.velocity.y);
     }
 
@@ -126,6 +130,8 @@ public class PlayerLocomotion : MonoBehaviour
         if (InputManager.Instance.GameplayInputBlocked) { ClearInput(); return; }
 
         _isGrounded = CheckGrounded();
+        //空中贴墙时不允许摩擦替重力“托住”角色；落地/离开侧墙立即恢复原材质。
+        if (_surface != null) _surface.SetSlideMaterial(!_isGrounded && _surface.HasSideContact());
 
         //水平移动
         Vector2 velocity = _body.velocity;
@@ -142,23 +148,11 @@ public class PlayerLocomotion : MonoBehaviour
         _body.velocity = velocity;
     }
 
-    /// <summary>脚底圆形检测：忽略自身碰撞体与触发器。</summary>
-    /// <summary>W3.1f：改用胶囊底部 BoxCast（与门客同一套）。</summary>
+    /// <summary>脚底盒形检测：只接受朝上法线；侧墙/过陡斜面不算落地。</summary>
     private bool CheckGrounded()
     {
-        Collider2D col = GetComponent<Collider2D>();
-        if (col == null) return false;
-        Bounds b = col.bounds;
-        Vector2 origin = new Vector2(b.center.x, b.min.y + 0.05f);
-        Vector2 size = new Vector2(Mathf.Max(0.1f, b.size.x * 0.8f), 0.04f);
-        RaycastHit2D[] hits = Physics2D.BoxCastAll(origin, size, 0f, Vector2.down, 0.12f);
-        for (int i = 0; i < hits.Length; i++)
-        {
-            if (hits[i].collider == null || hits[i].collider.isTrigger) continue;
-            if (hits[i].collider.transform == transform || hits[i].collider.transform.IsChildOf(transform)) continue;
-            return true;
-        }
-        return false;
+        if (_surface != null) return _surface.ProbeGround();
+        return PlayerSurfacePhysics.ProbeGround(GetComponent<Collider2D>(), _body);
     }
 
     private void ApplyFacing()

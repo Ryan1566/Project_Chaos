@@ -155,6 +155,9 @@ public partial class InputManager
         return !(action.activeControl?.device is Pointer pointer) || !IsPointerOverUi(pointer);
     }
 
+    /// <summary>UI back consumes this frame, including a secondary-window close that does not pop a panel.</summary>
+    public void ConsumeNavigationPress() { InvalidateGameplayInput(); }
+
     public bool IsNavigationHeld(string actionName)
     {
         if (IsRebinding) return false;
@@ -185,7 +188,7 @@ public partial class InputManager
         {
             // The map's own UI block can be bypassed only to close this exact top panel.
             // GM, rebinding and any other input owner remain authoritative.
-            if (!HasGameplayBlockerOtherThan(ui) && (WasNavigationPressed(ActionMap) || WasNavigationPressed(ActionMenu))) ui.PopPanel();
+            if (!HasGameplayBlockerOtherThan(ui) && WasNavigationPressed(ActionMap)) ui.PopPanel();
         }
         else if (ui.panelStack.Count == 0)
         {

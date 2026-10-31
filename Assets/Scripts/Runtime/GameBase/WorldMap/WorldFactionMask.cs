@@ -32,6 +32,11 @@ public class WorldFactionMask : RawImage
     /// <summary>势力色块的透明度（MVP 取值；将来可由配置驱动）。</summary>
     public const float FactionAlpha = 0.35f;
 
+    [SerializeField, Range(0, 4)] private float borderWidthPixels = 1.25f;
+    [SerializeField] private Color borderColor = new Color(0, 0, 0, .95f);
+    public int RasterGeneration { get; private set; }
+    private int _lastSignature;
+    private bool _hasSignature;
     private Texture2D _texture;
     private Color32[] _hi;              //超采样缓冲（复用，避免每次重建都分配几 MB）
     private int _hiWidth;
@@ -49,7 +54,10 @@ public class WorldFactionMask : RawImage
         //蒙版是背景层，绝不能吃掉点位的射线
         raycastTarget = false;
 
-        if (mapAspect <= 0f) mapAspect = 1f;
+        if (mapAspect <= 0f || float.IsNaN(mapAspect) || float.IsInfinity(mapAspect)) mapAspect = 1f;
+        int signature = Signature(areas, mapAspect);
+        if (_hasSignature && signature == _lastSignature && _texture != null) return;
+        _lastSignature = signature; _hasSignature = true;
 
         int width = RasterWidth;
         int height = Mathf.Clamp(Mathf.RoundToInt(width * mapAspect), 1, 4096);
@@ -72,12 +80,58 @@ public class WorldFactionMask : RawImage
             }
         }
 
+        // Stroke after every fill, so adjacent polygons cannot paint over their common border.
+        if (areas != null && borderWidthPixels > 0) foreach (var area in areas)
+            if (area != null && area.IsValid) StrokePolygon(area, sw, sh);
         EnsureTexture(width, height);
         Downsample(width, height);
+        RasterGeneration++;
 
         if (drawn == 0)
         {
             ChaosLog.Warn(LogChannel.UI, "[局外地图] 势力蒙版：本时期没有有效区域（顶点不足 3 的一律跳过）");
+        }
+    }
+
+    private int Signature(List<WorldFactionArea> areas, float aspect)
+    {
+        unchecked
+        {
+            int hash = aspect.GetHashCode() * 31 + borderWidthPixels.GetHashCode();
+            hash = hash * 31 + borderColor.GetHashCode();
+            if (areas != null) foreach (var area in areas)
+            {
+                if (area == null) { hash *= 31; continue; }
+                hash = hash * 31 + area.factionId.GetHashCode(); hash = hash * 31 + area.color.GetHashCode();
+                hash = hash * 31 + area.vertices.Count;
+                foreach (var point in area.vertices) hash = hash * 31 + point.GetHashCode();
+            }
+            return hash;
+        }
+    }
+    private void StrokePolygon(WorldFactionArea area, int width, int height)
+    {
+        float radius = Mathf.Clamp(borderWidthPixels, 0, 4) * Supersample * .5f;
+        for (int i = 0; i < area.vertices.Count; i++)
+        {
+            Vector2 a = Vector2.Scale(area.vertices[i], new Vector2(width, height));
+            Vector2 b = Vector2.Scale(area.vertices[(i + 1) % area.vertices.Count], new Vector2(width, height));
+            if (float.IsNaN(a.x) || float.IsNaN(a.y) || float.IsNaN(b.x) || float.IsNaN(b.y)
+                || float.IsInfinity(a.x) || float.IsInfinity(a.y) || float.IsInfinity(b.x) || float.IsInfinity(b.y)) continue;
+            int x0 = Mathf.Clamp(Mathf.FloorToInt(Mathf.Min(a.x, b.x) - radius - 1), 0, width - 1);
+            int x1 = Mathf.Clamp(Mathf.CeilToInt(Mathf.Max(a.x, b.x) + radius + 1), 0, width - 1);
+            int y0 = Mathf.Clamp(Mathf.FloorToInt(Mathf.Min(a.y, b.y) - radius - 1), 0, height - 1);
+            int y1 = Mathf.Clamp(Mathf.CeilToInt(Mathf.Max(a.y, b.y) + radius + 1), 0, height - 1);
+            Vector2 segment = b - a; float length = segment.sqrMagnitude;
+            for (int y = y0; y <= y1; y++) for (int x = x0; x <= x1; x++)
+            {
+                Vector2 point = new Vector2(x + .5f, y + .5f);
+                float t = length <= .00001f ? 0 : Mathf.Clamp01(Vector2.Dot(point - a, segment) / length);
+                float coverage = Mathf.Clamp01(radius + .5f - (point - a - segment * t).magnitude);
+                if (coverage <= 0) continue;
+                Color color = borderColor; color.a *= coverage;
+                BlendSourceOver(y * _hiWidth + x, (Color32)color);
+            }
         }
     }
 

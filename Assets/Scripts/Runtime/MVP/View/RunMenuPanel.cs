@@ -39,6 +39,14 @@ public sealed class RunMenuPanel : BasePanel, IGameplayView<RunMenuState>, IRunB
     public void SelectTab(RunFunctionTab tab) { _mapView?.CloseSecondary(); _presenter?.SelectTab(tab); }
     public bool TryCloseSecondaryWindow() { return _mapView != null && _mapView.CloseSecondary(); }
 
+    private bool _confirmRetreat;
+    public override void HandleBack()
+    {
+        if (TryCloseSecondaryWindow()) return;
+        if (_dragSource != null) { CancelDrag(); return; }
+        Send(_confirmRetreat ? PanelAction.Cancel : PanelAction.Close);
+    }
+
     private void Awake()
     {
         var backdrop = GetComponent<Image>();
@@ -134,7 +142,7 @@ public sealed class RunMenuPanel : BasePanel, IGameplayView<RunMenuState>, IRunB
     private void OnDisable() { CancelDrag(); _mapView?.CloseSecondary(); _teamPresenter?.SetActive(false); }
     private void OnDestroy() { CancelDrag(); _presenter?.Dispose(); _model?.Dispose(); _mapPresenter?.Dispose(); _teamPresenter?.Dispose(); }
     private void Send(PanelAction action, uint id = 0) { if (IsShowing) Intent?.Invoke(new PanelIntent(action, id)); }
-    public void ClosePanel() { UIManager.Instance.PopPanel(); }
+    public override void ClosePanel() { UIManager.Instance.PopPanel(); }
     private string _defaultHint;
     public void ShowItemDetails(string description) { if (_hint != null) _hint.text = description ?? _defaultHint; }
     public void ShowMessage(string message, bool success) { _hint.text = message; }
@@ -159,6 +167,7 @@ public sealed class RunMenuPanel : BasePanel, IGameplayView<RunMenuState>, IRunB
     public void Render(RunMenuState state)
     {
         CancelDrag();
+        _confirmRetreat = state.ConfirmRetreat;
         SelectedTab = state.Tab;
         _summary.text = state.Summary;
         _defaultHint = state.Hint; _hint.text = state.Hint;

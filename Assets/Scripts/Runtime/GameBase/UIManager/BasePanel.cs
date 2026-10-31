@@ -1,4 +1,4 @@
-﻿using ChaosDebug;
+using ChaosDebug;
 using UnityEngine;
 
 /// <summary>
@@ -55,6 +55,10 @@ public class BasePanel : MonoBehaviour
 
     /// <summary>Closing an in-run overlay resumes gameplay rather than revealing the outside panel beneath it.</summary>
     public virtual bool ReturnsToGameplayOnClose => false;
+
+    /// <summary>Navigation uses the same close path as the panel's visible return control.</summary>
+    public virtual void ClosePanel() { (uiManager ?? UIManager.Instance).PopPanel(); }
+    public virtual void HandleBack() { ClosePanel(); }
 
     /// <summary>当前是否正在播放显隐动画。</summary>
     public bool IsAnimating

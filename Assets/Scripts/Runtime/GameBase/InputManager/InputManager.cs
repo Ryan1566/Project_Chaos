@@ -1069,7 +1069,7 @@ public partial class InputManager : SingletonBase<InputManager>
     {
         RefreshInputScope();
         RefreshGameplayInputLatches();
-        TickVillageMapNavigation();
+        bool wasRebinding = IsRebinding;
         //⚠ 这一段必须在下面的 isStart 判断【之前】：
         //  那个开关管的是旧版 Escape/W 轮询，跟"正在等玩家按键"是两回事。
         //  放到后面的话，没开旧版轮询的场合按取消键会毫无反应，界面一直卡在"请按键…"
@@ -1078,6 +1078,11 @@ public partial class InputManager : SingletonBase<InputManager>
             FinishRebind(RebindResult.Cleared, _rebindOnFinished);
         }
 
+        if (!wasRebinding)
+        {
+            if (UIManager.Instance.TryHandleBackNavigation()) return;
+            TickVillageMapNavigation();
+        }
         if (!isStart)
             return;
 

@@ -224,7 +224,7 @@ public class InventoryPanel : BasePanel, IGameplayView<InventoryState>
         go.GetComponent<Button>().onClick.AddListener(() => Send(PanelAction.Close));
     }
 
-    public void ClosePanel() { if (UIManager.Instance != null) UIManager.Instance.PopPanel(); else Hide(); }
+    public override void ClosePanel() { if (UIManager.Instance != null) UIManager.Instance.PopPanel(); else Hide(); }
     public void ShowMessage(string message, bool success) { if (_hint != null) _hint.text = message; }
     public void Render(InventoryState state)
     {

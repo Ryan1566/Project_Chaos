@@ -198,6 +198,8 @@ public class RunSettlementPanel : BasePanel, IGameplayView<SettlementState>
     }
 
     // ══════════════════ 结算推进（与 W3.2e 一致，未改）══════════════════
+    public override void HandleBack() { Confirm(); }
+
     private void Confirm()
     {
         Send(PanelAction.Confirm);
@@ -261,7 +263,7 @@ public class RunSettlementPanel : BasePanel, IGameplayView<SettlementState>
         return c == null ? null : c.GetComponent<TextMeshProUGUI>();
     }
 
-    public void ClosePanel() { if (UIManager.Instance != null) UIManager.Instance.PopPanel(); else Hide(); }
+    public override void ClosePanel() { if (UIManager.Instance != null) UIManager.Instance.PopPanel(); else Hide(); }
     public void ShowMessage(string message, bool success) { if (_hint != null) _hint.text = message; }
     public void Render(SettlementState state)
     {
