@@ -83,15 +83,20 @@ public sealed class PlayerSurfacePhysics : MonoBehaviour
     }
 
     /// <summary>脚底盒形探测；只有法线朝上的真实碰撞面才算落地，侧墙不会误判为地面。</summary>
-    public bool ProbeGround()
+    public bool ProbeGround() { return ProbeGround(false); }
+
+    /// <summary>Terrain-only callers retain their existing rule that other actors are not ground.</summary>
+    public bool ProbeGround(bool terrainOnly)
     {
         EnsureCached();
         for (int i = 0; i < _solidColliders.Count; i++)
-            if (ProbeGround(_solidColliders[i], _body)) return true;
+            if (ProbeGround(_solidColliders[i], _body, terrainOnly)) return true;
         return false;
     }
 
-    public static bool ProbeGround(Collider2D collider, Rigidbody2D body)
+    public static bool ProbeGround(Collider2D collider, Rigidbody2D body) { return ProbeGround(collider, body, false); }
+
+    public static bool ProbeGround(Collider2D collider, Rigidbody2D body, bool terrainOnly)
     {
         if (collider == null || !collider.enabled || collider.isTrigger) return false;
         Bounds bounds = collider.bounds;
@@ -102,6 +107,7 @@ public sealed class PlayerSurfacePhysics : MonoBehaviour
         {
             RaycastHit2D hit = hits[i];
             if (hit.collider == null || hit.collider == collider || hit.collider.isTrigger) continue;
+            if (terrainOnly && !RunMap.RunMapPhysics.IsTerrain(hit.collider)) continue;
             if (body != null && hit.collider.attachedRigidbody == body) continue;
             if (body == null && hit.collider.transform.IsChildOf(collider.transform)) continue;
             if (!IsGroundNormal(hit.normal)) continue;

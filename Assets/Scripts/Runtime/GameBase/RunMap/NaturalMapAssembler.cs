@@ -85,6 +85,10 @@ namespace RunMap
                     if (tilemap.name != "Tilemap_Ground" && tilemap.name != "Tilemap_Deco") continue;
                     var localCollider = tilemap.GetComponent<TilemapCollider2D>();
                     if (localCollider != null) localCollider.enabled = false;
+                    // A disabled TilemapCollider leaves its composite geometry active in Unity 2022.
+                    // Exclude the authored terrain body from simulation; keep the renderer active.
+                    var localBody = tilemap.GetComponent<Rigidbody2D>();
+                    if (localBody != null) localBody.simulated = false;
                     if (tilemap.name == "Tilemap_Ground")
                         for (int x = 0; x < structure.Bounds.width; x++)
                             for (int y = 0; y < structure.Bounds.height; y++)
@@ -93,12 +97,8 @@ namespace RunMap
                                 int wx = structure.MirrorX ? structure.Bounds.xMax - 1 - x : structure.Bounds.x + x;
                                 if (!plan.IsSolid(wx, structure.Bounds.y + y)) tilemap.SetTile(cell, null);
                             }
-                    for (int x = structure.Template.ShaftColumn - 1; x <= structure.Template.ShaftColumn + 1; x++)
-                    {
-                        if (tilemap.name != "Tilemap_Ground") continue;
-                        for (int y = 0; y < structure.Template.EntranceFloor; y++) tilemap.SetTile(new Vector3Int(x, y, 0), fills[2]);
-                        for (int y = structure.Bounds.height - 2; y < structure.Bounds.height; y++) tilemap.SetTile(new Vector3Int(x, y, 0), fills[2]);
-                    }
+                    // Shaft sealing is already stamped into the final plan and rendered by
+                    // the common ground. Do not repaint prefab cells after the plan's carve.
                 }
                 yield return null;
             }

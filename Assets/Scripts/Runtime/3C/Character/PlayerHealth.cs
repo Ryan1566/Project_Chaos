@@ -13,7 +13,6 @@ public class PlayerHealth : MonoBehaviour
 {
     public int maxHp = 100;
     public float invulnSeconds = 0.5f;
-    public float flashSeconds = 0.15f;
 
     /// <summary>倒地时的半透明 alpha（Spine 没有 _Color → 用 skeleton.A）。</summary>
     public const float DownedAlpha = 0.4f;
@@ -24,8 +23,6 @@ public class PlayerHealth : MonoBehaviour
     public bool IsDowned { get { return Hp <= 0; } }
 
     private float _invulnUntil;
-    private float _flashUntil;
-    private Vector3 _baseScale;
     private Rigidbody2D _body;
     private int _runHealthBonus;
     private int _itemHealthBonus;
@@ -54,7 +51,6 @@ public class PlayerHealth : MonoBehaviour
     private void Awake()
     {
         Hp = maxHp;
-        _baseScale = transform.localScale;
         _body = GetComponent<Rigidbody2D>();
     }
 
@@ -67,7 +63,7 @@ public class PlayerHealth : MonoBehaviour
 
         Hp -= amount;
         _invulnUntil = Time.time + invulnSeconds;
-        _flashUntil = Time.time + flashSeconds;
+        //受击表现只保留 Cinemachine 震动；根节点/Spine 缩放与朝向永远不由伤害表现改写。
         CombatCameraShake.NotifyHurt(transform, CombatQuery.Center(transform));
 
         ChaosLog.Info(LogChannel.UI, "[玩家] 受到接触伤害 " + amount + "，HP=" + Mathf.Max(0, Hp) + "/" + maxHp
@@ -86,8 +82,6 @@ public class PlayerHealth : MonoBehaviour
     {
         if (Hp <= 0) return false;
         Hp = 0;
-        _flashUntil = 0f;
-        transform.localScale = _baseScale;
         ChaosLog.Warn(LogChannel.UI, "[玩家] GM：受控角色被强制打到倒地（HP 0/" + maxHp + "）");
         OnDowned();
         return true;
@@ -138,17 +132,5 @@ public class PlayerHealth : MonoBehaviour
         Hp = maxHp;
         _invulnUntil = Time.time + invulnSeconds;
         ChaosLog.Warn(LogChannel.UI, "[玩家] HP 归零 → 已回出生点 " + transform.position + " 并回满 HP=" + Hp);
-    }
-
-    private void Update()
-    {
-        //受击表现：缩放脉冲（Spine 无 _Color，不能染红）
-        if (_flashUntil > 0f && Time.time < _flashUntil)
-            transform.localScale = _baseScale * 1.12f;
-        else if (_flashUntil > 0f)
-        {
-            _flashUntil = 0f;
-            transform.localScale = _baseScale;
-        }
     }
 }

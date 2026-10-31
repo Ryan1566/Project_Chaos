@@ -31,6 +31,7 @@ public class AllyController : MonoBehaviour
     private static readonly float[] FollowOffsets = { -2.6f, 2.6f, -4.3f };
 
     private Rigidbody2D _body;
+    private PlayerSurfacePhysics _surface;
     private SkeletonAnimation _skeleton;
     private float _nextAttack;
     private float _nextJump;
@@ -55,6 +56,8 @@ public class AllyController : MonoBehaviour
     private void Awake()
     {
         _body = GetComponent<Rigidbody2D>();
+        _surface = GetComponent<PlayerSurfacePhysics>();
+        if (_surface == null) _surface = gameObject.AddComponent<PlayerSurfacePhysics>();
         _skeleton = GetComponentInChildren<SkeletonAnimation>(true);
         if (_skeleton != null) _skeleton.AnimationState.SetAnimation(0, "Idle_Normal", true);
         _currentAnimation = "Idle_Normal";
@@ -64,7 +67,11 @@ public class AllyController : MonoBehaviour
     //⚠ W3.3：**不要**在 OnDisable 里移除。倒地 = `enabled=false`，结算暂停世界也是 `enabled=false`；
     //  若 OnDisable 就移出 All，倒地门客会从 All 消失 → 观战判定/补员/结算重伤全部漏掉。
     //   统一只在 OnDestroy 移除。
-    private void OnDestroy() { All.Remove(this); }
+    private void OnDestroy()
+    {
+        if (_surface != null) _surface.SetSlideMaterial(false);
+        All.Remove(this);
+    }
 
     private RunMap.RunBehaviorSettings _settings;
     private RunMap.RunMapNavigator _navigator;
@@ -117,6 +124,8 @@ public class AllyController : MonoBehaviour
     {
         StopMoving();
         CancelAttack();
+        //禁用/倒地/暂停都会走这里：恢复自身材质，不能把低摩擦状态留给下一次启用。
+        if (_surface != null) _surface.SetSlideMaterial(false);
     }
 
     private void Update()
@@ -217,6 +226,23 @@ public class AllyController : MonoBehaviour
             return;
         }
         MoveLegacy(destination, controlled);
+    }
+
+    /// <summary>
+    /// 物理步前刷新自身材质：只有“确实离地且贴住侧墙”才启用低摩擦，
+    /// 避免空中持续推墙时摩擦把水平推力转成对重力的支撑。落地/离墙立即恢复。
+    /// Update 的 Navigator/legacy 两条移动链仍只负责设速度，材质规则仍只复用 PlayerSurfacePhysics 一套。
+    /// </summary>
+    private void FixedUpdate()
+    {
+        if (_surface == null) return;
+        if (IsDowned || _settings == null)
+        {
+            _surface.SetSlideMaterial(false);
+            return;
+        }
+        bool grounded = IsGrounded();
+        _surface.SetSlideMaterial(!grounded && _surface.HasSideContact());
     }
 
     private bool IsEligibleEnemy(EnemyPlaceholder enemy)
@@ -394,21 +420,11 @@ public class AllyController : MonoBehaviour
         return default(RaycastHit2D);
     }
 
+    /// <summary>门客落地判定复用共享查询：只接受朝上法线，侧墙/过陡斜面不算落地。</summary>
     private bool IsGrounded()
     {
-        Collider2D col = GetComponent<Collider2D>();
-        if (col == null) return false;
-        Bounds b = col.bounds;
-        Vector2 origin = new Vector2(b.center.x, b.min.y + 0.05f);
-        Vector2 size = new Vector2(Mathf.Max(0.1f, b.size.x * 0.8f), 0.04f);
-        RaycastHit2D[] hits = Physics2D.BoxCastAll(origin, size, 0f, Vector2.down, 0.12f);
-        for (int i = 0; i < hits.Length; i++)
-        {
-            if (!RunMap.RunMapPhysics.IsTerrain(hits[i].collider)) continue;
-            if (hits[i].collider.transform == transform || hits[i].collider.transform.IsChildOf(transform)) continue;
-            return true;
-        }
-        return false;
+        if (_surface != null) return _surface.ProbeGround(true);
+        return PlayerSurfacePhysics.ProbeGround(GetComponent<Collider2D>(), _body, true);
     }
 
     private bool GroundAhead(int dir)
@@ -584,6 +600,7 @@ public class AllyController : MonoBehaviour
         StopMoving();
         CancelAttack();
         if (_body != null) _body.velocity = Vector2.zero;
+        if (_surface != null) _surface.SetSlideMaterial(false);
         SetDownedVisual(true);
         enabled = false;   //停掉 Update（不跟随、不攻击）
         ChaosLog.Warn(LogChannel.UI, "[门客] " + AllyName + " 倒地（不可操作/不可被攻击/不跟随）位置="
