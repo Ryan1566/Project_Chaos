@@ -10,8 +10,8 @@ description:
   en: >
       Legacy assets directly under Assets/TileMap: seven Grass_*map001.asset plain Tile assets in Tile/ (each referencing the same-named grass texture in Assets/Art/PNG) plus the Rectangular Palette.prefab tile palette. The TileMap/RuleTile folder itself is empty; rule tiles live under the Kenney set.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.374Z"
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:56:40.543Z"
 fingerprint: 450400e624c8056438be16c247c8e9f274489c38e0f9c750feae99d0dba12cbc
 source:
   - path: "Assets/TileMap/Rectangular Palette.prefab"

@@ -11,9 +11,9 @@ description:
   en: >
       Generated runtime JSON for MapBiome (Resources path Data/Json/Runtime/MapBiomeConfig, no extension). Produced by ExcelTool/ExportExcelConfigs — never hand-edit.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.401Z"
-fingerprint: 3f9cab5b06fc387efce7bcb45d0d270896f498ee185274fe37d82d851f3ec52e
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:54:22.604Z"
+fingerprint: 14c49d69be5b3ee3a4401365999fee19d5ccd7aafcc4cb22b4b1a242ad5c5740
 source:
   - path: "Assets/Resources/Data/Json/Runtime/MapBiomeConfig.json"
 apis:

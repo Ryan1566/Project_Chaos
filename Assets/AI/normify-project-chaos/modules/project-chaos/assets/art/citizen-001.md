@@ -10,8 +10,8 @@ description:
   en: >
       Spine export of the Citizen_001 character: skeleton JSON, atlas text, texture, SkeletonData/Atlas assets and material — the only in-house Spine character.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.062Z"
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:56:15.079Z"
 fingerprint: 4d774c87cffc48d117968bcb463385517a086898270285590c4c61801ed976c2
 source:
   - path: "Assets/Art/FBX/Citizen_001/citizen_001.json"

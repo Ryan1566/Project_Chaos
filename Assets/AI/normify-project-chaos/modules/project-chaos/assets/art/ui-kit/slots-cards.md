@@ -10,8 +10,8 @@ description:
   en: >
       04_Slots: 20 sprites (Slot_Base/Empty/Locked/Selected, Slot_Frame_ and IconFrame_ per rarity, IconFrame_Base, QualityBar_ per rarity, QualitySeal, Checkbox checked/unchecked). 05_Cards: 11 sprites (Card_Normal/Selected/Disabled, BuildingCard buildable/building/built, ClanCard normal/selected, PortraitFrame square/round/bust) - 31 sprites; rarity uses Common/Rare/Epic/Legendary.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.089Z"
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:56:26.878Z"
 fingerprint: 2baf04cf6046fc8613e0d3087886a995561b20cdbfd8b47367dd225fd2448705
 source:
   - path: "Assets/Art/UI/04_Slots/Checkbox_Checked.png"

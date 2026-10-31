@@ -11,9 +11,9 @@ description:
   en: >
       The inventory of config tables: which xlsx exists, what each drives, its status, and which field specs back it. Currently TestTable and LoadingTable.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.464Z"
-fingerprint: 2258478558572dd73a9821d3724b9bffb86de0a69d37e858bb96f397c55d316c
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:58:40.813Z"
+fingerprint: 4fd71761568897d4aeb1821732b71109cc9ab710e2be3b66bfda705a144bbf06
 source:
   - path: "Assets/Chaos_Story/Story/03_配置表设计/00_配置表清单.md"
     line: 1

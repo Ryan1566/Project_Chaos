@@ -10,8 +10,8 @@ description:
   en: >
       DOTween runtime DLL plus 8 module extension files (Audio/Physics/Physics2D/Sprite/UI/EPOOutline). UI panels animate through these.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.450Z"
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:56:01.121Z"
 fingerprint: 8fa48482d2d58b79495d646eadbdbb38d6c97251abab7b4eaf24717f45c54eff
 source:
   - path: "Assets/Plugins/Demigiant/DOTween/DOTween.dll"

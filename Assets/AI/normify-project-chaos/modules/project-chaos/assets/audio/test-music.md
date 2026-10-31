@@ -10,8 +10,8 @@ description:
   en: >
       41 test BGM tracks named 'With love from Vertex Studio (N).mp3', N = 1..41, under Resources/Audio/TestMusic.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.143Z"
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:56:26.955Z"
 fingerprint: 92eec35ad90b79de82924620d12147a8168f47977a70eaa81f78e60aa5fa6be5
 source:
   - path: "Assets/Resources/Audio/TestMusic/With love from Vertex Studio (1).mp3"

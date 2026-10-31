@@ -10,8 +10,8 @@ description:
   en: >
       Audio dev probes: two OnGUI button panels that call AudioManager.PlayBGM/ChangeBgmVolume/PauseBGM/StopBGM and PlaySound/ChangeSoundVolume/StopSound.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.417Z"
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:56:54.862Z"
 fingerprint: 589065ed259b46afe46ee9859368652423b244f1d706b019679d677dec44210f
 source:
   - path: "Assets/Scripts/Runtime/GameTest/AudioTest/MusicTest.cs"

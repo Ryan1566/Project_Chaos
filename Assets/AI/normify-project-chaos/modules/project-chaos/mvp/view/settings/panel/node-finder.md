@@ -11,9 +11,9 @@ description:
   en: >
       Hard-coded node lookup for the panel: main-list tab buttons, ContentArea pages, the bottom button bar and the optional ConfirmGroup overlay, plus the shared Button finder. Awake validates that the tab/page name tables match the SettingCategory enum length.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.444Z"
-fingerprint: f6e00a704a92904810632d475db69fb4c2a10cbaf9072f1b9a5976923e8002f3
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:58:29.745Z"
+fingerprint: 888e6ac95db88b7e0ff338fe63c68dfc9be7f391634466415f8a96dddc392858
 source:
   - path: "Assets/Scripts/Runtime/MVP/View/SettingPanel.cs"
     line: 136

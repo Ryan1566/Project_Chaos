@@ -11,9 +11,9 @@ description:
   en: >
       Doc §10–§16: failure modes E1–E14, dependencies with fallbacks (incl. the ConfigLoader blocker), implementation advice (candidate units, landing gates, RNG/determinism), acceptance A1–A13, open questions Q1–Q10, references and change log.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.474Z"
-fingerprint: 4e068de8cc72d20c5a6106054d10511656be94f23b535031e6678639a6b6c287
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:58:40.818Z"
+fingerprint: 97c8c68fa80b6b27d30b86914c0d195bd28926b3d56f15563e770abaedbef677
 source:
   - path: "Assets/Chaos_Story/Story/02_系统策划/01_局内地图生成系统.md"
     line: 540

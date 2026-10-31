@@ -10,9 +10,9 @@ description:
   en: >
       Japanese fonts: Ichigayamincho SDF (primary) and MojiwYoiMincho-Standard SDF, with their raw TTF sources.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.287Z"
-fingerprint: f29c1d96516be89a85ec6bfa45c75fe8058ae6522996243129358a9ea53b5ac1
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:56:27.269Z"
+fingerprint: 999f8a5bff960492ad498098f01b4d3d063835fd9b12f03d7777964e34737e66
 source:
   - path: "Assets/Fonts/jp/Ichigayamincho SDF.asset"
   - path: "Assets/Fonts/jp/Ichigayamincho.ttf"

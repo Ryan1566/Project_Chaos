@@ -11,9 +11,9 @@ description:
   en: >
       Graphics page: resolution, window mode, frame-rate cap, vsync and quality. Resolution is the only list built at runtime (options beyond the monitor are filtered out by ResolutionHelper), so the selector index is just an offset into a cached table; a saved resolution that does not exist on the current monitor is snapped to the closest entry and written into the pending buffer.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.442Z"
-fingerprint: 7d401dadd23b6625925a0cf56c0f10accca46a5f4f1d8ec1c75f63dd3bc02d1b
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:58:29.742Z"
+fingerprint: 83691780c10117c329203900c73550e324e102bb99b025d2166c6ed361d5d47c
 source:
   - path: "Assets/Scripts/Runtime/MVP/View/SettingsPage/GraphicsSettingsPage.cs"
     line: 22

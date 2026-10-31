@@ -10,9 +10,9 @@ description:
   en: >
       Panel instance dictionary + display stack, with cross-scene survival via a static singleton. SetRootPanel(type) hides and clears the whole stack before pushing the target, which is how the save panel is replaced by the meta main screen instead of stacking on top of the main menu.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:30:54.571Z"
-fingerprint: 13074b92b36a513a35110fc39143849d39bc7055774b148f84049fd06d6b60b8
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:54:47.490Z"
+fingerprint: c0b2348612e030518d4b0b11be03508212120c6632226b827e88ff56f2fb99ab
 source:
   - path: "Assets/Scripts/Runtime/GameBase/UIManager/UIManager.cs"
     line: 1

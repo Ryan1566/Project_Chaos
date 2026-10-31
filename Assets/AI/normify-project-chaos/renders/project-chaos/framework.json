@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "id": "project-chaos.framework",
-  "updated_at": "2026-10-11T16:01:35.557Z",
+  "updated_at": "2026-10-31T09:00:55.381Z",
   "mode": "groups",
   "max_columns": 3,
   "reading": {
-    "zh": "按“先用后玩”读：左组是路径/跨场景常驻/日志/事件/资源/对象池等全局底座，第二组是 UI 与输入，第三组是本地化与设置，最后一组是局内玩法（地图生成）、音频、存档、对话与自测；箭头是子模块之间的调用/引用关系。",
-    "en": "Read left to right: global foundations (paths, cross-scene persistence, logging, events, resources, pool), then UI & input, then localization & settings, and finally in-run gameplay (map generation), audio, save, dialogue and dev-test probes. Arrows are call/reference links between submodules."
+    "zh": "按“先用后玩”读：左组是路径/跨场景常驻/日志/事件/资源/对象池等全局底座，第二组是 UI 与输入，第三组是本地化与设置，最后一组是面向玩法的层——局外世界地图服务加局内地图生成、音频、存档、对话与自测；箭头是子模块之间的调用/引用关系。",
+    "en": "Read left to right: global foundations (paths, cross-scene persistence, logging, events, resources, pool), then UI & input, then localization & settings, and finally the gameplay-facing layer - the world map service plus in-run map generation, audio, save, dialogue and dev-test probes. Arrows are call/reference links between submodules."
   },
   "order": [
     "project-chaos.framework.paths",
@@ -22,6 +22,7 @@
     "project-chaos.framework.localization",
     "project-chaos.framework.settings",
     "project-chaos.framework.setting-rows",
+    "project-chaos.framework.world-map",
     "project-chaos.framework.runmap",
     "project-chaos.framework.audio",
     "project-chaos.framework.save",
@@ -72,10 +73,11 @@
     {
       "id": "gameplay",
       "title": {
-        "zh": "局内玩法、音频、存档与自测",
-        "en": "Gameplay, Audio, Save & Tests"
+        "zh": "局外地图、局内玩法、音频、存档与自测",
+        "en": "World Map, Run, Audio, Save & Tests"
       },
       "children": [
+        "project-chaos.framework.world-map",
         "project-chaos.framework.runmap",
         "project-chaos.framework.audio",
         "project-chaos.framework.save",

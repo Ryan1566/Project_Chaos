@@ -11,9 +11,9 @@ description:
   en: >
       Static run statistics for automated acceptance: time progress hit full, time the target scene activated, largest pre-activation frame delta, loading frame count, target scene name and failure flag. They are static because this object is destroyed the moment LoadingScene activates. A static sceneLoaded callback is hooked exactly once and writes the activation timestamp back.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.396Z"
-fingerprint: 69a4a1bd4f73b2dedecbe57dd419556d295a3c3480ce4cb7287c141697c1b224
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:54:10.104Z"
+fingerprint: 3c1cad158685b77698b5133115ab31efdbfd3f85713842163821e086c42559fd
 source:
   - path: "Assets/Scripts/Runtime/GameBase/ScenesLoader/LoadingController.cs"
     line: 79

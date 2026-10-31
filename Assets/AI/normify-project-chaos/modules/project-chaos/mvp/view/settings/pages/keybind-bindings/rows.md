@@ -11,9 +11,9 @@ description:
   en: >
       The two key-row sets: keyboard rows carry two slots (keyboard + mouse) so one action can be bound to both, gamepad rows carry one. Each row shows an icon via KeyIconText when a KeyIconMap entry exists and falls back to text, which keeps widths stable across languages. Reset writes back the action name, binding kind and part name per row.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.443Z"
-fingerprint: 03908ed9b1f158b11dcd01ea8368f47711a172a7e5cf15c0bd5f51e2eebf2f50
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:58:29.743Z"
+fingerprint: 5fe21e38a92b79fdc1b7b9b863dc02e227abbbc9adc2c99b0e6b0931c0e0f35d
 source:
   - path: "Assets/Scripts/Runtime/MVP/View/SettingsPage/KeybindBindingsPage.cs"
     line: 221

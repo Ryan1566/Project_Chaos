@@ -10,9 +10,9 @@ description:
   en: >
       SettingsManager state and init: singleton setup, Applied/Pending snapshots, editing flag and dirty check for the settings page.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.434Z"
-fingerprint: e3c323738fad836796c9ec53e74318a84dff5000a9c6107a6b9dffb68650e3e8
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:54:47.489Z"
+fingerprint: 6c804dcdaede12356f9a005dd85f96139aabfd94cb970569c495aca8daebc13d
 source:
   - path: "Assets/Scripts/Runtime/GameBase/SettingsManager/SettingsManager.cs"
     line: 1

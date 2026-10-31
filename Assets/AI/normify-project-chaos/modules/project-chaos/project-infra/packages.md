@@ -10,8 +10,8 @@ description:
   en: >
       Unity package manifest and lock file. gittool's README warns Packages/ is gitignored, so versions drift between machines.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.447Z"
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:56:01.115Z"
 fingerprint: 258bc094c3c383d9113bcc9f62a300ef0b2ad7475b8241bfcdbb0ffaf561b97e
 source:
   - path: "Packages/manifest.json"

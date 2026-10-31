@@ -10,8 +10,8 @@ description:
   en: >
       00_Panels: 6 Panel_* sprites (Main, Main_Titled, Sub, Dialog, ListBody, TitleBar). 01_Buttons: 13 Button_* sprites (Lg and Md Normal/Hover/Pressed/Disabled, Lg Primary/Secondary/Danger, Round Normal/Hover) - 19 sprites total, all consumed as 9-slice.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.084Z"
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:56:26.866Z"
 fingerprint: eddf1af10e85fcbfc815d39e81e71d6f626272c80b56e4a57edd240cd5b6e63c
 source:
   - path: "Assets/Art/UI/00_Panels/Panel_Dialog.png"

@@ -10,9 +10,9 @@ description:
   en: >
       Panel prefabs under Assets/Resources/UIPanels, instantiated by UIManager from the PanelType name (MainMenuPanel, SettingPanel, SLPanel, plus WorldMapPanel added 2026-10-12, and the RecordCell sub-prefab). A PanelType without a matching prefab is reported by ValidatePanelPrefabs.
       
-revision: b6dae190152cdcce64be3587bb098f7af5b42563
-updated_at: "2026-10-17T09:35:47.637Z"
-fingerprint: 130603b27b982dc64483959c931a49fccf9d58698769d841852bc91fa0afd642
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:56:40.596Z"
+fingerprint: 70275525deb162c04d741be0de972332fdc8f96de513122119b65b8e9f94e675
 source:
   - path: "Assets/Resources/UIPanels/MainMenuPanel.prefab"
   - path: "Assets/Resources/UIPanels/SettingPanel.prefab"

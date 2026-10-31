@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "id": "project-chaos.project-infra",
-  "updated_at": "2026-10-06T11:58:42.533Z",
+  "updated_at": "2026-10-31T09:00:44.622Z",
   "mode": "groups",
   "max_columns": 4,
   "reading": {
-    "zh": "四簇：先包依赖与工程设置（基线），再第三方插件（Spine / DOTween / DLL），然后 Python 生成脚本与其产出的说明文档，最后仓库与 Agent 协作事项。跨簇箭头表示插件/脚本对资产的引用。",
-    "en": "Four clusters: packages+settings baseline, third-party plugins, the Python docs pipeline and its output manuals, then repo/agent ops. Cross-cluster arrows show plugin and script references."
+    "zh": "四簇：先包依赖与工程设置（基线），再第三方插件（Spine / DOTween / DLL），然后 Python 生成脚本与其产出的说明文档，最后仓库与 Agent 协作事项——Agent 配置、工作区、仓库根 Tools/ 的 DSH 工具链、Git 助手与仓库根生成产物。跨簇箭头表示插件/脚本对资产的引用。",
+    "en": "Four clusters: packages+settings baseline, third-party plugins (Spine / DOTween / DLL), the Python docs pipeline and its output manuals, then repo/agent ops - agent config, agent workspace, the repo-root Tools/ DSH toolchain, the git helper and generated repo-root artifacts. Cross-cluster arrows show plugin and script references."
   },
   "order": [
     "project-chaos.project-infra.packages",
@@ -19,6 +19,7 @@
     "project-chaos.project-infra.learn-manuals",
     "project-chaos.project-infra.agent-config",
     "project-chaos.project-infra.agent-workspace",
+    "project-chaos.project-infra.dsh-toolchain",
     "project-chaos.project-infra.git-helper",
     "project-chaos.project-infra.repo-root"
   ],
@@ -67,6 +68,7 @@
       "children": [
         "project-chaos.project-infra.agent-config",
         "project-chaos.project-infra.agent-workspace",
+        "project-chaos.project-infra.dsh-toolchain",
         "project-chaos.project-infra.git-helper",
         "project-chaos.project-infra.repo-root"
       ]

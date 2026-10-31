@@ -10,8 +10,8 @@ description:
   en: >
       Dialogue playback internals: typewriter coroutine, auto-skip coroutine, option button spawning/clearing, option selection and DialogueEvent dispatch.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.420Z"
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:56:54.869Z"
 fingerprint: 1fa134b12c96248ccdfb2d4f0793b0cdde93715c85edca41380eb735cccfe524
 source:
   - path: "Assets/Scripts/Runtime/GameBase/DialogueManager/DialogueManager.cs"

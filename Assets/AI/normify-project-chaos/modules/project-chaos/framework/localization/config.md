@@ -10,8 +10,8 @@ description:
   en: >
       LocalizationData ScriptableObject: key lookup, contains, add/remove entry and key enumeration for the localization table asset.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.424Z"
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:57:09.590Z"
 fingerprint: a43836ec9d7eccc09086bde991db83bfcaa9da7c3997ca5e93cad03b191ad019
 source:
   - path: "Assets/Scripts/Runtime/GameBase/LocalizationManager/LocalizationData.cs"

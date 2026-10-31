@@ -10,9 +10,9 @@ description:
   en: >
       Four per-panel localization sub configs under Sub_LD, split by UI panel to keep each file small.
       
-revision: b6dae190152cdcce64be3587bb098f7af5b42563
-updated_at: "2026-10-17T09:35:47.635Z"
-fingerprint: e683ffec42258e4d9b5c7dcbf893ae1a2776235114452bda7905bef5a908e243
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:56:27.359Z"
+fingerprint: b24550ae54e7da36d6e4186ed9f2b8ecc8308502a15b33af3a014afcd1e19c43
 source:
   - path: "Assets/Data/Localization/Sub_LD/MainMenuLocalizationConfig.asset"
   - path: "Assets/Data/Localization/Sub_LD/SettingLocalizationConfig.asset"

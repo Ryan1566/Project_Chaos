@@ -10,8 +10,8 @@ description:
   en: >
       SettingRow_Slider: integer slider row (e.g. mouse sensitivity) with range configuration and silent set.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.432Z"
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:57:20.399Z"
 fingerprint: 97b5468f9564d9e4abba7f47bebcb6d856109282ed6dee6368e686c65a124dec
 source:
   - path: "Assets/Scripts/Runtime/GameBase/SettingRows/SettingRow_Slider.cs"

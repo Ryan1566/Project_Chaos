@@ -11,8 +11,8 @@ description:
   en: >
       Tiny component carried by every room-chunk prefab: the fill and top Tile references. Lets the runtime assembler paint tiles without AssetDatabase and without duplicating tile assets into Resources.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.429Z"
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:57:20.393Z"
 fingerprint: 25d1f9572bba7e8279f02235a35535c2dbab358a1d0cdab130aac4b3251c536c
 source:
   - path: "Assets/Scripts/Runtime/GameBase/RunMap/RunMapChunkTiles.cs"

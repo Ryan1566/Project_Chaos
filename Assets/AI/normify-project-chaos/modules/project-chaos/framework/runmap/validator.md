@@ -11,8 +11,8 @@ description:
   en: >
       Connectivity and socket-matching validation: full-graph BFS, entry-to-boss path length, per-layer connectivity, layer-link counts and column alignment, boss as the only end, and connectivity after removing the boss door.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.430Z"
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:57:20.395Z"
 fingerprint: 52297c58032b3cb9cf3a62b84bbd62de1cf23565f6aaaad8c0d5478ac68a5de5
 source:
   - path: "Assets/Scripts/Runtime/GameBase/RunMap/RunMapValidator.cs"

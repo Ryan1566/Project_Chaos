@@ -11,8 +11,8 @@ description:
   en: >
       Pass E runtime implementation: instantiates room chunks from Resources, seals every unused L/R/U/D opening (idempotent band-fill) and applies deterministic terrain decoration (terrace / pit / pillars / steps). Replaced the editor-only assembler.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.428Z"
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:57:20.391Z"
 fingerprint: 3387622592e628fcbde9bf826b867a4c89e977f5270a22816c18a33547b2cd0e
 source:
   - path: "Assets/Scripts/Runtime/GameBase/RunMap/RunMapAssembler.cs"

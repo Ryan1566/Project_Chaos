@@ -10,8 +10,8 @@ description:
   en: >
       High-resolution map paintings under Assets/Art/PNG: Map_tianxia_zhongyuan.png (4096x3138, about 27.9 MB) — the meta world-map base image, used as the authoring tool's source image and referenced directly by WorldMapPanel.prefab; and east_asia_map_fantasy_equirect_4096x3072.png (4096x3072, about 7.9 MB). Both are uncompressed 4096-wide sources, not yet atlased or downscaled.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.130Z"
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:56:26.941Z"
 fingerprint: 4e5ef1c6580064387c38f40fd2a29b86962cefad2559cf57ff5700809dce3426
 source:
   - path: "Assets/Art/PNG/GameWorld_Map/Map_tianxia_zhongyuan.png"

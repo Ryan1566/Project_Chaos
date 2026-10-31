@@ -10,8 +10,8 @@ description:
   en: >
       Three themes under Assets/TileMap/Placeholder (Surface/Building/Underground), each with 7 Tile_*.asset plus matching 64x64 PNGs (PPU 64) - 42 files. This set has only fixed-sprite tiles and no RuleTile (unlike the Kenney set); editor-tools.runmap-placeholder generates it and final art should replace it under the same spec. Runtime skin view: assets.runmap-greybox.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.386Z"
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:56:40.578Z"
 fingerprint: 08fbf03342b90f7359147f98fbe1ee7d3bef934843e93fcdfc9577aabbc2b779
 source:
   - path: "Assets/TileMap/Placeholder/Building/Tile_Beam.asset"

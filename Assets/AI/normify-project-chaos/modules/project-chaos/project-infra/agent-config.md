@@ -2,19 +2,20 @@
 uid: f59c2d84
 id: project-chaos.project-infra.agent-config
 parent: project-chaos.project-infra
-name: {zh: "Agent 配置", en: "Agent Config"}
+name: {zh: "Agent 配置（Claude/Codex）", en: "Agent Config (Claude/Codex)"}
 description:
   zh: >
-      藏在 Assets 内的 Agent 工具配置：Claude Code 本地设置，白名单包含 env 命令与 Unity MCP 实例/执行类工具。
+      仓库内的 Agent 工具配置：Assets 内的 Claude Code 本地设置（白名单包含 env 命令与 Unity MCP 实例/执行类工具），以及仓库根目录的 Codex CLI 配置。
       
   en: >
-      Agent tooling config found inside Assets: a Claude Code local settings file whitelisting the env command and Unity MCP instance/execute tools.
+      Agent tooling config found in the repo: the Claude Code local settings file (inside Assets) whitelisting the env command and Unity MCP instance/execute tools, plus the Codex CLI config at the repo root.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.444Z"
-fingerprint: a452556c17a02358d4f5b8013c51512bbc470f8ca557b31c3e1f776f2612a668
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T09:03:54.712Z"
+fingerprint: f5bb28fc72ef435944581fbac02f3fa7dd140ec7c7b3ae8663c2607d1a72d7bf
 source:
   - path: "Assets/.claude/settings.local.json"
+  - path: ".codex/config.toml"
 apis:
   - protocol: file
     path: "Assets/.claude/settings.local.json"
@@ -24,5 +25,14 @@ apis:
           
       en: >
           Claude Code local permission allowlist: Bash(env) plus three Unity MCP tools.
+          
+  - protocol: file
+    path: ".codex/config.toml"
+    description:
+      zh: >
+          仓库根的 Codex CLI 配置（在同一工作副本里作业的 Codex agent 的模型/提供商设置）。
+          
+      en: >
+          Codex CLI config at the repo root (model/provider settings for the Codex agent working in the same checkout).
           
 ---

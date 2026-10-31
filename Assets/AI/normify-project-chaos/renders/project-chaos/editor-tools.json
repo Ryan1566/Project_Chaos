@@ -1,14 +1,19 @@
 {
   "schema_version": 1,
   "id": "project-chaos.editor-tools",
-  "updated_at": "2026-10-10T16:05:47.302Z",
+  "updated_at": "2026-10-31T09:01:08.398Z",
   "mode": "groups",
   "max_columns": 3,
+  "reading": {
+    "zh": "四簇，从左到右读：内容编辑（本地化合并、对话编辑器），工作流工具（Git、场景 UI 总览、世界地图编辑窗口），美术/图标/局内地图工具，最后是预制体与插件设置。",
+    "en": "Four clusters, read left to right: content editing (localization merge, dialogue editor), workflow tools (git, scene UI overview, world-map editor window), art/icon/run-map utilities, and finally prefab & plugin settings."
+  },
   "order": [
     "project-chaos.editor-tools.localization",
     "project-chaos.editor-tools.dialogue-editor",
     "project-chaos.editor-tools.git",
     "project-chaos.editor-tools.scene-ui-overview",
+    "project-chaos.editor-tools.worldmap-tool",
     "project-chaos.editor-tools.art-pipeline",
     "project-chaos.editor-tools.runmap-placeholder",
     "project-chaos.editor-tools.runmap-verify",
@@ -31,12 +36,13 @@
     {
       "id": "workflow-scene",
       "title": {
-        "zh": "工作流与场景",
-        "en": "Workflow and Scene"
+        "zh": "工作流、场景与世界地图工具",
+        "en": "Workflow, Scene & World Map"
       },
       "children": [
         "project-chaos.editor-tools.git",
-        "project-chaos.editor-tools.scene-ui-overview"
+        "project-chaos.editor-tools.scene-ui-overview",
+        "project-chaos.editor-tools.worldmap-tool"
       ]
     },
     {

@@ -11,8 +11,8 @@ description:
   en: >
       Idempotent DontDestroyOnLoad wrapper: a [SerializeField] persistKey (defaulting to the GameObject name) plus a static live registry — if an instance with the same key is already alive, the duplicate destroys itself and logs a warning. This is what keeps a second EnterScene load from creating a second UIRoot/Canvas/AudioListener.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:30:54.571Z"
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:56:54.869Z"
 fingerprint: 1fc68ee83e829397dfdcf394248e52c7e63acd1f2379a7553e237291e12640f8
 source:
   - path: "Assets/Scripts/Runtime/DontDestroy.cs"

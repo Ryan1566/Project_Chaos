@@ -10,8 +10,8 @@ description:
   en: >
       SettingRow_Selector: left/right selector row (e.g. window mode) configured from display texts or localization keys.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.432Z"
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:57:20.398Z"
 fingerprint: b8e91d28c0d242c15945e58c8198e62e34aba89f4a1fcd321a04300a52c4c5b6
 source:
   - path: "Assets/Scripts/Runtime/GameBase/SettingRows/SettingRow_Selector.cs"

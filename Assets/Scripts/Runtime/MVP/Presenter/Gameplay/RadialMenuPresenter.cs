@@ -41,7 +41,9 @@ namespace Chaos.MVP.Presenter.Gameplay
             _view.Render(new RadialMenuViewState { Primary = _primary, Secondary = _secondary,
                 IsSecondary = Model.Level == 2, SelectedPrimary = Model.Level == 2 ? Model.ParentIndex : Model.SelectedIndex,
                 SelectedSecondary = Model.Level == 2 ? Model.SelectedIndex : -1, PointerPixels = new Vector2(Model.PointerX, Model.PointerY),
-                Hint = (hint ?? "移动鼠标选择分类") + "\n左键确认 · 右键 / Esc 取消 · Backspace 返回分类" });
+                Hint = (hint ?? "移动鼠标选择分类") + (Model.Level == 2
+                    ? "\n左键确认 · 右键 / Esc 返回上一级"
+                    : "\n左键确认 · 右键 / Esc 关闭轮盘") });
         }
         RadialOptionViewState[] Map(System.Collections.Generic.IReadOnlyList<RadialMenuOption> options)
         {

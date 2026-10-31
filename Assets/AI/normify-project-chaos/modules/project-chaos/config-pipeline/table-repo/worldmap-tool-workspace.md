@@ -10,9 +10,9 @@ description:
   en: >
       Assets/Excel/Chaos_excel/_worldmap_tool/: draft and intermediate files of the world map authoring tool — WorldMapDraft.json (source image path, real pixel size, map id, points, faction areas) plus the five per-era part workbooks. Because the exporter only scans top-level files, nothing here is ever exported, which is also why the part tables may share a filename prefix.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:30:54.567Z"
-fingerprint: df38b1bbdef13c2adb4cf304158a2f718b6a56b8d062c55620842d7ffc06bda9
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:54:22.611Z"
+fingerprint: 1d2454c53b118ef8c413e676e4214d7933c227e86d07ab76b2226ccc832f0e09
 source:
   - path: "Assets/Excel/Chaos_excel/_worldmap_tool/WorldMapDraft.json"
 apis:

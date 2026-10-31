@@ -10,9 +10,9 @@ description:
   en: >
       SettingsData serializable model: versioned fields for graphics/audio/gameplay/keybind sections, plus CreateDefault, Clone, ContentEquals and per-section reset.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.433Z"
-fingerprint: c380d72e9760b2b52d75cc84c426bdec295eb57f76854059dc46349a37884cf3
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:54:47.486Z"
+fingerprint: 141a5a685946313829c8685dd0d4727de156c213eebb9ec5d28d63055bc2c203
 source:
   - path: "Assets/Scripts/Runtime/GameBase/SettingsManager/SettingsData.cs"
     line: 1

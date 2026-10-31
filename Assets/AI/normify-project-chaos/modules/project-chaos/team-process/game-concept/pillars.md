@@ -11,9 +11,9 @@ description:
   en: >
       Concept part 1: the one-line pitch, experience goals vs non-goals, target platform/users, the five-era setting, and the three nested core loops.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.466Z"
-fingerprint: ed531f387d52a91f4ecbaa4ab82a8535472098ea94d6261e1d9c0b4edc5d5f2a
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:58:40.815Z"
+fingerprint: 18bc59265ba2d1c0ad8afadb37f9fb231e844f2f2a93926753ef6d116c143338
 source:
   - path: "Assets/Chaos_Story/Story/01_企划/01_游戏概念案.md"
     line: 1

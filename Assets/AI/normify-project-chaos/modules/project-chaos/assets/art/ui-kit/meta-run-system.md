@@ -10,8 +10,8 @@ description:
   en: >
       08_Meta: 32 sprites (EraBadge 1-5, EraNode, FamilyNode/FamilySection, DepthCell, DispatchSlot, MarketRow/MarketOrderCard, Meta_ top bar and pills, Tag_ badges). 09_Run: 24 sprites (MapNode six kinds, DialogueBox and options, LootRow, PartyBar, SkillKey, Camp options, ConsumableBar, MinimapFrame, SceneProgress, Button_Pause). 10_System: 13 sprites (Loading bar fill/track/hourglass/tip bar, SaveSlot, KeybindChip/Conflict, SettingsRow, TitleSeal) - 69 sprites.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.079Z"
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:56:26.850Z"
 fingerprint: aad6ccda8de523bb36172a57599dfb92ec3185f6602aecf304f8c54d9085dda5
 source:
   - path: "Assets/Art/UI/08_Meta/DepthCell_Active.png"

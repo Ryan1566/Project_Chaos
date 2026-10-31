@@ -10,8 +10,8 @@ description:
   en: >
       Self-check for generated manuals: package integrity, the 84-character code-line limit, and characters missing from the two TMP fonts.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.460Z"
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:56:15.074Z"
 fingerprint: c616b95671386e8f0efdac74ef6dd5f2df74cb021c2ead9a4b4d4b5ea71f2dc1
 source:
   - path: "Assets/DocsSrc/check_docx.py"

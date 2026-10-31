@@ -10,8 +10,8 @@ description:
   en: >
       EmojiOne sprite asset: the TMP sprite index plus its texture and metadata, enabling inline <sprite> tags.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.392Z"
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:56:40.591Z"
 fingerprint: 0b9a0a1200fbcb5f20b2527996f58eb6ba4367722359a0130c59c190c261abc4
 source:
   - path: "Assets/TextMesh Pro/Resources/Sprite Assets/EmojiOne.asset"

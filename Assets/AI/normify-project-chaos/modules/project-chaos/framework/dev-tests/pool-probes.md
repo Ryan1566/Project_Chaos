@@ -10,8 +10,8 @@ description:
   en: >
       Pool dev probes: left click takes a "Cube" from the pool via ResManager; the delete probe returns itself to the pool after 1s.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.419Z"
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:56:54.867Z"
 fingerprint: a3fdd65723c921676b693481ab503c84df0118eeaafd70eedf0da9ffb78fc8a8
 source:
   - path: "Assets/Scripts/Runtime/GameTest/ObjPoolTest/ObjPoolTest.cs"

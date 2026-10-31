@@ -10,9 +10,9 @@ description:
   en: >
       Keybind row listening state: shows waiting prompts while rebinding, plus clickable/interactable overrides and button wiring.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.432Z"
-fingerprint: 2186e49773a62815771d127f9d2318a12e8d0b72a5564611164ee53443310610
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:54:34.944Z"
+fingerprint: e14b099292185ca6a1edce85d01cf94359b84e25e9737771e3c0736139f32154
 source:
   - path: "Assets/Scripts/Runtime/GameBase/SettingRows/SettingRow_Keybind.cs"
     line: 151

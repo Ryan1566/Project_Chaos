@@ -11,8 +11,8 @@ description:
   en: >
       The Python script that generates the map config tables, plus the seven xlsx drafts under xlsx/ (MapPreset / PresetLayer / MapBiome / MapChunk / ChunkSocket / ChunkSlot / MapLoading). These are drafts — the authoritative source tables live in Assets/Excel/Chaos_excel/ (see config-pipeline.table-repo).
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.445Z"
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:56:01.107Z"
 fingerprint: 8d0ccedecf3ccbe371a518edf78c4d8e644a69b573e1ba4ced2a5b04426be88d
 source:
   - path: "Assets/AI/runmap-art/gen_map_configs.py"

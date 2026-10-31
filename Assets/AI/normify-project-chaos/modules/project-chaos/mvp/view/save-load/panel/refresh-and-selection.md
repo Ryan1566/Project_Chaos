@@ -11,9 +11,9 @@ description:
   en: >
       Refresh and selection: reads the save-slot info once for the whole list (not once per cell), pushes it into each RecordCell, highlights the selected slot, and greys the delete button when the selected slot is empty. OnEnter lands here and nothing else. Also handles cell click, delete and return.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.441Z"
-fingerprint: 126d11b07ddfa369cdd0aca467c1b3959945aa29c94b3f0a27c6ab81a4a92747
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:54:47.492Z"
+fingerprint: cac4aab04c917cfe98e29bcdc0566e6d3adaeb58e9b8923482f66acdb1acd514
 source:
   - path: "Assets/Scripts/Runtime/MVP/View/SLPanel.cs"
     line: 273

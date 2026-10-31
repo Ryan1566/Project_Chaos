@@ -11,8 +11,8 @@ description:
   en: >
       Planner for the map: main path across layers, branches hanging off vertical openings, grid placement with conflict checks, weighted chunk picking by required sockets, and slot world-coordinate emission.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.430Z"
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:57:20.394Z"
 fingerprint: 0b1061f725ad3985cc873c4609578911a3fdd5fe943a4f80555d7b66b9aeeb49
 source:
   - path: "Assets/Scripts/Runtime/GameBase/RunMap/RunMapPlanner.cs"

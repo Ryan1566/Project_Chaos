@@ -10,8 +10,8 @@ description:
   en: >
       LocalizedTextFont subscription side: hooks the language-changed event, exposes Subscribed and an event counter for self-checking.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.426Z"
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:57:09.593Z"
 fingerprint: ba3dfe29dd1421029b0c897d584be144e708fcb47d10d36792b5b43a00c5b4cf
 source:
   - path: "Assets/Scripts/Runtime/GameBase/LocalizationManager/LocalizedTextFont.cs"

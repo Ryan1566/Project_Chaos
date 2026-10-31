@@ -10,9 +10,9 @@ description:
   en: >
       English fonts: AnticSlab-Regular SDF (primary) and STFANGSO SDF, with the raw TTF source.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.240Z"
-fingerprint: 9b22b04287c8bedf5bce5faeaf66cfd63af2bca772d1f09ab6be8d49b1969faf
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:56:27.188Z"
+fingerprint: 1a1f6b0cdb53b3eca672e75d720d0929b5fb7ee4ff2baea2dcd4861aaf30bc0b
 source:
   - path: "Assets/Fonts/en/AnticSlab-Regular SDF.asset"
   - path: "Assets/Fonts/en/AnticSlab-Regular.ttf"

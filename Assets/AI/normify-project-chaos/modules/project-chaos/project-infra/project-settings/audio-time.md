@@ -10,9 +10,9 @@ description:
   en: >
       Runtime timing and resource budgets: audio, time step, memory and NavMesh area definitions.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.456Z"
-fingerprint: 48d9f0c6405fec6be4135b4fce7798f35e196d9ec59cac169e11d1b82499abf8
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:56:15.063Z"
+fingerprint: 9390cbaba3baa0ca640793d4b02f1ffb4b71e0780fdd4c2bb2f45ed3c6711f60
 source:
   - path: "ProjectSettings/AudioManager.asset"
   - path: "ProjectSettings/TimeManager.asset"

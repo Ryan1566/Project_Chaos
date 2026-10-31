@@ -10,9 +10,9 @@ description:
   en: >
       InputManager core: Player map constants, Init loading the InputActionAsset, device-family conversion and the IsRebinding flag.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.423Z"
-fingerprint: efe37e8935ef64f4a05c1a643ffb319ec12c7e252ac2c96d7411d8937425f466
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:54:22.616Z"
+fingerprint: 91856414ec49bb874cc0c264ab798d341f2263a768ae022c2cef522278480ccd
 source:
   - path: "Assets/Scripts/Runtime/GameBase/InputManager/InputManager.cs"
     line: 1

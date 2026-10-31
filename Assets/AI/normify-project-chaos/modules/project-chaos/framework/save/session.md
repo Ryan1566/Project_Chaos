@@ -10,9 +10,9 @@ description:
   en: >
       GameSession: cross-scene singleton carrying the selected slot, loaded payload, target scene name and HasSession flag.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.431Z"
-fingerprint: 6baf7038d2c4f1dbfd69c0216b575c31510d4f5b9ca559d5a6b6502d963bbb07
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:54:34.943Z"
+fingerprint: 40c0a8ea33bf92c4882adb725c928071f589706cd8f8b98fb62e1b7f53517060
 source:
   - path: "Assets/Scripts/Runtime/GameBase/SaveManager/GameSession.cs"
     line: 1

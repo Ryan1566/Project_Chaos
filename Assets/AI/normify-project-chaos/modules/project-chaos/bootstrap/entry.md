@@ -11,9 +11,9 @@ description:
   en: >
       Entry initialises UIManager → InputManager → SettingsManager once (static _booted) and routes the first screen. Re-entering EnterScene from a run must NOT re-initialise the managers; because Entry lives under the persistent Managers root that gets destroyed by the DontDestroy guard, the re-entry routing hangs off a static SceneManager.sceneLoaded callback (idempotent, with Start as fallback).
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:30:54.570Z"
-fingerprint: 3d68c80f982a946dc44dd088b3541d384d93004c6d0a7ccb8df372f5936bcea2
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:57:59.777Z"
+fingerprint: a8949980ba7392b442a4942cdb2f8fcc8098b31714c9dd9037da494c88085acb
 source:
   - path: "Assets/Scripts/Runtime/Entry.cs"
     line: 5

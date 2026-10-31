@@ -11,9 +11,9 @@ description:
   en: >
       Config-table loader for the run-map catalog: joins MapBiome + MapChunk + ChunkSocket + ChunkSlot + MapPreset + PresetLayer into the same RunMapCatalog model the planner consumes, so switching from the hard-coded greybox catalog to tables changes no algorithm.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.429Z"
-fingerprint: 2dd4f42730ab6f644753c4332a62a31ff31926f60539867d2f9b835906e16907
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:54:34.941Z"
+fingerprint: 1d8d0d2ad9b4132356f88a727886dfa302825924691cfbb3b70fdb71c5ab223e
 source:
   - path: "Assets/Scripts/Runtime/GameBase/RunMap/RunMapConfigLoader.cs"
     line: 1

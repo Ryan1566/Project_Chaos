@@ -10,8 +10,8 @@ description:
   en: >
       Input dev probe: enables InputManager polling, subscribes to GetKeyDown and logs which key was pressed (Escape/W).
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.419Z"
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:56:54.865Z"
 fingerprint: b0349d3689646a05d0d98c2a1e2399e8e91e43315763564b862724ad00bbbf7e
 source:
   - path: "Assets/Scripts/Runtime/GameTest/InputTest/InputTest.cs"

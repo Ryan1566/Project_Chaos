@@ -11,9 +11,9 @@ description:
   en: >
       Scenes In Build: 0 = EnterScene (boot/meta), 1 = WorldScene (run), 2 = LoadingScene. TestScene was removed from the list on 2026-10-12; the file is untouched. Changing this list only affects memory — it must be persisted with File/Save Project.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:30:54.570Z"
-fingerprint: da321487d55679513ca1ef611f607c8cdb919e1bae7c0d5283e6325055f605b1
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:57:59.776Z"
+fingerprint: af22c5fd740d926ddec738616b6daf4d9dfe74de3b24c959c291529f08ea88a5
 source:
   - path: "ProjectSettings/EditorBuildSettings.asset"
     line: 1

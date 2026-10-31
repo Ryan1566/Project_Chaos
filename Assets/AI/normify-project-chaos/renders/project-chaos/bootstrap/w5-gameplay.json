@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.bootstrap.w5-gameplay",
+  "updated_at": "2026-10-31T09:01:50.040Z",
+  "mode": "groups",
+  "max_columns": 3,
+  "reading": {
+    "zh": "这层按一局的时间线读：run-flow 受理派遣并开启局内会话；encounter 在其中推进战斗；interaction 与 village 是场景侧玩法（局内地图的交互寻路、实体村庄的生产循环）；meta-events 与 team-supply 把奖励、市场交易与队伍状态结算回存档。team-supply 是计划态占位，等对应代码抽出后再落地。",
+    "en": "Read this layer as a run's timeline. run-flow accepts the dispatch and opens the run session; encounter runs the fighting inside it; interaction and village are the scene-side play (interacting/pathfinding in the run map, and the physical village production loop); meta-events and team-supply close the loop by settling rewards, market trades and team state back into saves. team-supply is a planned placeholder until that code is extracted."
+  },
+  "order": [
+    "project-chaos.bootstrap.w5-gameplay.run-flow",
+    "project-chaos.bootstrap.w5-gameplay.encounter",
+    "project-chaos.bootstrap.w5-gameplay.interaction",
+    "project-chaos.bootstrap.w5-gameplay.village",
+    "project-chaos.bootstrap.w5-gameplay.meta-events",
+    "project-chaos.bootstrap.w5-gameplay.team-supply"
+  ],
+  "groups": [
+    {
+      "id": "run-core",
+      "title": {
+        "zh": "局内主干：派遣与遭遇",
+        "en": "Run Core: Dispatch & Encounter"
+      },
+      "children": [
+        "project-chaos.bootstrap.w5-gameplay.run-flow",
+        "project-chaos.bootstrap.w5-gameplay.encounter"
+      ]
+    },
+    {
+      "id": "world-play",
+      "title": {
+        "zh": "场景内玩法：交互与村庄",
+        "en": "In-World Play: Interaction & Village"
+      },
+      "children": [
+        "project-chaos.bootstrap.w5-gameplay.interaction",
+        "project-chaos.bootstrap.w5-gameplay.village"
+      ]
+    },
+    {
+      "id": "meta-and-supply",
+      "title": {
+        "zh": "局外经济与队伍补给",
+        "en": "Meta Economy & Team Supply"
+      },
+      "children": [
+        "project-chaos.bootstrap.w5-gameplay.meta-events",
+        "project-chaos.bootstrap.w5-gameplay.team-supply"
+      ]
+    }
+  ]
+}

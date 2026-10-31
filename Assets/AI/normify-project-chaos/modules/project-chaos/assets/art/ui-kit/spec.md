@@ -10,8 +10,8 @@ description:
   en: >
       Delivery contract recorded in Assets/Art/UI/README.md: the <Category>_<Variant>.png naming rule (no sizes in file names), the eleven NN_<Category> group folders, the per-sprite import settings table (Full Rect plus per-sprite borders), the Sliced/Simple decision rule, the four re-skinned prefabs, and the svg2png.py re-export flow from the SVG source.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.089Z"
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:56:26.879Z"
 fingerprint: 3b71247cf7f34691c9b4fd6a8c081b7c29631844d72cc7909a77546b93c65c5c
 source:
   - path: "Assets/Art/UI/README.md"

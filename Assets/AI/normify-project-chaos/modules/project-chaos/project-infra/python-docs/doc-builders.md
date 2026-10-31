@@ -10,8 +10,8 @@ description:
   en: >
       Top-level doc scripts: two generators (localization, MVP layers) and one in-place patcher for the Excel manual. All are linear scripts with no functions.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.461Z"
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:56:15.076Z"
 fingerprint: aa971e9d6f0dc313ee3f27e30efbaf16111a3f03b0b1fec25a91591154a3cdbd
 source:
   - path: "Assets/DocsSrc/gen_localization_doc.py"

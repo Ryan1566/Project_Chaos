@@ -10,8 +10,8 @@ description:
   en: >
       Three layer themes under Assets/TileMap/Kenney (Surface/Building/Underground), each with 7 Tile_*.asset (Fill, Top, TopL, TopR, Rounded, Beam, Deco plus matching 70x70 PNGs, PPU 70) and one RuleTile_*.asset - 45 files. A RuleTile auto-tiles by 8-neighbour rules (5 tiling rules with output sprite and collider) while Tile_*.asset is a single fixed sprite. Runtime skin view: assets.runmap-kenney.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.380Z"
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:56:40.562Z"
 fingerprint: be458e41ae472963dccacad2704af2f8cdeb12de3ea62a44af20f24c09e7fb20
 source:
   - path: "Assets/TileMap/Kenney/Building/RuleTile_Building.asset"

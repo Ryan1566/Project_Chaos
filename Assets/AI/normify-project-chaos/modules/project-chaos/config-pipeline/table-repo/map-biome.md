@@ -11,9 +11,9 @@ description:
   en: >
       MapBiome_地图主题表.xlsx -> MapBiomeConfig: Id / themeKey (art-tile theme key, must match the TileMap directory name) / nameCN / layer (1 underground, 2 surface, 3 surface building) / retryMax (whole-map regeneration limit) / enable.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.407Z"
-fingerprint: 25cf6584d10aae8a8b80fe8222ef9984888351a69e268fbd8372a583f008586d
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:54:22.607Z"
+fingerprint: 210ee6cc2f146bdb72b63c46d28a0d38258987ec2495f231428044d7195f1c6e
 source:
   - path: "Assets/Excel/Chaos_excel/MapBiome_地图主题表.xlsx"
 apis:

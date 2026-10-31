@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "id": "2026-10-31-architecture-tree-sync",
+  "title": {
+    "en": "Architecture tree re-sync: fingerprint refresh, w5-gameplay split, missing modules",
+    "zh": "架构树重新对齐：指纹刷新 + w5-gameplay 拆分 + 补建缺失模块"
+  },
+  "status": "verified",
+  "intent": {
+    "en": "The module tree lagged behind the code: 91 fingerprint drifts, several new files with no module (Codex agent config, setting-panel doc generator, repo-root csproj/.vs artifacts), and bootstrap.w5-gameplay was still one flat leaf carrying 33 source files and 7 rpcs. This change re-syncs the tree and splits that node so the gameplay layer is drillable.",
+    "zh": "模块树落后于代码：91 处指纹漂移；多个新文件无归属模块（Codex 的 agent 配置、设置面板文档生成脚本、仓库根 csproj/.vs 产物）；bootstrap.w5-gameplay 仍是挂了 33 个源文件和 7 个 rpc 的扁平叶子。本次变更把树重新对齐代码，并拆分该节点，让玩法层可下钻。"
+  },
+  "modules": {
+    "api_add": [
+      {
+        "key": "rpc:RunEncounter.EnterPreparedScene",
+        "module": "project-chaos.bootstrap.w5-gameplay.encounter"
+      },
+      {
+        "key": "rpc:RunEncounter.Tick",
+        "module": "project-chaos.bootstrap.w5-gameplay.encounter"
+      },
+      {
+        "key": "rpc:RunEncounter.ApplyTeamDamage",
+        "module": "project-chaos.bootstrap.w5-gameplay.encounter"
+      },
+      {
+        "key": "rpc:DispatchService.Dispatch",
+        "module": "project-chaos.bootstrap.w5-gameplay.run-flow"
+      },
+      {
+        "key": "rpc:RunSceneFlow.EnterRun",
+        "module": "project-chaos.bootstrap.w5-gameplay.run-flow"
+      },
+      {
+        "key": "rpc:RunSceneFlow.Settle",
+        "module": "project-chaos.bootstrap.w5-gameplay.run-flow"
+      },
+      {
+        "key": "rpc:RunSceneFlow.Retreat",
+        "module": "project-chaos.bootstrap.w5-gameplay.run-flow"
+      },
+      {
+        "key": "rpc:Chaos.Gameplay.Interaction.RunInteractionService.TryExecute",
+        "module": "project-chaos.bootstrap.w5-gameplay.interaction"
+      },
+      {
+        "key": "rpc:RunMap.RunMapNavigator.MoveTo",
+        "module": "project-chaos.bootstrap.w5-gameplay.interaction"
+      },
+      {
+        "key": "rpc:RunMap.RunMapPathfinder.FindPath",
+        "module": "project-chaos.bootstrap.w5-gameplay.interaction"
+      },
+      {
+        "key": "rpc:VillageSceneFlow.EnterFromSave",
+        "module": "project-chaos.bootstrap.w5-gameplay.village"
+      },
+      {
+        "key": "rpc:VillageService.Execute",
+        "module": "project-chaos.bootstrap.w5-gameplay.village"
+      },
+      {
+        "key": "rpc:VillageService.TickProduction",
+        "module": "project-chaos.bootstrap.w5-gameplay.village"
+      },
+      {
+        "key": "rpc:MetaProgressService.SaveProgress",
+        "module": "project-chaos.bootstrap.w5-gameplay.meta-events"
+      },
+      {
+        "key": "rpc:EventService.ChooseOption",
+        "module": "project-chaos.bootstrap.w5-gameplay.meta-events"
+      },
+      {
+        "key": "rpc:MarketService.Trade",
+        "module": "project-chaos.bootstrap.w5-gameplay.meta-events"
+      },
+      {
+        "key": "file:.codex/config.toml",
+        "module": "project-chaos.project-infra.agent-config"
+      },
+      {
+        "key": "rpc:gen_setting_panel_doc.main",
+        "module": "project-chaos.project-infra.python-docs.setting-panel-doc"
+      },
+      {
+        "key": "rpc:gen_setting_panel_doc.build_document",
+        "module": "project-chaos.project-infra.python-docs.setting-panel-doc"
+      },
+      {
+        "key": "file:Assembly-CSharp.csproj",
+        "module": "project-chaos.project-infra.repo-root"
+      },
+      {
+        "key": "file:.vs/Assembly-CSharp.csproj.dtbcache.json",
+        "module": "project-chaos.project-infra.repo-root"
+      }
+    ],
+    "create": [
+      "project-chaos.bootstrap.w5-gameplay.run-flow",
+      "project-chaos.bootstrap.w5-gameplay.encounter",
+      "project-chaos.bootstrap.w5-gameplay.interaction",
+      "project-chaos.bootstrap.w5-gameplay.village",
+      "project-chaos.bootstrap.w5-gameplay.meta-events",
+      "project-chaos.bootstrap.w5-gameplay.team-supply",
+      "project-chaos.project-infra.python-docs.setting-panel-doc"
+    ],
+    "modify": [
+      "project-chaos.bootstrap",
+      "project-chaos.bootstrap.w5-gameplay",
+      "project-chaos.project-infra.agent-config",
+      "project-chaos.project-infra.repo-root",
+      "project-chaos.project-infra.python-docs",
+      "project-chaos.config-pipeline.table-repo",
+      "project-chaos.config-pipeline.generated-json",
+      "project-chaos.config-pipeline.generated-models",
+      "project-chaos.editor-tools"
+    ]
+  },
+  "acceptance": [
+    "normify_sync 的 affected/to_review/drift 列表清空，或残留项都在本变更范围内被显式刷新",
+    "normify_validate + normify_build 均为 0 error（warning 允许存在但不允许新增结构错误）",
+    "w5-gameplay 拆为可下钻的 5 个子模块，容器上的 7 个 rpc 均已下沉到对应叶子",
+    "新增模块（agent-config 的 .codex/config.toml、setting-panel-doc、repo-root 的 csproj/.vs 产物）source 落地且指纹由 normify_module_refresh 计算",
+    "受影响的 layout（editor-tools / table-repo / generated-json / generated-models / bootstrap / w5-gameplay / python-docs）order 覆盖全部子模块",
+    "normify_render 生成 normify.html 且统计与 receipt 一致"
+  ],
+  "note": "91 处 fingerprint-drift 用 normify_module_refresh 批量刷新；bootstrap.w5-gameplay 晋升容器并拆出 run-flow / encounter / interaction / village / meta-events 五个 active 叶子（7 个 rpc 全部下沉），team-supply 以 planned + fingerprint=pending 保留为待抽取占位；新增 project-infra.python-docs.setting-panel-doc；agent-config 并入 .codex/config.toml、repo-root 补 csproj/.vs 产物 API；七层 layout 补齐 order 与分组。注：agent-config 的写入失败是 Unity 的 .meta 重导入瞬时占用，已单独重试成功。",
+  "revision": {
+    "before": null,
+    "after": "7230b3db925288f8a01b1f2255de1e42f792f0cd"
+  },
+  "created_at": "2026-10-31T09:03:02.391Z",
+  "updated_at": "2026-10-31T09:04:05.100Z",
+  "closed_at": "2026-10-31T09:04:05.100Z"
+}

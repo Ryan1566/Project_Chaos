@@ -11,9 +11,9 @@ description:
   en: >
       Main menu panel: binds StartBtn/UpdateBtn/SettingBtn/QuitBtn in Awake, then pushes SLPanel by PanelType when the player starts a game and SettingPanel when the player opens settings. Update announcement and Quit only log / call Application.Quit today.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.439Z"
-fingerprint: 5903c3d0fb3041b9931310f7a283bc591ab4121a00dd03224f6881583460d768
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:54:47.490Z"
+fingerprint: e0b481d5ae63291d0f2a159384394500ae88aa817333375bf4a93e6070d15580
 source:
   - path: "Assets/Scripts/Runtime/MVP/View/MainMenuPanel.cs"
     line: 8

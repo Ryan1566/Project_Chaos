@@ -10,8 +10,8 @@ description:
   en: >
       WorldMapPoint and WorldFactionArea are the runtime views returned by the service. A faction may own several areas (same factionId, different regionId) — that is how enclaves are represented. Contains(normalized) does the ray-casting test with on-edge counting as inside; it is deliberately implemented here as well as in the editor tool because the runtime assembly cannot reference the editor one (both sides say to change the semantics together).
       
-revision: a7c3b8fe6345669cb33b508b5355f6a13e4cf0af
-updated_at: "2026-10-14T13:18:15.975Z"
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:57:59.774Z"
 fingerprint: 228b076c0e3d632862ad2a0330e24eb79b93f3156f0d3f02f127506abb2ff8d2
 source:
   - path: "Assets/Scripts/Runtime/GameBase/WorldMap/WorldMapPoint.cs"

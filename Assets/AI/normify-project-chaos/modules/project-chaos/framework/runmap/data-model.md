@@ -11,9 +11,9 @@ description:
   en: >
       Enums, chunk/preset definitions, MapLayout room graph and the xorshift RNG plus FNV-1a seed derivation (SceneSeed = FNV1a(RunSeed, sceneIndex)).
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.429Z"
-fingerprint: a653d591cde2c69191b665e7df1ef20b847c74988ab5d0622ce843b1fc79e873
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:54:34.942Z"
+fingerprint: e0d4216e018317832154b447c23eb6c5793ba9fc735d9590332c448e9e65aadd
 source:
   - path: "Assets/Scripts/Runtime/GameBase/RunMap/RunMapData.cs"
     line: 1

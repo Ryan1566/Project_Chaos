@@ -9,20 +9,20 @@
         "repository": "https://github.com/Ryan1566/Project_Chaos.git"
       }
     ],
-    "compiled_at": "2026-10-17T09:59:34.359Z",
+    "compiled_at": "2026-10-31T09:04:13.505Z",
     "stats": {
       "tree_count": 1,
-      "module_count": 428,
-      "leaf_count": 343,
-      "api_count": 931,
-      "dep_count": 216,
+      "module_count": 437,
+      "leaf_count": 351,
+      "api_count": 960,
+      "dep_count": 227,
       "cross_tree_dep_count": 0,
       "max_depth": 7,
-      "layout_count": 85,
+      "layout_count": 86,
       "planned_count": 0,
       "deprecated_count": 0,
       "policy_rule_count": 5,
-      "change_count": 6,
+      "change_count": 7,
       "open_change_count": 0
     }
   },
@@ -52,9 +52,9 @@
       "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "repository": "https://github.com/Ryan1566/Project_Chaos.git",
       "aggregate": {
-        "descendant_count": 427,
+        "descendant_count": 436,
         "own_api_count": 0,
-        "inherited_api_count": 931,
+        "inherited_api_count": 960,
         "dep_out": 0,
         "dep_in": 0
       }
@@ -183,8 +183,8 @@
           "path": "Assets/Art/FBX/Citizen_001/citizen_001_Material.mat"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.062Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:15.079Z",
       "fingerprint": "4d774c87cffc48d117968bcb463385517a086898270285590c4c61801ed976c2",
       "apis": [
         {
@@ -303,8 +303,8 @@
           "path": "Assets/Art/icon/IconAtlas_Input.spriteatlasv2"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.062Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:15.080Z",
       "fingerprint": "6b4b6999be57437df9f68826ffbc82e6be41c884e6733b29480a0073cbbf13df",
       "apis": [
         {
@@ -350,8 +350,8 @@
           "path": "Assets/Art/icon/keyboard&mouse/mouse_left.png"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.063Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:15.082Z",
       "fingerprint": "391b4ab95fedfa32cef143e7ab01491688e3ec46d7f4459e979d2f890d640f49",
       "apis": [
         {
@@ -415,8 +415,8 @@
           "path": "Assets/Art/icon/ps/controller_playstation4.png"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.063Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:15.085Z",
       "fingerprint": "230d750d9de9d2aae8d5b8fcc8a5a4dc00a6c717123cc263078e426f22fdd558",
       "apis": [
         {
@@ -480,8 +480,8 @@
           "path": "Assets/Art/icon/xbox/controller_xboxone.png"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.064Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:15.086Z",
       "fingerprint": "a91359517cfd0c7e5498f5006a39e74eafda7ec0c28a6bdd1c04b4afc479e205",
       "apis": [
         {
@@ -545,8 +545,8 @@
           "path": "Assets/Art/PNG/Grass_007map001.png"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.064Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:15.088Z",
       "fingerprint": "038cc819422a60c952a978240b869f2e2c2e1f57747af1be3b20497d94db37c4",
       "apis": [
         {
@@ -713,8 +713,8 @@
           "path": "Assets/Art/UI/03_Sliders_Bars/Slider_Track.png"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.068Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:26.823Z",
       "fingerprint": "2f953c757263fff5ed61d1e437c4a8db00e21401035f71413aeebce46b2d3591",
       "apis": [
         {
@@ -976,8 +976,8 @@
           "path": "Assets/Art/UI/10_System/TitleSeal.png"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.079Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:26.850Z",
       "fingerprint": "aad6ccda8de523bb36172a57599dfb92ec3185f6602aecf304f8c54d9085dda5",
       "apis": [
         {
@@ -1086,8 +1086,8 @@
           "path": "Assets/Art/UI/07_Ornaments/Ornament_Seal.png"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.082Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:26.858Z",
       "fingerprint": "b91ba49a443d5887dbba13a15e929ad4bd8ade2563246d9cc07d6c8a8c058c3c",
       "apis": [
         {
@@ -1190,8 +1190,8 @@
           "path": "Assets/Art/UI/01_Buttons/Button_Round_Normal.png"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.084Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:26.866Z",
       "fingerprint": "eddf1af10e85fcbfc815d39e81e71d6f626272c80b56e4a57edd240cd5b6e63c",
       "apis": [
         {
@@ -1330,8 +1330,8 @@
           "path": "Assets/Art/UI/05_Cards/PortraitFrame_Square.png"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.089Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:26.878Z",
       "fingerprint": "2baf04cf6046fc8613e0d3087886a995561b20cdbfd8b47367dd225fd2448705",
       "apis": [
         {
@@ -1389,8 +1389,8 @@
           "path": "Assets/Art/UI/README.md"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.089Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:26.879Z",
       "fingerprint": "3b71247cf7f34691c9b4fd6a8c081b7c29631844d72cc7909a77546b93c65c5c",
       "apis": [
         {
@@ -1433,8 +1433,8 @@
           "path": "Assets/Art/PNG/east_asia_map_fantasy_equirect_4096x3072.png"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.130Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:26.941Z",
       "fingerprint": "4e5ef1c6580064387c38f40fd2a29b86962cefad2559cf57ff5700809dce3426",
       "apis": [
         {
@@ -1513,8 +1513,8 @@
           "path": "Assets/Resources/Audio/Sound/牛叫.mp3"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.134Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:26.942Z",
       "fingerprint": "d72a1b37329e72fc689be8cc860e8568221a0fd5727ddfd635e4a5a9695a5ec8",
       "apis": [
         {
@@ -1560,8 +1560,8 @@
           "path": "Assets/Resources/Audio/TestMusic/With love from Vertex Studio (41).mp3"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.143Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:26.955Z",
       "fingerprint": "92eec35ad90b79de82924620d12147a8168f47977a70eaa81f78e60aa5fa6be5",
       "apis": [
         {
@@ -1659,9 +1659,9 @@
           "path": "Assets/Fonts/cn/XiangcuiDengcusong.ttf"
         }
       ],
-      "revision": "a7c3b8fe6345669cb33b508b5355f6a13e4cf0af",
-      "updated_at": "2026-10-14T13:18:13.095Z",
-      "fingerprint": "5df44f323e18a25e7bc891a3d712a65329d2448a83a34efea15c74544218a3af",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:27.179Z",
+      "fingerprint": "58301ec63206a4f10bb41f5b08d840996f2d4d17105a3bac19daa86643d652d5",
       "apis": [
         {
           "protocol": "file",
@@ -1746,9 +1746,9 @@
           "path": "Assets/Fonts/en/STFANGSO SDF.asset"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.240Z",
-      "fingerprint": "9b22b04287c8bedf5bce5faeaf66cfd63af2bca772d1f09ab6be8d49b1969faf",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:27.188Z",
+      "fingerprint": "1a1f6b0cdb53b3eca672e75d720d0929b5fb7ee4ff2baea2dcd4861aaf30bc0b",
       "apis": [
         {
           "protocol": "file",
@@ -1814,9 +1814,9 @@
           "path": "Assets/Fonts/jp/MojiwYoiMincho-Standard.ttf"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.287Z",
-      "fingerprint": "f29c1d96516be89a85ec6bfa45c75fe8058ae6522996243129358a9ea53b5ac1",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:27.269Z",
+      "fingerprint": "999f8a5bff960492ad498098f01b4d3d063835fd9b12f03d7777964e34737e66",
       "apis": [
         {
           "protocol": "file",
@@ -1885,8 +1885,8 @@
           "path": "Assets/Fonts/kr/Hangeuljaemin4-Regular.ttf"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.350Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:27.354Z",
       "fingerprint": "3cd02a455d58351f125f58bbc8afc0a69cc28e0d0645455e111e5a1fa042a5df",
       "apis": [
         {
@@ -1938,9 +1938,9 @@
           "path": "Assets/Resources/Data/Input/KeyIconMap.asset"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.351Z",
-      "fingerprint": "5977e8248f196b262cf65456b6970302d0cab9adf8e12148e0c8e2f1772a97fa",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:27.356Z",
+      "fingerprint": "4058011ee89889c3674f3f5170e922125083795a45e5b38f95dc5a9034b21b01",
       "apis": [
         {
           "protocol": "file",
@@ -2034,9 +2034,9 @@
           "path": "Assets/Data/Localization/LanguageFontMap.asset"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.351Z",
-      "fingerprint": "a48b7ff9dc21fa14558a028006cc173a04322a603df58656916052aabd5ec36e",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:27.357Z",
+      "fingerprint": "e02bee6c932388e13b30f42821a000b92c8837eea58e4159e29520dfa1c70129",
       "apis": [
         {
           "protocol": "file",
@@ -2117,9 +2117,9 @@
           "path": "Assets/Data/Localization/Sub_LD/RecordLocalizationConfig.asset"
         }
       ],
-      "revision": "b6dae190152cdcce64be3587bb098f7af5b42563",
-      "updated_at": "2026-10-17T09:35:47.635Z",
-      "fingerprint": "e683ffec42258e4d9b5c7dcbf893ae1a2776235114452bda7905bef5a908e243",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:27.359Z",
+      "fingerprint": "b24550ae54e7da36d6e4186ed9f2b8ecc8308502a15b33af3a014afcd1e19c43",
       "apis": [
         {
           "protocol": "file",
@@ -2215,8 +2215,8 @@
           "path": "Assets/Resources/DOTweenSettings.asset"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.352Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:27.359Z",
       "fingerprint": "65df8bf060848ea58e831868273232d620a752d853ecd77e542e6dfc69881874",
       "apis": [
         {
@@ -2256,8 +2256,8 @@
           "path": "Assets/Resources/Test/Cube.prefab"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.353Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:40.489Z",
       "fingerprint": "18e89f41da9c27ef6bdf5656f39cdc45d998bd132bb137393b885be4fb1fddb0",
       "apis": [
         {
@@ -2360,8 +2360,8 @@
           "path": "Assets/Resources/Prefabs/RunMap/Placeholder/Underground/Chunk_Underground_LayerLink_Stair.prefab"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.363Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:40.514Z",
       "fingerprint": "0564f34fded9947360e1972465916f71312dc89eb1716274993cda62637a84e4",
       "apis": [
         {
@@ -2478,8 +2478,8 @@
           "path": "Assets/Resources/Prefabs/RunMap/Kenney/Underground/Chunk_Underground_LayerLink_Stair.prefab"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.372Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:40.536Z",
       "fingerprint": "e273747de21e0fbf25cf7de190cc3c66653c86314ef9ab8edfb7db3752f91672",
       "apis": [
         {
@@ -2549,8 +2549,8 @@
           "path": "Assets/Prefabs/UI/SettingRows/SettingRow_Toggle.prefab"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.373Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:40.539Z",
       "fingerprint": "1ff81c78dae96aa2839d812f1c012d1b7f5988b4546beb0e4bbbb671edaf0687",
       "apis": [
         {
@@ -2690,8 +2690,8 @@
           "path": "Assets/TileMap/Tile/Grass_02map001.asset"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.374Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:40.543Z",
       "fingerprint": "450400e624c8056438be16c247c8e9f274489c38e0f9c750feae99d0dba12cbc",
       "apis": [
         {
@@ -2894,8 +2894,8 @@
           "path": "Assets/TileMap/Kenney/Underground/Tile_TopR.png"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.380Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:40.562Z",
       "fingerprint": "be458e41ae472963dccacad2704af2f8cdeb12de3ea62a44af20f24c09e7fb20",
       "apis": [
         {
@@ -3076,8 +3076,8 @@
           "path": "Assets/TileMap/Placeholder/Underground/Tile_TopR.png"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.386Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:40.578Z",
       "fingerprint": "08fbf03342b90f7359147f98fbe1ee7d3bef934843e93fcdfc9577aabbc2b779",
       "apis": [
         {
@@ -3168,8 +3168,8 @@
           "path": "Assets/TextMesh Pro/Fonts/LiberationSans.ttf"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.390Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:40.585Z",
       "fingerprint": "e42c69242b62a593e77ef5dd875ba54953488eb6f4b97dbcbd469f1bf0a87a4d",
       "apis": [
         {
@@ -3254,8 +3254,8 @@
           "path": "Assets/TextMesh Pro/Resources/LineBreaking Leading Characters.txt"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.391Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:40.588Z",
       "fingerprint": "b60bbbfcce10b06caad22e422b6da185253c0bb8f204d59cb35216086a4ffdce",
       "apis": [
         {
@@ -3331,8 +3331,8 @@
           "path": "Assets/TextMesh Pro/Shaders/TMPro.cginc"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.392Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:40.590Z",
       "fingerprint": "7f7e5c9eaf78eb17089ea733d10b6f06da8bb749dbc5dfa47cbc7c5eef4f9ce5",
       "apis": [
         {
@@ -3405,8 +3405,8 @@
           "path": "Assets/TextMesh Pro/Sprites/EmojiOne.json"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.392Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:40.591Z",
       "fingerprint": "0b9a0a1200fbcb5f20b2527996f58eb6ba4367722359a0130c59c190c261abc4",
       "apis": [
         {
@@ -3473,9 +3473,9 @@
           "path": "Assets/Resources/UIPanels/SubUI_Prefab/RecordCell.prefab"
         }
       ],
-      "revision": "b6dae190152cdcce64be3587bb098f7af5b42563",
-      "updated_at": "2026-10-17T09:35:47.637Z",
-      "fingerprint": "130603b27b982dc64483959c931a49fccf9d58698769d841852bc91fa0afd642",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:40.596Z",
+      "fingerprint": "70275525deb162c04d741be0de972332fdc8f96de513122119b65b8e9f94e675",
       "apis": [
         {
           "protocol": "file",
@@ -3560,8 +3560,8 @@
           "path": "Assets/Resources/UI/Loading/Loading_03.png"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.395Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:40.598Z",
       "fingerprint": "95a8be2053f3dcf8441050dbdfedcb5acf1b525dedc7f09a4d8137d85265d25a",
       "apis": [
         {
@@ -3644,9 +3644,9 @@
         }
       ],
       "aggregate": {
-        "descendant_count": 23,
+        "descendant_count": 30,
         "own_api_count": 0,
-        "inherited_api_count": 47,
+        "inherited_api_count": 68,
         "dep_out": 2,
         "dep_in": 0
       }
@@ -3677,9 +3677,9 @@
           "end_line": 17
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:30:54.570Z",
-      "fingerprint": "da321487d55679513ca1ef611f607c8cdb919e1bae7c0d5283e6325055f605b1",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:59.776Z",
+      "fingerprint": "af22c5fd740d926ddec738616b6daf4d9dfe74de3b24c959c291529f08ea88a5",
       "apis": [
         {
           "protocol": "file",
@@ -3759,9 +3759,9 @@
           "end_line": 18
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:30:54.570Z",
-      "fingerprint": "3d68c80f982a946dc44dd088b3541d384d93004c6d0a7ccb8df372f5936bcea2",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:59.777Z",
+      "fingerprint": "a8949980ba7392b442a4942cdb2f8fcc8098b31714c9dd9037da494c88085acb",
       "apis": [
         {
           "protocol": "file",
@@ -3842,9 +3842,9 @@
           "end_line": 583
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.395Z",
-      "fingerprint": "69a4a1bd4f73b2dedecbe57dd419556d295a3c3480ce4cb7287c141697c1b224",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:59.777Z",
+      "fingerprint": "3c1cad158685b77698b5133115ab31efdbfd3f85713842163821e086c42559fd",
       "apis": [
         {
           "protocol": "file",
@@ -3931,9 +3931,9 @@
           "end_line": 77
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.396Z",
-      "fingerprint": "69a4a1bd4f73b2dedecbe57dd419556d295a3c3480ce4cb7287c141697c1b224",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:59.778Z",
+      "fingerprint": "3c1cad158685b77698b5133115ab31efdbfd3f85713842163821e086c42559fd",
       "apis": [
         {
           "protocol": "file",
@@ -3996,9 +3996,9 @@
           "end_line": 401
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.396Z",
-      "fingerprint": "69a4a1bd4f73b2dedecbe57dd419556d295a3c3480ce4cb7287c141697c1b224",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:10.103Z",
+      "fingerprint": "3c1cad158685b77698b5133115ab31efdbfd3f85713842163821e086c42559fd",
       "apis": [
         {
           "protocol": "file",
@@ -4076,9 +4076,9 @@
           "end_line": 72
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.396Z",
-      "fingerprint": "69a4a1bd4f73b2dedecbe57dd419556d295a3c3480ce4cb7287c141697c1b224",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:10.104Z",
+      "fingerprint": "3c1cad158685b77698b5133115ab31efdbfd3f85713842163821e086c42559fd",
       "apis": [
         {
           "protocol": "rpc",
@@ -4174,9 +4174,9 @@
           "end_line": 597
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.396Z",
-      "fingerprint": "69a4a1bd4f73b2dedecbe57dd419556d295a3c3480ce4cb7287c141697c1b224",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:10.104Z",
+      "fingerprint": "3c1cad158685b77698b5133115ab31efdbfd3f85713842163821e086c42559fd",
       "apis": [
         {
           "protocol": "file",
@@ -4445,7 +4445,7 @@
         "own_api_count": 0,
         "inherited_api_count": 4,
         "dep_out": 0,
-        "dep_in": 0
+        "dep_in": 2
       }
     },
     "project-chaos.bootstrap.scene-loading.manager": {
@@ -4693,9 +4693,9 @@
           "path": "Assets/Scenes/MainScene.unity"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.398Z",
-      "fingerprint": "f8769b42b9aaf91a24796994711ef2098adac720f767980688b1ed0490c25e56",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:10.105Z",
+      "fingerprint": "9e6ffb62c6e69e8235b75f41177187d991cf07c23b8aa2434f6d7e5ea062b6b8",
       "apis": [
         {
           "protocol": "file",
@@ -5026,6 +5026,740 @@
         "dep_in": 0
       }
     },
+    "project-chaos.bootstrap.w5-gameplay": {
+      "uid": "b5e62026",
+      "id": "project-chaos.bootstrap.w5-gameplay",
+      "parent": "project-chaos.bootstrap",
+      "tree": "project-chaos",
+      "depth": 3,
+      "tags": [
+        "gameplay",
+        "dispatch",
+        "encounter",
+        "persistence"
+      ],
+      "name": {
+        "zh": "W5正式玩法与收尾",
+        "en": "W5 Gameplay Flow and Persistence"
+      },
+      "description": {
+        "zh": "派遣经LoadingScene进入WorldScene，接管已准备地图并生成队伍；三场结算或撤退后返回局外。RunEncounter按队伍生命、房间推进、敌人掉落拆分，跨场景保留整局库存、扎营标志与种子。事件奖励与一次性ID原子保存，市场交易失败回滚，胜败结算保存可幂等重试。\n",
+        "en": "Dispatch enters WorldScene through LoadingScene, adopts the prepared map, and spawns the team. Encounter responsibilities are split into team health, room progression, and enemies/drops. Run inventory, camping use, and seed survive stage transitions. Event, trade, and settlement saves support safe retry.\n"
+      },
+      "source": [
+        {
+          "path": "Assets/Scripts/Runtime/GameBase/Meta/RunSceneFlow.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/GameBase/Meta/DispatchService.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/GameBase/Meta/EventService.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/GameBase/Meta/MarketService.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/Player/RunEncounter.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/Player/RunEncounter.Team.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/Player/RunEncounter.Rooms.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/Player/RunEncounter.Enemies.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/Player/RunEncounterTicker.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/Player/RunDropItem.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/GameBase/LocalizationManager/GameplayText.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/GameBase/RunMap/RunMapPathfinder.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/GameBase/RunMap/RunMapNavigator.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/GameBase/RunMap/RunBehaviorSettings.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/NPC_AI/EnemyPlaceholder.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/NPC_AI/AllyController.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/Combat/CombatQuery.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/GameBase/Interaction/RunInteractionService.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/GameBase/Interaction/RunInteractable.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/MVP/Model/Gameplay/RunInteractionModel.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/MVP/Presenter/Gameplay/RunInteractionPresenter.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/MVP/View/RunInteractionHud.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/GameBase/Village/VillageSceneFlow.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/GameBase/Village/VillageSceneBootstrap.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/GameBase/Village/VillageSceneSettings.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/GameBase/Village/VillageWorkforce.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/GameBase/Village/VillagePlot.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/GameBase/Meta/VillageService.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/NPC_AI/Production/VillageBehaviorTree.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/NPC_AI/Production/VillageProductionNpc.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/MVP/Model/Gameplay/VillageWorldModel.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/MVP/Presenter/Gameplay/VillageWorldPresenter.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/MVP/View/VillageHud.cs"
+        }
+      ],
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T09:03:54.711Z",
+      "fingerprint": "5343da48b7730ef09e8ef487c1ab237954a062330917c96af77fa23a80e8c768",
+      "aggregate": {
+        "descendant_count": 6,
+        "own_api_count": 0,
+        "inherited_api_count": 21,
+        "dep_out": 0,
+        "dep_in": 0
+      }
+    },
+    "project-chaos.bootstrap.w5-gameplay.encounter": {
+      "uid": "4e7d83b1",
+      "id": "project-chaos.bootstrap.w5-gameplay.encounter",
+      "parent": "project-chaos.bootstrap.w5-gameplay",
+      "tree": "project-chaos",
+      "depth": 4,
+      "tags": [
+        "gameplay",
+        "encounter",
+        "combat"
+      ],
+      "name": {
+        "zh": "局内遭遇与战斗",
+        "en": "Run Encounter & Combat"
+      },
+      "description": {
+        "zh": "RunEncounter 按队伍生命（Team）、房间推进（Rooms）、敌人与掉落（Enemies）拆分，RunEncounterTicker 驱动逐帧推进，地上掉落归到结算模块。战斗查询与占位敌人/友军控制支撑局内交战。\n",
+        "en": "RunEncounter is split by team health (Team), room progression (Rooms), and enemies/drops (Enemies), with RunEncounterTicker as the per-frame driver and the ground drop owned by the settlement module. Combat query plus placeholder enemy and ally controllers back in-run fighting.\n"
+      },
+      "source": [
+        {
+          "path": "Assets/Scripts/Runtime/Player/RunEncounter.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/Player/RunEncounter.Team.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/Player/RunEncounter.Rooms.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/Player/RunEncounter.Enemies.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/Player/RunEncounterTicker.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/NPC_AI/EnemyPlaceholder.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/NPC_AI/AllyController.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/Combat/CombatQuery.cs"
+        }
+      ],
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T09:03:54.690Z",
+      "fingerprint": "90afa486d15658612762d5d1ebc2000b55a6e30fe26ac66c022d01bc701ae25e",
+      "apis": [
+        {
+          "protocol": "rpc",
+          "path": "RunEncounter.EnterPreparedScene",
+          "description": {
+            "zh": "接管读条地图并在其上开始本局战斗\n",
+            "en": "Start combat on the map prepared by the loading pipeline\n"
+          },
+          "key": "rpc:RunEncounter.EnterPreparedScene"
+        },
+        {
+          "protocol": "rpc",
+          "path": "RunEncounter.Tick",
+          "description": {
+            "zh": "推进当前房间/战斗状态（由 RunEncounterTicker 每帧驱动）\n",
+            "en": "Advance the current room/combat state, driven per frame by RunEncounterTicker\n"
+          },
+          "key": "rpc:RunEncounter.Tick"
+        },
+        {
+          "protocol": "rpc",
+          "path": "RunEncounter.ApplyTeamDamage",
+          "description": {
+            "zh": "对队伍结算伤害并判定阵亡\n",
+            "en": "Apply damage to the team and resolve deaths\n"
+          },
+          "key": "rpc:RunEncounter.ApplyTeamDamage"
+        }
+      ],
+      "deps": [
+        {
+          "kind": "call",
+          "to": "project-chaos.bootstrap.w5-gameplay.run-flow",
+          "label": {
+            "zh": "在派遣流程建立的会话里跑",
+            "en": "Runs in dispatch-created run"
+          },
+          "cross_tree": false
+        },
+        {
+          "kind": "reference",
+          "to": "project-chaos.config-pipeline",
+          "label": {
+            "zh": "读取房间与掉落配置",
+            "en": "Reads room/drop config"
+          },
+          "cross_tree": false
+        }
+      ],
+      "aggregate": {
+        "descendant_count": 0,
+        "own_api_count": 3,
+        "inherited_api_count": 0,
+        "dep_out": 2,
+        "dep_in": 0
+      }
+    },
+    "project-chaos.bootstrap.w5-gameplay.interaction": {
+      "uid": "b28f6c40",
+      "id": "project-chaos.bootstrap.w5-gameplay.interaction",
+      "parent": "project-chaos.bootstrap.w5-gameplay",
+      "tree": "project-chaos",
+      "depth": 4,
+      "tags": [
+        "gameplay",
+        "interaction",
+        "pathfinding"
+      ],
+      "name": {
+        "zh": "局内交互与寻路",
+        "en": "Run Interaction & Pathfinding"
+      },
+      "description": {
+        "zh": "RunInteractionService 在输入、距离、视线与目标条件都满足后执行一次交互；RunInteractable 是场景交互物；Model/Presenter/View 三件套驱动交互提示 HUD。RunMapPathfinder 与 RunMapNavigator 按实际能力图执行走跳落，RunBehaviorSettings 提供行为参数。\n",
+        "en": "RunInteractionService executes one interaction after input, range, visibility and target-condition checks; RunInteractable is the scene-side interactable; the model/presenter/view trio drives the interaction HUD. RunMapPathfinder and RunMapNavigator execute walk/jump/drop over the real capability graph, with RunBehaviorSettings supplying behaviour parameters.\n"
+      },
+      "source": [
+        {
+          "path": "Assets/Scripts/Runtime/GameBase/Interaction/RunInteractionService.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/GameBase/Interaction/RunInteractable.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/MVP/Model/Gameplay/RunInteractionModel.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/MVP/Presenter/Gameplay/RunInteractionPresenter.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/MVP/View/RunInteractionHud.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/GameBase/RunMap/RunMapPathfinder.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/GameBase/RunMap/RunMapNavigator.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/GameBase/RunMap/RunBehaviorSettings.cs"
+        }
+      ],
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T09:03:54.693Z",
+      "fingerprint": "2eeffbe4848c3415e57249514bc2187dd416a8542c4f5627f01be9fcf944cb12",
+      "apis": [
+        {
+          "protocol": "rpc",
+          "path": "Chaos.Gameplay.Interaction.RunInteractionService.TryExecute",
+          "description": {
+            "zh": "校验输入、距离、视线与目标条件后执行一次交互\n",
+            "en": "Execute one interaction after input, range, visibility and condition checks\n"
+          },
+          "key": "rpc:Chaos.Gameplay.Interaction.RunInteractionService.TryExecute"
+        },
+        {
+          "protocol": "rpc",
+          "path": "RunMap.RunMapNavigator.MoveTo",
+          "description": {
+            "zh": "按实际能力图执行走跳落，Reached 表示到达\n",
+            "en": "Execute walk/jump/drop navigation; Reached indicates arrival\n"
+          },
+          "key": "rpc:RunMap.RunMapNavigator.MoveTo"
+        },
+        {
+          "protocol": "rpc",
+          "path": "RunMap.RunMapPathfinder.FindPath",
+          "description": {
+            "zh": "在地图能力图上求一条可通行路径\n",
+            "en": "Find a traversable path over the map capability graph\n"
+          },
+          "key": "rpc:RunMap.RunMapPathfinder.FindPath"
+        }
+      ],
+      "deps": [
+        {
+          "kind": "call",
+          "to": "project-chaos.framework.runmap",
+          "label": {
+            "zh": "基于能力图寻路",
+            "en": "Pathfind on capability graph"
+          },
+          "cross_tree": false
+        },
+        {
+          "kind": "reference",
+          "to": "project-chaos.mvp",
+          "label": {
+            "zh": "交互提示走 MVP 三件套",
+            "en": "Prompt uses MVP trio"
+          },
+          "cross_tree": false
+        }
+      ],
+      "aggregate": {
+        "descendant_count": 0,
+        "own_api_count": 3,
+        "inherited_api_count": 0,
+        "dep_out": 2,
+        "dep_in": 0
+      }
+    },
+    "project-chaos.bootstrap.w5-gameplay.meta-events": {
+      "uid": "3f95a0e6",
+      "id": "project-chaos.bootstrap.w5-gameplay.meta-events",
+      "parent": "project-chaos.bootstrap.w5-gameplay",
+      "tree": "project-chaos",
+      "depth": 4,
+      "tags": [
+        "gameplay",
+        "event",
+        "market",
+        "save"
+      ],
+      "name": {
+        "zh": "事件市场掉落与结算",
+        "en": "Events, Market, Drops & Settlement"
+      },
+      "description": {
+        "zh": "EventService 处理剧情事件与选项奖励，MarketService 执行交易（失败回滚），MetaProgressService 保存局外进度；奖励与一次性 ID 原子保存，结算保存可幂等重试。GameplayText 汇总局内文案键，RunDropItem 是带出前先拾取的结算掉落。门客阵亡、扎营修整与背包带出仍散在 RunEncounter.Team / RunSceneFlow 里。\n",
+        "en": "EventService handles story events and option rewards, MarketService executes trades with rollback on failure, and MetaProgressService saves meta progress; rewards and one-shot IDs are saved atomically and settlement saves retry idempotently. GameplayText collects in-run text keys; RunDropItem is the world drop settled before withdraw. Retainer death, camping and bag withdraw still live inside RunEncounter.Team/RunSceneFlow.\n"
+      },
+      "source": [
+        {
+          "path": "Assets/Scripts/Runtime/GameBase/Meta/EventService.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/GameBase/Meta/MarketService.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/GameBase/Meta/MetaProgressService.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/GameBase/LocalizationManager/GameplayText.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/Player/RunDropItem.cs"
+        }
+      ],
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T09:03:54.697Z",
+      "fingerprint": "52e54bc27f1e1af0be679e96566d0319a33ece66d7209ce85fc15609a4f16413",
+      "apis": [
+        {
+          "protocol": "rpc",
+          "path": "MetaProgressService.SaveProgress",
+          "description": {
+            "zh": "保存当前会话槽位\n",
+            "en": "Save the active session slot\n"
+          },
+          "key": "rpc:MetaProgressService.SaveProgress"
+        },
+        {
+          "protocol": "rpc",
+          "path": "EventService.ChooseOption",
+          "description": {
+            "zh": "选择事件选项并原子发放奖励与一次性 ID\n",
+            "en": "Choose an event option, granting rewards and one-shot IDs atomically\n"
+          },
+          "key": "rpc:EventService.ChooseOption"
+        },
+        {
+          "protocol": "rpc",
+          "path": "MarketService.Trade",
+          "description": {
+            "zh": "执行市场交易，失败回滚资源与物品\n",
+            "en": "Execute a market trade, rolling back resources and items on failure\n"
+          },
+          "key": "rpc:MarketService.Trade"
+        }
+      ],
+      "deps": [
+        {
+          "kind": "call",
+          "to": "project-chaos.framework.save",
+          "label": {
+            "zh": "奖励与结算走存档事务",
+            "en": "Rewards via save transactions"
+          },
+          "cross_tree": false
+        },
+        {
+          "kind": "reference",
+          "to": "project-chaos.config-pipeline",
+          "label": {
+            "zh": "读取事件与市场配置",
+            "en": "Reads event/market config"
+          },
+          "cross_tree": false
+        }
+      ],
+      "aggregate": {
+        "descendant_count": 0,
+        "own_api_count": 3,
+        "inherited_api_count": 0,
+        "dep_out": 2,
+        "dep_in": 0
+      }
+    },
+    "project-chaos.bootstrap.w5-gameplay.run-flow": {
+      "uid": "9c4b21a7",
+      "id": "project-chaos.bootstrap.w5-gameplay.run-flow",
+      "parent": "project-chaos.bootstrap.w5-gameplay",
+      "tree": "project-chaos",
+      "depth": 4,
+      "tags": [
+        "gameplay",
+        "dispatch",
+        "run"
+      ],
+      "name": {
+        "zh": "派遣与局外流程",
+        "en": "Dispatch & Meta Run Flow"
+      },
+      "description": {
+        "zh": "DispatchService 派队入场与 RunSceneFlow 的跨场景流程：受理派遣→经 LoadingScene 进入 WorldScene 接管已准备地图→生成本局队伍→三场结算或撤退后回局外；含跨场景保留的整局库存、扎营标志与种子。\n",
+        "en": "DispatchService accepts a dispatch and RunSceneFlow drives the cross-stage flow: dispatch is accepted, LoadingScene loads WorldScene, the prepared map is adopted, the team is spawned, then settlement or retreat returns to the meta layer, carrying run inventory, camping use, and seed across stages.\n"
+      },
+      "source": [
+        {
+          "path": "Assets/Scripts/Runtime/GameBase/Meta/RunSceneFlow.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/GameBase/Meta/DispatchService.cs"
+        }
+      ],
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T09:03:54.686Z",
+      "fingerprint": "8a5e97375c6c511ddd0507e7eb86544cf376deae55f1596f871c382afcdf2a0c",
+      "apis": [
+        {
+          "protocol": "rpc",
+          "path": "DispatchService.Dispatch",
+          "description": {
+            "zh": "受理派遣并准备入场（校验槽位与队伍后推进局外状态）\n",
+            "en": "Accept a dispatch and prepare entry after validating slots and the team\n"
+          },
+          "key": "rpc:DispatchService.Dispatch"
+        },
+        {
+          "protocol": "rpc",
+          "path": "RunSceneFlow.EnterRun",
+          "description": {
+            "zh": "经读条进入 WorldScene 并接管已准备地图\n",
+            "en": "Enter WorldScene through the loading screen and adopt the prepared map\n"
+          },
+          "key": "rpc:RunSceneFlow.EnterRun"
+        },
+        {
+          "protocol": "rpc",
+          "path": "RunSceneFlow.Settle",
+          "description": {
+            "zh": "三场结算后回局外，跨场景保留库存、扎营与种子\n",
+            "en": "Return to the meta layer after settlement, preserving inventory, camping and seed\n"
+          },
+          "key": "rpc:RunSceneFlow.Settle"
+        },
+        {
+          "protocol": "rpc",
+          "path": "RunSceneFlow.Retreat",
+          "description": {
+            "zh": "撤退回局外并保留本局进度\n",
+            "en": "Retreat to the meta layer keeping this run's progress\n"
+          },
+          "key": "rpc:RunSceneFlow.Retreat"
+        }
+      ],
+      "deps": [
+        {
+          "kind": "call",
+          "to": "project-chaos.framework.runmap",
+          "label": {
+            "zh": "接管读条生成好的地图数据",
+            "en": "Adopt prepared map data"
+          },
+          "cross_tree": false
+        },
+        {
+          "kind": "call",
+          "to": "project-chaos.bootstrap.scene-loading",
+          "label": {
+            "zh": "经读条切换场景",
+            "en": "Switch scenes via loading"
+          },
+          "cross_tree": false
+        }
+      ],
+      "aggregate": {
+        "descendant_count": 0,
+        "own_api_count": 4,
+        "inherited_api_count": 0,
+        "dep_out": 2,
+        "dep_in": 1
+      }
+    },
+    "project-chaos.bootstrap.w5-gameplay.team-supply": {
+      "uid": "c05e7a93",
+      "id": "project-chaos.bootstrap.w5-gameplay.team-supply",
+      "parent": "project-chaos.bootstrap.w5-gameplay",
+      "tree": "project-chaos",
+      "depth": 4,
+      "tags": [
+        "gameplay",
+        "supply",
+        "planned"
+      ],
+      "name": {
+        "zh": "队伍补给与门客状态",
+        "en": "Team Supply & Retainer State"
+      },
+      "description": {
+        "zh": "计划态占位（fingerprint=pending）：门客生命/阵亡、扎营修整与局内背包带出还没有独立程序集，当前入口就在 RunEncounter.Team 与 RunSceneFlow 上，待抽出后迁移到此模块。\n",
+        "en": "Planned placeholder with pending fingerprint: retainer health/death, camping/rest and in-run bag withdraw are not a separate assembly yet - the current entry points sit on RunEncounter.Team and RunSceneFlow and will move here once extracted.\n"
+      },
+      "source": [
+        {
+          "path": "Assets/Scripts/Runtime/Player/RunEncounter.Team.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/GameBase/Meta/RunSceneFlow.cs"
+        }
+      ],
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T09:03:54.698Z",
+      "fingerprint": "22dee179b881974b516ee5fa173223b60937ce552609ef55f64564e34968dc4e",
+      "apis": [
+        {
+          "protocol": "rpc",
+          "path": "RunEncounter.Team.GetHealth",
+          "description": {
+            "zh": "读取单个门客当前生命/阵亡状态供局内 HUD 使用\n",
+            "en": "Read one retainer's current HP/death state for the in-run HUD\n"
+          },
+          "key": "rpc:RunEncounter.Team.GetHealth"
+        },
+        {
+          "protocol": "rpc",
+          "path": "RunSceneFlow.Camp",
+          "description": {
+            "zh": "队伍扎营时消耗一次扎营机会（跨场景保存在本局会话里）\n",
+            "en": "Spend the camping use flag when the team camps (cross-stage, kept in the run session)\n"
+          },
+          "key": "rpc:RunSceneFlow.Camp"
+        },
+        {
+          "protocol": "rpc",
+          "path": "RunSceneFlow.CollectRunBag",
+          "description": {
+            "zh": "结算前把局内背包物品转进带出清单\n",
+            "en": "Move items from the in-run bag into the withdraw list before settlement\n"
+          },
+          "key": "rpc:RunSceneFlow.CollectRunBag"
+        }
+      ],
+      "aggregate": {
+        "descendant_count": 0,
+        "own_api_count": 3,
+        "inherited_api_count": 0,
+        "dep_out": 0,
+        "dep_in": 0
+      }
+    },
+    "project-chaos.bootstrap.w5-gameplay.village": {
+      "uid": "6a1c47d2",
+      "id": "project-chaos.bootstrap.w5-gameplay.village",
+      "parent": "project-chaos.bootstrap.w5-gameplay",
+      "tree": "project-chaos",
+      "depth": 4,
+      "tags": [
+        "gameplay",
+        "village",
+        "production"
+      ],
+      "name": {
+        "zh": "实体村庄生产",
+        "en": "Physical Village & Production"
+      },
+      "description": {
+        "zh": "经读条进入实体村庄场景（VillageSceneFlow/VillageSceneBootstrap/VillageSceneSettings）；VillageWorkforce 管岗位分配，VillagePlot 管地块；VillageService 以原子方式处理建造/升级/取消/收获，TickProduction 只为独占岗位的入屋 NPC 累积生产；行为树与生产 NPC 驱动工人演出，Model/Presenter/View 三件套驱动村庄 HUD。\n",
+        "en": "Enter the physical village through the loading screen (VillageSceneFlow/VillageSceneBootstrap/VillageSceneSettings); VillageWorkforce assigns jobs and VillagePlot owns plots; VillageService handles build/upgrade/cancel/harvest atomically and TickProduction only accumulates for the exclusive building-job owner; a behaviour tree and production NPCs drive workers, with the model/presenter/view trio driving the village HUD.\n"
+      },
+      "source": [
+        {
+          "path": "Assets/Scripts/Runtime/GameBase/Village/VillageSceneFlow.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/GameBase/Village/VillageSceneBootstrap.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/GameBase/Village/VillageSceneSettings.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/GameBase/Village/VillageWorkforce.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/GameBase/Village/VillagePlot.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/GameBase/Meta/VillageService.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/NPC_AI/Production/VillageBehaviorTree.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/NPC_AI/Production/VillageProductionNpc.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/MVP/Model/Gameplay/VillageWorldModel.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/MVP/Presenter/Gameplay/VillageWorldPresenter.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/MVP/View/VillageHud.cs"
+        }
+      ],
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T09:03:54.696Z",
+      "fingerprint": "c3d84053d4d5dc2cc0c6383691b380ddd25713e50f105871f4561958ca0b0417",
+      "apis": [
+        {
+          "protocol": "rpc",
+          "path": "VillageSceneFlow.EnterFromSave",
+          "description": {
+            "zh": "经读条进入实体村庄，失败返回可重试的存档界面\n",
+            "en": "Load the physical village, with retryable save-slot recovery\n"
+          },
+          "key": "rpc:VillageSceneFlow.EnterFromSave"
+        },
+        {
+          "protocol": "rpc",
+          "path": "VillageService.Execute",
+          "description": {
+            "zh": "建造、升级、取消、收获立即保存，失败回滚资源与建筑\n",
+            "en": "Persist building commands atomically or restore resources and buildings\n"
+          },
+          "key": "rpc:VillageService.Execute"
+        },
+        {
+          "protocol": "rpc",
+          "path": "VillageService.TickProduction",
+          "description": {
+            "zh": "仅独占岗位的入屋工作 NPC 累积生产时间\n",
+            "en": "Accumulate production only for the working owner of a building job\n"
+          },
+          "key": "rpc:VillageService.TickProduction"
+        },
+        {
+          "protocol": "rpc",
+          "path": "VillageWorkforce.Assign",
+          "description": {
+            "zh": "按门客分配写入/释放建筑背后的岗位\n",
+            "en": "Assign or release the job slots behind a building based on retainer assignment\n"
+          },
+          "key": "rpc:VillageWorkforce.Assign"
+        },
+        {
+          "protocol": "rpc",
+          "path": "VillagePlot.Snapshot",
+          "description": {
+            "zh": "读取地块的作物/生长状态供村庄 HUD 使用\n",
+            "en": "Read a plot's crop/growth state for the village HUD\n"
+          },
+          "key": "rpc:VillagePlot.Snapshot"
+        }
+      ],
+      "deps": [
+        {
+          "kind": "call",
+          "to": "project-chaos.framework.save",
+          "label": {
+            "zh": "建造命令回滚并存档",
+            "en": "Roll back and persist builds"
+          },
+          "cross_tree": false
+        },
+        {
+          "kind": "call",
+          "to": "project-chaos.bootstrap.scene-loading",
+          "label": {
+            "zh": "经读条进入村庄",
+            "en": "Load village via loading"
+          },
+          "cross_tree": false
+        }
+      ],
+      "aggregate": {
+        "descendant_count": 0,
+        "own_api_count": 5,
+        "inherited_api_count": 0,
+        "dep_out": 2,
+        "dep_in": 0
+      }
+    },
     "project-chaos.config-pipeline": {
       "uid": "6b0d41af",
       "id": "project-chaos.config-pipeline",
@@ -5065,7 +5799,7 @@
         "own_api_count": 0,
         "inherited_api_count": 86,
         "dep_out": 1,
-        "dep_in": 2
+        "dep_in": 4
       }
     },
     "project-chaos.config-pipeline.exporter": {
@@ -5939,9 +6673,9 @@
           "path": "Assets/Resources/Data/Json/Runtime/MapBiomeConfig.json"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.401Z",
-      "fingerprint": "3f9cab5b06fc387efce7bcb45d0d270896f498ee185274fe37d82d851f3ec52e",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:22.604Z",
+      "fingerprint": "14c49d69be5b3ee3a4401365999fee19d5ccd7aafcc4cb22b4b1a242ad5c5740",
       "apis": [
         {
           "protocol": "file",
@@ -6056,9 +6790,9 @@
           "path": "Assets/Resources/Data/Json/Runtime/MapLoadingConfig.json"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.401Z",
-      "fingerprint": "e40515a887a2e680a1ea1d6cd34423772e18770d114cce6d9d4b306e7a60e859",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:22.605Z",
+      "fingerprint": "d72e4db7a9621615785aa5629bbd436330e8aad55dfbcdb666bea33da766cb32",
       "apis": [
         {
           "protocol": "file",
@@ -6267,9 +7001,9 @@
           "path": "Assets/Resources/Data/Json/Runtime/WorldFactionConfig.json"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:30:54.568Z",
-      "fingerprint": "2ace35fd5ba13cb4b68642ef6204cc642433f60d1d95c28f61701e69c573154f",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:22.606Z",
+      "fingerprint": "c9f988a7e7059f17aa1d21f2234e508c9e5fed8f56c19e7fc6065a862b3744b0",
       "apis": [
         {
           "protocol": "file",
@@ -6551,9 +7285,9 @@
           "end_line": 9
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.403Z",
-      "fingerprint": "b8664235a1b6842786c65c33c0629c1290c8c2813587089bd577edbe646543c7",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:22.607Z",
+      "fingerprint": "0577de3d791ce704e8b9d6a75c141f80ef5a93c60f29762233939e8522169585",
       "apis": [
         {
           "protocol": "file",
@@ -7729,9 +8463,9 @@
           "path": "Assets/Excel/Chaos_excel/MapBiome_地图主题表.xlsx"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.407Z",
-      "fingerprint": "25cf6584d10aae8a8b80fe8222ef9984888351a69e268fbd8372a583f008586d",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:22.607Z",
+      "fingerprint": "210ee6cc2f146bdb72b63c46d28a0d38258987ec2495f231428044d7195f1c6e",
       "apis": [
         {
           "protocol": "file",
@@ -7820,9 +8554,9 @@
           "path": "Assets/Excel/Chaos_excel/MapLoading_地图生成读条表.xlsx"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.407Z",
-      "fingerprint": "5c3fa56c8f4a920778a4ecb8584c7aaff212693f546ef037ce13f1bbd2037c82",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:22.608Z",
+      "fingerprint": "d6478e92423457b1e3a29cc810877a3f57160cd802988e9075c6c2aa12c7bd6d",
       "apis": [
         {
           "protocol": "file",
@@ -8046,9 +8780,9 @@
           "path": "Assets/Excel/Chaos_excel/WorldFaction_势力范围配置表.xlsx"
         }
       ],
-      "revision": "b6dae190152cdcce64be3587bb098f7af5b42563",
-      "updated_at": "2026-10-17T09:35:47.638Z",
-      "fingerprint": "79fe0a4104293edee319629b78ce1aa1dedab6d99339ae5e7a5cbf33a46373de",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:22.609Z",
+      "fingerprint": "f4760a15b9553a7468ee56b9865a0515a2e75bd1174ca63a3bfc72b1f69dac29",
       "apis": [
         {
           "protocol": "file",
@@ -8087,9 +8821,9 @@
           "path": "Assets/Excel/Chaos_excel/WorldMap_世界观地图表.xlsx"
         }
       ],
-      "revision": "b6dae190152cdcce64be3587bb098f7af5b42563",
-      "updated_at": "2026-10-17T09:35:47.638Z",
-      "fingerprint": "242ede5f266a3960f48642fa2f79492bcf0ab0be43faf3face06075d92be4174",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:22.610Z",
+      "fingerprint": "c01e46862ff33b804694a703be9008251e5c3c03886d076b95e8a509baf2def4",
       "apis": [
         {
           "protocol": "file",
@@ -8128,9 +8862,9 @@
           "path": "Assets/Excel/Chaos_excel/_worldmap_tool/WorldMapDraft.json"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:30:54.567Z",
-      "fingerprint": "df38b1bbdef13c2adb4cf304158a2f718b6a56b8d062c55620842d7ffc06bda9",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:22.611Z",
+      "fingerprint": "1d2454c53b118ef8c413e676e4214d7933c227e86d07ab76b2226ccc832f0e09",
       "apis": [
         {
           "protocol": "file",
@@ -10192,9 +10926,9 @@
           "end_line": 564
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.414Z",
-      "fingerprint": "bc4e06cf1c36cd8de541805d94af37446d858631e5bb2746db6196a0657e7f24",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:22.612Z",
+      "fingerprint": "f24057e8920891fafee6f41679d6a0e21c05668784bc2bdf700f3124ae2c78c1",
       "apis": [
         {
           "protocol": "file",
@@ -11016,9 +11750,9 @@
           "path": "Assets/Scripts/Editor/WorldMapTool/WorldMapToolWindow.cs"
         }
       ],
-      "revision": "3e4115979ea7e37fe093c0b4cd179612739ab7c5",
-      "updated_at": "2026-10-17T09:59:30.828Z",
-      "fingerprint": "2ee8d583708cc6bca43d775b8ed5f66c1692b3482158387e676b0e3156e0fa1d",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:22.613Z",
+      "fingerprint": "8b3bbc8dee4f09e9830983fbae480b7483f21a26863fed129a1f3a4d4bd6c600",
       "apis": [
         {
           "protocol": "file",
@@ -11186,8 +11920,8 @@
           "end_line": 167
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.417Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:54.859Z",
       "fingerprint": "1bbab6cee523c3ffabcfd4e5396869f08770bac456d42d1419768b73354fd300",
       "apis": [
         {
@@ -11280,8 +12014,8 @@
           "end_line": 126
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.417Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:54.860Z",
       "fingerprint": "1bbab6cee523c3ffabcfd4e5396869f08770bac456d42d1419768b73354fd300",
       "apis": [
         {
@@ -11350,8 +12084,8 @@
           "end_line": 239
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.417Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:54.860Z",
       "fingerprint": "1bbab6cee523c3ffabcfd4e5396869f08770bac456d42d1419768b73354fd300",
       "apis": [
         {
@@ -11484,8 +12218,8 @@
           "end_line": 36
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.417Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:54.862Z",
       "fingerprint": "589065ed259b46afe46ee9859368652423b244f1d706b019679d677dec44210f",
       "apis": [
         {
@@ -11570,8 +12304,8 @@
           "end_line": 32
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.418Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:54.864Z",
       "fingerprint": "b4564f2251178a9c42f112fa398630cb184176226b3dcc3d5f9f73e67116d235",
       "apis": [
         {
@@ -11688,9 +12422,9 @@
           "end_line": 468
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:30:46.651Z",
-      "fingerprint": "46e9c0ef06a72b1823d6d594fe13c9a5037cee8e8cff5714cae42caeab8a3bce",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:22.614Z",
+      "fingerprint": "255736699a608b0d4c4a4d5756dd5e2ffa04756b7559541748789d167612db08",
       "apis": [
         {
           "protocol": "rpc",
@@ -11745,8 +12479,8 @@
           "end_line": 27
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.418Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:54.864Z",
       "fingerprint": "6f4d093777e9476a73c2cffca750461c0525969e2f9c21284a73e8b2c456c0db",
       "apis": [
         {
@@ -11810,9 +12544,9 @@
           "end_line": 454
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:30:46.651Z",
-      "fingerprint": "46e9c0ef06a72b1823d6d594fe13c9a5037cee8e8cff5714cae42caeab8a3bce",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:22.615Z",
+      "fingerprint": "255736699a608b0d4c4a4d5756dd5e2ffa04756b7559541748789d167612db08",
       "apis": [
         {
           "protocol": "file",
@@ -11876,8 +12610,8 @@
           "end_line": 32
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.418Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:54.865Z",
       "fingerprint": "e07a66661d5354220249d197188d6fb0d161d1ae964453434e84a244880a9fac",
       "apis": [
         {
@@ -11939,8 +12673,8 @@
           "end_line": 48
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.419Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:54.865Z",
       "fingerprint": "b0349d3689646a05d0d98c2a1e2399e8e91e43315763564b862724ad00bbbf7e",
       "apis": [
         {
@@ -12022,8 +12756,8 @@
           "end_line": 18
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.419Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:54.867Z",
       "fingerprint": "a3fdd65723c921676b693481ab503c84df0118eeaafd70eedf0da9ffb78fc8a8",
       "apis": [
         {
@@ -12107,8 +12841,8 @@
           "end_line": 26
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.419Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:54.867Z",
       "fingerprint": "245daecccdb03a153b32d115d682a64d68578676a0db7250629eccb39f50ffa4",
       "apis": [
         {
@@ -12176,8 +12910,8 @@
           "end_line": 75
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.419Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:54.868Z",
       "fingerprint": "ec8bceeceb35a63db776963906f254e0cc50dcf92eed709a09cbf797c67e08f2",
       "apis": [
         {
@@ -12246,8 +12980,8 @@
           "end_line": 219
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.419Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:54.868Z",
       "fingerprint": "1fa134b12c96248ccdfb2d4f0793b0cdde93715c85edca41380eb735cccfe524",
       "apis": [
         {
@@ -12360,8 +13094,8 @@
           "end_line": 416
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.420Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:54.869Z",
       "fingerprint": "1fa134b12c96248ccdfb2d4f0793b0cdde93715c85edca41380eb735cccfe524",
       "apis": [
         {
@@ -12420,8 +13154,8 @@
           "end_line": 10
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:30:54.571Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:54.869Z",
       "fingerprint": "1fc68ee83e829397dfdcf394248e52c7e63acd1f2379a7553e237291e12640f8",
       "apis": [
         {
@@ -12489,8 +13223,8 @@
           "end_line": 72
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.420Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:54.870Z",
       "fingerprint": "40124927494b7719ae70baebfcc8b18b6cd4d368177ce432df66971ef1d6c0c0",
       "apis": [
         {
@@ -12572,8 +13306,8 @@
           "end_line": 31
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.421Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:54.870Z",
       "fingerprint": "b0c7b3042692c51b557ffea6b3e5a9ed8c36ecde05908d8a50ca0a1cfed4e3de",
       "apis": [
         {
@@ -12642,8 +13376,8 @@
           "end_line": 23
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.421Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:54.871Z",
       "fingerprint": "9854ccf84a246e351f41673ad509aba51fb3f8672672b40b8349e2d762ae9b2a",
       "apis": [
         {
@@ -12707,8 +13441,8 @@
           "end_line": 105
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.421Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:09.589Z",
       "fingerprint": "8a057c78171277edb4c32ee14fc4e3559f6c7da0b7265806ae5e4b0972b3247d",
       "apis": [
         {
@@ -12777,8 +13511,8 @@
           "end_line": 78
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.422Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:09.590Z",
       "fingerprint": "9854ccf84a246e351f41673ad509aba51fb3f8672672b40b8349e2d762ae9b2a",
       "apis": [
         {
@@ -12899,8 +13633,8 @@
           "end_line": 163
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.422Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:40.599Z",
       "fingerprint": "dce2712ad67121c6bd9ec2cabd8da2255fe257ba39608aa239a2482f97fe189e",
       "apis": [
         {
@@ -12984,8 +13718,8 @@
           "end_line": 285
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.422Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:40.599Z",
       "fingerprint": "dce2712ad67121c6bd9ec2cabd8da2255fe257ba39608aa239a2482f97fe189e",
       "apis": [
         {
@@ -13067,8 +13801,8 @@
           "end_line": 120
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.422Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:40.600Z",
       "fingerprint": "dce2712ad67121c6bd9ec2cabd8da2255fe257ba39608aa239a2482f97fe189e",
       "apis": [
         {
@@ -13150,8 +13884,8 @@
           "end_line": 215
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.422Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:40.600Z",
       "fingerprint": "dce2712ad67121c6bd9ec2cabd8da2255fe257ba39608aa239a2482f97fe189e",
       "apis": [
         {
@@ -13233,9 +13967,9 @@
           "end_line": 604
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.423Z",
-      "fingerprint": "efe37e8935ef64f4a05c1a643ffb319ec12c7e252ac2c96d7411d8937425f466",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:22.615Z",
+      "fingerprint": "91856414ec49bb874cc0c264ab798d341f2263a768ae022c2cef522278480ccd",
       "apis": [
         {
           "protocol": "rpc",
@@ -13336,9 +14070,9 @@
           "end_line": 200
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.423Z",
-      "fingerprint": "efe37e8935ef64f4a05c1a643ffb319ec12c7e252ac2c96d7411d8937425f466",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:22.616Z",
+      "fingerprint": "91856414ec49bb874cc0c264ab798d341f2263a768ae022c2cef522278480ccd",
       "apis": [
         {
           "protocol": "rpc",
@@ -13430,9 +14164,9 @@
           "end_line": 277
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.423Z",
-      "fingerprint": "efe37e8935ef64f4a05c1a643ffb319ec12c7e252ac2c96d7411d8937425f466",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:22.616Z",
+      "fingerprint": "91856414ec49bb874cc0c264ab798d341f2263a768ae022c2cef522278480ccd",
       "apis": [
         {
           "protocol": "rpc",
@@ -13500,9 +14234,9 @@
           "end_line": 1087
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.423Z",
-      "fingerprint": "efe37e8935ef64f4a05c1a643ffb319ec12c7e252ac2c96d7411d8937425f466",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:22.617Z",
+      "fingerprint": "91856414ec49bb874cc0c264ab798d341f2263a768ae022c2cef522278480ccd",
       "apis": [
         {
           "protocol": "file",
@@ -13543,9 +14277,9 @@
           "end_line": 950
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.423Z",
-      "fingerprint": "efe37e8935ef64f4a05c1a643ffb319ec12c7e252ac2c96d7411d8937425f466",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:34.935Z",
+      "fingerprint": "91856414ec49bb874cc0c264ab798d341f2263a768ae022c2cef522278480ccd",
       "apis": [
         {
           "protocol": "rpc",
@@ -13617,9 +14351,9 @@
           "end_line": 690
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.424Z",
-      "fingerprint": "efe37e8935ef64f4a05c1a643ffb319ec12c7e252ac2c96d7411d8937425f466",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:34.936Z",
+      "fingerprint": "91856414ec49bb874cc0c264ab798d341f2263a768ae022c2cef522278480ccd",
       "apis": [
         {
           "protocol": "rpc",
@@ -13669,9 +14403,9 @@
           "end_line": 356
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.424Z",
-      "fingerprint": "efe37e8935ef64f4a05c1a643ffb319ec12c7e252ac2c96d7411d8937425f466",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:34.937Z",
+      "fingerprint": "91856414ec49bb874cc0c264ab798d341f2263a768ae022c2cef522278480ccd",
       "apis": [
         {
           "protocol": "rpc",
@@ -13721,9 +14455,9 @@
           "end_line": 1183
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.424Z",
-      "fingerprint": "efe37e8935ef64f4a05c1a643ffb319ec12c7e252ac2c96d7411d8937425f466",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:34.938Z",
+      "fingerprint": "91856414ec49bb874cc0c264ab798d341f2263a768ae022c2cef522278480ccd",
       "apis": [
         {
           "protocol": "rpc",
@@ -13812,8 +14546,8 @@
           "end_line": 217
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.424Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:09.590Z",
       "fingerprint": "a43836ec9d7eccc09086bde991db83bfcaa9da7c3997ca5e93cad03b191ad019",
       "apis": [
         {
@@ -13904,8 +14638,8 @@
           "end_line": 155
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.424Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:09.591Z",
       "fingerprint": "a43836ec9d7eccc09086bde991db83bfcaa9da7c3997ca5e93cad03b191ad019",
       "apis": [
         {
@@ -13965,8 +14699,8 @@
           "end_line": 121
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.425Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:09.592Z",
       "fingerprint": "4058671362204296f8215354832fe0c555b68e8a7c185de5329c6c41cc4c3914",
       "apis": [
         {
@@ -14035,8 +14769,8 @@
           "end_line": 185
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.425Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:09.592Z",
       "fingerprint": "ac4bb43478a47a948649b4df647ba2bd4d1c308e32b10d5a56ebabd829609ccf",
       "apis": [
         {
@@ -14129,9 +14863,9 @@
           "end_line": 130
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.425Z",
-      "fingerprint": "e3467c7f202c922325ea9bcf15be6ea006a25d272a717bf7c80efe6e63dd930c",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:34.939Z",
+      "fingerprint": "9870cb654836593ff5c627442c6dd42ac4350f510b348e8848310fb0dd542d13",
       "apis": [
         {
           "protocol": "rpc",
@@ -14214,9 +14948,9 @@
           "end_line": 246
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.425Z",
-      "fingerprint": "e3467c7f202c922325ea9bcf15be6ea006a25d272a717bf7c80efe6e63dd930c",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:34.938Z",
+      "fingerprint": "9870cb654836593ff5c627442c6dd42ac4350f510b348e8848310fb0dd542d13",
       "apis": [
         {
           "protocol": "rpc",
@@ -14306,9 +15040,9 @@
           "end_line": 79
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.425Z",
-      "fingerprint": "231036b11d49330db6fec94418c31651f3bf80f54b60a6f622621348f26524d2",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:34.940Z",
+      "fingerprint": "5b5f18c3a92738c00bbe46d6aeb46a22c16d8e20eec6eb5eb6da16f2962f5e38",
       "apis": [
         {
           "protocol": "rpc",
@@ -14398,8 +15132,8 @@
           "end_line": 136
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.426Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:09.593Z",
       "fingerprint": "ba3dfe29dd1421029b0c897d584be144e708fcb47d10d36792b5b43a00c5b4cf",
       "apis": [
         {
@@ -14472,8 +15206,8 @@
           "end_line": 264
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.426Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:09.593Z",
       "fingerprint": "ba3dfe29dd1421029b0c897d584be144e708fcb47d10d36792b5b43a00c5b4cf",
       "apis": [
         {
@@ -14583,8 +15317,8 @@
           "end_line": 60
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.426Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:09.594Z",
       "fingerprint": "c9bc9718a1bf70d351563773bde68cf887d63b9d61da4f458a85a7fb12599567",
       "apis": [
         {
@@ -14639,8 +15373,8 @@
           "end_line": 135
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.426Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:09.594Z",
       "fingerprint": "6773abdfb8e4707eedb70b2374848144684d79756d69fda72304e0f8cad10558",
       "apis": [
         {
@@ -14742,8 +15476,8 @@
           "end_line": 207
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.426Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:09.595Z",
       "fingerprint": "6773abdfb8e4707eedb70b2374848144684d79756d69fda72304e0f8cad10558",
       "apis": [
         {
@@ -14843,8 +15577,8 @@
           "end_line": 116
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.427Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:09.596Z",
       "fingerprint": "fa1163b8f3f94ce90ba40968fb08d66c86691d38b6cd63863ab09532fc7f54bf",
       "apis": [
         {
@@ -14913,8 +15647,8 @@
           "end_line": 57
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.427Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:09.596Z",
       "fingerprint": "503d7507b447926bb5b8e08138f49b97c6aab3be3010c72b18e2f95725dea3fd",
       "apis": [
         {
@@ -14965,8 +15699,8 @@
           "end_line": 115
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.427Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:09.597Z",
       "fingerprint": "9a18fb3ce66bbd1c9cbcb823f436fa9c13dd6baa63e576304feeabfb8f49c2e0",
       "apis": [
         {
@@ -15044,8 +15778,8 @@
           "end_line": 338
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.427Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:09.597Z",
       "fingerprint": "9a18fb3ce66bbd1c9cbcb823f436fa9c13dd6baa63e576304feeabfb8f49c2e0",
       "apis": [
         {
@@ -15120,8 +15854,8 @@
           "end_line": 511
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.427Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:09.598Z",
       "fingerprint": "9a18fb3ce66bbd1c9cbcb823f436fa9c13dd6baa63e576304feeabfb8f49c2e0",
       "apis": [
         {
@@ -15247,8 +15981,8 @@
           "end_line": 179
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:30:46.651Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:09.598Z",
       "fingerprint": "75aea6f4913b39abaf2861b284bc582fdad1e18fa49931aa7ce68d15d18b2d68",
       "apis": [
         {
@@ -15389,9 +16123,9 @@
           "end_line": 22
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:30:54.571Z",
-      "fingerprint": "441dce61537755cfff6341a5f634f644068bf25833c741679ac6e97811949866",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:34.940Z",
+      "fingerprint": "fee73f4babc5226b25a8751fbb47e6457fb7f42ec1f3acdcca3e449d5311df7a",
       "apis": [
         {
           "protocol": "file",
@@ -15458,8 +16192,8 @@
           "end_line": 42
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.428Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:20.390Z",
       "fingerprint": "f03d0c3c98a00b3fed7488a60428ce24496e6a69cde5958034233ba7098aa650",
       "apis": [
         {
@@ -15519,8 +16253,8 @@
           "end_line": 115
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.428Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:20.390Z",
       "fingerprint": "f03d0c3c98a00b3fed7488a60428ce24496e6a69cde5958034233ba7098aa650",
       "apis": [
         {
@@ -15630,8 +16364,8 @@
           "end_line": 69
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.428Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:20.391Z",
       "fingerprint": "bf446302eec75ed3048abc1a327697f211cbc3adba45ceb5264a2d3e7f68191e",
       "apis": [
         {
@@ -15711,7 +16445,7 @@
         "own_api_count": 0,
         "inherited_api_count": 14,
         "dep_out": 0,
-        "dep_in": 0
+        "dep_in": 2
       }
     },
     "project-chaos.framework.runmap.assembler": {
@@ -15739,8 +16473,8 @@
           "end_line": 256
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.428Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:20.391Z",
       "fingerprint": "3387622592e628fcbde9bf826b867a4c89e977f5270a22816c18a33547b2cd0e",
       "apis": [
         {
@@ -15795,9 +16529,9 @@
           "end_line": 141
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.429Z",
-      "fingerprint": "cd4e96c2c3fe256ec5650c10bca542159ea014ce465be23b9bd78c889184f8e2",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:34.941Z",
+      "fingerprint": "49a489e6a54ac37eafb4ac9dc5c710de40ef2403339c63ea9199963d5da55efa",
       "apis": [
         {
           "protocol": "file",
@@ -15851,8 +16585,8 @@
           "end_line": 250
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.429Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:20.392Z",
       "fingerprint": "fd13e1d3304f665e43f658f2e563a142739006741ada7cd4d222e0b927d8fa81",
       "apis": [
         {
@@ -15898,8 +16632,8 @@
           "end_line": 23
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.429Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:20.393Z",
       "fingerprint": "25d1f9572bba7e8279f02235a35535c2dbab358a1d0cdab130aac4b3251c536c",
       "apis": [
         {
@@ -15945,9 +16679,9 @@
           "end_line": 173
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.429Z",
-      "fingerprint": "2dd4f42730ab6f644753c4332a62a31ff31926f60539867d2f9b835906e16907",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:34.941Z",
+      "fingerprint": "1d8d0d2ad9b4132356f88a727886dfa302825924691cfbb3b70fdb71c5ab223e",
       "apis": [
         {
           "protocol": "file",
@@ -16001,9 +16735,9 @@
           "end_line": 320
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.429Z",
-      "fingerprint": "a653d591cde2c69191b665e7df1ef20b847c74988ab5d0622ce843b1fc79e873",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:34.942Z",
+      "fingerprint": "e0d4216e018317832154b447c23eb6c5793ba9fc735d9590332c448e9e65aadd",
       "apis": [
         {
           "protocol": "file",
@@ -16048,8 +16782,8 @@
           "end_line": 184
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.429Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:20.393Z",
       "fingerprint": "04189848655d30f0e2e13c49cc3f1fdc9480bade71357e1030a185c9b330ed86",
       "apis": [
         {
@@ -16096,8 +16830,8 @@
           "end_line": 112
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.430Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:20.394Z",
       "fingerprint": "789e7f5eb1922b9d83b114e83a015703f8ea087a10a7f0ebf26699c35365932c",
       "apis": [
         {
@@ -16152,8 +16886,8 @@
           "end_line": 408
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.430Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:20.394Z",
       "fingerprint": "0b1061f725ad3985cc873c4609578911a3fdd5fe943a4f80555d7b66b9aeeb49",
       "apis": [
         {
@@ -16199,8 +16933,8 @@
           "end_line": 248
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.430Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:20.395Z",
       "fingerprint": "52297c58032b3cb9cf3a62b84bbd62de1cf23565f6aaaad8c0d5478ac68a5de5",
       "apis": [
         {
@@ -16244,7 +16978,7 @@
         "own_api_count": 0,
         "inherited_api_count": 18,
         "dep_out": 0,
-        "dep_in": 0
+        "dep_in": 2
       }
     },
     "project-chaos.framework.save.service-read": {
@@ -16268,9 +17002,9 @@
           "end_line": 218
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.430Z",
-      "fingerprint": "8e71d66d7c2df229548a801e2b34a665614a6e0faa67777f36a02d0b91c1fece",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:34.942Z",
+      "fingerprint": "a8be33462fa85ac6dd6f4113b8441f4b9f867790a1272dc5182656837e041d53",
       "apis": [
         {
           "protocol": "rpc",
@@ -16382,9 +17116,9 @@
           "end_line": 384
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.431Z",
-      "fingerprint": "8e71d66d7c2df229548a801e2b34a665614a6e0faa67777f36a02d0b91c1fece",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:34.943Z",
+      "fingerprint": "a8be33462fa85ac6dd6f4113b8441f4b9f867790a1272dc5182656837e041d53",
       "apis": [
         {
           "protocol": "rpc",
@@ -16496,9 +17230,9 @@
           "end_line": 81
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.431Z",
-      "fingerprint": "6baf7038d2c4f1dbfd69c0216b575c31510d4f5b9ca559d5a6b6502d963bbb07",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:34.943Z",
+      "fingerprint": "40c0a8ea33bf92c4882adb725c928071f589706cd8f8b98fb62e1b7f53517060",
       "apis": [
         {
           "protocol": "rpc",
@@ -16590,9 +17324,9 @@
           "end_line": 94
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:30:46.651Z",
-      "fingerprint": "467ddac3e50b1d4c99a5815ed66c63f651ddf662f059efc3d7ccb1a5a211832f",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:34.944Z",
+      "fingerprint": "96b43579715b745fa400a7e1f225cf6a186a15b152da078e6501d7a42619d982",
       "apis": [
         {
           "protocol": "rpc",
@@ -16686,8 +17420,8 @@
           "end_line": 141
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.431Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:20.396Z",
       "fingerprint": "5d66eb0bff3b0706c3d9c260008a56f70c43e4688c611d5d2e8bb1372e7fc163",
       "apis": [
         {
@@ -16789,8 +17523,8 @@
           "end_line": 34
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.431Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:20.397Z",
       "fingerprint": "2fea257bd73ae0a3975880a8925fb3520b6e2a38e4b525122e20175149e7a695",
       "apis": [
         {
@@ -16854,8 +17588,8 @@
           "end_line": 157
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.431Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:20.397Z",
       "fingerprint": "18f4ea2cf5a0bd03dfb7514dd9cd8536889a361a9030013a8e06b9cba041e794",
       "apis": [
         {
@@ -16946,9 +17680,9 @@
           "end_line": 103
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.432Z",
-      "fingerprint": "2186e49773a62815771d127f9d2318a12e8d0b72a5564611164ee53443310610",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:47.486Z",
+      "fingerprint": "e14b099292185ca6a1edce85d01cf94359b84e25e9737771e3c0736139f32154",
       "apis": [
         {
           "protocol": "rpc",
@@ -17040,9 +17774,9 @@
           "end_line": 150
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.432Z",
-      "fingerprint": "2186e49773a62815771d127f9d2318a12e8d0b72a5564611164ee53443310610",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:34.944Z",
+      "fingerprint": "e14b099292185ca6a1edce85d01cf94359b84e25e9737771e3c0736139f32154",
       "apis": [
         {
           "protocol": "rpc",
@@ -17134,9 +17868,9 @@
           "end_line": 239
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.432Z",
-      "fingerprint": "2186e49773a62815771d127f9d2318a12e8d0b72a5564611164ee53443310610",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:34.944Z",
+      "fingerprint": "e14b099292185ca6a1edce85d01cf94359b84e25e9737771e3c0736139f32154",
       "apis": [
         {
           "protocol": "rpc",
@@ -17217,8 +17951,8 @@
           "end_line": 135
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.432Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:20.398Z",
       "fingerprint": "b8e91d28c0d242c15945e58c8198e62e34aba89f4a1fcd321a04300a52c4c5b6",
       "apis": [
         {
@@ -17322,8 +18056,8 @@
           "end_line": 221
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.432Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:20.398Z",
       "fingerprint": "b8e91d28c0d242c15945e58c8198e62e34aba89f4a1fcd321a04300a52c4c5b6",
       "apis": [
         {
@@ -17396,8 +18130,8 @@
           "end_line": 68
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.432Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:20.399Z",
       "fingerprint": "97b5468f9564d9e4abba7f47bebcb6d856109282ed6dee6368e686c65a124dec",
       "apis": [
         {
@@ -17479,8 +18213,8 @@
           "end_line": 42
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.433Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:20.399Z",
       "fingerprint": "4346772d804f5427938ce142b807362184a3b1b82584eea12da0d2e620a41a98",
       "apis": [
         {
@@ -17579,9 +18313,9 @@
           "end_line": 159
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.433Z",
-      "fingerprint": "c380d72e9760b2b52d75cc84c426bdec295eb57f76854059dc46349a37884cf3",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:47.486Z",
+      "fingerprint": "141a5a685946313829c8685dd0d4727de156c213eebb9ec5d28d63055bc2c203",
       "apis": [
         {
           "protocol": "rpc",
@@ -17671,8 +18405,8 @@
           "end_line": 183
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.433Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:59.767Z",
       "fingerprint": "d8afff3ee09f2f9b674ec3efc181e6fa496c3dfea536fa5e7612876ea2361476",
       "apis": [
         {
@@ -17759,9 +18493,9 @@
           "end_line": 69
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.433Z",
-      "fingerprint": "6634d585c10ab342322dae4b9eb3684930705873c7bbc0b1eca7823d885b7f29",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:47.487Z",
+      "fingerprint": "4f570750ff24bfb7b0f9254f2775ee21b02d98dffbb1c86567fbec192518ca65",
       "apis": [
         {
           "protocol": "rpc",
@@ -17838,9 +18572,9 @@
           "end_line": 89
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.434Z",
-      "fingerprint": "e3c323738fad836796c9ec53e74318a84dff5000a9c6107a6b9dffb68650e3e8",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:47.489Z",
+      "fingerprint": "6c804dcdaede12356f9a005dd85f96139aabfd94cb970569c495aca8daebc13d",
       "apis": [
         {
           "protocol": "rpc",
@@ -17941,9 +18675,9 @@
           "end_line": 338
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.433Z",
-      "fingerprint": "e3c323738fad836796c9ec53e74318a84dff5000a9c6107a6b9dffb68650e3e8",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:47.487Z",
+      "fingerprint": "6c804dcdaede12356f9a005dd85f96139aabfd94cb970569c495aca8daebc13d",
       "apis": [
         {
           "protocol": "rpc",
@@ -18081,9 +18815,9 @@
           "end_line": 239
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.434Z",
-      "fingerprint": "e3c323738fad836796c9ec53e74318a84dff5000a9c6107a6b9dffb68650e3e8",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:47.488Z",
+      "fingerprint": "6c804dcdaede12356f9a005dd85f96139aabfd94cb970569c495aca8daebc13d",
       "apis": [
         {
           "protocol": "rpc",
@@ -18184,9 +18918,9 @@
           "end_line": 159
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.434Z",
-      "fingerprint": "e3c323738fad836796c9ec53e74318a84dff5000a9c6107a6b9dffb68650e3e8",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:47.488Z",
+      "fingerprint": "6c804dcdaede12356f9a005dd85f96139aabfd94cb970569c495aca8daebc13d",
       "apis": [
         {
           "protocol": "rpc",
@@ -18280,8 +19014,8 @@
           "end_line": 190
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.434Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:59.768Z",
       "fingerprint": "023436fd97e1c4ba95195e4be5985569e59e225bc5f957c0885a272c9974a9f8",
       "apis": [
         {
@@ -18411,8 +19145,8 @@
           "end_line": 33
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.434Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:59.770Z",
       "fingerprint": "5fd602bdb80c44478b60dc4ae15e532990a4576d915833becb0791ead9af5748",
       "apis": [
         {
@@ -18454,8 +19188,8 @@
           "end_line": 145
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.435Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:59.771Z",
       "fingerprint": "ca438f41c73fb26879bac743ccf5c9ab68e78458e1ca3ba696fe70887649c502",
       "apis": [
         {
@@ -18537,8 +19271,8 @@
           "end_line": 300
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.435Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:59.771Z",
       "fingerprint": "ca438f41c73fb26879bac743ccf5c9ab68e78458e1ca3ba696fe70887649c502",
       "apis": [
         {
@@ -18683,8 +19417,8 @@
           "end_line": 677
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.435Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:59.772Z",
       "fingerprint": "ca438f41c73fb26879bac743ccf5c9ab68e78458e1ca3ba696fe70887649c502",
       "apis": [
         {
@@ -18738,8 +19472,8 @@
           "end_line": 16
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.435Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:59.772Z",
       "fingerprint": "53e965d82b557323d141625d7f08c183cb8c4a694a74fbca947c6c3ebf7605cf",
       "apis": [
         {
@@ -18790,9 +19524,9 @@
           "end_line": 113
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.436Z",
-      "fingerprint": "6f86e6829ce665ae2883c79887db6160eb8f54948fc32f05bb7e05e338fa659a",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:47.489Z",
+      "fingerprint": "12e65e87641cb322ea210e0c11f8ee7f7cc3eef99bd353328e85b9c0cc5d75eb",
       "apis": [
         {
           "protocol": "rpc",
@@ -18882,9 +19616,9 @@
           "end_line": 155
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.435Z",
-      "fingerprint": "6f86e6829ce665ae2883c79887db6160eb8f54948fc32f05bb7e05e338fa659a",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:47.489Z",
+      "fingerprint": "12e65e87641cb322ea210e0c11f8ee7f7cc3eef99bd353328e85b9c0cc5d75eb",
       "apis": [
         {
           "protocol": "rpc",
@@ -18966,8 +19700,8 @@
           "end_line": 11
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.436Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:59.769Z",
       "fingerprint": "d34f715f9cbf0f5c44d97dc5c9a950a0e386a2fb02c66c08d96ca66ba696332e",
       "apis": [
         {
@@ -19036,9 +19770,9 @@
           "end_line": 200
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:30:54.571Z",
-      "fingerprint": "13074b92b36a513a35110fc39143849d39bc7055774b148f84049fd06d6b60b8",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:47.490Z",
+      "fingerprint": "c0b2348612e030518d4b0b11be03508212120c6632226b827e88ff56f2fb99ab",
       "apis": [
         {
           "protocol": "rpc",
@@ -19196,8 +19930,8 @@
           "path": "Assets/Scripts/Runtime/GameBase/WorldMap/WorldFactionMask.cs"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:30:54.569Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:59.773Z",
       "fingerprint": "5a53a1c03de37e2775fbd6ac742270bab49879db66c19ce57411bf12fd1daf22",
       "apis": [
         {
@@ -19237,8 +19971,8 @@
           "path": "Assets/Scripts/Runtime/GameBase/WorldMap/WorldMapMetaProvider.cs"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:30:54.569Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:59.773Z",
       "fingerprint": "512f6171c1c192465286e0016412eda9ccf64f7c87836cc7886fcd2e4b0c53b1",
       "apis": [
         {
@@ -19281,8 +20015,8 @@
           "path": "Assets/Scripts/Runtime/GameBase/WorldMap/WorldFactionArea.cs"
         }
       ],
-      "revision": "a7c3b8fe6345669cb33b508b5355f6a13e4cf0af",
-      "updated_at": "2026-10-14T13:18:15.975Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:59.774Z",
       "fingerprint": "228b076c0e3d632862ad2a0330e24eb79b93f3156f0d3f02f127506abb2ff8d2",
       "apis": [
         {
@@ -19340,8 +20074,8 @@
           "path": "Assets/Scripts/Runtime/GameBase/WorldMap/WorldMapService.cs"
         }
       ],
-      "revision": "a7c3b8fe6345669cb33b508b5355f6a13e4cf0af",
-      "updated_at": "2026-10-14T13:18:15.975Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:57:59.775Z",
       "fingerprint": "4f83d72c7e03da5dae78972dd16b4eb8a261006a517914b189c6442a2126805e",
       "apis": [
         {
@@ -19437,7 +20171,7 @@
         "own_api_count": 0,
         "inherited_api_count": 77,
         "dep_out": 3,
-        "dep_in": 0
+        "dep_in": 1
       }
     },
     "project-chaos.mvp.model": {
@@ -19641,9 +20375,9 @@
           "end_line": 66
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.439Z",
-      "fingerprint": "5903c3d0fb3041b9931310f7a283bc591ab4121a00dd03224f6881583460d768",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:47.490Z",
+      "fingerprint": "e0b481d5ae63291d0f2a159384394500ae88aa817333375bf4a93e6070d15580",
       "apis": [
         {
           "protocol": "file",
@@ -19801,9 +20535,9 @@
           "end_line": 509
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:30:54.571Z",
-      "fingerprint": "126d11b07ddfa369cdd0aca467c1b3959945aa29c94b3f0a27c6ab81a4a92747",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:47.490Z",
+      "fingerprint": "cac4aab04c917cfe98e29bcdc0566e6d3adaeb58e9b8923482f66acdb1acd514",
       "apis": [
         {
           "protocol": "file",
@@ -19880,9 +20614,9 @@
           "end_line": 450
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.440Z",
-      "fingerprint": "126d11b07ddfa369cdd0aca467c1b3959945aa29c94b3f0a27c6ab81a4a92747",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:47.491Z",
+      "fingerprint": "cac4aab04c917cfe98e29bcdc0566e6d3adaeb58e9b8923482f66acdb1acd514",
       "apis": [
         {
           "protocol": "file",
@@ -19950,9 +20684,9 @@
           "end_line": 138
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.440Z",
-      "fingerprint": "126d11b07ddfa369cdd0aca467c1b3959945aa29c94b3f0a27c6ab81a4a92747",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:47.491Z",
+      "fingerprint": "cac4aab04c917cfe98e29bcdc0566e6d3adaeb58e9b8923482f66acdb1acd514",
       "apis": [
         {
           "protocol": "rpc",
@@ -20040,9 +20774,9 @@
           "end_line": 272
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.440Z",
-      "fingerprint": "126d11b07ddfa369cdd0aca467c1b3959945aa29c94b3f0a27c6ab81a4a92747",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:47.492Z",
+      "fingerprint": "cac4aab04c917cfe98e29bcdc0566e6d3adaeb58e9b8923482f66acdb1acd514",
       "apis": [
         {
           "protocol": "file",
@@ -20119,9 +20853,9 @@
           "end_line": 368
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.441Z",
-      "fingerprint": "126d11b07ddfa369cdd0aca467c1b3959945aa29c94b3f0a27c6ab81a4a92747",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:47.492Z",
+      "fingerprint": "cac4aab04c917cfe98e29bcdc0566e6d3adaeb58e9b8923482f66acdb1acd514",
       "apis": [
         {
           "protocol": "file",
@@ -20200,9 +20934,9 @@
           "end_line": 209
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.441Z",
-      "fingerprint": "7966e1f2e9ae4a8554954d790b56ff83a8053cddbf9aade70be7f6e78fadc40b",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:54:47.492Z",
+      "fingerprint": "f3844a3d93f319cd7f7bf7ba9833cb210c6b1ef56daf784f67299de5b5f218fd",
       "apis": [
         {
           "protocol": "rpc",
@@ -20345,9 +21079,9 @@
           "end_line": 307
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.441Z",
-      "fingerprint": "566f91ff5e4fd192b5d959c2369f661d2efc4a42ee64f280b1b24860fab98f4f",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:58:29.739Z",
+      "fingerprint": "0004fedd3687c1cf546418ae14d08bc503625d876ac5e26e2fcb8584829151e6",
       "apis": [
         {
           "protocol": "rpc",
@@ -20438,9 +21172,9 @@
           "end_line": 157
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.442Z",
-      "fingerprint": "566f91ff5e4fd192b5d959c2369f661d2efc4a42ee64f280b1b24860fab98f4f",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:58:29.739Z",
+      "fingerprint": "0004fedd3687c1cf546418ae14d08bc503625d876ac5e26e2fcb8584829151e6",
       "apis": [
         {
           "protocol": "rpc",
@@ -20526,9 +21260,9 @@
           "end_line": 118
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.442Z",
-      "fingerprint": "566f91ff5e4fd192b5d959c2369f661d2efc4a42ee64f280b1b24860fab98f4f",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:58:29.740Z",
+      "fingerprint": "0004fedd3687c1cf546418ae14d08bc503625d876ac5e26e2fcb8584829151e6",
       "apis": [
         {
           "protocol": "rpc",
@@ -20645,9 +21379,9 @@
           "end_line": 50
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.442Z",
-      "fingerprint": "41ca215db524c24f825f6ec76874e51640b74da07da4876f57a59658cc3671ee",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:58:29.740Z",
+      "fingerprint": "f6a2c227ceb5b4bbccb658eed15c1b20322546398b0a7ecf9ea05369d20fae60",
       "apis": [
         {
           "protocol": "rpc",
@@ -20715,9 +21449,9 @@
           "end_line": 49
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.442Z",
-      "fingerprint": "0aab054c3618b0dc2abea1348ad74b1388b626fe9602777274795e50eebfc0e1",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:58:29.741Z",
+      "fingerprint": "8f391dc7c6fbbd0b53c7604a8c46018d8a4affcf21440cf69d35cd49027deaf6",
       "apis": [
         {
           "protocol": "rpc",
@@ -20785,9 +21519,9 @@
           "end_line": 116
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.442Z",
-      "fingerprint": "7d401dadd23b6625925a0cf56c0f10accca46a5f4f1d8ec1c75f63dd3bc02d1b",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:58:29.742Z",
+      "fingerprint": "83691780c10117c329203900c73550e324e102bb99b025d2166c6ed361d5d47c",
       "apis": [
         {
           "protocol": "rpc",
@@ -20989,9 +21723,9 @@
           "end_line": 220
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.443Z",
-      "fingerprint": "03908ed9b1f158b11dcd01ea8368f47711a172a7e5cf15c0bd5f51e2eebf2f50",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:58:29.742Z",
+      "fingerprint": "5fe21e38a92b79fdc1b7b9b863dc02e227abbbc9adc2c99b0e6b0931c0e0f35d",
       "apis": [
         {
           "protocol": "rpc",
@@ -21079,9 +21813,9 @@
           "end_line": 517
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.443Z",
-      "fingerprint": "03908ed9b1f158b11dcd01ea8368f47711a172a7e5cf15c0bd5f51e2eebf2f50",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:58:29.742Z",
+      "fingerprint": "5fe21e38a92b79fdc1b7b9b863dc02e227abbbc9adc2c99b0e6b0931c0e0f35d",
       "apis": [
         {
           "protocol": "file",
@@ -21145,9 +21879,9 @@
           "end_line": 580
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.443Z",
-      "fingerprint": "03908ed9b1f158b11dcd01ea8368f47711a172a7e5cf15c0bd5f51e2eebf2f50",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:58:29.743Z",
+      "fingerprint": "5fe21e38a92b79fdc1b7b9b863dc02e227abbbc9adc2c99b0e6b0931c0e0f35d",
       "apis": [
         {
           "protocol": "file",
@@ -21207,9 +21941,9 @@
           "end_line": 617
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.443Z",
-      "fingerprint": "03908ed9b1f158b11dcd01ea8368f47711a172a7e5cf15c0bd5f51e2eebf2f50",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:58:29.743Z",
+      "fingerprint": "5fe21e38a92b79fdc1b7b9b863dc02e227abbbc9adc2c99b0e6b0931c0e0f35d",
       "apis": [
         {
           "protocol": "file",
@@ -21290,9 +22024,9 @@
           "end_line": 421
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.443Z",
-      "fingerprint": "f6e00a704a92904810632d475db69fb4c2a10cbaf9072f1b9a5976923e8002f3",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:58:29.744Z",
+      "fingerprint": "888e6ac95db88b7e0ff338fe63c68dfc9be7f391634466415f8a96dddc392858",
       "apis": [
         {
           "protocol": "file",
@@ -21365,9 +22099,9 @@
           "end_line": 300
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.444Z",
-      "fingerprint": "f6e00a704a92904810632d475db69fb4c2a10cbaf9072f1b9a5976923e8002f3",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:58:29.745Z",
+      "fingerprint": "888e6ac95db88b7e0ff338fe63c68dfc9be7f391634466415f8a96dddc392858",
       "apis": [
         {
           "protocol": "rpc",
@@ -21453,9 +22187,9 @@
           "end_line": 248
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.444Z",
-      "fingerprint": "f6e00a704a92904810632d475db69fb4c2a10cbaf9072f1b9a5976923e8002f3",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:58:29.745Z",
+      "fingerprint": "888e6ac95db88b7e0ff338fe63c68dfc9be7f391634466415f8a96dddc392858",
       "apis": [
         {
           "protocol": "file",
@@ -21541,9 +22275,9 @@
           "path": "Assets/Scripts/Runtime/MVP/View/WorldMapPanel.cs"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:30:54.569Z",
-      "fingerprint": "508c133f403df544f4598de6a658aed52dfc4bd68f48de2149679f019a549de3",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:58:40.812Z",
+      "fingerprint": "d9e200b35faee8bd357db17115e34412c3be51c496d9116dedb04a8a2d792ee7",
       "apis": [
         {
           "protocol": "file",
@@ -21627,9 +22361,9 @@
       "updated_at": "2026-10-06T12:10:00Z",
       "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "aggregate": {
-        "descendant_count": 35,
+        "descendant_count": 37,
         "own_api_count": 0,
-        "inherited_api_count": 93,
+        "inherited_api_count": 101,
         "dep_out": 0,
         "dep_in": 0
       }
@@ -21641,21 +22375,24 @@
       "tree": "project-chaos",
       "depth": 3,
       "name": {
-        "zh": "Agent 配置",
-        "en": "Agent Config"
+        "zh": "Agent 配置（Claude/Codex）",
+        "en": "Agent Config (Claude/Codex)"
       },
       "description": {
-        "zh": "藏在 Assets 内的 Agent 工具配置：Claude Code 本地设置，白名单包含 env 命令与 Unity MCP 实例/执行类工具。\n",
-        "en": "Agent tooling config found inside Assets: a Claude Code local settings file whitelisting the env command and Unity MCP instance/execute tools.\n"
+        "zh": "仓库内的 Agent 工具配置：Assets 内的 Claude Code 本地设置（白名单包含 env 命令与 Unity MCP 实例/执行类工具），以及仓库根目录的 Codex CLI 配置。\n",
+        "en": "Agent tooling config found in the repo: the Claude Code local settings file (inside Assets) whitelisting the env command and Unity MCP instance/execute tools, plus the Codex CLI config at the repo root.\n"
       },
       "source": [
         {
           "path": "Assets/.claude/settings.local.json"
+        },
+        {
+          "path": ".codex/config.toml"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.444Z",
-      "fingerprint": "a452556c17a02358d4f5b8013c51512bbc470f8ca557b31c3e1f776f2612a668",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T09:03:54.712Z",
+      "fingerprint": "f5bb28fc72ef435944581fbac02f3fa7dd140ec7c7b3ae8663c2607d1a72d7bf",
       "apis": [
         {
           "protocol": "file",
@@ -21665,11 +22402,20 @@
             "en": "Claude Code local permission allowlist: Bash(env) plus three Unity MCP tools.\n"
           },
           "key": "file:Assets/.claude/settings.local.json"
+        },
+        {
+          "protocol": "file",
+          "path": ".codex/config.toml",
+          "description": {
+            "zh": "仓库根的 Codex CLI 配置（在同一工作副本里作业的 Codex agent 的模型/提供商设置）。\n",
+            "en": "Codex CLI config at the repo root (model/provider settings for the Codex agent working in the same checkout).\n"
+          },
+          "key": "file:.codex/config.toml"
         }
       ],
       "aggregate": {
         "descendant_count": 0,
-        "own_api_count": 1,
+        "own_api_count": 2,
         "inherited_api_count": 0,
         "dep_out": 0,
         "dep_in": 0
@@ -21758,8 +22504,8 @@
           "path": "Assets/AI/runmap-art/gen_map_configs.py"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.445Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:01.107Z",
       "fingerprint": "8d0ccedecf3ccbe371a518edf78c4d8e644a69b573e1ba4ced2a5b04426be88d",
       "apis": [
         {
@@ -21821,8 +22567,8 @@
           "path": "Assets/AI/runmap-art/KENNEY_LICENSES.md"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.445Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:01.108Z",
       "fingerprint": "ebf6eabf4d59b46061e32e48593cc1e8e4d4aa449ca706c23b226b876ef8e19f",
       "apis": [
         {
@@ -21894,8 +22640,8 @@
           "path": "Assets/AI/runmap-art/src/RunMapGenerator.cs.txt"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.445Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:01.108Z",
       "fingerprint": "d208af1697d72393a798b2ba4bb9980f6cf0c1b246dcb3f01f27575028feff65",
       "apis": [
         {
@@ -21920,6 +22666,77 @@
       "aggregate": {
         "descendant_count": 0,
         "own_api_count": 2,
+        "inherited_api_count": 0,
+        "dep_out": 0,
+        "dep_in": 0
+      }
+    },
+    "project-chaos.project-infra.dsh-toolchain": {
+      "uid": "7d3e9a12",
+      "id": "project-chaos.project-infra.dsh-toolchain",
+      "parent": "project-chaos.project-infra",
+      "tree": "project-chaos",
+      "depth": 3,
+      "tags": [
+        "infra",
+        "agent",
+        "mcp",
+        "docs"
+      ],
+      "name": {
+        "zh": "本地 Agent 工具链",
+        "en": "Local Agent Toolchain (Tools/)"
+      },
+      "description": {
+        "zh": "仓库根 Tools/ 下的 Agent 工具链：dsh-unity-mcp 是一个本地 DSH bundle（Unity MCP 桥接，把 Editor 工具以 mcp__unity__* 暴露给模型），gen_setting_panel_doc.py 是设置面板文档的 python-docx 生成器。都不属于 Unity 运行时资源，不进任何 asmdef。\n",
+        "en": "Agent toolchain under repo-root Tools/: dsh-unity-mcp is a local DSH bundle bridging Unity's MCP server (surfacing editor tools as mcp__unity__*), and gen_setting_panel_doc.py is a python-docx generator for the settings-panel doc. Neither is a Unity runtime asset and neither joins an asmdef.\n"
+      },
+      "source": [
+        {
+          "path": "Tools/dsh-unity-mcp/package.json"
+        },
+        {
+          "path": "Tools/dsh-unity-mcp/cordis.patch.yml"
+        },
+        {
+          "path": "Tools/gen_setting_panel_doc.py"
+        }
+      ],
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T09:02:00.000Z",
+      "fingerprint": "56c0e80689d4d79171f505896db9082125e711fdbfd65182b0ffb2ceb1717aca",
+      "apis": [
+        {
+          "protocol": "file",
+          "path": "Tools/dsh-unity-mcp/package.json",
+          "description": {
+            "zh": "本地 DSH bundle 的 npm 包声明：private、type=module，dsh.bundle.patch 指向 ./cordis.patch.yml。\n",
+            "en": "npm meta for the local DSH bundle: private, type=module, points the dsh.bundle.patch at ./cordis.patch.yml.\n"
+          },
+          "key": "file:Tools/dsh-unity-mcp/package.json"
+        },
+        {
+          "protocol": "file",
+          "path": "Tools/dsh-unity-mcp/cordis.patch.yml",
+          "description": {
+            "zh": "真正生效的 bundle 补丁：插入 mcp-unity 行，以 stdio 转发到 AnkleBreaker Unity MCP 服务；failOnStartupError=false 使 Unity 未开时 DSH 仍可启。\n",
+            "en": "The actual bundle patch: inserts the mcp-unity row pointing at the AnkleBreaker Unity MCP server over stdio; failOnStartupError=false keeps DSH usable when Unity is closed.\n"
+          },
+          "key": "file:Tools/dsh-unity-mcp/cordis.patch.yml"
+        },
+        {
+          "protocol": "file",
+          "path": "Tools/gen_setting_panel_doc.py",
+          "description": {
+            "zh": "独立运行 python-docx 的文档生成器，产出设置面板设计方案 docx；产物是派生物，不手改。\n",
+            "en": "Standalone python-docx generator for the settings-panel design doc; output is derived, not hand-edited.\n"
+          },
+          "key": "file:Tools/gen_setting_panel_doc.py"
+        }
+      ],
+      "aggregate": {
+        "descendant_count": 0,
+        "own_api_count": 3,
         "inherited_api_count": 0,
         "dep_out": 0,
         "dep_in": 0
@@ -21950,8 +22767,8 @@
           "path": "gittool/README.md"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.445Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:01.109Z",
       "fingerprint": "1613e934b478843f942246f0026a9eaf0d52f105a109d0d224df78d5319fecb3",
       "apis": [
         {
@@ -22055,8 +22872,8 @@
           "path": "Assets/Learn/MVP架构与配置数据分层说明.docx"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.446Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:01.111Z",
       "fingerprint": "cd0069f5977f5066a0600918a8cfc16a0e135d80289479ced1fbce150bf7fc84",
       "apis": [
         {
@@ -22114,8 +22931,8 @@
           "path": "Assets/Learn/本地化系统使用说明.docx"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.447Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:01.114Z",
       "fingerprint": "bce5f339db3bb470744e24649e77b1b1d0156ac11e6a1e7313745440cae63a2b",
       "apis": [
         {
@@ -22185,8 +23002,8 @@
           "path": "Packages/packages-lock.json"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.447Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:01.115Z",
       "fingerprint": "258bc094c3c383d9113bcc9f62a300ef0b2ad7475b8241bfcdbb0ffaf561b97e",
       "apis": [
         {
@@ -22238,8 +23055,8 @@
           "path": "Assets/Plugins/LitJson.dll"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.449Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:01.118Z",
       "fingerprint": "efd85ee5837e9ef4df49472caa584703b65c1950d0edc5c6b17ab7eaf91148e3",
       "apis": [
         {
@@ -22322,8 +23139,8 @@
           "path": "Assets/Plugins/Demigiant/DOTween/Editor/DOTweenEditor.XML"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.449Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:01.119Z",
       "fingerprint": "01481b3acc13cd56705fa5c3d26704569976914aaeb625706c7dde09ff99227b",
       "apis": [
         {
@@ -22384,8 +23201,8 @@
           "path": "Assets/Plugins/Demigiant/DOTween/readme.txt"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.450Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:01.121Z",
       "fingerprint": "8fa48482d2d58b79495d646eadbdbb38d6c97251abab7b4eaf24717f45c54eff",
       "apis": [
         {
@@ -22545,8 +23362,8 @@
           "path": "Assets/Plugins/Spine Examples/Images/outline-shaders-heading.png"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.451Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:01.123Z",
       "fingerprint": "5d5c93bcbf82446001abcd9a0b32e4b59a95828b5c0416ce9ee76b53313563c2",
       "apis": [
         {
@@ -22622,8 +23439,8 @@
           "path": "Assets/Plugins/Spine Examples/Scripts/Sample Components/SkeletonUtility Modules/SkeletonRagdoll.cs"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.452Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:01.125Z",
       "fingerprint": "e8936a9c9c6a788e2ae2fb52d43a9def11e650094b0ea2b1f6de884ffac3098f",
       "apis": [
         {
@@ -22709,8 +23526,8 @@
           "path": "Assets/Plugins/Spine Examples/Spine Skeletons/Runtime Template Material.mat"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.452Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:01.126Z",
       "fingerprint": "7a88129b3bcaf6a37a1047d46bbfec573450d831cb727320ad68e751bca734aa",
       "apis": [
         {
@@ -22787,8 +23604,8 @@
           "path": "Assets/Plugins/Spine/Editor/spine-unity/Editor/SpineAttributeDrawers.cs"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.453Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:01.128Z",
       "fingerprint": "4868014b77eac5c5a35ae56cd35d1d7f443b3717c93559debc1505373b1c110e",
       "apis": [
         {
@@ -22852,8 +23669,8 @@
           "path": "Assets/Plugins/Spine/CHANGELOG.md"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.453Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:01.129Z",
       "fingerprint": "d22393bcdc4c9034e315388c4d3f7b50bc729a84ec9a8da53174dd767c2eca55",
       "apis": [
         {
@@ -22923,8 +23740,8 @@
           "path": "Assets/Plugins/Spine/Runtime/spine-csharp/AnimationState.cs"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.456Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:01.132Z",
       "fingerprint": "e0357fb4d4686a0fb02f5a8cc7aa972f665c8d86eb9b8bb920e01751cd688b83",
       "apis": [
         {
@@ -23039,9 +23856,9 @@
           "path": "ProjectSettings/NavMeshAreas.asset"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.456Z",
-      "fingerprint": "48d9f0c6405fec6be4135b4fce7798f35e196d9ec59cac169e11d1b82499abf8",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:15.063Z",
+      "fingerprint": "9390cbaba3baa0ca640793d4b02f1ffb4b71e0780fdd4c2bb2f45ed3c6711f60",
       "apis": [
         {
           "protocol": "file",
@@ -23116,8 +23933,8 @@
           "path": "ProjectSettings/TagManager.asset"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.457Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:15.065Z",
       "fingerprint": "2f2580c5ffac97e08a01760025c9e1f8bcb085ffc467d15c53dd3d08cc5722a7",
       "apis": [
         {
@@ -23193,8 +24010,8 @@
           "path": "ProjectSettings/Packages/com.unity.testtools.codecoverage/Settings.json"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.458Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:15.067Z",
       "fingerprint": "bc9179379332d6006cacb7d7e8d90d349945d3f6315c24213b7413a655e0db59",
       "apis": [
         {
@@ -23270,8 +24087,8 @@
           "path": "ProjectSettings/ClusterInputManager.asset"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.459Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:15.069Z",
       "fingerprint": "02de1827ff973665c969b20c0c913139f68bff05b478398ab455eb36731cb709",
       "apis": [
         {
@@ -23350,8 +24167,8 @@
           "path": "ProjectSettings/VFXManager.asset"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.459Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:15.072Z",
       "fingerprint": "0478d3c201a5d2865bad641db06e3477d4affaf50b4958327af2d283d8508352",
       "apis": [
         {
@@ -23436,8 +24253,8 @@
           "path": "ProjectSettings/AutoStreamingSettings.asset"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.460Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:15.074Z",
       "fingerprint": "128163d70a8a7cf6a86c3682d910636ef172c7f7142b5c08186d647c7ea12d74",
       "apis": [
         {
@@ -23509,9 +24326,9 @@
       "updated_at": "2026-10-06T12:10:00Z",
       "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "aggregate": {
-        "descendant_count": 3,
+        "descendant_count": 4,
         "own_api_count": 0,
-        "inherited_api_count": 12,
+        "inherited_api_count": 14,
         "dep_out": 0,
         "dep_in": 0
       }
@@ -23537,8 +24354,8 @@
           "end_line": 143
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.460Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:15.074Z",
       "fingerprint": "c616b95671386e8f0efdac74ef6dd5f2df74cb021c2ead9a4b4d4b5ea71f2dc1",
       "apis": [
         {
@@ -23624,8 +24441,8 @@
           "path": "Assets/DocsSrc/update_excel_doc_model_layer.py"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.461Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:15.076Z",
       "fingerprint": "aa971e9d6f0dc313ee3f27e30efbaf16111a3f03b0b1fec25a91591154a3cdbd",
       "apis": [
         {
@@ -23731,8 +24548,8 @@
           "end_line": 238
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.461Z",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:56:15.076Z",
       "fingerprint": "e668e923a14bda7d99178521edccc82323e045e79504b7eb7684e53cd8440671",
       "apis": [
         {
@@ -23786,7 +24603,74 @@
         "own_api_count": 5,
         "inherited_api_count": 0,
         "dep_out": 0,
-        "dep_in": 1
+        "dep_in": 2
+      }
+    },
+    "project-chaos.project-infra.python-docs.setting-panel-doc": {
+      "uid": "7d13c9a4",
+      "id": "project-chaos.project-infra.python-docs.setting-panel-doc",
+      "parent": "project-chaos.project-infra.python-docs",
+      "tree": "project-chaos",
+      "depth": 4,
+      "tags": [
+        "infra",
+        "docs",
+        "python",
+        "settings"
+      ],
+      "name": {
+        "zh": "设置面板说明文档生成",
+        "en": "Setting Panel Doc Generator"
+      },
+      "description": {
+        "zh": "Tools/gen_setting_panel_doc.py（1253 行）：用 python-docx 生成《设置面板设计方案与实现说明》Word 文档，排版风格对齐 Assets/Learn 下已有中文说明文档（Title + Heading1 中文序号 + Heading2 1.1/2.3 + Normal/List Bullet/Table Grid，正文微软雅黑 10.5pt），输出到 Assets/Story。不在 DocsSrc 目录下。\n",
+        "en": "Tools/gen_setting_panel_doc.py (1253 lines) builds the settings-panel design/implementation Word doc with python-docx, matching the layout of the existing Chinese manuals in Assets/Learn (Title + Heading1 Chinese numerals + Heading2 1.1/2.3 + Normal/List Bullet/Table Grid, body in Microsoft YaHei 10.5pt), writing into Assets/Story. It lives outside DocsSrc.\n"
+      },
+      "source": [
+        {
+          "path": "Tools/gen_setting_panel_doc.py"
+        }
+      ],
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T09:03:54.698Z",
+      "fingerprint": "0a0204ceeca31c14dab994ce24efb95b39d62d71c67a5be69c25a52d30379cdc",
+      "apis": [
+        {
+          "protocol": "rpc",
+          "path": "gen_setting_panel_doc.main",
+          "description": {
+            "zh": "入口：无参数运行，生成设置面板说明 .docx\n",
+            "en": "Entry: run with no arguments to emit the settings-panel .docx\n"
+          },
+          "key": "rpc:gen_setting_panel_doc.main"
+        },
+        {
+          "protocol": "rpc",
+          "path": "gen_setting_panel_doc.build_document",
+          "description": {
+            "zh": "按 Learn 文档风格拼装章节、列表与表格\n",
+            "en": "Assemble headings, bullets and tables in the Learn manual style\n"
+          },
+          "key": "rpc:gen_setting_panel_doc.build_document"
+        }
+      ],
+      "deps": [
+        {
+          "kind": "reference",
+          "to": "project-chaos.project-infra.python-docs.docx-kit",
+          "label": {
+            "zh": "复用 docx 样式工具",
+            "en": "Reuses docx style kit"
+          },
+          "cross_tree": false
+        }
+      ],
+      "aggregate": {
+        "descendant_count": 0,
+        "own_api_count": 2,
+        "inherited_api_count": 0,
+        "dep_out": 1,
+        "dep_in": 0
       }
     },
     "project-chaos.project-infra.repo-root": {
@@ -23795,13 +24679,18 @@
       "parent": "project-chaos.project-infra",
       "tree": "project-chaos",
       "depth": 3,
+      "tags": [
+        "infra",
+        "repo",
+        "generated"
+      ],
       "name": {
         "zh": "仓库根文件",
         "en": "Repo Root Files"
       },
       "description": {
-        "zh": "仓库根元数据：README 占位、.gitignore、.vsconfig 与生成的解决方案文件。同目录的 .csproj 是 Unity 自动生成的产物。\n",
-        "en": "Repository-root metadata: README stub, .gitignore, .vsconfig and the generated solution file. The .csproj files here are Unity-regenerated artifacts.\n"
+        "zh": "仓库根元数据与 Unity 自动生成产物：README 占位、.gitignore、.vsconfig 与生成的解决方案文件；同目录的 .csproj 由 Unity 每次刷新重新生成，.vs/ 下是 Roslyn/IDE 缓存；另有 DSH 沙箱 ACL 修复留下的 acl-backup-*/acl-report-* 临时文件（非源码资产）。\n",
+        "en": "Repository-root metadata and Unity-generated artifacts: README stub, .gitignore, .vsconfig and the generated solution file. The .csproj files are regenerated on every Unity refresh and .vs/ holds Roslyn/IDE caches; acl-backup-*/acl-report-* are leftover files from DSH sandbox ACL repair, not source assets.\n"
       },
       "source": [
         {
@@ -23815,11 +24704,41 @@
         },
         {
           "path": "Project_Chaos.sln"
+        },
+        {
+          "path": "Assembly-CSharp.csproj"
+        },
+        {
+          "path": "Assembly-CSharp-Editor.csproj"
+        },
+        {
+          "path": "Assembly-CSharp-firstpass.csproj"
+        },
+        {
+          "path": "spine-unity.csproj"
+        },
+        {
+          "path": "spine-unity-editor.csproj"
+        },
+        {
+          "path": "spine-unity-examples.csproj"
+        },
+        {
+          "path": "spine-unity-examples-editor.csproj"
+        },
+        {
+          "path": "Sirenix.OdinInspector.Modules.UnityMathematics.csproj"
+        },
+        {
+          "path": ".vs/Assembly-CSharp.csproj.dtbcache.json"
+        },
+        {
+          "path": ".vs/Assembly-CSharp-Editor.csproj.dtbcache.json"
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.461Z",
-      "fingerprint": "afe46a829bbf4c9aca3aa137f7bdd526fd95e9a58e9050aac72e911299976754",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T09:03:54.716Z",
+      "fingerprint": "5725c6e0a30b4aca830989a749c4292cdc7f04a9737d12ce1ab318fd5b26b007",
       "apis": [
         {
           "protocol": "file",
@@ -23856,11 +24775,29 @@
             "en": "Solution referencing the 8 generated csproj files (Assembly-CSharp, spine-unity, ...).\n"
           },
           "key": "file:Project_Chaos.sln"
+        },
+        {
+          "protocol": "file",
+          "path": "Assembly-CSharp.csproj",
+          "description": {
+            "zh": "Unity 自动生成的 csproj 产物（Assembly-CSharp*、spine-unity*、Sirenix.*）——由 Unity 重新生成，禁止手改。\n",
+            "en": "Unity-generated csproj artifacts (Assembly-CSharp*, spine-unity*, Sirenix.*) — regenerated by Unity, never hand-edited.\n"
+          },
+          "key": "file:Assembly-CSharp.csproj"
+        },
+        {
+          "protocol": "file",
+          "path": ".vs/Assembly-CSharp.csproj.dtbcache.json",
+          "description": {
+            "zh": ".vs/ 下的 VS/Roslyn 缓存（两个 dtbcache.json，各约 78KB）——可丢弃的编辑器缓存，不是源码。\n",
+            "en": "VS/Roslyn cache under .vs/ (two dtbcache.json files, ~78KB each) — disposable editor cache, not source.\n"
+          },
+          "key": "file:.vs/Assembly-CSharp.csproj.dtbcache.json"
         }
       ],
       "aggregate": {
         "descendant_count": 0,
-        "own_api_count": 4,
+        "own_api_count": 6,
         "inherited_api_count": 0,
         "dep_out": 0,
         "dep_in": 1
@@ -24687,9 +25624,9 @@
           "end_line": 74
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.464Z",
-      "fingerprint": "2258478558572dd73a9821d3724b9bffb86de0a69d37e858bb96f397c55d316c",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:58:40.813Z",
+      "fingerprint": "4fd71761568897d4aeb1821732b71109cc9ab710e2be3b66bfda705a144bbf06",
       "apis": [
         {
           "protocol": "file",
@@ -25077,9 +26014,9 @@
           "end_line": 185
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.465Z",
-      "fingerprint": "ca9e031024f7f374a43b25f38611b9434e0b9ff87aeb9e2214042c6f3134e00c",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:58:40.814Z",
+      "fingerprint": "d36bd152a342132f3224433386deac36954d5a63b670f42460e619fad493629f",
       "apis": [
         {
           "protocol": "file",
@@ -25248,9 +26185,9 @@
           "end_line": 165
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.466Z",
-      "fingerprint": "ed531f387d52a91f4ecbaa4ab82a8535472098ea94d6261e1d9c0b4edc5d5f2a",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:58:40.815Z",
+      "fingerprint": "18bc59265ba2d1c0ad8afadb37f9fb231e844f2f2a93926753ef6d116c143338",
       "apis": [
         {
           "protocol": "file",
@@ -25295,9 +26232,9 @@
           "end_line": 395
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.466Z",
-      "fingerprint": "ed531f387d52a91f4ecbaa4ab82a8535472098ea94d6261e1d9c0b4edc5d5f2a",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:58:40.816Z",
+      "fingerprint": "18bc59265ba2d1c0ad8afadb37f9fb231e844f2f2a93926753ef6d116c143338",
       "apis": [
         {
           "protocol": "file",
@@ -25342,9 +26279,9 @@
           "end_line": 238
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.467Z",
-      "fingerprint": "ed531f387d52a91f4ecbaa4ab82a8535472098ea94d6261e1d9c0b4edc5d5f2a",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:58:40.816Z",
+      "fingerprint": "18bc59265ba2d1c0ad8afadb37f9fb231e844f2f2a93926753ef6d116c143338",
       "apis": [
         {
           "protocol": "file",
@@ -26514,9 +27451,9 @@
           "end_line": 141
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.473Z",
-      "fingerprint": "4e068de8cc72d20c5a6106054d10511656be94f23b535031e6678639a6b6c287",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:58:40.817Z",
+      "fingerprint": "97c8c68fa80b6b27d30b86914c0d195bd28926b3d56f15563e770abaedbef677",
       "apis": [
         {
           "protocol": "file",
@@ -26562,9 +27499,9 @@
           "end_line": 539
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.473Z",
-      "fingerprint": "4e068de8cc72d20c5a6106054d10511656be94f23b535031e6678639a6b6c287",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:58:40.818Z",
+      "fingerprint": "97c8c68fa80b6b27d30b86914c0d195bd28926b3d56f15563e770abaedbef677",
       "apis": [
         {
           "protocol": "file",
@@ -26610,9 +27547,9 @@
           "end_line": 973
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.474Z",
-      "fingerprint": "4e068de8cc72d20c5a6106054d10511656be94f23b535031e6678639a6b6c287",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:58:40.818Z",
+      "fingerprint": "97c8c68fa80b6b27d30b86914c0d195bd28926b3d56f15563e770abaedbef677",
       "apis": [
         {
           "protocol": "file",
@@ -26658,9 +27595,9 @@
           "end_line": 357
         }
       ],
-      "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.474Z",
-      "fingerprint": "4e068de8cc72d20c5a6106054d10511656be94f23b535031e6678639a6b6c287",
+      "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
+      "updated_at": "2026-10-31T08:58:40.819Z",
+      "fingerprint": "97c8c68fa80b6b27d30b86914c0d195bd28926b3d56f15563e770abaedbef677",
       "apis": [
         {
           "protocol": "file",
@@ -26682,8 +27619,11 @@
     }
   },
   "api_index": {
+    "file:.codex/config.toml": "project-chaos.project-infra.agent-config",
     "file:.gitignore": "project-chaos.project-infra.repo-root",
+    "file:.vs/Assembly-CSharp.csproj.dtbcache.json": "project-chaos.project-infra.repo-root",
     "file:.vsconfig": "project-chaos.project-infra.repo-root",
+    "file:Assembly-CSharp.csproj": "project-chaos.project-infra.repo-root",
     "file:Assets/.claude/settings.local.json": "project-chaos.project-infra.agent-config",
     "file:Assets/AI/runmap-art/gen_map_configs.py": "project-chaos.project-infra.agent-workspace.runmap-art.generator",
     "file:Assets/AI/runmap-art/kenney_dl2.zip": "project-chaos.project-infra.agent-workspace.runmap-art.reference",
@@ -27122,6 +28062,9 @@
     "file:ProjectSettings/VFXManager.asset": "project-chaos.project-infra.project-settings.rendering",
     "file:ProjectSettings/XRSettings.asset": "project-chaos.project-infra.project-settings.services",
     "file:README.md": "project-chaos.project-infra.repo-root",
+    "file:Tools/dsh-unity-mcp/cordis.patch.yml": "project-chaos.project-infra.dsh-toolchain",
+    "file:Tools/dsh-unity-mcp/package.json": "project-chaos.project-infra.dsh-toolchain",
+    "file:Tools/gen_setting_panel_doc.py": "project-chaos.project-infra.dsh-toolchain",
     "rpc:AudioManager.ChangeBgmVolume": "project-chaos.framework.audio.bgm",
     "rpc:AudioManager.ChangeSoundVolume": "project-chaos.framework.audio.sfx",
     "rpc:AudioManager.GetVolume": "project-chaos.framework.audio.channel-volume",
@@ -27145,6 +28088,7 @@
     "rpc:BasePanel.PauseTime": "project-chaos.framework.ui.base-panel-controls",
     "rpc:BasePanel.ResumeTime": "project-chaos.framework.ui.base-panel-controls",
     "rpc:BasePanel.Show": "project-chaos.framework.ui.base-panel",
+    "rpc:Chaos.Gameplay.Interaction.RunInteractionService.TryExecute": "project-chaos.bootstrap.w5-gameplay.interaction",
     "rpc:ChaosLog.Debug": "project-chaos.framework.logging.levels",
     "rpc:ChaosLog.Enabled": "project-chaos.framework.logging.config",
     "rpc:ChaosLog.EnableDebug": "project-chaos.framework.logging.config",
@@ -27205,6 +28149,7 @@
     "rpc:DialogueOption.optionText": "project-chaos.framework.dialogue.data",
     "rpc:DialogueOptionRuntime.nextDialogueId": "project-chaos.mvp.model.runtime-data",
     "rpc:DialogueRuntimeData.dialogueEntries": "project-chaos.mvp.model.runtime-data",
+    "rpc:DispatchService.Dispatch": "project-chaos.bootstrap.w5-gameplay.run-flow",
     "rpc:docx_kit.code": "project-chaos.project-infra.python-docs.docx-kit",
     "rpc:docx_kit.h1": "project-chaos.project-infra.python-docs.docx-kit",
     "rpc:docx_kit.new_document": "project-chaos.project-infra.python-docs.docx-kit",
@@ -27223,6 +28168,7 @@
     "rpc:EventManager.Clear": "project-chaos.framework.events.manager",
     "rpc:EventManager.RemoveListener": "project-chaos.framework.events.manager",
     "rpc:EventManager.TriggerEvent": "project-chaos.framework.events.manager",
+    "rpc:EventService.ChooseOption": "project-chaos.bootstrap.w5-gameplay.meta-events",
     "rpc:EventTriggerExt.TriggerEvent": "project-chaos.framework.events.extension",
     "rpc:FileUtil.LoadFiles": "project-chaos.config-pipeline.exporter.file-io",
     "rpc:FileUtil.SaveFile": "project-chaos.config-pipeline.exporter.file-io",
@@ -27231,6 +28177,8 @@
     "rpc:GameSession.Clear": "project-chaos.framework.save.session",
     "rpc:GameSession.SelectedSlot": "project-chaos.framework.save.session",
     "rpc:GameSession.SetTargetScene": "project-chaos.framework.save.session",
+    "rpc:gen_setting_panel_doc.build_document": "project-chaos.project-infra.python-docs.setting-panel-doc",
+    "rpc:gen_setting_panel_doc.main": "project-chaos.project-infra.python-docs.setting-panel-doc",
     "rpc:GitHelper.BuildPreview": "project-chaos.editor-tools.git.change-preview",
     "rpc:GitHelper.Classify": "project-chaos.editor-tools.git.change-preview",
     "rpc:GitHelper.DiscardTrackedChanges": "project-chaos.editor-tools.git.change-preview",
@@ -27398,6 +28346,7 @@
     "rpc:LogColorInfo.GetHex": "project-chaos.framework.logging.colors",
     "rpc:MainMenuPanel.OnEnter": "project-chaos.mvp.view.main-menu",
     "rpc:MainMenuPanel.OnExit": "project-chaos.mvp.view.main-menu",
+    "rpc:MarketService.Trade": "project-chaos.bootstrap.w5-gameplay.meta-events",
     "rpc:Menu/ExcelTool/ExportExcel": "project-chaos.config-pipeline.exporter.export-menu",
     "rpc:Menu/ExcelTool/ExportExcelConfigs": "project-chaos.config-pipeline.exporter.export-menu",
     "rpc:Menu/ExcelTool/ExportExcelModels": "project-chaos.config-pipeline.exporter.export-menu",
@@ -27419,6 +28368,7 @@
     "rpc:Menu/Tools/图标/按键图标映射": "project-chaos.editor-tools.input-icon.keymap-window",
     "rpc:Menu/Tools/图标/应用图标导入设置": "project-chaos.editor-tools.art-pipeline.icon-import-policy",
     "rpc:Menu/Tools/图标/重建图标图集": "project-chaos.editor-tools.art-pipeline.icon-atlas",
+    "rpc:MetaProgressService.SaveProgress": "project-chaos.bootstrap.w5-gameplay.meta-events",
     "rpc:MonoController.AddUpdateListener": "project-chaos.bootstrap.mono-tick.controller",
     "rpc:MonoController.Clear": "project-chaos.bootstrap.mono-tick.controller",
     "rpc:MonoController.RemoveUpdateListener": "project-chaos.bootstrap.mono-tick.controller",
@@ -27471,10 +28421,21 @@
     "rpc:ResolutionHelper.GetDisplayMax": "project-chaos.framework.settings.resolution",
     "rpc:ResolutionHelper.GetPresetAt": "project-chaos.framework.settings.resolution",
     "rpc:ResolutionHelper.PresetCount": "project-chaos.framework.settings.resolution",
+    "rpc:RunEncounter.ApplyTeamDamage": "project-chaos.bootstrap.w5-gameplay.encounter",
+    "rpc:RunEncounter.EnterPreparedScene": "project-chaos.bootstrap.w5-gameplay.encounter",
+    "rpc:RunEncounter.Team.GetHealth": "project-chaos.bootstrap.w5-gameplay.team-supply",
+    "rpc:RunEncounter.Tick": "project-chaos.bootstrap.w5-gameplay.encounter",
+    "rpc:RunMap.RunMapNavigator.MoveTo": "project-chaos.bootstrap.w5-gameplay.interaction",
+    "rpc:RunMap.RunMapPathfinder.FindPath": "project-chaos.bootstrap.w5-gameplay.interaction",
     "rpc:RunMapAssembler.Assemble": "project-chaos.framework.runmap.assembler",
     "rpc:RunMapBootstrap.BuildScene": "project-chaos.framework.runmap.bootstrap",
     "rpc:RunMapConfigLoader.LoadFromConfigs": "project-chaos.framework.runmap.config-loader",
     "rpc:RunMapLoadingText.ForStage": "project-chaos.framework.runmap.loading-text",
+    "rpc:RunSceneFlow.Camp": "project-chaos.bootstrap.w5-gameplay.team-supply",
+    "rpc:RunSceneFlow.CollectRunBag": "project-chaos.bootstrap.w5-gameplay.team-supply",
+    "rpc:RunSceneFlow.EnterRun": "project-chaos.bootstrap.w5-gameplay.run-flow",
+    "rpc:RunSceneFlow.Retreat": "project-chaos.bootstrap.w5-gameplay.run-flow",
+    "rpc:RunSceneFlow.Settle": "project-chaos.bootstrap.w5-gameplay.run-flow",
     "rpc:SavePayload.version": "project-chaos.framework.save.slot-data",
     "rpc:SaveSlotFile.meta": "project-chaos.framework.save.slot-data",
     "rpc:SaveSlotInfo.HasUsableSave": "project-chaos.framework.save.slot-data",
@@ -27609,6 +28570,11 @@
     "rpc:UIPanelAnimatorTool.AddAnimatorToAllPanelPrefabs": "project-chaos.editor-tools.ui-animator",
     "rpc:UIPanelAnimatorTool.ValidateAddAnimatorToAllPanelPrefabs": "project-chaos.editor-tools.ui-animator",
     "rpc:UIPanelStaggerItem.order": "project-chaos.framework.ui-animation.stagger-item",
+    "rpc:VillagePlot.Snapshot": "project-chaos.bootstrap.w5-gameplay.village",
+    "rpc:VillageSceneFlow.EnterFromSave": "project-chaos.bootstrap.w5-gameplay.village",
+    "rpc:VillageService.Execute": "project-chaos.bootstrap.w5-gameplay.village",
+    "rpc:VillageService.TickProduction": "project-chaos.bootstrap.w5-gameplay.village",
+    "rpc:VillageWorkforce.Assign": "project-chaos.bootstrap.w5-gameplay.village",
     "rpc:WorldFactionArea.Contains": "project-chaos.framework.world-map.runtime-model",
     "rpc:WorldMapRegionTree.Build": "project-chaos.editor-tools.worldmap-tool.region-tree",
     "rpc:WorldMapService.FactionIds": "project-chaos.framework.world-map.service",
@@ -27837,6 +28803,106 @@
       "label": {
         "zh": "启动场景挂载 Entry",
         "en": "Startup scene hosts Entry"
+      }
+    },
+    {
+      "from": "project-chaos.bootstrap.w5-gameplay.encounter",
+      "to": "project-chaos.bootstrap.w5-gameplay.run-flow",
+      "kind": "call",
+      "cross_tree": false,
+      "label": {
+        "zh": "在派遣流程建立的会话里跑",
+        "en": "Runs in dispatch-created run"
+      }
+    },
+    {
+      "from": "project-chaos.bootstrap.w5-gameplay.encounter",
+      "to": "project-chaos.config-pipeline",
+      "kind": "reference",
+      "cross_tree": false,
+      "label": {
+        "zh": "读取房间与掉落配置",
+        "en": "Reads room/drop config"
+      }
+    },
+    {
+      "from": "project-chaos.bootstrap.w5-gameplay.interaction",
+      "to": "project-chaos.framework.runmap",
+      "kind": "call",
+      "cross_tree": false,
+      "label": {
+        "zh": "基于能力图寻路",
+        "en": "Pathfind on capability graph"
+      }
+    },
+    {
+      "from": "project-chaos.bootstrap.w5-gameplay.interaction",
+      "to": "project-chaos.mvp",
+      "kind": "reference",
+      "cross_tree": false,
+      "label": {
+        "zh": "交互提示走 MVP 三件套",
+        "en": "Prompt uses MVP trio"
+      }
+    },
+    {
+      "from": "project-chaos.bootstrap.w5-gameplay.meta-events",
+      "to": "project-chaos.config-pipeline",
+      "kind": "reference",
+      "cross_tree": false,
+      "label": {
+        "zh": "读取事件与市场配置",
+        "en": "Reads event/market config"
+      }
+    },
+    {
+      "from": "project-chaos.bootstrap.w5-gameplay.meta-events",
+      "to": "project-chaos.framework.save",
+      "kind": "call",
+      "cross_tree": false,
+      "label": {
+        "zh": "奖励与结算走存档事务",
+        "en": "Rewards via save transactions"
+      }
+    },
+    {
+      "from": "project-chaos.bootstrap.w5-gameplay.run-flow",
+      "to": "project-chaos.bootstrap.scene-loading",
+      "kind": "call",
+      "cross_tree": false,
+      "label": {
+        "zh": "经读条切换场景",
+        "en": "Switch scenes via loading"
+      }
+    },
+    {
+      "from": "project-chaos.bootstrap.w5-gameplay.run-flow",
+      "to": "project-chaos.framework.runmap",
+      "kind": "call",
+      "cross_tree": false,
+      "label": {
+        "zh": "接管读条生成好的地图数据",
+        "en": "Adopt prepared map data"
+      }
+    },
+    {
+      "from": "project-chaos.bootstrap.w5-gameplay.village",
+      "to": "project-chaos.bootstrap.scene-loading",
+      "kind": "call",
+      "cross_tree": false,
+      "label": {
+        "zh": "经读条进入村庄",
+        "en": "Load village via loading"
+      }
+    },
+    {
+      "from": "project-chaos.bootstrap.w5-gameplay.village",
+      "to": "project-chaos.framework.save",
+      "kind": "call",
+      "cross_tree": false,
+      "label": {
+        "zh": "建造命令回滚并存档",
+        "en": "Roll back and persist builds"
       }
     },
     {
@@ -30105,6 +31171,16 @@
       }
     },
     {
+      "from": "project-chaos.project-infra.python-docs.setting-panel-doc",
+      "to": "project-chaos.project-infra.python-docs.docx-kit",
+      "kind": "reference",
+      "cross_tree": false,
+      "label": {
+        "zh": "复用 docx 样式工具",
+        "en": "Reuses docx style kit"
+      }
+    },
+    {
       "from": "project-chaos.team-process.arch-docs.blueprint",
       "to": "project-chaos.team-process.arch-docs.as-is-findings",
       "kind": "reference",
@@ -30613,11 +31689,12 @@
     "project-chaos.bootstrap": {
       "schema_version": 1,
       "id": "project-chaos.bootstrap",
-      "updated_at": "2026-10-06T11:58:30.506Z",
+      "updated_at": "2026-10-31T09:01:45.809Z",
       "mode": "groups",
+      "max_columns": 4,
       "reading": {
-        "zh": "从左到右是启动链路：Entry 按次序拉起各管理器 → MonoManager 提供帧驱动与协程 → ScenesLoadManager 是全工程唯一调 SceneManager 的地方 → LoadingController 持控读条与激活 → 场景资产由构建清单决定哪些能被加载。",
-        "en": "Left to right is the boot chain: Entry brings the managers up in order → MonoManager supplies the tick and coroutines → ScenesLoadManager is the only caller of SceneManager → LoadingController owns the bar and activation → the build list decides which scenes can be loaded."
+        "zh": "从左到右是启动链路：Entry 按次序拉起各管理器 → MonoManager 提供帧驱动与协程 → ScenesLoadManager 是全工程唯一调 SceneManager 的地方 → LoadingController 持控读条与激活 → 场景资产由构建清单决定哪些能被加载。最右侧 w5-gameplay 是读条之后真正跑起来的玩法流程（已拆为五个阶段），可继续下钻。",
+        "en": "Left to right is the boot chain: Entry brings the managers up in order -> MonoManager supplies the tick and coroutines -> ScenesLoadManager is the only caller of SceneManager -> LoadingController owns the bar and activation -> the build list decides which scenes can be loaded. The rightmost w5-gameplay node is the gameplay that actually runs after loading, now split into five stages; drill in for detail."
       },
       "order": [
         "project-chaos.bootstrap.entry",
@@ -30626,7 +31703,8 @@
         "project-chaos.bootstrap.scene-loading",
         "project-chaos.bootstrap.loading-screen",
         "project-chaos.bootstrap.scenes",
-        "project-chaos.bootstrap.build-settings"
+        "project-chaos.bootstrap.build-settings",
+        "project-chaos.bootstrap.w5-gameplay"
       ],
       "groups": [
         {
@@ -30661,6 +31739,16 @@
           },
           "children": [
             "project-chaos.bootstrap.build-settings"
+          ]
+        },
+        {
+          "id": "gameplay-flow",
+          "title": {
+            "zh": "玩法流程（W5 起的正式玩法）",
+            "en": "Gameplay Flows"
+          },
+          "children": [
+            "project-chaos.bootstrap.w5-gameplay"
           ]
         }
       ]
@@ -30775,6 +31863,60 @@
         "project-chaos.bootstrap.singleton.base",
         "project-chaos.bootstrap.singleton.mono",
         "project-chaos.bootstrap.singleton.auto-mono"
+      ]
+    },
+    "project-chaos.bootstrap.w5-gameplay": {
+      "schema_version": 1,
+      "id": "project-chaos.bootstrap.w5-gameplay",
+      "updated_at": "2026-10-31T09:01:50.040Z",
+      "mode": "groups",
+      "max_columns": 3,
+      "reading": {
+        "zh": "这层按一局的时间线读：run-flow 受理派遣并开启局内会话；encounter 在其中推进战斗；interaction 与 village 是场景侧玩法（局内地图的交互寻路、实体村庄的生产循环）；meta-events 与 team-supply 把奖励、市场交易与队伍状态结算回存档。team-supply 是计划态占位，等对应代码抽出后再落地。",
+        "en": "Read this layer as a run's timeline. run-flow accepts the dispatch and opens the run session; encounter runs the fighting inside it; interaction and village are the scene-side play (interacting/pathfinding in the run map, and the physical village production loop); meta-events and team-supply close the loop by settling rewards, market trades and team state back into saves. team-supply is a planned placeholder until that code is extracted."
+      },
+      "order": [
+        "project-chaos.bootstrap.w5-gameplay.run-flow",
+        "project-chaos.bootstrap.w5-gameplay.encounter",
+        "project-chaos.bootstrap.w5-gameplay.interaction",
+        "project-chaos.bootstrap.w5-gameplay.village",
+        "project-chaos.bootstrap.w5-gameplay.meta-events",
+        "project-chaos.bootstrap.w5-gameplay.team-supply"
+      ],
+      "groups": [
+        {
+          "id": "run-core",
+          "title": {
+            "zh": "局内主干：派遣与遭遇",
+            "en": "Run Core: Dispatch & Encounter"
+          },
+          "children": [
+            "project-chaos.bootstrap.w5-gameplay.run-flow",
+            "project-chaos.bootstrap.w5-gameplay.encounter"
+          ]
+        },
+        {
+          "id": "world-play",
+          "title": {
+            "zh": "场景内玩法：交互与村庄",
+            "en": "In-World Play: Interaction & Village"
+          },
+          "children": [
+            "project-chaos.bootstrap.w5-gameplay.interaction",
+            "project-chaos.bootstrap.w5-gameplay.village"
+          ]
+        },
+        {
+          "id": "meta-and-supply",
+          "title": {
+            "zh": "局外经济与队伍补给",
+            "en": "Meta Economy & Team Supply"
+          },
+          "children": [
+            "project-chaos.bootstrap.w5-gameplay.meta-events",
+            "project-chaos.bootstrap.w5-gameplay.team-supply"
+          ]
+        }
       ]
     },
     "project-chaos.config-pipeline": {
@@ -30932,16 +32074,18 @@
     "project-chaos.config-pipeline.generated-json": {
       "schema_version": 1,
       "id": "project-chaos.config-pipeline.generated-json",
-      "updated_at": "2026-10-11T16:01:36.069Z",
+      "updated_at": "2026-10-31T09:01:21.543Z",
       "mode": "groups",
       "max_columns": 3,
       "reading": {
-        "zh": "Resources/Data/Json/Runtime 下的运行时 Json（Resources 加载不带扩展名）。本层全部是导出产物：禁止手改，改表后重跑导出。",
-        "en": "Runtime JSON under Resources/Data/Json/Runtime (loaded without extension). All files here are export output: never hand-edit; change the table and re-export instead."
+        "zh": "Resources/Data/Json/Runtime 下的运行时 Json（Resources 加载不带扩展名），与源表同构分组：示例/读条、局外世界地图、地图生成表组。本层全部是导出产物：禁止手改，改表后重跑导出。",
+        "en": "Runtime JSON under Resources/Data/Json/Runtime (loaded without extension), grouped the same way as the source tables: smoke/loading, meta world map, and the runmap generation set. Every file here is export output - never hand-edit; change the table and re-export."
       },
       "order": [
         "project-chaos.config-pipeline.generated-json.test-table",
         "project-chaos.config-pipeline.generated-json.loading-table",
+        "project-chaos.config-pipeline.generated-json.world-map",
+        "project-chaos.config-pipeline.generated-json.world-faction",
         "project-chaos.config-pipeline.generated-json.map-biome",
         "project-chaos.config-pipeline.generated-json.map-preset",
         "project-chaos.config-pipeline.generated-json.preset-layer",
@@ -30960,6 +32104,17 @@
           "children": [
             "project-chaos.config-pipeline.generated-json.test-table",
             "project-chaos.config-pipeline.generated-json.loading-table"
+          ]
+        },
+        {
+          "id": "worldmap",
+          "title": {
+            "zh": "局外世界地图表组",
+            "en": "World map tables"
+          },
+          "children": [
+            "project-chaos.config-pipeline.generated-json.world-map",
+            "project-chaos.config-pipeline.generated-json.world-faction"
           ]
         },
         {
@@ -30983,17 +32138,19 @@
     "project-chaos.config-pipeline.generated-models": {
       "schema_version": 1,
       "id": "project-chaos.config-pipeline.generated-models",
-      "updated_at": "2026-10-11T16:01:36.305Z",
+      "updated_at": "2026-10-31T09:01:40.163Z",
       "mode": "groups",
       "max_columns": 3,
       "reading": {
-        "zh": "生成的数据类（Config 模式 → *Config.cs，Data 模式 → *Data.cs），public 字段供 JsonUtility 序列化。禁止手改；字段含义回指同名的 table-repo 模块。",
-        "en": "Generated C# data classes (Config mode -> *Config.cs, Data mode -> *Data.cs) with public fields for JsonUtility. Never hand-edit; field meanings point back to the matching table-repo module."
+        "zh": "生成的数据类（Config 模式 → *Config.cs，Data 模式 → *Data.cs），public 字段供 JsonUtility 序列化，与表同构分组：示例/读条、局外世界地图、地图生成。禁止手改；字段含义回指同名的 table-repo 模块。",
+        "en": "Generated C# data classes (Config mode -> *Config.cs, Data mode -> *Data.cs) with public fields for JsonUtility, grouped like the tables: smoke/loading, meta world map, runmap generation set. Never hand-edit; field meanings point back to the matching table-repo module."
       },
       "order": [
         "project-chaos.config-pipeline.generated-models.test-table-config",
         "project-chaos.config-pipeline.generated-models.test-table-data",
         "project-chaos.config-pipeline.generated-models.loading-table-config",
+        "project-chaos.config-pipeline.generated-models.world-map-config",
+        "project-chaos.config-pipeline.generated-models.world-faction-config",
         "project-chaos.config-pipeline.generated-models.map-biome-config",
         "project-chaos.config-pipeline.generated-models.map-preset-config",
         "project-chaos.config-pipeline.generated-models.preset-layer-config",
@@ -31013,6 +32170,17 @@
             "project-chaos.config-pipeline.generated-models.test-table-config",
             "project-chaos.config-pipeline.generated-models.test-table-data",
             "project-chaos.config-pipeline.generated-models.loading-table-config"
+          ]
+        },
+        {
+          "id": "worldmap",
+          "title": {
+            "zh": "局外世界地图类组",
+            "en": "World map classes"
+          },
+          "children": [
+            "project-chaos.config-pipeline.generated-models.world-map-config",
+            "project-chaos.config-pipeline.generated-models.world-faction-config"
           ]
         },
         {
@@ -31075,17 +32243,20 @@
     "project-chaos.config-pipeline.table-repo": {
       "schema_version": 1,
       "id": "project-chaos.config-pipeline.table-repo",
-      "updated_at": "2026-10-11T16:01:42.333Z",
+      "updated_at": "2026-10-31T09:01:15.218Z",
       "mode": "groups",
       "max_columns": 3,
       "reading": {
-        "zh": "左组是示例表与读条表；右组是地图生成的 7 张表，按生成器消费顺序读：主题（MapBiome）→ 原型图预算（MapPreset）→ 层序（PresetLayer）→ 房间块池（MapChunk）→ 接口（ChunkSocket）→ 标记点（ChunkSlot），外加读条文案表（MapLoading）。",
-        "en": "Left: the smoke-test and loading tables. Right: the seven-table runmap set, read as the generator consumes it — biome (theme/layer) -> preset (layout budget) -> preset layer (layer order) -> chunk pool -> sockets -> slots, plus the loading-caption table."
+        "zh": "左组是示例表与读条表；中组是局外世界地图表（WorldMap / WorldFaction）及世界地图工具的工作区状态；右组是地图生成的 7 张表，按生成器消费顺序读：主题（MapBiome）→ 原型图预算（MapPreset）→ 层序（PresetLayer）→ 房间块池（MapChunk）→ 接口（ChunkSocket）→ 标记点（ChunkSlot），外加读条文案表（MapLoading）。",
+        "en": "Left: the smoke-test and loading tables. Middle: the meta world-map set (WorldMap / WorldFaction) plus the world-map tool's workspace state. Right: the seven-table runmap set, read as the generator consumes it - biome (theme/layer) -> preset (layout budget) -> preset layer (layer order) -> chunk pool -> sockets -> slots, plus the loading-caption table."
       },
       "order": [
         "project-chaos.config-pipeline.table-repo.test-table",
         "project-chaos.config-pipeline.table-repo.loading-table",
         "project-chaos.config-pipeline.table-repo.repo-readme",
+        "project-chaos.config-pipeline.table-repo.world-map",
+        "project-chaos.config-pipeline.table-repo.world-faction",
+        "project-chaos.config-pipeline.table-repo.worldmap-tool-workspace",
         "project-chaos.config-pipeline.table-repo.map-biome",
         "project-chaos.config-pipeline.table-repo.map-preset",
         "project-chaos.config-pipeline.table-repo.preset-layer",
@@ -31105,6 +32276,18 @@
             "project-chaos.config-pipeline.table-repo.test-table",
             "project-chaos.config-pipeline.table-repo.loading-table",
             "project-chaos.config-pipeline.table-repo.repo-readme"
+          ]
+        },
+        {
+          "id": "worldmap",
+          "title": {
+            "zh": "局外世界地图表组与工具工作区",
+            "en": "World map tables & tool workspace"
+          },
+          "children": [
+            "project-chaos.config-pipeline.table-repo.world-map",
+            "project-chaos.config-pipeline.table-repo.world-faction",
+            "project-chaos.config-pipeline.table-repo.worldmap-tool-workspace"
           ]
         },
         {
@@ -31128,14 +32311,19 @@
     "project-chaos.editor-tools": {
       "schema_version": 1,
       "id": "project-chaos.editor-tools",
-      "updated_at": "2026-10-10T16:05:47.302Z",
+      "updated_at": "2026-10-31T09:01:08.398Z",
       "mode": "groups",
       "max_columns": 3,
+      "reading": {
+        "zh": "四簇，从左到右读：内容编辑（本地化合并、对话编辑器），工作流工具（Git、场景 UI 总览、世界地图编辑窗口），美术/图标/局内地图工具，最后是预制体与插件设置。",
+        "en": "Four clusters, read left to right: content editing (localization merge, dialogue editor), workflow tools (git, scene UI overview, world-map editor window), art/icon/run-map utilities, and finally prefab & plugin settings."
+      },
       "order": [
         "project-chaos.editor-tools.localization",
         "project-chaos.editor-tools.dialogue-editor",
         "project-chaos.editor-tools.git",
         "project-chaos.editor-tools.scene-ui-overview",
+        "project-chaos.editor-tools.worldmap-tool",
         "project-chaos.editor-tools.art-pipeline",
         "project-chaos.editor-tools.runmap-placeholder",
         "project-chaos.editor-tools.runmap-verify",
@@ -31158,12 +32346,13 @@
         {
           "id": "workflow-scene",
           "title": {
-            "zh": "工作流与场景",
-            "en": "Workflow and Scene"
+            "zh": "工作流、场景与世界地图工具",
+            "en": "Workflow, Scene & World Map"
           },
           "children": [
             "project-chaos.editor-tools.git",
-            "project-chaos.editor-tools.scene-ui-overview"
+            "project-chaos.editor-tools.scene-ui-overview",
+            "project-chaos.editor-tools.worldmap-tool"
           ]
         },
         {
@@ -31470,12 +32659,12 @@
     "project-chaos.framework": {
       "schema_version": 1,
       "id": "project-chaos.framework",
-      "updated_at": "2026-10-11T16:01:35.557Z",
+      "updated_at": "2026-10-31T09:00:55.381Z",
       "mode": "groups",
       "max_columns": 3,
       "reading": {
-        "zh": "按“先用后玩”读：左组是路径/跨场景常驻/日志/事件/资源/对象池等全局底座，第二组是 UI 与输入，第三组是本地化与设置，最后一组是局内玩法（地图生成）、音频、存档、对话与自测；箭头是子模块之间的调用/引用关系。",
-        "en": "Read left to right: global foundations (paths, cross-scene persistence, logging, events, resources, pool), then UI & input, then localization & settings, and finally in-run gameplay (map generation), audio, save, dialogue and dev-test probes. Arrows are call/reference links between submodules."
+        "zh": "按“先用后玩”读：左组是路径/跨场景常驻/日志/事件/资源/对象池等全局底座，第二组是 UI 与输入，第三组是本地化与设置，最后一组是面向玩法的层——局外世界地图服务加局内地图生成、音频、存档、对话与自测；箭头是子模块之间的调用/引用关系。",
+        "en": "Read left to right: global foundations (paths, cross-scene persistence, logging, events, resources, pool), then UI & input, then localization & settings, and finally the gameplay-facing layer - the world map service plus in-run map generation, audio, save, dialogue and dev-test probes. Arrows are call/reference links between submodules."
       },
       "order": [
         "project-chaos.framework.paths",
@@ -31491,6 +32680,7 @@
         "project-chaos.framework.localization",
         "project-chaos.framework.settings",
         "project-chaos.framework.setting-rows",
+        "project-chaos.framework.world-map",
         "project-chaos.framework.runmap",
         "project-chaos.framework.audio",
         "project-chaos.framework.save",
@@ -31541,10 +32731,11 @@
         {
           "id": "gameplay",
           "title": {
-            "zh": "局内玩法、音频、存档与自测",
-            "en": "Gameplay, Audio, Save & Tests"
+            "zh": "局外地图、局内玩法、音频、存档与自测",
+            "en": "World Map, Run, Audio, Save & Tests"
           },
           "children": [
+            "project-chaos.framework.world-map",
             "project-chaos.framework.runmap",
             "project-chaos.framework.audio",
             "project-chaos.framework.save",
@@ -32311,14 +33502,15 @@
     "project-chaos.mvp.view": {
       "schema_version": 1,
       "id": "project-chaos.mvp.view",
-      "updated_at": "2026-10-06T11:58:32.586Z",
+      "updated_at": "2026-10-31T09:01:00.617Z",
       "mode": "groups",
       "reading": {
-        "zh": "三个界面域并列：主菜单是入口，设置与存档都由主菜单按 PanelType 推入 UIManager 的栈。",
-        "en": "Three side-by-side UI domains: the main menu is the entry, and both settings and save/load are pushed onto the UIManager stack from it by PanelType."
+        "zh": "主菜单是入口；从这里局外世界地图承接 meta 循环，设置与存档面板都由它按 PanelType 推入 UIManager 的栈。",
+        "en": "The main menu is the entry; from there the world map carries the meta loop and the settings and save/load panels are pushed onto the UIManager stack by PanelType."
       },
       "order": [
         "project-chaos.mvp.view.main-menu",
+        "project-chaos.mvp.view.world-map",
         "project-chaos.mvp.view.settings",
         "project-chaos.mvp.view.save-load"
       ],
@@ -32334,22 +33526,14 @@
           ]
         },
         {
-          "id": "settings-ui",
+          "id": "flow-ui",
           "title": {
-            "zh": "设置界面",
-            "en": "Settings UI"
+            "zh": "局外地图·设置·存档界面",
+            "en": "World Map / Settings / Save UI"
           },
           "children": [
-            "project-chaos.mvp.view.settings"
-          ]
-        },
-        {
-          "id": "save-ui",
-          "title": {
-            "zh": "存档界面",
-            "en": "Save UI"
-          },
-          "children": [
+            "project-chaos.mvp.view.world-map",
+            "project-chaos.mvp.view.settings",
             "project-chaos.mvp.view.save-load"
           ]
         }
@@ -32485,12 +33669,12 @@
     "project-chaos.project-infra": {
       "schema_version": 1,
       "id": "project-chaos.project-infra",
-      "updated_at": "2026-10-06T11:58:42.533Z",
+      "updated_at": "2026-10-31T09:00:44.622Z",
       "mode": "groups",
       "max_columns": 4,
       "reading": {
-        "zh": "四簇：先包依赖与工程设置（基线），再第三方插件（Spine / DOTween / DLL），然后 Python 生成脚本与其产出的说明文档，最后仓库与 Agent 协作事项。跨簇箭头表示插件/脚本对资产的引用。",
-        "en": "Four clusters: packages+settings baseline, third-party plugins, the Python docs pipeline and its output manuals, then repo/agent ops. Cross-cluster arrows show plugin and script references."
+        "zh": "四簇：先包依赖与工程设置（基线），再第三方插件（Spine / DOTween / DLL），然后 Python 生成脚本与其产出的说明文档，最后仓库与 Agent 协作事项——Agent 配置、工作区、仓库根 Tools/ 的 DSH 工具链、Git 助手与仓库根生成产物。跨簇箭头表示插件/脚本对资产的引用。",
+        "en": "Four clusters: packages+settings baseline, third-party plugins (Spine / DOTween / DLL), the Python docs pipeline and its output manuals, then repo/agent ops - agent config, agent workspace, the repo-root Tools/ DSH toolchain, the git helper and generated repo-root artifacts. Cross-cluster arrows show plugin and script references."
       },
       "order": [
         "project-chaos.project-infra.packages",
@@ -32503,6 +33687,7 @@
         "project-chaos.project-infra.learn-manuals",
         "project-chaos.project-infra.agent-config",
         "project-chaos.project-infra.agent-workspace",
+        "project-chaos.project-infra.dsh-toolchain",
         "project-chaos.project-infra.git-helper",
         "project-chaos.project-infra.repo-root"
       ],
@@ -32551,6 +33736,7 @@
           "children": [
             "project-chaos.project-infra.agent-config",
             "project-chaos.project-infra.agent-workspace",
+            "project-chaos.project-infra.dsh-toolchain",
             "project-chaos.project-infra.git-helper",
             "project-chaos.project-infra.repo-root"
           ]
@@ -32706,16 +33892,17 @@
     "project-chaos.project-infra.python-docs": {
       "schema_version": 1,
       "id": "project-chaos.project-infra.python-docs",
-      "updated_at": "2026-10-06T11:58:48.569Z",
+      "updated_at": "2026-10-31T09:02:47.879Z",
       "mode": "layers",
       "max_columns": 3,
       "reading": {
-        "zh": "从左到右：样式脚手架 → 三个生成/修订脚本（生成 Learn 下的手册）→ 自检脚本回查产物。",
-        "en": "Left to right: style scaffold, then the builder/patcher scripts that write the Learn manuals, then the self-check that reads the output back."
+        "zh": "从左到右：样式脚手架 → 生成/修订脚本（doc-builders 生成 Learn 下的既有手册，setting-panel-doc 生成 Assets/Story 下的设置面板说明）→ 自检脚本回查产物。",
+        "en": "Left to right: style scaffold, then the builder/patcher scripts that write the Learn manuals (doc-builders for the existing manuals, setting-panel-doc for the settings-panel doc in Assets/Story), then the self-check that reads the output back."
       },
       "order": [
         "project-chaos.project-infra.python-docs.docx-kit",
         "project-chaos.project-infra.python-docs.doc-builders",
+        "project-chaos.project-infra.python-docs.setting-panel-doc",
         "project-chaos.project-infra.python-docs.check-docx"
       ]
     },
@@ -33218,6 +34405,15 @@
         "zh": "世界观地图工具：可拖宽的势力区域主从树与拖放"
       },
       "updated_at": "2026-10-17T09:59:33.469Z"
+    },
+    {
+      "id": "2026-10-31-architecture-tree-sync",
+      "status": "verified",
+      "title": {
+        "en": "Architecture tree re-sync: fingerprint refresh, w5-gameplay split, missing modules",
+        "zh": "架构树重新对齐：指纹刷新 + w5-gameplay 拆分 + 补建缺失模块"
+      },
+      "updated_at": "2026-10-31T09:04:05.100Z"
     }
   ]
 }

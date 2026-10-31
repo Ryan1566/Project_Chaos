@@ -10,9 +10,9 @@ description:
   en: >
       Meta world map authoring window. Drawing uses clip-local coordinates (GUI.BeginClip translates the origin) while hit-testing uses window coordinates; menu 8 asserts they match. Preview chains consecutive vertices, the auto-close edge is dashed, new vertices insert after the pen head. Toolbar 'new faction area' takes the era's next free FactionId. Sidebar: resizable era→faction→region tree; dragging a region reorders it within a faction or moves it to another faction (confirmed).
       
-revision: 3e4115979ea7e37fe093c0b4cd179612739ab7c5
-updated_at: "2026-10-17T09:59:30.828Z"
-fingerprint: 2ee8d583708cc6bca43d775b8ed5f66c1692b3482158387e676b0e3156e0fa1d
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:54:22.613Z"
+fingerprint: 8b3bbc8dee4f09e9830983fbae480b7483f21a26863fed129a1f3a4d4bd6c600
 source:
   - path: "Assets/Scripts/Editor/WorldMapTool/WorldMapToolWindow.cs"
 apis:

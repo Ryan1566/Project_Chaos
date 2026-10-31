@@ -10,9 +10,9 @@ description:
   en: >
       SaveSlotService write side: Save/CreateNew/Delete, first non-empty slot lookup and disk existence check, plus foreign-file warnings on disk.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.431Z"
-fingerprint: 8e71d66d7c2df229548a801e2b34a665614a6e0faa67777f36a02d0b91c1fece
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:54:34.943Z"
+fingerprint: a8be33462fa85ac6dd6f4113b8441f4b9f867790a1272dc5182656837e041d53
 source:
   - path: "Assets/Scripts/Runtime/GameBase/SaveManager/SaveSlotService.cs"
     line: 219

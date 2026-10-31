@@ -10,8 +10,8 @@ description:
   en: >
       241 keyboard/mouse icons named keyboard_<key>.png and mouse_<part>.png, most with *_outline variants; letters, function keys, arrows and numpad.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.063Z"
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:56:15.082Z"
 fingerprint: 391b4ab95fedfa32cef143e7ab01491688e3ec46d7f4459e979d2f890d640f49
 source:
   - path: "Assets/Art/icon/keyboard&mouse/keyboard_a.png"

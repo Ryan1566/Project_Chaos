@@ -26,10 +26,14 @@ public sealed class RunItemWheelDriver : MonoBehaviour
                 || RunItemUseService.Actor == null || RunItemUseService.Actor.IsDowned) { Close(); return; }
             if (_hold && !input.IsNavigationHeld(InputManager.ActionItemWheel)) { Close(); return; }
             if (Time.frameCount == _openedFrame) return;
-            if ((!_hold && input.WasNavigationPressed(InputManager.ActionItemWheel))
-                || input.WasNavigationPressed(InputManager.ActionMenu) || Mouse.current?.rightButton.wasPressedThisFrame == true)
+            if (!_hold && input.WasNavigationPressed(InputManager.ActionItemWheel))
             { Close(); return; }
-            if (Keyboard.current?.backspaceKey.wasPressedThisFrame == true) _presenter.Back();
+            if (input.WasNavigationPressed(InputManager.ActionMenu) || Mouse.current?.rightButton.wasPressedThisFrame == true)
+            {
+                _presenter.Back();
+                if (!_presenter.Model.IsOpen) Close();
+                return;
+            }
             if (!_presenter.Model.IsOpen) { Close(); return; }
             var delta = Mouse.current == null ? Vector2.zero : Mouse.current.delta.ReadValue();
             _presenter.Move(delta.x, delta.y, Time.unscaledDeltaTime);

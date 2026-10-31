@@ -11,9 +11,9 @@ description:
   en: >
       The id-to-field binding toolkit: BindSlider/BindSelector/BindToggle/BindButton each map one settingId onto a getter and setter of SettingsData, notify SettingsManager when the player changes something, and return the row so a page can grey it out later. FindRow and ValidateRows catch rows that were placed in the prefab but never bound.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.441Z"
-fingerprint: 566f91ff5e4fd192b5d959c2369f661d2efc4a42ee64f280b1b24860fab98f4f
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:58:29.739Z"
+fingerprint: 0004fedd3687c1cf546418ae14d08bc503625d876ac5e26e2fcb8584829151e6
 source:
   - path: "Assets/Scripts/Runtime/MVP/View/SettingsPage/SettingsPageBase.cs"
     line: 158

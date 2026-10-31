@@ -11,9 +11,9 @@ description:
   en: >
       Bind-on-first-use lifecycle: the panel calls EnsureBound, which runs OnBind exactly once and logs an error when the GameObject is still inactive. RefreshAll replays the Pending snapshot into every registered refresher, deliberately via SetValueWithoutNotify so refresh cannot feed back into itself.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.442Z"
-fingerprint: 566f91ff5e4fd192b5d959c2369f661d2efc4a42ee64f280b1b24860fab98f4f
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:58:29.739Z"
+fingerprint: 0004fedd3687c1cf546418ae14d08bc503625d876ac5e26e2fcb8584829151e6
 source:
   - path: "Assets/Scripts/Runtime/MVP/View/SettingsPage/SettingsPageBase.cs"
     line: 119

@@ -1,14 +1,15 @@
 {
   "schema_version": 1,
   "id": "project-chaos.mvp.view",
-  "updated_at": "2026-10-06T11:58:32.586Z",
+  "updated_at": "2026-10-31T09:01:00.617Z",
   "mode": "groups",
   "reading": {
-    "zh": "三个界面域并列：主菜单是入口，设置与存档都由主菜单按 PanelType 推入 UIManager 的栈。",
-    "en": "Three side-by-side UI domains: the main menu is the entry, and both settings and save/load are pushed onto the UIManager stack from it by PanelType."
+    "zh": "主菜单是入口；从这里局外世界地图承接 meta 循环，设置与存档面板都由它按 PanelType 推入 UIManager 的栈。",
+    "en": "The main menu is the entry; from there the world map carries the meta loop and the settings and save/load panels are pushed onto the UIManager stack by PanelType."
   },
   "order": [
     "project-chaos.mvp.view.main-menu",
+    "project-chaos.mvp.view.world-map",
     "project-chaos.mvp.view.settings",
     "project-chaos.mvp.view.save-load"
   ],
@@ -24,22 +25,14 @@
       ]
     },
     {
-      "id": "settings-ui",
+      "id": "flow-ui",
       "title": {
-        "zh": "设置界面",
-        "en": "Settings UI"
+        "zh": "局外地图·设置·存档界面",
+        "en": "World Map / Settings / Save UI"
       },
       "children": [
-        "project-chaos.mvp.view.settings"
-      ]
-    },
-    {
-      "id": "save-ui",
-      "title": {
-        "zh": "存档界面",
-        "en": "Save UI"
-      },
-      "children": [
+        "project-chaos.mvp.view.world-map",
+        "project-chaos.mvp.view.settings",
         "project-chaos.mvp.view.save-load"
       ]
     }

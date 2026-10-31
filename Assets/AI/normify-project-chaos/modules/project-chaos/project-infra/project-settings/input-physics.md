@@ -10,8 +10,8 @@ description:
   en: >
       Input and physics configuration: legacy input axes plus 2D/3D physics and cluster input settings.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.459Z"
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:56:15.069Z"
 fingerprint: 02de1827ff973665c969b20c0c913139f68bff05b478398ab455eb36731cb709
 source:
   - path: "ProjectSettings/InputManager.asset"

@@ -1,17 +1,19 @@
 {
   "schema_version": 1,
   "id": "project-chaos.config-pipeline.generated-models",
-  "updated_at": "2026-10-11T16:01:36.305Z",
+  "updated_at": "2026-10-31T09:01:40.163Z",
   "mode": "groups",
   "max_columns": 3,
   "reading": {
-    "zh": "生成的数据类（Config 模式 → *Config.cs，Data 模式 → *Data.cs），public 字段供 JsonUtility 序列化。禁止手改；字段含义回指同名的 table-repo 模块。",
-    "en": "Generated C# data classes (Config mode -> *Config.cs, Data mode -> *Data.cs) with public fields for JsonUtility. Never hand-edit; field meanings point back to the matching table-repo module."
+    "zh": "生成的数据类（Config 模式 → *Config.cs，Data 模式 → *Data.cs），public 字段供 JsonUtility 序列化，与表同构分组：示例/读条、局外世界地图、地图生成。禁止手改；字段含义回指同名的 table-repo 模块。",
+    "en": "Generated C# data classes (Config mode -> *Config.cs, Data mode -> *Data.cs) with public fields for JsonUtility, grouped like the tables: smoke/loading, meta world map, runmap generation set. Never hand-edit; field meanings point back to the matching table-repo module."
   },
   "order": [
     "project-chaos.config-pipeline.generated-models.test-table-config",
     "project-chaos.config-pipeline.generated-models.test-table-data",
     "project-chaos.config-pipeline.generated-models.loading-table-config",
+    "project-chaos.config-pipeline.generated-models.world-map-config",
+    "project-chaos.config-pipeline.generated-models.world-faction-config",
     "project-chaos.config-pipeline.generated-models.map-biome-config",
     "project-chaos.config-pipeline.generated-models.map-preset-config",
     "project-chaos.config-pipeline.generated-models.preset-layer-config",
@@ -31,6 +33,17 @@
         "project-chaos.config-pipeline.generated-models.test-table-config",
         "project-chaos.config-pipeline.generated-models.test-table-data",
         "project-chaos.config-pipeline.generated-models.loading-table-config"
+      ]
+    },
+    {
+      "id": "worldmap",
+      "title": {
+        "zh": "局外世界地图类组",
+        "en": "World map classes"
+      },
+      "children": [
+        "project-chaos.config-pipeline.generated-models.world-map-config",
+        "project-chaos.config-pipeline.generated-models.world-faction-config"
       ]
     },
     {

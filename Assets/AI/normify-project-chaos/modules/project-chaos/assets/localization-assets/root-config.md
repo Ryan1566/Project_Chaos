@@ -10,9 +10,9 @@ description:
   en: >
       Root localization config and the LanguageFontMap that binds each language to a TMP font asset.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.351Z"
-fingerprint: a48b7ff9dc21fa14558a028006cc173a04322a603df58656916052aabd5ec36e
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:56:27.357Z"
+fingerprint: e02bee6c932388e13b30f42821a000b92c8837eea58e4159e29520dfa1c70129
 source:
   - path: "Assets/Data/Localization/ChaosLocalizationConfig.asset"
   - path: "Assets/Data/Localization/LanguageFontMap.asset"

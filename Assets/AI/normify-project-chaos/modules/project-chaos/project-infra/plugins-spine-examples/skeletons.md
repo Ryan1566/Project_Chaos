@@ -10,8 +10,8 @@ description:
   en: >
       168 example skeleton files (Dragon, Eyes, Raptor, Spineboy, ...) with their atlases, JSON and materials.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.452Z"
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:56:01.126Z"
 fingerprint: 7a88129b3bcaf6a37a1047d46bbfec573450d831cb727320ad68e751bca734aa
 source:
   - path: "Assets/Plugins/Spine Examples/Spine Skeletons/Dragon/dragon_SkeletonData.asset"

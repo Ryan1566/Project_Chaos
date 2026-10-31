@@ -10,8 +10,8 @@ description:
   en: >
       UIPanelAnimator stagger internals: collects marked/child items, builds per-item tweens with interval ordering, and prunes the item cache.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.435Z"
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:57:59.772Z"
 fingerprint: ca438f41c73fb26879bac743ccf5c9ab68e78458e1ca3ba696fe70887649c502
 source:
   - path: "Assets/Scripts/Runtime/GameBase/UIManager/UIPanelAnimator.cs"

@@ -10,8 +10,8 @@ description:
   en: >
       06_Overlays: 14 sprites (Toast info/success/warning/fail, Tooltip, Keycap square/wide, EventBar scene/story/system, Warn ready/injured/dispatched/low-confidence). 07_Ornaments: 4 sprites (Ornament divider, seal, meander, corner-cloud) - 18 sprites covering toast popups, keycaps and Chinese-style ornaments.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.082Z"
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:56:26.858Z"
 fingerprint: b91ba49a443d5887dbba13a15e929ad4bd8ade2563246d9cc07d6c8a8c058c3c
 source:
   - path: "Assets/Art/UI/06_Overlays/EventBar_Scene.png"

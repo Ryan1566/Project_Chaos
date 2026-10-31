@@ -1,16 +1,18 @@
 {
   "schema_version": 1,
   "id": "project-chaos.config-pipeline.generated-json",
-  "updated_at": "2026-10-11T16:01:36.069Z",
+  "updated_at": "2026-10-31T09:01:21.543Z",
   "mode": "groups",
   "max_columns": 3,
   "reading": {
-    "zh": "Resources/Data/Json/Runtime 下的运行时 Json（Resources 加载不带扩展名）。本层全部是导出产物：禁止手改，改表后重跑导出。",
-    "en": "Runtime JSON under Resources/Data/Json/Runtime (loaded without extension). All files here are export output: never hand-edit; change the table and re-export instead."
+    "zh": "Resources/Data/Json/Runtime 下的运行时 Json（Resources 加载不带扩展名），与源表同构分组：示例/读条、局外世界地图、地图生成表组。本层全部是导出产物：禁止手改，改表后重跑导出。",
+    "en": "Runtime JSON under Resources/Data/Json/Runtime (loaded without extension), grouped the same way as the source tables: smoke/loading, meta world map, and the runmap generation set. Every file here is export output - never hand-edit; change the table and re-export."
   },
   "order": [
     "project-chaos.config-pipeline.generated-json.test-table",
     "project-chaos.config-pipeline.generated-json.loading-table",
+    "project-chaos.config-pipeline.generated-json.world-map",
+    "project-chaos.config-pipeline.generated-json.world-faction",
     "project-chaos.config-pipeline.generated-json.map-biome",
     "project-chaos.config-pipeline.generated-json.map-preset",
     "project-chaos.config-pipeline.generated-json.preset-layer",
@@ -29,6 +31,17 @@
       "children": [
         "project-chaos.config-pipeline.generated-json.test-table",
         "project-chaos.config-pipeline.generated-json.loading-table"
+      ]
+    },
+    {
+      "id": "worldmap",
+      "title": {
+        "zh": "局外世界地图表组",
+        "en": "World map tables"
+      },
+      "children": [
+        "project-chaos.config-pipeline.generated-json.world-map",
+        "project-chaos.config-pipeline.generated-json.world-faction"
       ]
     },
     {

@@ -10,8 +10,8 @@ description:
   en: >
       02_Controls: 10 sprites (Dropdown closed/open and arrow up/down, Scrollbar track/thumb, Switch on/off, Tab normal/selected). 03_Sliders_Bars: 17 sprites (Slider track/fill and three handle states; Bar_Track; Bar_Fill_ for Health, Armor, Confidence, Crimson, Depth, Exp, Progress; Boss track/fill; Bar_Gloss; Bar_PhaseTick) - 27 sprites total.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.068Z"
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:56:26.823Z"
 fingerprint: 2f953c757263fff5ed61d1e437c4a8db00e21401035f71413aeebce46b2d3591
 source:
   - path: "Assets/Art/UI/02_Controls/Dropdown_Arrow_Down.png"

@@ -10,9 +10,9 @@ description:
   en: >
       BasePanel shown as the meta main screen: reads the current era from GameSession, asks WorldMapService for points and faction areas, instantiates point icons (runtime-generated circles, overridable per Kind) and the faction mask, shows Kind/Type/RefId on click, and owns the bottom buttons (back to menu, enter the run, debug era switch).
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:30:54.569Z"
-fingerprint: 508c133f403df544f4598de6a658aed52dfc4bd68f48de2149679f019a549de3
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:58:40.812Z"
+fingerprint: d9e200b35faee8bd357db17115e34412c3be51c496d9116dedb04a8a2d792ee7
 source:
   - path: "Assets/Scripts/Runtime/MVP/View/WorldMapPanel.cs"
 apis:

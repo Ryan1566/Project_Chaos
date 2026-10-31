@@ -11,9 +11,9 @@ description:
   en: >
       Newly added scene asset Assets/Scenes/MainScene.unity, landed with the 2026-10-11 commit that added the China map. It currently holds only 2 GameObjects, is referenced by no script and is not registered in Build Settings — the real entry chain is still TestScene -> LoadingScene -> WorldScene (see bootstrap.build-settings).
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.398Z"
-fingerprint: f8769b42b9aaf91a24796994711ef2098adac720f767980688b1ed0490c25e56
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:54:10.105Z"
+fingerprint: 9e6ffb62c6e69e8235b75f41177187d991cf07c23b8aa2434f6d7e5ea062b6b8
 source:
   - path: "Assets/Scenes/MainScene.unity"
 apis:

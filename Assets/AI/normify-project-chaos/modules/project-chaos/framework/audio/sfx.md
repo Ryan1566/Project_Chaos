@@ -10,8 +10,8 @@ description:
   en: >
       Sound-effect block: PlaySound/PlayUISound with callback, runtime volume change, pause and stop by AudioSource.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.417Z"
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:56:54.860Z"
 fingerprint: 1bbab6cee523c3ffabcfd4e5396869f08770bac456d42d1419768b73354fd300
 source:
   - path: "Assets/Scripts/Runtime/GameBase/AudioManager/AudioManager.cs"

@@ -10,8 +10,8 @@ description:
   en: >
       104 PlayStation icons named playstation_*.png covering PS3/4/5 buttons, D-pad, sticks, triggers and whole controllers, with outline variants.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.063Z"
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:56:15.085Z"
 fingerprint: 230d750d9de9d2aae8d5b8fcc8a5a4dc00a6c717123cc263078e426f22fdd558
 source:
   - path: "Assets/Art/icon/ps/playstation_button_cross.png"

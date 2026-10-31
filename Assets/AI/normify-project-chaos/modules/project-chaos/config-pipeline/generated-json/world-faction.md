@@ -10,9 +10,9 @@ description:
   en: >
       WorldFactionConfig.json: the runtime artifact produced from the faction-area workbook, read by WorldMapService which filters polygon vertices by the current era. Do not hand-edit.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:30:54.568Z"
-fingerprint: 2ace35fd5ba13cb4b68642ef6204cc642433f60d1d95c28f61701e69c573154f
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:54:22.606Z"
+fingerprint: c9f988a7e7059f17aa1d21f2234e508c9e5fed8f56c19e7fc6065a862b3744b0
 source:
   - path: "Assets/Resources/Data/Json/Runtime/WorldFactionConfig.json"
 apis:

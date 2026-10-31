@@ -7,11 +7,13 @@ name: {zh: "GM 面板骨架与切换", en: "GM Panel Shell and Switching"}
 description:
   zh: >
       GM 面板外壳（场景对象，不走 UIManager 面板栈）：板块列表 + 内容区，由 EnterGM 开关。它的 Canvas 层级高于 UI 画布，因此会压住世界观地图面板左上角（已知观感问题）。
+      
   en: >
       GM panel shell (scene object, not pushed through the UIManager stack): section list plus a content area, toggled by EnterGM. Its canvas sits above the UI canvas, so it overlaps the top-left of the world map panel (known cosmetic issue).
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:30:46.651Z"
-fingerprint: 46e9c0ef06a72b1823d6d594fe13c9a5037cee8e8cff5714cae42caeab8a3bce
+      
+revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
+updated_at: "2026-10-31T08:54:22.614Z"
+fingerprint: 255736699a608b0d4c4a4d5756dd5e2ffa04756b7559541748789d167612db08
 source:
   - path: "Assets/Scripts/Runtime/GM/GMPanel.cs"
     line: 1
