@@ -20,7 +20,8 @@ namespace Chaos.MVP.Presenter.Gameplay
         public int Index;
         public uint Id, Count;
         public bool Unlocked;
-        public string Name;
+        public string Name, Description;
+        public UnityEngine.Sprite Icon;
     }
     public sealed class RunMenuState
     {
@@ -81,10 +82,13 @@ namespace Chaos.MVP.Presenter.Gameplay
                 for (int i = 0; i < RunInventory.GetMaximum(section); i++)
                 {
                     var item = RunInventory.GetSlot(section, i);
+                    var definition = item == null ? null : Chaos.Gameplay.Items.ItemBase.Create(item.itemId);
                     slots.Add(new RunBagSlotState { Section = section, Index = i,
                         Id = item == null ? 0 : item.itemId, Count = item == null ? 0 : item.count,
                         Unlocked = i < RunInventory.GetCapacity(section),
-                        Name = item == null ? "" : GameplayText.ItemName(item.itemId) });
+                        Name = item == null ? "" : GameplayText.ItemName(item.itemId),
+                        Description = definition == null ? "" : definition.Name + " · " + definition.SubCategory + "：" + definition.Description,
+                        Icon = definition == null ? null : definition.Icon ?? Chaos.Gameplay.Items.ItemIconFallback.Resolve(definition.ParentCategory) });
                 }
             return new RunMenuState { Slots = slots, Tab = _tab, Uncarried = RunInventory.GetUncarriedImportant(),
                 ConfirmRetreat = _model.ConfirmRetreat,
@@ -92,7 +96,7 @@ namespace Chaos.MVP.Presenter.Gameplay
                 Hint = _model.ConfirmRetreat ? "撤离将放弃普通行囊；已获得的重要道具永久保留。"
                     : _tab == RunFunctionTab.Team ? "击杀经验由全队共享 · 每级 1 属性点 · 生命加点不治疗 · 成长仅本局有效。"
                     : _tab == RunFunctionTab.Map ? "滚轮缩放 · 拖动平移 · 队伍共享视野；敌人仅在当前视野显示。"
-                    : "拖拽物品到对应专用行或杂物格；已有物品时交换。专用行快捷选用待开放。",
+                    : "拖拽物品到对应专用行或杂物格；已有物品时交换。专用行道具可在 " + InputManager.Instance.GetBindingDisplay(InputManager.ActionItemWheel, InputManager.BindingKind.Keyboard, InputDeviceType.Keyboard) + " 轮盘中选用，左键确认。",
                 Placeholder = _tab == RunFunctionTab.Team ? "队伍状态页签预留，后续接入。"
                     : "",
                 RetreatLabel = _model.ConfirmRetreat ? "确认撤离" : "撤离" };

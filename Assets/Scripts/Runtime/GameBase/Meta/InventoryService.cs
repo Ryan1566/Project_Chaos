@@ -49,6 +49,9 @@ public class InventoryService : SingletonBase<InventoryService>
 
         DataList<ItemConfig> list = JsonUtility.FromJson<DataList<ItemConfig>>(asset.text);
         _defs = (list == null || list.datas == null) ? new List<ItemConfig>() : list.datas;
+        var itemUses = Chaos.Gameplay.Items.ItemUseCatalog.Load();
+        if (itemUses != null) foreach (var definition in itemUses.additionalDefinitions)
+            if (definition != null && !_defs.Exists(d => d.Index == definition.Index)) _defs.Add(definition);
     }
 
     public void Reload()

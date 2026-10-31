@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 //LanguageType 在 LocalizationSystem 命名空间；本类在全局命名空间，所以必须显式 using
 using LocalizationSystem;
 using UnityEngine;
@@ -49,6 +49,8 @@ public class SettingsData
     /// 这里存 int 而不是枚举：与其余设置项一致，且改文案/调枚举顺序时更稳。
     /// </summary>
     public int language = (int)LanguageType.ChineseSimplified;
+
+    public int itemWheelMode = (int)ItemWheelTriggerMode.Hold;
 
     // ══════════════════ 声音 ══════════════════
     // 四路音量统一 0~100 整数（UI 上是拉条，步进 1）。
@@ -152,6 +154,7 @@ public class SettingsData
                 //语言属于游戏性分类，恢复默认即回到默认语言。
                 //其余游戏性项（屏幕震动、伤害数字等）后续加在这里。
                 language = d.language;
+                itemWheelMode = d.itemWheelMode;
                 break;
         }
     }

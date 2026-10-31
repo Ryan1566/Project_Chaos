@@ -455,3 +455,17 @@ MonoBehaviour:
     english: Move Right
     japanese: "\u53F3\u3078\u79FB\u52D5"
     korean: "\uC624\uB978\uCABD \uC774\uB3D9"
+  - key: ui_setting_wheel_toggle
+    description: 
+    chineseSimplified: "\u70B9\u6309\u5F39\u51FA"
+    chineseTraditional: "\u9EDE\u6309\u5F48\u51FA"
+    english: Tap to toggle
+    japanese: 
+    korean: 
+  - key: ui_setting_wheel_hold
+    description: 
+    chineseSimplified: "\u957F\u6309\u663E\u793A"
+    chineseTraditional: "\u9577\u6309\u986F\u793A"
+    english: Hold to show
+    japanese: 
+    korean: 

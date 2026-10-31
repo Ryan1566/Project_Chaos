@@ -120,6 +120,9 @@ public class KeybindBindingsPage : SettingsPageBase
         BindKeyRow(SettingIds.Interact, InputManager.ActionInteract, InputManager.BindingKind.Keyboard, true);
         BindKeyRow(SettingIds.Map, InputManager.ActionMap, InputManager.BindingKind.Keyboard, true);
         BindKeyRow(SettingIds.Functions, InputManager.ActionFunctions, InputManager.BindingKind.Keyboard, true);
+        BindKeyRow(SettingIds.Inventory, InputManager.ActionInventory, InputManager.BindingKind.Keyboard, true);
+        BindKeyRow(SettingIds.Team, InputManager.ActionTeam, InputManager.BindingKind.Keyboard, true);
+        BindKeyRow(SettingIds.ItemWheel, InputManager.ActionItemWheel, InputManager.BindingKind.Keyboard, true);
 
         //手柄三行：一个格子。
         //手柄的移动不拆：它是 <Gamepad>/leftStick/x 单轴绑定，没有 negative/positive 段
@@ -166,8 +169,17 @@ public class KeybindBindingsPage : SettingsPageBase
             EnsureShortcutRow(source, keyboard ? SettingIds.Interact : SettingIds.InteractGamepad, 1);
             EnsureShortcutRow(source, keyboard ? SettingIds.Map : SettingIds.MapGamepad, 2);
             EnsureShortcutRow(source, keyboard ? SettingIds.Functions : SettingIds.FunctionsGamepad, 3);
+            if (keyboard)
+            {
+                EnsureShortcutRow(source, SettingIds.Inventory, 4);
+                EnsureShortcutRow(source, SettingIds.Team, 5);
+                EnsureShortcutRow(source, SettingIds.ItemWheel, 6);
+            }
         }
         AddRefresher(_ => {
+            SetShortcutText(SettingIds.Inventory, "局内背包");
+            SetShortcutText(SettingIds.Team, "派遣队伍");
+            SetShortcutText(SettingIds.ItemWheel, "道具快捷轮盘");
             foreach (string id in new[] { SettingIds.Interact, SettingIds.InteractGamepad })
                 SetShortcutText(id, Chaos.Gameplay.Interaction.RunInteractionText.Get("ActionName"));
             foreach (string id in new[] { SettingIds.Map, SettingIds.MapGamepad })

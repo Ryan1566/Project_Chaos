@@ -112,6 +112,33 @@
           "processors": "",
           "interactions": "",
           "initialStateCheck": false
+        },
+        {
+          "name": "Inventory",
+          "type": "Button",
+          "id": "54ca1ed7-e9a8-46c7-8f8b-d95384643964",
+          "expectedControlType": "Button",
+          "processors": "",
+          "interactions": "",
+          "initialStateCheck": false
+        },
+        {
+          "name": "Team",
+          "type": "Button",
+          "id": "e4f66c31-dd7f-4af3-b3fd-216507a8911b",
+          "expectedControlType": "Button",
+          "processors": "",
+          "interactions": "",
+          "initialStateCheck": false
+        },
+        {
+          "name": "ItemWheel",
+          "type": "Button",
+          "id": "5aae4460-4e51-4afe-85a6-93d0e41dfdc2",
+          "expectedControlType": "Button",
+          "processors": "",
+          "interactions": "",
+          "initialStateCheck": false
         }
       ],
       "bindings": [
@@ -420,6 +447,39 @@
           "processors": "",
           "groups": "Gamepad",
           "action": "VillageMap",
+          "isComposite": false,
+          "isPartOfComposite": false
+        },
+        {
+          "name": "",
+          "id": "8cec3f90-6034-4507-b847-a1147ae02748",
+          "path": "<Keyboard>/i",
+          "interactions": "",
+          "processors": "",
+          "groups": "Keyboard",
+          "action": "Inventory",
+          "isComposite": false,
+          "isPartOfComposite": false
+        },
+        {
+          "name": "",
+          "id": "8fb64ca1-860a-4da2-b0d5-4e4bab9519f7",
+          "path": "<Keyboard>/t",
+          "interactions": "",
+          "processors": "",
+          "groups": "Keyboard",
+          "action": "Team",
+          "isComposite": false,
+          "isPartOfComposite": false
+        },
+        {
+          "name": "",
+          "id": "9523965c-75d5-449f-b941-cf7b4cc2b0f4",
+          "path": "<Keyboard>/leftAlt",
+          "interactions": "",
+          "processors": "",
+          "groups": "Keyboard",
+          "action": "ItemWheel",
           "isComposite": false,
           "isPartOfComposite": false
         }

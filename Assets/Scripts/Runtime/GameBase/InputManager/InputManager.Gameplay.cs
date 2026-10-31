@@ -11,6 +11,9 @@ public partial class InputManager
     public const string ActionInteract = "Interact";
     public const string ActionMap = "Map";
     public const string ActionFunctions = "Functions";
+    public const string ActionInventory = "Inventory";
+    public const string ActionTeam = "Team";
+    public const string ActionItemWheel = "ItemWheel";
     public const string ActionVillageMove = "VillageMove";
     public const string ActionVillageJump = "VillageJump";
     public const string ActionVillageInteract = "VillageInteract";
@@ -150,6 +153,13 @@ public partial class InputManager
         var action = FindScopedAction(actionName);
         if (action == null || !action.enabled || !action.WasPressedThisFrame()) return false;
         return !(action.activeControl?.device is Pointer pointer) || !IsPointerOverUi(pointer);
+    }
+
+    public bool IsNavigationHeld(string actionName)
+    {
+        if (IsRebinding) return false;
+        var action = FindScopedAction(actionName);
+        return action != null && action.enabled && action.IsPressed();
     }
 
     private bool IsPointerOverUi(Pointer pointer)

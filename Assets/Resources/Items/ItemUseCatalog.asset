@@ -1,0 +1,100 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cea4742512b08e42aac202e372a66ba, type: 3}
+  m_Name: ItemUseCatalog
+  m_EditorClassIdentifier: 
+  profiles:
+  - itemId: 1
+    parentCategory: 2
+    subCategory: "\u8349\u836F"
+    description: "\u6062\u590D\u5F53\u524D\u89D2\u827235\u70B9\u751F\u547D\uFF1B\u6EE1\u751F\u547D\u6216\u5012\u5730\u65F6\u4E0D\u80FD\u4F7F\u7528\u3002"
+    effect: 1
+    value: 35
+    radius: 3
+    duration: 30
+    cooldown: 1
+    animationSeconds: 0.5
+    animationName: 
+    consume: 1
+  - itemId: 5
+    parentCategory: 2
+    subCategory: "\u589E\u76CA\u98DF\u7269"
+    description: "30\u79D2\u5185\u751F\u547D\u4E0A\u9650\u589E\u52A020\uFF0C\u4E0D\u81EA\u52A8\u6062\u590D\u751F\u547D\uFF1B\u91CD\u590D\u4F7F\u7528\u5237\u65B0\u6301\u7EED\u65F6\u95F4\u3002"
+    effect: 2
+    value: 20
+    radius: 3
+    duration: 30
+    cooldown: 1
+    animationSeconds: 0.5
+    animationName: 
+    consume: 1
+  - itemId: 6
+    parentCategory: 2
+    subCategory: "\u4F24\u836F"
+    description: "\u6062\u590D\u5F53\u524D\u89D2\u827260\u70B9\u751F\u547D\uFF1B\u6EE1\u751F\u547D\u6216\u5012\u5730\u65F6\u4E0D\u80FD\u4F7F\u7528\u3002"
+    effect: 1
+    value: 60
+    radius: 3
+    duration: 30
+    cooldown: 1
+    animationSeconds: 0.5
+    animationName: 
+    consume: 1
+  - itemId: 10
+    parentCategory: 3
+    subCategory: "\u7206\u7834\u5668\u5177"
+    description: "\u5BF9\u81EA\u8EAB3\u683C\u8303\u56F4\u5185\u7684\u5C40\u5185\u654C\u4EBA\u9020\u621020\u70B9\u4F24\u5BB3\uFF1B\u8303\u56F4\u5185\u65E0\u654C\u4EBA\u65F6\u4E0D\u80FD\u4F7F\u7528\u3002"
+    effect: 3
+    value: 20
+    radius: 3
+    duration: 30
+    cooldown: 1
+    animationSeconds: 0.5
+    animationName: 
+    consume: 1
+  - itemId: 11
+    parentCategory: 1
+    subCategory: "\u4FE1\u7269"
+    description: "\u6C38\u4E45\u5F52\u5C5E\u5F53\u524D\u5B58\u6863\u7684\u552F\u4E00\u4FE1\u7269\u3002\u6682\u65E0\u4E3B\u52A8\u6548\u679C\u3002"
+    effect: 0
+    value: 0
+    radius: 3
+    duration: 30
+    cooldown: 1
+    animationSeconds: 0.5
+    animationName: 
+    consume: 0
+  additionalDefinitions:
+  - Index: 10
+    NameKey: "\u9707\u54CD\u7F50"
+    Category: 5
+    IsCampItem: 0
+    StackLimit: 99
+    EffectId: 0
+    IconKey: 
+    Enable: 1
+    BuyPrice: 10
+    SellPrice: 5
+    RunCategory: 2
+    IsUnique: 0
+  - Index: 11
+    NameKey: "\u884C\u519B\u4FE1\u7269"
+    Category: 5
+    IsCampItem: 0
+    StackLimit: 1
+    EffectId: 0
+    IconKey: 
+    Enable: 1
+    BuyPrice: 0
+    SellPrice: 0
+    RunCategory: 1
+    IsUnique: 1

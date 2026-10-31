@@ -68,6 +68,17 @@ public static class RunInventory
     }
     public static bool IsImportant(uint itemId)
     { return InventoryService.Instance.GetDefinition(itemId)?.RunCategory == 1; }
+    // No event between quantity commit and effect commit; observers see the complete transaction.
+    internal static bool TryConsumeExact(RunBagSection section, int index, uint expectedId, out string reason)
+    {
+        if (!Ready(out reason)) return false;
+        if (!Address(section, index) || IsImportant(expectedId)) { reason = "道具不能消耗"; return false; }
+        var stack = Slots[(int)section][index];
+        if (stack == null || stack.itemId != expectedId || stack.count == 0) { reason = "格子内容已经改变"; return false; }
+        if (--stack.count == 0) Slots[(int)section][index] = null;
+        return true;
+    }
+    internal static void NotifyUseCommitted() { Publish(); }
     private static bool Accepts(RunBagSection section, uint id)
     {
         if (section == RunBagSection.Misc) return true;
@@ -78,6 +89,7 @@ public static class RunInventory
     { foreach (var stack in Stacks) if (stack.itemId == id) return stack.count; return 0; }
     public static void BeginRun()
     {
+        Chaos.Gameplay.Items.RunItemUseService.Clear();
         EnsureContext(); ClearSlots(); _started = true;
         foreach (var id in RunBagProgression.OwnedItems())
             PlaceImportant(id);
@@ -85,6 +97,7 @@ public static class RunInventory
     }
     public static void Clear()
     {
+        Chaos.Gameplay.Items.RunItemUseService.Clear();
         EnsureContext(); bool changed = UsedSlots != 0;
         ClearSlots(); _started = false;
         if (changed) Publish();

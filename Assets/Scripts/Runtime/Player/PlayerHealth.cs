@@ -28,6 +28,19 @@ public class PlayerHealth : MonoBehaviour
     private Vector3 _baseScale;
     private Rigidbody2D _body;
     private int _runHealthBonus;
+    private int _itemHealthBonus;
+    public void SetItemHealthBonus(int bonus)
+    {
+        bonus = Mathf.Clamp(bonus, 0, 100000);
+        maxHp = Mathf.Max(1, maxHp - _itemHealthBonus + bonus); _itemHealthBonus = bonus;
+        Hp = Mathf.Min(Hp, maxHp);
+    }
+    public int RestoreHealth(int amount)
+    {
+        if (IsDowned || amount <= 0) return 0;
+        int restored = (int)System.Math.Min((long)amount, (long)maxHp - Hp);
+        Hp += restored; return restored;
+    }
 
     /// <summary>Adjust maximum only; never heal, revive or reset invulnerability.</summary>
     public void SetRunHealthBonus(int bonus)

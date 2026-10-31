@@ -4,7 +4,7 @@ using LocalizationSystem;
 /// <summary>
 /// 游戏性设置页。
 ///
-/// 目前只有一项：语言切换。它落在这一页是因为语言属于「游戏性」分类——
+/// 语言和轮盘唤出方式。它落在这一页是因为语言属于「游戏性」分类——
 /// 与 SettingIds.Language 的前缀 "gameplay." 和 SettingsData 的「游戏性」字段分区一致。
 ///
 /// ══════════ 后续候选（来自设计文档 4.1）══════════
@@ -19,6 +19,8 @@ public class GameplaySettingsPage : SettingsPageBase
 {
     protected override void OnBind()
     {
+        BindSelector(SettingIds.ItemWheelMode, new[] { "点按弹出", "长按显示" },
+            data => data.itemWheelMode, (data, index) => data.itemWheelMode = index);
         //语言：档位就是 LanguageType 的序号，值直接存 SettingsData.language。
         //选项文案来自 LocalizationManager，所以以后启用新语言只改枚举，界面自动跟上。
         BindSelector(SettingIds.Language, GetLanguageOptions(),

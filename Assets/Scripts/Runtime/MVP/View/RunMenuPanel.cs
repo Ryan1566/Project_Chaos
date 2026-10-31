@@ -62,7 +62,7 @@ public sealed class RunMenuPanel : BasePanel, IGameplayView<RunMenuState>, IRunB
         for (int section = 0; section < 4; section++)
         {
             float y = -section * 75;
-            var heading = Label(_inventory, "Section" + section, names[section] + (section < 3 ? "\n快捷选用预留" : "\n无快捷选用"), 18,
+            var heading = Label(_inventory, "Section" + section, names[section] + (section < 3 ? "\n轮盘选用" : "\n无快捷选用"), 18,
                 new Vector2(12, y), new Vector2(156, 60));
             heading.color = section < 3 ? new Color(.75f, .84f, .94f) : new Color(.75f, .76f, .78f);
             for (int index = 0; index < maxima[section]; index++)
@@ -135,6 +135,8 @@ public sealed class RunMenuPanel : BasePanel, IGameplayView<RunMenuState>, IRunB
     private void OnDestroy() { CancelDrag(); _presenter?.Dispose(); _model?.Dispose(); _mapPresenter?.Dispose(); _teamPresenter?.Dispose(); }
     private void Send(PanelAction action, uint id = 0) { if (IsShowing) Intent?.Invoke(new PanelIntent(action, id)); }
     public void ClosePanel() { UIManager.Instance.PopPanel(); }
+    private string _defaultHint;
+    public void ShowItemDetails(string description) { if (_hint != null) _hint.text = description ?? _defaultHint; }
     public void ShowMessage(string message, bool success) { _hint.text = message; }
     private int _catalogPage;
     private uint[] _catalogItems = Array.Empty<uint>();
@@ -159,7 +161,7 @@ public sealed class RunMenuPanel : BasePanel, IGameplayView<RunMenuState>, IRunB
         CancelDrag();
         SelectedTab = state.Tab;
         _summary.text = state.Summary;
-        _hint.text = state.Hint;
+        _defaultHint = state.Hint; _hint.text = state.Hint;
         _inventory.gameObject.SetActive(state.Tab == RunFunctionTab.Inventory);
         _placeholder.transform.parent.gameObject.SetActive(false);
         _teamView.gameObject.SetActive(state.Tab == RunFunctionTab.Team);

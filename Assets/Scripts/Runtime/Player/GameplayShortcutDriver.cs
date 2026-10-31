@@ -3,6 +3,9 @@ using UnityEngine;
 /// <summary>Run-level UI shortcuts stay available when the controlled character is downed or paused.</summary>
 public sealed class GameplayShortcutDriver : MonoBehaviour
 {
+    private void Awake()
+    { if (GetComponent<RunItemWheelDriver>() == null) gameObject.AddComponent<RunItemWheelDriver>(); }
+
     private void Update()
     {
         if (!DispatchService.Instance.IsInRun || RunSceneFlow.IsTransitioning || RunEncounter.Defeated || RunEncounter.RunCleared) return;
@@ -16,6 +19,17 @@ public sealed class GameplayShortcutDriver : MonoBehaviour
                 if (collection != null && collection.IsShowing)
                 { if (!collection.TryCloseSecondaryWindow()) ui.PopPanel(); }
                 else if (input.CanReadGameplayInput) RunMenuPanel.Open();
+                return;
+            }
+            if (input.WasNavigationPressed(InputManager.ActionInventory) || input.WasNavigationPressed(InputManager.ActionTeam))
+            {
+                var tab = input.WasNavigationPressed(InputManager.ActionTeam) ? RunFunctionTab.Team : RunFunctionTab.Inventory;
+                if (collection != null && collection.IsShowing)
+                {
+                    if (collection.TryCloseSecondaryWindow()) return;
+                    if (collection.SelectedTab == tab) ui.PopPanel(); else collection.SelectTab(tab);
+                }
+                else if (input.CanReadGameplayInput) RunMenuPanel.Open(tab);
                 return;
             }
             if (input.WasNavigationPressed(InputManager.ActionMap))

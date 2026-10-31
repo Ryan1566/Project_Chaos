@@ -14,6 +14,10 @@ public static class SettingIds
 {
     // ══════════════════ 游戏性页 ══════════════════
     public const string Language = "gameplay.language";
+    public const string ItemWheelMode = "gameplay.itemWheelMode";
+    public const string Inventory = "keybind.inventory";
+    public const string Team = "keybind.team";
+    public const string ItemWheel = "keybind.itemWheel";
 
     // ══════════════════ 画面页 ══════════════════
     public const string Resolution = "graphics.resolution";

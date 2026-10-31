@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEditor;
@@ -493,7 +493,7 @@ namespace LocalizationSystem.Editor
             output.entries.Clear();
             output.entries.AddRange(merged);
             EditorUtility.SetDirty(output);
-            AssetDatabase.SaveAssets();
+            AssetDatabase.SaveAssetIfDirty(output); // Do not save unrelated dirty assets while merging one localization table.
             AssetDatabase.Refresh();
 
             r.Success = true;

@@ -66,11 +66,14 @@ public static class SettingKeys
     ///
     /// 有了它，SettingKeys 就【只有一份】，不会在 SettingsPageBase 或各地页面里被复述。
     /// </summary>
+    public static readonly string[] ItemWheelOptions = { "ui_setting_wheel_toggle", "ui_setting_wheel_hold" };
+
     public static string[] ForSetting(string settingId)
     {
         if (settingId == SettingIds.WindowMode) return WindowModeOptions;
         if (settingId == SettingIds.Quality) return QualityOptions;
         if (settingId == SettingIds.AttackTrigger) return TriggerModeOptions;
+        if (settingId == SettingIds.ItemWheelMode) return ItemWheelOptions;
         if (settingId == SettingIds.Language) return LanguageOptions;
         return null;
     }

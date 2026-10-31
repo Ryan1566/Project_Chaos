@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Text;
 using ChaosDebug;
@@ -240,6 +240,7 @@ public class SettingsManager : SingletonBase<SettingsManager>
     public void ApplyToRuntime(SettingsData data)
     {
         if (data == null) return;
+        data.itemWheelMode = data.itemWheelMode == (int)ItemWheelTriggerMode.Toggle ? 0 : 1;
         ApplyGraphics(data);
         ApplyAudio(data);
         ApplyInput(data);
