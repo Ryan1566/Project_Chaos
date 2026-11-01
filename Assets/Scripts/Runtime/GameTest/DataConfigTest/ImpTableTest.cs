@@ -1,73 +1,32 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_EDITOR
 using OfficeOpenXml;
 using System.IO;
 using ChaosDebug;
+#endif
 
-public class ImpTableTest : MonoBehaviour 
+/// <summary>ä»…åœ¨ç¼–è¾‘å™¨ä¸­æ¼”ç¤ºæŒ‰ä½ç½®è¯»å–æµ‹è¯•å·¥ä½œç°¿ï¼Œä¸ä¾èµ–ä¸­æ–‡é¡µç­¾åç§°ã€‚</summary>
+public class ImpTableTest : MonoBehaviour
 {
-    //±íÂ·¾¶¼ÇµÃ¼Óºó×º
-    string filePath;
-    FileInfo fileInfo = null;
-
-    private void Awake()
-    {
-        filePath = Application.dataPath + "/" + GlobalPath.data_ExcelPath +
-        "/TestTable_²âÊÔ±í" + ".xlsx";
-    }
-
+#if UNITY_EDITOR
     private void Start()
     {
-        fileInfo = new FileInfo(filePath);
-        //ChaosLog.Info(LogChannel.Config, ep.File.Name);
-        //ChaosLog.Info(LogChannel.Config, ep.Workbook.Worksheets.Count.ToString());
-        
-        ReadFile();
-    }
-
-    private void ReadFile()
-    {
-        // Í¨¹ıExcel±í¸ñµÄÎÄ¼şĞÅÏ¢£¬´ò¿ªExcel±í¸ñ
-        using (ExcelPackage ep = new ExcelPackage(fileInfo))
+        string path = Path.Combine(Application.dataPath, "Excel/Chaos_excel/æµ‹è¯•è¡¨.xlsx");
+        if (!File.Exists(path))
         {
-            // »ñÈ¡Excel±í¸ñ(´ÓµÚ1ÕÅ±í¿ªÊ¼)//Ö¸¶¨¹¤×÷±í
-            ExcelWorksheet workSheet = ep.Workbook.Worksheets[1];//epplus¶ÁÈ¡µÄË÷Òı´Ó1¿ªÊ¼¶ø·Ç0
-            //ExcelWorksheet worksheet1 = excelPackage.Workbook.Worksheets["TestSheet0"];//Ò²¿ÉÒÔÖ¸¶¨Ãû×Ö
-
-            //¶ÁÈ¡Ä³¶ÎÊı¾İ
-            //string s = workSheet.Cells[7,1].Value.ToString();// »ñÈ¡±íÖĞ µÚ7ĞĞµÚ1ÁĞµÄÖµ
-            //ChaosLog.Info(LogChannel.Config, s);
-
-            //¶ÁÈ¡ËùÓĞÊı¾İ
-            for(int i = 7;i <= workSheet.Dimension.End.Row;i++)
+            ChaosLog.Error(LogChannel.Config, "æµ‹è¯•å·¥ä½œç°¿ä¸å­˜åœ¨ï¼š" + path);
+            return;
+        }
+        using (var package = new ExcelPackage(new FileInfo(path)))
+        {
+            var sheet = ExcelWorksheetAccess.GetByIndex(package.Workbook, 1);
+            if (sheet.Dimension == null) return;
+            for (int row = 7; row <= sheet.Dimension.End.Row; row++)
             {
-                ChaosLog.Info(LogChannel.Config, "±àºÅ" + workSheet.Cells[i, 1].Value.ToString() +
-              "½ÇÉ«" + workSheet.Cells[i, 2].Value.ToString() +
-              "Ö°Òµ" + workSheet.Cells[i, 3].Value.ToString());
+                ChaosLog.Info(LogChannel.Config, "åºå·ï¼š" + sheet.Cells[row, 1].Text
+                    + "ï¼Œè§’è‰²ï¼š" + sheet.Cells[row, 2].Text + "ï¼ŒèŒä¸šï¼š" + sheet.Cells[row, 3].Text);
             }
-
-            int row = workSheet.Dimension.End.Row;//»ñµÃ×î´óĞĞÊı
-            int column = workSheet.Dimension.End.Column;//»ñµÃ×î´óÁĞÊı
-
-            //Ğ´ÈëÊı¾İ
-            //workSheet.Cells[4, 1].Value = "50";//Ö¸¶¨ĞĞºÍÁĞĞ´ÈëÊı¾İ
-
-            //workSheet.Cells["C1"].Value = "³¬¼¶ÎŞµĞ´óÁĞ°Í";//Ö¸¶¨µ¥Ôª¸ñĞ´ÈëÊı¾İ
-
-            //É¾³ı±í¸ñ
-            //ep.Workbook.Worksheets.Delete("Sheet2");//É¾³ıÃûÎªSheet2£¬Èç¹ûExcelÎÄ¼şÀïÃ»ÓĞµÄ»°»á±¨´í
-
-            //´´½¨±í¸ñ
-            //ep.Workbook.Worksheets.Add("Table");
-            /*
-            Ìí¼ÓÃû×Ö½ĞTableµÄ±í¸ñ£¨¿ÉÒÔ×Ô¼º¸ÄÃû×Ö£©
-            Èç¹ûÎÄ¼ş´æÔÚ£¬Ôò»áÔÚ±íÄÚ´´½¨³öÒ»ÕÅ½ĞTableµÄ±í¸ñ
-            Èç¹ûÎÄ¼ş²»´æÔÚ£¬¾Í»á´´½¨³öExcelÎÄ¼ş£¬Ëû×îÉÙ»áÓĞÒ»ÕÅ±í£¬½ĞTable
-            */
-
-            //±£´æ±í¸ñ
-            //ep.Save(); // ±£´æ±í¸ñ
         }
     }
+#endif
 }

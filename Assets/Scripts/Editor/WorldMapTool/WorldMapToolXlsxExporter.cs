@@ -48,11 +48,14 @@ public static class WorldMapToolXlsxExporter
     /// <summary>顶层目录（**参与导出**，只扫这一层、不递归）。</summary>
     public const string TopLevelFolderAssetPath = "Assets/Excel/Chaos_excel";
 
-    /// <summary>地图表文件名（顶层，全工程只能有一张 `WorldMap_` 开头的表）。</summary>
-    public const string MapTableFileName = "WorldMap_世界观地图表.xlsx";
+    /// <summary>
+    /// 世界观地图表文件名（顶层共享工作簿）：第 1 页 = 地点（WorldMapConfig），第 2 页 = 疆域（WorldFactionConfig）。
+    /// 只保留一张共享表，避免顶层出现同英文前缀的第二张表被静默覆盖。
+    /// </summary>
+    public const string MapTableFileName = "世界观地图表.xlsx";
 
-    /// <summary>势力**合并**表文件名（顶层）。</summary>
-    public const string FactionMergedFileName = "WorldFaction_势力范围配置表.xlsx";
+    /// <summary>势力**合并**表文件名（顶层）—— 现已与地点表合并为同一张共享工作簿，因此与 <see cref="MapTableFileName"/> 同名。</summary>
+    public const string FactionMergedFileName = "世界观地图表.xlsx";
 
     /// <summary>势力**时期分表**文件名（放子目录，不参与导出）。</summary>
     public static string FactionStageFileName(uint stage)
@@ -100,6 +103,208 @@ public static class WorldMapToolXlsxExporter
 
     private const string MapTableName = "WorldMap";
     private const string FactionTableName = "WorldFaction";
+
+    // ══════════════════ 共享工作簿：固定页位置 ══════════════════
+
+    /// <summary>地点页的工作表位置（从 1 开始）。位置固定，不靠页签名称识别。</summary>
+    public const int MapSheetIndex = 1;
+
+    /// <summary>疆域页的工作表位置（从 1 开始）。位置固定，不靠页签名称识别。</summary>
+    public const int FactionSheetIndex = 2;
+
+    /// <summary>地点页的展示名称（仅用于改名恢复；识别一律按索引）。</summary>
+    public const string MapSheetDisplayName = "地点";
+
+    /// <summary>疆域页的展示名称（仅用于改名恢复；识别一律按索引）。</summary>
+    public const string FactionSheetDisplayName = "疆域";
+
+    /// <summary>
+    /// 解析本次写盘的目标目录：默认重载写正式顶层目录，临时目录重载只写传入文件夹。
+    /// 传入空值视为使用正式顶层目录。
+    /// </summary>
+    private static string ResolveOutputFolderAbsolute(string outputDirectory)
+    {
+        if (string.IsNullOrEmpty(outputDirectory)) return TopLevelFolderAbsolute;
+        return WorldMapToolDataIO.AssetPathToAbsolute(outputDirectory);
+    }
+
+    /// <summary>把磁盘绝对路径转成报告用的工程内路径（不在 Assets 下时原样返回绝对路径）。</summary>
+    private static string ToReportPath(string absolutePath)
+    {
+        if (string.IsNullOrEmpty(absolutePath)) return string.Empty;
+
+        string root = TopLevelFolderAbsolute;
+        if (string.IsNullOrEmpty(root)) return absolutePath;
+
+        string normalizedRoot = root.Replace('\\', '/').TrimEnd('/');
+        string normalized = absolutePath.Replace('\\', '/');
+
+        if (string.Equals(Path.GetDirectoryName(normalized), normalizedRoot, StringComparison.OrdinalIgnoreCase))
+            return TopLevelFolderAssetPath + "/" + Path.GetFileName(absolutePath);
+
+        return absolutePath;
+    }
+
+    /// <summary>工作表名比较：忽略前后空白与大小写，用于判断页签是否已是中文展示名。</summary>
+    private static bool SameSheetName(string left, string right)
+    {
+        if (left == null || right == null) return false;
+        return string.Equals(left.Trim(), right.Trim(), StringComparison.OrdinalIgnoreCase);
+    }
+
+    /// <summary>
+    /// 在已有工作簿里按**固定位置**取目标页；位置不存在时只能在工作簿**末尾追加**补齐，
+    /// 绝不插到别处，保证「1 地点 / 2 疆域」的索引不受额外页影响。
+    /// </summary>
+    private static ExcelWorksheet GetOrAppendSheetByIndex(ExcelWorkbook workbook, int oneBasedIndex, out string error)
+    {
+        error = null;
+        if (workbook == null)
+        {
+            error = "工作簿为 null";
+            return null;
+        }
+
+        int count = workbook.Worksheets.Count;
+        if (oneBasedIndex < 1)
+        {
+            error = "目标页索引非法：" + oneBasedIndex;
+            return null;
+        }
+
+        if (count >= oneBasedIndex) return ExcelWorksheetAccess.GetByIndex(workbook, oneBasedIndex);
+
+        //缺少目标页：只在末尾补齐中间位置，保证索引对齐
+        while (workbook.Worksheets.Count < oneBasedIndex)
+        {
+            workbook.Worksheets.Add("占位" + (workbook.Worksheets.Count + 1));
+        }
+        return ExcelWorksheetAccess.GetByIndex(workbook, oneBasedIndex);
+    }
+
+    /// <summary>
+    /// 表名比较的归一化：忽略前后空白、大小写，并去掉 `Config` 后缀再比一次 ——
+    /// 导出器读的是**基名**（`WorldMap`），人工表里常写成**完整类名**（`WorldMapConfig`），两者视为同一张表。
+    /// </summary>
+    private static bool SameTableType(string left, string right)
+    {
+        if (left == null || right == null) return false;
+
+        string a = NormalizeTableType(left);
+        string b = NormalizeTableType(right);
+        if (a.Length == 0 || b.Length == 0) return false;
+        return string.Equals(a, b, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static string NormalizeTableType(string value)
+    {
+        string trimmed = value == null ? string.Empty : value.Trim();
+        if (trimmed.EndsWith("Config", StringComparison.OrdinalIgnoreCase))
+            trimmed = trimmed.Substring(0, trimmed.Length - "Config".Length).Trim();
+        return trimmed;
+    }
+
+    /// <summary>
+    /// 整页是否为空占位：**所有**已用单元格（值、公式、文本）都为空才算空 —— 不能只看 B1，
+    /// 否则 B1 空、别的格有用户数据时会被当占位覆盖掉。
+    /// </summary>
+    private static bool IsEmptyPlaceholderSheet(ExcelWorksheet sheet)
+    {
+        if (sheet.Dimension == null) return true;   //完全空白
+
+        ExcelRange cells = sheet.Cells[1, 1, sheet.Dimension.End.Row, sheet.Dimension.End.Column];
+        foreach (ExcelRangeBase cell in cells)
+        {
+            if (cell.Value != null) return false;
+            if (!string.IsNullOrEmpty(cell.Formula)) return false;
+            if (!string.IsNullOrEmpty(cell.Text) && cell.Text.Trim().Length > 0) return false;
+        }
+        return true;
+    }
+
+    /// <summary>
+    /// 校验目标页归属：整页空占位 = 合法（可直接写）；B1 的表类型与本类同名（基名或完整 `Config` 类名）= 同一张表（可覆盖）；
+    /// 其它值 = 别类数据（拒绝，绝不覆盖）。返回 false 时 error 给出原因。
+    /// </summary>
+    private static bool CheckSheetOwnership(ExcelWorksheet sheet, string tableName, int sheetIndex, out string error)
+    {
+        error = null;
+        if (IsEmptyPlaceholderSheet(sheet)) return true;   //整页无数据、无公式 → 空占位，合法
+
+        string existing = sheet.Cells[1, 2].Text;
+        if (!string.IsNullOrEmpty(existing) && SameTableType(existing, tableName)) return true;
+
+        error = "工作表索引 " + sheetIndex + "（当前名称「" + sheet.Name + "」）的 B1 表类型为「" +
+                (string.IsNullOrEmpty(existing) ? "（空）" : existing) +
+                "」，与本次要写的数据（" + tableName + "）不符 —— 该页不属于本次数据，已拒绝覆盖。";
+        return false;
+    }
+
+    /// <summary>
+    /// 保证共享工作簿里**固定两页**都在：1 = 地点、2 = 疆域。
+    /// 缺位时只在**末尾**补齐并写成空占位（纯名称页、无任何单元格内容），不能碰既有页的位置与内容，
+    /// 额外页原样保留；已有页即使次序不是约定位置也一律不动。
+    /// </summary>
+    private static void EnsureBothSheets(ExcelWorkbook workbook)
+    {
+        if (workbook == null) return;
+
+        int required = FactionSheetIndex > MapSheetIndex ? FactionSheetIndex : MapSheetIndex;
+        while (workbook.Worksheets.Count < required)
+            workbook.Worksheets.Add(workbook.Worksheets.Count==0?MapSheetDisplayName:FactionSheetDisplayName);
+    }
+
+    /// <summary>清空目标页整块已用区域，但保留列宽、行高等版面设置；避免旧数据残留在新数据下方。</summary>
+    private static void ClearSheetUsedRange(ExcelWorksheet sheet)
+    {
+        int lastRow = sheet.Dimension != null ? sheet.Dimension.End.Row : 0;
+        int lastCol = sheet.Dimension != null ? sheet.Dimension.End.Column : 0;
+        if (lastRow < 1 || lastCol < 1) return;
+        sheet.Cells[1, 1, lastRow, lastCol].Clear();
+    }
+
+    /// <summary>
+    /// 事务式保存：先完整写到同目录的临时文件，成功后再替换目标；
+    /// 任何一步失败都不动原表。临时文件仅在运行时清理，且只清理本方法自己生成的限定文件。
+    /// </summary>
+    private static void SaveWorkbookTransactional(ExcelPackage package, string targetAbsolutePath)
+    {
+        string folder = Path.GetDirectoryName(targetAbsolutePath);
+        EnsureFolder(folder);
+
+        string fileName = Path.GetFileName(targetAbsolutePath);
+        string tempPath = Path.Combine(folder, "~tmp_worldmap_" + Guid.NewGuid().ToString("N") + "_" + fileName);
+        try
+        {
+            package.SaveAs(new FileInfo(tempPath));   //先写临时文件，失败时原表不受影响
+            // 同卷原子替换，失败时原表仍在；备份仅在成功后清理，失败时保留恢复源。
+            if(File.Exists(targetAbsolutePath))
+            {
+                string backupPath=tempPath+".bak";
+                File.Replace(tempPath,targetAbsolutePath,backupPath);
+                SafeDeleteGeneratedFile(backupPath);
+            }
+            else File.Move(tempPath,targetAbsolutePath);
+        }
+        finally
+        {
+            SafeDeleteGeneratedFile(tempPath);      //只删本方法生成的临时文件
+        }
+    }
+
+    /// <summary>运行时清理导出事务自己生成的临时文件；文件不存在或删除失败都静默跳过。</summary>
+    private static void SafeDeleteGeneratedFile(string absolutePath)
+    {
+        if (string.IsNullOrEmpty(absolutePath)) return;
+        try
+        {
+            if (File.Exists(absolutePath)) File.Delete(absolutePath);
+        }
+        catch
+        {
+            //清理失败不影响导出结果，交给人工处理
+        }
+    }
 
     // ══════════════════ 单元格写入 ══════════════════
 
@@ -169,20 +374,31 @@ public static class WorldMapToolXlsxExporter
     // ══════════════════ 导出：地图表（顶层） ══════════════════
 
     /// <summary>
-    /// 导出地图表到**顶层** `WorldMap_世界观地图表.xlsx`。
+    /// 导出地点页到**顶层** `世界观地图表.xlsx` 的第 1 页（默认重载，写正式根目录）。
     /// 会在写盘前执行硬约束校验：① ≥1 行数据；② 顶层无同前缀其它表。
     /// </summary>
     public static WorldMapExportResult ExportMapTable(WorldMapDraft draft)
     {
+        return ExportMapTable(draft, null);
+    }
+
+    /// <summary>
+    /// 导出地点页到指定目录下的 `世界观地图表.xlsx` 第 1 页（供主控临时目录独立验证）。
+    /// 只更新第 1 页：其余页的值、样式、列宽、行高全部原样保留，绝不整本重建。
+    /// </summary>
+    public static WorldMapExportResult ExportMapTable(WorldMapDraft draft, string outputDirectory)
+    {
         var result = new WorldMapExportResult();
+
+        if (draft == null) { result.Message = "草稿为 null，未导出"; return result; }
+
+        string folderAbsolute = ResolveOutputFolderAbsolute(outputDirectory);
 
         //硬约束①：≥1 行数据
         result.Issues.AddRange(WorldMapToolValidator.ValidateMapTable(draft, true));
-        //硬约束②：顶层同前缀冲突
+        //硬约束②：同前缀冲突（共享文件自身不算冲突）
         WorldMapToolValidator.CheckTopLevelPrefixCollision(
-            TopLevelFolderAbsolute, MapTableFileName, MapTableName, result.Issues);
-
-        if (draft == null) { result.Message = "草稿为 null，未导出"; return result; }
+            folderAbsolute, MapTableFileName, MapTableName, result.Issues);
 
         if (WorldMapToolValidator.HasError(result.Issues))
         {
@@ -191,12 +407,29 @@ public static class WorldMapToolXlsxExporter
             return result;
         }
 
-        string absolutePath = Path.Combine(TopLevelFolderAbsolute, MapTableFileName);
+        string absolutePath = Path.Combine(folderAbsolute, MapTableFileName);
         try
         {
-            using (var package = new ExcelPackage())
+            //已有工作簿直接打开并原地修改，未存在时新建
+            using (var package = new ExcelPackage(new FileInfo(absolutePath)))
             {
-                ExcelWorksheet sheet = package.Workbook.Worksheets.Add("WorldMapSheet0");
+                EnsureBothSheets(package.Workbook);
+                string error;
+                ExcelWorksheet sheet = GetOrAppendSheetByIndex(package.Workbook, MapSheetIndex, out error);
+                if (sheet == null) throw new InvalidOperationException(error);
+
+                if (!CheckSheetOwnership(sheet, MapTableName, MapSheetIndex, out error))
+                {
+                    result.Success = false;
+                    result.Issues.Add(WorldMapToolIssue.Error(error));
+                    result.Message = "地图表**拒绝导出**：" + error;
+                    return result;
+                }
+
+                ClearSheetUsedRange(sheet);
+                //页签名称只是展示；按索引选中后再恢复中文名
+                if (!SameSheetName(sheet.Name, MapSheetDisplayName)) sheet.Name = MapSheetDisplayName;
+
                 WriteHeader(sheet, MapTableName, MapNotes, MapProperties, MapTypes);
 
                 int rowIndex = 7;   //第 7 行起是数据
@@ -220,12 +453,13 @@ public static class WorldMapToolXlsxExporter
                     result.MapRowCount++;
                 }
 
-                package.SaveAs(new FileInfo(absolutePath));
+                SaveWorkbookTransactional(package, absolutePath);
             }
 
-            result.WrittenFiles.Add(TopLevelFolderAssetPath + "/" + MapTableFileName);
+            result.WrittenFiles.Add(ToReportPath(absolutePath));
             result.Success = true;
-            result.Message = "地图表已导出：" + MapTableFileName + "（数据 " + result.MapRowCount + " 行）";
+            result.Message = "地图表已导出：第 " + MapSheetIndex + " 页「" + MapSheetDisplayName + "」写入 " +
+                             Path.GetFileName(absolutePath) + "（数据 " + result.MapRowCount + " 行）";
         }
         catch (Exception e)
         {
@@ -272,7 +506,7 @@ public static class WorldMapToolXlsxExporter
             {
                 using (var package = new ExcelPackage())
                 {
-                    ExcelWorksheet sheet = package.Workbook.Worksheets.Add("WorldFactionSheet" + stage);
+                    ExcelWorksheet sheet = package.Workbook.Worksheets.Add("时代" + stage);
                     WriteHeader(sheet, FactionTableName, FactionNotes, FactionProperties, FactionTypes);
 
                     int rowIndex = 7;
@@ -326,20 +560,32 @@ public static class WorldMapToolXlsxExporter
     // ══════════════════ 导出：势力合并表（顶层） ══════════════════
 
     /// <summary>
-    /// 导出**合并表**到顶层（等价于把 5 张时期分表人工合并）：按时期 1→5、区域内按顶点顺序排列，
+    /// 导出**疆域页**到顶层 `世界观地图表.xlsx` 的第 2 页（默认重载，写正式根目录）。
+    /// 等价于把 5 张时期分表人工合并：按时期 1→5、区域内按顶点顺序排列，
     /// 并且 **`Index` 全局重新连续编号**（各分表都从 1 起，直接拼会产生重复 —— 见 `06_...字段规格.md` C1）。
     /// </summary>
     public static WorldMapExportResult ExportFactionMergedTable(WorldMapDraft draft)
     {
+        return ExportFactionMergedTable(draft, null);
+    }
+
+    /// <summary>
+    /// 导出**疆域页**到指定目录下的 `世界观地图表.xlsx` 第 2 页（供主控临时目录独立验证）。
+    /// 只更新第 2 页：第 1 页地点页与所有额外页原样保留。首次单独导出时会在末尾补一个空地点页占位。
+    /// </summary>
+    public static WorldMapExportResult ExportFactionMergedTable(WorldMapDraft draft, string outputDirectory)
+    {
         var result = new WorldMapExportResult();
+
+        if (draft == null) { result.Message = "草稿为 null，未导出"; return result; }
+
+        string folderAbsolute = ResolveOutputFolderAbsolute(outputDirectory);
 
         //硬约束①：合并表 ≥1 行数据
         result.Issues.AddRange(WorldMapToolValidator.ValidateFactionTables(draft, true));
-        //硬约束②：顶层同前缀冲突
+        //硬约束②：同前缀冲突（共享文件自身不算冲突）
         WorldMapToolValidator.CheckTopLevelPrefixCollision(
-            TopLevelFolderAbsolute, FactionMergedFileName, FactionTableName, result.Issues);
-
-        if (draft == null) { result.Message = "草稿为 null，未导出"; return result; }
+            folderAbsolute, FactionMergedFileName, FactionTableName, result.Issues);
 
         if (WorldMapToolValidator.HasError(result.Issues))
         {
@@ -351,13 +597,29 @@ public static class WorldMapToolXlsxExporter
         List<WorldMapFactionRegion> regions = WorldMapToolDataIO.GroupRegions(draft);
         //★ 同一 (时期,势力) 统一取"第一块区域"的颜色：把"同势力两块不同色"挡在导出这一层
         Dictionary<string, string> factionColors = BuildFactionColorMap(regions);
-        string absolutePath = Path.Combine(TopLevelFolderAbsolute, FactionMergedFileName);
+        string absolutePath = Path.Combine(folderAbsolute, FactionMergedFileName);
 
         try
         {
-            using (var package = new ExcelPackage())
+            using (var package = new ExcelPackage(new FileInfo(absolutePath)))
             {
-                ExcelWorksheet sheet = package.Workbook.Worksheets.Add("WorldFactionSheet0");
+                EnsureBothSheets(package.Workbook);
+                string error;
+                ExcelWorksheet sheet = GetOrAppendSheetByIndex(package.Workbook, FactionSheetIndex, out error);
+                if (sheet == null) throw new InvalidOperationException(error);
+
+                if (!CheckSheetOwnership(sheet, FactionTableName, FactionSheetIndex, out error))
+                {
+                    result.Success = false;
+                    result.Issues.Add(WorldMapToolIssue.Error(error));
+                    result.Message = "势力合并表**拒绝导出**：" + error;
+                    return result;
+                }
+
+                ClearSheetUsedRange(sheet);
+                //页签名称只是展示；按索引选中后再恢复中文名
+                if (!SameSheetName(sheet.Name, FactionSheetDisplayName)) sheet.Name = FactionSheetDisplayName;
+
                 WriteHeader(sheet, FactionTableName, FactionNotes, FactionProperties, FactionTypes);
 
                 int rowIndex = 7;
@@ -392,12 +654,13 @@ public static class WorldMapToolXlsxExporter
                     }
                 }
 
-                package.SaveAs(new FileInfo(absolutePath));
+                SaveWorkbookTransactional(package, absolutePath);
             }
 
-            result.WrittenFiles.Add(TopLevelFolderAssetPath + "/" + FactionMergedFileName);
+            result.WrittenFiles.Add(ToReportPath(absolutePath));
             result.Success = true;
-            result.Message = "势力合并表已导出：" + FactionMergedFileName +
+            result.Message = "势力合并表已导出：第 " + FactionSheetIndex + " 页「" + FactionSheetDisplayName + "」写入 " +
+                             Path.GetFileName(absolutePath) +
                              "（数据 " + result.FactionRowCount + " 行，Index 已全局连续重编号）";
         }
         catch (Exception e)

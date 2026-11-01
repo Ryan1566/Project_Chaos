@@ -373,7 +373,7 @@ public class ConfigManager
                     for (int index = 1; index <= worksheets.Count; index++)
                     {
                         scannedWorksheetCount++;
-                        ExcelWorksheet worksheet = worksheets[index];
+                        ExcelWorksheet worksheet = ExcelWorksheetAccess.GetByIndex(package.Workbook, index);
                         SheetPlan plan = AnalyzeWorksheet(
                             worksheet,
                             workbookPath,
@@ -1288,6 +1288,8 @@ public class ConfigManager
         {
             foreach (PlannedFile file in files)
             {
+                // 内容完全一致时不触碰目标，避免无意义的资源重导入与文件替换冲突。
+                if (HasIdenticalOutput(file)) continue;
                 string directory = Path.GetDirectoryName(file.TargetPath);
                 if (string.IsNullOrEmpty(directory))
                 {
@@ -1295,16 +1297,17 @@ public class ConfigManager
                 }
                 Directory.CreateDirectory(directory);
                 string stagePath = file.TargetPath + ".chaos_export_" + Guid.NewGuid().ToString("N") + ".tmp";
-                File.WriteAllText(stagePath, file.Content ?? string.Empty, new UTF8Encoding(false));
                 stagedFiles.Add(new StagedFile
                 {
                     File = file,
                     StagePath = stagePath,
                 });
+                File.WriteAllText(stagePath, file.Content ?? string.Empty, new UTF8Encoding(false));
             }
         }
         catch (Exception ex)
         {
+            CleanupStagedFiles(stagedFiles);
             throw Error(null, null, 0, 0, null,
                 "导出暂存失败，未发布任何文件；备份目录「" + backupRoot + "」；" + ex.Message, ex);
         }
@@ -1353,6 +1356,37 @@ public class ConfigManager
             }
             detail += "；原始错误：" + ex.Message;
             throw Error(null, null, 0, 0, null, detail, ex);
+        }
+        finally { CleanupStagedFiles(stagedFiles); }
+    }
+
+    /// <summary>按实际输出编码比较字节；无法读取时继续原发布流程，让其报告真实的访问失败。</summary>
+    private static bool HasIdenticalOutput(PlannedFile file)
+    {
+        if (!File.Exists(file.TargetPath)) return false;
+        try
+        {
+            byte[] existing=File.ReadAllBytes(file.TargetPath);
+            byte[] expected=new UTF8Encoding(false).GetBytes(file.Content??string.Empty);
+            if(existing.Length!=expected.Length)return false;
+            for(int i=0;i<existing.Length;i++)if(existing[i]!=expected[i])return false;
+            return true;
+        }
+        catch(IOException){return false;}
+        catch(UnauthorizedAccessException){return false;}
+    }
+
+    /// <summary>只清理本次生成并登记的暂存文件，不动目标产物与回滚备份。</summary>
+    private static void CleanupStagedFiles(List<StagedFile> staged)
+    {
+        foreach(var file in staged)
+        {
+            try
+            {
+                if(File.Exists(file.StagePath))File.Delete(file.StagePath);
+                if(File.Exists(file.StagePath+".meta"))File.Delete(file.StagePath+".meta");
+            }
+            catch(Exception ex){Debug.LogWarning("导出暂存文件清理失败："+file.StagePath+"；"+ex.Message);}
         }
     }
 
