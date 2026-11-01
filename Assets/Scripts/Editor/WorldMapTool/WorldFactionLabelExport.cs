@@ -11,14 +11,14 @@ public static class WorldFactionLabelExport
     [Serializable] sealed class Atlas { public List<Era> stages; }
     [Serializable] sealed class Era { public uint stage; public List<Faction> factions; }
     [Serializable] sealed class Faction { public uint id; public string name; public float labelX, labelY; }
-    [Serializable] sealed class Output { public int schemaVersion = 1; public List<WorldFactionLabelConfig> datas; }
+    [Serializable] sealed class Output { public int schemaVersion = 1; public List<WorldMapTable_WorldFactionLabelConfig> datas; }
     [MenuItem("Tools/世界观地图/同步运行时势力名称")]
     public static void Export()
     {
         if (EditorApplication.isPlaying) throw new InvalidOperationException("请在编辑模式同步势力名称");
         string source = Application.dataPath + "/Excel/Chaos_excel/_worldmap_tool/WorldMapHistoricalAtlas.json";
         var atlas = JsonUtility.FromJson<Atlas>(File.ReadAllText(source));
-        var output = new Output { datas = new List<WorldFactionLabelConfig>() };
+        var output = new Output { datas = new List<WorldMapTable_WorldFactionLabelConfig>() };
         var seen = new HashSet<string>();
         foreach (var era in atlas.stages) foreach (var faction in era.factions)
         {
@@ -27,9 +27,9 @@ public static class WorldFactionLabelExport
             var point = new Vector2(faction.labelX, faction.labelY);
             if (!WorldFactionLabelCatalog.Contains(WorldMapService.Instance.Areas(era.stage), faction.id, point))
                 throw new InvalidDataException("势力名称锚点不在本国领地内：" + era.stage + "/" + faction.name);
-            output.datas.Add(new WorldFactionLabelConfig { Stage = era.stage, FactionId = faction.id, Name = faction.name, X = point.x, Y = point.y });
+            output.datas.Add(new WorldMapTable_WorldFactionLabelConfig { Stage = era.stage, FactionId = faction.id, Name = faction.name, X = point.x, Y = point.y });
         }
-        string path = "Assets/Resources/" + ConfigTableAssets.Resolve(nameof(WorldFactionLabelConfig)) + ".json";
+        string path = "Assets/Resources/" + ConfigTableAssets.Resolve(nameof(WorldMapTable_WorldFactionLabelConfig)) + ".json";
         File.WriteAllText(path, JsonUtility.ToJson(output, true));
         AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceUpdate);
         WorldFactionLabelCatalog.Reload();

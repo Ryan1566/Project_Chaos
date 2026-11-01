@@ -6,15 +6,15 @@ using UnityEngine;
 /// <summary>Stage-specific names and anchors. Views receive complete display data and never read authoring files.</summary>
 public static class WorldFactionLabelCatalog
 {
-    static List<WorldFactionLabelConfig> _entries;
+    static List<WorldMapTable_WorldFactionLabelConfig> _entries;
     public static void Reload() { _entries = null; }
     static void Load()
     {
         if (_entries != null) return;
-        _entries = new List<WorldFactionLabelConfig>();
-        var asset = ConfigTableAssets.Load(GlobalPath.data_JsonPathToRead + "WorldFactionLabelConfig");
+        _entries = new List<WorldMapTable_WorldFactionLabelConfig>();
+        var asset = ConfigTableAssets.Load(GlobalPath.data_JsonPathToRead + "WorldMapTable_WorldFactionLabelConfig");
         if (asset == null) return;
-        try { _entries = JsonUtility.FromJson<DataList<WorldFactionLabelConfig>>(asset.text)?.datas ?? _entries; }
+        try { _entries = JsonUtility.FromJson<DataList<WorldMapTable_WorldFactionLabelConfig>>(asset.text)?.datas ?? _entries; }
         catch (Exception error) { Debug.LogWarning("[世界观地图] 势力名称配置无效：" + error.Message); }
     }
     public static List<WorldFactionLabel> Read(uint stage, List<WorldFactionArea> areas)

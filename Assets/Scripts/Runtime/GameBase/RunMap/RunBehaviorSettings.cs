@@ -17,7 +17,7 @@ namespace RunMap
 
         public static RunBehaviorSettings Load(string role)
         {
-            var rows = ConfigLoader.Instance.LoadData<RunBehaviorConfig>();
+            var rows = ConfigLoader.Instance.LoadData<RunContentTable_RunBehaviorConfig>();
             var row = rows == null ? null : rows.datas.Find(r => r.role == role);
             if (row == null) throw new InvalidOperationException("RunBehavior missing role: " + role);
             var result = JsonUtility.FromJson<RunBehaviorSettings>(JsonUtility.ToJson(row));

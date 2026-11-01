@@ -7,7 +7,7 @@ using UnityEngine;
 ///
 /// ══════════════ 表是模板、存档是实例 ══════════════
 /// `Retainer` 表 = 模板；`SavePayload.retainers` 里每个 `RetainerSave` = 某一行的**副本实例**
-/// （`protoId` → `RetainerConfig.Index`）。属性**不落盘**（模板值 + 将来 Effect 加成），
+/// （`protoId` → `RetainerTable_RetainerConfig.Index`）。属性**不落盘**（模板值 + 将来 Effect 加成），
 /// 只落盘会变的东西：当前生命 `hp`、信心 `confidence`、重伤 `wounded`/`woundedRemainSeconds`。
 ///
 /// ══════════════ 可出战（口径原文 05 §3.2）══════════════
@@ -34,7 +34,7 @@ public class RetainerService : SingletonBase<RetainerService>
         Wounded = 2,
     }
 
-    private List<RetainerConfig> _defs;
+    private List<RetainerTable_RetainerConfig> _defs;
     private bool _loaded;
 
     public void EnsureLoaded()
@@ -42,17 +42,17 @@ public class RetainerService : SingletonBase<RetainerService>
         if (_loaded) return;
         _loaded = true;
 
-        string path = GlobalPath.data_JsonPathToRead + "RetainerConfig";
+        string path = GlobalPath.data_JsonPathToRead + "RetainerTable_RetainerConfig";
         TextAsset asset = ConfigTableAssets.Load(path);
         if (asset == null)
         {
             ChaosLog.Warn(LogChannel.Config, "[门客] 找不到 " + path + "（招募/展示会退化，不抛异常）");
-            _defs = new List<RetainerConfig>();
+            _defs = new List<RetainerTable_RetainerConfig>();
             return;
         }
 
-        DataList<RetainerConfig> list = JsonUtility.FromJson<DataList<RetainerConfig>>(asset.text);
-        _defs = (list == null || list.datas == null) ? new List<RetainerConfig>() : list.datas;
+        DataList<RetainerTable_RetainerConfig> list = JsonUtility.FromJson<DataList<RetainerTable_RetainerConfig>>(asset.text);
+        _defs = (list == null || list.datas == null) ? new List<RetainerTable_RetainerConfig>() : list.datas;
     }
 
     public void Reload()
@@ -65,7 +65,7 @@ public class RetainerService : SingletonBase<RetainerService>
     public int DefinitionCount { get { EnsureLoaded(); return _defs == null ? 0 : _defs.Count; } }
 
     /// <summary>按 `protoId` 回查模板；找不到返回 null（调用方走占位分支，E3）。</summary>
-    public RetainerConfig GetDefinition(uint protoId)
+    public RetainerTable_RetainerConfig GetDefinition(uint protoId)
     {
         EnsureLoaded();
         if (_defs == null) return null;
@@ -117,13 +117,13 @@ public class RetainerService : SingletonBase<RetainerService>
             return null;
         }
 
-        var pool = new List<RetainerConfig>();
+        var pool = new List<RetainerTable_RetainerConfig>();
         uint total = 0;
         if (_defs != null)
         {
             for (int i = 0; i < _defs.Count; i++)
             {
-                RetainerConfig d = _defs[i];
+                RetainerTable_RetainerConfig d = _defs[i];
                 if (d == null || !d.Enable || d.RecruitWeight == 0) continue;
                 pool.Add(d);
                 total += d.RecruitWeight;
@@ -138,7 +138,7 @@ public class RetainerService : SingletonBase<RetainerService>
 
         uint roll = (uint)Random.Range(0, (int)total);
         uint acc = 0;
-        RetainerConfig picked = null;
+        RetainerTable_RetainerConfig picked = null;
         for (int i = 0; i < pool.Count; i++)
         {
             acc += pool[i].RecruitWeight;
@@ -157,7 +157,7 @@ public class RetainerService : SingletonBase<RetainerService>
     /// **按模板 ID 实例化一名门客**（W5.1 剧情事件「给门客」用）。
     ///
     /// 与 <see cref="RecruitRandom"/> **同一条实例化路径**（都走 <see cref="CreateInstance"/>），
-    /// 只是不再随机挑模板 —— 事件表里的 `GiveRetainerId` 就指 `RetainerConfig.Index`。
+    /// 只是不再随机挑模板 —— 事件表里的 `GiveRetainerId` 就指 `RetainerTable_RetainerConfig.Index`。
     /// 达到上限 / 模板不存在 / 模板禁用时返回 null 并给出原因（E4：跳过该奖励 + Warn）。
     /// </summary>
     public RetainerSave RecruitByProtoId(uint protoId, out string reason)
@@ -172,7 +172,7 @@ public class RetainerService : SingletonBase<RetainerService>
             return null;
         }
 
-        RetainerConfig def = GetDefinition(protoId);
+        RetainerTable_RetainerConfig def = GetDefinition(protoId);
         if (def == null)
         {
             reason = "门客模板 " + protoId + " 不存在";
@@ -194,7 +194,7 @@ public class RetainerService : SingletonBase<RetainerService>
     }
 
     /// <summary>模板 → 存档实例（招募与事件发放**共用**这一处，别另写一份）。</summary>
-    private RetainerSave CreateInstance(RetainerConfig picked)
+    private RetainerSave CreateInstance(RetainerTable_RetainerConfig picked)
     {
         var instance = new RetainerSave
         {
@@ -337,7 +337,7 @@ public class RetainerService : SingletonBase<RetainerService>
     {
         hp = attack = defense = speed = 0;
         if (retainer == null) return;
-        RetainerConfig def = GetDefinition(retainer.protoId);
+        RetainerTable_RetainerConfig def = GetDefinition(retainer.protoId);
         if (def == null) return;
         hp = (int)def.Hp + BonusHp;
         attack = (int)def.Attack + BonusAttack;

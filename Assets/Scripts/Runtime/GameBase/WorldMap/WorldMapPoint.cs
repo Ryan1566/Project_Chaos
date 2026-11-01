@@ -3,13 +3,13 @@ using UnityEngine;
 /// <summary>
 /// 局外地图上的**一个点位**（运行时视图）。
 ///
-/// 由 <see cref="WorldMapService"/> 从 `WorldMapConfig` 转出来：
+/// 由 <see cref="WorldMapService"/> 从 `WorldMapTable_WorldMapConfig` 转出来：
 /// 只保留 `Enable = true` 的行，并把坐标换成归一化 `Vector2`。
 /// 它是**纯数据**，不含任何 Unity 对象引用 —— 所以表被删掉也不会影响已生成的对象。
 /// </summary>
 public class WorldMapPoint
 {
-    /// <summary>表内序号（`WorldMapConfig.Index`），排错用。</summary>
+    /// <summary>表内序号（`WorldMapTable_WorldMapConfig.Index`），排错用。</summary>
     public uint index;
 
     /// <summary>属于哪张底图（`MapId`）。</summary>

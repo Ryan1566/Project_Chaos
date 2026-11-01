@@ -12,13 +12,13 @@ public class RecordTest : MonoBehaviour
     void Start()
     {
         //Read
-        TestTableConfig model = Recorder.Instance.ReadData<TestTableConfig>(0);
+        TestTable_TestConfig model = Recorder.Instance.ReadData<TestTable_TestConfig>(0);
         ChaosLog.Info("∂¡»°" + model.Index);
         model.Index = 2;
 
         //Update
-        Recorder.Instance.UpdateData<TestTableConfig>(0, model, true);
-        model = Recorder.Instance.ReadData<TestTableConfig>(0);
+        Recorder.Instance.UpdateData<TestTable_TestConfig>(0, model, true);
+        model = Recorder.Instance.ReadData<TestTable_TestConfig>(0);
 
         ChaosLog.Info("∂¡»°" + model.Index);
     }

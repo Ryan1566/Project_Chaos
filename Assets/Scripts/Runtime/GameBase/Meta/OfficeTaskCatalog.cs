@@ -10,9 +10,9 @@ using UnityEngine;
 public static class OfficeTaskCatalog
 {
     /// <summary>三张表的类型名（由 ConfigTableAssets 按类型名解析资源索引）。</summary>
-    public const string TaskClassName = "OfficeTaskConfig";
-    public const string OptionClassName = "OfficeTaskOptionConfig";
-    public const string EraGateClassName = "OfficeEraGateConfig";
+    public const string TaskClassName = "OfficeTaskTable_OfficeTaskConfig";
+    public const string OptionClassName = "OfficeTaskTable_OfficeTaskOptionConfig";
+    public const string EraGateClassName = "OfficeTaskTable_OfficeEraGateConfig";
 
     /// <summary>时代上限，与 SavePayload.era 的取值范围 1..5 一致。</summary>
     public const uint MaxEra = 5u;
@@ -56,14 +56,14 @@ public static class OfficeTaskCatalog
     }
 
     /// <summary>返回全部有效任务定义（按表顺序）；未加载成功时为空数组。</summary>
-    public static OfficeTaskConfig[] GetTasks()
+    public static OfficeTaskTable_OfficeTaskConfig[] GetTasks()
     {
         OfficeTaskCatalogSet set = EnsureLoaded();
-        return set == null ? new OfficeTaskConfig[0] : set.Tasks.ToArray();
+        return set == null ? new OfficeTaskTable_OfficeTaskConfig[0] : set.Tasks.ToArray();
     }
 
     /// <summary>按任务 ID 取定义；配置未加载或不存在时返回 null。</summary>
-    public static OfficeTaskConfig GetTask(uint taskId)
+    public static OfficeTaskTable_OfficeTaskConfig GetTask(uint taskId)
     {
         OfficeTaskCatalogSet set = EnsureLoaded();
         OfficeTaskCatalogSet.TaskEntry entry = set == null ? null : set.GetEntry(taskId);
@@ -71,33 +71,33 @@ public static class OfficeTaskCatalog
     }
 
     /// <summary>取某任务的全部有效选项（按表顺序）；不存在时为空数组。</summary>
-    public static OfficeTaskOptionConfig[] GetOptions(uint taskId)
+    public static OfficeTaskTable_OfficeTaskOptionConfig[] GetOptions(uint taskId)
     {
         OfficeTaskCatalogSet set = EnsureLoaded();
         OfficeTaskCatalogSet.TaskEntry entry = set == null ? null : set.GetEntry(taskId);
-        return entry == null ? new OfficeTaskOptionConfig[0] : entry.OptionList();
+        return entry == null ? new OfficeTaskTable_OfficeTaskOptionConfig[0] : entry.OptionList();
     }
 
     /// <summary>取某任务的全部时代门槛记录；无门槛时为空数组。</summary>
-    public static OfficeEraGateConfig[] GetEraGates(uint taskId)
+    public static OfficeTaskTable_OfficeEraGateConfig[] GetEraGates(uint taskId)
     {
         OfficeTaskCatalogSet set = EnsureLoaded();
         OfficeTaskCatalogSet.TaskEntry entry = set == null ? null : set.GetEntry(taskId);
         return entry == null || entry.EraGates.Count == 0
-            ? new OfficeEraGateConfig[0] : entry.EraGates.ToArray();
+            ? new OfficeTaskTable_OfficeEraGateConfig[0] : entry.EraGates.ToArray();
     }
 
     /// <summary>
     /// 按“当前待推进时代”取门槛记录：EraGate.Era = 1 表示 1→2，允许 1..4。
     /// 该参数与 CanAdvanceEra 的当前时代参数同义，不是目标时代。
     /// </summary>
-    public static OfficeEraGateConfig[] GetEraGatesByEra(uint currentEra)
+    public static OfficeTaskTable_OfficeEraGateConfig[] GetEraGatesByEra(uint currentEra)
     {
         OfficeTaskCatalogSet set = EnsureLoaded();
-        if (set == null) return new OfficeEraGateConfig[0];
-        List<OfficeEraGateConfig> list;
+        if (set == null) return new OfficeTaskTable_OfficeEraGateConfig[0];
+        List<OfficeTaskTable_OfficeEraGateConfig> list;
         if (!set.EraGatesByEra.TryGetValue(currentEra, out list) || list == null || list.Count == 0)
-            return new OfficeEraGateConfig[0];
+            return new OfficeTaskTable_OfficeEraGateConfig[0];
         return list.ToArray();
     }
 
@@ -105,17 +105,17 @@ public static class OfficeTaskCatalog
     /// 从当前待推进时代出发，逐级检查后续每个时代门槛是否都已完成；
     /// 用于给调用端显示“下一道门槛”，不修改任何状态。返回 null 表示没有后续门槛。
     /// </summary>
-    public static OfficeEraGateConfig FirstPendingGate(uint currentEra, Func<uint, bool> isTaskCompleted)
+    public static OfficeTaskTable_OfficeEraGateConfig FirstPendingGate(uint currentEra, Func<uint, bool> isTaskCompleted)
     {
         if (isTaskCompleted == null) return null;
         for (uint era = currentEra < 1u ? 1u : currentEra; era < MaxEra; era++)
         {
-            List<OfficeEraGateConfig> gates;
+            List<OfficeTaskTable_OfficeEraGateConfig> gates;
             OfficeTaskCatalogSet set = EnsureLoaded();
             if (set == null || !set.EraGatesByEra.TryGetValue(era, out gates) || gates == null) continue;
             for (int i = 0; i < gates.Count; i++)
             {
-                OfficeEraGateConfig gate = gates[i];
+                OfficeTaskTable_OfficeEraGateConfig gate = gates[i];
                 if (gate != null && gate.Enable && !isTaskCompleted(gate.TaskId)) return gate;
             }
         }
@@ -155,11 +155,11 @@ public static class OfficeTaskCatalog
     private static OfficeTaskCatalogSet LoadAll(out string error)
     {
         error = null;
-        List<OfficeTaskConfig> tasks = ReadTable<OfficeTaskConfig>(TaskClassName, out error);
+        List<OfficeTaskTable_OfficeTaskConfig> tasks = ReadTable<OfficeTaskTable_OfficeTaskConfig>(TaskClassName, out error);
         if (tasks == null) return null;
-        List<OfficeTaskOptionConfig> options = ReadTable<OfficeTaskOptionConfig>(OptionClassName, out error);
+        List<OfficeTaskTable_OfficeTaskOptionConfig> options = ReadTable<OfficeTaskTable_OfficeTaskOptionConfig>(OptionClassName, out error);
         if (options == null) return null;
-        List<OfficeEraGateConfig> gates = ReadTable<OfficeEraGateConfig>(EraGateClassName, out error);
+        List<OfficeTaskTable_OfficeEraGateConfig> gates = ReadTable<OfficeTaskTable_OfficeEraGateConfig>(EraGateClassName, out error);
         if (gates == null) return null;
 
         var set = new OfficeTaskCatalogSet();
@@ -210,21 +210,21 @@ public sealed class OfficeTaskCatalogSet
     /// <summary>一个任务连同它的选项、时代门槛。</summary>
     public sealed class TaskEntry
     {
-        public OfficeTaskConfig Config;
-        public readonly List<OfficeTaskOptionConfig> Options = new List<OfficeTaskOptionConfig>();
-        public readonly List<OfficeEraGateConfig> EraGates = new List<OfficeEraGateConfig>();
+        public OfficeTaskTable_OfficeTaskConfig Config;
+        public readonly List<OfficeTaskTable_OfficeTaskOptionConfig> Options = new List<OfficeTaskTable_OfficeTaskOptionConfig>();
+        public readonly List<OfficeTaskTable_OfficeEraGateConfig> EraGates = new List<OfficeTaskTable_OfficeEraGateConfig>();
 
         /// <summary>该任务全部可用选项的副本；调用方不能改动目录内部列表。</summary>
-        public OfficeTaskOptionConfig[] OptionList()
+        public OfficeTaskTable_OfficeTaskOptionConfig[] OptionList()
         {
-            var result = new List<OfficeTaskOptionConfig>();
+            var result = new List<OfficeTaskTable_OfficeTaskOptionConfig>();
             for (int i = 0; i < Options.Count; i++)
                 if (Options[i] != null) result.Add(Options[i]);
             return result.ToArray();
         }
 
         /// <summary>按选项 ID 查选项；不存在返回 null。</summary>
-        public OfficeTaskOptionConfig FindOption(uint optionId)
+        public OfficeTaskTable_OfficeTaskOptionConfig FindOption(uint optionId)
         {
             for (int i = 0; i < Options.Count; i++)
                 if (Options[i] != null && Options[i].Index == optionId) return Options[i];
@@ -232,10 +232,10 @@ public sealed class OfficeTaskCatalogSet
         }
     }
 
-    public readonly List<OfficeTaskConfig> Tasks = new List<OfficeTaskConfig>();
+    public readonly List<OfficeTaskTable_OfficeTaskConfig> Tasks = new List<OfficeTaskTable_OfficeTaskConfig>();
     public readonly Dictionary<uint, TaskEntry> TaskById = new Dictionary<uint, TaskEntry>();
-    public readonly List<OfficeEraGateConfig> EraGates = new List<OfficeEraGateConfig>();
-    public readonly Dictionary<uint, List<OfficeEraGateConfig>> EraGatesByEra = new Dictionary<uint, List<OfficeEraGateConfig>>();
+    public readonly List<OfficeTaskTable_OfficeEraGateConfig> EraGates = new List<OfficeTaskTable_OfficeEraGateConfig>();
+    public readonly Dictionary<uint, List<OfficeTaskTable_OfficeEraGateConfig>> EraGatesByEra = new Dictionary<uint, List<OfficeTaskTable_OfficeEraGateConfig>>();
     /// <summary>表里出现过的全部任务 ID（含被禁用的），用于区分“前置不存在”和“前置被禁用”。</summary>
     internal readonly HashSet<uint> SeenTaskId = new HashSet<uint>();
 
@@ -247,8 +247,8 @@ public sealed class OfficeTaskCatalogSet
     }
 
     /// <summary>校验并填充聚合；返回 null 表示通过，否则返回第一个问题描述。</summary>
-    internal static string Build(OfficeTaskCatalogSet set, List<OfficeTaskConfig> rawTasks,
-        List<OfficeTaskOptionConfig> rawOptions, List<OfficeEraGateConfig> rawGates)
+    internal static string Build(OfficeTaskCatalogSet set, List<OfficeTaskTable_OfficeTaskConfig> rawTasks,
+        List<OfficeTaskTable_OfficeTaskOptionConfig> rawOptions, List<OfficeTaskTable_OfficeEraGateConfig> rawGates)
     {
         if (rawTasks == null || rawTasks.Count == 0)
             return "配置缺失：" + OfficeTaskCatalog.TaskClassName + " 没有任何任务条目";
@@ -260,13 +260,13 @@ public sealed class OfficeTaskCatalogSet
     }
 
     /// <summary>任务表校验：ID、类别、目标、时代、资源码、时限、前置关系。</summary>
-    private static string ValidateTasks(OfficeTaskCatalogSet set, List<OfficeTaskConfig> rawTasks)
+    private static string ValidateTasks(OfficeTaskCatalogSet set, List<OfficeTaskTable_OfficeTaskConfig> rawTasks)
     {
         var seen = new HashSet<uint>();
         set.SeenTaskId.Clear();
         for (int i = 0; i < rawTasks.Count; i++)
         {
-            OfficeTaskConfig config = rawTasks[i];
+            OfficeTaskTable_OfficeTaskConfig config = rawTasks[i];
             if (config == null) continue; // 空行由导表跳过，运行时不参与
             if (config.Index == 0u) return "任务表第 " + (i + 1) + " 条 ID 为 0";
             if (!seen.Add(config.Index)) return "任务表任务 ID 重复：" + config.Index;
@@ -287,7 +287,7 @@ public sealed class OfficeTaskCatalogSet
     {
         for (int i = 0; i < set.Tasks.Count; i++)
         {
-            OfficeTaskConfig config = set.Tasks[i];
+            OfficeTaskTable_OfficeTaskConfig config = set.Tasks[i];
             uint prerequisite = config.PrerequisiteTaskId;
             if (prerequisite == 0u) continue;
             if (!set.SeenTaskId.Contains(prerequisite))
@@ -308,7 +308,7 @@ public sealed class OfficeTaskCatalogSet
     }
 
     /// <summary>单个任务的定义校验；只校验任务自身字段，不依赖选项表。</summary>
-    private static string ValidateTask(OfficeTaskConfig config)
+    private static string ValidateTask(OfficeTaskTable_OfficeTaskConfig config)
     {
         string id = "任务 " + config.Index + " ";
         if (config.Category < (uint)OfficeTaskCategory.County || config.Category > (uint)OfficeTaskCategory.Emergency)
@@ -351,14 +351,14 @@ public sealed class OfficeTaskCatalogSet
     }
 
     /// <summary>选项表校验：唯一 ID、任务存在且目标允许选择、资源码与代价/奖励合法。</summary>
-    private static string ValidateOptions(OfficeTaskCatalogSet set, List<OfficeTaskOptionConfig> rawOptions)
+    private static string ValidateOptions(OfficeTaskCatalogSet set, List<OfficeTaskTable_OfficeTaskOptionConfig> rawOptions)
     {
         var seen = new HashSet<uint>();
         if (rawOptions != null)
         {
             for (int i = 0; i < rawOptions.Count; i++)
             {
-                OfficeTaskOptionConfig option = rawOptions[i];
+                OfficeTaskTable_OfficeTaskOptionConfig option = rawOptions[i];
                 if (option == null) continue;
                 if (option.Index == 0u) return "选项表第 " + (i + 1) + " 条 ID 为 0";
                 if (!seen.Add(option.Index)) return "选项 ID 重复：" + option.Index;
@@ -397,13 +397,13 @@ public sealed class OfficeTaskCatalogSet
     /// 时代门槛表校验：唯一 ID、Era 表示“当前待推进时代”（1 表示 1→2），允许 1..4，
     /// 目标必须是已启用的郡县指派事务；同一时代的多条记录按 AND 处理。
     /// </summary>
-    private static string ValidateGates(OfficeTaskCatalogSet set, List<OfficeEraGateConfig> rawGates)
+    private static string ValidateGates(OfficeTaskCatalogSet set, List<OfficeTaskTable_OfficeEraGateConfig> rawGates)
     {
         var seen = new HashSet<uint>();
         if (rawGates == null) return null;
         for (int i = 0; i < rawGates.Count; i++)
         {
-            OfficeEraGateConfig gate = rawGates[i];
+            OfficeTaskTable_OfficeEraGateConfig gate = rawGates[i];
             if (gate == null) continue;
             if (gate.Index == 0u) return "时代门槛表第 " + (i + 1) + " 条 ID 为 0";
             if (!seen.Add(gate.Index)) return "时代门槛 ID 重复：" + gate.Index;
@@ -415,10 +415,10 @@ public sealed class OfficeTaskCatalogSet
             if (entry == null) return id + "依赖的任务不存在或已被禁用：" + gate.TaskId;
             if (entry.Config.Category != (uint)OfficeTaskCategory.County)
                 return id + "只允许依赖郡县指派事务，实际任务 " + gate.TaskId + " 类别为 " + entry.Config.Category;
-            List<OfficeEraGateConfig> list;
+            List<OfficeTaskTable_OfficeEraGateConfig> list;
             if (!set.EraGatesByEra.TryGetValue(gate.Era, out list))
             {
-                list = new List<OfficeEraGateConfig>();
+                list = new List<OfficeTaskTable_OfficeEraGateConfig>();
                 set.EraGatesByEra.Add(gate.Era, list);
             }
             list.Add(gate);

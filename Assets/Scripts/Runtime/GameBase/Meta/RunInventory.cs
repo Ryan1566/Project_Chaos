@@ -115,7 +115,7 @@ public static class RunInventory
             if (Slots[(int)section][i] == null) { index = i; return true; }
         index = -1; return false;
     }
-    private static bool FindDestination(ItemConfig def, bool important, out RunBagSection section, out int index)
+    private static bool FindDestination(ItemTable_ItemConfig def, bool important, out RunBagSection section, out int index)
     {
         if (important && EmptySlot(RunBagSection.Important, out index)) { section = RunBagSection.Important; return true; }
         if (EmptySlot(RunBagSection.Misc, out index)) { section = RunBagSection.Misc; return true; }

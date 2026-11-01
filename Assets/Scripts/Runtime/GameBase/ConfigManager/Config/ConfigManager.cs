@@ -527,15 +527,8 @@ public class ConfigManager
             return null;
         }
 
-        ExporterMode? suffixMode = GetSuffixMode(rawClassName);
-        if (markedMode.HasValue && suffixMode.HasValue && markedMode.Value != suffixMode.Value)
-        {
-            throw Error(workbookPath, worksheetName, ClassNameRow, ClassNameColumn, rawClassName,
-                "B1 类名后缀是 " + suffixMode.Value + "，但 B2 模式标记是 "
-                + (markedMode.Value == ExporterMode.Config ? "IsConfig" : "IsData") + "，两者不一致");
-        }
-
-        ExporterMode mode = markedMode ?? suffixMode ?? requestedMode;
+        // B1是数据基础名，导出模式只由B2或本次请求决定，不从基础名末尾猜测。
+        ExporterMode mode = markedMode ?? requestedMode;
         if (mode != requestedMode)
         {
             AddSkip(skipped, workbookPath, workbookName, worksheetName,
@@ -543,21 +536,21 @@ public class ConfigManager
             return null;
         }
 
-        string className = BuildClassName(rawClassName, mode, suffixMode.HasValue, workbookPath, worksheetName);
+        string className = BuildClassName(rawClassName, mode, workbookPath, worksheetName);
         List<ColumnPlan> columns = AnalyzeColumns(worksheet, workbookPath, worksheetName, className, warnings);
         int dataRowCount;
         string dataContent = BuildDataContent(worksheet, workbookPath, worksheetName, columns, out dataRowCount);
         string classContent = BuildClassContent(columns, className, mode, workbookName);
 
-        string dataFileName = workbookName + "_" + className
-            + (mode == ExporterMode.Config ? ".json" : ".record");
+        string dataFileName = ConfigExportNaming.DataFileName(workbookName, rawClassName,
+            mode == ExporterMode.Config ? ".json" : ".record");
         string classFileName = className + ".cs";
         ValidateFileNamePart(dataFileName, "数据文件名", workbookPath, worksheetName, 0, 0);
         ValidateFileNamePart(classFileName, "类文件名", workbookPath, worksheetName, 0, 0);
 
         string dataFilePath = Path.Combine(jsonDirectory, dataFileName);
         string classFilePath = Path.Combine(classDirectory, classFileName);
-        string resourcePath = BuildResourcePath(workbookName, className);
+        string resourcePath = BuildResourcePath(workbookName, rawClassName);
 
         SheetPlan plan = new SheetPlan
         {
@@ -802,7 +795,7 @@ public class ConfigManager
     }
 
     /// <summary>
-    /// 生成类文件内容。类文件名始终等于完整类名加 .cs，不附加工作簿前缀。
+    /// 生成类文件内容。完整类名已含英文表名与模式后缀，脚本文件名与类名保持一致。
     /// </summary>
     private static string BuildClassContent(
         List<ColumnPlan> columns,
@@ -1452,21 +1445,22 @@ public class ConfigManager
     }
 
     /// <summary>
-    /// 兼容旧编辑器验证工具的单表 Json 导出入口。文件名沿用旧规则，不受新批量命名影响。
+    /// 保留旧工具的单表调用入口，文件与类名统一使用当前英文命名规则。
     /// </summary>
     private static void ExportJson(ExcelWorksheet workSheet, string fileName, ExporterMode mode)
     {
         try
         {
-            string className = BuildClassName(fileName, mode, GetSuffixMode(fileName).HasValue, fileName, workSheet.Name);
+            string baseName=TrimmedCell(workSheet,ClassNameRow,ClassNameColumn);
+            string className = BuildClassName(baseName, mode, fileName, workSheet.Name);
             List<ColumnPlan> columns = AnalyzeColumns(workSheet, fileName, workSheet.Name, className, new List<string>());
             int dataRowCount;
             string content = BuildDataContent(workSheet, fileName, workSheet.Name, columns, out dataRowCount);
             string outputDirectory = ResolveOutputDirectory(
                 null,
                 mode == ExporterMode.Config ? GlobalPath.data_JsonPath : GlobalPath.data_RecordPath);
-            string oldFileName = fileName + mode.ToString()
-                + (mode == ExporterMode.Config ? ".json" : ".record");
+            string oldFileName = ConfigExportNaming.DataFileName(fileName,baseName,
+                mode == ExporterMode.Config ? ".json" : ".record");
             ValidateFileNamePart(oldFileName, "旧版数据文件名", fileName, workSheet.Name, 0, 0);
 
             List<PlannedFile> files = new List<PlannedFile>
@@ -1495,19 +1489,20 @@ public class ConfigManager
     }
 
     /// <summary>
-    /// 兼容旧编辑器验证工具的单表类导出入口。类文件名沿用旧规则，不受新批量命名影响。
+    /// 保留旧工具的单表类调用入口，脚本文件名始终与当前完整类名一致。
     /// </summary>
     private static void ExportClass(ExcelWorksheet workSheet, string fileName, ExporterMode mode)
     {
         try
         {
-            string className = BuildClassName(fileName, mode, GetSuffixMode(fileName).HasValue, fileName, workSheet.Name);
+            string baseName=TrimmedCell(workSheet,ClassNameRow,ClassNameColumn);
+            string className = BuildClassName(baseName, mode, fileName, workSheet.Name);
             List<ColumnPlan> columns = AnalyzeColumns(workSheet, fileName, workSheet.Name, className, new List<string>());
             string content = BuildClassContent(columns, className, mode, fileName);
             string outputDirectory = ResolveOutputDirectory(
                 null,
                 mode == ExporterMode.Config ? GlobalPath.data_ExcelClassPath : GlobalPath.data_ExcelModelPath);
-            string oldFileName = fileName + mode.ToString() + ".cs";
+            string oldFileName = className + ".cs";
             ValidateFileNamePart(oldFileName, "旧版类文件名", fileName, workSheet.Name, 0, 0);
 
             List<PlannedFile> files = new List<PlannedFile>
@@ -1634,24 +1629,26 @@ public class ConfigManager
     {
         string name = Path.GetFileNameWithoutExtension(workbookPath);
         ValidateFileNamePart(name, "工作簿名", workbookPath, null, 0, 0);
+        try { ConfigExportNaming.WorkbookKey(workbookPath); }
+        catch(ArgumentException ex){throw Error(workbookPath,null,0,0,null,"工作簿名缺少合法英文表名："+ex.Message,ex);}
         return name;
     }
 
     /// <summary>
-    /// 生成完整类名：B1 已带 Config/Data 后缀时保持原样，否则追加当前模式后缀。
+    /// 生成完整类名：英文表名、B1基础名和导出模式后缀共同构成脚本及类名。
     /// </summary>
     private static string BuildClassName(
         string rawClassName,
         ExporterMode mode,
-        bool hasSuffix,
         string workbookPath,
         string worksheetName)
     {
-        string className = (rawClassName ?? string.Empty).Trim();
-        if (!hasSuffix)
-        {
-            className += mode.ToString();
-        }
+        string baseName;
+        try { baseName=ConfigExportNaming.ClassName(rawClassName); }
+        catch(ArgumentException ex){throw Error(workbookPath,worksheetName,ClassNameRow,ClassNameColumn,rawClassName,"B1基础名必须是合法的 C# 标识符，且仅允许ASCII英文字母、数字和下划线："+ex.Message,ex);}
+        if(!IsValidIdentifier(baseName)||ReservedFileNames.Contains(baseName))
+            throw Error(workbookPath,worksheetName,ClassNameRow,ClassNameColumn,baseName,"B1基础名不是可用的英文C#标识符");
+        string className = ConfigExportNaming.GeneratedClassName(workbookPath,baseName,mode.ToString());
         if (!IsValidIdentifier(className))
         {
             throw Error(workbookPath, worksheetName, ClassNameRow, ClassNameColumn, className,
@@ -1663,19 +1660,6 @@ public class ConfigManager
                 "类名是 Windows 保留文件名，无法生成类文件");
         }
         return className;
-    }
-
-    private static ExporterMode? GetSuffixMode(string className)
-    {
-        if (className.EndsWith("Config", StringComparison.Ordinal))
-        {
-            return ExporterMode.Config;
-        }
-        if (className.EndsWith("Data", StringComparison.Ordinal))
-        {
-            return ExporterMode.Data;
-        }
-        return null;
     }
 
     private static ExporterMode? ParseModeMarker(string rawMode, string workbookPath, string worksheetName)
@@ -1763,7 +1747,7 @@ public class ConfigManager
         {
             prefix += "/";
         }
-        return prefix + workbookName + "_" + className;
+        return prefix + ConfigExportNaming.WorkbookKey(workbookName) + "_" + ConfigExportNaming.ClassName(className);
     }
 
     private static void AddSkip(

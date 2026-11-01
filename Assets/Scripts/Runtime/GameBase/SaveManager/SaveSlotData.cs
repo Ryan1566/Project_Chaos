@@ -114,7 +114,7 @@ public class SavePayload
     public List<uint> ownedImportantItems = new List<uint>();
 
     /// <summary>
-    /// **W5.1 新增（M4 剧情事件）**：已处置的**一次性**事件 ID 列表（存的是 `EventConfig.Index`）。
+    /// **W5.1 新增（M4 剧情事件）**：已处置的**一次性**事件 ID 列表（存的是 `EventTable_EventConfig.Index`）。
     ///
     /// ⚠ **追加字段 = 零迁移**（见本文件顶部）：老存档没有 `firedEvents` 时保留这里的
     /// `new List&lt;uint&gt;()`，即"还没触发过任何事件"，不报错、不需要迁移代码。
@@ -202,7 +202,7 @@ public class RetainerSave
     /// <summary>重伤到期时刻，**UTC ticks**（JsonUtility 不支持 DateTime）。0 = 未重伤。</summary>
     public long woundedUntilUtcTicks;
 
-    /// <summary>模板外键 → `RetainerConfig.Index`（表→存档的外键；0 = 老存档/占位）。</summary>
+    /// <summary>模板外键 → `RetainerTable_RetainerConfig.Index`（表→存档的外键；0 = 老存档/占位）。</summary>
     public uint protoId;
 
     /// <summary>重伤剩余秒数（**原型期真正读写的字段**；只按运行中时间递减）。</summary>
@@ -232,9 +232,9 @@ public class BuildingSave
 [Serializable]
 public class ItemStackSave
 {
-    /// <summary>外键 → `ItemConfig.Index`。</summary>
+    /// <summary>外键 → `ItemTable_ItemConfig.Index`。</summary>
     public uint itemId;
 
-    /// <summary>该种道具持有的数量（上限 = `ItemConfig.StackLimit`）。</summary>
+    /// <summary>该种道具持有的数量（上限 = `ItemTable_ItemConfig.StackLimit`）。</summary>
     public uint count;
 }

@@ -27,8 +27,8 @@ public static class ItemWheelAssetSetup
                 new ItemUseProfile { itemId = 11, parentCategory = ItemParentCategory.Important, subCategory = "信物", description = "永久归属当前存档的唯一信物。暂无主动效果。", effect = ItemUseEffect.None, consume = false }
             };
             catalog.additionalDefinitions = new[] {
-                new ItemConfig { Index = 10, NameKey = "震响罐", Category = 5, RunCategory = 2, StackLimit = 99, Enable = true, BuyPrice = 10, SellPrice = 5 },
-                new ItemConfig { Index = 11, NameKey = "行军信物", Category = 5, RunCategory = 1, IsUnique = true, StackLimit = 1, Enable = true }
+                new ItemTable_ItemConfig { Index = 10, NameKey = "震响罐", Category = 5, RunCategory = 2, StackLimit = 99, Enable = true, BuyPrice = 10, SellPrice = 5 },
+                new ItemTable_ItemConfig { Index = 11, NameKey = "行军信物", Category = 5, RunCategory = 1, IsUnique = true, StackLimit = 1, Enable = true }
             };
             AssetDatabase.CreateAsset(catalog, catalogPath);
         }

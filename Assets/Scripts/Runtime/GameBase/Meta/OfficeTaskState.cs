@@ -15,5 +15,5 @@ public sealed class OfficeTaskSnapshot
     public bool Timed, Repeatable;
     public double RemainingSeconds;
     public uint Progress, Required;
-    public OfficeTaskOptionConfig[] Options;
+    public OfficeTaskTable_OfficeTaskOptionConfig[] Options;
 }

@@ -23,18 +23,18 @@ public static class CampService
     /// <summary>补充减员消耗药数。</summary>
     public const int RefillCost = 2;
 
-    private static List<ItemConfig> _itemDefs;
+    private static List<ItemTable_ItemConfig> _itemDefs;
     private static bool _loaded;
 
     private static void EnsureLoaded()
     {
         if (_loaded) return;
         _loaded = true;
-        string path = GlobalPath.data_JsonPathToRead + "ItemConfig";
+        string path = GlobalPath.data_JsonPathToRead + "ItemTable_ItemConfig";
         TextAsset asset = ConfigTableAssets.Load(path);
-        if (asset == null) { ChaosLog.Warn(LogChannel.Config, "[扎营] 找不到 " + path); _itemDefs = new List<ItemConfig>(); return; }
-        DataList<ItemConfig> list = JsonUtility.FromJson<DataList<ItemConfig>>(asset.text);
-        _itemDefs = (list == null || list.datas == null) ? new List<ItemConfig>() : list.datas;
+        if (asset == null) { ChaosLog.Warn(LogChannel.Config, "[扎营] 找不到 " + path); _itemDefs = new List<ItemTable_ItemConfig>(); return; }
+        DataList<ItemTable_ItemConfig> list = JsonUtility.FromJson<DataList<ItemTable_ItemConfig>>(asset.text);
+        _itemDefs = (list == null || list.datas == null) ? new List<ItemTable_ItemConfig>() : list.datas;
     }
 
     /// <summary>该物品是否"药"（`Item.Category == 1`）。</summary>

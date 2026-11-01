@@ -21,12 +21,12 @@ namespace RunMap
         /// <summary>最近一次装载的简报（给了哪些表、各多少行）—— 留痕用，避免"读了个空表还不知道"。</summary>
         public static string LastReport = "";
 
-        private const string BiomeTable = "MapBiomeConfig";
-        private const string ChunkTable = "MapChunkConfig";
-        private const string SocketTable = "ChunkSocketConfig";
-        private const string SlotTable = "ChunkSlotConfig";
-        private const string PresetTable = "MapPresetConfig";
-        private const string LayerTable = "PresetLayerConfig";
+        private const string BiomeTable = "RunMapTable_MapBiomeConfig";
+        private const string ChunkTable = "RunMapTable_MapChunkConfig";
+        private const string SocketTable = "RunMapTable_ChunkSocketConfig";
+        private const string SlotTable = "RunMapTable_ChunkSlotConfig";
+        private const string PresetTable = "RunMapTable_MapPresetConfig";
+        private const string LayerTable = "RunMapTable_PresetLayerConfig";
 
         /// <summary>装载。任一张表读不到都返回 null（调用方决定降级到灰盒名录，见 §10 E12）。</summary>
         public static RunMapCatalog LoadFromConfigs()
@@ -35,12 +35,12 @@ namespace RunMap
             BiomeByPreset.Clear();
             var cat = new RunMapCatalog();
 
-            var biomes = Read<MapBiomeConfig>(BiomeTable);
-            var chunks = Read<MapChunkConfig>(ChunkTable);
-            var sockets = Read<ChunkSocketConfig>(SocketTable);
-            var slots = Read<ChunkSlotConfig>(SlotTable);
-            var presets = Read<MapPresetConfig>(PresetTable);
-            var layers = Read<PresetLayerConfig>(LayerTable);
+            var biomes = Read<RunMapTable_MapBiomeConfig>(BiomeTable);
+            var chunks = Read<RunMapTable_MapChunkConfig>(ChunkTable);
+            var sockets = Read<RunMapTable_ChunkSocketConfig>(SocketTable);
+            var slots = Read<RunMapTable_ChunkSlotConfig>(SlotTable);
+            var presets = Read<RunMapTable_MapPresetConfig>(PresetTable);
+            var layers = Read<RunMapTable_PresetLayerConfig>(LayerTable);
 
             if (biomes == null || chunks == null || presets == null)
             {
@@ -53,7 +53,7 @@ namespace RunMap
             // ① 主题：同时登记"层 → 主题"的映射（跨层地图按层取主题靠它）
             for (int i = 0; i < biomes.datas.Count; i++)
             {
-                MapBiomeConfig b = biomes.datas[i];
+                RunMapTable_MapBiomeConfig b = biomes.datas[i];
                 if (!b.enable) continue;
                 cat.RegisterTheme((MapLayer)b.layer, b.themeKey);
                 RegisterBiome(b);   //W5.2：地形倍率 / 掉落组（只读进运行时结构，不参与生成）
@@ -63,7 +63,7 @@ namespace RunMap
             // ② 房间块
             for (int i = 0; i < chunks.datas.Count; i++)
             {
-                MapChunkConfig c = chunks.datas[i];
+                RunMapTable_MapChunkConfig c = chunks.datas[i];
                 if (!c.enable) continue;
                 cat.Add(new ChunkDef
                 {
@@ -84,7 +84,7 @@ namespace RunMap
             {
                 for (int i = 0; i < sockets.datas.Count; i++)
                 {
-                    ChunkSocketConfig s = sockets.datas[i];
+                    RunMapTable_ChunkSocketConfig s = sockets.datas[i];
                     ChunkDef d = cat.Get(s.chunkId);
                     if (d == null) continue;
                     d.Sockets.Add(new SocketDef
@@ -102,7 +102,7 @@ namespace RunMap
             {
                 for (int i = 0; i < slots.datas.Count; i++)
                 {
-                    ChunkSlotConfig s = slots.datas[i];
+                    RunMapTable_ChunkSlotConfig s = slots.datas[i];
                     ChunkDef d = cat.Get(s.chunkId);
                     if (d == null) continue;
                     d.Slots.Add(new SlotDef { SlotType = (int)s.slotType, X = s.posX, Y = s.posY });
@@ -114,7 +114,7 @@ namespace RunMap
             var byPresetId = new Dictionary<uint, PresetDef>();
             for (int i = 0; i < presets.datas.Count; i++)
             {
-                MapPresetConfig p = presets.datas[i];
+                RunMapTable_MapPresetConfig p = presets.datas[i];
                 if (!p.enable) continue;
                 var def = new PresetDef
                 {
@@ -141,7 +141,7 @@ namespace RunMap
             {
                 for (int i = 0; i < layers.datas.Count; i++)
                 {
-                    PresetLayerConfig l = layers.datas[i];
+                    RunMapTable_PresetLayerConfig l = layers.datas[i];
                     PresetDef def;
                     if (!byPresetId.TryGetValue(l.presetId, out def)) continue;
                     def.Layers.Add(new LayerSpec
@@ -232,7 +232,7 @@ namespace RunMap
         }
 
         /// <summary>把一行 `MapBiome` 读成 `BiomeInfo`（§9 E1：倍率 ≤0 / 掉落组 0 一律兜底 1 + Warn）。</summary>
-        private static void RegisterBiome(MapBiomeConfig b)
+        private static void RegisterBiome(RunMapTable_MapBiomeConfig b)
         {
             var info = new BiomeInfo
             {

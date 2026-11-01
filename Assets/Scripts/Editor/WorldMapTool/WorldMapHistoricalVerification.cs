@@ -11,7 +11,7 @@ using UnityEngine;
 /// <summary>Targeted authoring, raster-fill and Excel/JSON/runtime round-trip verification.</summary>
 public static class WorldMapHistoricalVerification
 {
-    [Serializable] private sealed class Rows { public List<WorldFactionConfig> datas; }
+    [Serializable] private sealed class Rows { public List<WorldMapTable_WorldFactionConfig> datas; }
     [Serializable] private sealed class Atlas { public WorldMapHistoricalAtlas.Stage[] stages; }
     private static string Qa => Application.dataPath + "/QA/WorldMapHistory/";
     private static int _checks;
@@ -80,7 +80,7 @@ public static class WorldMapHistoricalVerification
             WorldMapToolDataIO.AssetPathToAbsolute(WorldMapToolDataIO.DraftAssetPath),
             WorldMapToolDataIO.AssetPathToAbsolute(WorldMapHistoricalAtlas.AssetPath),
             Path.Combine(WorldMapToolXlsxExporter.TopLevelFolderAbsolute,WorldMapToolXlsxExporter.FactionMergedFileName),
-            Application.dataPath + "/Resources/" + ConfigTableAssets.Resolve(nameof(WorldFactionConfig)) + ".json" };
+            Application.dataPath + "/Resources/" + ConfigTableAssets.Resolve(nameof(WorldMapTable_WorldFactionConfig)) + ".json" };
         for (uint stage = 1; stage <= 5; stage++) targets.Add(Path.Combine(folder,WorldMapToolXlsxExporter.FactionStageFileName(stage)));
         var manifest = new List<string>();
         foreach (var path in targets) if (File.Exists(path))
@@ -94,7 +94,7 @@ public static class WorldMapHistoricalVerification
         Check(merged.Success, "merged XLSX: " + merged.Message);
         // 只导出本次势力工作簿，并更新同一类型索引，其他已发布条目保持不变。
         ConfigManager.ExportExcelBatch(new[]{Path.Combine(WorldMapToolXlsxExporter.TopLevelFolderAbsolute,WorldMapToolXlsxExporter.FactionMergedFileName)},ExporterMode.Config);
-        AssetDatabase.ImportAsset("Assets/Resources/"+ConfigTableAssets.Resolve(nameof(WorldFactionConfig))+".json",ImportAssetOptions.ForceUpdate);
+        AssetDatabase.ImportAsset("Assets/Resources/"+ConfigTableAssets.Resolve(nameof(WorldMapTable_WorldFactionConfig))+".json",ImportAssetOptions.ForceUpdate);
         WorldMapService.Instance.Reload();
         VerifyRuntime(draft);
         foreach (var window in Resources.FindObjectsOfTypeAll<WorldMapToolWindow>()) window.ReloadSavedDraft();
@@ -105,7 +105,7 @@ public static class WorldMapHistoricalVerification
 
     private static void VerifyRuntime(WorldMapDraft draft)
     {
-        var rows = JsonUtility.FromJson<Rows>(File.ReadAllText(Application.dataPath + "/Resources/"+ConfigTableAssets.Resolve(nameof(WorldFactionConfig))+".json"));
+        var rows = JsonUtility.FromJson<Rows>(File.ReadAllText(Application.dataPath + "/Resources/"+ConfigTableAssets.Resolve(nameof(WorldMapTable_WorldFactionConfig))+".json"));
         Check(rows?.datas != null && rows.datas.Count == draft.factionVertices.Count, "single-table runtime JSON row count equals draft");
         var atlas = JsonUtility.FromJson<Atlas>(File.ReadAllText(Qa+"candidate-atlas.json"));
         foreach (var stage in atlas.stages)

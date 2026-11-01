@@ -2,189 +2,189 @@
     "schemaVersion": 1,
     "tables": [
         {
-            "className": "BuildingConfig",
-            "resourcePath": "Data/Json/Runtime/建筑表_BuildingConfig",
-            "workbook": "建筑表",
+            "className": "BuildingTable_BuildingConfig",
+            "resourcePath": "Data/Json/Runtime/BuildingTable_Building",
+            "workbook": "BuildingTable_建筑表",
             "worksheet": "建筑"
         },
         {
-            "className": "EffectConfig",
-            "resourcePath": "Data/Json/Runtime/效果表_EffectConfig",
-            "workbook": "效果表",
+            "className": "EffectTable_EffectConfig",
+            "resourcePath": "Data/Json/Runtime/EffectTable_Effect",
+            "workbook": "EffectTable_效果表",
             "worksheet": "通用效果"
         },
         {
-            "className": "FamilyTreeConfig",
-            "resourcePath": "Data/Json/Runtime/局外技能树表_FamilyTreeConfig",
-            "workbook": "局外技能树表",
+            "className": "MetaSkillTreeTable_FamilyTreeConfig",
+            "resourcePath": "Data/Json/Runtime/MetaSkillTreeTable_FamilyTree",
+            "workbook": "MetaSkillTreeTable_局外技能树表",
             "worksheet": "节点"
         },
         {
-            "className": "FamilyTreeEffectConfig",
-            "resourcePath": "Data/Json/Runtime/局外技能树表_FamilyTreeEffectConfig",
-            "workbook": "局外技能树表",
+            "className": "MetaSkillTreeTable_FamilyTreeEffectConfig",
+            "resourcePath": "Data/Json/Runtime/MetaSkillTreeTable_FamilyTreeEffect",
+            "workbook": "MetaSkillTreeTable_局外技能树表",
             "worksheet": "效果映射"
         },
         {
-            "className": "ItemConfig",
-            "resourcePath": "Data/Json/Runtime/物品表_ItemConfig",
-            "workbook": "物品表",
-            "worksheet": "物品"
-        },
-        {
-            "className": "RetainerConfig",
-            "resourcePath": "Data/Json/Runtime/门客表_RetainerConfig",
-            "workbook": "门客表",
-            "worksheet": "门客"
-        },
-        {
-            "className": "VillageSceneConfig",
-            "resourcePath": "Data/Json/Runtime/村庄表_VillageSceneConfig",
-            "workbook": "村庄表",
+            "className": "VillageTable_VillageSceneConfig",
+            "resourcePath": "Data/Json/Runtime/VillageTable_VillageScene",
+            "workbook": "VillageTable_村庄表",
             "worksheet": "场景"
         },
         {
-            "className": "VillageTextConfig",
-            "resourcePath": "Data/Json/Runtime/村庄表_VillageTextConfig",
-            "workbook": "村庄表",
+            "className": "VillageTable_VillageTextConfig",
+            "resourcePath": "Data/Json/Runtime/VillageTable_VillageText",
+            "workbook": "VillageTable_村庄表",
             "worksheet": "文案"
         },
         {
-            "className": "ChunkSlotConfig",
-            "resourcePath": "Data/Json/Runtime/地图生成表_ChunkSlotConfig",
-            "workbook": "地图生成表",
-            "worksheet": "放置插槽"
+            "className": "ItemTable_ItemConfig",
+            "resourcePath": "Data/Json/Runtime/ItemTable_Item",
+            "workbook": "ItemTable_物品表",
+            "worksheet": "物品"
         },
         {
-            "className": "ChunkSocketConfig",
-            "resourcePath": "Data/Json/Runtime/地图生成表_ChunkSocketConfig",
-            "workbook": "地图生成表",
-            "worksheet": "区块接口"
-        },
-        {
-            "className": "MapBiomeConfig",
-            "resourcePath": "Data/Json/Runtime/地图生成表_MapBiomeConfig",
-            "workbook": "地图生成表",
-            "worksheet": "地形主题"
-        },
-        {
-            "className": "MapChunkConfig",
-            "resourcePath": "Data/Json/Runtime/地图生成表_MapChunkConfig",
-            "workbook": "地图生成表",
-            "worksheet": "结构区块"
-        },
-        {
-            "className": "MapGenerationConfig",
-            "resourcePath": "Data/Json/Runtime/地图生成表_MapGenerationConfig",
-            "workbook": "地图生成表",
-            "worksheet": "生成参数"
-        },
-        {
-            "className": "MapLoadingConfig",
-            "resourcePath": "Data/Json/Runtime/读条表_MapLoadingConfig",
-            "workbook": "读条表",
-            "worksheet": "地图读条"
-        },
-        {
-            "className": "MapPresetConfig",
-            "resourcePath": "Data/Json/Runtime/地图生成表_MapPresetConfig",
-            "workbook": "地图生成表",
-            "worksheet": "地图预设"
-        },
-        {
-            "className": "PresetLayerConfig",
-            "resourcePath": "Data/Json/Runtime/地图生成表_PresetLayerConfig",
-            "workbook": "地图生成表",
-            "worksheet": "预设分层"
-        },
-        {
-            "className": "RunBehaviorConfig",
-            "resourcePath": "Data/Json/Runtime/局内内容表_RunBehaviorConfig",
-            "workbook": "局内内容表",
-            "worksheet": "角色行为"
-        },
-        {
-            "className": "RunInteractionConfig",
-            "resourcePath": "Data/Json/Runtime/局内内容表_RunInteractionConfig",
-            "workbook": "局内内容表",
-            "worksheet": "交互物"
-        },
-        {
-            "className": "DropConfig",
-            "resourcePath": "Data/Json/Runtime/物品表_DropConfig",
-            "workbook": "物品表",
+            "className": "ItemTable_DropConfig",
+            "resourcePath": "Data/Json/Runtime/ItemTable_Drop",
+            "workbook": "ItemTable_物品表",
             "worksheet": "掉落"
         },
         {
-            "className": "EraConfig",
-            "resourcePath": "Data/Json/Runtime/时代进度表_EraConfig",
-            "workbook": "时代进度表",
-            "worksheet": "时代"
+            "className": "RetainerTable_RetainerConfig",
+            "resourcePath": "Data/Json/Runtime/RetainerTable_Retainer",
+            "workbook": "RetainerTable_门客表",
+            "worksheet": "门客"
         },
         {
-            "className": "DepthConfig",
-            "resourcePath": "Data/Json/Runtime/时代进度表_DepthConfig",
-            "workbook": "时代进度表",
-            "worksheet": "深度"
+            "className": "RunMapTable_MapPresetConfig",
+            "resourcePath": "Data/Json/Runtime/RunMapTable_MapPreset",
+            "workbook": "RunMapTable_地图生成表",
+            "worksheet": "地图预设"
         },
         {
-            "className": "LoadingTableConfig",
-            "resourcePath": "Data/Json/Runtime/读条表_LoadingTableConfig",
-            "workbook": "读条表",
+            "className": "RunMapTable_PresetLayerConfig",
+            "resourcePath": "Data/Json/Runtime/RunMapTable_PresetLayer",
+            "workbook": "RunMapTable_地图生成表",
+            "worksheet": "预设分层"
+        },
+        {
+            "className": "RunMapTable_MapGenerationConfig",
+            "resourcePath": "Data/Json/Runtime/RunMapTable_MapGeneration",
+            "workbook": "RunMapTable_地图生成表",
+            "worksheet": "生成参数"
+        },
+        {
+            "className": "RunMapTable_MapBiomeConfig",
+            "resourcePath": "Data/Json/Runtime/RunMapTable_MapBiome",
+            "workbook": "RunMapTable_地图生成表",
+            "worksheet": "地形主题"
+        },
+        {
+            "className": "RunMapTable_MapChunkConfig",
+            "resourcePath": "Data/Json/Runtime/RunMapTable_MapChunk",
+            "workbook": "RunMapTable_地图生成表",
+            "worksheet": "结构区块"
+        },
+        {
+            "className": "RunMapTable_ChunkSocketConfig",
+            "resourcePath": "Data/Json/Runtime/RunMapTable_ChunkSocket",
+            "workbook": "RunMapTable_地图生成表",
+            "worksheet": "区块接口"
+        },
+        {
+            "className": "RunMapTable_ChunkSlotConfig",
+            "resourcePath": "Data/Json/Runtime/RunMapTable_ChunkSlot",
+            "workbook": "RunMapTable_地图生成表",
+            "worksheet": "放置插槽"
+        },
+        {
+            "className": "RunContentTable_RunInteractionConfig",
+            "resourcePath": "Data/Json/Runtime/RunContentTable_RunInteraction",
+            "workbook": "RunContentTable_局内内容表",
+            "worksheet": "交互物"
+        },
+        {
+            "className": "RunContentTable_RunBehaviorConfig",
+            "resourcePath": "Data/Json/Runtime/RunContentTable_RunBehavior",
+            "workbook": "RunContentTable_局内内容表",
+            "worksheet": "角色行为"
+        },
+        {
+            "className": "LoadingTable_LoadingConfig",
+            "resourcePath": "Data/Json/Runtime/LoadingTable_Loading",
+            "workbook": "LoadingTable_读条表",
             "worksheet": "轮播设置"
         },
         {
-            "className": "TestTableConfig",
-            "resourcePath": "Data/Json/Runtime/测试表_TestTableConfig",
-            "workbook": "测试表",
-            "worksheet": "测试"
+            "className": "LoadingTable_MapLoadingConfig",
+            "resourcePath": "Data/Json/Runtime/LoadingTable_MapLoading",
+            "workbook": "LoadingTable_读条表",
+            "worksheet": "地图读条"
         },
         {
-            "className": "EventConfig",
-            "resourcePath": "Data/Json/Runtime/剧情事件表_EventConfig",
-            "workbook": "剧情事件表",
-            "worksheet": "事件"
+            "className": "ProgressTable_EraConfig",
+            "resourcePath": "Data/Json/Runtime/ProgressTable_Era",
+            "workbook": "ProgressTable_时代进度表",
+            "worksheet": "时代"
         },
         {
-            "className": "EventOptionConfig",
-            "resourcePath": "Data/Json/Runtime/剧情事件表_EventOptionConfig",
-            "workbook": "剧情事件表",
-            "worksheet": "选项"
+            "className": "ProgressTable_DepthConfig",
+            "resourcePath": "Data/Json/Runtime/ProgressTable_Depth",
+            "workbook": "ProgressTable_时代进度表",
+            "worksheet": "深度"
         },
         {
-            "className": "OfficeTaskConfig",
-            "resourcePath": "Data/Json/Runtime/办事任务表_OfficeTaskConfig",
-            "workbook": "办事任务表",
+            "className": "OfficeTaskTable_OfficeTaskConfig",
+            "resourcePath": "Data/Json/Runtime/OfficeTaskTable_OfficeTask",
+            "workbook": "OfficeTaskTable_办事任务表",
             "worksheet": "任务"
         },
         {
-            "className": "OfficeTaskOptionConfig",
-            "resourcePath": "Data/Json/Runtime/办事任务表_OfficeTaskOptionConfig",
-            "workbook": "办事任务表",
+            "className": "OfficeTaskTable_OfficeTaskOptionConfig",
+            "resourcePath": "Data/Json/Runtime/OfficeTaskTable_OfficeTaskOption",
+            "workbook": "OfficeTaskTable_办事任务表",
             "worksheet": "选项"
         },
         {
-            "className": "OfficeEraGateConfig",
-            "resourcePath": "Data/Json/Runtime/办事任务表_OfficeEraGateConfig",
-            "workbook": "办事任务表",
+            "className": "OfficeTaskTable_OfficeEraGateConfig",
+            "resourcePath": "Data/Json/Runtime/OfficeTaskTable_OfficeEraGate",
+            "workbook": "OfficeTaskTable_办事任务表",
             "worksheet": "时代门槛"
         },
         {
-            "className": "WorldMapConfig",
-            "resourcePath": "Data/Json/Runtime/世界观地图表_WorldMapConfig",
-            "workbook": "世界观地图表",
+            "className": "EventTable_EventConfig",
+            "resourcePath": "Data/Json/Runtime/EventTable_Event",
+            "workbook": "EventTable_剧情事件表",
+            "worksheet": "事件"
+        },
+        {
+            "className": "EventTable_EventOptionConfig",
+            "resourcePath": "Data/Json/Runtime/EventTable_EventOption",
+            "workbook": "EventTable_剧情事件表",
+            "worksheet": "选项"
+        },
+        {
+            "className": "TestTable_TestConfig",
+            "resourcePath": "Data/Json/Runtime/TestTable_Test",
+            "workbook": "TestTable_测试表",
+            "worksheet": "测试"
+        },
+        {
+            "className": "WorldMapTable_WorldMapConfig",
+            "resourcePath": "Data/Json/Runtime/WorldMapTable_WorldMap",
+            "workbook": "WorldMapTable_世界观地图表",
             "worksheet": "地点"
         },
         {
-            "className": "WorldFactionConfig",
-            "resourcePath": "Data/Json/Runtime/世界观地图表_WorldFactionConfig",
-            "workbook": "世界观地图表",
+            "className": "WorldMapTable_WorldFactionConfig",
+            "resourcePath": "Data/Json/Runtime/WorldMapTable_WorldFaction",
+            "workbook": "WorldMapTable_世界观地图表",
             "worksheet": "疆域"
         },
         {
-            "className": "WorldFactionLabelConfig",
-            "resourcePath": "Data/Json/Runtime/世界观地图表_WorldFactionLabelConfig",
-            "workbook": "世界观地图表",
+            "className": "WorldMapTable_WorldFactionLabelConfig",
+            "resourcePath": "Data/Json/Runtime/WorldMapTable_WorldFactionLabel",
+            "workbook": "WorldMapTable_世界观地图表",
             "worksheet": "历史名录派生"
         }
     ]

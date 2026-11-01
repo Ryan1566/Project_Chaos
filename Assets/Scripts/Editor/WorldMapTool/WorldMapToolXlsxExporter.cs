@@ -49,13 +49,13 @@ public static class WorldMapToolXlsxExporter
     public const string TopLevelFolderAssetPath = "Assets/Excel/Chaos_excel";
 
     /// <summary>
-    /// 世界观地图表文件名（顶层共享工作簿）：第 1 页 = 地点（WorldMapConfig），第 2 页 = 疆域（WorldFactionConfig）。
+    /// 世界观地图表文件名（顶层共享工作簿）：第 1 页 = 地点（WorldMapTable_WorldMapConfig），第 2 页 = 疆域（WorldMapTable_WorldFactionConfig）。
     /// 只保留一张共享表，避免顶层出现同英文前缀的第二张表被静默覆盖。
     /// </summary>
-    public const string MapTableFileName = "世界观地图表.xlsx";
+    public const string MapTableFileName = "WorldMapTable_世界观地图表.xlsx";
 
     /// <summary>势力**合并**表文件名（顶层）—— 现已与地点表合并为同一张共享工作簿，因此与 <see cref="MapTableFileName"/> 同名。</summary>
-    public const string FactionMergedFileName = "世界观地图表.xlsx";
+    public const string FactionMergedFileName = "WorldMapTable_世界观地图表.xlsx";
 
     /// <summary>势力**时期分表**文件名（放子目录，不参与导出）。</summary>
     public static string FactionStageFileName(uint stage)
@@ -184,7 +184,7 @@ public static class WorldMapToolXlsxExporter
 
     /// <summary>
     /// 表名比较的归一化：忽略前后空白、大小写，并去掉 `Config` 后缀再比一次 ——
-    /// 导出器读的是**基名**（`WorldMap`），人工表里常写成**完整类名**（`WorldMapConfig`），两者视为同一张表。
+    /// 导出器读的是**基名**（`WorldMap`），人工表里常写成**完整类名**（`WorldMapTable_WorldMapConfig`），两者视为同一张表。
     /// </summary>
     private static bool SameTableType(string left, string right)
     {
@@ -398,7 +398,7 @@ public static class WorldMapToolXlsxExporter
         result.Issues.AddRange(WorldMapToolValidator.ValidateMapTable(draft, true));
         //硬约束②：同前缀冲突（共享文件自身不算冲突）
         WorldMapToolValidator.CheckTopLevelPrefixCollision(
-            folderAbsolute, MapTableFileName, MapTableName, result.Issues);
+            folderAbsolute, MapTableFileName, ConfigExportNaming.WorkbookKey(MapTableFileName), result.Issues);
 
         if (WorldMapToolValidator.HasError(result.Issues))
         {
@@ -585,7 +585,7 @@ public static class WorldMapToolXlsxExporter
         result.Issues.AddRange(WorldMapToolValidator.ValidateFactionTables(draft, true));
         //硬约束②：同前缀冲突（共享文件自身不算冲突）
         WorldMapToolValidator.CheckTopLevelPrefixCollision(
-            folderAbsolute, FactionMergedFileName, FactionTableName, result.Issues);
+            folderAbsolute, FactionMergedFileName, ConfigExportNaming.WorkbookKey(FactionMergedFileName), result.Issues);
 
         if (WorldMapToolValidator.HasError(result.Issues))
         {

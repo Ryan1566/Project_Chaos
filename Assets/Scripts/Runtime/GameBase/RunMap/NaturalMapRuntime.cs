@@ -38,7 +38,7 @@ namespace RunMap
         public static NaturalMapParameters LoadParameters(int sceneIndex, bool applyPreview = true)
         {
             uint preset = sceneIndex == 1 ? 11u : sceneIndex == 2 ? 10u : 12u;
-            var rows = ConfigLoader.Instance.LoadData<MapGenerationConfig>();
+            var rows = ConfigLoader.Instance.LoadData<RunMapTable_MapGenerationConfig>();
             var row = rows == null ? null : rows.datas.Find(r => r.enable && r.presetId == preset);
             if (row == null) throw new InvalidOperationException("MapGeneration缺少预设" + preset + "的启用参数");
             var p = JsonUtility.FromJson<NaturalMapParameters>(JsonUtility.ToJson(row));

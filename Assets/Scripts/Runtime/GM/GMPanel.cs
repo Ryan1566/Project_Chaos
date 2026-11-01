@@ -639,7 +639,7 @@ public partial class GMPanel : MonoBehaviour
         AddActionButton(page, "强制检查并弹事件", () =>
         {
             int n = EventService.Instance.CheckAndShowOnReturnToMeta();
-            EventConfig head = EventService.Instance.Current;
+            EventTable_EventConfig head = EventService.Instance.Current;
             string text = n == 0
                 ? "[剧情事件] 强制检查：没有满足条件的事件（队列 0 个，不弹面板）"
                 : ("[剧情事件] 强制检查：入队 " + n + " 个，队首 " + head.Index + "《" + head.TitleText + "》，已弹面板");

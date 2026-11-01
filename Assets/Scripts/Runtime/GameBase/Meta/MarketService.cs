@@ -27,21 +27,21 @@ public class MarketService : SingletonBase<MarketService>
     /// <summary>买价；物品不存在或表里为 0 → `0`（= 不可买）。</summary>
     public uint GetBuyPrice(uint itemId)
     {
-        ItemConfig def = InventoryService.Instance.GetDefinition(itemId);
+        ItemTable_ItemConfig def = InventoryService.Instance.GetDefinition(itemId);
         return def == null ? 0u : def.BuyPrice;
     }
 
     /// <summary>卖价；物品不存在或表里为 0 → `0`（= 不可卖）。</summary>
     public uint GetSellPrice(uint itemId)
     {
-        ItemConfig def = InventoryService.Instance.GetDefinition(itemId);
+        ItemTable_ItemConfig def = InventoryService.Instance.GetDefinition(itemId);
         return def == null ? 0u : def.SellPrice;
     }
 
     /// <summary>可交易 = 启用 且（买价 &gt; 0 或 卖价 &gt; 0）；两列都 0 不进市场列表（E5）。</summary>
     public bool IsTradable(uint itemId)
     {
-        ItemConfig def = InventoryService.Instance.GetDefinition(itemId);
+        ItemTable_ItemConfig def = InventoryService.Instance.GetDefinition(itemId);
         if (def == null || !def.Enable) return false;
         return def.BuyPrice > 0u || def.SellPrice > 0u;
     }
@@ -96,7 +96,7 @@ public class MarketService : SingletonBase<MarketService>
         reason = null;
         InventoryService inv = InventoryService.Instance;
 
-        ItemConfig def = inv.GetDefinition(itemId);
+        ItemTable_ItemConfig def = inv.GetDefinition(itemId);
         if (def == null)
         {
             reason = "道具表里没有 itemId=" + itemId;
@@ -164,7 +164,7 @@ public class MarketService : SingletonBase<MarketService>
     /// <summary>把 `AddItem` 的原始原因（很长）翻译成面板/验收要的两句话（§9 E2 / E3）。</summary>
     private string DescribeAddFailure(uint itemId, InventoryService inv)
     {
-        ItemConfig def = inv.GetDefinition(itemId);
+        ItemTable_ItemConfig def = inv.GetDefinition(itemId);
         uint stackLimit = def == null ? 1u : (def.StackLimit == 0u ? 1u : def.StackLimit);
         if (GetCount(itemId) == 0u && inv.UsedSlots >= inv.TotalSlots)
             return "格位已满（" + inv.UsedSlots + "/" + inv.TotalSlots + "）";
@@ -182,7 +182,7 @@ public class MarketService : SingletonBase<MarketService>
         reason = null;
         InventoryService inv = InventoryService.Instance;
 
-        ItemConfig def = inv.GetDefinition(itemId);
+        ItemTable_ItemConfig def = inv.GetDefinition(itemId);
         if (def == null)
         {
             reason = "道具表里没有 itemId=" + itemId;
@@ -243,12 +243,12 @@ public class MarketService : SingletonBase<MarketService>
           .Append(inv.GetResource(InventoryService.ResourceKind.Money))
           .Append("｜格位 ").Append(inv.UsedSlots).Append("/").Append(inv.TotalSlots);
 
-        List<ItemConfig> defs = inv.GetAllDefinitions();
+        List<ItemTable_ItemConfig> defs = inv.GetAllDefinitions();
         int tradable = 0;
         int halfPriceOk = 0;
         for (int i = 0; i < defs.Count; i++)
         {
-            ItemConfig def = defs[i];
+            ItemTable_ItemConfig def = defs[i];
             if (def == null) continue;
 
             if (!def.Enable)

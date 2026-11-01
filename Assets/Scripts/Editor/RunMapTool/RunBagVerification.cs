@@ -21,11 +21,11 @@ public static class RunBagVerification
         Action<bool,string> check = (ok,name) => { if (!ok) throw new Exception("FAIL " + name); report.AppendLine("PASS " + name); };
         var defs = InventoryService.Instance.GetAllDefinitions();
         var added = new[] {
-            new ItemConfig { Index=900001, RunCategory=2, StackLimit=9, Enable=true },
-            new ItemConfig { Index=900002, RunCategory=1, IsUnique=true, StackLimit=99, Enable=true, BuyPrice=4, SellPrice=2 },
-            new ItemConfig { Index=900003, RunCategory=3, StackLimit=8, Enable=true },
-            new ItemConfig { Index=900004, RunCategory=0, StackLimit=7, Enable=true },
-            new ItemConfig { Index=900005, RunCategory=1, IsUnique=false, StackLimit=99, Enable=true, BuyPrice=3, SellPrice=2 }
+            new ItemTable_ItemConfig { Index=900001, RunCategory=2, StackLimit=9, Enable=true },
+            new ItemTable_ItemConfig { Index=900002, RunCategory=1, IsUnique=true, StackLimit=99, Enable=true, BuyPrice=4, SellPrice=2 },
+            new ItemTable_ItemConfig { Index=900003, RunCategory=3, StackLimit=8, Enable=true },
+            new ItemTable_ItemConfig { Index=900004, RunCategory=0, StackLimit=7, Enable=true },
+            new ItemTable_ItemConfig { Index=900005, RunCategory=1, IsUnique=false, StackLimit=99, Enable=true, BuyPrice=3, SellPrice=2 }
         };
         defs.AddRange(added);
         string reason;

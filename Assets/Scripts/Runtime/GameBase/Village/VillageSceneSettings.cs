@@ -12,7 +12,7 @@ public sealed class VillageSceneSettings
     public string groundTilePool;
     public static VillageSceneSettings Load()
     {
-        var rows = ConfigLoader.Instance.LoadData<VillageSceneConfig>();
+        var rows = ConfigLoader.Instance.LoadData<VillageTable_VillageSceneConfig>();
         if (rows == null || rows.datas.Count != 1) throw new InvalidOperationException("VillageScene requires one configuration row");
         var p = JsonUtility.FromJson<VillageSceneSettings>(JsonUtility.ToJson(rows.datas[0])); p.Validate(); return p;
     }
@@ -33,7 +33,7 @@ public static class VillageText
 {
     public static string Get(string key, params object[] args)
     {
-        var rows = ConfigLoader.Instance.LoadData<VillageTextConfig>();
+        var rows = ConfigLoader.Instance.LoadData<VillageTable_VillageTextConfig>();
         var row = rows == null ? null : rows.datas.Find(r => r.key == key);
         if (row == null) throw new InvalidOperationException("VillageText missing key: " + key);
         var manager = LocalizationManager.GetInstance();

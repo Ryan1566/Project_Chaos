@@ -94,13 +94,13 @@ public class AllyController : MonoBehaviour
         try { _settings = RunMap.RunBehaviorSettings.Load("Ally"); }
         catch (System.Exception exception)
         {
-            Debug.LogError("[Ally] RunBehaviorConfig Ally is unavailable: " + exception.Message, this);
+            Debug.LogError("[Ally] RunContentTable_RunBehaviorConfig Ally is unavailable: " + exception.Message, this);
             enabled = false;
             return;
         }
         if (_settings == null)
         {
-            Debug.LogError("[Ally] RunBehaviorConfig has no Ally row.", this);
+            Debug.LogError("[Ally] RunContentTable_RunBehaviorConfig has no Ally row.", this);
             enabled = false;
             return;
         }
@@ -483,7 +483,7 @@ public class AllyController : MonoBehaviour
 
     // ══════════════ W3.3：门客运行时 HP / 倒地 / 复活 ══════════════
     /// <summary>
-    /// 血量上限 = `RetainerConfig.Hp` + `EffectAggregator` 的 **EffectType=4 / Target=1** 加成。
+    /// 血量上限 = `RetainerTable_RetainerConfig.Hp` + `EffectAggregator` 的 **EffectType=4 / Target=1** 加成。
     /// **懒解析**：`memberId` 是 Instantiate 之后由 `PlayerSpawner.SpawnAllies` 写入的，Awake 里还是 0。
     /// 取不到模板 / 服务异常 → Warn 并用 100。
     /// </summary>
@@ -530,7 +530,7 @@ public class AllyController : MonoBehaviour
             RetainerSave retainer;
             if (service != null && service.TryGet(memberId, out retainer))
             {
-                RetainerConfig definition = service.GetDefinition(retainer.protoId);
+                RetainerTable_RetainerConfig definition = service.GetDefinition(retainer.protoId);
                 if (definition != null) tableHp = (int)definition.Hp;
                 bonusHp = service.BonusHp;
             }

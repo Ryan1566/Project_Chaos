@@ -57,7 +57,7 @@ namespace Chaos.MVP.Model.Gameplay
             if(task.SelectedOptionId>0&&task.Status==OfficeTaskStatus.Active)result+="\n"+OfficeTaskText.Get("prepared");
             return result;
         }
-        static string Describe(OfficeTaskOptionConfig option)
+        static string Describe(OfficeTaskTable_OfficeTaskOptionConfig option)
         {
             string text=option.OptionText;
             if(option.CostAmount>0)text+="　"+OfficeTaskText.Get("cost",InventoryService.ResourceDisplayName(VillageService.ResourceKindOf(option.CostResourceType)),option.CostAmount);

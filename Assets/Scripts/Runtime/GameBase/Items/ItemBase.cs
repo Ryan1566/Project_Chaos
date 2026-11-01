@@ -6,7 +6,7 @@ namespace Chaos.Gameplay.Items
     /// <summary>All five item families share this contract. Quantity always comes from the bag, never from a shared definition.</summary>
     public abstract class ItemBase
     {
-        public ItemConfig Definition { get; }
+        public ItemTable_ItemConfig Definition { get; }
         public ItemUseProfile Profile { get; }
         public uint Id => Definition.Index;
         public string Name => GameplayText.ItemName(Definition);
@@ -22,7 +22,7 @@ namespace Chaos.Gameplay.Items
         public bool IsUnique => ParentCategory == ItemParentCategory.Important || Definition.IsUnique;
         public bool TryUse(RunBagSection section, int index, out string reason) => RunItemUseService.TryUse(section, index, Id, out reason);
         public bool Consumes => ParentCategory != ItemParentCategory.Important && Profile != null && Profile.consume;
-        protected ItemBase(ItemConfig definition, ItemUseProfile profile) { Definition = definition; Profile = profile; }
+        protected ItemBase(ItemTable_ItemConfig definition, ItemUseProfile profile) { Definition = definition; Profile = profile; }
         public abstract bool CanUse(PlayerHealth actor, out string reason);
         internal abstract void Apply(PlayerHealth actor);
         public virtual void PlayUseAnimation(PlayerHealth actor)
@@ -40,7 +40,7 @@ namespace Chaos.Gameplay.Items
         }
         sealed class ConfiguredItem : ItemBase
         {
-            public ConfiguredItem(ItemConfig d, ItemUseProfile p) : base(d, p) { }
+            public ConfiguredItem(ItemTable_ItemConfig d, ItemUseProfile p) : base(d, p) { }
             public override bool CanUse(PlayerHealth actor, out string reason)
             {
                 reason = null;

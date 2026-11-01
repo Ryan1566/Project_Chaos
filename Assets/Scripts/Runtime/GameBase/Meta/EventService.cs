@@ -35,12 +35,12 @@ public class EventService : SingletonBase<EventService>
     /// <summary>触发类型：已点亮家族树节点。</summary>
     public const uint TriggerFamilyTreeNode = 3u;
 
-    private List<EventConfig> _eventDefs;
-    private List<EventOptionConfig> _optionDefs;
+    private List<EventTable_EventConfig> _eventDefs;
+    private List<EventTable_EventOptionConfig> _optionDefs;
     private bool _loaded;
 
     /// <summary>待弹队列（运行时，不落盘）。队首 = 当前该弹的事件。</summary>
-    private readonly List<EventConfig> _queue = new List<EventConfig>();
+    private readonly List<EventTable_EventConfig> _queue = new List<EventTable_EventConfig>();
 
     /// <summary>本次会话已弹过的**可重复**事件 ID（不落盘；JsonUtility 不支持 HashSet 落盘）。</summary>
     private readonly HashSet<uint> _poppedThisSession = new HashSet<uint>();
@@ -56,8 +56,8 @@ public class EventService : SingletonBase<EventService>
         if (_loaded) return;
         _loaded = true;
 
-        _eventDefs = LoadTable<EventConfig>("EventConfig");
-        _optionDefs = LoadTable<EventOptionConfig>("EventOptionConfig");
+        _eventDefs = LoadTable<EventTable_EventConfig>("EventTable_EventConfig");
+        _optionDefs = LoadTable<EventTable_EventOptionConfig>("EventTable_EventOptionConfig");
 
         ChaosLog.Info(LogChannel.Config,
             "[剧情事件] 表已加载：Event " + _eventDefs.Count + " 行，EventOption " + _optionDefs.Count + " 行");
@@ -88,7 +88,7 @@ public class EventService : SingletonBase<EventService>
     public int EventCount { get { EnsureLoaded(); return _eventDefs == null ? 0 : _eventDefs.Count; } }
     public int OptionCount { get { EnsureLoaded(); return _optionDefs == null ? 0 : _optionDefs.Count; } }
 
-    public EventConfig GetEvent(uint eventIndex)
+    public EventTable_EventConfig GetEvent(uint eventIndex)
     {
         EnsureLoaded();
         if (_eventDefs == null) return null;
@@ -97,7 +97,7 @@ public class EventService : SingletonBase<EventService>
         return null;
     }
 
-    public EventOptionConfig GetOption(uint optionIndex)
+    public EventTable_EventOptionConfig GetOption(uint optionIndex)
     {
         EnsureLoaded();
         if (_optionDefs == null) return null;
@@ -107,15 +107,15 @@ public class EventService : SingletonBase<EventService>
     }
 
     /// <summary>某事件的选项（`Enable=true`，按 `OptionIndex` 升序，最多 3 个）。</summary>
-    public List<EventOptionConfig> GetOptions(uint eventId)
+    public List<EventTable_EventOptionConfig> GetOptions(uint eventId)
     {
         EnsureLoaded();
-        var result = new List<EventOptionConfig>();
+        var result = new List<EventTable_EventOptionConfig>();
         if (_optionDefs == null) return result;
 
         for (int i = 0; i < _optionDefs.Count; i++)
         {
-            EventOptionConfig opt = _optionDefs[i];
+            EventTable_EventOptionConfig opt = _optionDefs[i];
             if (opt == null || !opt.Enable || opt.EventId != eventId) continue;
             result.Add(opt);
         }
@@ -123,7 +123,7 @@ public class EventService : SingletonBase<EventService>
         //OptionIndex 升序 = 按钮从上到下的顺序
         for (int i = 1; i < result.Count; i++)
         {
-            EventOptionConfig key = result[i];
+            EventTable_EventOptionConfig key = result[i];
             int j = i - 1;
             while (j >= 0 && result[j].OptionIndex > key.OptionIndex) { result[j + 1] = result[j]; j--; }
             result[j + 1] = key;
@@ -144,7 +144,7 @@ public class EventService : SingletonBase<EventService>
     // ══════════════════ 队列（面板读取）══════════════════
 
     /// <summary>队首事件（该弹的那个）；队列空返回 null。</summary>
-    public EventConfig Current { get { return _queue.Count > 0 ? _queue[0] : null; } }
+    public EventTable_EventConfig Current { get { return _queue.Count > 0 ? _queue[0] : null; } }
 
     /// <summary>队列长度（含队首）。</summary>
     public int PendingCount { get { return _queue.Count; } }
@@ -159,7 +159,7 @@ public class EventService : SingletonBase<EventService>
     // ══════════════════ 触发判定 ══════════════════
 
     /// <summary>逐字口径（§3.2）：只判"是否达到"，不判"是否刚达到"。</summary>
-    public bool IsSatisfied(EventConfig def, SavePayload p, out string why)
+    public bool IsSatisfied(EventTable_EventConfig def, SavePayload p, out string why)
     {
         why = null;
         if (def == null) { why = "事件为空"; return false; }
@@ -193,7 +193,7 @@ public class EventService : SingletonBase<EventService>
     /// **收集本轮该弹的事件**（§3.6 Q1/Q2/Q5 + §3.5 R4）。
     /// 返回的列表就是队列本身（面板只读）。队列非空时**直接返回**（E9 幂等，不重复入队）。
     /// </summary>
-    public List<EventConfig> CheckAndCollect()
+    public List<EventTable_EventConfig> CheckAndCollect()
     {
         EnsureLoaded();
 
@@ -210,11 +210,11 @@ public class EventService : SingletonBase<EventService>
         SavePayload p = MetaProgressService.Instance.Payload;
         if (p.firedEvents == null) p.firedEvents = new List<uint>();
 
-        var candidates = new List<EventConfig>();
+        var candidates = new List<EventTable_EventConfig>();
         int total = _eventDefs == null ? 0 : _eventDefs.Count;
         for (int i = 0; i < total; i++)
         {
-            EventConfig def = _eventDefs[i];
+            EventTable_EventConfig def = _eventDefs[i];
             if (def == null || !def.Enable) continue;
 
             if (p.firedEvents.Contains(def.Index))
@@ -234,7 +234,7 @@ public class EventService : SingletonBase<EventService>
         //Q2 排序：Priority 降序 → Index 升序（手写插入排序，避免闭包分配）
         for (int i = 1; i < candidates.Count; i++)
         {
-            EventConfig key = candidates[i];
+            EventTable_EventConfig key = candidates[i];
             int j = i - 1;
             while (j >= 0 && ComesBefore(key, candidates[j])) { candidates[j + 1] = candidates[j]; j--; }
             candidates[j + 1] = key;
@@ -264,7 +264,7 @@ public class EventService : SingletonBase<EventService>
     }
 
     /// <summary>排序判据：`Priority` 大在前；相同则 `Index` 小在前。</summary>
-    private static bool ComesBefore(EventConfig a, EventConfig b)
+    private static bool ComesBefore(EventTable_EventConfig a, EventTable_EventConfig b)
     {
         if (a.Priority != b.Priority) return a.Priority > b.Priority;
         return a.Index < b.Index;
@@ -276,7 +276,7 @@ public class EventService : SingletonBase<EventService>
     /// </summary>
     public int CheckAndShowOnReturnToMeta()
     {
-        List<EventConfig> queue = CheckAndCollect();
+        List<EventTable_EventConfig> queue = CheckAndCollect();
         if (queue == null || queue.Count == 0) return 0;
 
         ChaosLog.Success(LogChannel.Config,
@@ -306,8 +306,8 @@ public class EventService : SingletonBase<EventService>
     /// <summary>选择、奖励和一次性标记作为同一次存档提交；保存失败恢复整个 payload。</summary>
     public bool TryChooseOption(uint optionIndex, out string reason)
     {
-        EventConfig current = Current;
-        EventOptionConfig option = GetOption(optionIndex);
+        EventTable_EventConfig current = Current;
+        EventTable_EventOptionConfig option = GetOption(optionIndex);
         if (current == null || option == null || !option.Enable || option.EventId != current.Index)
         {
             reason = "该选项不属于当前事件";
@@ -335,7 +335,7 @@ public class EventService : SingletonBase<EventService>
     public bool TryCompleteCurrent(out string reason)
     {
         reason = null;
-        EventConfig current = Current;
+        EventTable_EventConfig current = Current;
         if (current == null) return true;
         if (_resolvedEventIndex != current.Index)
         {
@@ -356,7 +356,7 @@ public class EventService : SingletonBase<EventService>
         _resolvedResult = null;
     }
 
-    private static void RecordDisposition(EventConfig current, SavePayload payload)
+    private static void RecordDisposition(EventTable_EventConfig current, SavePayload payload)
     {
         if (payload.firedEvents == null) payload.firedEvents = new List<uint>();
         if (!current.Repeatable && !payload.firedEvents.Contains(current.Index))
@@ -384,7 +384,7 @@ public class EventService : SingletonBase<EventService>
         EnsureLoaded();
         reason = null;
 
-        EventOptionConfig opt = GetOption(optionIndex);
+        EventTable_EventOptionConfig opt = GetOption(optionIndex);
         if (opt == null)
         {
             reason = "选项 " + optionIndex + " 不存在";
@@ -544,7 +544,7 @@ public class EventService : SingletonBase<EventService>
         //逐条列出每个事件的当前判定（便于现场看"为什么不弹"）
         for (int i = 0; i < _eventDefs.Count; i++)
         {
-            EventConfig def = _eventDefs[i];
+            EventTable_EventConfig def = _eventDefs[i];
             if (def == null) continue;
             string why;
             bool ok = IsSatisfied(def, p, out why);

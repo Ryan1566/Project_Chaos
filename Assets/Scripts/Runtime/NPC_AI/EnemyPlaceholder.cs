@@ -71,13 +71,13 @@ public class EnemyPlaceholder : MonoBehaviour, IDamageable
         try { _settings = RunMap.RunBehaviorSettings.Load("Enemy"); }
         catch (System.Exception exception)
         {
-            Debug.LogError("[Enemy] RunBehaviorConfig Enemy is unavailable: " + exception.Message, this);
+            Debug.LogError("[Enemy] RunContentTable_RunBehaviorConfig Enemy is unavailable: " + exception.Message, this);
             enabled = false;
             return;
         }
         if (_settings == null)
         {
-            Debug.LogError("[Enemy] RunBehaviorConfig has no Enemy row.", this);
+            Debug.LogError("[Enemy] RunContentTable_RunBehaviorConfig has no Enemy row.", this);
             enabled = false;
             return;
         }

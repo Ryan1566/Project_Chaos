@@ -53,10 +53,10 @@ public static class OfficeTaskVerification
     static void Click(Button button){ExecuteEvents.Execute(button.gameObject,new PointerEventData(EventSystem.current),ExecuteEvents.pointerClickHandler);}
     static OfficeTaskSave Record(uint id)=>Payload.officeTasks.Single(r=>r.taskId==id);
     static string SlotPath()=>Directory.GetFiles(storage,"*.json").Single();
-    static OfficeTaskConfig Definition(uint id,OfficeTaskCategory category,OfficeTaskGoal goal=OfficeTaskGoal.Choice)
-    {return new OfficeTaskConfig{Index=id,Category=(uint)category,GoalType=(uint)goal,TitleText="隔离样例"+id,BodyText="仅用于独立验收",MinEra=1,MaxEra=5,Enable=true};}
-    static OfficeTaskOptionConfig Option(uint id,uint task)=>new OfficeTaskOptionConfig{Index=id,TaskId=task,OptionText="隔离选项",Enable=true};
-    static string BuildFixture(OfficeTaskCatalogSet set,List<OfficeTaskConfig> tasks,List<OfficeTaskOptionConfig> options,List<OfficeEraGateConfig> gates)
+    static OfficeTaskTable_OfficeTaskConfig Definition(uint id,OfficeTaskCategory category,OfficeTaskGoal goal=OfficeTaskGoal.Choice)
+    {return new OfficeTaskTable_OfficeTaskConfig{Index=id,Category=(uint)category,GoalType=(uint)goal,TitleText="隔离样例"+id,BodyText="仅用于独立验收",MinEra=1,MaxEra=5,Enable=true};}
+    static OfficeTaskTable_OfficeTaskOptionConfig Option(uint id,uint task)=>new OfficeTaskTable_OfficeTaskOptionConfig{Index=id,TaskId=task,OptionText="隔离选项",Enable=true};
+    static string BuildFixture(OfficeTaskCatalogSet set,List<OfficeTaskTable_OfficeTaskConfig> tasks,List<OfficeTaskTable_OfficeTaskOptionConfig> options,List<OfficeTaskTable_OfficeEraGateConfig> gates)
     {return (string)typeof(OfficeTaskCatalogSet).GetMethod("Build",BindingFlags.Static|BindingFlags.NonPublic).Invoke(null,new object[]{set,tasks,options,gates});}
     static void Fixtures()
     {
@@ -68,13 +68,13 @@ public static class OfficeTaskVerification
         var timeout=Definition(70006,OfficeTaskCategory.Emergency);timeout.DurationSeconds=2;timeout.FailureResourceType=4;timeout.FailureResourceAmount=3;timeout.FailureReputation=-2;
         var overflow=Definition(70007,OfficeTaskCategory.Preset);
         var pending=Definition(70008,OfficeTaskCategory.Preset);
-        var tasks=new List<OfficeTaskConfig>{county,admin,delivery,clears,raid,timeout,overflow,pending};
+        var tasks=new List<OfficeTaskTable_OfficeTaskConfig>{county,admin,delivery,clears,raid,timeout,overflow,pending};
         var options=tasks.Select((t,i)=>Option((uint)(71001+i),t.Index)).ToList();
         options[0].ReputationDelta=2;options[1].ReputationDelta=10;
         options[2].CostResourceType=1;options[2].CostAmount=3;options[2].RewardResourceType=4;options[2].RewardAmount=5;
         options[4].CostResourceType=1;options[4].CostAmount=2;options[4].RewardResourceType=4;options[4].RewardAmount=11;
         options[6].RewardResourceType=4;options[6].RewardAmount=uint.MaxValue;options[6].CostResourceType=1;options[6].CostAmount=1;
-        var gates=new List<OfficeEraGateConfig>{new OfficeEraGateConfig{Index=1,Era=1,TaskId=county.Index,Enable=true}};
+        var gates=new List<OfficeTaskTable_OfficeEraGateConfig>{new OfficeTaskTable_OfficeEraGateConfig{Index=1,Era=1,TaskId=county.Index,Enable=true}};
         var set=new OfficeTaskCatalogSet();string catalogError=BuildFixture(set,tasks,options,gates);Check(catalogError==null,"independent fixture catalog accepts current-era gate and emergency raid: "+catalogError);
         typeof(OfficeTaskCatalog).GetProperty("Current").SetValue(null,set);
         typeof(OfficeTaskCatalog).GetField("_loaded",BindingFlags.Static|BindingFlags.NonPublic).SetValue(null,true);
@@ -118,8 +118,8 @@ public static class OfficeTaskVerification
         var payload=JsonUtility.FromJson<SavePayload>(JsonUtility.ToJson(Payload));GameSession.Instance.Clear();Check(SaveSlotService.Instance.Save(3,payload),"formal-flow isolated slot created");GameSession.Instance.Begin(3,payload,"MainScene");VillageSceneFlow.EnterFromSave();
         yield return WaitVillage();yield return new WaitForSecondsRealtime(.3f);
         Check(Payload.officeTasks.Any(t=>t.taskId==9001)&&Payload.officeTasks.Any(t=>t.taskId==9301),"formal village driver activates configured county and timed delivery tasks");
-        bool asyncDone=false;int asyncCount=-1;ConfigLoader.Instance.LoadDataAsync<ItemConfig>(data=>{asyncDone=true;asyncCount=data?.datas.Count??-1;});float deadline=Time.realtimeSinceStartup+8;while(!asyncDone&&Time.realtimeSinceStartup<deadline)yield return null;
-        Check(asyncDone&&asyncCount==ConfigLoader.Instance.LoadData<ItemConfig>().datas.Count,"renamed resources load through identical sync and async type index");
+        bool asyncDone=false;int asyncCount=-1;ConfigLoader.Instance.LoadDataAsync<ItemTable_ItemConfig>(data=>{asyncDone=true;asyncCount=data?.datas.Count??-1;});float deadline=Time.realtimeSinceStartup+8;while(!asyncDone&&Time.realtimeSinceStartup<deadline)yield return null;
+        Check(asyncDone&&asyncCount==ConfigLoader.Instance.LoadData<ItemTable_ItemConfig>().datas.Count,"renamed resources load through identical sync and async type index");
         yield return Press(Key.E);Check(Top is VillageOfficePanel,"physical office E entry preserved");ClickName("OfficeTasks");yield return new WaitForSecondsRealtime(.3f);Check(Top is OfficeTasksPanel,"office opens four-category task panel");
         Check(Top.GetComponentsInChildren<Button>(false).Count(b=>b.name.StartsWith("Category",StringComparison.Ordinal))==4||Top.GetComponentsInChildren<Button>(false).Count(b=>b.GetComponentsInChildren<TextMeshProUGUI>().Any(t=>new[]{"郡县指派事务","行政事件","预设任务","突发任务"}.Contains(t.text)))==4,"four categories are present in real UI");
         foreach(var text in Top.GetComponentsInChildren<TextMeshProUGUI>()){if(text.name=="Summary"||text.name=="DetailTitle"||text.name=="DetailProgress"||text.name=="Title"){text.ForceMeshUpdate();Check(text.rectTransform.rect.height>0&&text.textInfo.characterCount>0,"task heading actually produces visible text: "+text.name);}}

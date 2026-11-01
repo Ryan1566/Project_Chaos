@@ -9,30 +9,30 @@ using UnityEngine;
 /// </summary>
 public class FamilyTreeService : SingletonBase<FamilyTreeService>
 {
-    private List<FamilyTreeConfig> _defs;
+    private List<MetaSkillTreeTable_FamilyTreeConfig> _defs;
     private bool _loaded;
 
     public void EnsureLoaded()
     {
         if (_loaded) return;
         _loaded = true;
-        string path = GlobalPath.data_JsonPathToRead + "FamilyTreeConfig";
+        string path = GlobalPath.data_JsonPathToRead + "MetaSkillTreeTable_FamilyTreeConfig";
         TextAsset asset = ConfigTableAssets.Load(path);
         if (asset == null)
         {
             ChaosLog.Warn(LogChannel.Config, "[家族树] 找不到 " + path);
-            _defs = new List<FamilyTreeConfig>();
+            _defs = new List<MetaSkillTreeTable_FamilyTreeConfig>();
             return;
         }
-        DataList<FamilyTreeConfig> list = JsonUtility.FromJson<DataList<FamilyTreeConfig>>(asset.text);
-        _defs = (list == null || list.datas == null) ? new List<FamilyTreeConfig>() : list.datas;
+        DataList<MetaSkillTreeTable_FamilyTreeConfig> list = JsonUtility.FromJson<DataList<MetaSkillTreeTable_FamilyTreeConfig>>(asset.text);
+        _defs = (list == null || list.datas == null) ? new List<MetaSkillTreeTable_FamilyTreeConfig>() : list.datas;
     }
 
     public void Reload() { _loaded = false; _defs = null; EnsureLoaded(); }
 
-    public List<FamilyTreeConfig> GetAll() { EnsureLoaded(); return _defs; }
+    public List<MetaSkillTreeTable_FamilyTreeConfig> GetAll() { EnsureLoaded(); return _defs; }
 
-    public FamilyTreeConfig GetDef(uint nodeId)
+    public MetaSkillTreeTable_FamilyTreeConfig GetDef(uint nodeId)
     {
         EnsureLoaded();
         for (int i = 0; i < _defs.Count; i++)
@@ -58,7 +58,7 @@ public class FamilyTreeService : SingletonBase<FamilyTreeService>
     public bool CanUnlock(uint nodeId, out string reason)
     {
         reason = null;
-        FamilyTreeConfig def = GetDef(nodeId);
+        MetaSkillTreeTable_FamilyTreeConfig def = GetDef(nodeId);
         if (def == null) { reason = "节点 " + nodeId + " 不存在"; return false; }
         if (!def.Enable) { reason = "节点 " + nodeId + " 已禁用"; return false; }
         if (IsUnlocked(nodeId)) { reason = "节点 " + nodeId + " 已经点亮过了"; return false; }
@@ -85,7 +85,7 @@ public class FamilyTreeService : SingletonBase<FamilyTreeService>
     {
         if (!CanUnlock(nodeId, out reason)) return false;
 
-        FamilyTreeConfig def = GetDef(nodeId);
+        MetaSkillTreeTable_FamilyTreeConfig def = GetDef(nodeId);
         InventoryService.ResourceKind kind = VillageService.ResourceKindOf(def.CostType);
         string spendReason;
         if (!InventoryService.Instance.SpendResource(kind, def.CostValue, out spendReason))
@@ -119,7 +119,7 @@ public class FamilyTreeService : SingletonBase<FamilyTreeService>
         sb.Append("[家族树] 已点亮 ").Append(Unlocked.Count).Append("/").Append(_defs.Count).Append("：");
         for (int i = 0; i < _defs.Count; i++)
         {
-            FamilyTreeConfig def = _defs[i];
+            MetaSkillTreeTable_FamilyTreeConfig def = _defs[i];
             if (def == null) continue;
             sb.Append("\n  ").Append(def.Index)
               .Append(" 板块").Append(def.Board).Append("#").Append(def.OrderInBoard)

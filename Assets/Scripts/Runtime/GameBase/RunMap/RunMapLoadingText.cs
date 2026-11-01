@@ -32,7 +32,7 @@ namespace RunMap
         public const uint StageValidate = 7;
         public const uint StageReady = 8;
 
-        private static List<MapLoadingConfig> _rows;
+        private static List<LoadingTable_MapLoadingConfig> _rows;
         private static bool _loadTried;
 
         /// <summary>当前设置里的语言。取不到就按简中。</summary>
@@ -58,7 +58,7 @@ namespace RunMap
 
         public static string ForStage(uint stage, LanguageType lang)
         {
-            List<MapLoadingConfig> rows = Rows();
+            List<LoadingTable_MapLoadingConfig> rows = Rows();
             if (rows == null) return "";
             for (int i = 0; i < rows.Count; i++)
                 if (rows[i].stage == stage) return Pick(rows[i], lang);
@@ -66,7 +66,7 @@ namespace RunMap
         }
 
         /// <summary>按语言取列。某语言为空时**回退简中**（避免"翻译还没来"变成空白读条）。</summary>
-        public static string Pick(MapLoadingConfig row, LanguageType lang)
+        public static string Pick(LoadingTable_MapLoadingConfig row, LanguageType lang)
         {
             if (row == null) return "";
             string s;
@@ -86,22 +86,22 @@ namespace RunMap
         public static List<string> AllStages(LanguageType lang)
         {
             var result = new List<string>();
-            List<MapLoadingConfig> rows = Rows();
+            List<LoadingTable_MapLoadingConfig> rows = Rows();
             if (rows == null) return result;
-            var copy = new List<MapLoadingConfig>(rows);
+            var copy = new List<LoadingTable_MapLoadingConfig>(rows);
             copy.Sort((a, b) => a.sort.CompareTo(b.sort));
             for (int i = 0; i < copy.Count; i++) result.Add(Pick(copy[i], lang));
             return result;
         }
 
-        private static List<MapLoadingConfig> Rows()
+        private static List<LoadingTable_MapLoadingConfig> Rows()
         {
             if (_loadTried) return _rows;
             _loadTried = true;
-            DataList<MapLoadingConfig> list = ConfigLoader.Instance.LoadData<MapLoadingConfig>();
+            DataList<LoadingTable_MapLoadingConfig> list = ConfigLoader.Instance.LoadData<LoadingTable_MapLoadingConfig>();
             if (list == null || list.datas == null || list.datas.Count == 0)
             {
-                ChaosLog.Warn(LogChannel.Config, "[RunMap] 读条文案表为空或读不到：MapLoadingConfig");
+                ChaosLog.Warn(LogChannel.Config, "[RunMap] 读条文案表为空或读不到：LoadingTable_MapLoadingConfig");
                 _rows = null;
                 return null;
             }

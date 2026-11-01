@@ -20,7 +20,7 @@ namespace LocalizationSystem
             return ItemName(InventoryService.Instance.GetDefinition(itemId), itemId);
         }
 
-        public static string ItemName(ItemConfig definition, uint missingId = 0)
+        public static string ItemName(ItemTable_ItemConfig definition, uint missingId = 0)
         {
             if (definition == null) return Text("ui_item_unknown", "道具 #{0}", missingId);
             string key = definition.NameKey;

@@ -10,6 +10,8 @@ using UnityEngine;
 /// <summary>
 /// 配置导表管线验证。只在本方法被调用时生成系统临时目录下的样表、Json/record 和类文件，
 /// 不读取也不写入生产 Excel、Resources、ConfigData 或 ModelData 目录。
+/// 样表统一使用「英文表名_中文说明.xlsx」；JSON/record 资源名为「英文表名前缀_B1」，C# 类名为「英文表名前缀_B1Config」
+/// 或「英文表名前缀_B1Data」。B1 本身不追加或剥离字符串，模式只由 B2 或请求模式决定。
 /// </summary>
 public static class ConfigPipelineVerification
 {
@@ -74,6 +76,7 @@ public static class ConfigPipelineVerification
         string buildingWorkbook = CreateBuildingWorkbook(main);
         string legacyWorkbook = CreateLegacyWorkbook(main);
 
+        // 主流程工作簿按「英文表名_中文说明.xlsx」命名；JSON 只取英文前缀+B1，类名再追加 Config。
         List<string> configWorkbooks = new List<string> { buildingWorkbook, legacyWorkbook };
         ConfigExportReport configReport = ConfigManager.ExportExcelBatch(
             configWorkbooks,
@@ -89,29 +92,30 @@ public static class ConfigPipelineVerification
         Check(report, !configReport.TypeIndexPublished, "临时目录不应发布类型索引");
         Check(report, configReport.Artifacts.Count == 3, "Config 产物数量应为 3，实际 " + configReport.Artifacts.Count);
 
-        string buildingJson = Path.Combine(main.Json, "建筑表_BuildingConfig.json");
-        string inferredJson = Path.Combine(main.Json, "建筑表_InferredConfig.json");
-        string legacyJson = Path.Combine(main.Json, "旧表_副标题_LegacyConfig.json");
-        string buildingClass = Path.Combine(main.Class, "BuildingConfig.cs");
-        string inferredClass = Path.Combine(main.Class, "InferredConfig.cs");
-        string legacyClass = Path.Combine(main.Class, "LegacyConfig.cs");
+        // JSON 名只含英文表名前缀 + B1，不带 Config 后缀；类名才追加 Config。
+        string buildingJson = Path.Combine(main.Json, "BuildingTable_Building.json");
+        string inferredJson = Path.Combine(main.Json, "BuildingTable_Inferred.json");
+        string legacyJson = Path.Combine(main.Json, "LegacyNote_Legacy.json");
+        string buildingClass = Path.Combine(main.Class, "BuildingTable_BuildingConfig.cs");
+        string inferredClass = Path.Combine(main.Class, "BuildingTable_InferredConfig.cs");
+        string legacyClass = Path.Combine(main.Class, "LegacyNote_LegacyConfig.cs");
 
-        Check(report, File.Exists(buildingJson), "缺少完整工作簿名命名的 Json：" + buildingJson);
+        Check(report, File.Exists(buildingJson), "缺少英文前缀+B1 命名的 Json：" + buildingJson);
         Check(report, File.Exists(inferredJson), "缺少 B2 为空时按请求模式命名的 Json：" + inferredJson);
-        Check(report, File.Exists(legacyJson), "缺少带下划线工作簿的完整基名 Json：" + legacyJson);
-        Check(report, !File.Exists(Path.Combine(main.Json, "建筑_BuildingConfig.json")), "不应截断工作簿名");
-        Check(report, !File.Exists(Path.Combine(main.Json, "旧表_LegacyConfig.json")), "不应把旧表_副标题截成旧表");
-        Check(report, !File.Exists(Path.Combine(main.Json, "旧表_副标题_LegacyConfigConfig.json")), "完整类名不应重复追加 Config 后缀");
+        Check(report, File.Exists(legacyJson), "缺少英文前缀+B1 命名的 Json：" + legacyJson);
+        Check(report, !File.Exists(Path.Combine(main.Json, "BuildingTable_建筑_Building.json")), "Json 不应包含中文页签名");
+        Check(report, !File.Exists(Path.Combine(main.Json, "LegacyNote_副标题_Legacy.json")), "Json 不应包含中文说明段");
+        Check(report, !File.Exists(Path.Combine(main.Json, "BuildingTable_BuildingConfig.json")), "Json 名不应自动追加 Config 后缀");
         Check(report, File.Exists(buildingClass), "缺少类文件：" + buildingClass);
         Check(report, File.Exists(inferredClass), "缺少推断模式类文件：" + inferredClass);
-        Check(report, File.Exists(legacyClass), "缺少完整类名类文件：" + legacyClass);
-        Check(report, !File.Exists(Path.Combine(main.Class, "LegacyConfigConfig.cs")), "完整类名不应重复追加 Config 后缀（类文件）");
+        Check(report, File.Exists(legacyClass), "缺少 Config 复合类文件：" + legacyClass);
+        Check(report, !File.Exists(Path.Combine(main.Class, "Legacy.cs")), "类名必须是英文前缀+B1Config，不应生成 Legacy.cs");
 
-        ConfigExportArtifact buildingArtifact = FindArtifact(configReport, "BuildingConfig");
-        Check(report, buildingArtifact != null, "报告中缺少 BuildingConfig 产物");
-        Check(report, buildingArtifact.DataFileName == "建筑表_BuildingConfig.json", "BuildingConfig 数据文件名错误：" + buildingArtifact.DataFileName);
-        Check(report, buildingArtifact.ResourcePath == "Data/Json/Runtime/建筑表_BuildingConfig", "BuildingConfig 资源路径错误：" + buildingArtifact.ResourcePath);
-        Check(report, buildingArtifact.DataRowCount == 2, "BuildingConfig 数据行数错误：" + buildingArtifact.DataRowCount);
+        ConfigExportArtifact buildingArtifact = FindArtifact(configReport, "BuildingTable_BuildingConfig");
+        Check(report, buildingArtifact != null, "报告中缺少 BuildingTable_BuildingConfig 产物");
+        Check(report, buildingArtifact.DataFileName == "BuildingTable_Building.json", "BuildingTable_BuildingConfig 数据文件名错误：" + buildingArtifact.DataFileName);
+        Check(report, buildingArtifact.ResourcePath == "Data/Json/Runtime/BuildingTable_Building", "BuildingTable_BuildingConfig 资源路径错误：" + buildingArtifact.ResourcePath);
+        Check(report, buildingArtifact.DataRowCount == 2, "BuildingTable_BuildingConfig 数据行数错误：" + buildingArtifact.DataRowCount);
 
         string buildingJsonText = File.ReadAllText(buildingJson, Encoding.UTF8);
         Check(report, buildingJsonText.IndexOf("\"datas\"", StringComparison.Ordinal) >= 0, "Json 必须保留 datas 容器");
@@ -119,26 +123,28 @@ public static class ConfigPipelineVerification
 
         VerificationDataList buildingData = ReadDataList(buildingJson);
         Check(report, buildingData != null && buildingData.datas != null && buildingData.datas.Count == 2,
-            "BuildingConfig Json 解析行数错误");
+            "Building 数据解析行数错误");
         string expectedSpecial = "引号\"反斜杠\\换行\n逗号,冒号:花括号{}";
-        Check(report, buildingData.datas[0].id == 1, "BuildingConfig 第一行 id 错误");
-        Check(report, buildingData.datas[0].price == 100, "BuildingConfig 第一行 price 错误");
+        Check(report, buildingData.datas[0].id == 1, "Building 第一行 id 错误");
+        Check(report, buildingData.datas[0].price == 100, "Building 第一行 price 错误");
         string actualSpecial = buildingData.datas[0].name ?? string.Empty;
         Check(report, actualSpecial.Replace("\r\n", "\n") == expectedSpecial, "特殊字符串未正确往返");
-        Check(report, buildingData.datas[1].id == 2 && buildingData.datas[1].name == "第二行", "BuildingConfig 第二行数据错误");
+        Check(report, buildingData.datas[1].id == 2 && buildingData.datas[1].name == "第二行", "Building 第二行数据错误");
 
         string buildingClassText = File.ReadAllText(buildingClass, Encoding.UTF8);
-        Check(report, buildingClassText.IndexOf("public int id;", StringComparison.Ordinal) >= 0, "BuildingConfig 缺少 id 字段");
-        Check(report, buildingClassText.IndexOf("public string name;", StringComparison.Ordinal) >= 0, "BuildingConfig 缺少 name 字段");
-        Check(report, buildingClassText.IndexOf("public int price;", StringComparison.Ordinal) >= 0, "BuildingConfig 缺少 price 字段");
+        Check(report, buildingClassText.IndexOf("public class BuildingTable_BuildingConfig", StringComparison.Ordinal) >= 0,
+            "BuildingTable_BuildingConfig 缺少复合类声明");
+        Check(report, buildingClassText.IndexOf("public int id;", StringComparison.Ordinal) >= 0, "Building 类缺少 id 字段");
+        Check(report, buildingClassText.IndexOf("public string name;", StringComparison.Ordinal) >= 0, "Building 类缺少 name 字段");
+        Check(report, buildingClassText.IndexOf("public int price;", StringComparison.Ordinal) >= 0, "Building 类缺少 price 字段");
         Check(report, buildingClassText.IndexOf("serverOnly", StringComparison.Ordinal) < 0, "server 列不应写入类文件");
 
         VerificationDataList legacyData = ReadDataList(legacyJson);
         Check(report, legacyData != null && legacyData.datas != null && legacyData.datas.Count == 1,
-            "LegacyConfig Json 解析行数错误");
+            "Legacy Json 解析行数错误");
         string legacyClassText = File.ReadAllText(legacyClass, Encoding.UTF8);
-        Check(report, legacyClassText.IndexOf("public class LegacyConfig", StringComparison.Ordinal) >= 0,
-            "LegacyConfig 类名错误");
+        Check(report, legacyClassText.IndexOf("public class LegacyNote_LegacyConfig", StringComparison.Ordinal) >= 0,
+            "Legacy 类声明必须是英文前缀+B1Config：LegacyNote_LegacyConfig");
 
         ConfigExportReport dataReport = ConfigManager.ExportExcelBatch(
             new List<string> { buildingWorkbook, legacyWorkbook },
@@ -151,25 +157,27 @@ public static class ConfigPipelineVerification
         Check(report, dataReport.ExportedWorksheetCount == 2, "Data 应导出 2 个页签，实际 " + dataReport.ExportedWorksheetCount);
         Check(report, dataReport.SkippedWorksheetCount == 4, "Data 应跳过 4 个页签，实际 " + dataReport.SkippedWorksheetCount);
         Check(report, dataReport.DataRowCount == 2, "Data 应导出 2 行数据，实际 " + dataReport.DataRowCount);
-        string buildingRecord = Path.Combine(main.Record, "建筑表_BuildingData.record");
-        string inferredRecord = Path.Combine(main.Record, "建筑表_InferredData.record");
-        string buildingDataClass = Path.Combine(main.DataClass, "BuildingData.cs");
-        string inferredDataClass = Path.Combine(main.DataClass, "InferredData.cs");
+        // Data 模式：record 名为英文前缀+B1，类名为英文前缀+B1Data。
+        string buildingRecord = Path.Combine(main.Record, "BuildingTable_Building.record");
+        string inferredRecord = Path.Combine(main.Record, "BuildingTable_Inferred.record");
+        string buildingDataClass = Path.Combine(main.DataClass, "BuildingTable_BuildingData.cs");
+        string inferredDataClass = Path.Combine(main.DataClass, "BuildingTable_InferredData.cs");
         Check(report, File.Exists(buildingRecord), "缺少 Data record：" + buildingRecord);
         Check(report, File.Exists(inferredRecord), "缺少 B2 为空时按请求模式命名的 Data record：" + inferredRecord);
         Check(report, File.Exists(buildingDataClass), "缺少 Data 类文件：" + buildingDataClass);
         Check(report, File.Exists(inferredDataClass), "缺少推断模式 Data 类文件：" + inferredDataClass);
-        Check(report, !File.Exists(Path.Combine(main.Class, "BuildingData.cs")), "Data 类文件不应写入 Config 类目录");
-        Check(report, !File.Exists(Path.Combine(main.DataClass, "BuildingDataData.cs")), "Data 类名不应重复追加 Data 后缀");
+        Check(report, !File.Exists(Path.Combine(main.Record, "BuildingTable_BuildingData.record")), "record 名不应追加 Data 后缀");
+        Check(report, !File.Exists(Path.Combine(main.Class, "BuildingTable_BuildingData.cs")), "Data 类文件不应写入 Config 类目录");
+        Check(report, !File.Exists(Path.Combine(main.DataClass, "BuildingTable_BuildingDataData.cs")), "Data 类名不应重复追加 Data 后缀");
         string recordText = File.ReadAllText(buildingRecord, Encoding.UTF8);
         Check(report, recordText.IndexOf("\"datas\"", StringComparison.Ordinal) >= 0, "record 必须保留 datas 容器");
         VerificationDataList recordData = ReadDataList(buildingRecord);
         Check(report, recordData != null && recordData.datas != null && recordData.datas.Count == 1,
-            "BuildingData record 解析行数错误");
-        Check(report, recordData.datas[0].id == 1 && recordData.datas[0].name == "模型行", "BuildingData record 数据错误");
+            "Building Data record 解析行数错误");
+        Check(report, recordData.datas[0].id == 1 && recordData.datas[0].name == "模型行", "Building Data record 数据错误");
         VerificationDataList inferredData = ReadDataList(inferredRecord);
         Check(report, inferredData != null && inferredData.datas != null && inferredData.datas.Count == 1,
-            "InferredData record 解析行数错误");
+            "Inferred Data record 解析行数错误");
 
         CheckTypeIndexGuard(report, buildingWorkbook, tempRoot);
         CheckAtomicity(report, tempRoot);
@@ -180,6 +188,10 @@ public static class ConfigPipelineVerification
         CheckInvalidIdentifier(report, tempRoot);
         CheckInvalidBool(report, tempRoot);
         CheckWriteRollback(report, tempRoot);
+        CheckNamingExact(report, tempRoot);
+        CheckNamingConflict(report, tempRoot);
+        CheckNamingCrossPrefix(report, tempRoot);
+        CheckNamingCjkRejected(report, tempRoot);
     }
 
     /// <summary>
@@ -264,7 +276,7 @@ public static class ConfigPipelineVerification
     private static void CheckAtomicity(ConfigPipelineVerificationReport report, string tempRoot)
     {
         CaseDirectories atomic = CreateCase(tempRoot, "整批校验");
-        string workbookPath = Path.Combine(atomic.Xlsx, "原子表.xlsx");
+        string workbookPath = Path.Combine(atomic.Xlsx, "AtomicTable_原子说明.xlsx");
         using (ExcelPackage package = new ExcelPackage())
         {
             AddTableSheet(package, "有效", "Atomic", "IsConfig",
@@ -276,7 +288,7 @@ public static class ConfigPipelineVerification
             package.SaveAs(new FileInfo(workbookPath));
         }
 
-        string oldJson = Path.Combine(atomic.Json, "原子表_AtomicConfig.json");
+        string oldJson = Path.Combine(atomic.Json, "AtomicTable_Atomic.json");
         WriteUtf8(oldJson, "OLD");
 
         ConfigExportException exception = ExpectFailure(
@@ -291,15 +303,16 @@ public static class ConfigPipelineVerification
                     atomic.Class,
                     false);
             },
-            "原子表.xlsx",
+            "AtomicTable_原子说明.xlsx",
             "非法",
             "第 7 行",
             "第 2 列",
             "字段「id」");
-        CheckExceptionLocation(report, exception, "原子表.xlsx", "非法", 7, 2, "id");
+        CheckExceptionLocation(report, exception, "AtomicTable_原子说明.xlsx", "非法", 7, 2, "id");
 
         Check(report, File.ReadAllText(oldJson, Encoding.UTF8) == "OLD", "校验失败不得覆盖旧 Json");
-        Check(report, !File.Exists(Path.Combine(atomic.Json, "原子表_AtomicBadConfig.json")), "校验失败不得写入非法页签 Json");
+        Check(report, !File.Exists(Path.Combine(atomic.Json, "AtomicTable_AtomicBad.json")), "校验失败不得写入非法页签 Json");
+        Check(report, !File.Exists(Path.Combine(atomic.Class, "AtomicTable_AtomicBadConfig.cs")), "校验失败不得写入非法页签类文件");
         Check(report, Directory.GetFiles(atomic.Class, "*.cs", SearchOption.TopDirectoryOnly).Length == 0,
             "校验失败不得写入任何类文件");
     }
@@ -307,7 +320,7 @@ public static class ConfigPipelineVerification
     private static void CheckDuplicateClass(ConfigPipelineVerificationReport report, string tempRoot)
     {
         CaseDirectories duplicateClass = CreateCase(tempRoot, "重复类");
-        string workbookPath = Path.Combine(duplicateClass.Xlsx, "重复类.xlsx");
+        string workbookPath = Path.Combine(duplicateClass.Xlsx, "DupClass_重复类说明.xlsx");
         using (ExcelPackage package = new ExcelPackage())
         {
             AddTableSheet(package, "一", "Dup", "IsConfig",
@@ -331,18 +344,18 @@ public static class ConfigPipelineVerification
                     duplicateClass.Class,
                     false);
             },
-            "重复类.xlsx",
+            "DupClass_重复类说明.xlsx",
             "类名重复",
             "第 1 行",
             "第 2 列");
-        CheckExceptionLocation(report, exception, "重复类.xlsx", "二", 1, 2, "DupConfig");
+        CheckExceptionLocation(report, exception, "DupClass_重复类说明.xlsx", "二", 1, 2, "DupClass_DupConfig");
         CheckNoOutput(report, duplicateClass);
     }
 
     private static void CheckDuplicateField(ConfigPipelineVerificationReport report, string tempRoot)
     {
         CaseDirectories duplicateField = CreateCase(tempRoot, "重复字段");
-        string workbookPath = Path.Combine(duplicateField.Xlsx, "重复字段.xlsx");
+        string workbookPath = Path.Combine(duplicateField.Xlsx, "DupField_重复字段说明.xlsx");
         using (ExcelPackage package = new ExcelPackage())
         {
             AddTableSheet(package, "字段", "DupField", "IsConfig",
@@ -366,11 +379,11 @@ public static class ConfigPipelineVerification
                     duplicateField.Class,
                     false);
             },
-            "重复字段.xlsx",
+            "DupField_重复字段说明.xlsx",
             "字段名重复",
             "第 4 行",
             "第 3 列");
-        CheckExceptionLocation(report, exception, "重复字段.xlsx", "字段", 4, 3, "id");
+        CheckExceptionLocation(report, exception, "DupField_重复字段说明.xlsx", "字段", 4, 3, "id");
         CheckNoOutput(report, duplicateField);
     }
 
@@ -379,7 +392,7 @@ public static class ConfigPipelineVerification
         CaseDirectories overflow = CreateCase(tempRoot, "数值溢出");
         string workbookPath = CreateSimpleWorkbook(
             overflow,
-            "溢出.xlsx",
+            "Overflow_溢出说明.xlsx",
             "溢出",
             "Overflow",
             "IsConfig",
@@ -401,10 +414,10 @@ public static class ConfigPipelineVerification
                     overflow.Class,
                     false);
             },
-            "溢出.xlsx",
+            "Overflow_溢出说明.xlsx",
             "第 7 行",
             "第 2 列");
-        CheckExceptionLocation(report, exception, "溢出.xlsx", "溢出", 7, 2, "id");
+        CheckExceptionLocation(report, exception, "Overflow_溢出说明.xlsx", "溢出", 7, 2, "id");
         CheckNoOutput(report, overflow);
     }
 
@@ -413,7 +426,7 @@ public static class ConfigPipelineVerification
         CaseDirectories invalidType = CreateCase(tempRoot, "非法类型");
         string workbookPath = CreateSimpleWorkbook(
             invalidType,
-            "类型.xlsx",
+            "BadType_非法类型说明.xlsx",
             "类型",
             "BadType",
             "IsConfig",
@@ -435,11 +448,11 @@ public static class ConfigPipelineVerification
                     invalidType.Class,
                     false);
             },
-            "类型.xlsx",
+            "BadType_非法类型说明.xlsx",
             "不支持此类型",
             "第 6 行",
             "第 2 列");
-        CheckExceptionLocation(report, exception, "类型.xlsx", "类型", 6, 2, "id");
+        CheckExceptionLocation(report, exception, "BadType_非法类型说明.xlsx", "类型", 6, 2, "id");
         CheckNoOutput(report, invalidType);
     }
 
@@ -448,7 +461,7 @@ public static class ConfigPipelineVerification
         CaseDirectories invalidIdentifier = CreateCase(tempRoot, "非法标识符");
         string workbookPath = CreateSimpleWorkbook(
             invalidIdentifier,
-            "标识符.xlsx",
+            "BadIdent_非法标识符说明.xlsx",
             "标识符",
             "1Bad",
             "IsConfig",
@@ -470,11 +483,11 @@ public static class ConfigPipelineVerification
                     invalidIdentifier.Class,
                     false);
             },
-            "标识符.xlsx",
+            "BadIdent_非法标识符说明.xlsx",
             "合法的 C# 标识符",
             "第 1 行",
             "第 2 列");
-        CheckExceptionLocation(report, exception, "标识符.xlsx", "标识符", 1, 2, null);
+        CheckExceptionLocation(report, exception, "BadIdent_非法标识符说明.xlsx", "标识符", 1, 2, null);
         CheckNoOutput(report, invalidIdentifier);
     }
 
@@ -483,7 +496,7 @@ public static class ConfigPipelineVerification
         CaseDirectories invalidBool = CreateCase(tempRoot, "非法布尔");
         string workbookPath = CreateSimpleWorkbook(
             invalidBool,
-            "布尔.xlsx",
+            "BadBool_非法布尔说明.xlsx",
             "布尔",
             "BadBool",
             "IsConfig",
@@ -505,11 +518,11 @@ public static class ConfigPipelineVerification
                     invalidBool.Class,
                     false);
             },
-            "布尔.xlsx",
+            "BadBool_非法布尔说明.xlsx",
             "bool 取值",
             "第 7 行",
             "第 2 列");
-        CheckExceptionLocation(report, exception, "布尔.xlsx", "布尔", 7, 2, "flag");
+        CheckExceptionLocation(report, exception, "BadBool_非法布尔说明.xlsx", "布尔", 7, 2, "flag");
         CheckNoOutput(report, invalidBool);
     }
 
@@ -518,7 +531,7 @@ public static class ConfigPipelineVerification
         CaseDirectories rollback = CreateCase(tempRoot, "写盘回滚");
         string workbookA = CreateSimpleWorkbook(
             rollback,
-            "回滚A.xlsx",
+            "RollbackA_回滚A说明.xlsx",
             "A",
             "RollbackA",
             "IsConfig",
@@ -529,7 +542,7 @@ public static class ConfigPipelineVerification
             new[] { "1" });
         string workbookB = CreateSimpleWorkbook(
             rollback,
-            "回滚B.xlsx",
+            "RollbackB_回滚B说明.xlsx",
             "B",
             "RollbackB",
             "IsConfig",
@@ -539,8 +552,8 @@ public static class ConfigPipelineVerification
             new[] { "编号" },
             new[] { "2" });
 
-        string oldA = Path.Combine(rollback.Json, "回滚A_RollbackAConfig.json");
-        string oldB = Path.Combine(rollback.Json, "回滚B_RollbackBConfig.json");
+        string oldA = Path.Combine(rollback.Json, "RollbackA_RollbackA.json");
+        string oldB = Path.Combine(rollback.Json, "RollbackB_RollbackB.json");
         WriteUtf8(oldA, "OLD_A");
         WriteUtf8(oldB, "OLD_B");
 
@@ -564,8 +577,221 @@ public static class ConfigPipelineVerification
 
         Check(report, File.ReadAllText(oldA, Encoding.UTF8) == "OLD_A", "回滚后旧 Json A 必须恢复");
         Check(report, File.ReadAllText(oldB, Encoding.UTF8) == "OLD_B", "回滚后旧 Json B 必须保持");
-        Check(report, !File.Exists(Path.Combine(rollback.Class, "回滚A_RollbackAConfig.cs")),
+        Check(report, !File.Exists(Path.Combine(rollback.Class, "RollbackA_RollbackAConfig.cs")),
             "写盘失败时不应提交类文件");
+    }
+
+    /// <summary>
+    /// 精确命名用例：TestTable_测试表.xlsx + B1=Test 只产出 TestTable_Test.json、
+    /// TestTable_TestConfig.cs 与 public class TestTable_TestConfig。
+    /// </summary>
+    private static void CheckNamingExact(ConfigPipelineVerificationReport report, string tempRoot)
+    {
+        CaseDirectories naming = CreateCase(tempRoot, "命名精确");
+        string workbookPath = CreateSimpleWorkbook(
+            naming,
+            "TestTable_测试表.xlsx",
+            "测试页",
+            "Test",
+            "IsConfig",
+            new[] { "id" },
+            new[] { "int" },
+            new[] { "client" },
+            new[] { "编号" },
+            new[] { "1" });
+
+        ConfigExportReport exported = ConfigManager.ExportExcelBatch(
+            new List<string> { workbookPath },
+            ExporterMode.Config,
+            naming.Json,
+            naming.Class,
+            false);
+        Check(report, exported.Artifacts.Count == 1, "命名用例应只产出 1 个产物，实际 " + exported.Artifacts.Count);
+
+        ConfigExportArtifact artifact = FindArtifact(exported, "TestTable_TestConfig");
+        Check(report, artifact != null, "报告中缺少复合类名 TestTable_TestConfig 的产物");
+        Check(report, artifact.DataFileName == "TestTable_Test.json", "命名用例数据文件名错误：" + artifact.DataFileName);
+        Check(report, artifact.ResourcePath == "Data/Json/Runtime/TestTable_Test", "命名用例资源路径错误：" + artifact.ResourcePath);
+        Check(report, artifact.ClassFilePath == Path.Combine(naming.Class, "TestTable_TestConfig.cs"), "命名用例类文件路径错误：" + artifact.ClassFilePath);
+
+        string json = Path.Combine(naming.Json, "TestTable_Test.json");
+        string classFile = Path.Combine(naming.Class, "TestTable_TestConfig.cs");
+        Check(report, File.Exists(json), "缺少文件：" + json);
+        Check(report, File.Exists(classFile), "缺少文件：" + classFile);
+        Check(report, !File.Exists(Path.Combine(naming.Json, "TestTable_TestConfig.json")), "JSON 名不应带 Config 后缀");
+        Check(report, !File.Exists(Path.Combine(naming.Class, "Test.cs")), "不应生成裸 B1 类文件 Test.cs");
+
+        string classText = File.ReadAllText(classFile, Encoding.UTF8);
+        Check(report, classText.IndexOf("public class TestTable_TestConfig", StringComparison.Ordinal) >= 0,
+            "TestTable_TestConfig.cs 缺少复合类声明");
+        Check(report, classText.IndexOf("public class Test ", StringComparison.Ordinal) < 0, "不应声明裸 Test 类");
+    }
+
+    /// <summary>
+    /// 同一英文前缀、不同中文说明且 B1 相同，应作为重复类名整批拒绝。
+    /// </summary>
+    private static void CheckNamingConflict(ConfigPipelineVerificationReport report, string tempRoot)
+    {
+        CaseDirectories conflict = CreateCase(tempRoot, "命名冲突");
+        string firstWorkbook = CreateSimpleWorkbook(
+            conflict,
+            "SameName_说明甲.xlsx",
+            "甲",
+            "SameName",
+            "IsConfig",
+            new[] { "id" },
+            new[] { "int" },
+            new[] { "client" },
+            new[] { "编号" },
+            new[] { "1" });
+        string secondWorkbook = CreateSimpleWorkbook(
+            conflict,
+            "SameName_说明乙.xlsx",
+            "乙",
+            "SameName",
+            "IsConfig",
+            new[] { "id" },
+            new[] { "int" },
+            new[] { "client" },
+            new[] { "编号" },
+            new[] { "2" });
+
+        ConfigExportException exception = ExpectFailure(
+            report,
+            "同英文前缀同 B1 应整批拒绝",
+            () =>
+            {
+                ConfigManager.ExportExcelBatch(
+                    new List<string> { firstWorkbook, secondWorkbook },
+                    ExporterMode.Config,
+                    conflict.Json,
+                    conflict.Class,
+                    false);
+            },
+            "SameName_说明乙.xlsx",
+            "类名重复");
+        Check(report, exception.Message.IndexOf("SameName_SameNameConfig", StringComparison.Ordinal) >= 0,
+            "冲突异常应包含复合类名 SameName_SameNameConfig；实际：" + exception.Message);
+
+        Check(report, !File.Exists(Path.Combine(conflict.Json, "SameName_SameName.json")),
+            "冲突时不应写入同名 Json");
+        Check(report, Directory.GetFiles(conflict.Json, "*.json", SearchOption.TopDirectoryOnly).Length == 0,
+            "冲突时应整批拒绝，不得写出任何 Json");
+        Check(report, Directory.GetFiles(conflict.Class, "*.cs", SearchOption.TopDirectoryOnly).Length == 0,
+            "冲突时应整批拒绝，不得写出任何类文件");
+        CheckNoOutput(report, conflict);
+    }
+
+    /// <summary>
+    /// 不同英文表名前缀下相同 B1 合法，复合类名互不相同，必须同批全部导出。
+    /// </summary>
+    private static void CheckNamingCrossPrefix(ConfigPipelineVerificationReport report, string tempRoot)
+    {
+        CaseDirectories cross = CreateCase(tempRoot, "跨前缀同名");
+        string heroWorkbook = CreateSimpleWorkbook(
+            cross,
+            "HeroTable_英雄说明.xlsx",
+            "英雄",
+            "Shared",
+            "IsConfig",
+            new[] { "id" },
+            new[] { "int" },
+            new[] { "client" },
+            new[] { "编号" },
+            new[] { "1" });
+        string itemWorkbook = CreateSimpleWorkbook(
+            cross,
+            "ItemTable_道具说明.xlsx",
+            "道具",
+            "Shared",
+            "IsConfig",
+            new[] { "id" },
+            new[] { "int" },
+            new[] { "client" },
+            new[] { "编号" },
+            new[] { "2" });
+
+        ConfigExportReport exported = ConfigManager.ExportExcelBatch(
+            new List<string> { heroWorkbook, itemWorkbook },
+            ExporterMode.Config,
+            cross.Json,
+            cross.Class,
+            false);
+        Check(report, exported.Artifacts.Count == 2, "跨前缀同名应产出 2 个产物，实际 " + exported.Artifacts.Count);
+
+        ConfigExportArtifact hero = FindArtifact(exported, "HeroTable_SharedConfig");
+        ConfigExportArtifact item = FindArtifact(exported, "ItemTable_SharedConfig");
+        Check(report, hero != null && item != null, "跨前缀同名应得到 HeroTable_SharedConfig 与 ItemTable_SharedConfig");
+        Check(report, hero.DataFileName == "HeroTable_Shared.json", "跨前缀数据文件名错误：" + hero.DataFileName);
+        Check(report, item.DataFileName == "ItemTable_Shared.json", "跨前缀数据文件名错误：" + item.DataFileName);
+        Check(report, File.Exists(Path.Combine(cross.Json, "HeroTable_Shared.json")), "缺少 HeroTable_Shared.json");
+        Check(report, File.Exists(Path.Combine(cross.Json, "ItemTable_Shared.json")), "缺少 ItemTable_Shared.json");
+        Check(report, File.Exists(Path.Combine(cross.Class, "HeroTable_SharedConfig.cs")), "缺少 HeroTable_SharedConfig.cs");
+        Check(report, File.Exists(Path.Combine(cross.Class, "ItemTable_SharedConfig.cs")), "缺少 ItemTable_SharedConfig.cs");
+        string heroText = File.ReadAllText(Path.Combine(cross.Class, "HeroTable_SharedConfig.cs"), Encoding.UTF8);
+        Check(report, heroText.IndexOf("public class HeroTable_SharedConfig", StringComparison.Ordinal) >= 0,
+            "HeroTable_SharedConfig.cs 缺少复合类声明");
+    }
+
+    /// <summary>
+    /// 中文 B1 与无英文前缀的中文工作簿名都应明确报错。
+    /// </summary>
+    private static void CheckNamingCjkRejected(ConfigPipelineVerificationReport report, string tempRoot)
+    {
+        CaseDirectories cjkClass = CreateCase(tempRoot, "中文类名");
+        string cjkClassWorkbook = CreateSimpleWorkbook(
+            cjkClass,
+            "CjkClass_测试表.xlsx",
+            "测试",
+            "中文类",
+            "IsConfig",
+            new[] { "id" },
+            new[] { "int" },
+            new[] { "client" },
+            new[] { "编号" },
+            new[] { "1" });
+        ExpectFailure(
+            report,
+            "中文 B1 应被拒绝",
+            () =>
+            {
+                ConfigManager.ExportExcelBatch(
+                    new List<string> { cjkClassWorkbook },
+                    ExporterMode.Config,
+                    cjkClass.Json,
+                    cjkClass.Class,
+                    false);
+            },
+            "CjkClass_测试表.xlsx",
+            "类名");
+        CheckNoOutput(report, cjkClass);
+
+        CaseDirectories cjkPrefix = CreateCase(tempRoot, "中文表名前缀");
+        string cjkPrefixWorkbook = CreateSimpleWorkbook(
+            cjkPrefix,
+            "中文表_说明.xlsx",
+            "测试",
+            "CnPrefix",
+            "IsConfig",
+            new[] { "id" },
+            new[] { "int" },
+            new[] { "client" },
+            new[] { "编号" },
+            new[] { "1" });
+        ExpectFailure(
+            report,
+            "无英文前缀的中文表名应被拒绝",
+            () =>
+            {
+                ConfigManager.ExportExcelBatch(
+                    new List<string> { cjkPrefixWorkbook },
+                    ExporterMode.Config,
+                    cjkPrefix.Json,
+                    cjkPrefix.Class,
+                    false);
+            },
+            "中文表_说明.xlsx");
+        CheckNoOutput(report, cjkPrefix);
     }
 
     private static void CheckNoOutput(ConfigPipelineVerificationReport report, CaseDirectories dirs)
@@ -648,7 +874,7 @@ public static class ConfigPipelineVerification
 
     private static string CreateBuildingWorkbook(CaseDirectories dirs)
     {
-        string path = Path.Combine(dirs.Xlsx, "建筑表.xlsx");
+        string path = Path.Combine(dirs.Xlsx, "BuildingTable_建筑配置说明.xlsx");
         const string special = "引号\"反斜杠\\换行\n逗号,冒号:花括号{}";
         using (ExcelPackage package = new ExcelPackage())
         {
@@ -699,13 +925,13 @@ public static class ConfigPipelineVerification
 
     private static string CreateLegacyWorkbook(CaseDirectories dirs)
     {
-        string path = Path.Combine(dirs.Xlsx, "旧表_副标题.xlsx");
+        string path = Path.Combine(dirs.Xlsx, "LegacyNote_旧表副标题.xlsx");
         using (ExcelPackage package = new ExcelPackage())
         {
             AddTableSheet(
                 package,
                 "旧表",
-                "LegacyConfig",
+                "Legacy",
                 "IsConfig",
                 new[] { "id" },
                 new[] { "int" },

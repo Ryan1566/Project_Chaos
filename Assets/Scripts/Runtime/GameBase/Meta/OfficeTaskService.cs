@@ -84,7 +84,7 @@ public sealed class OfficeTaskService : SingletonBase<OfficeTaskService>
     /// </summary>
     private static OfficeTaskSnapshot BuildSnapshot(OfficeTaskCatalogSet.TaskEntry entry, OfficeTaskSave record, SavePayload payload)
     {
-        OfficeTaskConfig config = entry.Config;
+        OfficeTaskTable_OfficeTaskConfig config = entry.Config;
         OfficeTaskGoal goal = (OfficeTaskGoal)config.GoalType;
         bool settled = record.status == OfficeTaskStatus.Completed || record.status == OfficeTaskStatus.Failed;
         var snapshot = new OfficeTaskSnapshot
@@ -113,7 +113,7 @@ public sealed class OfficeTaskService : SingletonBase<OfficeTaskService>
             {
                 // 显示“当前持有量”，界面据此判断能否提交；需求量为任务要求 + 同资源选项代价的合计。
                 ulong demand = config.RequiredAmount;
-                OfficeTaskOptionConfig chosen = entry.FindOption(record.selectedOptionId);
+                OfficeTaskTable_OfficeTaskOptionConfig chosen = entry.FindOption(record.selectedOptionId);
                 if (chosen != null && chosen.CostResourceType == config.ResourceType) demand += chosen.CostAmount;
                 snapshot.Required = demand > uint.MaxValue ? uint.MaxValue : (uint)demand;
                 uint held;
@@ -141,12 +141,12 @@ public sealed class OfficeTaskService : SingletonBase<OfficeTaskService>
     }
 
     /// <summary>展示快照不共享可写配置对象，避免外部界面修改领域目录。</summary>
-    static OfficeTaskOptionConfig[] CopyOptions(OfficeTaskOptionConfig[] source)
+    static OfficeTaskTable_OfficeTaskOptionConfig[] CopyOptions(OfficeTaskTable_OfficeTaskOptionConfig[] source)
     {
-        var copy=new OfficeTaskOptionConfig[source.Length];
+        var copy=new OfficeTaskTable_OfficeTaskOptionConfig[source.Length];
         for(int i=0;i<source.Length;i++)
         {
-            var item=source[i];copy[i]=new OfficeTaskOptionConfig {Index=item.Index,TaskId=item.TaskId,OptionText=item.OptionText,
+            var item=source[i];copy[i]=new OfficeTaskTable_OfficeTaskOptionConfig {Index=item.Index,TaskId=item.TaskId,OptionText=item.OptionText,
                 CostResourceType=item.CostResourceType,CostAmount=item.CostAmount,RewardResourceType=item.RewardResourceType,RewardAmount=item.RewardAmount,
                 ReputationDelta=item.ReputationDelta,InfluenceDelta=item.InfluenceDelta,DevelopmentDelta=item.DevelopmentDelta,Enable=item.Enable};
         }
@@ -240,7 +240,7 @@ public sealed class OfficeTaskService : SingletonBase<OfficeTaskService>
     }
 
     /// <summary>结算选项奖励：资源只在配置了正数量时入账，三项指标按配置增减；调用前必须先通过预检。</summary>
-    private static bool TryApplyReward(SavePayload payload, OfficeTaskOptionConfig option, out string reason)
+    private static bool TryApplyReward(SavePayload payload, OfficeTaskTable_OfficeTaskOptionConfig option, out string reason)
     {
         reason = null;
         if (option == null) return true;
@@ -256,7 +256,7 @@ public sealed class OfficeTaskService : SingletonBase<OfficeTaskService>
     }
 
     /// <summary>失败惩罚：资源按 min(持有, 惩罚) 扣减，三项指标按配置扣并限 0。</summary>
-    private static void ApplyFailurePenalty(SavePayload payload, OfficeTaskConfig config)
+    private static void ApplyFailurePenalty(SavePayload payload, OfficeTaskTable_OfficeTaskConfig config)
     {
         if (payload == null || config == null) return;
         uint amount = config.FailureResourceAmount;
@@ -284,7 +284,7 @@ public sealed class OfficeTaskService : SingletonBase<OfficeTaskService>
         if (!TryGetPayload(out payload) || MetaCommandRunner.IsExecuting) return false;
         OfficeTaskCatalogSet set = OfficeTaskCatalog.EnsureLoaded();
         if (set == null) return false;
-        var pending = new List<OfficeTaskConfig>();
+        var pending = new List<OfficeTaskTable_OfficeTaskConfig>();
         for (int i = 0; i < set.Tasks.Count; i++)
             if (CanActivate(set, payload, set.Tasks[i], payload.officeClockSeconds)) pending.Add(set.Tasks[i]);
         if (pending.Count == 0) return false;
@@ -396,7 +396,7 @@ public sealed class OfficeTaskService : SingletonBase<OfficeTaskService>
         double clock = payload.officeClockSeconds;
         for (int i = 0; i < set.Tasks.Count; i++)
         {
-            OfficeTaskConfig config = set.Tasks[i];
+            OfficeTaskTable_OfficeTaskConfig config = set.Tasks[i];
             if (config == null || !config.Repeatable) continue;
             OfficeTaskSave record = FindRecord(payload, config.Index);
             if (record == null || record.status == OfficeTaskStatus.Active || record.status == OfficeTaskStatus.AwaitingBattle) continue;
@@ -411,7 +411,7 @@ public sealed class OfficeTaskService : SingletonBase<OfficeTaskService>
     /// 激活判定：时代区间、进入次数、最深通关、前置完成，以及该任务当前状态是否允许重新开始。
     /// 郡县指派事务写入记录后永不重开；等待战斗的轮次也不重开。
     /// </summary>
-    private static bool CanActivate(OfficeTaskCatalogSet set, SavePayload payload, OfficeTaskConfig config, double clock)
+    private static bool CanActivate(OfficeTaskCatalogSet set, SavePayload payload, OfficeTaskTable_OfficeTaskConfig config, double clock)
     {
         if (config == null || !config.Enable) return false;
         if (payload.era < config.MinEra || payload.era > config.MaxEra) return false;
@@ -432,7 +432,7 @@ public sealed class OfficeTaskService : SingletonBase<OfficeTaskService>
     }
 
     /// <summary>写入新的一轮：cycle 从 1 开始，有时限才写 deadlineClock；等待战斗的轮次不会被覆盖。</summary>
-    private static bool Activate(SavePayload payload, OfficeTaskCatalogSet set, OfficeTaskConfig config)
+    private static bool Activate(SavePayload payload, OfficeTaskCatalogSet set, OfficeTaskTable_OfficeTaskConfig config)
     {
         if (payload == null || config == null) return false;
         EnsureLists(payload);
@@ -456,7 +456,7 @@ public sealed class OfficeTaskService : SingletonBase<OfficeTaskService>
     }
 
     /// <summary>结束后安排下一次可重开时刻；不可重复任务不安排冷却。</summary>
-    private static void ScheduleReopen(OfficeTaskConfig config, double clock, OfficeTaskSave record)
+    private static void ScheduleReopen(OfficeTaskTable_OfficeTaskConfig config, double clock, OfficeTaskSave record)
     {
         if (config == null || record == null) return;
         record.deadlineClock = 0.0;
@@ -465,7 +465,7 @@ public sealed class OfficeTaskService : SingletonBase<OfficeTaskService>
     }
 
     /// <summary>完成一轮：completedCycles 永久累加（用于前置与时代门槛），并按冷却安排下一次可重开时刻。</summary>
-    private static void FinishCycle(OfficeTaskConfig config, OfficeTaskSave record, OfficeTaskStatus status, double clock)
+    private static void FinishCycle(OfficeTaskTable_OfficeTaskConfig config, OfficeTaskSave record, OfficeTaskStatus status, double clock)
     {
         if (record == null) return;
         record.status = status;
@@ -500,7 +500,7 @@ public sealed class OfficeTaskService : SingletonBase<OfficeTaskService>
         reason = null;
         OfficeTaskCatalogSet.TaskEntry entry = set.GetEntry(taskId);
         if (entry == null) { reason = "任务不存在或已禁用：" + taskId; return false; }
-        OfficeTaskConfig config = entry.Config;
+        OfficeTaskTable_OfficeTaskConfig config = entry.Config;
         OfficeTaskSave record = FindRecord(payload, taskId);
         if (record == null) { reason = "任务尚未触发：" + taskId; return false; }
         if (record.cycle != cycle) { reason = "任务轮次已变化，请刷新列表"; return false; }
@@ -514,7 +514,7 @@ public sealed class OfficeTaskService : SingletonBase<OfficeTaskService>
         {reason="任务时限已结束，不能再提交选项";return false;}
         if(config.GoalType==(uint)OfficeTaskGoal.VillageRaid&&record.selectedOptionId!=0u)
         {reason="本轮应对方案已经记录，不能重复支付或更换";return false;}
-        OfficeTaskOptionConfig option = entry.FindOption(optionId);
+        OfficeTaskTable_OfficeTaskOptionConfig option = entry.FindOption(optionId);
         if (option == null) { reason = "选项不属于该任务或已禁用：" + optionId; return false; }
         if (record.selectedOptionId == optionId) { reason = "已提交过相同选项，不重复结算"; return false; }
 
@@ -536,8 +536,8 @@ public sealed class OfficeTaskService : SingletonBase<OfficeTaskService>
     }
 
     /// <summary>选项类任务：选合法选项即完成，选项代价与奖励在同一事务内结算。</summary>
-    private static bool CompleteWithOption(SavePayload payload, OfficeTaskConfig config,
-        OfficeTaskSave record, OfficeTaskOptionConfig option, double clock, out string reason)
+    private static bool CompleteWithOption(SavePayload payload, OfficeTaskTable_OfficeTaskConfig config,
+        OfficeTaskSave record, OfficeTaskTable_OfficeTaskOptionConfig option, double clock, out string reason)
     {
         if (!PrecheckSettlement(payload, config, option, out reason)) return false;
         if (!Settle(payload, config, option, out reason)) return false;
@@ -546,8 +546,8 @@ public sealed class OfficeTaskService : SingletonBase<OfficeTaskService>
     }
 
     /// <summary>资源交付：任务要求量与选项额外代价合计预检后一次扣除，再结算奖励。</summary>
-    private static bool Deliver(SavePayload payload, OfficeTaskConfig config,
-        OfficeTaskSave record, OfficeTaskOptionConfig option, double clock, out string reason)
+    private static bool Deliver(SavePayload payload, OfficeTaskTable_OfficeTaskConfig config,
+        OfficeTaskSave record, OfficeTaskTable_OfficeTaskOptionConfig option, double clock, out string reason)
     {
         if (!PrecheckSettlement(payload, config, option, out reason)) return false;
         if (!Settle(payload, config, option, out reason)) return false;
@@ -556,8 +556,8 @@ public sealed class OfficeTaskService : SingletonBase<OfficeTaskService>
     }
 
     /// <summary>通关类：当前 clears 相对本轮开始时的增量达到要求才允许结算。</summary>
-    private static bool FinishClears(SavePayload payload, OfficeTaskConfig config,
-        OfficeTaskSave record, OfficeTaskOptionConfig option, double clock, out string reason)
+    private static bool FinishClears(SavePayload payload, OfficeTaskTable_OfficeTaskConfig config,
+        OfficeTaskSave record, OfficeTaskTable_OfficeTaskOptionConfig option, double clock, out string reason)
     {
         if (ClearsSinceStart(payload, record) < config.RequiredClears)
         {
@@ -571,8 +571,8 @@ public sealed class OfficeTaskService : SingletonBase<OfficeTaskService>
     }
 
     /// <summary>遭遇袭击：只记录策略并扣选项成本，倒计时结束后转待战斗，不提前发奖。</summary>
-    private static bool PrepareRaid(SavePayload payload, OfficeTaskConfig config,
-        OfficeTaskSave record, OfficeTaskOptionConfig option, out string reason)
+    private static bool PrepareRaid(SavePayload payload, OfficeTaskTable_OfficeTaskConfig config,
+        OfficeTaskSave record, OfficeTaskTable_OfficeTaskOptionConfig option, out string reason)
     {
         if (payload.era < config.MinEra || payload.era > config.MaxEra) { reason = "当前时代不适用该任务"; return false; }
         // 准备阶段只支付策略成本；战斗奖励必须等真实结果回报后再发放。
@@ -585,8 +585,8 @@ public sealed class OfficeTaskService : SingletonBase<OfficeTaskService>
     /// 任务要求量与选项代价按资源码合并后统一预检：
     /// 同类资源先合计再与持有量比较，不足整体拒绝；奖励入账后若超过 uint 上限也整体拒绝。
     /// </summary>
-    private static bool PrecheckSettlement(SavePayload payload, OfficeTaskConfig config,
-        OfficeTaskOptionConfig option, out string reason)
+    private static bool PrecheckSettlement(SavePayload payload, OfficeTaskTable_OfficeTaskConfig config,
+        OfficeTaskTable_OfficeTaskOptionConfig option, out string reason)
     {
         reason = null;
         var demand = new Dictionary<uint, ulong>();
@@ -642,8 +642,8 @@ public sealed class OfficeTaskService : SingletonBase<OfficeTaskService>
     /// 按预检通过的组合执行扣减与奖励：先扣任务要求量，再扣选项代价，最后结算奖励。
     /// 任一步失败立即返回 false（外层事务会整体回滚），不做“部分成功”。
     /// </summary>
-    private static bool Settle(SavePayload payload, OfficeTaskConfig config,
-        OfficeTaskOptionConfig option, out string reason)
+    private static bool Settle(SavePayload payload, OfficeTaskTable_OfficeTaskConfig config,
+        OfficeTaskTable_OfficeTaskOptionConfig option, out string reason)
     {
         reason = null;
         if (config.GoalType == (uint)OfficeTaskGoal.ResourceDelivery && config.RequiredAmount > 0u)
@@ -761,15 +761,15 @@ public sealed class OfficeTaskService : SingletonBase<OfficeTaskService>
         }
         OfficeTaskCatalogSet set = OfficeTaskCatalog.EnsureLoaded();
         if (set == null) { reason = OfficeTaskCatalog.LastError ?? "任务配置缺失"; return false; }
-        List<OfficeEraGateConfig> gates;
+        List<OfficeTaskTable_OfficeEraGateConfig> gates;
         if (!set.EraGatesByEra.TryGetValue(era, out gates) || gates == null || gates.Count == 0) return true;
         for (int i = 0; i < gates.Count; i++)
         {
-            OfficeEraGateConfig gate = gates[i];
+            OfficeTaskTable_OfficeEraGateConfig gate = gates[i];
             if (gate == null || !gate.Enable) continue;
             if (!IsTaskCompleted(payload, gate.TaskId))
             {
-                OfficeTaskConfig task = set.GetEntry(gate.TaskId)?.Config;
+                OfficeTaskTable_OfficeTaskConfig task = set.GetEntry(gate.TaskId)?.Config;
                 string title = task == null || string.IsNullOrEmpty(task.TitleText)
                     ? gate.TaskId.ToString() : task.TitleText;
                 reason = "推进到时代 " + (era + 1u) + " 需要先完成郡县任务：" + title;
@@ -780,12 +780,12 @@ public sealed class OfficeTaskService : SingletonBase<OfficeTaskService>
     }
 
     /// <summary>当前待推进时代的第一道未完成门槛；没有门槛时返回 null。只读，供界面提示。</summary>
-    public OfficeEraGateConfig GetPendingEraGate(out uint era)
+    public OfficeTaskTable_OfficeEraGateConfig GetPendingEraGate(out uint era)
     {
         era = 0u;
         SavePayload payload;
         if (!TryGetPayload(out payload)) return null;
-        OfficeEraGateConfig gate = OfficeTaskCatalog.FirstPendingGate(payload.era,
+        OfficeTaskTable_OfficeEraGateConfig gate = OfficeTaskCatalog.FirstPendingGate(payload.era,
             taskId => IsTaskCompleted(payload, taskId));
         if (gate != null) era = gate.Era;
         return gate;

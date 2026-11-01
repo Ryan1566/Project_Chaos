@@ -18,7 +18,7 @@ public static class RunBagFlowVerification
     private static readonly StringBuilder Report = new StringBuilder();
     private static Keyboard Keyboard;
     private static string Storage, Overrides;
-    private static ItemConfig Engineering;
+    private static ItemTable_ItemConfig Engineering;
     private static void Check(bool value, string label)
     { if (!value) throw new Exception(label); Report.AppendLine("PASS " + label); Flush(); }
     private static void Flush()
@@ -33,7 +33,7 @@ public static class RunBagFlowVerification
         Directory.CreateDirectory(Storage); SaveSlotService.UseEditorTestDirectory(Storage); Isolation();
         Overrides=InputManager.Instance.SaveOverridesJson();
         Keyboard=InputSystem.AddDevice<Keyboard>("ChaosBagFlowKeyboard");
-        Engineering=new ItemConfig {Index=990001,RunCategory=2,StackLimit=50,Enable=true,NameKey="工程验证"};
+        Engineering=new ItemTable_ItemConfig {Index=990001,RunCategory=2,StackLimit=50,Enable=true,NameKey="工程验证"};
         InventoryService.Instance.GetAllDefinitions().Add(Engineering);
         GameSession.Instance.BeginSandbox(new SavePayload {resMoney=1000,resGoods=1000,resMaterial=1000,resBlueprint=1000});
         for(int i=0;i<4;i++)RetainerService.Instance.RecruitRandom();

@@ -31,7 +31,7 @@ public class VillageService : SingletonBase<VillageService>
         MaxLevel,
     }
 
-    private List<BuildingConfig> _defs;
+    private List<BuildingTable_BuildingConfig> _defs;
     private bool _loaded;
     private SavePayload _timerPayload;
     private float _buildRemainder;
@@ -63,16 +63,16 @@ public class VillageService : SingletonBase<VillageService>
     {
         if (_loaded) return;
         _loaded = true;
-        string path = GlobalPath.data_JsonPathToRead + "BuildingConfig";
+        string path = GlobalPath.data_JsonPathToRead + "BuildingTable_BuildingConfig";
         TextAsset asset = ConfigTableAssets.Load(path);
         if (asset == null)
         {
             ChaosLog.Warn(LogChannel.Config, "[村庄] 找不到 " + path);
-            _defs = new List<BuildingConfig>();
+            _defs = new List<BuildingTable_BuildingConfig>();
             return;
         }
-        DataList<BuildingConfig> list = JsonUtility.FromJson<DataList<BuildingConfig>>(asset.text);
-        _defs = (list == null || list.datas == null) ? new List<BuildingConfig>() : list.datas;
+        DataList<BuildingTable_BuildingConfig> list = JsonUtility.FromJson<DataList<BuildingTable_BuildingConfig>>(asset.text);
+        _defs = (list == null || list.datas == null) ? new List<BuildingTable_BuildingConfig>() : list.datas;
     }
 
     public void Reload() { _loaded = false; _defs = null; EnsureLoaded(); }
@@ -89,9 +89,9 @@ public class VillageService : SingletonBase<VillageService>
         }
     }
 
-    public List<BuildingConfig> GetAllDefs() { EnsureLoaded(); return _defs; }
+    public List<BuildingTable_BuildingConfig> GetAllDefs() { EnsureLoaded(); return _defs; }
 
-    public BuildingConfig GetDef(uint buildingId, uint level)
+    public BuildingTable_BuildingConfig GetDef(uint buildingId, uint level)
     {
         EnsureLoaded();
         for (int i = 0; i < _defs.Count; i++)
@@ -137,7 +137,7 @@ public class VillageService : SingletonBase<VillageService>
     private bool StartBuildCore(uint buildingId, out string reason)
     {
         reason = null;
-        BuildingConfig lv1 = GetDef(buildingId, 1u);
+        BuildingTable_BuildingConfig lv1 = GetDef(buildingId, 1u);
         if (lv1 == null) { reason = "建筑 " + buildingId + " 在表里不存在"; return false; }
         if (Find(buildingId) != null) { reason = "建筑 " + buildingId + " 已经建过了"; return false; }
         if (IsQueueBusy) { reason = "已有建筑在建造/升级中（同时只能 1 条队列）"; return false; }
@@ -177,7 +177,7 @@ public class VillageService : SingletonBase<VillageService>
         if (IsQueueBusy) { reason = "已有建筑在建造/升级中（同时只能 1 条队列）"; return false; }
 
         uint targetLevel = save.level + 1u;
-        BuildingConfig def = GetDef(buildingId, targetLevel);
+        BuildingTable_BuildingConfig def = GetDef(buildingId, targetLevel);
         if (def == null) { reason = "表里没有 " + buildingId + " 的 Lv" + targetLevel; return false; }
 
         InventoryService.ResourceKind kind = ResourceKindOf(def.CostResourceType);
@@ -207,7 +207,7 @@ public class VillageService : SingletonBase<VillageService>
         if (save == null) { reason = "没有可取消的建造"; return false; }
         if (save.completed) { reason = "建筑已建成，无需取消"; return false; }
 
-        BuildingConfig def = GetDef(buildingId, save.level);
+        BuildingTable_BuildingConfig def = GetDef(buildingId, save.level);
         uint cost = def == null ? 0u : def.CostAmount;
         refunded = cost * CancelRefundPercent / 100u;   //向下取整
 
@@ -258,7 +258,7 @@ public class VillageService : SingletonBase<VillageService>
         if (save == null) { reason = "还没建造 " + buildingId; return false; }
         if (!save.completed) { reason = "建筑还在建造中"; return false; }
 
-        BuildingConfig def = GetDef(buildingId, save.level);
+        BuildingTable_BuildingConfig def = GetDef(buildingId, save.level);
         if (def == null) { reason = "表里没有 " + buildingId + " Lv" + save.level; return false; }
 
         if (save.pendingOutput == 0) { reason = VillageText.Get("NoYield"); return false; }
@@ -294,7 +294,7 @@ public class VillageService : SingletonBase<VillageService>
         save.pendingResourceType = def.OutputResourceType;
         MetaRuntimeDriver.NotifyChanged();
     }
-    private static uint BuildDuration(BuildingConfig definition)
+    private static uint BuildDuration(BuildingTable_BuildingConfig definition)
     {
         int change = definition.BuildingId == 2001u ? EffectAggregator.Instance.Snapshot.FarmBuildSecondsDelta : 0;
         return (uint)System.Math.Max(1L, (long)definition.BuildSeconds + change);

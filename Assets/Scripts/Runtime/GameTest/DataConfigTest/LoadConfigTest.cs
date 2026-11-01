@@ -9,11 +9,11 @@ public class LoadConfigTest : MonoBehaviour
     void Start()
     {
         /* 同步读取配置信息
-        JsonDataList<TestTableConfig> testList = JsonDataManager.Instance.LoadData<TestTableConfig>();
+        JsonDataList<TestTable_TestConfig> testList = JsonDataManager.Instance.LoadData<TestTable_TestConfig>();
         ChaosLog.Info(LogChannel.Config, testList.datas[0].Occupation.ToString());*/
 
         //异步读取配置信息
-        ConfigLoader.Instance.LoadDataAsync<TestTableConfig>((json) =>
+        ConfigLoader.Instance.LoadDataAsync<TestTable_TestConfig>((json) =>
         {
             ChaosLog.Info(LogChannel.Config, json.datas[0].Occupation.ToString());
         });

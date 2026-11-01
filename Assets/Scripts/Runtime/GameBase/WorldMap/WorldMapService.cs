@@ -125,11 +125,11 @@ public class WorldMapService : SingletonBase<WorldMapService>
         _pointsByMap = new Dictionary<uint, List<WorldMapPoint>>();
         _areasByStage = new Dictionary<uint, List<WorldFactionArea>>();
 
-        LoadPoints(LoadTable<WorldMapConfig>("WorldMap"));
-        LoadAreas(LoadTable<WorldFactionConfig>("WorldFaction"));
+        LoadPoints(LoadTable<WorldMapTable_WorldMapConfig>("WorldMap"));
+        LoadAreas(LoadTable<WorldMapTable_WorldFactionConfig>("WorldFaction"));
     }
 
-    private void LoadPoints(List<WorldMapConfig> rows)
+    private void LoadPoints(List<WorldMapTable_WorldMapConfig> rows)
     {
         if (rows == null || rows.Count == 0)
         {
@@ -140,7 +140,7 @@ public class WorldMapService : SingletonBase<WorldMapService>
         int skipped = 0;
         for (int i = 0; i < rows.Count; i++)
         {
-            WorldMapConfig row = rows[i];
+            WorldMapTable_WorldMapConfig row = rows[i];
             if (row == null) continue;
             if (!row.Enable) { skipped++; continue; }
 
@@ -175,7 +175,7 @@ public class WorldMapService : SingletonBase<WorldMapService>
             "[局外地图] 点位已加载：底图 " + _pointsByMap.Count + " 张，共 " + CountPoints() + " 个点位（跳过 Enable=false " + skipped + " 个）");
     }
 
-    private void LoadAreas(List<WorldFactionConfig> rows)
+    private void LoadAreas(List<WorldMapTable_WorldFactionConfig> rows)
     {
         if (rows == null || rows.Count == 0)
         {
@@ -184,19 +184,19 @@ public class WorldMapService : SingletonBase<WorldMapService>
         }
 
         //先按 (Stage,FactionId,RegionId) 分组，保持首次出现顺序 —— 顺序稳定，便于排查
-        var groups = new Dictionary<string, List<WorldFactionConfig>>();
+        var groups = new Dictionary<string, List<WorldMapTable_WorldFactionConfig>>();
         var order = new List<string>();
 
         for (int i = 0; i < rows.Count; i++)
         {
-            WorldFactionConfig row = rows[i];
+            WorldMapTable_WorldFactionConfig row = rows[i];
             if (row == null || !row.Enable) continue;
 
             string key = row.Stage + "|" + row.FactionId + "|" + row.RegionId;
-            List<WorldFactionConfig> group;
+            List<WorldMapTable_WorldFactionConfig> group;
             if (!groups.TryGetValue(key, out group))
             {
-                group = new List<WorldFactionConfig>();
+                group = new List<WorldMapTable_WorldFactionConfig>();
                 groups.Add(key, group);
                 order.Add(key);
             }
@@ -208,7 +208,7 @@ public class WorldMapService : SingletonBase<WorldMapService>
         int colorConflict = 0;
         for (int i = 0; i < order.Count; i++)
         {
-            List<WorldFactionConfig> group = groups[order[i]];
+            List<WorldMapTable_WorldFactionConfig> group = groups[order[i]];
             if (group.Count < 3)
             {
                 //规格 M2：少于 3 个顶点不构成多边形 → 跳过并记 warning（不得崩溃）
@@ -221,7 +221,7 @@ public class WorldMapService : SingletonBase<WorldMapService>
             //规格 M1：按 PointOrder 升序连成闭合多边形
             group.Sort((a, b) => a.PointOrder.CompareTo(b.PointOrder));
 
-            WorldFactionConfig first = group[0];
+            WorldMapTable_WorldFactionConfig first = group[0];
 
             //★ 同一 (时期,势力) 的多块区域（飞地）**颜色归一化为第一块的颜色**：
             //  表里若被填成两种色，同一势力在地图上会被画成两个势力 —— 这里统一，并只 Warn 一次。
@@ -291,8 +291,8 @@ public class WorldMapService : SingletonBase<WorldMapService>
     /// </summary>
     private static List<T> LoadTable<T>(string tableName) where T : class
     {
-        //Config 模式的产物名 = 表名 + "Config.json"，路径取自 GlobalPath（单一真相源）
-        string path = GlobalPath.data_JsonPathToRead + tableName + "Config";
+        // 完整配置类型通过索引定位JSON，不再从旧基础表名拼接文件路径。
+        string path = typeof(T).Name;
 
         TextAsset asset = ConfigTableAssets.Load(path);
         if (asset == null)

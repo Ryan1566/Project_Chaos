@@ -16,7 +16,7 @@ public static class VillageVerification
     {
         var lines = new List<string>(); Action<bool, string> check = (ok, text) => lines.Add((ok ? "PASS " : "FAIL ") + text);
         var p = VillageSceneSettings.Load(); check(p.widthTiles == 96 && p.workerCount == 4, "standard village dimensions and roles");
-        var texts = ConfigLoader.Instance.LoadData<VillageTextConfig>().datas;
+        var texts = ConfigLoader.Instance.LoadData<VillageTable_VillageTextConfig>().datas;
         check(texts.Count == 30 && texts.Select(t => t.key).Distinct().Count() == 30, "thirty distinct authored UI and role text keys");
         check(texts.All(t => !string.IsNullOrEmpty(t.zhCN) && !string.IsNullOrEmpty(t.zhTW) && !string.IsNullOrEmpty(t.enUS) && !string.IsNullOrEmpty(t.jaJP) && !string.IsNullOrEmpty(t.koKR)), "all five languages populated");
         Action<Action<VillageSceneSettings>, string> reject = (edit, name) => {

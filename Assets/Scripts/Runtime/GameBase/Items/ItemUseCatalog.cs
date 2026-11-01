@@ -17,12 +17,12 @@ namespace Chaos.Gameplay.Items
         public string animationName;
         public bool consume = true;
     }
-    /// <summary>Use/animation extension to Excel's ItemConfig. Additional prototype definitions never override Excel IDs.</summary>
+    /// <summary>Use/animation extension to Excel's ItemTable_ItemConfig. Additional prototype definitions never override Excel IDs.</summary>
     [CreateAssetMenu(menuName = "Chaos/道具使用配置", fileName = "ItemUseCatalog")]
     public sealed class ItemUseCatalog : ScriptableObject
     {
         public ItemUseProfile[] profiles = Array.Empty<ItemUseProfile>();
-        public ItemConfig[] additionalDefinitions = Array.Empty<ItemConfig>();
+        public ItemTable_ItemConfig[] additionalDefinitions = Array.Empty<ItemTable_ItemConfig>();
         public const string ResourcePath = "Items/ItemUseCatalog";
         public static ItemUseCatalog Load() => Resources.Load<ItemUseCatalog>(ResourcePath);
         public ItemUseProfile Find(uint id)

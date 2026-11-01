@@ -11,7 +11,7 @@ public class ImpTableTest : MonoBehaviour
 #if UNITY_EDITOR
     private void Start()
     {
-        string path = Path.Combine(Application.dataPath, "Excel/Chaos_excel/测试表.xlsx");
+        string path = Path.Combine(Application.dataPath, "Excel/Chaos_excel/TestTable_测试表.xlsx");
         if (!File.Exists(path))
         {
             ChaosLog.Error(LogChannel.Config, "测试工作簿不存在：" + path);

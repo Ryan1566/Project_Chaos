@@ -7,7 +7,7 @@ namespace Chaos.Gameplay.Interaction
     {
         public static string Get(string key, params object[] args)
         {
-            var rows = ConfigLoader.Instance.LoadData<RunInteractionConfig>();
+            var rows = ConfigLoader.Instance.LoadData<RunContentTable_RunInteractionConfig>();
             var row = rows == null ? null : rows.datas.Find(r => r.key == key);
             if (row == null) throw new InvalidOperationException("RunInteraction missing text: " + key);
             var manager = LocalizationManager.GetInstance();

@@ -52,6 +52,24 @@ public class Recorder : SingletonBase<Recorder>
     /// </summary>
     private Dictionary<string,string> _cache = new Dictionary<string,string>();
 
+    /// <summary>新导出的记录省去Config/Data后缀；旧缓存仍按原完整类名读取，保存时沿用所命中的键。</summary>
+    private string ResolveCacheKey<T>()
+    {
+        string legacy = typeof(T).Name;
+        string key = ExportedRecordKey(legacy);
+        if (_cache.ContainsKey(key)) return key;
+        return _cache.ContainsKey(legacy) ? legacy : key;
+    }
+
+    /// <summary>仅处理包含英文表名前缀的生成类型，不改变旧单名记录的命名。</summary>
+    private static string ExportedRecordKey(string typeName)
+    {
+        if (typeName.IndexOf('_') < 1) return typeName;
+        if (typeName.EndsWith("Config", StringComparison.Ordinal)) return typeName.Substring(0, typeName.Length - 6);
+        if (typeName.EndsWith("Data", StringComparison.Ordinal)) return typeName.Substring(0, typeName.Length - 4);
+        return typeName;
+    }
+
     public Recorder()
     {
         _cache.Clear();
@@ -94,7 +112,7 @@ public class Recorder : SingletonBase<Recorder>
     {
         try
         {
-            string fileContent = _cache[typeof(T).Name];
+            string fileContent = _cache[ResolveCacheKey<T>()];
             DataList<T> dataList = JsonUtility.FromJson<DataList<T>>(fileContent);
             return dataList;
         }
@@ -119,10 +137,10 @@ public class Recorder : SingletonBase<Recorder>
 
         try
         {
-            _cache[typeof(T).Name] = json;
+            _cache[ResolveCacheKey<T>()] = json;
             if (save)
             {
-                string path = string.Format("{0}/{1}/{2}.record",Application.dataPath, RecordPath, typeof(T).Name);
+                string path = string.Format("{0}/{1}/{2}.record",Application.dataPath, RecordPath, ResolveCacheKey<T>());
                 if (File.Exists(path))
                     File.Delete(path);
                 File.WriteAllText(path, json);

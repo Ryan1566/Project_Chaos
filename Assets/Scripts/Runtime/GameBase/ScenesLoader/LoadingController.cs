@@ -11,7 +11,7 @@ using TMPro;
 ///
 /// ══════════════════ 它负责什么 ══════════════════
 /// 一个**独立的小场景**（`LoadingScene`）在被切进来之后：
-///   ① 立刻按配表 `LoadingTableConfig` 把所有轮播图 `Resources.LoadAsync&lt;Sprite&gt;` **一次性预加载**；
+///   ① 立刻按配表 `LoadingTable_LoadingConfig` 把所有轮播图 `Resources.LoadAsync&lt;Sprite&gt;` **一次性预加载**；
 ///   ② 开始流式加载目标场景（`ScenesLoadManager.BeginLoadSceneAsync(目标, activateOnComplete:false)`）；
 ///   ③ 一边轮播背景一边把进度条推到"进度满 + 轮播图就绪"；
 ///   ④ 都满了、且读条界面**至少渲染过 1 帧**之后，才 `allowSceneActivation = true`。
@@ -50,7 +50,7 @@ public class LoadingController : MonoBehaviour
 
     /// <summary>Config 模式产物的 `Resources` 相对路径（不带扩展名）。
     /// ⚠ 这里直接 `Resources.Load`，**不走 `ConfigLoader`** —— 后者的路径常量是错的（已有 P0 记录）。</summary>
-    private const string ConfigResourcePath = "Data/Json/Runtime/LoadingTableConfig";
+    private const string ConfigResourcePath = "Data/Json/Runtime/LoadingTable_LoadingConfig";
 
     /// <summary>Unity 在激活前 `progress` 的上限。</summary>
     private const float ProgressCeiling = 0.9f;
@@ -587,10 +587,10 @@ public class LoadingController : MonoBehaviour
             return;
         }
 
-        DataList<LoadingTableConfig> config = null;
+        DataList<LoadingTable_LoadingConfig> config = null;
         try
         {
-            config = JsonUtility.FromJson<DataList<LoadingTableConfig>>(text.text);
+            config = JsonUtility.FromJson<DataList<LoadingTable_LoadingConfig>>(text.text);
         }
         catch (System.Exception e)
         {
@@ -605,10 +605,10 @@ public class LoadingController : MonoBehaviour
         }
 
         //先收集 + 过滤，再按 sort 排序（排序有一次性的小分配，不在每帧循环里）
-        var picked = new List<LoadingTableConfig>();
+        var picked = new List<LoadingTable_LoadingConfig>();
         for (int i = 0; i < config.datas.Count; i++)
         {
-            LoadingTableConfig row = config.datas[i];
+            LoadingTable_LoadingConfig row = config.datas[i];
             if (row == null) continue;
             if (!row.enable) continue;                       // enable=false：保留在表里但不播放
             if (string.IsNullOrEmpty(row.srcImg))
@@ -623,7 +623,7 @@ public class LoadingController : MonoBehaviour
 
         for (int i = 0; i < picked.Count; i++)
         {
-            LoadingTableConfig row = picked[i];
+            LoadingTable_LoadingConfig row = picked[i];
 
             float show = row.showSeconds > 0f ? row.showSeconds : DefaultShowSeconds;
             float fade = row.fadeSeconds;

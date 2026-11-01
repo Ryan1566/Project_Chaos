@@ -34,7 +34,7 @@ public class WorldMapToolIssue
 ///    而页签**完全空白**更会直接抛 `Dimension == null` 的 NRE —— 两种情况都会**中断整批导出**，
 ///    其后所有表都不导出。所以「顶层表必须 ≥1 行数据」是硬拒绝。
 /// ② **顶层同英文前缀的第二张表**：导出器按「文件名第一个 `_` 之前」推类名且**不查重**，
-///    `WorldMap_别的.xlsx` 会导出同一个 `WorldMapConfig` 并**静默覆盖**。所以发现同前缀就硬拒绝。
+///    `WorldMap_别的.xlsx` 会导出同一个 `WorldMapTable_WorldMapConfig` 并**静默覆盖**。所以发现同前缀就硬拒绝。
 ///
 /// 错误分两级：**Error = 阻断导出**；**Warning = 只提示**（例如自交 ——
 /// `06_WorldFaction_字段规格.md` M7 明确说自交只提示不阻断）。

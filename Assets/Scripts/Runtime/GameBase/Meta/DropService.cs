@@ -18,7 +18,7 @@ public class DropService : SingletonBase<DropService>
     /// <summary>精英/boss 掉落组（本轮未用）。</summary>
     public const uint GroupElite = 2u;
 
-    private List<DropConfig> _defs;
+    private List<ItemTable_DropConfig> _defs;
     private bool _loaded;
 
     public void EnsureLoaded()
@@ -26,21 +26,21 @@ public class DropService : SingletonBase<DropService>
         if (_loaded) return;
         _loaded = true;
 
-        string path = GlobalPath.data_JsonPathToRead + "DropConfig";
+        string path = GlobalPath.data_JsonPathToRead + "ItemTable_DropConfig";
         TextAsset asset = ConfigTableAssets.Load(path);
         if (asset == null)
         {
             ChaosLog.Warn(LogChannel.Config, "[掉落] 找不到 " + path);
-            _defs = new List<DropConfig>();
+            _defs = new List<ItemTable_DropConfig>();
             return;
         }
-        DataList<DropConfig> list = JsonUtility.FromJson<DataList<DropConfig>>(asset.text);
-        _defs = (list == null || list.datas == null) ? new List<DropConfig>() : list.datas;
+        DataList<ItemTable_DropConfig> list = JsonUtility.FromJson<DataList<ItemTable_DropConfig>>(asset.text);
+        _defs = (list == null || list.datas == null) ? new List<ItemTable_DropConfig>() : list.datas;
     }
 
     public void Reload() { _loaded = false; _defs = null; EnsureLoaded(); }
 
-    public List<DropConfig> GetAll() { EnsureLoaded(); return _defs; }
+    public List<ItemTable_DropConfig> GetAll() { EnsureLoaded(); return _defs; }
 
     /// <summary>
     /// **组内加权抽 1 件**。返回 false 表示该组没有可用行。
@@ -53,11 +53,11 @@ public class DropService : SingletonBase<DropService>
         EnsureLoaded();
 
         //收集该组的可用行
-        var candidates = new List<DropConfig>();
+        var candidates = new List<ItemTable_DropConfig>();
         uint totalWeight = 0u;
         for (int i = 0; i < _defs.Count; i++)
         {
-            DropConfig def = _defs[i];
+            ItemTable_DropConfig def = _defs[i];
             if (def == null || !def.Enable) continue;
             if (def.DropGroup != dropGroup) continue;
             if (def.Weight == 0u) continue;
@@ -75,7 +75,7 @@ public class DropService : SingletonBase<DropService>
         uint roll = (uint)random.Next(0, (int)totalWeight);   //[0, totalWeight)
 
         uint accumulated = 0u;
-        DropConfig picked = candidates[candidates.Count - 1];
+        ItemTable_DropConfig picked = candidates[candidates.Count - 1];
         for (int i = 0; i < candidates.Count; i++)
         {
             accumulated += candidates[i].Weight;
@@ -100,7 +100,7 @@ public class DropService : SingletonBase<DropService>
         sb.Append("[掉落] 表中共 ").Append(_defs.Count).Append(" 行");
         for (int i = 0; i < _defs.Count; i++)
         {
-            DropConfig def = _defs[i];
+            ItemTable_DropConfig def = _defs[i];
             if (def == null) continue;
             sb.Append("\n    ").Append(def.Index).Append(" 组").Append(def.DropGroup)
               .Append(" 物品").Append(def.ItemId).Append(" ×").Append(def.MinCount).Append("~").Append(def.MaxCount)

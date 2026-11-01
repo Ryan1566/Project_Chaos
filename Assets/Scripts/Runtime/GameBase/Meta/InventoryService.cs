@@ -29,7 +29,7 @@ public class InventoryService : SingletonBase<InventoryService>
         Money = 3,      // 钱财  → resMoney
     }
 
-    private List<ItemConfig> _defs;
+    private List<ItemTable_ItemConfig> _defs;
     private bool _loaded;
     private int _slotBonus;
 
@@ -38,17 +38,17 @@ public class InventoryService : SingletonBase<InventoryService>
         if (_loaded) return;
         _loaded = true;
 
-        string path = GlobalPath.data_JsonPathToRead + "ItemConfig";
+        string path = GlobalPath.data_JsonPathToRead + "ItemTable_ItemConfig";
         TextAsset asset = ConfigTableAssets.Load(path);
         if (asset == null)
         {
             ChaosLog.Warn(LogChannel.Config, "[库存] 找不到 " + path + "（展示会退化，不抛异常）");
-            _defs = new List<ItemConfig>();
+            _defs = new List<ItemTable_ItemConfig>();
             return;
         }
 
-        DataList<ItemConfig> list = JsonUtility.FromJson<DataList<ItemConfig>>(asset.text);
-        _defs = (list == null || list.datas == null) ? new List<ItemConfig>() : list.datas;
+        DataList<ItemTable_ItemConfig> list = JsonUtility.FromJson<DataList<ItemTable_ItemConfig>>(asset.text);
+        _defs = (list == null || list.datas == null) ? new List<ItemTable_ItemConfig>() : list.datas;
         var itemUses = Chaos.Gameplay.Items.ItemUseCatalog.Load();
         if (itemUses != null) foreach (var definition in itemUses.additionalDefinitions)
             if (definition != null && !_defs.Exists(d => d.Index == definition.Index)) _defs.Add(definition);
@@ -61,7 +61,7 @@ public class InventoryService : SingletonBase<InventoryService>
         EnsureLoaded();
     }
 
-    public ItemConfig GetDefinition(uint itemId)
+    public ItemTable_ItemConfig GetDefinition(uint itemId)
     {
         EnsureLoaded();
         if (_defs == null) return null;
@@ -74,10 +74,10 @@ public class InventoryService : SingletonBase<InventoryService>
     /// 全部道具定义（**表顺序，只读用途，别改里面的对象**）。
     /// 给“按表遍历”的场景用（W5.3 市场要列出所有可交易物品，逐个 itemId 试探既慢又不可靠）。
     /// </summary>
-    public List<ItemConfig> GetAllDefinitions()
+    public List<ItemTable_ItemConfig> GetAllDefinitions()
     {
         EnsureLoaded();
-        if (_defs == null) _defs = new List<ItemConfig>();
+        if (_defs == null) _defs = new List<ItemTable_ItemConfig>();
         return _defs;
     }
 
@@ -133,17 +133,17 @@ public class InventoryService : SingletonBase<InventoryService>
         _slotBonus = 0;
         if (effectIds != null)
         {
-            TextAsset asset = ConfigTableAssets.Load(GlobalPath.data_JsonPathToRead + "EffectConfig");
+            TextAsset asset = ConfigTableAssets.Load(GlobalPath.data_JsonPathToRead + "EffectTable_EffectConfig");
             if (asset != null)
             {
-                DataList<EffectConfig> list = JsonUtility.FromJson<DataList<EffectConfig>>(asset.text);
+                DataList<EffectTable_EffectConfig> list = JsonUtility.FromJson<DataList<EffectTable_EffectConfig>>(asset.text);
                 if (list != null && list.datas != null)
                 {
                     for (int i = 0; i < effectIds.Count; i++)
                     {
                         for (int k = 0; k < list.datas.Count; k++)
                         {
-                            EffectConfig e = list.datas[k];
+                            EffectTable_EffectConfig e = list.datas[k];
                             if (e == null || !e.Enable || e.Index != effectIds[i]) continue;
                             //EffectType=2 = 格位（增量型，相加）
                             if (e.EffectType == 2u) _slotBonus += (int)e.Value;
@@ -153,7 +153,7 @@ public class InventoryService : SingletonBase<InventoryService>
             }
             else
             {
-                ChaosLog.Warn(LogChannel.Config, "[库存] 找不到 EffectConfig，格位加成按 0 处理");
+                ChaosLog.Warn(LogChannel.Config, "[库存] 找不到 EffectTable_EffectConfig，格位加成按 0 处理");
             }
         }
 
@@ -172,7 +172,7 @@ public class InventoryService : SingletonBase<InventoryService>
         reason = null;
         if (count == 0) { reason = "数量为 0"; return false; }
 
-        ItemConfig def = GetDefinition(itemId);
+        ItemTable_ItemConfig def = GetDefinition(itemId);
         if (def == null) { reason = "道具表里没有 itemId=" + itemId; ChaosLog.Warn(LogChannel.Config, "[库存] " + reason); return false; }
         if (!def.Enable) { reason = "道具 itemId=" + itemId + " 已禁用（Enable=false）"; ChaosLog.Warn(LogChannel.Config, "[库存] " + reason); return false; }
 
@@ -328,7 +328,7 @@ public class InventoryService : SingletonBase<InventoryService>
         for (int i = 0; i < stacks.Count; i++)
         {
             if (stacks[i] == null) continue;
-            ItemConfig def = GetDefinition(stacks[i].itemId);
+            ItemTable_ItemConfig def = GetDefinition(stacks[i].itemId);
             sb.Append("\n  itemId=").Append(stacks[i].itemId)
               .Append(" ").Append(def == null ? "(表缺失)" : def.NameKey)
               .Append(" ×").Append(stacks[i].count).Append("/").Append(def == null ? "?" : def.StackLimit.ToString());

@@ -48,6 +48,6 @@ namespace Chaos.MVP.Presenter.Gameplay
                 Message(GameplayText.Text("ui_retainer_recruited", "招募成功：{0}", Name(retainer, RetainerService.Instance.GetDefinition(retainer.protoId))), true);
             else Message(reason);
         }
-        private static string Name(RetainerSave r, RetainerConfig def) => def == null ? "门客 #" + r.id : GameplayText.Text(def.NameKey, "门客 #" + r.id);
+        private static string Name(RetainerSave r, RetainerTable_RetainerConfig def) => def == null ? "门客 #" + r.id : GameplayText.Text(def.NameKey, "门客 #" + r.id);
     }
 }

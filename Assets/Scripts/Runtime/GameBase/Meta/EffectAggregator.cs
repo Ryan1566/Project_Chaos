@@ -76,26 +76,26 @@ public class EffectAggregator : SingletonBase<EffectAggregator>
         List<uint> unlocked = MetaProgressService.Instance.Payload.familyTreeNodes;
         if (unlocked == null) unlocked = new List<uint>();
 
-        List<FamilyTreeEffectConfig> links = LoadTable<FamilyTreeEffectConfig>("FamilyTreeEffect");
-        List<EffectConfig> effects = LoadTable<EffectConfig>("Effect");
+        List<MetaSkillTreeTable_FamilyTreeEffectConfig> links = LoadTable<MetaSkillTreeTable_FamilyTreeEffectConfig>("FamilyTreeEffect");
+        List<EffectTable_EffectConfig> effects = LoadTable<EffectTable_EffectConfig>("Effect");
         if (links == null || effects == null)
         {
             _snapshot = snap;
             return _snapshot;
         }
 
-        var effectById = new Dictionary<uint, EffectConfig>();
+        var effectById = new Dictionary<uint, EffectTable_EffectConfig>();
         for (int i = 0; i < effects.Count; i++)
             if (effects[i] != null && effects[i].Enable && !effectById.ContainsKey(effects[i].Index))
                 effectById.Add(effects[i].Index, effects[i]);
 
         for (int i = 0; i < links.Count; i++)
         {
-            FamilyTreeEffectConfig link = links[i];
+            MetaSkillTreeTable_FamilyTreeEffectConfig link = links[i];
             if (link == null || !link.Enable) continue;
             if (!unlocked.Contains(link.NodeId)) continue;
 
-            EffectConfig effect;
+            EffectTable_EffectConfig effect;
             if (!effectById.TryGetValue(link.EffectId, out effect))
             {
                 ChaosLog.Warn(LogChannel.Config, "[效果聚合] 节点 " + link.NodeId + " 的效果 " + link.EffectId + " 在 Effect 表里不存在（跳过）");
@@ -153,7 +153,7 @@ public class EffectAggregator : SingletonBase<EffectAggregator>
 
     private static List<T> LoadTable<T>(string tableName) where T : class
     {
-        string path = GlobalPath.data_JsonPathToRead + tableName + "Config";
+        string path = typeof(T).Name;
         TextAsset asset = ConfigTableAssets.Load(path);
         if (asset == null)
         {
