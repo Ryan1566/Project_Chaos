@@ -1,0 +1,158 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76805176abf562d4aae4275a1b67cb70, type: 3}
+  m_Name: VillageFacilitySettings
+  m_EditorClassIdentifier: 
+  facilities:
+  - id: office
+    kind: 1
+    x: -39
+    width: 6
+    height: 4
+    color: {r: 0.62, g: 0.52, b: 0.35, a: 1}
+    name:
+      zhCN: "\u529E\u4E8B\u5355\u4F4D"
+      enUS: Administrative Office
+      zhTW: "\u8FA6\u4E8B\u55AE\u4F4D"
+      jaJP: "\u57F7\u52D9\u6240"
+      koKR: "\uC9D1\uBB34\uC18C"
+    description:
+      zhCN: "\u529E\u4E8B\u5355\u4F4D"
+      enUS: Administrative Office
+      zhTW: "\u8FA6\u4E8B\u55AE\u4F4D"
+      jaJP: "\u57F7\u52D9\u6240"
+      koKR: "\uC9D1\uBB34\uC18C"
+  - id: family
+    kind: 2
+    x: 0
+    width: 6
+    height: 4
+    color: {r: 0.55, g: 0.4, b: 0.32, a: 1}
+    name:
+      zhCN: "\u5BB6\u65CF\u5E9C\u90B8"
+      enUS: Family Residence
+      zhTW: "\u5BB6\u65CF\u5E9C\u90B8"
+      jaJP: "\u4E00\u65CF\u306E\u5C4B\u6577"
+      koKR: "\uAC00\uBB38 \uC800\uD0DD"
+    description:
+      zhCN: "\u5BB6\u65CF\u5E9C\u90B8"
+      enUS: Family Residence
+      zhTW: "\u5BB6\u65CF\u5E9C\u90B8"
+      jaJP: "\u4E00\u65CF\u306E\u5C4B\u6577"
+      koKR: "\uAC00\uBB38 \uC800\uD0DD"
+  - id: warehouse
+    kind: 3
+    x: 39
+    width: 6
+    height: 4
+    color: {r: 0.42, g: 0.51, b: 0.4, a: 1}
+    name:
+      zhCN: "\u4ED3\u5E93"
+      enUS: Warehouse
+      zhTW: "\u5009\u5EAB"
+      jaJP: "\u5009\u5EAB"
+      koKR: "\uCC3D\uACE0"
+    description:
+      zhCN: "\u4ED3\u5E93"
+      enUS: Warehouse
+      zhTW: "\u5009\u5EAB"
+      jaJP: "\u5009\u5EAB"
+      koKR: "\uCC3D\uACE0"
+  officeTitle:
+    zhCN: "\u529E\u4E8B\u5355\u4F4D"
+    enUS: Administrative Office
+    zhTW: "\u8FA6\u4E8B\u55AE\u4F4D"
+    jaJP: "\u57F7\u52D9\u6240"
+    koKR: "\uC9D1\uBB34\uC18C"
+  officeBody:
+    zhCN: "\u5728\u6B64\u5904\u7406\u4EFB\u52A1\u4E0E\u4E8B\u4EF6\u3001\u8FDB\u884C\u4EA4\u6613\uFF0C\u67E5\u770B\u7A0E\u6536\u8BF4\u660E\u3002\u4EFB\u52A1\u4E0E\u4E8B\u4EF6\u6CBF\u7528\u73B0\u6709\u6D41\u7A0B\uFF1B\u7A0E\u6536\u89C4\u5219\u5C1A\u672A\u5F00\u653E\u3002"
+    enUS: Handle existing tasks and events, trade, and view tax information. Tax
+      rules are not available yet.
+    zhTW: "\u5728\u6B64\u8655\u7406\u4EFB\u52D9\u8207\u4E8B\u4EF6\u3001\u9032\u884C\u4EA4\u6613\uFF0C\u67E5\u770B\u7A05\u6536\u8AAA\u660E\u3002\u4EFB\u52D9\u8207\u4E8B\u4EF6\u6CBF\u7528\u73FE\u6709\u6D41\u7A0B\uFF1B\u7A05\u6536\u898F\u5247\u5C1A\u672A\u958B\u653E\u3002"
+    jaJP: "\u4EFB\u52D9\u3068\u51FA\u6765\u4E8B\u3001\u53D6\u5F15\u3001\u5FB4\u7A0E\u306E\u6848\u5185\u3092\u6271\u3044\u307E\u3059\u3002\u5FB4\u7A0E\u5236\u5EA6\u306F\u307E\u3060\u5229\u7528\u3067\u304D\u307E\u305B\u3093\u3002"
+    koKR: "\uAE30\uC874 \uC784\uBB34\uC640 \uC0AC\uAC74, \uAC70\uB798 \uBC0F \uC138\uAE08
+      \uC548\uB0B4\uB97C \uC774\uC6A9\uD569\uB2C8\uB2E4. \uC138\uAE08 \uC81C\uB3C4\uB294
+      \uC544\uC9C1 \uC774\uC6A9\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4."
+  tasksLabel:
+    zhCN: "\u4EFB\u52A1\u4E0E\u4E8B\u4EF6"
+    enUS: Tasks & Events
+    zhTW: "\u4EFB\u52D9\u8207\u4E8B\u4EF6"
+    jaJP: "\u4EFB\u52D9\u3068\u51FA\u6765\u4E8B"
+    koKR: "\uC784\uBB34\uC640 \uC0AC\uAC74"
+  tasksEmptyBody:
+    zhCN: "\u5F53\u524D\u6CA1\u6709\u5F85\u5904\u7406\u4E8B\u4EF6\u3002\u4E8B\u4EF6\u4ECD\u6309\u65E2\u6709\u6761\u4EF6\u4E0E\u8FD4\u4E61\u6D41\u7A0B\u51FA\u73B0\uFF1B\u65B0\u7684\u4EFB\u52A1\u89C4\u5219\u5C06\u5728\u540E\u7EED\u8BBE\u8BA1\u3002"
+    enUS: There are no pending events. Events keep their existing conditions and
+      return-to-village flow; new task rules will be designed later.
+    zhTW: "\u76EE\u524D\u6C92\u6709\u5F85\u8655\u7406\u4E8B\u4EF6\u3002\u4E8B\u4EF6\u4ECD\u6309\u65E2\u6709\u689D\u4EF6\u8207\u8FD4\u9109\u6D41\u7A0B\u51FA\u73FE\uFF1B\u65B0\u7684\u4EFB\u52D9\u898F\u5247\u5C07\u5728\u5F8C\u7E8C\u8A2D\u8A08\u3002"
+    jaJP: "\u73FE\u5728\u3001\u672A\u51E6\u7406\u306E\u51FA\u6765\u4E8B\u306F\u3042\u308A\u307E\u305B\u3093\u3002\u65E2\u5B58\u306E\u6761\u4EF6\u3068\u5E30\u9084\u6642\u306E\u6D41\u308C\u3092\u4F7F\u7528\u3057\u307E\u3059\u3002\u65B0\u3057\u3044\u4EFB\u52D9\u5236\u5EA6\u306F\u4ECA\u5F8C\u8A2D\u8A08\u3055\u308C\u307E\u3059\u3002"
+    koKR: "\uD604\uC7AC \uCC98\uB9AC\uD560 \uC0AC\uAC74\uC774 \uC5C6\uC2B5\uB2C8\uB2E4.
+      \uC0AC\uAC74\uC740 \uAE30\uC874 \uC870\uAC74\uACFC \uADC0\uD658 \uC808\uCC28\uB97C
+      \uB530\uB974\uBA70, \uC0C8\uB85C\uC6B4 \uC784\uBB34 \uADDC\uCE59\uC740 \uCD94\uD6C4
+      \uC124\uACC4\uB429\uB2C8\uB2E4."
+  tradeLabel:
+    zhCN: "\u4EA4\u6613"
+    enUS: Trade
+    zhTW: "\u4EA4\u6613"
+    jaJP: "\u53D6\u5F15"
+    koKR: "\uAC70\uB798"
+  taxLabel:
+    zhCN: "\u7A0E\u6536\u8BF4\u660E"
+    enUS: Tax Information
+    zhTW: "\u7A05\u6536\u8AAA\u660E"
+    jaJP: "\u5FB4\u7A0E\u306E\u6848\u5185"
+    koKR: "\uC138\uAE08 \uC548\uB0B4"
+  backLabel:
+    zhCN: "\u8FD4\u56DE"
+    enUS: Back
+    zhTW: "\u8FD4\u56DE"
+    jaJP: "\u623B\u308B"
+    koKR: "\uB4A4\uB85C"
+  taxTitle:
+    zhCN: "\u7A0E\u6536\u8BF4\u660E"
+    enUS: Tax Information
+    zhTW: "\u7A05\u6536\u8AAA\u660E"
+    jaJP: "\u5FB4\u7A0E\u306E\u6848\u5185"
+    koKR: "\uC138\uAE08 \uC548\uB0B4"
+  taxBody:
+    zhCN: "\u7A0E\u6536\u5236\u5EA6\u5C06\u5728\u540E\u7EED\u8BBE\u8BA1\u3002\u672C\u9875\u4EC5\u8BF4\u660E\u9884\u7559\u7528\u9014\uFF0C\u4E0D\u5F81\u7A0E\u3001\u4E0D\u53D1\u653E\u6536\u76CA\uFF0C\u4E5F\u4E0D\u6539\u53D8\u8D44\u6E90\u3002"
+    enUS: Tax rules will be designed later. This information page collects no taxes,
+      grants no income and changes no resources.
+    zhTW: "\u7A05\u6536\u5236\u5EA6\u5C07\u5728\u5F8C\u7E8C\u8A2D\u8A08\u3002\u672C\u9801\u50C5\u8AAA\u660E\u9810\u7559\u7528\u9014\uFF0C\u4E0D\u5FB5\u7A05\u3001\u4E0D\u767C\u653E\u6536\u76CA\uFF0C\u4E5F\u4E0D\u6539\u8B8A\u8CC7\u6E90\u3002"
+    jaJP: "\u5FB4\u7A0E\u5236\u5EA6\u306F\u4ECA\u5F8C\u8A2D\u8A08\u3055\u308C\u307E\u3059\u3002\u3053\u306E\u6848\u5185\u3067\u306F\u5FB4\u7A0E\u3084\u53CE\u5165\u306E\u4ED8\u4E0E\u3001\u8CC7\u6E90\u306E\u5909\u66F4\u306F\u884C\u3044\u307E\u305B\u3093\u3002"
+    koKR: "\uC138\uAE08 \uC81C\uB3C4\uB294 \uCD94\uD6C4 \uC124\uACC4\uB429\uB2C8\uB2E4.
+      \uC774 \uC548\uB0B4\uC5D0\uC11C\uB294 \uC138\uAE08\uC744 \uAC77\uAC70\uB098
+      \uC218\uC785\uC744 \uC9C0\uAE09\uD558\uAC70\uB098 \uC790\uC6D0\uC744 \uBCC0\uACBD\uD558\uC9C0
+      \uC54A\uC2B5\uB2C8\uB2E4."
+  warehouseTitle:
+    zhCN: "\u4ED3\u5E93"
+    enUS: Warehouse
+    zhTW: "\u5009\u5EAB"
+    jaJP: "\u5009\u5EAB"
+    koKR: "\uCC3D\uACE0"
+  permanentLabel:
+    zhCN: "\u6C38\u4E45\u6536\u85CF"
+    enUS: Permanent Collection
+    zhTW: "\u6C38\u4E45\u6536\u85CF"
+    jaJP: "\u6C38\u4E45\u6240\u6301"
+    koKR: "\uC601\uAD6C \uC18C\uC7A5"
+  missingSession:
+    zhCN: "\u5C1A\u672A\u8F7D\u5165\u5B58\u6863"
+    enUS: No save loaded
+    zhTW: "\u5C1A\u672A\u8F09\u5165\u5B58\u6A94"
+    jaJP: "\u30BB\u30FC\u30D6\u672A\u8AAD\u8FBC"
+    koKR: "\uC800\uC7A5 \uB370\uC774\uD130 \uC5C6\uC74C"
+  interactHint:
+    zhCN: "{0}\u3000\u6309 {1} \u8FDB\u5165"
+    enUS: '{0}   Press {1} to enter'
+    zhTW: "{0}\u3000\u6309 {1} \u9032\u5165"
+    jaJP: "{0}\u3000{1} \u3067\u5165\u308B"
+    koKR: "{0}   {1} \uD0A4\uB85C \uC785\uC7A5"

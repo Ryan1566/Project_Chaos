@@ -65,5 +65,6 @@ public static class VillageSceneBuilder
             if (original.IsValid() && original.isLoaded) SceneManager.SetActiveScene(original);
             if (opened && scene.IsValid() && scene.isLoaded) EditorSceneManager.CloseScene(scene, true);
         }
+        VillageFacilitiesSetup.InstallAnchors(VillageFacilitySettings.Load());
     }
 }

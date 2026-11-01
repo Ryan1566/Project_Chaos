@@ -16,6 +16,7 @@ public sealed class VillageSceneBootstrap : MonoBehaviour
     public GameObject Avatar { get; private set; }
     public VillagePlot[] Plots { get; private set; }
     public VillageProductionNpc[] Workers { get; private set; }
+    public VillageFacility[] Facilities { get; private set; }
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     private static void Reset() { Current = null; IsReady = false; LastError = null; }
     private void Start()
@@ -28,6 +29,19 @@ public sealed class VillageSceneBootstrap : MonoBehaviour
             Plots = GetComponentsInChildren<VillagePlot>().OrderBy(p => p.BuildingId).ToArray();
             var terrain = GetComponentInChildren<Tilemap>();
             ValidateSceneLayout(Settings, terrain, Plots);
+            var facilitySettings = VillageFacilitySettings.Load(); facilitySettings.Validate(Settings, Plots);
+            Facilities = GetComponentsInChildren<VillageFacility>(true);
+            if (Facilities.Length != facilitySettings.facilities.Length
+                || Facilities.Select(f => f.Id).Distinct().Count() != Facilities.Length)
+                throw new InvalidOperationException("MainScene needs three unique civic facility anchors");
+            foreach (var definition in facilitySettings.facilities)
+            {
+                var facility = Array.Find(Facilities, f => f.Id == definition.id);
+                if (facility == null || facility.Kind != definition.kind || !facility.gameObject.activeInHierarchy
+                    || Vector3.Distance(facility.transform.position,new Vector3(definition.x,Settings.groundY+.03f,0))>.001f)
+                    throw new InvalidOperationException("MainScene facility differs from configuration: "+definition.id);
+                facility.Initialize(definition);
+            }
             VillageService.Instance.EnsureLoaded();
             for (int i = 0; i < Plots.Length; i++)
                 if (Plots[i].BuildingId != 2001u + i || VillageService.Instance.GetDef(Plots[i].BuildingId, 1) == null)
