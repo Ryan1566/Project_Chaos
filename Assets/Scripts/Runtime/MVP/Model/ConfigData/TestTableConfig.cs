@@ -1,11 +1,22 @@
-using System;	
+using System;
 
-[Serializable]	
+[Serializable]
 public class TestTableConfig
 {
-	public uint Index;//序号
-	public string CharName;//角色名称
-	public uint Occupation;//职业
-	public uint head_icon;//头像
+    /// <summary>
+    /// 序号
+    /// </summary>
+    public uint Index;
+    /// <summary>
+    /// 角色名称
+    /// </summary>
+    public string CharName;
+    /// <summary>
+    /// 职业
+    /// </summary>
+    public uint Occupation;
+    /// <summary>
+    /// 头像
+    /// </summary>
+    public uint head_icon;
 }
-

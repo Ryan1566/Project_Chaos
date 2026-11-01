@@ -1,14 +1,34 @@
-using System;	
+using System;
 
-[Serializable]	
+[Serializable]
 public class DropConfig
 {
-	public uint Index;//序号
-	public uint DropGroup;//掉落组
-	public uint ItemId;//物品ID
-	public uint MinCount;//最小数量
-	public uint MaxCount;//最大数量
-	public uint Weight;//权重
-	public bool Enable;//是否启用
+    /// <summary>
+    /// 序号
+    /// </summary>
+    public uint Index;
+    /// <summary>
+    /// 掉落组
+    /// </summary>
+    public uint DropGroup;
+    /// <summary>
+    /// 物品ID
+    /// </summary>
+    public uint ItemId;
+    /// <summary>
+    /// 最小数量
+    /// </summary>
+    public uint MinCount;
+    /// <summary>
+    /// 最大数量
+    /// </summary>
+    public uint MaxCount;
+    /// <summary>
+    /// 权重
+    /// </summary>
+    public uint Weight;
+    /// <summary>
+    /// 是否启用
+    /// </summary>
+    public bool Enable;
 }
-

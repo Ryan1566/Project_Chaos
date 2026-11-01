@@ -30,8 +30,7 @@ namespace Chaos.MVP.Presenter.Gameplay
             if(!model.CanOperate){View.CloseOffice();return;}
             if(intent==VillageOfficeIntent.Tasks)
             {
-                if(EventService.Instance.HasPending)UIManager.Instance.PushPanel(PanelType.EventPanel);
-                else {model.ShowEmptyTasks();Refresh();}
+                OfficeTasksPanel.Open(model.FacilityId);
             }
             else if(intent==VillageOfficeIntent.Trade)UIManager.Instance.PushPanel(PanelType.MarketPanel);
             else if(intent==VillageOfficeIntent.Tax){model.ShowTax();Refresh();}

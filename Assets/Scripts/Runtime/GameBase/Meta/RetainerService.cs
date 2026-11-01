@@ -43,7 +43,7 @@ public class RetainerService : SingletonBase<RetainerService>
         _loaded = true;
 
         string path = GlobalPath.data_JsonPathToRead + "RetainerConfig";
-        TextAsset asset = Resources.Load<TextAsset>(path);
+        TextAsset asset = ConfigTableAssets.Load(path);
         if (asset == null)
         {
             ChaosLog.Warn(LogChannel.Config, "[门客] 找不到 " + path + "（招募/展示会退化，不抛异常）");

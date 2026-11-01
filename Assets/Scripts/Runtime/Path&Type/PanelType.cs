@@ -32,5 +32,6 @@ public enum PanelType
     MarketPanel,//ÊÐ³¡Ãæ°å
     RunMenuPanel, // Formal in-run bag and menu
     RunContentPanel, // Run NPC, chest and gathering dialogue
-    VillageOfficePanel // Civic office navigation and tax information
+    VillageOfficePanel, // Civic office navigation and tax information
+    OfficeTasksPanel
 }

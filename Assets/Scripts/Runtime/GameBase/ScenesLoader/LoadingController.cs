@@ -578,7 +578,7 @@ public class LoadingController : MonoBehaviour
     {
         _entries.Clear();
 
-        TextAsset text = Resources.Load<TextAsset>(ConfigResourcePath);
+        TextAsset text = ConfigTableAssets.Load(ConfigResourcePath);
         if (text == null)
         {
             ChaosLog.Warn(LogChannel.Scene,

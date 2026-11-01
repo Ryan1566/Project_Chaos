@@ -16,6 +16,7 @@ namespace Chaos.MVP.Model.Gameplay
         public bool TaxPage {get;private set;}
         public bool TasksPage {get;private set;}
         public VillageOfficeModel(string id){facilityId=id;}
+        public string FacilityId=>facilityId;
         public bool IsCurrent=>GameSession.Instance.HasSession&&GameSession.Instance.ContextId==context
             &&VillageSceneFlow.IsVillageScene&&VillageSceneBootstrap.IsReady;
         public bool CanOperate=>IsCurrent&&world.CanUseFacility(facilityId);

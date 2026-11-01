@@ -154,7 +154,7 @@ public class EffectAggregator : SingletonBase<EffectAggregator>
     private static List<T> LoadTable<T>(string tableName) where T : class
     {
         string path = GlobalPath.data_JsonPathToRead + tableName + "Config";
-        TextAsset asset = Resources.Load<TextAsset>(path);
+        TextAsset asset = ConfigTableAssets.Load(path);
         if (asset == null)
         {
             ChaosLog.Warn(LogChannel.Config, "[效果聚合] 找不到 " + path + "（按空表处理）");

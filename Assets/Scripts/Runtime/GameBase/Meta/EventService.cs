@@ -66,7 +66,7 @@ public class EventService : SingletonBase<EventService>
     private static List<T> LoadTable<T>(string tableName) where T : class
     {
         string path = GlobalPath.data_JsonPathToRead + tableName;
-        TextAsset asset = Resources.Load<TextAsset>(path);
+        TextAsset asset = ConfigTableAssets.Load(path);
         if (asset == null)
         {
             ChaosLog.Warn(LogChannel.Config, "[剧情事件] 找不到 " + path + "（事件功能会退化，不抛异常）");

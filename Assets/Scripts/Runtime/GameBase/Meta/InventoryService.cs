@@ -39,7 +39,7 @@ public class InventoryService : SingletonBase<InventoryService>
         _loaded = true;
 
         string path = GlobalPath.data_JsonPathToRead + "ItemConfig";
-        TextAsset asset = Resources.Load<TextAsset>(path);
+        TextAsset asset = ConfigTableAssets.Load(path);
         if (asset == null)
         {
             ChaosLog.Warn(LogChannel.Config, "[库存] 找不到 " + path + "（展示会退化，不抛异常）");
@@ -133,7 +133,7 @@ public class InventoryService : SingletonBase<InventoryService>
         _slotBonus = 0;
         if (effectIds != null)
         {
-            TextAsset asset = Resources.Load<TextAsset>(GlobalPath.data_JsonPathToRead + "EffectConfig");
+            TextAsset asset = ConfigTableAssets.Load(GlobalPath.data_JsonPathToRead + "EffectConfig");
             if (asset != null)
             {
                 DataList<EffectConfig> list = JsonUtility.FromJson<DataList<EffectConfig>>(asset.text);

@@ -1,14 +1,34 @@
-using System;	
+using System;
 
-[Serializable]	
+[Serializable]
 public class EraConfig
 {
-	public uint Index;//序号
-	public uint Era;//时代
-	public string NameKey;//名称key
-	public uint BaseDifficulty;//基础难度档
-	public uint MilestoneType;//里程碑类型
-	public uint MilestoneValue;//里程碑阈值
-	public bool Enable;//是否启用
+    /// <summary>
+    /// 序号
+    /// </summary>
+    public uint Index;
+    /// <summary>
+    /// 时代
+    /// </summary>
+    public uint Era;
+    /// <summary>
+    /// 名称key
+    /// </summary>
+    public string NameKey;
+    /// <summary>
+    /// 基础难度档
+    /// </summary>
+    public uint BaseDifficulty;
+    /// <summary>
+    /// 里程碑类型
+    /// </summary>
+    public uint MilestoneType;
+    /// <summary>
+    /// 里程碑阈值
+    /// </summary>
+    public uint MilestoneValue;
+    /// <summary>
+    /// 是否启用
+    /// </summary>
+    public bool Enable;
 }
-

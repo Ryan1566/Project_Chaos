@@ -145,6 +145,9 @@ public class MetaProgressService : SingletonBase<MetaProgressService>
             return false;
         }
 
+        // 任务门槛是配置驱动的附加条件，未配置时保持原时代推进规则。
+        if(HasSession&&!OfficeTaskService.Instance.CanAdvanceEra(era,out var taskReason))
+        {ChaosLog.Warn(LogChannel.Config,"[进度] "+taskReason);return false;}
         p.era = era + 1;
         //深度不重置（概念案 Q1'）；只保证不越新上限
         p.depth = (uint)Mathf.Clamp((int)p.depth, (int)MinDepth, (int)p.era);

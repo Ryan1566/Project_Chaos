@@ -1,15 +1,38 @@
-using System;	
+using System;
 
-[Serializable]	
+[Serializable]
 public class EventConfig
 {
-	public uint Index;//序号
-	public uint TriggerType;//触发类型
-	public uint TriggerValue;//触发值
-	public bool Repeatable;//是否可重复
-	public uint Priority;//优先级
-	public string TitleText;//标题
-	public string BodyText;//正文
-	public bool Enable;//是否启用
+    /// <summary>
+    /// 序号
+    /// </summary>
+    public uint Index;
+    /// <summary>
+    /// 触发类型
+    /// </summary>
+    public uint TriggerType;
+    /// <summary>
+    /// 触发值
+    /// </summary>
+    public uint TriggerValue;
+    /// <summary>
+    /// 是否可重复
+    /// </summary>
+    public bool Repeatable;
+    /// <summary>
+    /// 优先级
+    /// </summary>
+    public uint Priority;
+    /// <summary>
+    /// 标题
+    /// </summary>
+    public string TitleText;
+    /// <summary>
+    /// 正文
+    /// </summary>
+    public string BodyText;
+    /// <summary>
+    /// 是否启用
+    /// </summary>
+    public bool Enable;
 }
-

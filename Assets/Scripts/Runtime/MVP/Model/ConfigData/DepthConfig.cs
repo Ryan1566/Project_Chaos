@@ -1,12 +1,26 @@
-using System;	
+using System;
 
-[Serializable]	
+[Serializable]
 public class DepthConfig
 {
-	public uint Index;//序号
-	public uint Era;//时代
-	public uint Depth;//深度
-	public float DifficultyDelta;//难度增量
-	public bool Enable;//是否启用
+    /// <summary>
+    /// 序号
+    /// </summary>
+    public uint Index;
+    /// <summary>
+    /// 时代
+    /// </summary>
+    public uint Era;
+    /// <summary>
+    /// 深度
+    /// </summary>
+    public uint Depth;
+    /// <summary>
+    /// 难度增量
+    /// </summary>
+    public float DifficultyDelta;
+    /// <summary>
+    /// 是否启用
+    /// </summary>
+    public bool Enable;
 }
-

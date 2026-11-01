@@ -1,16 +1,42 @@
-using System;	
+using System;
 
-[Serializable]	
+[Serializable]
 public class WorldFactionConfig
 {
-	public uint Index;//序号
-	public uint Stage;//时期
-	public uint FactionId;//势力ID
-	public uint RegionId;//区域ID
-	public uint PointOrder;//顶点序号
-	public float X;//横坐标
-	public float Y;//纵坐标
-	public string Color;//填充颜色
-	public bool Enable;//是否启用
+    /// <summary>
+    /// 序号
+    /// </summary>
+    public uint Index;
+    /// <summary>
+    /// 时期
+    /// </summary>
+    public uint Stage;
+    /// <summary>
+    /// 势力ID
+    /// </summary>
+    public uint FactionId;
+    /// <summary>
+    /// 区域ID
+    /// </summary>
+    public uint RegionId;
+    /// <summary>
+    /// 顶点序号
+    /// </summary>
+    public uint PointOrder;
+    /// <summary>
+    /// 横坐标
+    /// </summary>
+    public float X;
+    /// <summary>
+    /// 纵坐标
+    /// </summary>
+    public float Y;
+    /// <summary>
+    /// 填充颜色
+    /// </summary>
+    public string Color;
+    /// <summary>
+    /// 是否启用
+    /// </summary>
+    public bool Enable;
 }
-

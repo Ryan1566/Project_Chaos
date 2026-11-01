@@ -1,100 +1,217 @@
-using OfficeOpenXml;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using UnityEngine;
+
+#if UNITY_EDITOR
+using OfficeOpenXml;
 using UnityEditor;
 using ChaosDebug;
+#endif
 
 /// <summary>
-/// µ¼³öÄ£Ê½Ã¶¾Ù
+/// å¯¼å‡ºæ¨¡å¼æšä¸¾
 /// </summary>
-public enum ExporterMode 
+public enum ExporterMode
 {
     /// <summary>
-    /// ±í¸ñÊı¾İ£¬²ß»®ÅäÖÃµÄÄ¬ÈÏ³£Á¿Êı¾İ
+    /// è¡¨æ ¼æ•°æ®ï¼Œç­–åˆ’é…ç½®çš„é»˜è®¤å¸¸é‡æ•°æ®
     /// </summary>
     Config,
     /// <summary>
-    /// Ä£ĞÍÊı¾İ£¬·şÎñÆ÷»òÕß±¾µØ¿ÉÒÔĞŞ¸ÄµÄÊı¾İ
+    /// æ¨¡å‹æ•°æ®ï¼ŒæœåŠ¡å™¨æˆ–è€…æœ¬åœ°å¯ä»¥ä¿®æ”¹çš„æ•°æ®
     /// </summary>
     Data,
 }
 
-//[InitializeOnLoad]
+#if UNITY_EDITOR
+
 /// <summary>
-/// ÅäÖÃ¹ÜÀíÆ÷£¬ÓÃÓÚExcelÅäÖÃ±íµÄ¶ÁÈ¡ºÍĞòÁĞ»¯£¬µ¼³ö¶ÔÓ¦µÄJsonºÍclass
+/// æ‰¹é‡å¯¼è¡¨æŠ¥å‘Šã€‚è°ƒç”¨æ–¹å¯ä»¥ç›´æ¥è¯»å–äº§ç‰©ã€è·³è¿‡é¡µç­¾ã€è­¦å‘Šå’Œç±»å‹ç´¢å¼•çŠ¶æ€ã€‚
+/// </summary>
+[Serializable]
+public sealed class ConfigExportReport
+{
+    /// <summary>æœ¬æ¬¡å¯¼å‡ºæ¨¡å¼</summary>
+    public ExporterMode Mode;
+    /// <summary>è¾“å…¥å·¥ä½œç°¿æ•°é‡</summary>
+    public int WorkbookCount;
+    /// <summary>æ‰«æåˆ°çš„å·¥ä½œè¡¨æ•°é‡</summary>
+    public int ScannedWorksheetCount;
+    /// <summary>æˆåŠŸå¯¼å‡ºçš„å·¥ä½œè¡¨æ•°é‡</summary>
+    public int ExportedWorksheetCount;
+    /// <summary>è·³è¿‡çš„ç©ºé¡µã€è¯´æ˜é¡µæˆ–æ¨¡å¼ä¸åŒ¹é…é¡µæ•°é‡</summary>
+    public int SkippedWorksheetCount;
+    /// <summary>å¯¼å‡ºçš„æ•°æ®è¡Œæ€»æ•°</summary>
+    public int DataRowCount;
+    /// <summary>æ¯ä¸ªå·²å¯¼å‡ºå·¥ä½œè¡¨å¯¹åº”çš„äº§ç‰©ä¿¡æ¯</summary>
+    public List<ConfigExportArtifact> Artifacts = new List<ConfigExportArtifact>();
+    /// <summary>è¢«è·³è¿‡çš„å·¥ä½œè¡¨åŠåŸå› </summary>
+    public List<ConfigExportSkip> Skipped = new List<ConfigExportSkip>();
+    /// <summary>æœªé˜»æ–­å¯¼å‡ºçš„è­¦å‘Š</summary>
+    public List<string> Warnings = new List<string>();
+    /// <summary>æœ¬æ‰¹æ˜¯å¦å‘å¸ƒäº†ç±»å‹ç´¢å¼•</summary>
+    public bool TypeIndexPublished;
+    /// <summary>ç±»å‹ç´¢å¼•çš„ç»å¯¹è·¯å¾„ï¼›æœªå‘å¸ƒæ—¶ä¸º null</summary>
+    public string TypeIndexPath;
+    /// <summary>å‘å¸ƒåçš„ç±»å‹ç´¢å¼•æ¡ç›®æ€»æ•°</summary>
+    public int TypeIndexEntryCount;
+    /// <summary>æœ¬æ‰¹è€—æ—¶ï¼ˆæ¯«ç§’ï¼‰</summary>
+    public double ElapsedMilliseconds;
+
+    /// <summary>ç”Ÿæˆä¾¿äºæ—¥å¿—æŸ¥çœ‹çš„ä¸­æ–‡æ‘˜è¦</summary>
+    public string ToSummary()
+    {
+        string indexState = TypeIndexPublished
+            ? $"å·²å‘å¸ƒï¼ˆ{TypeIndexEntryCount} æ¡ï¼‰"
+            : "æœªå‘å¸ƒ";
+        return $"æ¨¡å¼ {Mode}ï¼šå·¥ä½œç°¿ {WorkbookCount} ä¸ªï¼Œæ‰«æé¡µç­¾ {ScannedWorksheetCount} ä¸ªï¼Œ"
+            + $"å¯¼å‡º {ExportedWorksheetCount} ä¸ªï¼Œè·³è¿‡ {SkippedWorksheetCount} ä¸ªï¼Œ"
+            + $"æ•°æ®è¡Œ {DataRowCount} è¡Œï¼Œç±»å‹ç´¢å¼•{indexState}";
+    }
+}
+
+/// <summary>
+/// å•ä¸ªå·¥ä½œè¡¨çš„å¯¼å‡ºäº§ç‰©ä¿¡æ¯ã€‚
+/// </summary>
+[Serializable]
+public sealed class ConfigExportArtifact
+{
+    public string WorkbookPath;
+    public string WorkbookName;
+    public string WorksheetName;
+    public string ClassName;
+    public ExporterMode Mode;
+    /// <summary>Config æ¨¡å¼ä¸º .jsonï¼ŒData æ¨¡å¼ä¸º .record</summary>
+    public string DataFileName;
+    public string DataFilePath;
+    public string ClassFileName;
+    public string ClassFilePath;
+    /// <summary>ä¸å¸¦æ‰©å±•åçš„è¿è¡Œæ—¶èµ„æºè·¯å¾„ï¼Œä»¥ Data/Json/Runtime/ å¼€å¤´</summary>
+    public string ResourcePath;
+    public int DataRowCount;
+}
+
+/// <summary>
+/// è¢«è·³è¿‡çš„å·¥ä½œè¡¨åŠåŸå› ã€‚
+/// </summary>
+[Serializable]
+public sealed class ConfigExportSkip
+{
+    public string WorkbookPath;
+    public string WorkbookName;
+    public string WorksheetName;
+    public string Reason;
+}
+
+/// <summary>
+/// å¸¦æ–‡ä»¶ã€é¡µç­¾ã€Excel è¡Œåˆ—å’Œå­—æ®µå®šä½çš„å¯¼è¡¨å¼‚å¸¸ã€‚
+/// </summary>
+public sealed class ConfigExportException : Exception
+{
+    /// <summary>å·¥ä½œç°¿ç»å¯¹è·¯å¾„ï¼›æ‰¹æ¬¡çº§é”™è¯¯æ—¶å¯èƒ½ä¸ºç©º</summary>
+    public string WorkbookPath { get; private set; }
+    /// <summary>å·¥ä½œè¡¨åï¼›æ‰¹æ¬¡çº§é”™è¯¯æ—¶å¯èƒ½ä¸ºç©º</summary>
+    public string WorksheetName { get; private set; }
+    /// <summary>Excel è¡Œå·ï¼Œä» 1 å¼€å§‹ï¼›0 è¡¨ç¤ºæ— å…·ä½“è¡Œ</summary>
+    public int Row { get; private set; }
+    /// <summary>Excel åˆ—å·ï¼Œä» 1 å¼€å§‹ï¼›0 è¡¨ç¤ºæ— å…·ä½“åˆ—</summary>
+    public int Column { get; private set; }
+    /// <summary>å­—æ®µåï¼›æ— å­—æ®µæ—¶ä¸ºç©º</summary>
+    public string FieldName { get; private set; }
+
+    public ConfigExportException(
+        string message,
+        string workbookPath,
+        string worksheetName,
+        int row,
+        int column,
+        string fieldName,
+        Exception innerException = null)
+        : base(message, innerException)
+    {
+        WorkbookPath = workbookPath;
+        WorksheetName = worksheetName;
+        Row = row;
+        Column = column;
+        FieldName = fieldName;
+    }
+}
+
+/// <summary>
+/// é…ç½®ç®¡ç†å™¨ï¼Œç”¨äº Excel é…ç½®è¡¨çš„æ‰¹é‡æ ¡éªŒã€åºåˆ—åŒ–å¯¼å‡ºå’Œç±»å‹ç´¢å¼•å‘å¸ƒã€‚
+/// æ‰€æœ‰å®ç°éƒ½æ”¾åœ¨ UNITY_EDITOR åˆ†æ”¯å†…ï¼ŒPlayer ç¨‹åºé›†ä¸ä¼šå¼•ç”¨ UnityEditorã€‚
 /// </summary>
 public class ConfigManager
 {
-    /// <summary>
-    /// ±¸×¢ĞĞ
-    /// </summary>
-    private const int remarkIndex = 3;
-    /// <summary>
-    /// ÊôĞÔĞĞ
-    /// </summary>
-    private const int propertyIndex = 4;
-    /// <summary>
-    /// ¶ËÅäÖÃĞĞ ÅĞ¶ÏÊÇserver»¹ÊÇclient
-    /// </summary>
-    private const int endIndex = 5;
-    /// <summary>
-    /// ÀàĞÍĞĞ
-    /// </summary>
-    private const int typeIndex = 6;
-    /// <summary>
-    /// ÖµĞĞ
-    /// </summary>
-    private const int valueIndex = 7;
+    // æ–°ç‰ˆè¡¨å¤´çº¦å®šï¼šç¬¬ 1 è¡Œ B åˆ—ç±»åï¼Œç¬¬ 2 è¡Œ B åˆ—æ¨¡å¼ï¼Œç¬¬ 3 è¡Œå¤‡æ³¨ï¼Œç¬¬ 4 è¡Œå­—æ®µï¼Œ
+    // ç¬¬ 5 è¡Œç«¯æ ‡è®°ï¼Œç¬¬ 6 è¡Œç±»å‹ï¼Œç¬¬ 7 è¡Œèµ·æ•°æ®ã€‚
+    private const int ClassNameRow = 1;
+    private const int ModeRow = 2;
+    private const int RemarkRow = 3;
+    private const int PropertyRow = 4;
+    private const int EndFlagRow = 5;
+    private const int TypeRow = 6;
+    private const int FirstDataRow = 7;
+    private const int ClassNameColumn = 2;
+    private const int ModeColumn = 2;
 
-    //[MenuItem("Tool/ClearExcelConfigs")]
-    private static void ClearConfigs()
+    private static readonly HashSet<string> SupportedTypes = new HashSet<string>(StringComparer.Ordinal)
     {
+        "int", "uint", "long", "ulong", "byte", "sbyte", "short", "ushort",
+        "float", "double", "bool", "string",
+    };
 
-    }
+    private static readonly HashSet<string> CSharpKeywords = new HashSet<string>(StringComparer.Ordinal)
+    {
+        "abstract", "as", "base", "bool", "break", "byte", "case", "catch", "char", "checked",
+        "class", "const", "continue", "decimal", "default", "delegate", "do", "double", "else",
+        "enum", "event", "explicit", "extern", "false", "finally", "fixed", "float", "for",
+        "foreach", "goto", "if", "implicit", "in", "int", "interface", "internal", "is", "lock",
+        "long", "namespace", "new", "null", "object", "operator", "out", "override", "params",
+        "private", "protected", "public", "readonly", "ref", "return", "sbyte", "sealed", "short",
+        "sizeof", "stackalloc", "static", "string", "struct", "switch", "this", "throw", "true",
+        "try", "typeof", "uint", "ulong", "unchecked", "unsafe", "ushort", "using", "virtual",
+        "void", "volatile", "while",
+    };
 
-#if UNITY_EDITOR 
+    private static readonly HashSet<string> ReservedFileNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+    {
+        "CON", "PRN", "AUX", "NUL",
+        "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
+        "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9",
+    };
 
+    /// <summary>
+    /// ä¿ç•™åŸèœå•ï¼šåŒæ—¶å¯¼å‡º Config å’Œ Dataã€‚ä¸¤æ¬¡æ‰¹å¤„ç†å„è‡ªå…ˆæ ¡éªŒåå‘å¸ƒã€‚
+    /// </summary>
     [MenuItem("ExcelTool/ExportExcel")]
     private static void ExportConfigsAndModels()
     {
-        ExportConfigs();
-        ExportModels();
+        try
+        {
+            ConfigExportReport configReport = ExportMenuBatch(ExporterMode.Config, true);
+            ConfigExportReport dataReport = ExportMenuBatch(ExporterMode.Data, false);
+            ChaosLog.Info(LogChannel.Config, "å·²å¯¼å‡ºæ‰€æœ‰ Config/Dataï¼š" + configReport.ToSummary() + "ï¼›" + dataReport.ToSummary());
+        }
+        catch (Exception e)
+        {
+            ChaosLog.Error(LogChannel.Config, e.ToString());
+        }
     }
 
     /// <summary>
-    /// µ¼³öÅäÖÃ
+    /// ä¿ç•™åŸèœå•ï¼šæŒ‰çœŸå®ç›®å½•å¯¼å‡º Configã€‚
     /// </summary>
     [MenuItem("ExcelTool/ExportExcelConfigs")]
     private static void ExportConfigs()
     {
         try
         {
-            FileInfo[] files = FileUtil.LoadFiles(GlobalPath.data_ExcelPath);
-
-            foreach (var file in files)
-            {
-                if (file.Extension != ".xlsx") continue;//¹ıÂË²»ÊÇExcelµÄÎÄ¼ş
-
-                ExcelPackage ep = new ExcelPackage(file);
-                ExcelWorksheets workSheets = ep.Workbook.Worksheets;
-
-                ExcelWorksheet workSheet = workSheets[1];//Ö»µ¼ÈëµÚÒ»¸öÒ³Ç©
-
-                if (workSheet.Dimension.End.Row == 0)//¿Õ±í²»´¦Àí
-                    return;
-
-                ExportJson(workSheet, Path.GetFileNameWithoutExtension(GetFileName(file.Name)),ExporterMode.Config);//µ¼³öJson
-                ExportClass(workSheet, Path.GetFileNameWithoutExtension(GetFileName(file.Name)), ExporterMode.Config);//µ¼³öÀà
-            }
-
-            AssetDatabase.Refresh();
-
-            ChaosLog.Info(LogChannel.Config, $"¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª--------------------------------------ÒÑµ¼³öËùÓĞConfigÎÄ¼ş");
+            ConfigExportReport report = ExportMenuBatch(ExporterMode.Config, true);
+            ChaosLog.Info(LogChannel.Config, "å·²å¯¼å‡ºæ‰€æœ‰ Configï¼š" + report.ToSummary());
         }
         catch (Exception e)
         {
@@ -103,450 +220,1778 @@ public class ConfigManager
     }
 
     /// <summary>
-    /// µ¼³öMVPÊı¾İModelÀà
+    /// ä¿ç•™åŸèœå•ï¼šæŒ‰çœŸå®ç›®å½•å¯¼å‡º Dataï¼ˆ.recordï¼‰ã€‚
     /// </summary>
     [MenuItem("ExcelTool/ExportExcelModels")]
     private static void ExportModels()
     {
         try
         {
-            FileInfo[] files = FileUtil.LoadFiles(GlobalPath.data_ExcelPath);
-
-            foreach (var file in files)
-            {
-                //¹ıÂËÎÄ¼ş
-                if (file.Extension != ".xlsx") continue;
-                ExcelPackage excelPackage = new ExcelPackage(file);
-                ExcelWorksheets workSheets = excelPackage.Workbook.Worksheets;
-                //Ö»µ¼±í1
-                ExcelWorksheet workSheet = workSheets[1];
-
-                if (workSheet.Dimension.End.Row == 0)//¿Õ±í²»´¦Àí
-                    return;
-
-                ExportJson(workSheet, Path.GetFileNameWithoutExtension(GetFileName(file.Name)), ExporterMode.Data);
-                ExportClass(workSheet, Path.GetFileNameWithoutExtension(GetFileName(file.Name)), ExporterMode.Data);
-
-            }
-            AssetDatabase.Refresh();
-
-            ChaosLog.Info(LogChannel.Config, $"¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª--------------------------------------ÒÑµ¼³öËùÓĞModelÎÄ¼ş");
+            ConfigExportReport report = ExportMenuBatch(ExporterMode.Data, false);
+            ChaosLog.Info(LogChannel.Config, "å·²å¯¼å‡ºæ‰€æœ‰ Dataï¼š" + report.ToSummary());
         }
         catch (Exception e)
         {
             ChaosLog.Error(LogChannel.Config, e.ToString());
         }
     }
-#endif
 
-    //µ¼³öÀà
-    private static void ExportClass(ExcelWorksheet workSheet,string fileName,ExporterMode mode)
+    /// <summary>
+    /// æŒ‰çœŸå® Excel ç›®å½•æ‰§è¡Œèœå•å¯¼å‡ºã€‚
+    /// </summary>
+    private static ConfigExportReport ExportMenuBatch(ExporterMode mode, bool publishTypeIndex)
     {
-        string[] endflags = GetEnd(workSheet);
-        string[] properties = GetProperties(workSheet);
-        StringBuilder sb = new StringBuilder();
-        sb.Append("using System;\t\n\n");
-        sb.Append("[Serializable]\t\n");
-        if (mode == ExporterMode.Data)//Ìí¼ÓÓÃÓÚ³Ö¾Ã»¯µÄÊı¾İÀà±¸×¢
-            sb.Append($"//ÓÃÓÚ{fileName}ModelÀà½øĞĞ³Ö¾Ã»¯µÄÊı¾İÀà\n");
-        sb.Append($"public class {fileName}{mode.ToString()}");//ÀàÃû
-        /*if (mode == ExporterMode.Data)//Ä£ĞÍÀà¼Ì³ĞÄ£ĞÍ½Ó¿Ú
-            sb.Append(": IModel");*/
-        sb.Append("\n");
-        sb.Append("{\n");
-
-        for (int col = 1; col <= properties.Length; col++)
+        FileInfo[] files = FileUtil.LoadFiles(GlobalPath.data_ExcelPath);
+        List<string> paths = new List<string>();
+        foreach (FileInfo file in files)
         {
-            if (endflags[col - 1] == "server")
-                continue;
-
-            string fieldType = GetType(workSheet, col);
-            string fieldName = properties[col - 1];
-            string remarkContent = GetRemark(workSheet, col);
-            sb.Append($"\tpublic {fieldType} {fieldName};");
-            sb.Append($"//{remarkContent}\n");
-        }
-
-        sb.Append("}\n\n");
-
-        string savePath = mode == ExporterMode.Config ? GlobalPath.data_ExcelClassPath : GlobalPath.data_ExcelModelPath;
-
-        FileUtil.SaveFile(savePath
-            , string.Format("{0}{1}.cs", fileName,mode.ToString())
-            , sb.ToString());
-
-        ChaosLog.Info(LogChannel.Config, $"Class: ÒÑµ¼³ö¶ÔÓ¦{mode.ToString()}ÎÄ¼ş{string.Format("{0}{1}.cs", fileName, mode.ToString())}ÖÁÎÄ¼ş¼Ğ {savePath}");
-    }
-
-    //µ¼³öJson
-    private static void ExportJson(ExcelWorksheet workSheet, string fileName,ExporterMode mode)
-    {
-        string str = "";
-        int num = 0;
-
-        string[] endflags = GetEnd(workSheet);//ÅĞ¶ÏÊÇ²»ÊÇclient¿ÉÓÃµÄ×Ö¶Î
-        string[] properties = GetProperties(workSheet);
-        for (int col = 1; col <= properties.Length; col++)
-        {
-            if (endflags[col - 1] == "server" || endflags[col - 1] == "")
-                continue;
-
-            string colType = GetType(workSheet, col);
-            string colField = properties[col - 1];
-            string[] temp = GetValues(workSheet, col);
-            num = temp.Length;
-            for (int i = 0; i < temp.Length; i++)
+            if (string.Equals(file.Extension, ".xlsx", StringComparison.OrdinalIgnoreCase))
             {
-                string converted;
-                try
-                {
-                    converted = Convert(colType, temp[i]);
-                }
-                catch (Exception ex)
-                {
-                    // °Ñ³ö´íÎ»ÖÃµÄÉÏÏÂÎÄÒ»²¢Å×³ö£º±í / Ò³Ç© / Excel ĞĞÁĞ / ×Ö¶Î / ÀàĞÍ / Ô­Ê¼È¡Öµ¡£
-                    // Convert Ö»ÄÃµÃµ½ (type, value)£¬¶¨Î»²»µ½ÊÇÄÄÒ»¸ñ£»¶ø±¾ÏîÄ¿ÒÑ¾­±»
-                    // ¡¸¾²Ä¬Ê§°Ü / ¶¨Î»²»µ½¡¹¿Ó¹ı¶à´Î£¨¿Õ±í return¡¢Â·¾¶´íÎ»¡¢¿ÕÁĞ Json ÎŞ key£©£¬
-                    // ËùÒÔ¡¸²»Ö§³Ö´ËÀàĞÍ¡¹¡¸bool ÁĞÈ¡Öµ·Ç·¨¡¹±ØĞëÄÜÖ±½ÓÖ¸µ½ÄÇÒ»¸ñ¡£
-                    throw new Exception(
-                        $"µ¼³öÊ§°Ü£º±í¡¸{fileName}¡¹Ò³Ç©¡¸{workSheet.Name}¡¹µÚ {valueIndex + i} ĞĞµÚ {col} ÁĞ"
-                        + $"£¨×Ö¶Î {colField}£¬ÀàĞÍ {colType}£©µÄÈ¡Öµ¡¸{temp[i]}¡¹ÎŞ·¨×ª»»£º{ex.Message}", ex);
-                }
-                str += GetJsonK_VFromKeyAndValues(colField, converted) + ',';
+                paths.Add(file.FullName);
             }
         }
 
-        if(str == "")
+        paths.Sort(StringComparer.OrdinalIgnoreCase);
+        if (paths.Count == 0)
         {
-            ChaosLog.Info(LogChannel.Config, "¸Ã±íÎŞÈÎºÎµ¼³öÏî");
+            throw Error(null, null, 0, 0, null, "ç›®å½•ã€Œ" + GlobalPath.data_ExcelPath + "ã€ä¸‹æ²¡æœ‰ .xlsx å·¥ä½œç°¿");
+        }
+
+        return ExportExcelBatch(paths, mode, null, null, publishTypeIndex);
+    }
+
+    /// <summary>
+    /// æ‰¹é‡å¯¼å‡º Excel é…ç½®çš„å…¬å¼€å…¥å£ã€‚å…ˆè§£æå¹¶æ ¡éªŒæ•´æ‰¹å·¥ä½œç°¿ï¼Œç¡®è®¤å…¨éƒ¨åˆæ³•åæ‰å‘å¸ƒ
+    /// JSON/recordã€ç±»æ–‡ä»¶å’Œå¯é€‰ç±»å‹ç´¢å¼•ï¼›æ‰€æœ‰å¤±è´¥éƒ½ä¼šè½¬æ¢ä¸º ConfigExportExceptionã€‚
+    /// </summary>
+    /// <param name="xlsxAbsolutePaths">ç»å¯¹è·¯å¾„çš„ .xlsx å·¥ä½œç°¿é›†åˆ</param>
+    /// <param name="exportMode">æœ¬æ‰¹å¯¼å‡ºæ¨¡å¼ï¼›é¡µç­¾æ¨¡å¼ä¸å®ƒä¸ä¸€è‡´æ—¶è·³è¿‡</param>
+    /// <param name="jsonOutputDirectory">
+    /// å¯é€‰çš„ JSON/record è¾“å‡ºç›®å½•ï¼Œæ”¯æŒç»å¯¹è·¯å¾„ã€Assets/ å¼€å¤´è·¯å¾„æˆ–ç›¸å¯¹ Assets çš„è·¯å¾„ï¼›
+    /// ä¸ºç©ºæ—¶ Config å†™ GlobalPath.data_JsonPathï¼ŒData å†™ GlobalPath.data_RecordPathã€‚
+    /// </param>
+    /// <param name="classOutputDirectory">
+    /// å¯é€‰çš„ç±»æ–‡ä»¶è¾“å‡ºç›®å½•ï¼›ä¸ºç©ºæ—¶ Config å†™ GlobalPath.data_ExcelClassPathï¼Œ
+    /// Data å†™ GlobalPath.data_ExcelModelPathã€‚
+    /// </param>
+    /// <param name="publishTypeIndex">
+    /// æ˜¯å¦å‘å¸ƒç±»å‹ç´¢å¼•ã€‚ä»… Config æ¨¡å¼ä¸” JSON è¾“å‡ºç›®å½•ä¸ºçœŸå® Resources/Data/Json/Runtime
+    /// æ—¶å…è®¸ä¸º trueï¼›ç‹¬ç«‹ä¸´æ—¶ç›®å½•æµ‹è¯•å¿…é¡»ä¼  falseã€‚
+    /// </param>
+    /// <returns>åŒ…å«äº§ç‰©ã€è·³è¿‡é¡µç­¾ã€è­¦å‘Šå’Œç±»å‹ç´¢å¼•çŠ¶æ€çš„æŠ¥å‘Š</returns>
+    /// <exception cref="ConfigExportException">ä»»ä¸€å·¥ä½œç°¿ã€é¡µç­¾ã€å­—æ®µæˆ–å‘å¸ƒæ­¥éª¤å¤±è´¥</exception>
+    public static ConfigExportReport ExportExcelBatch(
+        IList<string> xlsxAbsolutePaths,
+        ExporterMode exportMode,
+        string jsonOutputDirectory = null,
+        string classOutputDirectory = null,
+        bool publishTypeIndex = true)
+    {
+        try
+        {
+            return ExportExcelBatchInternal(
+                xlsxAbsolutePaths,
+                exportMode,
+                jsonOutputDirectory,
+                classOutputDirectory,
+                publishTypeIndex);
+        }
+        catch (ConfigExportException)
+        {
+            throw;
+        }
+        catch (Exception ex)
+        {
+            throw Error(null, null, 0, 0, null, "æ‰¹é‡å¯¼å‡ºå¤±è´¥ï¼š" + ex.Message, ex);
+        }
+    }
+
+    /// <summary>
+    /// æ‰¹é‡å¯¼å‡ºçš„å†…éƒ¨å®ç°ã€‚å·¥ä½œè¡¨è§„åˆ™ï¼šéå†æ‰€æœ‰æœ‰æ•ˆé¡µç­¾ï¼›B1 ä¸ºç±»åï¼ŒB2 ä¸º IsConfig/IsDataã€‚
+    /// B1 å·²æ˜¯å®Œæ•´ç±»åï¼ˆä»¥ Config/Data ç»“å°¾ï¼‰æ—¶ä¸å†è¿½åŠ åç¼€ï¼›B2 ä¸ºç©ºæ—¶æŒ‰ B1 åç¼€æˆ–æœ¬æ‰¹
+    /// exportMode æ¨æ–­ã€‚ç¬¬ 3 è¡Œå¤‡æ³¨ã€ç¬¬ 4 è¡Œå­—æ®µã€ç¬¬ 5 è¡Œç«¯æ ‡è®°ã€ç¬¬ 6 è¡Œç±»å‹ã€ç¬¬ 7 è¡Œèµ·æ•°æ®ä¿æŒä¸å˜ã€‚
+    /// </summary>
+    private static ConfigExportReport ExportExcelBatchInternal(
+        IList<string> xlsxAbsolutePaths,
+        ExporterMode exportMode,
+        string jsonOutputDirectory,
+        string classOutputDirectory,
+        bool publishTypeIndex)
+    {
+        System.Diagnostics.Stopwatch stopwatch = System.Diagnostics.Stopwatch.StartNew();
+
+        if (exportMode != ExporterMode.Config && exportMode != ExporterMode.Data)
+        {
+            throw Error(null, null, 0, 0, null, "ä¸æ”¯æŒçš„å¯¼å‡ºæ¨¡å¼ï¼š" + exportMode);
+        }
+        if (xlsxAbsolutePaths == null || xlsxAbsolutePaths.Count == 0)
+        {
+            throw Error(null, null, 0, 0, null, "æ²¡æœ‰ä¼ å…¥ä»»ä½• .xlsx å·¥ä½œç°¿ç»å¯¹è·¯å¾„");
+        }
+        if (publishTypeIndex && exportMode != ExporterMode.Config)
+        {
+            throw Error(null, null, 0, 0, null,
+                "Data æ¨¡å¼è¾“å‡º .recordï¼Œä¸åœ¨ Resources/Data/Json/Runtime ä¸‹ï¼Œä¸èƒ½å‘å¸ƒç±»å‹ç´¢å¼•ï¼›è¯·å°† publishTypeIndex è®¾ä¸º false");
+        }
+
+        string defaultJsonPath = exportMode == ExporterMode.Config
+            ? GlobalPath.data_JsonPath
+            : GlobalPath.data_RecordPath;
+        string defaultClassPath = exportMode == ExporterMode.Config
+            ? GlobalPath.data_ExcelClassPath
+            : GlobalPath.data_ExcelModelPath;
+        string jsonDirectory = ResolveOutputDirectory(jsonOutputDirectory, defaultJsonPath);
+        string classDirectory = ResolveOutputDirectory(classOutputDirectory, defaultClassPath);
+
+        if (publishTypeIndex)
+        {
+            string productionJsonDirectory = ResolveOutputDirectory(null, GlobalPath.data_JsonPath);
+            if (!PathsEqual(jsonDirectory, productionJsonDirectory))
+            {
+                throw Error(null, null, 0, 0, null,
+                    "å‘å¸ƒç±»å‹ç´¢å¼•æ—¶ JSON è¾“å‡ºç›®å½•å¿…é¡»æ˜¯ã€Œ" + productionJsonDirectory
+                    + "ã€ï¼›ç‹¬ç«‹ä¸´æ—¶ç›®å½•æµ‹è¯•è¯·å°† publishTypeIndex è®¾ä¸º false");
+            }
+        }
+
+        List<string> workbookPaths = NormalizeWorkbookPaths(xlsxAbsolutePaths);
+        List<SheetPlan> plans = new List<SheetPlan>();
+        List<ConfigExportSkip> skipped = new List<ConfigExportSkip>();
+        List<string> warnings = new List<string>();
+        Dictionary<string, SheetPlan> classPlans = new Dictionary<string, SheetPlan>(StringComparer.Ordinal);
+        Dictionary<string, SheetPlan> outputPlans = new Dictionary<string, SheetPlan>(StringComparer.OrdinalIgnoreCase);
+        int scannedWorksheetCount = 0;
+
+        foreach (string workbookPath in workbookPaths)
+        {
+            string workbookName = GetWorkbookName(workbookPath);
+            try
+            {
+                using (ExcelPackage package = new ExcelPackage(new FileInfo(workbookPath)))
+                {
+                    ExcelWorksheets worksheets = package.Workbook.Worksheets;
+                    for (int index = 1; index <= worksheets.Count; index++)
+                    {
+                        scannedWorksheetCount++;
+                        ExcelWorksheet worksheet = worksheets[index];
+                        SheetPlan plan = AnalyzeWorksheet(
+                            worksheet,
+                            workbookPath,
+                            workbookName,
+                            exportMode,
+                            jsonDirectory,
+                            classDirectory,
+                            skipped,
+                            warnings,
+                            classPlans,
+                            outputPlans);
+                        if (plan != null)
+                        {
+                            plans.Add(plan);
+                        }
+                    }
+                }
+            }
+            catch (ConfigExportException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw Error(workbookPath, null, 0, 0, null, "è¯»å–å·¥ä½œç°¿å¤±è´¥ï¼š" + ex.Message, ex);
+            }
+        }
+
+        PlannedFile indexFile = null;
+        int indexEntryCount = 0;
+        string indexFullPath = null;
+        if (publishTypeIndex)
+        {
+            indexFile = BuildIndexPlan(plans, jsonDirectory, out indexEntryCount, out indexFullPath);
+        }
+
+        List<PlannedFile> filesToPublish = new List<PlannedFile>();
+        foreach (SheetPlan plan in plans)
+        {
+            filesToPublish.Add(new PlannedFile
+            {
+                TargetPath = plan.DataFilePath,
+                Content = plan.DataContent,
+                Description = plan.Mode == ExporterMode.Config ? "é…ç½® Json" : "æ•°æ® record",
+                WorkbookPath = plan.WorkbookPath,
+                WorksheetName = plan.WorksheetName,
+            });
+        }
+        foreach (SheetPlan plan in plans)
+        {
+            filesToPublish.Add(new PlannedFile
+            {
+                TargetPath = plan.ClassFilePath,
+                Content = plan.ClassContent,
+                Description = "é…ç½®ç±»æ–‡ä»¶",
+                WorkbookPath = plan.WorkbookPath,
+                WorksheetName = plan.WorksheetName,
+            });
+        }
+        if (indexFile != null)
+        {
+            filesToPublish.Add(indexFile);
+        }
+
+        PublishPlannedFiles(filesToPublish);
+        RefreshAfterPublish(filesToPublish, publishTypeIndex, indexFullPath);
+
+        ConfigExportReport report = new ConfigExportReport
+        {
+            Mode = exportMode,
+            WorkbookCount = workbookPaths.Count,
+            ScannedWorksheetCount = scannedWorksheetCount,
+            ExportedWorksheetCount = plans.Count,
+            SkippedWorksheetCount = skipped.Count,
+            TypeIndexPublished = publishTypeIndex && indexFile != null,
+            TypeIndexPath = indexFullPath,
+            TypeIndexEntryCount = indexEntryCount,
+        };
+        foreach (SheetPlan plan in plans)
+        {
+            report.DataRowCount += plan.DataRowCount;
+            report.Artifacts.Add(new ConfigExportArtifact
+            {
+                WorkbookPath = plan.WorkbookPath,
+                WorkbookName = plan.WorkbookName,
+                WorksheetName = plan.WorksheetName,
+                ClassName = plan.ClassName,
+                Mode = plan.Mode,
+                DataFileName = plan.DataFileName,
+                DataFilePath = plan.DataFilePath,
+                ClassFileName = plan.ClassFileName,
+                ClassFilePath = plan.ClassFilePath,
+                ResourcePath = plan.ResourcePath,
+                DataRowCount = plan.DataRowCount,
+            });
+        }
+        report.Skipped.AddRange(skipped);
+        report.Warnings.AddRange(warnings);
+        stopwatch.Stop();
+        report.ElapsedMilliseconds = stopwatch.Elapsed.TotalMilliseconds;
+        return report;
+    }
+
+    /// <summary>
+    /// æ ¡éªŒå¹¶æ„å»ºå•ä¸ªå·¥ä½œè¡¨çš„å¯¼å‡ºè®¡åˆ’ï¼›ç©ºé¡µã€è¯´æ˜é¡µå’Œæ¨¡å¼ä¸åŒ¹é…é¡µè¿”å› null å¹¶è®°å½•è·³è¿‡åŸå› ã€‚
+    /// </summary>
+    private static SheetPlan AnalyzeWorksheet(
+        ExcelWorksheet worksheet,
+        string workbookPath,
+        string workbookName,
+        ExporterMode requestedMode,
+        string jsonDirectory,
+        string classDirectory,
+        List<ConfigExportSkip> skipped,
+        List<string> warnings,
+        Dictionary<string, SheetPlan> classPlans,
+        Dictionary<string, SheetPlan> outputPlans)
+    {
+        string worksheetName = worksheet.Name ?? string.Empty;
+        ExcelAddressBase dimension = worksheet.Dimension;
+        if (dimension == null || dimension.End.Row == 0 || dimension.End.Column == 0)
+        {
+            AddSkip(skipped, workbookPath, workbookName, worksheetName, "ç©ºé¡µ");
+            return null;
+        }
+
+        string rawClassName = TrimmedCell(worksheet, ClassNameRow, ClassNameColumn);
+        string rawMode = TrimmedCell(worksheet, ModeRow, ModeColumn);
+        ExporterMode? markedMode = ParseModeMarker(rawMode, workbookPath, worksheetName);
+        bool hasFieldHeader = HasFieldHeader(worksheet);
+
+        if (rawClassName.Length == 0 && !hasFieldHeader && !markedMode.HasValue)
+        {
+            AddSkip(skipped, workbookPath, workbookName, worksheetName, "ç©ºé¡µæˆ–è¯´æ˜é¡µï¼ˆB1 æ— ç±»åä¸”ç¬¬4è¡Œæ— å­—æ®µï¼‰");
+            return null;
+        }
+        if (rawClassName.Length == 0)
+        {
+            throw Error(workbookPath, worksheetName, ClassNameRow, ClassNameColumn, null,
+                "æœ‰æ•ˆé¡µç­¾ç¼ºå°‘ B1 ç±»å");
+        }
+        if (!hasFieldHeader)
+        {
+            if (markedMode.HasValue)
+            {
+                throw Error(workbookPath, worksheetName, PropertyRow, 0, null,
+                    "B2 å·²æ ‡è®° " + (markedMode.Value == ExporterMode.Config ? "IsConfig" : "IsData")
+                    + "ï¼Œä½†ç¬¬4è¡Œæ²¡æœ‰å­—æ®µå");
+            }
+            AddSkip(skipped, workbookPath, workbookName, worksheetName, "è¯´æ˜é¡µï¼ˆç¬¬4è¡Œæ²¡æœ‰å­—æ®µåï¼‰");
+            return null;
+        }
+
+        ExporterMode? suffixMode = GetSuffixMode(rawClassName);
+        if (markedMode.HasValue && suffixMode.HasValue && markedMode.Value != suffixMode.Value)
+        {
+            throw Error(workbookPath, worksheetName, ClassNameRow, ClassNameColumn, rawClassName,
+                "B1 ç±»ååç¼€æ˜¯ " + suffixMode.Value + "ï¼Œä½† B2 æ¨¡å¼æ ‡è®°æ˜¯ "
+                + (markedMode.Value == ExporterMode.Config ? "IsConfig" : "IsData") + "ï¼Œä¸¤è€…ä¸ä¸€è‡´");
+        }
+
+        ExporterMode mode = markedMode ?? suffixMode ?? requestedMode;
+        if (mode != requestedMode)
+        {
+            AddSkip(skipped, workbookPath, workbookName, worksheetName,
+                "é¡µç­¾æ¨¡å¼ä¸º " + mode + "ï¼Œæœ¬æ‰¹å¯¼å‡ºæ¨¡å¼ä¸º " + requestedMode);
+            return null;
+        }
+
+        string className = BuildClassName(rawClassName, mode, suffixMode.HasValue, workbookPath, worksheetName);
+        List<ColumnPlan> columns = AnalyzeColumns(worksheet, workbookPath, worksheetName, className, warnings);
+        int dataRowCount;
+        string dataContent = BuildDataContent(worksheet, workbookPath, worksheetName, columns, out dataRowCount);
+        string classContent = BuildClassContent(columns, className, mode, workbookName);
+
+        string dataFileName = workbookName + "_" + className
+            + (mode == ExporterMode.Config ? ".json" : ".record");
+        string classFileName = className + ".cs";
+        ValidateFileNamePart(dataFileName, "æ•°æ®æ–‡ä»¶å", workbookPath, worksheetName, 0, 0);
+        ValidateFileNamePart(classFileName, "ç±»æ–‡ä»¶å", workbookPath, worksheetName, 0, 0);
+
+        string dataFilePath = Path.Combine(jsonDirectory, dataFileName);
+        string classFilePath = Path.Combine(classDirectory, classFileName);
+        string resourcePath = BuildResourcePath(workbookName, className);
+
+        SheetPlan plan = new SheetPlan
+        {
+            WorkbookPath = workbookPath,
+            WorkbookName = workbookName,
+            WorksheetName = worksheetName,
+            Mode = mode,
+            ClassName = className,
+            DataFileName = dataFileName,
+            DataFilePath = dataFilePath,
+            DataContent = dataContent,
+            ClassFileName = classFileName,
+            ClassFilePath = classFilePath,
+            ClassContent = classContent,
+            ResourcePath = resourcePath,
+            DataRowCount = dataRowCount,
+        };
+
+        SheetPlan previous;
+        if (classPlans.TryGetValue(className, out previous))
+        {
+            throw Error(workbookPath, worksheetName, ClassNameRow, ClassNameColumn, className,
+                "ç±»åé‡å¤ï¼šä¸è¡¨ã€Œ" + Path.GetFileName(previous.WorkbookPath) + "ã€é¡µç­¾ã€Œ"
+                + previous.WorksheetName + "ã€ä½¿ç”¨äº†åŒä¸€ä¸ªå®Œæ•´ç±»å");
+        }
+        RegisterOutput(outputPlans, dataFilePath, plan);
+        RegisterOutput(outputPlans, classFilePath, plan);
+        classPlans.Add(className, plan);
+        return plan;
+    }
+
+    /// <summary>
+    /// è¯»å–å¹¶æ ¡éªŒå­—æ®µåˆ—ã€‚å®Œå…¨ç©ºç™½çš„åˆ—è·³è¿‡ï¼›æœ‰æ•°æ®ä½†æ²¡æœ‰å­—æ®µå/ç±»å‹çš„åˆ—å¿…é¡»æŠ¥é”™ã€‚
+    /// </summary>
+    private static List<ColumnPlan> AnalyzeColumns(
+        ExcelWorksheet worksheet,
+        string workbookPath,
+        string worksheetName,
+        string className,
+        List<string> warnings)
+    {
+        if (worksheet.Dimension == null)
+        {
+            throw Error(workbookPath, worksheetName, 0, 0, null, "å·¥ä½œè¡¨ä¸ºç©ºï¼Œæ— æ³•è¯»å–å­—æ®µ");
+        }
+
+        List<ColumnPlan> columns = new List<ColumnPlan>();
+        Dictionary<string, ColumnPlan> fieldNames = new Dictionary<string, ColumnPlan>(StringComparer.Ordinal);
+        int lastColumn = worksheet.Dimension.End.Column;
+
+        for (int column = 1; column <= lastColumn; column++)
+        {
+            string fieldName = TrimmedCell(worksheet, PropertyRow, column);
+            string fieldType = TrimmedCell(worksheet, TypeRow, column);
+            string endFlag = TrimmedCell(worksheet, EndFlagRow, column);
+            string remark = CellText(worksheet, RemarkRow, column);
+            bool hasData = ColumnHasData(worksheet, column);
+
+            if (fieldName.Length == 0 && fieldType.Length == 0 && endFlag.Length == 0 && !hasData)
+            {
+                continue;
+            }
+            if (fieldName.Length == 0)
+            {
+                throw Error(workbookPath, worksheetName, PropertyRow, column, null,
+                    "å­—æ®µåä¸ºç©ºï¼ˆè¯¥åˆ—å­˜åœ¨ç±»å‹ã€ç«¯æ ‡è®°æˆ–æ•°æ®ï¼‰");
+            }
+            if (fieldType.Length == 0)
+            {
+                throw Error(workbookPath, worksheetName, TypeRow, column, fieldName,
+                    "ç±»å‹ä¸ºç©º");
+            }
+
+            bool inClass = !string.Equals(endFlag, "server", StringComparison.OrdinalIgnoreCase);
+            if (!inClass)
+            {
+                continue;
+            }
+            bool inJson = endFlag.Length > 0;
+
+            if (!SupportedTypes.Contains(fieldType))
+            {
+                throw Error(workbookPath, worksheetName, TypeRow, column, fieldName,
+                    "ä¸æ”¯æŒæ­¤ç±»å‹ã€Œ" + fieldType + "ã€ï¼Œå¯ç”¨ç±»å‹ï¼šint/uint/long/ulong/byte/sbyte/short/ushort/float/double/bool/string");
+            }
+            if (!IsValidIdentifier(fieldName))
+            {
+                throw Error(workbookPath, worksheetName, PropertyRow, column, fieldName,
+                    "å­—æ®µåä¸æ˜¯åˆæ³•çš„ C# æ ‡è¯†ç¬¦");
+            }
+            if (string.Equals(fieldName, className, StringComparison.Ordinal))
+            {
+                throw Error(workbookPath, worksheetName, PropertyRow, column, fieldName,
+                    "å­—æ®µåä¸èƒ½ä¸ç±»åç›¸åŒ");
+            }
+
+            ColumnPlan previous;
+            if (fieldNames.TryGetValue(fieldName, out previous))
+            {
+                throw Error(workbookPath, worksheetName, PropertyRow, column, fieldName,
+                    "å­—æ®µåé‡å¤ï¼šä¸ç¬¬ " + previous.Column + " åˆ—ä½¿ç”¨äº†åŒä¸€ä¸ªå­—æ®µå");
+            }
+
+            if (endFlag.Length > 0
+                && !string.Equals(endFlag, "client", StringComparison.OrdinalIgnoreCase))
+            {
+                warnings.Add("è¡¨ã€Œ" + Path.GetFileName(workbookPath) + "ã€é¡µç­¾ã€Œ" + worksheetName
+                    + "ã€ç¬¬" + EndFlagRow + "è¡Œç¬¬" + column + "åˆ—ç«¯æ ‡è®°ã€Œ" + endFlag
+                    + "ã€ä¸æ˜¯ server/clientï¼ŒæŒ‰å®¢æˆ·ç«¯å­—æ®µå¤„ç†");
+            }
+
+            ColumnPlan columnPlan = new ColumnPlan
+            {
+                Column = column,
+                FieldName = fieldName,
+                Type = fieldType,
+                EndFlag = endFlag,
+                Remark = remark,
+                InClass = inClass,
+                InJson = inJson,
+            };
+            fieldNames.Add(fieldName, columnPlan);
+            columns.Add(columnPlan);
+        }
+
+        if (columns.Count == 0)
+        {
+            throw Error(workbookPath, worksheetName, PropertyRow, 0, null,
+                "æ²¡æœ‰å¯å¯¼å‡ºå­—æ®µï¼ˆæ‰€æœ‰åˆ—éƒ½æ˜¯ server æˆ–ç©ºåˆ—ï¼‰");
+        }
+
+        bool hasJsonColumn = false;
+        foreach (ColumnPlan column in columns)
+        {
+            if (column.InJson)
+            {
+                hasJsonColumn = true;
+                break;
+            }
+        }
+        if (!hasJsonColumn)
+        {
+            throw Error(workbookPath, worksheetName, EndFlagRow, 0, null,
+                "æ²¡æœ‰å®¢æˆ·ç«¯å­—æ®µï¼šç¬¬" + EndFlagRow + "è¡Œç«¯æ ‡è®°ä¸ºç©ºæˆ– serverï¼Œæ— æ³•ç”Ÿæˆ Json/record");
+        }
+
+        return columns;
+    }
+
+    /// <summary>
+    /// æ„å»ºå¸¦ datas å®¹å™¨çš„ Json/record å†…å®¹ï¼Œå¹¶åœ¨è½¬æ¢æ¯ä¸ªå€¼æ—¶ä¿ç•™ç²¾ç¡®å•å…ƒæ ¼å®šä½ã€‚
+    /// </summary>
+    private static string BuildDataContent(
+        ExcelWorksheet worksheet,
+        string workbookPath,
+        string worksheetName,
+        List<ColumnPlan> columns,
+        out int dataRowCount)
+    {
+        List<ColumnPlan> jsonColumns = new List<ColumnPlan>();
+        foreach (ColumnPlan column in columns)
+        {
+            if (column.InJson)
+            {
+                jsonColumns.Add(column);
+            }
+        }
+
+        List<List<string>> rows = new List<List<string>>();
+        if (worksheet.Dimension != null)
+        {
+            int lastRow = worksheet.Dimension.End.Row;
+            for (int row = FirstDataRow; row <= lastRow; row++)
+            {
+                bool hasValue = false;
+                foreach (ColumnPlan column in jsonColumns)
+                {
+                    if (TrimmedCell(worksheet, row, column.Column).Length > 0)
+                    {
+                        hasValue = true;
+                        break;
+                    }
+                }
+                if (!hasValue)
+                {
+                    continue;
+                }
+
+                List<string> values = new List<string>(jsonColumns.Count);
+                foreach (ColumnPlan column in jsonColumns)
+                {
+                    string rawValue = CellText(worksheet, row, column.Column);
+                    try
+                    {
+                        values.Add(EncodeJsonValue(column.Type, rawValue));
+                    }
+                    catch (ConfigExportException)
+                    {
+                        throw;
+                    }
+                    catch (Exception ex)
+                    {
+                        throw Error(workbookPath, worksheetName, row, column.Column, column.FieldName,
+                            "JSON å€¼è½¬æ¢å¤±è´¥ï¼š" + ex.Message, ex);
+                    }
+                }
+                rows.Add(values);
+            }
+        }
+
+        dataRowCount = rows.Count;
+        StringBuilder builder = new StringBuilder();
+        builder.Append("{\n    \"datas\": [");
+        if (rows.Count == 0)
+        {
+            builder.Append("]\n}");
+            return builder.ToString();
+        }
+
+        for (int rowIndex = 0; rowIndex < rows.Count; rowIndex++)
+        {
+            builder.Append("\n        {");
+            for (int columnIndex = 0; columnIndex < jsonColumns.Count; columnIndex++)
+            {
+                if (columnIndex > 0)
+                {
+                    builder.Append(',');
+                }
+                builder.Append("\n            ");
+                builder.Append(EscapeJson(jsonColumns[columnIndex].FieldName));
+                builder.Append(": ");
+                builder.Append(rows[rowIndex][columnIndex]);
+            }
+            builder.Append("\n        }");
+            if (rowIndex < rows.Count - 1)
+            {
+                builder.Append(',');
+            }
+        }
+        builder.Append("\n    ]\n}");
+        return builder.ToString();
+    }
+
+    /// <summary>
+    /// ç”Ÿæˆç±»æ–‡ä»¶å†…å®¹ã€‚ç±»æ–‡ä»¶åå§‹ç»ˆç­‰äºå®Œæ•´ç±»ååŠ  .csï¼Œä¸é™„åŠ å·¥ä½œç°¿å‰ç¼€ã€‚
+    /// </summary>
+    private static string BuildClassContent(
+        List<ColumnPlan> columns,
+        string className,
+        ExporterMode mode,
+        string workbookName)
+    {
+        StringBuilder builder = new StringBuilder();
+        builder.Append("using System;\n\n");
+        builder.Append("[Serializable]\n");
+        if (mode == ExporterMode.Data)
+        {
+            builder.Append("//ç”¨äºæŒä¹…åŒ–çš„æ•°æ®ç±»ï¼Œæ¥æºå·¥ä½œç°¿ï¼š").Append(workbookName).Append("\n");
+        }
+        builder.Append("public class ").Append(className).Append("\n{\n");
+        foreach (ColumnPlan column in columns)
+        {
+            string remark = SanitizeComment(column.Remark);
+            if (remark.Length > 0)
+            {
+                builder.Append("    /// <summary>\n");
+                builder.Append("    /// ").Append(remark).Append("\n");
+                builder.Append("    /// </summary>\n");
+            }
+            builder.Append("    public ").Append(column.Type).Append(' ')
+                .Append(column.FieldName).Append(";\n");
+        }
+        builder.Append("}\n");
+        return builder.ToString();
+    }
+
+    /// <summary>
+    /// æŠŠå•å…ƒæ ¼æ–‡æœ¬æŒ‰ç¬¬ 6 è¡Œç±»å‹è½¬æ¢æˆå¯ç›´æ¥æ‹¼è¿› Json çš„ç‰‡æ®µã€‚
+    /// </summary>
+    private static string EncodeJsonValue(string type, string rawValue)
+    {
+        string value = rawValue ?? string.Empty;
+        switch (type)
+        {
+            case "string":
+                return EscapeJson(value);
+            case "bool":
+                {
+                    string normalized = value.Trim().ToLowerInvariant();
+                    if (normalized == "true" || normalized == "1" || normalized == "æ˜¯")
+                    {
+                        return "true";
+                    }
+                    if (normalized == "false" || normalized == "0" || normalized == "å¦")
+                    {
+                        return "false";
+                    }
+                    throw new FormatException("bool å–å€¼ã€Œ" + value + "ã€éæ³•ï¼Œåº”ä¸º true/falseã€1/0 æˆ– æ˜¯/å¦");
+                }
+            case "int":
+                {
+                    int parsed;
+                    if (!int.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out parsed))
+                    {
+                        throw NumberError(type, value);
+                    }
+                    return parsed.ToString(CultureInfo.InvariantCulture);
+                }
+            case "uint":
+                {
+                    uint parsed;
+                    if (!uint.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out parsed))
+                    {
+                        throw NumberError(type, value);
+                    }
+                    return parsed.ToString(CultureInfo.InvariantCulture);
+                }
+            case "long":
+                {
+                    long parsed;
+                    if (!long.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out parsed))
+                    {
+                        throw NumberError(type, value);
+                    }
+                    return parsed.ToString(CultureInfo.InvariantCulture);
+                }
+            case "ulong":
+                {
+                    ulong parsed;
+                    if (!ulong.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out parsed))
+                    {
+                        throw NumberError(type, value);
+                    }
+                    return parsed.ToString(CultureInfo.InvariantCulture);
+                }
+            case "byte":
+                {
+                    byte parsed;
+                    if (!byte.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out parsed))
+                    {
+                        throw NumberError(type, value);
+                    }
+                    return parsed.ToString(CultureInfo.InvariantCulture);
+                }
+            case "sbyte":
+                {
+                    sbyte parsed;
+                    if (!sbyte.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out parsed))
+                    {
+                        throw NumberError(type, value);
+                    }
+                    return parsed.ToString(CultureInfo.InvariantCulture);
+                }
+            case "short":
+                {
+                    short parsed;
+                    if (!short.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out parsed))
+                    {
+                        throw NumberError(type, value);
+                    }
+                    return parsed.ToString(CultureInfo.InvariantCulture);
+                }
+            case "ushort":
+                {
+                    ushort parsed;
+                    if (!ushort.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out parsed))
+                    {
+                        throw NumberError(type, value);
+                    }
+                    return parsed.ToString(CultureInfo.InvariantCulture);
+                }
+            case "float":
+                {
+                    float parsed;
+                    if (!float.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out parsed)
+                        || float.IsNaN(parsed) || float.IsInfinity(parsed))
+                    {
+                        throw NumberError(type, value);
+                    }
+                    return parsed.ToString("R", CultureInfo.InvariantCulture);
+                }
+            case "double":
+                {
+                    double parsed;
+                    if (!double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out parsed)
+                        || double.IsNaN(parsed) || double.IsInfinity(parsed))
+                    {
+                        throw NumberError(type, value);
+                    }
+                    return parsed.ToString("R", CultureInfo.InvariantCulture);
+                }
+            default:
+                throw new FormatException("ä¸æ”¯æŒæ­¤ç±»å‹: " + type);
+        }
+    }
+
+    /// <summary>
+    /// æŠŠå­—ç¬¦ä¸²è½¬æˆ JSON å­—ç¬¦ä¸²å­—é¢é‡ï¼Œå¤„ç†å¼•å·ã€åæ–œæ ã€æ§åˆ¶å­—ç¬¦å’Œä»£ç†é¡¹ã€‚
+    /// </summary>
+    private static string EscapeJson(string text)
+    {
+        if (text == null)
+        {
+            return "\"\"";
+        }
+
+        StringBuilder builder = new StringBuilder(text.Length + 8);
+        builder.Append('"');
+        for (int index = 0; index < text.Length; index++)
+        {
+            char current = text[index];
+            switch (current)
+            {
+                case '"':
+                    builder.Append("\\\"");
+                    break;
+                case '\\':
+                    builder.Append("\\\\");
+                    break;
+                case '\b':
+                    builder.Append("\\b");
+                    break;
+                case '\f':
+                    builder.Append("\\f");
+                    break;
+                case '\n':
+                    builder.Append("\\n");
+                    break;
+                case '\r':
+                    builder.Append("\\r");
+                    break;
+                case '\t':
+                    builder.Append("\\t");
+                    break;
+                default:
+                    if (current < ' ')
+                    {
+                        AppendUnicodeEscape(builder, current);
+                    }
+                    else if (char.IsHighSurrogate(current))
+                    {
+                        if (index + 1 >= text.Length || !char.IsLowSurrogate(text[index + 1]))
+                        {
+                            throw new FormatException("å­—ç¬¦ä¸²åŒ…å«å­¤ç«‹çš„é«˜ä»£ç†é¡¹ï¼Œæ— æ³•ç”Ÿæˆåˆæ³• JSON");
+                        }
+                        builder.Append(current);
+                        builder.Append(text[++index]);
+                    }
+                    else if (char.IsLowSurrogate(current))
+                    {
+                        throw new FormatException("å­—ç¬¦ä¸²åŒ…å«å­¤ç«‹çš„ä½ä»£ç†é¡¹ï¼Œæ— æ³•ç”Ÿæˆåˆæ³• JSON");
+                    }
+                    else if (current == '\u2028' || current == '\u2029')
+                    {
+                        AppendUnicodeEscape(builder, current);
+                    }
+                    else
+                    {
+                        builder.Append(current);
+                    }
+                    break;
+            }
+        }
+        builder.Append('"');
+        return builder.ToString();
+    }
+
+    private static void AppendUnicodeEscape(StringBuilder builder, char value)
+    {
+        builder.Append("\\u").Append(((int)value).ToString("x4", CultureInfo.InvariantCulture));
+    }
+
+    private static FormatException NumberError(string type, string value)
+    {
+        return new FormatException(type + " å–å€¼ã€Œ" + value + "ã€ä¸æ˜¯åˆæ³•æ•°å€¼æˆ–è¶…å‡ºç›®æ ‡ç±»å‹èŒƒå›´");
+    }
+
+    /// <summary>
+    /// æ„å»ºå¹¶åˆå¹¶ç±»å‹ç´¢å¼•ã€‚æœ¬æ‰¹è¦†ç›–çš„åŒç±»åæ¡ç›®åŸä½æ›¿æ¢ï¼Œæœªè¦†ç›–çš„æ—¢æœ‰æ¡ç›®åŸæ ·ä¿ç•™ã€‚
+    /// </summary>
+    private static PlannedFile BuildIndexPlan(
+        List<SheetPlan> plans,
+        string jsonDirectory,
+        out int entryCount,
+        out string indexFullPath)
+    {
+        string indexResourcePath = ConfigTableAssets.IndexResourcePath;
+        if (string.IsNullOrWhiteSpace(indexResourcePath)
+            || !indexResourcePath.StartsWith(GlobalPath.data_JsonPathToRead, StringComparison.Ordinal))
+        {
+            throw Error(null, null, 0, 0, null,
+                "ConfigTableAssets.IndexResourcePath éæ³•ï¼š" + indexResourcePath);
+        }
+
+        string indexFileName = Path.GetFileName(indexResourcePath) + ".json";
+        indexFullPath = Path.Combine(jsonDirectory, indexFileName);
+        ConfigTableAssets.Index index = new ConfigTableAssets.Index();
+
+        if (File.Exists(indexFullPath))
+        {
+            string text;
+            try
+            {
+                text = File.ReadAllText(indexFullPath, Encoding.UTF8);
+            }
+            catch (Exception ex)
+            {
+                throw Error(null, null, 0, 0, null,
+                    "è¯»å–ç±»å‹ç´¢å¼•å¤±è´¥ï¼š" + indexFullPath + "ï¼›" + ex.Message, ex);
+            }
+
+            try
+            {
+                index = JsonUtility.FromJson<ConfigTableAssets.Index>(text);
+            }
+            catch (Exception ex)
+            {
+                throw Error(null, null, 0, 0, null,
+                    "ç±»å‹ç´¢å¼•è§£æå¤±è´¥ï¼š" + indexFullPath + "ï¼›" + ex.Message, ex);
+            }
+            if (index == null)
+            {
+                throw Error(null, null, 0, 0, null, "ç±»å‹ç´¢å¼•è§£æç»“æœä¸ºç©ºï¼š" + indexFullPath);
+            }
+            if (index.schemaVersion != 1)
+            {
+                throw Error(null, null, 0, 0, null,
+                    "ç±»å‹ç´¢å¼•ç‰ˆæœ¬ä¸å—æ”¯æŒï¼š" + index.schemaVersion + "ï¼Œè·¯å¾„ï¼š" + indexFullPath);
+            }
+            if (index.tables == null)
+            {
+                index.tables = new List<ConfigTableAssets.Entry>();
+            }
+        }
+
+        HashSet<string> oldClassNames = new HashSet<string>(StringComparer.Ordinal);
+        foreach (ConfigTableAssets.Entry oldEntry in index.tables)
+        {
+            ValidateIndexEntry(oldEntry, indexFullPath);
+            if (!oldClassNames.Add(oldEntry.className))
+            {
+                throw Error(null, null, 0, 0, null,
+                    "æ—¢æœ‰ç±»å‹ç´¢å¼•å«é‡å¤ç±»å‹ã€Œ" + oldEntry.className + "ã€ï¼š" + indexFullPath);
+            }
+        }
+
+        List<ConfigTableAssets.Entry> newEntries = new List<ConfigTableAssets.Entry>();
+        Dictionary<string, ConfigTableAssets.Entry> newEntryByClass =
+            new Dictionary<string, ConfigTableAssets.Entry>(StringComparer.Ordinal);
+        foreach (SheetPlan plan in plans)
+        {
+            if (plan.Mode != ExporterMode.Config)
+            {
+                continue;
+            }
+
+            ConfigTableAssets.Entry entry = new ConfigTableAssets.Entry
+            {
+                className = plan.ClassName,
+                resourcePath = plan.ResourcePath,
+                workbook = plan.WorkbookName,
+                worksheet = plan.WorksheetName,
+            };
+            ValidateIndexEntry(entry, indexFullPath);
+            if (newEntryByClass.ContainsKey(entry.className))
+            {
+                throw Error(plan.WorkbookPath, plan.WorksheetName, ClassNameRow, ClassNameColumn,
+                    plan.ClassName, "æœ¬æ‰¹ç±»å‹ç´¢å¼•å‡ºç°é‡å¤ç±»å‹");
+            }
+            newEntryByClass.Add(entry.className, entry);
+            newEntries.Add(entry);
+        }
+
+        List<ConfigTableAssets.Entry> merged = new List<ConfigTableAssets.Entry>();
+        foreach (ConfigTableAssets.Entry oldEntry in index.tables)
+        {
+            ConfigTableAssets.Entry replacement;
+            if (newEntryByClass.TryGetValue(oldEntry.className, out replacement))
+            {
+                merged.Add(replacement);
+                newEntryByClass.Remove(oldEntry.className);
+            }
+            else
+            {
+                merged.Add(oldEntry);
+            }
+        }
+        foreach (ConfigTableAssets.Entry entry in newEntries)
+        {
+            if (newEntryByClass.ContainsKey(entry.className))
+            {
+                merged.Add(entry);
+                newEntryByClass.Remove(entry.className);
+            }
+        }
+
+        HashSet<string> classNames = new HashSet<string>(StringComparer.Ordinal);
+        HashSet<string> resourcePaths = new HashSet<string>(StringComparer.Ordinal);
+        foreach (ConfigTableAssets.Entry entry in merged)
+        {
+            ValidateIndexEntry(entry, indexFullPath);
+            if (!classNames.Add(entry.className))
+            {
+                throw Error(null, null, 0, 0, null,
+                    "ç±»å‹ç´¢å¼•å«é‡å¤ç±»å‹ã€Œ" + entry.className + "ã€ï¼š" + indexFullPath);
+            }
+            if (!resourcePaths.Add(entry.resourcePath))
+            {
+                throw Error(null, null, 0, 0, null,
+                    "ç±»å‹ç´¢å¼•å«é‡å¤èµ„æºè·¯å¾„ã€Œ" + entry.resourcePath + "ã€ï¼š" + indexFullPath);
+            }
+        }
+
+        index = new ConfigTableAssets.Index
+        {
+            schemaVersion = 1,
+            tables = merged,
+        };
+        string content = JsonUtility.ToJson(index, true);
+        if (string.IsNullOrEmpty(content))
+        {
+            throw Error(null, null, 0, 0, null, "ç±»å‹ç´¢å¼•åºåˆ—åŒ–ç»“æœä¸ºç©ºï¼š" + indexFullPath);
+        }
+
+        entryCount = merged.Count;
+        return new PlannedFile
+        {
+            TargetPath = indexFullPath,
+            Content = content + "\n",
+            Description = "ç±»å‹ç´¢å¼•",
+        };
+    }
+
+    /// <summary>
+    /// æ ¡éªŒä¸€æ¡ç±»å‹ç´¢å¼•è®°å½•ï¼Œç¡®ä¿è¿è¡Œæ—¶ ConfigTableAssets èƒ½ç›´æ¥ä½¿ç”¨ã€‚
+    /// </summary>
+    private static void ValidateIndexEntry(ConfigTableAssets.Entry entry, string indexFilePath)
+    {
+        if (entry == null)
+        {
+            throw Error(null, null, 0, 0, null, "ç±»å‹ç´¢å¼•å«ç©ºæ¡ç›®ï¼š" + indexFilePath);
+        }
+        if (string.IsNullOrWhiteSpace(entry.className) || !IsValidIdentifier(entry.className))
+        {
+            throw Error(null, null, 0, 0, null,
+                "ç±»å‹ç´¢å¼• className éæ³•ã€Œ" + entry.className + "ã€ï¼š" + indexFilePath);
+        }
+        if (string.IsNullOrWhiteSpace(entry.resourcePath))
+        {
+            throw Error(null, null, 0, 0, null,
+                "ç±»å‹ç´¢å¼• resourcePath ä¸ºç©ºï¼š" + indexFilePath);
+        }
+        if (!entry.resourcePath.StartsWith(GlobalPath.data_JsonPathToRead, StringComparison.Ordinal))
+        {
+            throw Error(null, null, 0, 0, null,
+                "ç±»å‹ç´¢å¼• resourcePath å¿…é¡»ä»¥ã€Œ" + GlobalPath.data_JsonPathToRead
+                + "ã€å¼€å¤´ï¼šã€Œ" + entry.resourcePath + "ã€ï¼š" + indexFilePath);
+        }
+        if (entry.resourcePath.Length <= GlobalPath.data_JsonPathToRead.Length)
+        {
+            throw Error(null, null, 0, 0, null,
+                "ç±»å‹ç´¢å¼• resourcePath ç¼ºå°‘æ–‡ä»¶åï¼šã€Œ" + entry.resourcePath + "ã€ï¼š" + indexFilePath);
+        }
+        if (entry.resourcePath.IndexOf(".json", StringComparison.OrdinalIgnoreCase) >= 0)
+        {
+            throw Error(null, null, 0, 0, null,
+                "ç±»å‹ç´¢å¼• resourcePath ä¸èƒ½å¸¦ .jsonï¼šã€Œ" + entry.resourcePath + "ã€ï¼š" + indexFilePath);
+        }
+        if (entry.resourcePath.IndexOf('\\') >= 0
+            || entry.resourcePath.IndexOf("..", StringComparison.Ordinal) >= 0
+            || entry.resourcePath.IndexOf("//", StringComparison.Ordinal) >= 0
+            || entry.resourcePath.EndsWith("/", StringComparison.Ordinal))
+        {
+            throw Error(null, null, 0, 0, null,
+                "ç±»å‹ç´¢å¼• resourcePath å«éæ³•è·¯å¾„ç‰‡æ®µï¼šã€Œ" + entry.resourcePath + "ã€ï¼š" + indexFilePath);
+        }
+        if (string.IsNullOrWhiteSpace(entry.workbook))
+        {
+            throw Error(null, null, 0, 0, null,
+                "ç±»å‹ç´¢å¼• workbook ä¸ºç©ºï¼š" + indexFilePath);
+        }
+        if (string.IsNullOrWhiteSpace(entry.worksheet))
+        {
+            throw Error(null, null, 0, 0, null,
+                "ç±»å‹ç´¢å¼• worksheet ä¸ºç©ºï¼š" + indexFilePath);
+        }
+    }
+
+    /// <summary>
+    /// å‘å¸ƒè®¡åˆ’å†…çš„äº§ç‰©ã€‚å…ˆå…¨éƒ¨å†™æš‚å­˜æ–‡ä»¶ï¼Œå†é€ä¸ªæ›¿æ¢ï¼›ä»»ä¸€æ­¥å¤±è´¥éƒ½æ¢å¤æ—¢æœ‰æ–‡ä»¶ã€‚
+    /// </summary>
+    private static void PublishPlannedFiles(List<PlannedFile> files)
+    {
+        if (files == null || files.Count == 0)
+        {
             return;
         }
 
-        //»ñÈ¡key:valueµÄ×Ö·û´®
-        str = str.Substring(0, str.Length - 1);//È¥³ı×îĞ¡µ¥Î»Óï¾äµÄ×îºóÒ»¸ö","
-        str = GetJsonFromJsonK_V(str, num);//×é×°³ÉJsonÁĞ±í£¬²¢È¥³ıÁĞ±íÖĞ×îºóÒ»¸ö","
-        str = GetUnityJsonFromJson(str);//ĞŞ¸ÄÎªÊÊÓ¦JsonUtilityµÄ¸ñÊ½
-        str = FormatJson(str);//ĞÂÔö£ºµ¼³öÇ°Í³Ò»ÃÀ»¯£¬±ãÓÚÈË¹¤²é¿´
-
-        //ÓÃ Unity ×Ô´ø JsonUtility£¨ĞèÊÖ¶¯¼Ó»»ĞĞ£©
-        //string json1 = JsonUtility.ToJson(fileContent); // ½ô´Õ¸ñÊ½
-        //str = JsonUtility.ToJson(str, true); // ´øËõ½øµÄ¸ñÊ½»¯¸ñÊ½
-
-        string savePath = mode == ExporterMode.Config ? GlobalPath.data_JsonPath : GlobalPath.data_RecordPath;
-
-        FileUtil.SaveFile(savePath
-            , string.Format("{0}{1}.{2}"
-            , fileName, mode.ToString(), mode == ExporterMode.Config ? "json" : "record"), str);
-
-        ChaosLog.Info(LogChannel.Config, $"Json: ÒÑµ¼³ö¶ÔÓ¦{mode.ToString()}ÎÄ¼ş" +
-            $"{string.Format("{0}{1}.{2}", fileName, mode.ToString(), mode == ExporterMode.Config ? "json" : "record")}" +
-            $"ÖÁÎÄ¼ş¼Ğ {savePath}");
-    }
-
-    /// <summary>
-    /// »ñÈ¡Excel±í¶ÔÓ¦µÄÀàÃû
-    /// </summary>
-    /// <param name="fullName">ÎÄ¼şÈ«Ãû</param>
-    /// <returns></returns>
-    private static string GetFileName(string fullName)
-    {
-        fullName = fullName.Split('_')[0];
-        return fullName;
-    }
-
-    /// <summary>
-    /// »ñÈ¡±¸×¢
-    /// </summary>
-    /// <param name="workSheet"></param>
-    /// <param name="col"></param>
-    /// <returns></returns>
-    private static string GetRemark(ExcelWorksheet workSheet, int col)
-    {
-        return workSheet.Cells[remarkIndex, col].Text;
-    }
-
-    /// <summary>
-    /// »ñÈ¡ÊôĞÔ
-    /// </summary>
-    /// <param name="workSheet">¶ÁÈ¡µÄ±í</param>
-    /// <returns></returns>
-    /// <exception cref="System.Exception"></exception>
-    private static string[] GetProperties(ExcelWorksheet workSheet)
-    {
-        string[] properties = new string[workSheet.Dimension.End.Column];
-        for(int col = 1;col <= workSheet.Dimension.End.Column;col++)
+        HashSet<string> targets = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        foreach (PlannedFile file in files)
         {
-            if (workSheet.Cells[propertyIndex, col].Text == "")
+            string fullPath;
+            try
             {
-                throw new System.Exception(string.Format("µÚ{0}ĞĞµÚ{1}ÁĞÎª¿Õ", propertyIndex, col));
+                fullPath = Path.GetFullPath(file.TargetPath);
             }
-            properties[col - 1] = workSheet.Cells[propertyIndex, col].Text;
-        }
-        return properties;
-    }
-
-    private static string[] GetEnd(ExcelWorksheet workSheet)
-    {
-        string[] end = new string[workSheet.Dimension.End.Column];
-        for (int col = 1; col <= workSheet.Dimension.End.Column; col++)
-        {
-            if (workSheet.Cells[propertyIndex, col].Text == "")
+            catch (Exception ex)
             {
-                ChaosLog.Warn(string.Format("µÚ{0}ĞĞµÚ{1}ÁĞÎª¿Õ", propertyIndex, col));
+                throw Error(file.WorkbookPath, file.WorksheetName, 0, 0, null,
+                    "å‘å¸ƒç›®æ ‡è·¯å¾„éæ³•ï¼š" + file.TargetPath + "ï¼›" + ex.Message, ex);
             }
-            end[col - 1] = workSheet.Cells[endIndex, col].Text;
+            if (!targets.Add(fullPath))
+            {
+                throw Error(file.WorkbookPath, file.WorksheetName, 0, 0, null,
+                    "å‘å¸ƒç›®æ ‡é‡å¤ï¼š" + fullPath);
+            }
+            file.TargetPath = fullPath;
         }
-        return end;
-    }
 
-    /// <summary>
-    /// »ñÈ¡Öµ
-    /// </summary>
-    /// <param name="workSheet"></param>
-    /// <param name="col"></param>
-    /// <returns></returns>
-    private static string[] GetValues(ExcelWorksheet workSheet,int col)
-    {
-        string[] values = new string[workSheet.Dimension.End.Row - valueIndex + 1];//Êµ¼ÊÖµÊı×éµÄÈİÁ¿
-        for(int row = valueIndex;row <= workSheet.Dimension.End.Row; row++)
+        string backupRoot = Path.Combine(
+            Path.GetTempPath(),
+            "ChaosConfigExport",
+            "backup_" + DateTime.Now.ToString("yyyyMMdd_HHmmss_fff") + "_" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(backupRoot);
+
+        List<StagedFile> stagedFiles = new List<StagedFile>();
+        try
         {
-            values[row - valueIndex] = workSheet.Cells[row,col].Text;
-        }
-        return values;
-    }
-
-    /// <summary>
-    /// »ñÈ¡ÀàĞÍ
-    /// </summary>
-    /// <param name="workSheet"></param>
-    /// <param name="col"></param>
-    /// <returns></returns>
-    private static string GetType(ExcelWorksheet workSheet,int col)
-    {
-        return workSheet.Cells[typeIndex, col].Text.Trim();
-    }
-
-    /// <summary>
-    /// ÀàĞÍ×ª»»
-    ///
-    /// ¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T ÀàĞÍ±ØĞëÍ¬Ê±¹ıÁ½µÀ¹Ø ¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T
-    /// 1) ±ØĞëÊÇ¡¾ºÏ·¨µÄ C# ÀàĞÍÃû¡¿¡ª¡ª ExportClass »á°Ñ Excel µÚ 6 ĞĞµÄÎÄ±¾¡¾Ô­Ñù¡¿µ±×Ö¶ÎÀàĞÍÆ´³É
-    ///    `public {ÀàĞÍ} {×Ö¶Î};`£¬Æ´³ö `public int32 X;` ÕâÖÖ¾ÍÖ±½Ó±àÒë²»¹ı£»
-    /// 2) ±ØĞëÄÜ±»¡¾UnityEngine.JsonUtility ÕıÈ·Íù·µ¡¿¡ª¡ª ÔËĞĞÊ±¶ÁÈ¡Á´ÓÃµÄÊÇ JsonUtility.FromJson¡£
-    ///
-    /// ¡¾ÒÑÒÆ³ı¡¿int32 / int64 / long long£º
-    ///   ËüÃÇÔøÊÇ±¾·½·¨µÄ case£¬µ« C# Àï²¢²»´æÔÚÕâĞ©ÀàĞÍÃû£¬Éú³ÉµÄÀà±ØÈ»±àÒëÊ§°Ü¡£
-    ///   ÒÆ³ıºóËüÃÇÂäµ½ default ·ÖÖ§£¬ÔÚ¡¾µ¼³ö½×¶Î¡¿¾ÍÒÔ¡¸²»Ö§³Ö´ËÀàĞÍ¡¹Ã÷È·Ê§°Ü ¡ª¡ª
-    ///   ÔçÊ§°ÜºÃ¹ı"µ¼³ö¿´ÆğÀ´³É¹¦¡¢Êµ¼ÊÄÃµ½Ò»¶ÑÄªÃûÆäÃîµÄ±àÒë´íÎó"¡£
-    ///
-    /// ¡¾ÒÑĞÂÔö¡¿byte / sbyte / short / ushort / bool£¨¾ù¾­ JsonUtility Íù·µÊµ²â£©¡£
-    ///
-    /// ¡¾Êµ²âºó·ñ¾ö£¬½ûÖ¹ÖØĞÂ¼ÓÈë¡¿
-    ///   ¡¤ decimal ¡ª¡ª JsonUtility »á¡¾¾²Ä¬¶ªÆú¡¿¸Ã×Ö¶Î£ºToJson Êä³öÀï¸ù±¾Ã»ÓĞËü£¬Íù·µºóºãÎª 0¡£
-    ///     ÕâÊÇ"ÎŞÉù´íÖµ"£¬±È±¨´íÎ£ÏÕµÃ¶à£¬ËùÒÔÁ¬ÊÔ¶¼²»ÒªÊÔ¡£
-    ///   ¡¤ char    ¡ª¡ª ÄÜÍù·µ£¬µ« JSON Àï´æ³É¡¾Êı×Ö¡¿£¨'A' ¡ú 65£©£¬ÓïÒå¼«Ò×±»Îó¶Á¡£
-    ///
-    /// ¡¾bool ÎªÊ²Ã´Òª¹éÒ»»¯¡¿¡ª¡ª ÀíÓÉ¡¾²»ÊÇ¡¿"JsonUtility ÒªĞ¡Ğ´"ÕâÃ´¼òµ¥¡£
-    ///   Lead 2026-10-05 Êµ²â£¨´ËÇ°"´óĞ¡Ğ´²»Ãô¸Ğ"µÄËµ·¨¡¾Ö»¶Ô´øÒıºÅĞÎÊ½³ÉÁ¢¡¿£©£º
-    ///     ¡¤ ÂãÖµ {"b":true} / {"b":false}          ¡ú ½âÎö³É¹¦
-    ///     ¡¤ ÂãÖµ {"b":TRUE} / {"b":True}           ¡ú Å× JSON parse error: Invalid value
-    ///     ¡¤ ´øÒıºÅ {"b":"true"} / {"b":"TRUE"}     ¡ú ½âÎö³É¹¦£¨½ö´ËĞÎÊ½´óĞ¡Ğ´²»Ãô¸Ğ£©
-    ///     ¡¤ {"b":1} / {"b":0}                      ¡ú ½âÎö³É¹¦£¨Êı×Ö£©
-    ///     ¡¤ {"b":ÊÇ} Å×Òì³££»{"b":"ÊÇ"} ²»±¨´íµ«¡¾¾²Ä¬±ä false¡¿£¨ÎŞÉù´íÖµ£©
-    ///   µ¼³öÆ÷²ú³öµÄÊÇ¡¾ÂãÖµ¡¿£¬ËùÒÔ±ØĞë¹éÒ»»¯³ÉÇ¡ºÃĞ¡Ğ´µÄ true / false£º
-    ///   ·ñÔò´óĞ´»áÖ±½ÓÅ×Òì³££¬ÖĞÎÄ¡¸ÊÇ¡¹ÔÚÓï·¨ÉÏ¾Í²»ÊÇºÏ·¨ JSON¡£
-    ///   ¾ø²»ÄÜÓë string ¹éµ½Ò»×é¼ÓÒıºÅ£¬·ñÔò "ÊÇ" »á½âÎöÊ§°Ü²¢¾²Ä¬»ØÍË false¡£
-    /// </summary>
-    /// <param name="type">Excel µÚ 6 ĞĞµÄÀàĞÍÎÄ±¾£¨ĞëÊÇĞ¡Ğ´ÀàĞÍÃû£©</param>
-    /// <param name="value">µ¥Ôª¸ñÎÄ±¾</param>
-    /// <returns>¿ÉÖ±½ÓÆ´½ø Json µÄÆ¬¶Î£¨string »á¼ÓË«ÒıºÅ£»bool ¹éÒ»»¯ÎªÂãµÄ true/false£©</returns>
-    /// <exception cref="Exception">ÀàĞÍ²»ÔÚ°×Ãûµ¥ÄÚ£»»ò bool ÁĞÈ¡ÖµÎŞ·¨Ê¶±ğ</exception>
-    private static string Convert(string type,string value)
-    {
-        string res = "";
-        switch (type)
-        {
-            case "int":
-                res = value;
-                break;
-            case "uint":
-                res = value;
-                break;
-            case "long":
-                res = value;
-                break;
-            case "ulong":
-                res = value;
-                break;
-            case "byte":
-            case "sbyte":
-            case "short":
-            case "ushort":
-                res = value;
-                break;
-            case "float":
-                res = value;
-                break;
-            case "double":
-                res = value;
-                break;
-            case "bool":
+            foreach (PlannedFile file in files)
+            {
+                string directory = Path.GetDirectoryName(file.TargetPath);
+                if (string.IsNullOrEmpty(directory))
                 {
-                    // ¹éÒ»»¯³É¹æ·¶µÄ¡¾ÂãÖµ¡¿true / false£¨²»¼ÓÒıºÅ£¬²»ÄÜÓë string Í¬×é£©¡£
-                    // È¡Öµ¿ÌÒâÖ»Áô true/false¡¢1/0¡¢ÊÇ/·ñ£¨²»Çø·Ö´óĞ¡Ğ´£©£º
-                    // ¶àÒ»Ì×Í¬Òå´Ê£¨yes/y/no/n£©¾Í¶àÒ»ÖÖÌî´í·½Ê½¡£
-                    string v = (value ?? "").Trim().ToLowerInvariant();
-                    if (v == "true" || v == "1" || v == "ÊÇ") res = "true";
-                    else if (v == "false" || v == "0" || v == "·ñ") res = "false";
-                    else throw new Exception($"bool ÁĞÈ¡Öµ·Ç·¨£º'{value}'£¨Ó¦Îª true/false¡¢1/0 »ò ÊÇ/·ñ£©");
-                    break;
+                    throw new InvalidOperationException("æ— æ³•ç¡®å®šç›®æ ‡ç›®å½•ï¼š" + file.TargetPath);
                 }
-            case "string":
-                res = $"\"{value}\"";
+                Directory.CreateDirectory(directory);
+                string stagePath = file.TargetPath + ".chaos_export_" + Guid.NewGuid().ToString("N") + ".tmp";
+                File.WriteAllText(stagePath, file.Content ?? string.Empty, new UTF8Encoding(false));
+                stagedFiles.Add(new StagedFile
+                {
+                    File = file,
+                    StagePath = stagePath,
+                });
+            }
+        }
+        catch (Exception ex)
+        {
+            throw Error(null, null, 0, 0, null,
+                "å¯¼å‡ºæš‚å­˜å¤±è´¥ï¼Œæœªå‘å¸ƒä»»ä½•æ–‡ä»¶ï¼›å¤‡ä»½ç›®å½•ã€Œ" + backupRoot + "ã€ï¼›" + ex.Message, ex);
+        }
+
+        List<CommittedFile> committedFiles = new List<CommittedFile>();
+        try
+        {
+            for (int index = 0; index < stagedFiles.Count; index++)
+            {
+                StagedFile staged = stagedFiles[index];
+                bool existed = File.Exists(staged.File.TargetPath);
+                string backupPath = null;
+                if (existed)
+                {
+                    backupPath = Path.Combine(
+                        backupRoot,
+                        index.ToString(CultureInfo.InvariantCulture) + "_"
+                        + Path.GetFileName(staged.File.TargetPath) + ".bak");
+                    File.Copy(staged.File.TargetPath, backupPath, true);
+                }
+
+                if (existed)
+                {
+                    File.Replace(staged.StagePath, staged.File.TargetPath, null);
+                }
+                else
+                {
+                    File.Move(staged.StagePath, staged.File.TargetPath);
+                }
+
+                committedFiles.Add(new CommittedFile
+                {
+                    File = staged.File,
+                    Existed = existed,
+                    BackupPath = backupPath,
+                });
+            }
+        }
+        catch (Exception ex)
+        {
+            List<string> rollbackErrors = RollbackCommittedFiles(committedFiles);
+            string detail = "å¯¼å‡ºå‘å¸ƒå¤±è´¥ï¼Œå·²å›æ»š " + committedFiles.Count + " ä¸ªå·²å‘å¸ƒæ–‡ä»¶ï¼›å¤‡ä»½ç›®å½•ã€Œ" + backupRoot + "ã€";
+            if (rollbackErrors.Count > 0)
+            {
+                detail += "ï¼›å›æ»šå¼‚å¸¸ï¼š" + string.Join("ï¼›", rollbackErrors.ToArray());
+            }
+            detail += "ï¼›åŸå§‹é”™è¯¯ï¼š" + ex.Message;
+            throw Error(null, null, 0, 0, null, detail, ex);
+        }
+    }
+
+    /// <summary>
+    /// å›æ»šå·²æäº¤æ–‡ä»¶ï¼šæ—¢æœ‰æ–‡ä»¶ä»å¤‡ä»½æ¢å¤ï¼›æœ¬æ‰¹æ–°æ–‡ä»¶åˆ é™¤ã€‚ä¸ä¼šåˆ é™¤æˆ–æ›¿æ¢ä»»ä½•æ—¢æœ‰æ—§äº§ç‰©ã€‚
+    /// </summary>
+    private static List<string> RollbackCommittedFiles(List<CommittedFile> committedFiles)
+    {
+        List<string> errors = new List<string>();
+        for (int index = committedFiles.Count - 1; index >= 0; index--)
+        {
+            CommittedFile committed = committedFiles[index];
+            try
+            {
+                if (committed.Existed)
+                {
+                    if (string.IsNullOrEmpty(committed.BackupPath) || !File.Exists(committed.BackupPath))
+                    {
+                        errors.Add("ç¼ºå°‘å¤‡ä»½ï¼Œæ— æ³•æ¢å¤ï¼š" + committed.File.TargetPath);
+                    }
+                    else
+                    {
+                        File.Copy(committed.BackupPath, committed.File.TargetPath, true);
+                    }
+                }
+                else if (File.Exists(committed.File.TargetPath))
+                {
+                    File.Delete(committed.File.TargetPath);
+                }
+            }
+            catch (Exception ex)
+            {
+                errors.Add(committed.File.TargetPath + "ï¼š" + ex.Message);
+            }
+        }
+        return errors;
+    }
+
+    /// <summary>
+    /// å‘å¸ƒååˆ·æ–° AssetDatabaseï¼Œå¹¶åœ¨å‘å¸ƒç´¢å¼•æ—¶æ˜¾å¼ Reload è¿è¡Œæ—¶ç´¢å¼•ç¼“å­˜ã€‚
+    /// </summary>
+    private static void RefreshAfterPublish(List<PlannedFile> files, bool publishTypeIndex, string indexFullPath)
+    {
+        bool hasAssetFile = false;
+        foreach (PlannedFile file in files)
+        {
+            if (IsUnderAssets(file.TargetPath))
+            {
+                hasAssetFile = true;
                 break;
-            default:
-                throw new Exception($"²»Ö§³Ö´ËÀàĞÍ: {type}");
-        }
-        return res;
-    }
-
-    /// <summary>
-    /// ·µ»Økey:value
-    /// </summary>
-    private static string GetJsonK_VFromKeyAndValues(string key, string value)
-    {
-        return string.Format("\"{0}\":{1}", key, value);
-    }
-
-    /// <summary>
-    ///»ñÈ¡[key:value]×ª»»Îª{key:value,key:value},ÔÙ±ä³É[{key:value,key:value},{key:value,key:value}]
-    /// </summary>
-    private static string GetJsonFromJsonK_V(string json, int valueNum)
-    {
-        string str = "";
-        string[] strs;
-        List<string> listStr = new List<string>();
-        strs = json.Split(',');
-        listStr.Clear();
-        for (int j = 0; j < valueNum; j++)
-        {
-            string tempStr = "";
-            for (int i = 0;i < strs.Length / valueNum; i++)
-            {
-                tempStr += strs[j + i * valueNum];
-                tempStr += ",";
             }
-            tempStr = tempStr.Substring(0, tempStr.Length - 1);
-            
-            //listStr.Add("{" + string.Format("{0},{1}", strs[j], strs[j + valueNum]) + "}");
-            listStr.Add("{" + tempStr + "}");
         }
-        str = "[";
-        foreach (var l in listStr)
+        if (hasAssetFile)
         {
-            str += l + ',';
+            AssetDatabase.Refresh();
         }
-        str = str.Substring(0, str.Length - 1);
-        str += ']';
-        return str;
+        if (publishTypeIndex && !string.IsNullOrEmpty(indexFullPath))
+        {
+            string indexAssetPath = AbsoluteToAssetPath(indexFullPath);
+            AssetDatabase.ImportAsset(indexAssetPath, ImportAssetOptions.ForceUpdate);
+        }
+        ConfigTableAssets.Reload();
     }
 
     /// <summary>
-    /// ÊÊÓ¦JsonUtility.FromJsonº¯ÊıµÄ×ª»»¸ñÊ½
+    /// å…¼å®¹æ—§ç¼–è¾‘å™¨éªŒè¯å·¥å…·çš„å•è¡¨ Json å¯¼å‡ºå…¥å£ã€‚æ–‡ä»¶åæ²¿ç”¨æ—§è§„åˆ™ï¼Œä¸å—æ–°æ‰¹é‡å‘½åå½±å“ã€‚
     /// </summary>
-    private static string GetUnityJsonFromJson(string json)
+    private static void ExportJson(ExcelWorksheet workSheet, string fileName, ExporterMode mode)
     {
-        return "{" + "\"datas\":" + json + "}";
-    }
-
-    /// <summary>
-    /// °Ñ½ô´ÕµÄ Json ÎÄ±¾ÕûÀí³É´øËõ½øÓë»»ĞĞµÄĞÎÊ½£¬±ãÓÚÈË¹¤²é¿´Óë±È½Ï¡£
-    ///
-    /// Ö»Ó°Ïìµ¼³ö²úÎïµÄÅÅ°æ£º.json Óë .record µÄÄÚÈİÍêÈ«Ò»ÖÂ£¬Ö»ÊÇÀ©Õ¹Ãû²»Í¬£»
-    /// JsonUtility.FromJson ²»¹ØĞÄ¿Õ°×£¬ËùÒÔÃÀ»¯²»»áÓ°ÏìÔËĞĞÊ±¶ÁÈ¡¡£
-    ///
-    /// ÅÅ°æ·ç¸ñÓë JsonUtility.ToJson(obj, true) Ò»ÖÂ£¨4 ¿Õ¸ñËõ½ø¡¢Ã°ºÅºóÁô¿Õ¸ñ£©£¬
-    /// ÕâÑù¹¤³ÌÀïµÄ Json ÎÄ¼ş¿´ÆğÀ´ÊÇÍ¬Ò»ÖÖ¸ñÊ½¡£
-    ///
-    /// ×¢Òâ£º±ØĞëÇø·Ö¡¸×Ö·û´®ÄÚ²¿¡¹Óë¡¸½á¹¹·ûºÅ¡¹¡£ÖĞÎÄÊı¾İÀïÈç¹û³öÏÖ¶ººÅ¡¢
-    /// Ã°ºÅ¡¢»¨À¨ºÅ£¬²»Çø·Ö¾Í»áÔÚ×Ö·û´®ÖĞ¼ä²å»»ĞĞ£¬°Ñ Json Ğ´»µ¡£
-    /// </summary>
-    private static string FormatJson(string compact)
-    {
-        if (string.IsNullOrEmpty(compact)) return compact;
-
-        const char QUOTE = (char)34;      //Ë«ÒıºÅ
-        const char BACKSLASH = (char)92;  //·´Ğ±¸Ü
-
-        StringBuilder sb = new StringBuilder(compact.Length * 2);
-        int depth = 0;//Ç¶Ì×²ã¼¶£¬1 ²ã = 4 ¸ö¿Õ¸ñ
-        bool inString = false;
-
-        for (int i = 0; i < compact.Length; i++)
+        try
         {
-            char c = compact[i];
+            string className = BuildClassName(fileName, mode, GetSuffixMode(fileName).HasValue, fileName, workSheet.Name);
+            List<ColumnPlan> columns = AnalyzeColumns(workSheet, fileName, workSheet.Name, className, new List<string>());
+            int dataRowCount;
+            string content = BuildDataContent(workSheet, fileName, workSheet.Name, columns, out dataRowCount);
+            string outputDirectory = ResolveOutputDirectory(
+                null,
+                mode == ExporterMode.Config ? GlobalPath.data_JsonPath : GlobalPath.data_RecordPath);
+            string oldFileName = fileName + mode.ToString()
+                + (mode == ExporterMode.Config ? ".json" : ".record");
+            ValidateFileNamePart(oldFileName, "æ—§ç‰ˆæ•°æ®æ–‡ä»¶å", fileName, workSheet.Name, 0, 0);
 
-            if (inString)//×Ö·û´®ÄÚ²¿Ô­Ñù°áÔË£¬Ö»´¦Àí×ªÒåÓë½áÊøÒıºÅ
+            List<PlannedFile> files = new List<PlannedFile>
             {
-                sb.Append(c);
-                if (c == BACKSLASH && i + 1 < compact.Length)
-                    sb.Append(compact[++i]);
-                else if (c == QUOTE)
-                    inString = false;
-                continue;
+                new PlannedFile
+                {
+                    TargetPath = Path.Combine(outputDirectory, oldFileName),
+                    Content = content,
+                    Description = "æ—§ç‰ˆå•è¡¨æ•°æ®",
+                    WorkbookPath = fileName,
+                    WorksheetName = workSheet.Name,
+                },
+            };
+            PublishPlannedFiles(files);
+            RefreshAfterPublish(files, false, null);
+            ChaosLog.Info(LogChannel.Config, "æ—§ç‰ˆå•è¡¨æ•°æ®å·²å¯¼å‡ºï¼š" + oldFileName);
+        }
+        catch (ConfigExportException)
+        {
+            throw;
+        }
+        catch (Exception ex)
+        {
+            throw Error(fileName, workSheet.Name, 0, 0, null, "æ—§ç‰ˆå•è¡¨æ•°æ®å¯¼å‡ºå¤±è´¥ï¼š" + ex.Message, ex);
+        }
+    }
+
+    /// <summary>
+    /// å…¼å®¹æ—§ç¼–è¾‘å™¨éªŒè¯å·¥å…·çš„å•è¡¨ç±»å¯¼å‡ºå…¥å£ã€‚ç±»æ–‡ä»¶åæ²¿ç”¨æ—§è§„åˆ™ï¼Œä¸å—æ–°æ‰¹é‡å‘½åå½±å“ã€‚
+    /// </summary>
+    private static void ExportClass(ExcelWorksheet workSheet, string fileName, ExporterMode mode)
+    {
+        try
+        {
+            string className = BuildClassName(fileName, mode, GetSuffixMode(fileName).HasValue, fileName, workSheet.Name);
+            List<ColumnPlan> columns = AnalyzeColumns(workSheet, fileName, workSheet.Name, className, new List<string>());
+            string content = BuildClassContent(columns, className, mode, fileName);
+            string outputDirectory = ResolveOutputDirectory(
+                null,
+                mode == ExporterMode.Config ? GlobalPath.data_ExcelClassPath : GlobalPath.data_ExcelModelPath);
+            string oldFileName = fileName + mode.ToString() + ".cs";
+            ValidateFileNamePart(oldFileName, "æ—§ç‰ˆç±»æ–‡ä»¶å", fileName, workSheet.Name, 0, 0);
+
+            List<PlannedFile> files = new List<PlannedFile>
+            {
+                new PlannedFile
+                {
+                    TargetPath = Path.Combine(outputDirectory, oldFileName),
+                    Content = content,
+                    Description = "æ—§ç‰ˆå•è¡¨ç±»æ–‡ä»¶",
+                    WorkbookPath = fileName,
+                    WorksheetName = workSheet.Name,
+                },
+            };
+            PublishPlannedFiles(files);
+            RefreshAfterPublish(files, false, null);
+            ChaosLog.Info(LogChannel.Config, "æ—§ç‰ˆå•è¡¨ç±»å·²å¯¼å‡ºï¼š" + oldFileName);
+        }
+        catch (ConfigExportException)
+        {
+            throw;
+        }
+        catch (Exception ex)
+        {
+            throw Error(fileName, workSheet.Name, 0, 0, null, "æ—§ç‰ˆå•è¡¨ç±»å¯¼å‡ºå¤±è´¥ï¼š" + ex.Message, ex);
+        }
+    }
+
+    /// <summary>
+    /// è§£æå¹¶æ ¡éªŒå·¥ä½œç°¿ç»å¯¹è·¯å¾„é›†åˆï¼Œæ‹’ç»ç›¸å¯¹è·¯å¾„ã€é .xlsx å’Œé‡å¤è¾“å…¥ã€‚
+    /// </summary>
+    private static List<string> NormalizeWorkbookPaths(IList<string> xlsxAbsolutePaths)
+    {
+        List<string> result = new List<string>();
+        HashSet<string> seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        foreach (string rawPath in xlsxAbsolutePaths)
+        {
+            if (string.IsNullOrWhiteSpace(rawPath))
+            {
+                throw Error(null, null, 0, 0, null, "å·¥ä½œç°¿è·¯å¾„ä¸ºç©º");
+            }
+            if (!Path.IsPathRooted(rawPath))
+            {
+                throw Error(null, null, 0, 0, null, "å·¥ä½œç°¿è·¯å¾„å¿…é¡»æ˜¯ç»å¯¹è·¯å¾„ï¼š" + rawPath);
             }
 
-            switch (c)
+            string fullPath;
+            try
             {
-                case QUOTE:
-                    inString = true;
-                    sb.Append(c);
-                    break;
+                fullPath = Path.GetFullPath(rawPath);
+            }
+            catch (Exception ex)
+            {
+                throw Error(null, null, 0, 0, null, "å·¥ä½œç°¿è·¯å¾„éæ³•ï¼š" + rawPath + "ï¼›" + ex.Message, ex);
+            }
 
-                case '{':
-                case '[':
-                    sb.Append(c);
-                    //¿ÕÈİÆ÷ {} »ò [] ²»»»ĞĞ£¬ÃâµÃ³öÏÖÖ»ÓĞÒ»¶ÔÀ¨ºÅµÄÁ½ĞĞ
-                    if (i + 1 < compact.Length && compact[i + 1] != '}' && compact[i + 1] != ']')
+            if (!string.Equals(Path.GetExtension(fullPath), ".xlsx", StringComparison.OrdinalIgnoreCase))
+            {
+                throw Error(fullPath, null, 0, 0, null, "å·¥ä½œç°¿æ‰©å±•åå¿…é¡»æ˜¯ .xlsx");
+            }
+            if (!File.Exists(fullPath))
+            {
+                throw Error(fullPath, null, 0, 0, null, "å·¥ä½œç°¿ä¸å­˜åœ¨");
+            }
+            if (!seen.Add(fullPath))
+            {
+                throw Error(fullPath, null, 0, 0, null, "åŒä¸€å·¥ä½œç°¿è¢«é‡å¤ä¼ å…¥");
+            }
+            result.Add(fullPath);
+        }
+        return result;
+    }
+
+    /// <summary>
+    /// è§£æè¾“å‡ºç›®å½•ï¼›ç©ºå€¼ä½¿ç”¨ GlobalPath é»˜è®¤ç›®å½•ï¼Œç›¸å¯¹è·¯å¾„ä¼˜å…ˆæŒ‰é¡¹ç›®æ ¹ç›®å½•/Assets è§£æã€‚
+    /// </summary>
+    private static string ResolveOutputDirectory(string supplied, string defaultRelativePath)
+    {
+        try
+        {
+            string path;
+            if (string.IsNullOrWhiteSpace(supplied))
+            {
+                path = Path.Combine(Application.dataPath, defaultRelativePath);
+            }
+            else
+            {
+                string raw = supplied.Trim();
+                if (Path.IsPathRooted(raw))
+                {
+                    path = raw;
+                }
+                else
+                {
+                    string projectRoot = Directory.GetParent(Application.dataPath).FullName;
+                    if (raw.Equals("Assets", StringComparison.OrdinalIgnoreCase)
+                        || raw.StartsWith("Assets/", StringComparison.OrdinalIgnoreCase)
+                        || raw.StartsWith("Assets\\", StringComparison.OrdinalIgnoreCase))
                     {
-                        depth++;
-                        sb.Append('\n');
-                        sb.Append(' ', depth * 4);
+                        path = Path.Combine(projectRoot, raw);
                     }
-                    break;
-
-                case '}':
-                case ']':
-                    //ÓëÉÏÃæµÄ¿ÕÈİÆ÷ÅĞ¶Ï±£³Ö¶Ô³Æ
-                    if (depth > 0 && i > 0 && compact[i - 1] != '{' && compact[i - 1] != '[')
+                    else
                     {
-                        depth--;
-                        sb.Append('\n');
-                        sb.Append(' ', depth * 4);
+                        path = Path.Combine(Application.dataPath, raw);
                     }
-                    sb.Append(c);
-                    break;
+                }
+            }
 
-                case ',':
-                    sb.Append(c).Append('\n').Append(' ', depth * 4);
-                    break;
+            string fullPath = Path.GetFullPath(path);
+            string root = Path.GetPathRoot(fullPath);
+            if (!string.IsNullOrEmpty(root) && fullPath.Length > root.Length)
+            {
+                fullPath = fullPath.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+            }
+            return fullPath;
+        }
+        catch (Exception ex)
+        {
+            throw Error(null, null, 0, 0, null,
+                "è¾“å‡ºç›®å½•æ— æ•ˆï¼š" + (supplied ?? defaultRelativePath) + "ï¼›" + ex.Message, ex);
+        }
+    }
 
-                case ':':
-                    sb.Append(c).Append(' ');
-                    break;
+    private static string GetWorkbookName(string workbookPath)
+    {
+        string name = Path.GetFileNameWithoutExtension(workbookPath);
+        ValidateFileNamePart(name, "å·¥ä½œç°¿å", workbookPath, null, 0, 0);
+        return name;
+    }
 
-                case ' '://½ô´ÕÎÄ±¾Àï²»¸ÃÓĞ¿Õ°×£¬ÕæÓĞÒ²¶ªµô£¬ÃâµÃ³öÏÖ¶àÓà¿ÕĞĞ
-                case '\t':
-                case '\r':
-                case '\n':
-                    break;
+    /// <summary>
+    /// ç”Ÿæˆå®Œæ•´ç±»åï¼šB1 å·²å¸¦ Config/Data åç¼€æ—¶ä¿æŒåŸæ ·ï¼Œå¦åˆ™è¿½åŠ å½“å‰æ¨¡å¼åç¼€ã€‚
+    /// </summary>
+    private static string BuildClassName(
+        string rawClassName,
+        ExporterMode mode,
+        bool hasSuffix,
+        string workbookPath,
+        string worksheetName)
+    {
+        string className = (rawClassName ?? string.Empty).Trim();
+        if (!hasSuffix)
+        {
+            className += mode.ToString();
+        }
+        if (!IsValidIdentifier(className))
+        {
+            throw Error(workbookPath, worksheetName, ClassNameRow, ClassNameColumn, className,
+                "ç±»åä¸æ˜¯åˆæ³•çš„ C# æ ‡è¯†ç¬¦");
+        }
+        if (ReservedFileNames.Contains(className))
+        {
+            throw Error(workbookPath, worksheetName, ClassNameRow, ClassNameColumn, className,
+                "ç±»åæ˜¯ Windows ä¿ç•™æ–‡ä»¶åï¼Œæ— æ³•ç”Ÿæˆç±»æ–‡ä»¶");
+        }
+        return className;
+    }
 
-                default:
-                    sb.Append(c);
-                    break;
+    private static ExporterMode? GetSuffixMode(string className)
+    {
+        if (className.EndsWith("Config", StringComparison.Ordinal))
+        {
+            return ExporterMode.Config;
+        }
+        if (className.EndsWith("Data", StringComparison.Ordinal))
+        {
+            return ExporterMode.Data;
+        }
+        return null;
+    }
+
+    private static ExporterMode? ParseModeMarker(string rawMode, string workbookPath, string worksheetName)
+    {
+        if (rawMode.Length == 0)
+        {
+            return null;
+        }
+        if (string.Equals(rawMode, "IsConfig", StringComparison.OrdinalIgnoreCase))
+        {
+            return ExporterMode.Config;
+        }
+        if (string.Equals(rawMode, "IsData", StringComparison.OrdinalIgnoreCase))
+        {
+            return ExporterMode.Data;
+        }
+        throw Error(workbookPath, worksheetName, ModeRow, ModeColumn, null,
+            "B2 æ¨¡å¼æ ‡è®°ã€Œ" + rawMode + "ã€æ— æ³•è¯†åˆ«ï¼Œåº”ä¸º IsConfig æˆ– IsData");
+    }
+
+    private static bool HasFieldHeader(ExcelWorksheet worksheet)
+    {
+        if (worksheet.Dimension == null)
+        {
+            return false;
+        }
+        int lastColumn = worksheet.Dimension.End.Column;
+        for (int column = 1; column <= lastColumn; column++)
+        {
+            if (TrimmedCell(worksheet, PropertyRow, column).Length > 0)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static bool ColumnHasData(ExcelWorksheet worksheet, int column)
+    {
+        if (worksheet.Dimension == null)
+        {
+            return false;
+        }
+        int lastRow = worksheet.Dimension.End.Row;
+        for (int row = FirstDataRow; row <= lastRow; row++)
+        {
+            if (TrimmedCell(worksheet, row, column).Length > 0)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static void RegisterOutput(
+        Dictionary<string, SheetPlan> outputPlans,
+        string path,
+        SheetPlan plan)
+    {
+        string fullPath;
+        try
+        {
+            fullPath = Path.GetFullPath(path);
+        }
+        catch (Exception ex)
+        {
+            throw Error(plan.WorkbookPath, plan.WorksheetName, 0, 0, null,
+                "è¾“å‡ºè·¯å¾„éæ³•ï¼š" + path + "ï¼›" + ex.Message, ex);
+        }
+
+        SheetPlan previous;
+        if (outputPlans.TryGetValue(fullPath, out previous))
+        {
+            throw Error(plan.WorkbookPath, plan.WorksheetName, ClassNameRow, ClassNameColumn, plan.ClassName,
+                "è¾“å‡ºè·¯å¾„é‡å¤ï¼šä¸è¡¨ã€Œ" + Path.GetFileName(previous.WorkbookPath) + "ã€é¡µç­¾ã€Œ"
+                + previous.WorksheetName + "ã€ç”ŸæˆåŒä¸€æ–‡ä»¶ã€Œ" + fullPath + "ã€");
+        }
+        outputPlans.Add(fullPath, plan);
+    }
+
+    private static string BuildResourcePath(string workbookName, string className)
+    {
+        string prefix = GlobalPath.data_JsonPathToRead;
+        if (!prefix.EndsWith("/", StringComparison.Ordinal))
+        {
+            prefix += "/";
+        }
+        return prefix + workbookName + "_" + className;
+    }
+
+    private static void AddSkip(
+        List<ConfigExportSkip> skipped,
+        string workbookPath,
+        string workbookName,
+        string worksheetName,
+        string reason)
+    {
+        skipped.Add(new ConfigExportSkip
+        {
+            WorkbookPath = workbookPath,
+            WorkbookName = workbookName,
+            WorksheetName = worksheetName,
+            Reason = reason,
+        });
+    }
+
+    private static string CellText(ExcelWorksheet worksheet, int row, int column)
+    {
+        string text = worksheet.Cells[row, column].Text;
+        return text ?? string.Empty;
+    }
+
+    private static string TrimmedCell(ExcelWorksheet worksheet, int row, int column)
+    {
+        return CellText(worksheet, row, column).Trim();
+    }
+
+    private static string SanitizeComment(string text)
+    {
+        if (string.IsNullOrEmpty(text))
+        {
+            return string.Empty;
+        }
+        StringBuilder builder = new StringBuilder(text.Length);
+        foreach (char current in text)
+        {
+            if (current == '\r' || current == '\n' || current == '\u2028' || current == '\u2029'
+                || char.IsControl(current))
+            {
+                builder.Append(' ');
+            }
+            else
+            {
+                builder.Append(current);
+            }
+        }
+        return builder.ToString().Trim();
+    }
+
+    private static bool IsValidIdentifier(string value)
+    {
+        if (string.IsNullOrEmpty(value) || CSharpKeywords.Contains(value))
+        {
+            return false;
+        }
+        if (!(char.IsLetter(value[0]) || value[0] == '_'))
+        {
+            return false;
+        }
+        for (int index = 1; index < value.Length; index++)
+        {
+            char current = value[index];
+            if (!(char.IsLetterOrDigit(current) || current == '_'))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /// <summary>
+    /// æ ¡éªŒå·¥ä½œç°¿åã€æ•°æ®æ–‡ä»¶åå’Œç±»æ–‡ä»¶åä¸­çš„éæ³•å­—ç¬¦ã€‚
+    /// </summary>
+    private static void ValidateFileNamePart(
+        string name,
+        string label,
+        string workbookPath,
+        string worksheetName,
+        int row,
+        int column)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw Error(workbookPath, worksheetName, row, column, null, label + "ä¸ºç©º");
+        }
+        if (name != name.Trim())
+        {
+            throw Error(workbookPath, worksheetName, row, column, null, label + "é¦–å°¾ä¸èƒ½æœ‰ç©ºç™½");
+        }
+        if (name == "." || name == "..")
+        {
+            throw Error(workbookPath, worksheetName, row, column, null, label + "ä¸èƒ½æ˜¯ . æˆ– ..");
+        }
+        if (name.IndexOf("..", StringComparison.Ordinal) >= 0)
+        {
+            throw Error(workbookPath, worksheetName, row, column, null, label + "ä¸èƒ½åŒ…å« ..");
+        }
+        if (name.EndsWith(".", StringComparison.Ordinal) || name.EndsWith(" ", StringComparison.Ordinal))
+        {
+            throw Error(workbookPath, worksheetName, row, column, null, label + "ä¸èƒ½ä»¥ç‚¹æˆ–ç©ºæ ¼ç»“å°¾");
+        }
+
+        char[] invalidChars = Path.GetInvalidFileNameChars();
+        foreach (char current in name)
+        {
+            if (char.IsControl(current) || Array.IndexOf(invalidChars, current) >= 0)
+            {
+                throw Error(workbookPath, worksheetName, row, column, null,
+                    label + "åŒ…å«éæ³•æ–‡ä»¶åå­—ç¬¦ï¼šã€Œ" + current + "ã€");
             }
         }
 
-        return sb.ToString();
+        string stem = name;
+        int dotIndex = name.IndexOf('.');
+        if (dotIndex >= 0)
+        {
+            stem = name.Substring(0, dotIndex);
+        }
+        if (ReservedFileNames.Contains(stem))
+        {
+            throw Error(workbookPath, worksheetName, row, column, null,
+                label + "ä½¿ç”¨äº† Windows ä¿ç•™æ–‡ä»¶åï¼šã€Œ" + stem + "ã€");
+        }
+    }
+
+    private static bool IsUnderAssets(string absolutePath)
+    {
+        string assetsRoot = Path.GetFullPath(Application.dataPath);
+        string fullPath = Path.GetFullPath(absolutePath);
+        string prefix = assetsRoot + Path.DirectorySeparatorChar;
+        return fullPath.StartsWith(prefix, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static string AbsoluteToAssetPath(string absolutePath)
+    {
+        string assetsRoot = Path.GetFullPath(Application.dataPath);
+        string fullPath = Path.GetFullPath(absolutePath);
+        string prefix = assetsRoot + Path.DirectorySeparatorChar;
+        if (!fullPath.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
+        {
+            throw Error(null, null, 0, 0, null,
+                "è·¯å¾„ä¸åœ¨ Assets ä¸‹ï¼Œæ— æ³•å¯¼å…¥ AssetDatabaseï¼š" + absolutePath);
+        }
+        return "Assets/" + fullPath.Substring(prefix.Length).Replace('\\', '/');
+    }
+
+    private static bool PathsEqual(string first, string second)
+    {
+        string firstPath = Path.GetFullPath(first);
+        string secondPath = Path.GetFullPath(second);
+        string firstRoot = Path.GetPathRoot(firstPath);
+        string secondRoot = Path.GetPathRoot(secondPath);
+        if (!string.IsNullOrEmpty(firstRoot) && firstPath.Length > firstRoot.Length)
+        {
+            firstPath = firstPath.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+        }
+        if (!string.IsNullOrEmpty(secondRoot) && secondPath.Length > secondRoot.Length)
+        {
+            secondPath = secondPath.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+        }
+        return string.Equals(firstPath, secondPath, StringComparison.OrdinalIgnoreCase);
+    }
+
+    /// <summary>
+    /// æ„é€ å¸¦å®šä½ä¿¡æ¯çš„å¯¼å‡ºå¼‚å¸¸ï¼Œæ¶ˆæ¯ä½¿ç”¨æ–‡ä»¶/é¡µç­¾/è¡Œ/åˆ—/å­—æ®µæ ¼å¼ã€‚
+    /// </summary>
+    private static ConfigExportException Error(
+        string workbookPath,
+        string worksheetName,
+        int row,
+        int column,
+        string fieldName,
+        string detail,
+        Exception innerException = null)
+    {
+        StringBuilder message = new StringBuilder("é…ç½®å¯¼å‡ºå¤±è´¥");
+        if (!string.IsNullOrEmpty(workbookPath))
+        {
+            message.Append("ï¼šè¡¨ã€Œ").Append(Path.GetFileName(workbookPath)).Append("ã€");
+        }
+        if (!string.IsNullOrEmpty(worksheetName))
+        {
+            message.Append("é¡µç­¾ã€Œ").Append(worksheetName).Append("ã€");
+        }
+        if (row > 0)
+        {
+            message.Append("ç¬¬ ").Append(row).Append(" è¡Œ");
+        }
+        if (column > 0)
+        {
+            message.Append("ç¬¬ ").Append(column).Append(" åˆ—");
+        }
+        if (!string.IsNullOrEmpty(fieldName))
+        {
+            message.Append("ï¼ˆå­—æ®µã€Œ").Append(fieldName).Append("ã€ï¼‰");
+        }
+        message.Append("ï¼š").Append(detail);
+        return new ConfigExportException(
+            message.ToString(),
+            workbookPath,
+            worksheetName,
+            row,
+            column,
+            fieldName,
+            innerException);
+    }
+
+    /// <summary>å•ä¸ªå·¥ä½œè¡¨çš„å®Œæ•´å¯¼å‡ºè®¡åˆ’ã€‚</summary>
+    private sealed class SheetPlan
+    {
+        public string WorkbookPath;
+        public string WorkbookName;
+        public string WorksheetName;
+        public ExporterMode Mode;
+        public string ClassName;
+        public string DataFileName;
+        public string DataFilePath;
+        public string DataContent;
+        public string ClassFileName;
+        public string ClassFilePath;
+        public string ClassContent;
+        public string ResourcePath;
+        public int DataRowCount;
+    }
+
+    /// <summary>å•åˆ—å­—æ®µè®¡åˆ’ã€‚</summary>
+    private sealed class ColumnPlan
+    {
+        public int Column;
+        public string FieldName;
+        public string Type;
+        public string EndFlag;
+        public string Remark;
+        public bool InClass;
+        public bool InJson;
+    }
+
+    /// <summary>å¾…å‘å¸ƒæ–‡ä»¶ã€‚</summary>
+    private sealed class PlannedFile
+    {
+        public string TargetPath;
+        public string Content;
+        public string Description;
+        public string WorkbookPath;
+        public string WorksheetName;
+    }
+
+    /// <summary>å·²å†™å…¥æš‚å­˜æ–‡ä»¶ã€ç­‰å¾…æäº¤çš„äº§ç‰©ã€‚</summary>
+    private sealed class StagedFile
+    {
+        public PlannedFile File;
+        public string StagePath;
+    }
+
+    /// <summary>å·²æäº¤ã€å¯ç”¨äºå¤±è´¥å›æ»šçš„äº§ç‰©ã€‚</summary>
+    private sealed class CommittedFile
+    {
+        public PlannedFile File;
+        public bool Existed;
+        public string BackupPath;
     }
 }
+#endif

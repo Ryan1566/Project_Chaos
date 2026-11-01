@@ -1,0 +1,20 @@
+{
+    "datas": [
+        {
+            "Id": 1,
+            "widthTiles": 96,
+            "groundDepth": 6,
+            "playerSpawnX": -38,
+            "groundY": 0,
+            "workerCount": 4,
+            "workerMoveSpeed": 2,
+            "workSeconds": 8,
+            "restSeconds": 3,
+            "wanderMinSeconds": 2,
+            "wanderMaxSeconds": 5,
+            "plotSpacing": 18,
+            "firstPlotX": -27,
+            "groundTilePool": "Surface"
+        }
+    ]
+}

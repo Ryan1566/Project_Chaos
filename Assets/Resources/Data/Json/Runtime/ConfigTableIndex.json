@@ -1,0 +1,191 @@
+{
+    "schemaVersion": 1,
+    "tables": [
+        {
+            "className": "BuildingConfig",
+            "resourcePath": "Data/Json/Runtime/村庄养成_BuildingConfig",
+            "workbook": "村庄养成",
+            "worksheet": "Building"
+        },
+        {
+            "className": "EffectConfig",
+            "resourcePath": "Data/Json/Runtime/村庄养成_EffectConfig",
+            "workbook": "村庄养成",
+            "worksheet": "Effect"
+        },
+        {
+            "className": "FamilyTreeConfig",
+            "resourcePath": "Data/Json/Runtime/村庄养成_FamilyTreeConfig",
+            "workbook": "村庄养成",
+            "worksheet": "FamilyTree"
+        },
+        {
+            "className": "FamilyTreeEffectConfig",
+            "resourcePath": "Data/Json/Runtime/村庄养成_FamilyTreeEffectConfig",
+            "workbook": "村庄养成",
+            "worksheet": "FamilyTreeEffect"
+        },
+        {
+            "className": "ItemConfig",
+            "resourcePath": "Data/Json/Runtime/村庄养成_ItemConfig",
+            "workbook": "村庄养成",
+            "worksheet": "Item"
+        },
+        {
+            "className": "RetainerConfig",
+            "resourcePath": "Data/Json/Runtime/村庄养成_RetainerConfig",
+            "workbook": "村庄养成",
+            "worksheet": "Retainer"
+        },
+        {
+            "className": "VillageSceneConfig",
+            "resourcePath": "Data/Json/Runtime/村庄养成_VillageSceneConfig",
+            "workbook": "村庄养成",
+            "worksheet": "VillageScene"
+        },
+        {
+            "className": "VillageTextConfig",
+            "resourcePath": "Data/Json/Runtime/村庄养成_VillageTextConfig",
+            "workbook": "村庄养成",
+            "worksheet": "VillageText"
+        },
+        {
+            "className": "ChunkSlotConfig",
+            "resourcePath": "Data/Json/Runtime/局内地图_ChunkSlotConfig",
+            "workbook": "局内地图",
+            "worksheet": "ChunkSlot"
+        },
+        {
+            "className": "ChunkSocketConfig",
+            "resourcePath": "Data/Json/Runtime/局内地图_ChunkSocketConfig",
+            "workbook": "局内地图",
+            "worksheet": "ChunkSocket"
+        },
+        {
+            "className": "MapBiomeConfig",
+            "resourcePath": "Data/Json/Runtime/局内地图_MapBiomeConfig",
+            "workbook": "局内地图",
+            "worksheet": "MapBiome"
+        },
+        {
+            "className": "MapChunkConfig",
+            "resourcePath": "Data/Json/Runtime/局内地图_MapChunkConfig",
+            "workbook": "局内地图",
+            "worksheet": "MapChunk"
+        },
+        {
+            "className": "MapGenerationConfig",
+            "resourcePath": "Data/Json/Runtime/局内地图_MapGenerationConfig",
+            "workbook": "局内地图",
+            "worksheet": "MapGeneration"
+        },
+        {
+            "className": "MapLoadingConfig",
+            "resourcePath": "Data/Json/Runtime/局内地图_MapLoadingConfig",
+            "workbook": "局内地图",
+            "worksheet": "MapLoading"
+        },
+        {
+            "className": "MapPresetConfig",
+            "resourcePath": "Data/Json/Runtime/局内地图_MapPresetConfig",
+            "workbook": "局内地图",
+            "worksheet": "MapPreset"
+        },
+        {
+            "className": "PresetLayerConfig",
+            "resourcePath": "Data/Json/Runtime/局内地图_PresetLayerConfig",
+            "workbook": "局内地图",
+            "worksheet": "PresetLayer"
+        },
+        {
+            "className": "RunBehaviorConfig",
+            "resourcePath": "Data/Json/Runtime/局内地图_RunBehaviorConfig",
+            "workbook": "局内地图",
+            "worksheet": "RunBehavior"
+        },
+        {
+            "className": "RunInteractionConfig",
+            "resourcePath": "Data/Json/Runtime/局内地图_RunInteractionConfig",
+            "workbook": "局内地图",
+            "worksheet": "RunInteraction"
+        },
+        {
+            "className": "DropConfig",
+            "resourcePath": "Data/Json/Runtime/局内地图_DropConfig",
+            "workbook": "局内地图",
+            "worksheet": "Drop"
+        },
+        {
+            "className": "EraConfig",
+            "resourcePath": "Data/Json/Runtime/进程与通用_EraConfig",
+            "workbook": "进程与通用",
+            "worksheet": "Era"
+        },
+        {
+            "className": "DepthConfig",
+            "resourcePath": "Data/Json/Runtime/进程与通用_DepthConfig",
+            "workbook": "进程与通用",
+            "worksheet": "Depth"
+        },
+        {
+            "className": "LoadingTableConfig",
+            "resourcePath": "Data/Json/Runtime/进程与通用_LoadingTableConfig",
+            "workbook": "进程与通用",
+            "worksheet": "LoadingTable"
+        },
+        {
+            "className": "TestTableConfig",
+            "resourcePath": "Data/Json/Runtime/进程与通用_TestTableConfig",
+            "workbook": "进程与通用",
+            "worksheet": "TestTable"
+        },
+        {
+            "className": "EventConfig",
+            "resourcePath": "Data/Json/Runtime/局外事务_EventConfig",
+            "workbook": "局外事务",
+            "worksheet": "Event"
+        },
+        {
+            "className": "EventOptionConfig",
+            "resourcePath": "Data/Json/Runtime/局外事务_EventOptionConfig",
+            "workbook": "局外事务",
+            "worksheet": "EventOption"
+        },
+        {
+            "className": "OfficeTaskConfig",
+            "resourcePath": "Data/Json/Runtime/局外事务_OfficeTaskConfig",
+            "workbook": "局外事务",
+            "worksheet": "OfficeTaskConfig"
+        },
+        {
+            "className": "OfficeTaskOptionConfig",
+            "resourcePath": "Data/Json/Runtime/局外事务_OfficeTaskOptionConfig",
+            "workbook": "局外事务",
+            "worksheet": "OfficeTaskOptionConfig"
+        },
+        {
+            "className": "OfficeEraGateConfig",
+            "resourcePath": "Data/Json/Runtime/局外事务_OfficeEraGateConfig",
+            "workbook": "局外事务",
+            "worksheet": "OfficeEraGateConfig"
+        },
+        {
+            "className": "WorldMapConfig",
+            "resourcePath": "Data/Json/Runtime/WorldMap_世界观地图表_WorldMapConfig",
+            "workbook": "WorldMap_世界观地图表",
+            "worksheet": "WorldMapSheet0"
+        },
+        {
+            "className": "WorldFactionConfig",
+            "resourcePath": "Data/Json/Runtime/WorldFaction_势力范围配置表_WorldFactionConfig",
+            "workbook": "WorldFaction_势力范围配置表",
+            "worksheet": "WorldFactionSheet0"
+        },
+        {
+            "className": "WorldFactionLabelConfig",
+            "resourcePath": "Data/Json/Runtime/WorldFaction_势力范围配置表_WorldFactionLabelConfig",
+            "workbook": "WorldFaction_势力范围配置表.xlsx",
+            "worksheet": "历史名录派生"
+        }
+    ]
+}

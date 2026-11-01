@@ -142,7 +142,7 @@ public static class VillageFacilitiesVerification
         Check(Top==office&&!office.transform.Find("OfficeCard/OfficeTasks").gameObject.activeSelf,"tax secondary information page");
         yield return Press(Key.Escape);Check(Top==office&&office.transform.Find("OfficeCard/OfficeTasks").gameObject.activeSelf,"Esc from tax returns one level");
         Check(snapshot==JsonUtility.ToJson(GameSession.Instance.LoadedPayload),"tax page and back grant no income and mutate no payload");
-        Click("OfficeTasks");yield return new WaitForSecondsRealtime(.3f);Check(Top==office&&!office.transform.Find("OfficeCard/OfficeTasks").gameObject.activeSelf,"empty task queue displays information without generating events");yield return Press(Key.Escape);Check(Top==office&&office.transform.Find("OfficeCard/OfficeTasks").gameObject.activeSelf,"empty tasks return to office");
+        Click("OfficeTasks");yield return new WaitForSecondsRealtime(.3f);Check(Top is OfficeTasksPanel,"office opens current four-category task interface");yield return Press(Key.Escape);Check(Top==office,"tasks return to office");
         uint money=InventoryService.Instance.GetResource(InventoryService.ResourceKind.Money);var counts=InventoryService.Instance.GetStacks().ToDictionary(s=>s.itemId,s=>s.count);
         Click("OfficeTrade");yield return new WaitForSecondsRealtime(.3f);Check(Top is MarketPanel,"office trade uses existing market");Click("Btn_Buy");yield return null;
         var added=InventoryService.Instance.GetStacks().FirstOrDefault(s=>s.count>(counts.TryGetValue(s.itemId,out var old)?old:0));
@@ -185,7 +185,7 @@ public static class VillageFacilitiesVerification
         Check(world==null&&VillageSceneBootstrap.Current.Facilities.Length==3&&VillageSceneBootstrap.Current.Workers.Length==4,"return cleans old village and recreates only three civic facilities");
         if(Top is EventPanel)yield return Press(Key.Escape);
         yield return Open("office");Check(Top is VillageOfficePanel,"office works after expedition return");
-        Check(EventService.Instance.HasPending,"existing return flow queued events");Click("OfficeTasks");yield return new WaitForSecondsRealtime(.3f);Check(Top is EventPanel,"office opens existing pending event queue");yield return Press(Key.Escape);Check(Top is VillageOfficePanel,"pending event panel returns to office");yield return Press(Key.Escape);
+        Check(EventService.Instance.HasPending,"existing return flow queued events");Click("OfficeTasks");yield return new WaitForSecondsRealtime(.3f);Check(Top is OfficeTasksPanel,"office opens task interface after return");var reports=Top.GetComponentsInChildren<Button>().Single(b=>b.name=="LegacyButton");reports.onClick.Invoke();yield return new WaitForSecondsRealtime(.3f);Check(Top is EventPanel,"task interface opens existing pending event queue");yield return Press(Key.Escape);Check(Top is OfficeTasksPanel,"pending event panel returns to task interface");yield return Press(Key.Escape);yield return Press(Key.Escape);
         Check(SaveSlotService.SavesDirectory==storage,"all persistence stayed in owned temporary directory");
     }
 }

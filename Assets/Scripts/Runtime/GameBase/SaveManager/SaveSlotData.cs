@@ -121,6 +121,27 @@ public class SavePayload
     /// 可重复事件（`Repeatable=true`）**不写这里**，它靠运行时不落盘的会话集合去重。
     /// </summary>
     public List<uint> firedEvents = new List<uint>();
+
+    /// <summary>办事单位任务与三项村庄指标，旧档缺失时使用初始空状态。</summary>
+    public List<OfficeTaskSave> officeTasks = new List<OfficeTaskSave>();
+    public int reputation;
+    public int influence;
+    public int villageDevelopment;
+    public double officeClockSeconds;
+}
+
+/// <summary>每个任务保留当前轮次及永久完成记录，重复任务不清除历史完成次数。</summary>
+[Serializable]
+public class OfficeTaskSave
+{
+    public uint taskId;
+    public uint cycle = 1;
+    public OfficeTaskStatus status;
+    public double deadlineClock;
+    public double nextActivationClock;
+    public uint startedClears;
+    public uint selectedOptionId;
+    public uint completedCycles;
 }
 
 /// <summary>一个存档文件的根对象（= 落盘的整个 Json）。</summary>

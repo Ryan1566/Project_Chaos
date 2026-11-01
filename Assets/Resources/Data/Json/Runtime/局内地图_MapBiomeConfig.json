@@ -8,7 +8,7 @@
             "retryMax": 20,
             "enable": true,
             "EnemyHpMul": 1.2,
-            "EnemyDmgMul": 1.0,
+            "EnemyDmgMul": 1,
             "DropGroupBase": 1
         },
         {
@@ -18,8 +18,8 @@
             "layer": 2,
             "retryMax": 20,
             "enable": true,
-            "EnemyHpMul": 1.0,
-            "EnemyDmgMul": 1.0,
+            "EnemyHpMul": 1,
+            "EnemyDmgMul": 1,
             "DropGroupBase": 1
         },
         {

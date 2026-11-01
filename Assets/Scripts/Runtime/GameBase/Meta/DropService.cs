@@ -27,7 +27,7 @@ public class DropService : SingletonBase<DropService>
         _loaded = true;
 
         string path = GlobalPath.data_JsonPathToRead + "DropConfig";
-        TextAsset asset = Resources.Load<TextAsset>(path);
+        TextAsset asset = ConfigTableAssets.Load(path);
         if (asset == null)
         {
             ChaosLog.Warn(LogChannel.Config, "[掉落] 找不到 " + path);

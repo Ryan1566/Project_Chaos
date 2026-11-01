@@ -1,17 +1,46 @@
-using System;	
+using System;
 
-[Serializable]	
+[Serializable]
 public class WorldMapConfig
 {
-	public uint Index;//序号
-	public uint MapId;//地图ID
-	public uint Kind;//条目类别
-	public uint Type;//地点类型
-	public uint RefId;//地点ID
-	public float X;//横坐标
-	public float Y;//纵坐标
-	public float Scale;//图标缩放
-	public uint Layer;//显示层级
-	public bool Enable;//是否启用
+    /// <summary>
+    /// 序号
+    /// </summary>
+    public uint Index;
+    /// <summary>
+    /// 地图ID
+    /// </summary>
+    public uint MapId;
+    /// <summary>
+    /// 条目类别
+    /// </summary>
+    public uint Kind;
+    /// <summary>
+    /// 地点类型
+    /// </summary>
+    public uint Type;
+    /// <summary>
+    /// 地点ID
+    /// </summary>
+    public uint RefId;
+    /// <summary>
+    /// 横坐标
+    /// </summary>
+    public float X;
+    /// <summary>
+    /// 纵坐标
+    /// </summary>
+    public float Y;
+    /// <summary>
+    /// 图标缩放
+    /// </summary>
+    public float Scale;
+    /// <summary>
+    /// 显示层级
+    /// </summary>
+    public uint Layer;
+    /// <summary>
+    /// 是否启用
+    /// </summary>
+    public bool Enable;
 }
-

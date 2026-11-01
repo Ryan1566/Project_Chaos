@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>Runs the existing whole-second meta timers in a real save session.</summary>
@@ -9,6 +10,8 @@ public sealed class MetaRuntimeDriver : MonoBehaviour
     private float _elapsed, _saveElapsed;
     private string _savedSnapshot;
     private int _contextId;
+    private double _officeElapsed;
+    private bool _officeReady;
     private static bool _publishing;
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
@@ -40,10 +43,21 @@ public sealed class MetaRuntimeDriver : MonoBehaviour
             _payload = current;
             _contextId = GameSession.Instance.ContextId;
             _elapsed = _saveElapsed = 0;
+            _officeElapsed=0;_officeReady=false;
             _savedSnapshot = JsonUtility.ToJson(current);
         }
         _elapsed += Time.deltaTime;
-        _saveElapsed += Time.deltaTime;
+        _saveElapsed += Time.unscaledDeltaTime;
+        // 普通面板不冻结任务时限；暂停菜单（含其上层设置页）及读条阶段不推进。
+        bool taskWorldReady=VillageSceneBootstrap.IsReady||RunEncounter.IsSceneReady;
+        var ui=UIManager.Instance;
+        bool menuPaused=ui.HasPanelInStack(PanelType.PausePanel);
+        if(taskWorldReady&&!menuPaused)
+        {
+            if(!_officeReady){OfficeTaskService.Instance.RefreshTriggers();_officeReady=true;}
+            _officeElapsed+=Time.unscaledDeltaTime;
+            if(_officeElapsed>=1){double seconds=Math.Floor(_officeElapsed);_officeElapsed-=seconds;OfficeTaskService.Instance.Tick(seconds);}
+        }
         if (_elapsed >= 1)
         {
             // Existing timers store uint seconds: fractional frame deltas must be accumulated first.

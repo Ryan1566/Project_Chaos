@@ -1,18 +1,50 @@
-using System;	
+using System;
 
-[Serializable]	
+[Serializable]
 public class BuildingConfig
 {
-	public uint Index;//序号
-	public uint BuildingId;//建筑ID
-	public string NameKey;//名称key
-	public uint Level;//等级
-	public uint BuildSeconds;//建造秒数
-	public uint OutputResourceType;//产出资源类型
-	public uint OutputAmount;//每次产出数量
-	public uint HarvestSeconds;//收获周期秒
-	public uint CostResourceType;//建造消耗资源类型
-	public uint CostAmount;//建造消耗数量
-	public bool Enable;//是否启用
+    /// <summary>
+    /// 序号
+    /// </summary>
+    public uint Index;
+    /// <summary>
+    /// 建筑ID
+    /// </summary>
+    public uint BuildingId;
+    /// <summary>
+    /// 名称key
+    /// </summary>
+    public string NameKey;
+    /// <summary>
+    /// 等级
+    /// </summary>
+    public uint Level;
+    /// <summary>
+    /// 建造秒数
+    /// </summary>
+    public uint BuildSeconds;
+    /// <summary>
+    /// 产出资源类型
+    /// </summary>
+    public uint OutputResourceType;
+    /// <summary>
+    /// 每次产出数量
+    /// </summary>
+    public uint OutputAmount;
+    /// <summary>
+    /// 收获周期秒
+    /// </summary>
+    public uint HarvestSeconds;
+    /// <summary>
+    /// 建造消耗资源类型
+    /// </summary>
+    public uint CostResourceType;
+    /// <summary>
+    /// 建造消耗数量
+    /// </summary>
+    public uint CostAmount;
+    /// <summary>
+    /// 是否启用
+    /// </summary>
+    public bool Enable;
 }
-

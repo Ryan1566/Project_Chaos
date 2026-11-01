@@ -1,15 +1,38 @@
-using System;	
+using System;
 
-[Serializable]	
+[Serializable]
 public class FamilyTreeConfig
 {
-	public uint Index;//序号
-	public uint Board;//板块
-	public uint OrderInBoard;//板块内顺序
-	public string NameKey;//名称key
-	public uint PrereqNodeId;//前置节点
-	public uint CostType;//消耗类型
-	public uint CostValue;//消耗数量
-	public bool Enable;//是否启用
+    /// <summary>
+    /// 序号
+    /// </summary>
+    public uint Index;
+    /// <summary>
+    /// 板块
+    /// </summary>
+    public uint Board;
+    /// <summary>
+    /// 板块内顺序
+    /// </summary>
+    public uint OrderInBoard;
+    /// <summary>
+    /// 名称key
+    /// </summary>
+    public string NameKey;
+    /// <summary>
+    /// 前置节点
+    /// </summary>
+    public uint PrereqNodeId;
+    /// <summary>
+    /// 消耗类型
+    /// </summary>
+    public uint CostType;
+    /// <summary>
+    /// 消耗数量
+    /// </summary>
+    public uint CostValue;
+    /// <summary>
+    /// 是否启用
+    /// </summary>
+    public bool Enable;
 }
-

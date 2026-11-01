@@ -29,7 +29,7 @@ public static class WorldFactionLabelExport
                 throw new InvalidDataException("势力名称锚点不在本国领地内：" + era.stage + "/" + faction.name);
             output.datas.Add(new WorldFactionLabelConfig { Stage = era.stage, FactionId = faction.id, Name = faction.name, X = point.x, Y = point.y });
         }
-        const string path = "Assets/Resources/Data/Json/Runtime/WorldFactionLabelConfig.json";
+        string path = "Assets/Resources/" + ConfigTableAssets.Resolve(nameof(WorldFactionLabelConfig)) + ".json";
         File.WriteAllText(path, JsonUtility.ToJson(output, true));
         AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceUpdate);
         WorldFactionLabelCatalog.Reload();

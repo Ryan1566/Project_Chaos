@@ -1,13 +1,30 @@
-using System;	
+using System;
 
-[Serializable]	
+[Serializable]
 public class EffectConfig
 {
-	public uint Index;//序号
-	public uint EffectType;//效果类型
-	public uint Target;//目标
-	public float Value;//数值
-	public string Note;//说明
-	public bool Enable;//是否启用
+    /// <summary>
+    /// 序号
+    /// </summary>
+    public uint Index;
+    /// <summary>
+    /// 效果类型
+    /// </summary>
+    public uint EffectType;
+    /// <summary>
+    /// 目标
+    /// </summary>
+    public uint Target;
+    /// <summary>
+    /// 数值
+    /// </summary>
+    public float Value;
+    /// <summary>
+    /// 说明
+    /// </summary>
+    public string Note;
+    /// <summary>
+    /// 是否启用
+    /// </summary>
+    public bool Enable;
 }
-

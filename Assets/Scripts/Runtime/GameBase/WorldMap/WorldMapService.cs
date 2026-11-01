@@ -294,7 +294,7 @@ public class WorldMapService : SingletonBase<WorldMapService>
         //Config 模式的产物名 = 表名 + "Config.json"，路径取自 GlobalPath（单一真相源）
         string path = GlobalPath.data_JsonPathToRead + tableName + "Config";
 
-        TextAsset asset = Resources.Load<TextAsset>(path);
+        TextAsset asset = ConfigTableAssets.Load(path);
         if (asset == null)
         {
             ChaosLog.Warn(LogChannel.Config, "[局外地图] 配置表缺失：Resources/" + path + ".json（按空表处理）");

@@ -1,19 +1,54 @@
-using System;	
+using System;
 
-[Serializable]	
+[Serializable]
 public class EventOptionConfig
 {
-	public uint Index;//序号
-	public uint EventId;//事件ID
-	public uint OptionIndex;//选项序号
-	public string OptionText;//选项文本
-	public uint GiveResourceType;//给资源类型
-	public uint GiveResourceAmount;//给资源数量
-	public uint GiveItemId;//给物品ID
-	public uint GiveItemCount;//给物品数量
-	public uint GiveRetainerId;//给门客ID
-	public int ConfidenceDelta;//信心变化
-	public uint EffectId;//效果ID
-	public bool Enable;//是否启用
+    /// <summary>
+    /// 序号
+    /// </summary>
+    public uint Index;
+    /// <summary>
+    /// 事件ID
+    /// </summary>
+    public uint EventId;
+    /// <summary>
+    /// 选项序号
+    /// </summary>
+    public uint OptionIndex;
+    /// <summary>
+    /// 选项文本
+    /// </summary>
+    public string OptionText;
+    /// <summary>
+    /// 给资源类型
+    /// </summary>
+    public uint GiveResourceType;
+    /// <summary>
+    /// 给资源数量
+    /// </summary>
+    public uint GiveResourceAmount;
+    /// <summary>
+    /// 给物品ID
+    /// </summary>
+    public uint GiveItemId;
+    /// <summary>
+    /// 给物品数量
+    /// </summary>
+    public uint GiveItemCount;
+    /// <summary>
+    /// 给门客ID
+    /// </summary>
+    public uint GiveRetainerId;
+    /// <summary>
+    /// 信心变化
+    /// </summary>
+    public int ConfidenceDelta;
+    /// <summary>
+    /// 效果ID
+    /// </summary>
+    public uint EffectId;
+    /// <summary>
+    /// 是否启用
+    /// </summary>
+    public bool Enable;
 }
-

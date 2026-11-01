@@ -1,14 +1,34 @@
-using System;	
+using System;
 
-[Serializable]	
+[Serializable]
 public class RunInteractionConfig
 {
-	public uint Id;//文案行编号
-	public string key;//稳定文案键
-	public string zhCN;//简体中文
-	public string enUS;//英语
-	public string zhTW;//繁体中文
-	public string jaJP;//日语
-	public string koKR;//韩语
+    /// <summary>
+    /// 文案行编号
+    /// </summary>
+    public uint Id;
+    /// <summary>
+    /// 稳定文案键
+    /// </summary>
+    public string key;
+    /// <summary>
+    /// 简体中文
+    /// </summary>
+    public string zhCN;
+    /// <summary>
+    /// 英语
+    /// </summary>
+    public string enUS;
+    /// <summary>
+    /// 繁体中文
+    /// </summary>
+    public string zhTW;
+    /// <summary>
+    /// 日语
+    /// </summary>
+    public string jaJP;
+    /// <summary>
+    /// 韩语
+    /// </summary>
+    public string koKR;
 }
-

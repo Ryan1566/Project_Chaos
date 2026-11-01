@@ -64,7 +64,7 @@ public class VillageService : SingletonBase<VillageService>
         if (_loaded) return;
         _loaded = true;
         string path = GlobalPath.data_JsonPathToRead + "BuildingConfig";
-        TextAsset asset = Resources.Load<TextAsset>(path);
+        TextAsset asset = ConfigTableAssets.Load(path);
         if (asset == null)
         {
             ChaosLog.Warn(LogChannel.Config, "[村庄] 找不到 " + path);

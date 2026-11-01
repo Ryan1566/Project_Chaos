@@ -17,7 +17,7 @@ public class FamilyTreeService : SingletonBase<FamilyTreeService>
         if (_loaded) return;
         _loaded = true;
         string path = GlobalPath.data_JsonPathToRead + "FamilyTreeConfig";
-        TextAsset asset = Resources.Load<TextAsset>(path);
+        TextAsset asset = ConfigTableAssets.Load(path);
         if (asset == null)
         {
             ChaosLog.Warn(LogChannel.Config, "[家族树] 找不到 " + path);

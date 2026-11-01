@@ -7,7 +7,7 @@
             "RegionId": 1,
             "PointOrder": 1,
             "X": 0.3747,
-            "Y": 0.1290,
+            "Y": 0.129,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -18,7 +18,7 @@
             "RegionId": 1,
             "PointOrder": 2,
             "X": 0.4349,
-            "Y": 0.1290,
+            "Y": 0.129,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -40,7 +40,7 @@
             "RegionId": 1,
             "PointOrder": 4,
             "X": 0.5089,
-            "Y": 0.2750,
+            "Y": 0.275,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -116,7 +116,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 11,
-            "X": 0.4950,
+            "X": 0.495,
             "Y": 0.5427,
             "Color": "#2F3A4F",
             "Enable": true
@@ -139,7 +139,7 @@
             "RegionId": 1,
             "PointOrder": 13,
             "X": 0.5482,
-            "Y": 0.5500,
+            "Y": 0.55,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -150,7 +150,7 @@
             "RegionId": 1,
             "PointOrder": 14,
             "X": 0.5366,
-            "Y": 0.5640,
+            "Y": 0.564,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -172,7 +172,7 @@
             "RegionId": 1,
             "PointOrder": 16,
             "X": 0.4857,
-            "Y": 0.6340,
+            "Y": 0.634,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -216,7 +216,7 @@
             "RegionId": 1,
             "PointOrder": 20,
             "X": 0.2776,
-            "Y": 0.7070,
+            "Y": 0.707,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -248,7 +248,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 23,
-            "X": 0.0880,
+            "X": 0.088,
             "Y": 0.4941,
             "Color": "#2F3A4F",
             "Enable": true
@@ -270,7 +270,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 25,
-            "X": 0.0880,
+            "X": 0.088,
             "Y": 0.3724,
             "Color": "#2F3A4F",
             "Enable": true
@@ -315,7 +315,7 @@
             "RegionId": 1,
             "PointOrder": 29,
             "X": 0.2545,
-            "Y": 0.1290,
+            "Y": 0.129,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -381,7 +381,7 @@
             "RegionId": 1,
             "PointOrder": 5,
             "X": 0.4857,
-            "Y": 0.6340,
+            "Y": 0.634,
             "Color": "#4A6FA5",
             "Enable": true
         },
@@ -403,7 +403,7 @@
             "RegionId": 1,
             "PointOrder": 7,
             "X": 0.5366,
-            "Y": 0.5640,
+            "Y": 0.564,
             "Color": "#4A6FA5",
             "Enable": true
         },
@@ -579,7 +579,7 @@
             "RegionId": 1,
             "PointOrder": 6,
             "X": 0.7031,
-            "Y": 0.4880,
+            "Y": 0.488,
             "Color": "#B23A48",
             "Enable": true
         },
@@ -589,7 +589,7 @@
             "FactionId": 3,
             "RegionId": 1,
             "PointOrder": 7,
-            "X": 0.6430,
+            "X": 0.643,
             "Y": 0.4758,
             "Color": "#B23A48",
             "Enable": true
@@ -678,7 +678,7 @@
             "RegionId": 1,
             "PointOrder": 15,
             "X": 0.5089,
-            "Y": 0.2750,
+            "Y": 0.275,
             "Color": "#B23A48",
             "Enable": true
         },
@@ -700,7 +700,7 @@
             "RegionId": 1,
             "PointOrder": 17,
             "X": 0.4349,
-            "Y": 0.1290,
+            "Y": 0.129,
             "Color": "#B23A48",
             "Enable": true
         },
@@ -710,7 +710,7 @@
             "FactionId": 3,
             "RegionId": 1,
             "PointOrder": 18,
-            "X": 0.4210,
+            "X": 0.421,
             "Y": 0.0803,
             "Color": "#B23A48",
             "Enable": true
@@ -743,7 +743,7 @@
             "FactionId": 3,
             "RegionId": 1,
             "PointOrder": 21,
-            "X": 0.7910,
+            "X": 0.791,
             "Y": 0.1107,
             "Color": "#B23A48",
             "Enable": true
@@ -832,7 +832,7 @@
             "RegionId": 1,
             "PointOrder": 29,
             "X": 0.9198,
-            "Y": 0.1900,
+            "Y": 0.19,
             "Color": "#B23A48",
             "Enable": true
         },
@@ -886,7 +886,7 @@
             "FactionId": 3,
             "RegionId": 1,
             "PointOrder": 34,
-            "X": 0.9190,
+            "X": 0.919,
             "Y": 0.2045,
             "Color": "#B23A48",
             "Enable": true
@@ -952,7 +952,7 @@
             "FactionId": 3,
             "RegionId": 1,
             "PointOrder": 40,
-            "X": 0.9320,
+            "X": 0.932,
             "Y": 0.2222,
             "Color": "#B23A48",
             "Enable": true
@@ -975,7 +975,7 @@
             "RegionId": 1,
             "PointOrder": 42,
             "X": 0.9177,
-            "Y": 0.2390,
+            "Y": 0.239,
             "Color": "#B23A48",
             "Enable": true
         },
@@ -985,7 +985,7 @@
             "FactionId": 3,
             "RegionId": 1,
             "PointOrder": 43,
-            "X": 0.9150,
+            "X": 0.915,
             "Y": 0.2411,
             "Color": "#B23A48",
             "Enable": true
@@ -1085,7 +1085,7 @@
             "RegionId": 1,
             "PointOrder": 52,
             "X": 0.8746,
-            "Y": 0.2390,
+            "Y": 0.239,
             "Color": "#B23A48",
             "Enable": true
         },
@@ -1107,7 +1107,7 @@
             "RegionId": 1,
             "PointOrder": 54,
             "X": 0.8686,
-            "Y": 0.2390,
+            "Y": 0.239,
             "Color": "#B23A48",
             "Enable": true
         },
@@ -1117,7 +1117,7 @@
             "FactionId": 3,
             "RegionId": 1,
             "PointOrder": 55,
-            "X": 0.8680,
+            "X": 0.868,
             "Y": 0.2387,
             "Color": "#B23A48",
             "Enable": true
@@ -1151,7 +1151,7 @@
             "RegionId": 1,
             "PointOrder": 58,
             "X": 0.8596,
-            "Y": 0.2410,
+            "Y": 0.241,
             "Color": "#B23A48",
             "Enable": true
         },
@@ -1205,7 +1205,7 @@
             "FactionId": 3,
             "RegionId": 1,
             "PointOrder": 63,
-            "X": 0.8640,
+            "X": 0.864,
             "Y": 0.2578,
             "Color": "#B23A48",
             "Enable": true
@@ -1271,7 +1271,7 @@
             "FactionId": 3,
             "RegionId": 1,
             "PointOrder": 69,
-            "X": 0.8930,
+            "X": 0.893,
             "Y": 0.2653,
             "Color": "#B23A48",
             "Enable": true
@@ -1304,7 +1304,7 @@
             "FactionId": 3,
             "RegionId": 1,
             "PointOrder": 72,
-            "X": 0.8990,
+            "X": 0.899,
             "Y": 0.2747,
             "Color": "#B23A48",
             "Enable": true
@@ -1326,7 +1326,7 @@
             "FactionId": 3,
             "RegionId": 1,
             "PointOrder": 74,
-            "X": 0.9170,
+            "X": 0.917,
             "Y": 0.2875,
             "Color": "#B23A48",
             "Enable": true
@@ -1371,7 +1371,7 @@
             "RegionId": 1,
             "PointOrder": 78,
             "X": 0.9322,
-            "Y": 0.2940,
+            "Y": 0.294,
             "Color": "#B23A48",
             "Enable": true
         },
@@ -1414,7 +1414,7 @@
             "FactionId": 3,
             "RegionId": 1,
             "PointOrder": 82,
-            "X": 0.9280,
+            "X": 0.928,
             "Y": 0.3056,
             "Color": "#B23A48",
             "Enable": true
@@ -1425,7 +1425,7 @@
             "FactionId": 3,
             "RegionId": 1,
             "PointOrder": 83,
-            "X": 0.9150,
+            "X": 0.915,
             "Y": 0.3147,
             "Color": "#B23A48",
             "Enable": true
@@ -1502,8 +1502,8 @@
             "FactionId": 3,
             "RegionId": 1,
             "PointOrder": 90,
-            "X": 0.8870,
-            "Y": 0.3370,
+            "X": 0.887,
+            "Y": 0.337,
             "Color": "#B23A48",
             "Enable": true
         },
@@ -1646,7 +1646,7 @@
             "RegionId": 1,
             "PointOrder": 103,
             "X": 0.8537,
-            "Y": 0.3580,
+            "Y": 0.358,
             "Color": "#B23A48",
             "Enable": true
         },
@@ -1701,7 +1701,7 @@
             "RegionId": 1,
             "PointOrder": 108,
             "X": 0.8771,
-            "Y": 0.3690,
+            "Y": 0.369,
             "Color": "#B23A48",
             "Enable": true
         },
@@ -1711,7 +1711,7 @@
             "FactionId": 3,
             "RegionId": 1,
             "PointOrder": 109,
-            "X": 0.8810,
+            "X": 0.881,
             "Y": 0.3695,
             "Color": "#B23A48",
             "Enable": true
@@ -1723,7 +1723,7 @@
             "RegionId": 1,
             "PointOrder": 110,
             "X": 0.8875,
-            "Y": 0.3680,
+            "Y": 0.368,
             "Color": "#B23A48",
             "Enable": true
         },
@@ -1755,7 +1755,7 @@
             "FactionId": 3,
             "RegionId": 1,
             "PointOrder": 113,
-            "X": 0.8970,
+            "X": 0.897,
             "Y": 0.3629,
             "Color": "#B23A48",
             "Enable": true
@@ -1821,7 +1821,7 @@
             "FactionId": 3,
             "RegionId": 1,
             "PointOrder": 119,
-            "X": 0.9210,
+            "X": 0.921,
             "Y": 0.3539,
             "Color": "#B23A48",
             "Enable": true
@@ -1921,7 +1921,7 @@
             "RegionId": 1,
             "PointOrder": 128,
             "X": 0.8992,
-            "Y": 0.3800,
+            "Y": 0.38,
             "Color": "#B23A48",
             "Enable": true
         },
@@ -1997,7 +1997,7 @@
             "FactionId": 3,
             "RegionId": 1,
             "PointOrder": 135,
-            "X": 0.8900,
+            "X": 0.89,
             "Y": 0.4071,
             "Color": "#B23A48",
             "Enable": true
@@ -2074,7 +2074,7 @@
             "FactionId": 3,
             "RegionId": 1,
             "PointOrder": 142,
-            "X": 0.8720,
+            "X": 0.872,
             "Y": 0.4561,
             "Color": "#B23A48",
             "Enable": true
@@ -2184,7 +2184,7 @@
             "FactionId": 3,
             "RegionId": 1,
             "PointOrder": 152,
-            "X": 0.8320,
+            "X": 0.832,
             "Y": 0.5043,
             "Color": "#B23A48",
             "Enable": true
@@ -2404,7 +2404,7 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 16,
-            "X": 0.8230,
+            "X": 0.823,
             "Y": 0.5585,
             "Color": "#2E8B57",
             "Enable": true
@@ -2504,7 +2504,7 @@
             "RegionId": 1,
             "PointOrder": 25,
             "X": 0.8466,
-            "Y": 0.5850,
+            "Y": 0.585,
             "Color": "#2E8B57",
             "Enable": true
         },
@@ -2525,7 +2525,7 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 27,
-            "X": 0.8500,
+            "X": 0.85,
             "Y": 0.5885,
             "Color": "#2E8B57",
             "Enable": true
@@ -2625,7 +2625,7 @@
             "RegionId": 1,
             "PointOrder": 36,
             "X": 0.8556,
-            "Y": 0.6120,
+            "Y": 0.612,
             "Color": "#2E8B57",
             "Enable": true
         },
@@ -2647,7 +2647,7 @@
             "RegionId": 1,
             "PointOrder": 38,
             "X": 0.8599,
-            "Y": 0.6170,
+            "Y": 0.617,
             "Color": "#2E8B57",
             "Enable": true
         },
@@ -2679,7 +2679,7 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 41,
-            "X": 0.8680,
+            "X": 0.868,
             "Y": 0.6204,
             "Color": "#2E8B57",
             "Enable": true
@@ -2702,7 +2702,7 @@
             "RegionId": 1,
             "PointOrder": 43,
             "X": 0.8747,
-            "Y": 0.6190,
+            "Y": 0.619,
             "Color": "#2E8B57",
             "Enable": true
         },
@@ -2855,7 +2855,7 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 57,
-            "X": 0.8930,
+            "X": 0.893,
             "Y": 0.6451,
             "Color": "#2E8B57",
             "Enable": true
@@ -2966,7 +2966,7 @@
             "RegionId": 1,
             "PointOrder": 67,
             "X": 0.9445,
-            "Y": 0.6650,
+            "Y": 0.665,
             "Color": "#2E8B57",
             "Enable": true
         },
@@ -3009,7 +3009,7 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 71,
-            "X": 0.9600,
+            "X": 0.96,
             "Y": 0.6631,
             "Color": "#2E8B57",
             "Enable": true
@@ -3043,7 +3043,7 @@
             "RegionId": 1,
             "PointOrder": 74,
             "X": 0.9622,
-            "Y": 0.6650,
+            "Y": 0.665,
             "Color": "#2E8B57",
             "Enable": true
         },
@@ -3053,7 +3053,7 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 75,
-            "X": 0.9640,
+            "X": 0.964,
             "Y": 0.6689,
             "Color": "#2E8B57",
             "Enable": true
@@ -3075,8 +3075,8 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 77,
-            "X": 0.9680,
-            "Y": 0.6740,
+            "X": 0.968,
+            "Y": 0.674,
             "Color": "#2E8B57",
             "Enable": true
         },
@@ -3086,7 +3086,7 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 78,
-            "X": 0.9640,
+            "X": 0.964,
             "Y": 0.6739,
             "Color": "#2E8B57",
             "Enable": true
@@ -3131,7 +3131,7 @@
             "RegionId": 1,
             "PointOrder": 82,
             "X": 0.9492,
-            "Y": 0.6770,
+            "Y": 0.677,
             "Color": "#2E8B57",
             "Enable": true
         },
@@ -3153,7 +3153,7 @@
             "RegionId": 1,
             "PointOrder": 84,
             "X": 0.9394,
-            "Y": 0.6770,
+            "Y": 0.677,
             "Color": "#2E8B57",
             "Enable": true
         },
@@ -3174,7 +3174,7 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 86,
-            "X": 0.9290,
+            "X": 0.929,
             "Y": 0.6779,
             "Color": "#2E8B57",
             "Enable": true
@@ -3196,7 +3196,7 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 88,
-            "X": 0.9220,
+            "X": 0.922,
             "Y": 0.6817,
             "Color": "#2E8B57",
             "Enable": true
@@ -3240,7 +3240,7 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 92,
-            "X": 0.9010,
+            "X": 0.901,
             "Y": 0.6943,
             "Color": "#2E8B57",
             "Enable": true
@@ -3328,7 +3328,7 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 100,
-            "X": 0.8570,
+            "X": 0.857,
             "Y": 0.6705,
             "Color": "#2E8B57",
             "Enable": true
@@ -3372,7 +3372,7 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 104,
-            "X": 0.8310,
+            "X": 0.831,
             "Y": 0.6569,
             "Color": "#2E8B57",
             "Enable": true
@@ -3417,7 +3417,7 @@
             "RegionId": 1,
             "PointOrder": 108,
             "X": 0.8123,
-            "Y": 0.6620,
+            "Y": 0.662,
             "Color": "#2E8B57",
             "Enable": true
         },
@@ -3428,7 +3428,7 @@
             "RegionId": 1,
             "PointOrder": 109,
             "X": 0.8108,
-            "Y": 0.6630,
+            "Y": 0.663,
             "Color": "#2E8B57",
             "Enable": true
         },
@@ -3460,7 +3460,7 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 112,
-            "X": 0.8020,
+            "X": 0.802,
             "Y": 0.6726,
             "Color": "#2E8B57",
             "Enable": true
@@ -3559,7 +3559,7 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 121,
-            "X": 0.8040,
+            "X": 0.804,
             "Y": 0.7104,
             "Color": "#2E8B57",
             "Enable": true
@@ -3592,7 +3592,7 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 124,
-            "X": 0.7950,
+            "X": 0.795,
             "Y": 0.7178,
             "Color": "#2E8B57",
             "Enable": true
@@ -3615,7 +3615,7 @@
             "RegionId": 1,
             "PointOrder": 126,
             "X": 0.7872,
-            "Y": 0.7160,
+            "Y": 0.716,
             "Color": "#2E8B57",
             "Enable": true
         },
@@ -3747,7 +3747,7 @@
             "RegionId": 1,
             "PointOrder": 9,
             "X": 0.7411,
-            "Y": 0.7410,
+            "Y": 0.741,
             "Color": "#5B7C99",
             "Enable": true
         },
@@ -3955,8 +3955,8 @@
             "FactionId": 5,
             "RegionId": 1,
             "PointOrder": 28,
-            "X": 0.7980,
-            "Y": 0.7990,
+            "X": 0.798,
+            "Y": 0.799,
             "Color": "#5B7C99",
             "Enable": true
         },
@@ -4010,7 +4010,7 @@
             "FactionId": 5,
             "RegionId": 1,
             "PointOrder": 33,
-            "X": 0.8070,
+            "X": 0.807,
             "Y": 0.8007,
             "Color": "#5B7C99",
             "Enable": true
@@ -4055,7 +4055,7 @@
             "RegionId": 1,
             "PointOrder": 37,
             "X": 0.8185,
-            "Y": 0.8250,
+            "Y": 0.825,
             "Color": "#5B7C99",
             "Enable": true
         },
@@ -4153,7 +4153,7 @@
             "FactionId": 5,
             "RegionId": 1,
             "PointOrder": 46,
-            "X": 0.8740,
+            "X": 0.874,
             "Y": 0.8631,
             "Color": "#5B7C99",
             "Enable": true
@@ -4164,7 +4164,7 @@
             "FactionId": 5,
             "RegionId": 1,
             "PointOrder": 47,
-            "X": 0.8860,
+            "X": 0.886,
             "Y": 0.8825,
             "Color": "#5B7C99",
             "Enable": true
@@ -4197,7 +4197,7 @@
             "FactionId": 5,
             "RegionId": 1,
             "PointOrder": 50,
-            "X": 0.8920,
+            "X": 0.892,
             "Y": 0.8888,
             "Color": "#5B7C99",
             "Enable": true
@@ -4395,7 +4395,7 @@
             "FactionId": 5,
             "RegionId": 1,
             "PointOrder": 68,
-            "X": 0.9480,
+            "X": 0.948,
             "Y": 0.8981,
             "Color": "#5B7C99",
             "Enable": true
@@ -4428,7 +4428,7 @@
             "FactionId": 5,
             "RegionId": 1,
             "PointOrder": 71,
-            "X": 0.9620,
+            "X": 0.962,
             "Y": 0.8838,
             "Color": "#5B7C99",
             "Enable": true
@@ -4473,7 +4473,7 @@
             "RegionId": 1,
             "PointOrder": 75,
             "X": 0.9672,
-            "Y": 0.8690,
+            "Y": 0.869,
             "Color": "#5B7C99",
             "Enable": true
         },
@@ -4494,7 +4494,7 @@
             "FactionId": 5,
             "RegionId": 1,
             "PointOrder": 77,
-            "X": 0.9640,
+            "X": 0.964,
             "Y": 0.8612,
             "Color": "#5B7C99",
             "Enable": true
@@ -4539,7 +4539,7 @@
             "RegionId": 1,
             "PointOrder": 81,
             "X": 0.9517,
-            "Y": 0.8420,
+            "Y": 0.842,
             "Color": "#5B7C99",
             "Enable": true
         },
@@ -4748,7 +4748,7 @@
             "RegionId": 1,
             "PointOrder": 100,
             "X": 0.9399,
-            "Y": 0.7890,
+            "Y": 0.789,
             "Color": "#5B7C99",
             "Enable": true
         },
@@ -4803,7 +4803,7 @@
             "RegionId": 1,
             "PointOrder": 105,
             "X": 0.9491,
-            "Y": 0.7960,
+            "Y": 0.796,
             "Color": "#5B7C99",
             "Enable": true
         },
@@ -4824,7 +4824,7 @@
             "FactionId": 5,
             "RegionId": 1,
             "PointOrder": 107,
-            "X": 0.9540,
+            "X": 0.954,
             "Y": 0.8031,
             "Color": "#5B7C99",
             "Enable": true
@@ -4913,7 +4913,7 @@
             "RegionId": 1,
             "PointOrder": 2,
             "X": 0.5366,
-            "Y": 0.5640,
+            "Y": 0.564,
             "Color": "#A0522D",
             "Enable": true
         },
@@ -4924,7 +4924,7 @@
             "RegionId": 1,
             "PointOrder": 3,
             "X": 0.5482,
-            "Y": 0.5500,
+            "Y": 0.55,
             "Color": "#A0522D",
             "Enable": true
         },
@@ -4934,7 +4934,7 @@
             "FactionId": 6,
             "RegionId": 1,
             "PointOrder": 4,
-            "X": 0.5690,
+            "X": 0.569,
             "Y": 0.5427,
             "Color": "#A0522D",
             "Enable": true
@@ -4967,7 +4967,7 @@
             "FactionId": 6,
             "RegionId": 1,
             "PointOrder": 7,
-            "X": 0.6430,
+            "X": 0.643,
             "Y": 0.4758,
             "Color": "#A0522D",
             "Enable": true
@@ -4979,7 +4979,7 @@
             "RegionId": 1,
             "PointOrder": 8,
             "X": 0.7031,
-            "Y": 0.4880,
+            "Y": 0.488,
             "Color": "#A0522D",
             "Enable": true
         },
@@ -5077,7 +5077,7 @@
             "FactionId": 7,
             "RegionId": 1,
             "PointOrder": 4,
-            "X": 0.5690,
+            "X": 0.569,
             "Y": 0.5427,
             "Color": "#6B5B95",
             "Enable": true
@@ -5089,7 +5089,7 @@
             "RegionId": 1,
             "PointOrder": 5,
             "X": 0.5482,
-            "Y": 0.5500,
+            "Y": 0.55,
             "Color": "#6B5B95",
             "Enable": true
         },
@@ -5110,7 +5110,7 @@
             "FactionId": 7,
             "RegionId": 1,
             "PointOrder": 7,
-            "X": 0.4950,
+            "X": 0.495,
             "Y": 0.5427,
             "Color": "#6B5B95",
             "Enable": true
@@ -5198,7 +5198,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 6,
-            "X": 0.0880,
+            "X": 0.088,
             "Y": 0.4941,
             "Color": "#2F3A4F",
             "Enable": true
@@ -5220,7 +5220,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 8,
-            "X": 0.0880,
+            "X": 0.088,
             "Y": 0.3724,
             "Color": "#2F3A4F",
             "Enable": true
@@ -5264,8 +5264,8 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 12,
-            "X": 0.2360,
-            "Y": 0.1290,
+            "X": 0.236,
+            "Y": 0.129,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -5287,7 +5287,7 @@
             "RegionId": 1,
             "PointOrder": 14,
             "X": 0.3562,
-            "Y": 0.0620,
+            "Y": 0.062,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -5297,7 +5297,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 15,
-            "X": 0.3750,
+            "X": 0.375,
             "Y": 0.0251,
             "Color": "#2F3A4F",
             "Enable": true
@@ -5418,8 +5418,8 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 26,
-            "X": 0.8410,
-            "Y": 0.0460,
+            "X": 0.841,
+            "Y": 0.046,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -5430,7 +5430,7 @@
             "RegionId": 1,
             "PointOrder": 27,
             "X": 0.8433,
-            "Y": 0.0480,
+            "Y": 0.048,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -5462,7 +5462,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 30,
-            "X": 0.8520,
+            "X": 0.852,
             "Y": 0.0476,
             "Color": "#2F3A4F",
             "Enable": true
@@ -5507,7 +5507,7 @@
             "RegionId": 1,
             "PointOrder": 34,
             "X": 0.8564,
-            "Y": 0.0480,
+            "Y": 0.048,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -5539,7 +5539,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 37,
-            "X": 0.8690,
+            "X": 0.869,
             "Y": 0.0665,
             "Color": "#2F3A4F",
             "Enable": true
@@ -5605,7 +5605,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 43,
-            "X": 0.8760,
+            "X": 0.876,
             "Y": 0.0856,
             "Color": "#2F3A4F",
             "Enable": true
@@ -5660,7 +5660,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 48,
-            "X": 0.8810,
+            "X": 0.881,
             "Y": 0.0987,
             "Color": "#2F3A4F",
             "Enable": true
@@ -5683,7 +5683,7 @@
             "RegionId": 1,
             "PointOrder": 50,
             "X": 0.8851,
-            "Y": 0.1050,
+            "Y": 0.105,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -5727,7 +5727,7 @@
             "RegionId": 1,
             "PointOrder": 54,
             "X": 0.8844,
-            "Y": 0.1160,
+            "Y": 0.116,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -5748,7 +5748,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 56,
-            "X": 0.8900,
+            "X": 0.89,
             "Y": 0.1204,
             "Color": "#2F3A4F",
             "Enable": true
@@ -5759,7 +5759,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 57,
-            "X": 0.8930,
+            "X": 0.893,
             "Y": 0.1206,
             "Color": "#2F3A4F",
             "Enable": true
@@ -5902,7 +5902,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 70,
-            "X": 0.9210,
+            "X": 0.921,
             "Y": 0.1374,
             "Color": "#2F3A4F",
             "Enable": true
@@ -5935,8 +5935,8 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 73,
-            "X": 0.9170,
-            "Y": 0.1500,
+            "X": 0.917,
+            "Y": 0.15,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -6002,7 +6002,7 @@
             "RegionId": 1,
             "PointOrder": 79,
             "X": 0.9208,
-            "Y": 0.1710,
+            "Y": 0.171,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -6068,7 +6068,7 @@
             "RegionId": 1,
             "PointOrder": 85,
             "X": 0.9198,
-            "Y": 0.1900,
+            "Y": 0.19,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -6122,7 +6122,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 90,
-            "X": 0.9190,
+            "X": 0.919,
             "Y": 0.2045,
             "Color": "#2F3A4F",
             "Enable": true
@@ -6188,7 +6188,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 96,
-            "X": 0.9320,
+            "X": 0.932,
             "Y": 0.2222,
             "Color": "#2F3A4F",
             "Enable": true
@@ -6211,7 +6211,7 @@
             "RegionId": 1,
             "PointOrder": 98,
             "X": 0.9177,
-            "Y": 0.2390,
+            "Y": 0.239,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -6221,7 +6221,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 99,
-            "X": 0.9150,
+            "X": 0.915,
             "Y": 0.2411,
             "Color": "#2F3A4F",
             "Enable": true
@@ -6321,7 +6321,7 @@
             "RegionId": 1,
             "PointOrder": 108,
             "X": 0.8746,
-            "Y": 0.2390,
+            "Y": 0.239,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -6343,7 +6343,7 @@
             "RegionId": 1,
             "PointOrder": 110,
             "X": 0.8686,
-            "Y": 0.2390,
+            "Y": 0.239,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -6353,7 +6353,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 111,
-            "X": 0.8680,
+            "X": 0.868,
             "Y": 0.2387,
             "Color": "#2F3A4F",
             "Enable": true
@@ -6387,7 +6387,7 @@
             "RegionId": 1,
             "PointOrder": 114,
             "X": 0.8596,
-            "Y": 0.2410,
+            "Y": 0.241,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -6441,7 +6441,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 119,
-            "X": 0.8640,
+            "X": 0.864,
             "Y": 0.2578,
             "Color": "#2F3A4F",
             "Enable": true
@@ -6507,7 +6507,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 125,
-            "X": 0.8930,
+            "X": 0.893,
             "Y": 0.2653,
             "Color": "#2F3A4F",
             "Enable": true
@@ -6540,7 +6540,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 128,
-            "X": 0.8990,
+            "X": 0.899,
             "Y": 0.2747,
             "Color": "#2F3A4F",
             "Enable": true
@@ -6562,7 +6562,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 130,
-            "X": 0.9170,
+            "X": 0.917,
             "Y": 0.2875,
             "Color": "#2F3A4F",
             "Enable": true
@@ -6607,7 +6607,7 @@
             "RegionId": 1,
             "PointOrder": 134,
             "X": 0.9322,
-            "Y": 0.2940,
+            "Y": 0.294,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -6650,7 +6650,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 138,
-            "X": 0.9280,
+            "X": 0.928,
             "Y": 0.3056,
             "Color": "#2F3A4F",
             "Enable": true
@@ -6661,7 +6661,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 139,
-            "X": 0.9150,
+            "X": 0.915,
             "Y": 0.3147,
             "Color": "#2F3A4F",
             "Enable": true
@@ -6738,8 +6738,8 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 146,
-            "X": 0.8870,
-            "Y": 0.3370,
+            "X": 0.887,
+            "Y": 0.337,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -6882,7 +6882,7 @@
             "RegionId": 1,
             "PointOrder": 159,
             "X": 0.8537,
-            "Y": 0.3580,
+            "Y": 0.358,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -6937,7 +6937,7 @@
             "RegionId": 1,
             "PointOrder": 164,
             "X": 0.8771,
-            "Y": 0.3690,
+            "Y": 0.369,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -6947,7 +6947,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 165,
-            "X": 0.8810,
+            "X": 0.881,
             "Y": 0.3695,
             "Color": "#2F3A4F",
             "Enable": true
@@ -6959,7 +6959,7 @@
             "RegionId": 1,
             "PointOrder": 166,
             "X": 0.8875,
-            "Y": 0.3680,
+            "Y": 0.368,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -6991,7 +6991,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 169,
-            "X": 0.8970,
+            "X": 0.897,
             "Y": 0.3629,
             "Color": "#2F3A4F",
             "Enable": true
@@ -7057,7 +7057,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 175,
-            "X": 0.9210,
+            "X": 0.921,
             "Y": 0.3539,
             "Color": "#2F3A4F",
             "Enable": true
@@ -7157,7 +7157,7 @@
             "RegionId": 1,
             "PointOrder": 184,
             "X": 0.8992,
-            "Y": 0.3800,
+            "Y": 0.38,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -7233,7 +7233,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 191,
-            "X": 0.8900,
+            "X": 0.89,
             "Y": 0.4071,
             "Color": "#2F3A4F",
             "Enable": true
@@ -7310,7 +7310,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 198,
-            "X": 0.8720,
+            "X": 0.872,
             "Y": 0.4561,
             "Color": "#2F3A4F",
             "Enable": true
@@ -7420,7 +7420,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 208,
-            "X": 0.8320,
+            "X": 0.832,
             "Y": 0.5043,
             "Color": "#2F3A4F",
             "Enable": true
@@ -7541,7 +7541,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 219,
-            "X": 0.8230,
+            "X": 0.823,
             "Y": 0.5585,
             "Color": "#2F3A4F",
             "Enable": true
@@ -7641,7 +7641,7 @@
             "RegionId": 1,
             "PointOrder": 228,
             "X": 0.8466,
-            "Y": 0.5850,
+            "Y": 0.585,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -7662,7 +7662,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 230,
-            "X": 0.8500,
+            "X": 0.85,
             "Y": 0.5885,
             "Color": "#2F3A4F",
             "Enable": true
@@ -7762,7 +7762,7 @@
             "RegionId": 1,
             "PointOrder": 239,
             "X": 0.8556,
-            "Y": 0.6120,
+            "Y": 0.612,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -7784,7 +7784,7 @@
             "RegionId": 1,
             "PointOrder": 241,
             "X": 0.8599,
-            "Y": 0.6170,
+            "Y": 0.617,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -7816,7 +7816,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 244,
-            "X": 0.8680,
+            "X": 0.868,
             "Y": 0.6204,
             "Color": "#2F3A4F",
             "Enable": true
@@ -7839,7 +7839,7 @@
             "RegionId": 1,
             "PointOrder": 246,
             "X": 0.8747,
-            "Y": 0.6190,
+            "Y": 0.619,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -7992,7 +7992,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 260,
-            "X": 0.8930,
+            "X": 0.893,
             "Y": 0.6451,
             "Color": "#2F3A4F",
             "Enable": true
@@ -8103,7 +8103,7 @@
             "RegionId": 1,
             "PointOrder": 270,
             "X": 0.9445,
-            "Y": 0.6650,
+            "Y": 0.665,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -8146,7 +8146,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 274,
-            "X": 0.9600,
+            "X": 0.96,
             "Y": 0.6631,
             "Color": "#2F3A4F",
             "Enable": true
@@ -8180,7 +8180,7 @@
             "RegionId": 1,
             "PointOrder": 277,
             "X": 0.9622,
-            "Y": 0.6650,
+            "Y": 0.665,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -8190,7 +8190,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 278,
-            "X": 0.9640,
+            "X": 0.964,
             "Y": 0.6689,
             "Color": "#2F3A4F",
             "Enable": true
@@ -8212,8 +8212,8 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 280,
-            "X": 0.9680,
-            "Y": 0.6740,
+            "X": 0.968,
+            "Y": 0.674,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -8223,7 +8223,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 281,
-            "X": 0.9640,
+            "X": 0.964,
             "Y": 0.6739,
             "Color": "#2F3A4F",
             "Enable": true
@@ -8268,7 +8268,7 @@
             "RegionId": 1,
             "PointOrder": 285,
             "X": 0.9492,
-            "Y": 0.6770,
+            "Y": 0.677,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -8290,7 +8290,7 @@
             "RegionId": 1,
             "PointOrder": 287,
             "X": 0.9394,
-            "Y": 0.6770,
+            "Y": 0.677,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -8311,7 +8311,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 289,
-            "X": 0.9290,
+            "X": 0.929,
             "Y": 0.6779,
             "Color": "#2F3A4F",
             "Enable": true
@@ -8333,7 +8333,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 291,
-            "X": 0.9220,
+            "X": 0.922,
             "Y": 0.6817,
             "Color": "#2F3A4F",
             "Enable": true
@@ -8377,7 +8377,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 295,
-            "X": 0.9010,
+            "X": 0.901,
             "Y": 0.6943,
             "Color": "#2F3A4F",
             "Enable": true
@@ -8465,7 +8465,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 303,
-            "X": 0.8570,
+            "X": 0.857,
             "Y": 0.6705,
             "Color": "#2F3A4F",
             "Enable": true
@@ -8509,7 +8509,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 307,
-            "X": 0.8310,
+            "X": 0.831,
             "Y": 0.6569,
             "Color": "#2F3A4F",
             "Enable": true
@@ -8554,7 +8554,7 @@
             "RegionId": 1,
             "PointOrder": 311,
             "X": 0.8123,
-            "Y": 0.6620,
+            "Y": 0.662,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -8565,7 +8565,7 @@
             "RegionId": 1,
             "PointOrder": 312,
             "X": 0.8108,
-            "Y": 0.6630,
+            "Y": 0.663,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -8597,7 +8597,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 315,
-            "X": 0.8020,
+            "X": 0.802,
             "Y": 0.6726,
             "Color": "#2F3A4F",
             "Enable": true
@@ -8696,7 +8696,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 324,
-            "X": 0.8040,
+            "X": 0.804,
             "Y": 0.7104,
             "Color": "#2F3A4F",
             "Enable": true
@@ -8729,7 +8729,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 327,
-            "X": 0.7950,
+            "X": 0.795,
             "Y": 0.7178,
             "Color": "#2F3A4F",
             "Enable": true
@@ -8752,7 +8752,7 @@
             "RegionId": 1,
             "PointOrder": 329,
             "X": 0.7872,
-            "Y": 0.7160,
+            "Y": 0.716,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -8818,7 +8818,7 @@
             "RegionId": 1,
             "PointOrder": 335,
             "X": 0.7411,
-            "Y": 0.7410,
+            "Y": 0.741,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -9026,8 +9026,8 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 354,
-            "X": 0.7980,
-            "Y": 0.7990,
+            "X": 0.798,
+            "Y": 0.799,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -9081,7 +9081,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 359,
-            "X": 0.8070,
+            "X": 0.807,
             "Y": 0.8007,
             "Color": "#2F3A4F",
             "Enable": true
@@ -9126,7 +9126,7 @@
             "RegionId": 1,
             "PointOrder": 363,
             "X": 0.8185,
-            "Y": 0.8250,
+            "Y": 0.825,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -9224,7 +9224,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 372,
-            "X": 0.8740,
+            "X": 0.874,
             "Y": 0.8631,
             "Color": "#2F3A4F",
             "Enable": true
@@ -9235,7 +9235,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 373,
-            "X": 0.8860,
+            "X": 0.886,
             "Y": 0.8825,
             "Color": "#2F3A4F",
             "Enable": true
@@ -9268,7 +9268,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 376,
-            "X": 0.8920,
+            "X": 0.892,
             "Y": 0.8888,
             "Color": "#2F3A4F",
             "Enable": true
@@ -9466,7 +9466,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 394,
-            "X": 0.9480,
+            "X": 0.948,
             "Y": 0.8981,
             "Color": "#2F3A4F",
             "Enable": true
@@ -9499,7 +9499,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 397,
-            "X": 0.9620,
+            "X": 0.962,
             "Y": 0.8838,
             "Color": "#2F3A4F",
             "Enable": true
@@ -9544,7 +9544,7 @@
             "RegionId": 1,
             "PointOrder": 401,
             "X": 0.9672,
-            "Y": 0.8690,
+            "Y": 0.869,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -9565,7 +9565,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 403,
-            "X": 0.9640,
+            "X": 0.964,
             "Y": 0.8612,
             "Color": "#2F3A4F",
             "Enable": true
@@ -9610,7 +9610,7 @@
             "RegionId": 1,
             "PointOrder": 407,
             "X": 0.9517,
-            "Y": 0.8420,
+            "Y": 0.842,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -9819,7 +9819,7 @@
             "RegionId": 1,
             "PointOrder": 426,
             "X": 0.9399,
-            "Y": 0.7890,
+            "Y": 0.789,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -9874,7 +9874,7 @@
             "RegionId": 1,
             "PointOrder": 431,
             "X": 0.9491,
-            "Y": 0.7960,
+            "Y": 0.796,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -9895,7 +9895,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 433,
-            "X": 0.9540,
+            "X": 0.954,
             "Y": 0.8031,
             "Color": "#2F3A4F",
             "Enable": true
@@ -9983,8 +9983,8 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 441,
-            "X": 0.5320,
-            "Y": 0.9200,
+            "X": 0.532,
+            "Y": 0.92,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -10006,7 +10006,7 @@
             "RegionId": 1,
             "PointOrder": 1,
             "X": 0.7411,
-            "Y": 0.7410,
+            "Y": 0.741,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -10115,7 +10115,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 11,
-            "X": 0.7030,
+            "X": 0.703,
             "Y": 0.5393,
             "Color": "#2F3A4F",
             "Enable": true
@@ -10214,7 +10214,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 20,
-            "X": 0.5690,
+            "X": 0.569,
             "Y": 0.5306,
             "Color": "#2F3A4F",
             "Enable": true
@@ -10226,7 +10226,7 @@
             "RegionId": 1,
             "PointOrder": 21,
             "X": 0.5748,
-            "Y": 0.5310,
+            "Y": 0.531,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -10237,7 +10237,7 @@
             "RegionId": 1,
             "PointOrder": 22,
             "X": 0.5749,
-            "Y": 0.5310,
+            "Y": 0.531,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -10302,7 +10302,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 28,
-            "X": 0.5320,
+            "X": 0.532,
             "Y": 0.6188,
             "Color": "#2F3A4F",
             "Enable": true
@@ -10313,7 +10313,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 29,
-            "X": 0.5320,
+            "X": 0.532,
             "Y": 0.7861,
             "Color": "#2F3A4F",
             "Enable": true
@@ -10445,8 +10445,8 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 41,
-            "X": 0.5320,
-            "Y": 0.9200,
+            "X": 0.532,
+            "Y": 0.92,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -10522,7 +10522,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 48,
-            "X": 0.0880,
+            "X": 0.088,
             "Y": 0.4941,
             "Color": "#2F3A4F",
             "Enable": true
@@ -10544,7 +10544,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 50,
-            "X": 0.0880,
+            "X": 0.088,
             "Y": 0.3724,
             "Color": "#2F3A4F",
             "Enable": true
@@ -10588,8 +10588,8 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 54,
-            "X": 0.2360,
-            "Y": 0.1290,
+            "X": 0.236,
+            "Y": 0.129,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -10611,7 +10611,7 @@
             "RegionId": 1,
             "PointOrder": 56,
             "X": 0.3562,
-            "Y": 0.0620,
+            "Y": 0.062,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -10621,7 +10621,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 57,
-            "X": 0.3750,
+            "X": 0.375,
             "Y": 0.0251,
             "Color": "#2F3A4F",
             "Enable": true
@@ -10742,8 +10742,8 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 68,
-            "X": 0.8410,
-            "Y": 0.0460,
+            "X": 0.841,
+            "Y": 0.046,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -10754,7 +10754,7 @@
             "RegionId": 1,
             "PointOrder": 69,
             "X": 0.8433,
-            "Y": 0.0480,
+            "Y": 0.048,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -10786,7 +10786,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 72,
-            "X": 0.8520,
+            "X": 0.852,
             "Y": 0.0476,
             "Color": "#2F3A4F",
             "Enable": true
@@ -10831,7 +10831,7 @@
             "RegionId": 1,
             "PointOrder": 76,
             "X": 0.8564,
-            "Y": 0.0480,
+            "Y": 0.048,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -10863,7 +10863,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 79,
-            "X": 0.8690,
+            "X": 0.869,
             "Y": 0.0665,
             "Color": "#2F3A4F",
             "Enable": true
@@ -10929,7 +10929,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 85,
-            "X": 0.8760,
+            "X": 0.876,
             "Y": 0.0856,
             "Color": "#2F3A4F",
             "Enable": true
@@ -10984,7 +10984,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 90,
-            "X": 0.8810,
+            "X": 0.881,
             "Y": 0.0987,
             "Color": "#2F3A4F",
             "Enable": true
@@ -11007,7 +11007,7 @@
             "RegionId": 1,
             "PointOrder": 92,
             "X": 0.8851,
-            "Y": 0.1050,
+            "Y": 0.105,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -11051,7 +11051,7 @@
             "RegionId": 1,
             "PointOrder": 96,
             "X": 0.8844,
-            "Y": 0.1160,
+            "Y": 0.116,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -11072,7 +11072,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 98,
-            "X": 0.8900,
+            "X": 0.89,
             "Y": 0.1204,
             "Color": "#2F3A4F",
             "Enable": true
@@ -11083,7 +11083,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 99,
-            "X": 0.8930,
+            "X": 0.893,
             "Y": 0.1206,
             "Color": "#2F3A4F",
             "Enable": true
@@ -11226,7 +11226,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 112,
-            "X": 0.9210,
+            "X": 0.921,
             "Y": 0.1374,
             "Color": "#2F3A4F",
             "Enable": true
@@ -11259,8 +11259,8 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 115,
-            "X": 0.9170,
-            "Y": 0.1500,
+            "X": 0.917,
+            "Y": 0.15,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -11326,7 +11326,7 @@
             "RegionId": 1,
             "PointOrder": 121,
             "X": 0.9208,
-            "Y": 0.1710,
+            "Y": 0.171,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -11392,7 +11392,7 @@
             "RegionId": 1,
             "PointOrder": 127,
             "X": 0.9198,
-            "Y": 0.1900,
+            "Y": 0.19,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -11446,7 +11446,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 132,
-            "X": 0.9190,
+            "X": 0.919,
             "Y": 0.2045,
             "Color": "#2F3A4F",
             "Enable": true
@@ -11513,7 +11513,7 @@
             "RegionId": 1,
             "PointOrder": 138,
             "X": 0.8372,
-            "Y": 0.2020,
+            "Y": 0.202,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -11622,7 +11622,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 148,
-            "X": 0.8900,
+            "X": 0.89,
             "Y": 0.4071,
             "Color": "#2F3A4F",
             "Enable": true
@@ -11699,7 +11699,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 155,
-            "X": 0.8720,
+            "X": 0.872,
             "Y": 0.4561,
             "Color": "#2F3A4F",
             "Enable": true
@@ -11809,7 +11809,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 165,
-            "X": 0.8320,
+            "X": 0.832,
             "Y": 0.5043,
             "Color": "#2F3A4F",
             "Enable": true
@@ -11930,7 +11930,7 @@
             "FactionId": 1,
             "RegionId": 1,
             "PointOrder": 176,
-            "X": 0.8230,
+            "X": 0.823,
             "Y": 0.5585,
             "Color": "#2F3A4F",
             "Enable": true
@@ -12041,7 +12041,7 @@
             "RegionId": 1,
             "PointOrder": 186,
             "X": 0.7262,
-            "Y": 0.7070,
+            "Y": 0.707,
             "Color": "#2F3A4F",
             "Enable": true
         },
@@ -12216,7 +12216,7 @@
             "FactionId": 2,
             "RegionId": 1,
             "PointOrder": 3,
-            "X": 0.5320,
+            "X": 0.532,
             "Y": 0.7861,
             "Color": "#4A6FA5",
             "Enable": true
@@ -12227,7 +12227,7 @@
             "FactionId": 2,
             "RegionId": 1,
             "PointOrder": 4,
-            "X": 0.5320,
+            "X": 0.532,
             "Y": 0.6188,
             "Color": "#4A6FA5",
             "Enable": true
@@ -12349,7 +12349,7 @@
             "RegionId": 1,
             "PointOrder": 1,
             "X": 0.7872,
-            "Y": 0.7160,
+            "Y": 0.716,
             "Color": "#2E8B57",
             "Enable": true
         },
@@ -12371,7 +12371,7 @@
             "RegionId": 1,
             "PointOrder": 3,
             "X": 0.7262,
-            "Y": 0.7070,
+            "Y": 0.707,
             "Color": "#2E8B57",
             "Enable": true
         },
@@ -12459,7 +12459,7 @@
             "RegionId": 1,
             "PointOrder": 11,
             "X": 0.8466,
-            "Y": 0.5850,
+            "Y": 0.585,
             "Color": "#2E8B57",
             "Enable": true
         },
@@ -12480,7 +12480,7 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 13,
-            "X": 0.8500,
+            "X": 0.85,
             "Y": 0.5885,
             "Color": "#2E8B57",
             "Enable": true
@@ -12580,7 +12580,7 @@
             "RegionId": 1,
             "PointOrder": 22,
             "X": 0.8556,
-            "Y": 0.6120,
+            "Y": 0.612,
             "Color": "#2E8B57",
             "Enable": true
         },
@@ -12602,7 +12602,7 @@
             "RegionId": 1,
             "PointOrder": 24,
             "X": 0.8599,
-            "Y": 0.6170,
+            "Y": 0.617,
             "Color": "#2E8B57",
             "Enable": true
         },
@@ -12634,7 +12634,7 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 27,
-            "X": 0.8680,
+            "X": 0.868,
             "Y": 0.6204,
             "Color": "#2E8B57",
             "Enable": true
@@ -12657,7 +12657,7 @@
             "RegionId": 1,
             "PointOrder": 29,
             "X": 0.8747,
-            "Y": 0.6190,
+            "Y": 0.619,
             "Color": "#2E8B57",
             "Enable": true
         },
@@ -12810,7 +12810,7 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 43,
-            "X": 0.8930,
+            "X": 0.893,
             "Y": 0.6451,
             "Color": "#2E8B57",
             "Enable": true
@@ -12921,7 +12921,7 @@
             "RegionId": 1,
             "PointOrder": 53,
             "X": 0.9445,
-            "Y": 0.6650,
+            "Y": 0.665,
             "Color": "#2E8B57",
             "Enable": true
         },
@@ -12964,7 +12964,7 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 57,
-            "X": 0.9600,
+            "X": 0.96,
             "Y": 0.6631,
             "Color": "#2E8B57",
             "Enable": true
@@ -12998,7 +12998,7 @@
             "RegionId": 1,
             "PointOrder": 60,
             "X": 0.9622,
-            "Y": 0.6650,
+            "Y": 0.665,
             "Color": "#2E8B57",
             "Enable": true
         },
@@ -13008,7 +13008,7 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 61,
-            "X": 0.9640,
+            "X": 0.964,
             "Y": 0.6689,
             "Color": "#2E8B57",
             "Enable": true
@@ -13030,8 +13030,8 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 63,
-            "X": 0.9680,
-            "Y": 0.6740,
+            "X": 0.968,
+            "Y": 0.674,
             "Color": "#2E8B57",
             "Enable": true
         },
@@ -13041,7 +13041,7 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 64,
-            "X": 0.9640,
+            "X": 0.964,
             "Y": 0.6739,
             "Color": "#2E8B57",
             "Enable": true
@@ -13086,7 +13086,7 @@
             "RegionId": 1,
             "PointOrder": 68,
             "X": 0.9492,
-            "Y": 0.6770,
+            "Y": 0.677,
             "Color": "#2E8B57",
             "Enable": true
         },
@@ -13108,7 +13108,7 @@
             "RegionId": 1,
             "PointOrder": 70,
             "X": 0.9394,
-            "Y": 0.6770,
+            "Y": 0.677,
             "Color": "#2E8B57",
             "Enable": true
         },
@@ -13129,7 +13129,7 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 72,
-            "X": 0.9290,
+            "X": 0.929,
             "Y": 0.6779,
             "Color": "#2E8B57",
             "Enable": true
@@ -13151,7 +13151,7 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 74,
-            "X": 0.9220,
+            "X": 0.922,
             "Y": 0.6817,
             "Color": "#2E8B57",
             "Enable": true
@@ -13195,7 +13195,7 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 78,
-            "X": 0.9010,
+            "X": 0.901,
             "Y": 0.6943,
             "Color": "#2E8B57",
             "Enable": true
@@ -13283,7 +13283,7 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 86,
-            "X": 0.8570,
+            "X": 0.857,
             "Y": 0.6705,
             "Color": "#2E8B57",
             "Enable": true
@@ -13327,7 +13327,7 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 90,
-            "X": 0.8310,
+            "X": 0.831,
             "Y": 0.6569,
             "Color": "#2E8B57",
             "Enable": true
@@ -13372,7 +13372,7 @@
             "RegionId": 1,
             "PointOrder": 94,
             "X": 0.8123,
-            "Y": 0.6620,
+            "Y": 0.662,
             "Color": "#2E8B57",
             "Enable": true
         },
@@ -13383,7 +13383,7 @@
             "RegionId": 1,
             "PointOrder": 95,
             "X": 0.8108,
-            "Y": 0.6630,
+            "Y": 0.663,
             "Color": "#2E8B57",
             "Enable": true
         },
@@ -13415,7 +13415,7 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 98,
-            "X": 0.8020,
+            "X": 0.802,
             "Y": 0.6726,
             "Color": "#2E8B57",
             "Enable": true
@@ -13514,7 +13514,7 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 107,
-            "X": 0.8040,
+            "X": 0.804,
             "Y": 0.7104,
             "Color": "#2E8B57",
             "Enable": true
@@ -13547,7 +13547,7 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 110,
-            "X": 0.7950,
+            "X": 0.795,
             "Y": 0.7178,
             "Color": "#2E8B57",
             "Enable": true
@@ -13877,8 +13877,8 @@
             "FactionId": 5,
             "RegionId": 1,
             "PointOrder": 29,
-            "X": 0.7980,
-            "Y": 0.7990,
+            "X": 0.798,
+            "Y": 0.799,
             "Color": "#5B7C99",
             "Enable": true
         },
@@ -13932,7 +13932,7 @@
             "FactionId": 5,
             "RegionId": 1,
             "PointOrder": 34,
-            "X": 0.8070,
+            "X": 0.807,
             "Y": 0.8007,
             "Color": "#5B7C99",
             "Enable": true
@@ -13977,7 +13977,7 @@
             "RegionId": 1,
             "PointOrder": 38,
             "X": 0.8185,
-            "Y": 0.8250,
+            "Y": 0.825,
             "Color": "#5B7C99",
             "Enable": true
         },
@@ -14075,7 +14075,7 @@
             "FactionId": 5,
             "RegionId": 1,
             "PointOrder": 47,
-            "X": 0.8740,
+            "X": 0.874,
             "Y": 0.8631,
             "Color": "#5B7C99",
             "Enable": true
@@ -14086,7 +14086,7 @@
             "FactionId": 5,
             "RegionId": 1,
             "PointOrder": 48,
-            "X": 0.8860,
+            "X": 0.886,
             "Y": 0.8825,
             "Color": "#5B7C99",
             "Enable": true
@@ -14119,7 +14119,7 @@
             "FactionId": 5,
             "RegionId": 1,
             "PointOrder": 51,
-            "X": 0.8920,
+            "X": 0.892,
             "Y": 0.8888,
             "Color": "#5B7C99",
             "Enable": true
@@ -14317,7 +14317,7 @@
             "FactionId": 5,
             "RegionId": 1,
             "PointOrder": 69,
-            "X": 0.9480,
+            "X": 0.948,
             "Y": 0.8981,
             "Color": "#5B7C99",
             "Enable": true
@@ -14350,7 +14350,7 @@
             "FactionId": 5,
             "RegionId": 1,
             "PointOrder": 72,
-            "X": 0.9620,
+            "X": 0.962,
             "Y": 0.8838,
             "Color": "#5B7C99",
             "Enable": true
@@ -14395,7 +14395,7 @@
             "RegionId": 1,
             "PointOrder": 76,
             "X": 0.9672,
-            "Y": 0.8690,
+            "Y": 0.869,
             "Color": "#5B7C99",
             "Enable": true
         },
@@ -14416,7 +14416,7 @@
             "FactionId": 5,
             "RegionId": 1,
             "PointOrder": 78,
-            "X": 0.9640,
+            "X": 0.964,
             "Y": 0.8612,
             "Color": "#5B7C99",
             "Enable": true
@@ -14461,7 +14461,7 @@
             "RegionId": 1,
             "PointOrder": 82,
             "X": 0.9517,
-            "Y": 0.8420,
+            "Y": 0.842,
             "Color": "#5B7C99",
             "Enable": true
         },
@@ -14670,7 +14670,7 @@
             "RegionId": 1,
             "PointOrder": 101,
             "X": 0.9399,
-            "Y": 0.7890,
+            "Y": 0.789,
             "Color": "#5B7C99",
             "Enable": true
         },
@@ -14725,7 +14725,7 @@
             "RegionId": 1,
             "PointOrder": 106,
             "X": 0.9491,
-            "Y": 0.7960,
+            "Y": 0.796,
             "Color": "#5B7C99",
             "Enable": true
         },
@@ -14746,7 +14746,7 @@
             "FactionId": 5,
             "RegionId": 1,
             "PointOrder": 108,
-            "X": 0.9540,
+            "X": 0.954,
             "Y": 0.8031,
             "Color": "#5B7C99",
             "Enable": true
@@ -14835,7 +14835,7 @@
             "RegionId": 1,
             "PointOrder": 6,
             "X": 0.5749,
-            "Y": 0.5310,
+            "Y": 0.531,
             "Color": "#A0522D",
             "Enable": true
         },
@@ -14900,7 +14900,7 @@
             "FactionId": 6,
             "RegionId": 1,
             "PointOrder": 12,
-            "X": 0.7030,
+            "X": 0.703,
             "Y": 0.5393,
             "Color": "#A0522D",
             "Enable": true
@@ -15000,7 +15000,7 @@
             "RegionId": 1,
             "PointOrder": 8,
             "X": 0.5749,
-            "Y": 0.5310,
+            "Y": 0.531,
             "Color": "#C45551",
             "Enable": true
         },
@@ -15011,7 +15011,7 @@
             "RegionId": 1,
             "PointOrder": 9,
             "X": 0.5748,
-            "Y": 0.5310,
+            "Y": 0.531,
             "Color": "#C45551",
             "Enable": true
         },
@@ -15021,7 +15021,7 @@
             "FactionId": 20,
             "RegionId": 1,
             "PointOrder": 10,
-            "X": 0.5690,
+            "X": 0.569,
             "Y": 0.5306,
             "Color": "#C45551",
             "Enable": true
@@ -15132,7 +15132,7 @@
             "RegionId": 1,
             "PointOrder": 6,
             "X": 0.8372,
-            "Y": 0.2020,
+            "Y": 0.202,
             "Color": "#627997",
             "Enable": true
         },
@@ -15175,7 +15175,7 @@
             "FactionId": 45,
             "RegionId": 1,
             "PointOrder": 10,
-            "X": 0.9320,
+            "X": 0.932,
             "Y": 0.2222,
             "Color": "#627997",
             "Enable": true
@@ -15198,7 +15198,7 @@
             "RegionId": 1,
             "PointOrder": 12,
             "X": 0.9177,
-            "Y": 0.2390,
+            "Y": 0.239,
             "Color": "#627997",
             "Enable": true
         },
@@ -15208,7 +15208,7 @@
             "FactionId": 45,
             "RegionId": 1,
             "PointOrder": 13,
-            "X": 0.9150,
+            "X": 0.915,
             "Y": 0.2411,
             "Color": "#627997",
             "Enable": true
@@ -15308,7 +15308,7 @@
             "RegionId": 1,
             "PointOrder": 22,
             "X": 0.8746,
-            "Y": 0.2390,
+            "Y": 0.239,
             "Color": "#627997",
             "Enable": true
         },
@@ -15330,7 +15330,7 @@
             "RegionId": 1,
             "PointOrder": 24,
             "X": 0.8686,
-            "Y": 0.2390,
+            "Y": 0.239,
             "Color": "#627997",
             "Enable": true
         },
@@ -15340,7 +15340,7 @@
             "FactionId": 45,
             "RegionId": 1,
             "PointOrder": 25,
-            "X": 0.8680,
+            "X": 0.868,
             "Y": 0.2387,
             "Color": "#627997",
             "Enable": true
@@ -15374,7 +15374,7 @@
             "RegionId": 1,
             "PointOrder": 28,
             "X": 0.8596,
-            "Y": 0.2410,
+            "Y": 0.241,
             "Color": "#627997",
             "Enable": true
         },
@@ -15428,7 +15428,7 @@
             "FactionId": 45,
             "RegionId": 1,
             "PointOrder": 33,
-            "X": 0.8640,
+            "X": 0.864,
             "Y": 0.2578,
             "Color": "#627997",
             "Enable": true
@@ -15494,7 +15494,7 @@
             "FactionId": 45,
             "RegionId": 1,
             "PointOrder": 39,
-            "X": 0.8930,
+            "X": 0.893,
             "Y": 0.2653,
             "Color": "#627997",
             "Enable": true
@@ -15527,7 +15527,7 @@
             "FactionId": 45,
             "RegionId": 1,
             "PointOrder": 42,
-            "X": 0.8990,
+            "X": 0.899,
             "Y": 0.2747,
             "Color": "#627997",
             "Enable": true
@@ -15549,7 +15549,7 @@
             "FactionId": 45,
             "RegionId": 1,
             "PointOrder": 44,
-            "X": 0.9170,
+            "X": 0.917,
             "Y": 0.2875,
             "Color": "#627997",
             "Enable": true
@@ -15594,7 +15594,7 @@
             "RegionId": 1,
             "PointOrder": 48,
             "X": 0.9322,
-            "Y": 0.2940,
+            "Y": 0.294,
             "Color": "#627997",
             "Enable": true
         },
@@ -15637,7 +15637,7 @@
             "FactionId": 45,
             "RegionId": 1,
             "PointOrder": 52,
-            "X": 0.9280,
+            "X": 0.928,
             "Y": 0.3056,
             "Color": "#627997",
             "Enable": true
@@ -15648,7 +15648,7 @@
             "FactionId": 45,
             "RegionId": 1,
             "PointOrder": 53,
-            "X": 0.9150,
+            "X": 0.915,
             "Y": 0.3147,
             "Color": "#627997",
             "Enable": true
@@ -15725,8 +15725,8 @@
             "FactionId": 45,
             "RegionId": 1,
             "PointOrder": 60,
-            "X": 0.8870,
-            "Y": 0.3370,
+            "X": 0.887,
+            "Y": 0.337,
             "Color": "#627997",
             "Enable": true
         },
@@ -15869,7 +15869,7 @@
             "RegionId": 1,
             "PointOrder": 73,
             "X": 0.8537,
-            "Y": 0.3580,
+            "Y": 0.358,
             "Color": "#627997",
             "Enable": true
         },
@@ -15924,7 +15924,7 @@
             "RegionId": 1,
             "PointOrder": 78,
             "X": 0.8771,
-            "Y": 0.3690,
+            "Y": 0.369,
             "Color": "#627997",
             "Enable": true
         },
@@ -15934,7 +15934,7 @@
             "FactionId": 45,
             "RegionId": 1,
             "PointOrder": 79,
-            "X": 0.8810,
+            "X": 0.881,
             "Y": 0.3695,
             "Color": "#627997",
             "Enable": true
@@ -15946,7 +15946,7 @@
             "RegionId": 1,
             "PointOrder": 80,
             "X": 0.8875,
-            "Y": 0.3680,
+            "Y": 0.368,
             "Color": "#627997",
             "Enable": true
         },
@@ -15978,7 +15978,7 @@
             "FactionId": 45,
             "RegionId": 1,
             "PointOrder": 83,
-            "X": 0.8970,
+            "X": 0.897,
             "Y": 0.3629,
             "Color": "#627997",
             "Enable": true
@@ -16044,7 +16044,7 @@
             "FactionId": 45,
             "RegionId": 1,
             "PointOrder": 89,
-            "X": 0.9210,
+            "X": 0.921,
             "Y": 0.3539,
             "Color": "#627997",
             "Enable": true
@@ -16144,7 +16144,7 @@
             "RegionId": 1,
             "PointOrder": 98,
             "X": 0.8992,
-            "Y": 0.3800,
+            "Y": 0.38,
             "Color": "#627997",
             "Enable": true
         },
@@ -16165,7 +16165,7 @@
             "FactionId": 46,
             "RegionId": 1,
             "PointOrder": 2,
-            "X": 0.7030,
+            "X": 0.703,
             "Y": 0.5393,
             "Color": "#9D834D",
             "Enable": true
@@ -16342,7 +16342,7 @@
             "RegionId": 1,
             "PointOrder": 9,
             "X": 0.7411,
-            "Y": 0.7410,
+            "Y": 0.741,
             "Color": "#5B7C99",
             "Enable": true
         },
@@ -16429,7 +16429,7 @@
             "FactionId": 5,
             "RegionId": 1,
             "PointOrder": 17,
-            "X": 0.7400,
+            "X": 0.74,
             "Y": 0.7766,
             "Color": "#5B7C99",
             "Enable": true
@@ -16462,7 +16462,7 @@
             "FactionId": 21,
             "RegionId": 1,
             "PointOrder": 1,
-            "X": 0.3750,
+            "X": 0.375,
             "Y": 0.0251,
             "Color": "#B45F43",
             "Enable": true
@@ -16473,7 +16473,7 @@
             "FactionId": 21,
             "RegionId": 1,
             "PointOrder": 2,
-            "X": 0.4050,
+            "X": 0.405,
             "Y": 0.0251,
             "Color": "#B45F43",
             "Enable": true
@@ -16540,7 +16540,7 @@
             "RegionId": 1,
             "PointOrder": 8,
             "X": 0.2221,
-            "Y": 0.4880,
+            "Y": 0.488,
             "Color": "#B45F43",
             "Enable": true
         },
@@ -16572,7 +16572,7 @@
             "FactionId": 21,
             "RegionId": 1,
             "PointOrder": 11,
-            "X": 0.0880,
+            "X": 0.088,
             "Y": 0.4941,
             "Color": "#B45F43",
             "Enable": true
@@ -16594,7 +16594,7 @@
             "FactionId": 21,
             "RegionId": 1,
             "PointOrder": 13,
-            "X": 0.0880,
+            "X": 0.088,
             "Y": 0.3724,
             "Color": "#B45F43",
             "Enable": true
@@ -16638,8 +16638,8 @@
             "FactionId": 21,
             "RegionId": 1,
             "PointOrder": 17,
-            "X": 0.2360,
-            "Y": 0.1290,
+            "X": 0.236,
+            "Y": 0.129,
             "Color": "#B45F43",
             "Enable": true
         },
@@ -16661,7 +16661,7 @@
             "RegionId": 1,
             "PointOrder": 19,
             "X": 0.3562,
-            "Y": 0.0620,
+            "Y": 0.062,
             "Color": "#B45F43",
             "Enable": true
         },
@@ -16759,7 +16759,7 @@
             "FactionId": 22,
             "RegionId": 1,
             "PointOrder": 9,
-            "X": 0.6060,
+            "X": 0.606,
             "Y": 0.5367,
             "Color": "#8E3C55",
             "Enable": true
@@ -16814,7 +16814,7 @@
             "FactionId": 22,
             "RegionId": 1,
             "PointOrder": 14,
-            "X": 0.5320,
+            "X": 0.532,
             "Y": 0.4332,
             "Color": "#8E3C55",
             "Enable": true
@@ -16836,7 +16836,7 @@
             "FactionId": 22,
             "RegionId": 1,
             "PointOrder": 16,
-            "X": 0.4950,
+            "X": 0.495,
             "Y": 0.5062,
             "Color": "#8E3C55",
             "Enable": true
@@ -16848,7 +16848,7 @@
             "RegionId": 1,
             "PointOrder": 17,
             "X": 0.4488,
-            "Y": 0.4880,
+            "Y": 0.488,
             "Color": "#8E3C55",
             "Enable": true
         },
@@ -16880,7 +16880,7 @@
             "FactionId": 22,
             "RegionId": 1,
             "PointOrder": 20,
-            "X": 0.5320,
+            "X": 0.532,
             "Y": 0.3663,
             "Color": "#8E3C55",
             "Enable": true
@@ -16914,7 +16914,7 @@
             "RegionId": 1,
             "PointOrder": 23,
             "X": 0.6106,
-            "Y": 0.4150,
+            "Y": 0.415,
             "Color": "#8E3C55",
             "Enable": true
         },
@@ -16925,7 +16925,7 @@
             "RegionId": 1,
             "PointOrder": 24,
             "X": 0.6707,
-            "Y": 0.4210,
+            "Y": 0.421,
             "Color": "#8E3C55",
             "Enable": true
         },
@@ -16935,7 +16935,7 @@
             "FactionId": 22,
             "RegionId": 1,
             "PointOrder": 25,
-            "X": 0.7170,
+            "X": 0.717,
             "Y": 0.4089,
             "Color": "#8E3C55",
             "Enable": true
@@ -17023,7 +17023,7 @@
             "FactionId": 22,
             "RegionId": 1,
             "PointOrder": 33,
-            "X": 0.6690,
+            "X": 0.669,
             "Y": 0.0251,
             "Color": "#8E3C55",
             "Enable": true
@@ -17101,7 +17101,7 @@
             "RegionId": 1,
             "PointOrder": 40,
             "X": 0.8851,
-            "Y": 0.1050,
+            "Y": 0.105,
             "Color": "#8E3C55",
             "Enable": true
         },
@@ -17145,7 +17145,7 @@
             "RegionId": 1,
             "PointOrder": 44,
             "X": 0.8844,
-            "Y": 0.1160,
+            "Y": 0.116,
             "Color": "#8E3C55",
             "Enable": true
         },
@@ -17166,7 +17166,7 @@
             "FactionId": 22,
             "RegionId": 1,
             "PointOrder": 46,
-            "X": 0.8900,
+            "X": 0.89,
             "Y": 0.1204,
             "Color": "#8E3C55",
             "Enable": true
@@ -17177,7 +17177,7 @@
             "FactionId": 22,
             "RegionId": 1,
             "PointOrder": 47,
-            "X": 0.8930,
+            "X": 0.893,
             "Y": 0.1206,
             "Color": "#8E3C55",
             "Enable": true
@@ -17320,7 +17320,7 @@
             "FactionId": 22,
             "RegionId": 1,
             "PointOrder": 60,
-            "X": 0.9210,
+            "X": 0.921,
             "Y": 0.1374,
             "Color": "#8E3C55",
             "Enable": true
@@ -17353,8 +17353,8 @@
             "FactionId": 22,
             "RegionId": 1,
             "PointOrder": 63,
-            "X": 0.9170,
-            "Y": 0.1500,
+            "X": 0.917,
+            "Y": 0.15,
             "Color": "#8E3C55",
             "Enable": true
         },
@@ -17420,7 +17420,7 @@
             "RegionId": 1,
             "PointOrder": 69,
             "X": 0.9208,
-            "Y": 0.1710,
+            "Y": 0.171,
             "Color": "#8E3C55",
             "Enable": true
         },
@@ -17486,7 +17486,7 @@
             "RegionId": 1,
             "PointOrder": 75,
             "X": 0.9198,
-            "Y": 0.1900,
+            "Y": 0.19,
             "Color": "#8E3C55",
             "Enable": true
         },
@@ -17540,7 +17540,7 @@
             "FactionId": 22,
             "RegionId": 1,
             "PointOrder": 80,
-            "X": 0.9190,
+            "X": 0.919,
             "Y": 0.2045,
             "Color": "#8E3C55",
             "Enable": true
@@ -17606,7 +17606,7 @@
             "FactionId": 22,
             "RegionId": 1,
             "PointOrder": 86,
-            "X": 0.9320,
+            "X": 0.932,
             "Y": 0.2222,
             "Color": "#8E3C55",
             "Enable": true
@@ -17629,7 +17629,7 @@
             "RegionId": 1,
             "PointOrder": 88,
             "X": 0.9177,
-            "Y": 0.2390,
+            "Y": 0.239,
             "Color": "#8E3C55",
             "Enable": true
         },
@@ -17639,7 +17639,7 @@
             "FactionId": 22,
             "RegionId": 1,
             "PointOrder": 89,
-            "X": 0.9150,
+            "X": 0.915,
             "Y": 0.2411,
             "Color": "#8E3C55",
             "Enable": true
@@ -17739,7 +17739,7 @@
             "RegionId": 1,
             "PointOrder": 98,
             "X": 0.8746,
-            "Y": 0.2390,
+            "Y": 0.239,
             "Color": "#8E3C55",
             "Enable": true
         },
@@ -17761,7 +17761,7 @@
             "RegionId": 1,
             "PointOrder": 100,
             "X": 0.8686,
-            "Y": 0.2390,
+            "Y": 0.239,
             "Color": "#8E3C55",
             "Enable": true
         },
@@ -17771,7 +17771,7 @@
             "FactionId": 22,
             "RegionId": 1,
             "PointOrder": 101,
-            "X": 0.8680,
+            "X": 0.868,
             "Y": 0.2387,
             "Color": "#8E3C55",
             "Enable": true
@@ -17805,7 +17805,7 @@
             "RegionId": 1,
             "PointOrder": 104,
             "X": 0.8596,
-            "Y": 0.2410,
+            "Y": 0.241,
             "Color": "#8E3C55",
             "Enable": true
         },
@@ -17859,7 +17859,7 @@
             "FactionId": 22,
             "RegionId": 1,
             "PointOrder": 109,
-            "X": 0.8640,
+            "X": 0.864,
             "Y": 0.2578,
             "Color": "#8E3C55",
             "Enable": true
@@ -17925,7 +17925,7 @@
             "FactionId": 22,
             "RegionId": 1,
             "PointOrder": 115,
-            "X": 0.8930,
+            "X": 0.893,
             "Y": 0.2653,
             "Color": "#8E3C55",
             "Enable": true
@@ -17958,7 +17958,7 @@
             "FactionId": 22,
             "RegionId": 1,
             "PointOrder": 118,
-            "X": 0.8990,
+            "X": 0.899,
             "Y": 0.2747,
             "Color": "#8E3C55",
             "Enable": true
@@ -17980,7 +17980,7 @@
             "FactionId": 22,
             "RegionId": 1,
             "PointOrder": 120,
-            "X": 0.9170,
+            "X": 0.917,
             "Y": 0.2875,
             "Color": "#8E3C55",
             "Enable": true
@@ -18025,7 +18025,7 @@
             "RegionId": 1,
             "PointOrder": 124,
             "X": 0.9322,
-            "Y": 0.2940,
+            "Y": 0.294,
             "Color": "#8E3C55",
             "Enable": true
         },
@@ -18068,7 +18068,7 @@
             "FactionId": 22,
             "RegionId": 1,
             "PointOrder": 128,
-            "X": 0.9280,
+            "X": 0.928,
             "Y": 0.3056,
             "Color": "#8E3C55",
             "Enable": true
@@ -18079,7 +18079,7 @@
             "FactionId": 22,
             "RegionId": 1,
             "PointOrder": 129,
-            "X": 0.9150,
+            "X": 0.915,
             "Y": 0.3147,
             "Color": "#8E3C55",
             "Enable": true
@@ -18156,8 +18156,8 @@
             "FactionId": 22,
             "RegionId": 1,
             "PointOrder": 136,
-            "X": 0.8870,
-            "Y": 0.3370,
+            "X": 0.887,
+            "Y": 0.337,
             "Color": "#8E3C55",
             "Enable": true
         },
@@ -18300,7 +18300,7 @@
             "RegionId": 1,
             "PointOrder": 149,
             "X": 0.8537,
-            "Y": 0.3580,
+            "Y": 0.358,
             "Color": "#8E3C55",
             "Enable": true
         },
@@ -18355,7 +18355,7 @@
             "RegionId": 1,
             "PointOrder": 154,
             "X": 0.8771,
-            "Y": 0.3690,
+            "Y": 0.369,
             "Color": "#8E3C55",
             "Enable": true
         },
@@ -18365,7 +18365,7 @@
             "FactionId": 22,
             "RegionId": 1,
             "PointOrder": 155,
-            "X": 0.8810,
+            "X": 0.881,
             "Y": 0.3695,
             "Color": "#8E3C55",
             "Enable": true
@@ -18377,7 +18377,7 @@
             "RegionId": 1,
             "PointOrder": 156,
             "X": 0.8875,
-            "Y": 0.3680,
+            "Y": 0.368,
             "Color": "#8E3C55",
             "Enable": true
         },
@@ -18409,7 +18409,7 @@
             "FactionId": 22,
             "RegionId": 1,
             "PointOrder": 159,
-            "X": 0.8970,
+            "X": 0.897,
             "Y": 0.3629,
             "Color": "#8E3C55",
             "Enable": true
@@ -18475,7 +18475,7 @@
             "FactionId": 22,
             "RegionId": 1,
             "PointOrder": 165,
-            "X": 0.9210,
+            "X": 0.921,
             "Y": 0.3539,
             "Color": "#8E3C55",
             "Enable": true
@@ -18575,7 +18575,7 @@
             "RegionId": 1,
             "PointOrder": 174,
             "X": 0.8992,
-            "Y": 0.3800,
+            "Y": 0.38,
             "Color": "#8E3C55",
             "Enable": true
         },
@@ -18651,7 +18651,7 @@
             "FactionId": 22,
             "RegionId": 1,
             "PointOrder": 181,
-            "X": 0.8900,
+            "X": 0.89,
             "Y": 0.4071,
             "Color": "#8E3C55",
             "Enable": true
@@ -18728,7 +18728,7 @@
             "FactionId": 22,
             "RegionId": 1,
             "PointOrder": 188,
-            "X": 0.8720,
+            "X": 0.872,
             "Y": 0.4561,
             "Color": "#8E3C55",
             "Enable": true
@@ -18838,7 +18838,7 @@
             "FactionId": 22,
             "RegionId": 1,
             "PointOrder": 198,
-            "X": 0.8320,
+            "X": 0.832,
             "Y": 0.5043,
             "Color": "#8E3C55",
             "Enable": true
@@ -18959,7 +18959,7 @@
             "FactionId": 22,
             "RegionId": 1,
             "PointOrder": 209,
-            "X": 0.8230,
+            "X": 0.823,
             "Y": 0.5585,
             "Color": "#8E3C55",
             "Enable": true
@@ -19081,7 +19081,7 @@
             "RegionId": 1,
             "PointOrder": 4,
             "X": 0.2221,
-            "Y": 0.4880,
+            "Y": 0.488,
             "Color": "#52646C",
             "Enable": true
         },
@@ -19213,7 +19213,7 @@
             "RegionId": 1,
             "PointOrder": 5,
             "X": 0.4488,
-            "Y": 0.4880,
+            "Y": 0.488,
             "Color": "#8B7D5B",
             "Enable": true
         },
@@ -19246,7 +19246,7 @@
             "RegionId": 1,
             "PointOrder": 8,
             "X": 0.3747,
-            "Y": 0.5580,
+            "Y": 0.558,
             "Color": "#8B7D5B",
             "Enable": true
         },
@@ -19312,7 +19312,7 @@
             "RegionId": 1,
             "PointOrder": 5,
             "X": 0.3747,
-            "Y": 0.5580,
+            "Y": 0.558,
             "Color": "#487C80",
             "Enable": true
         },
@@ -19333,7 +19333,7 @@
             "FactionId": 25,
             "RegionId": 1,
             "PointOrder": 7,
-            "X": 0.4210,
+            "X": 0.421,
             "Y": 0.6097,
             "Color": "#487C80",
             "Enable": true
@@ -19389,7 +19389,7 @@
             "RegionId": 1,
             "PointOrder": 1,
             "X": 0.4488,
-            "Y": 0.4880,
+            "Y": 0.488,
             "Color": "#C58A46",
             "Enable": true
         },
@@ -19399,7 +19399,7 @@
             "FactionId": 26,
             "RegionId": 1,
             "PointOrder": 2,
-            "X": 0.4950,
+            "X": 0.495,
             "Y": 0.5062,
             "Color": "#C58A46",
             "Enable": true
@@ -19476,7 +19476,7 @@
             "FactionId": 27,
             "RegionId": 1,
             "PointOrder": 3,
-            "X": 0.5690,
+            "X": 0.569,
             "Y": 0.5914,
             "Color": "#99668D",
             "Enable": true
@@ -19487,7 +19487,7 @@
             "FactionId": 27,
             "RegionId": 1,
             "PointOrder": 4,
-            "X": 0.5320,
+            "X": 0.532,
             "Y": 0.6218,
             "Color": "#99668D",
             "Enable": true
@@ -19542,7 +19542,7 @@
             "FactionId": 27,
             "RegionId": 1,
             "PointOrder": 9,
-            "X": 0.6060,
+            "X": 0.606,
             "Y": 0.5367,
             "Color": "#99668D",
             "Enable": true
@@ -19553,7 +19553,7 @@
             "FactionId": 28,
             "RegionId": 1,
             "PointOrder": 1,
-            "X": 0.4210,
+            "X": 0.421,
             "Y": 0.6097,
             "Color": "#A46645",
             "Enable": true
@@ -19663,7 +19663,7 @@
             "FactionId": 29,
             "RegionId": 1,
             "PointOrder": 3,
-            "X": 0.4950,
+            "X": 0.495,
             "Y": 0.5062,
             "Color": "#6B5B95",
             "Enable": true
@@ -19685,7 +19685,7 @@
             "FactionId": 29,
             "RegionId": 1,
             "PointOrder": 5,
-            "X": 0.5320,
+            "X": 0.532,
             "Y": 0.4332,
             "Color": "#6B5B95",
             "Enable": true
@@ -19751,7 +19751,7 @@
             "FactionId": 30,
             "RegionId": 1,
             "PointOrder": 4,
-            "X": 0.5320,
+            "X": 0.532,
             "Y": 0.6218,
             "Color": "#4A6FA5",
             "Enable": true
@@ -19762,7 +19762,7 @@
             "FactionId": 30,
             "RegionId": 1,
             "PointOrder": 5,
-            "X": 0.5690,
+            "X": 0.569,
             "Y": 0.5914,
             "Color": "#4A6FA5",
             "Enable": true
@@ -19839,7 +19839,7 @@
             "FactionId": 31,
             "RegionId": 1,
             "PointOrder": 1,
-            "X": 0.4210,
+            "X": 0.421,
             "Y": 0.7557,
             "Color": "#84785B",
             "Enable": true
@@ -19960,7 +19960,7 @@
             "FactionId": 31,
             "RegionId": 1,
             "PointOrder": 12,
-            "X": 0.5320,
+            "X": 0.532,
             "Y": 0.8652,
             "Color": "#84785B",
             "Enable": true
@@ -19983,7 +19983,7 @@
             "RegionId": 1,
             "PointOrder": 1,
             "X": 0.6106,
-            "Y": 0.4150,
+            "Y": 0.415,
             "Color": "#3E8E79",
             "Enable": true
         },
@@ -20059,7 +20059,7 @@
             "FactionId": 32,
             "RegionId": 1,
             "PointOrder": 8,
-            "X": 0.7170,
+            "X": 0.717,
             "Y": 0.4089,
             "Color": "#3E8E79",
             "Enable": true
@@ -20071,7 +20071,7 @@
             "RegionId": 1,
             "PointOrder": 9,
             "X": 0.6707,
-            "Y": 0.4210,
+            "Y": 0.421,
             "Color": "#3E8E79",
             "Enable": true
         },
@@ -20169,7 +20169,7 @@
             "FactionId": 34,
             "RegionId": 1,
             "PointOrder": 1,
-            "X": 0.4050,
+            "X": 0.405,
             "Y": 0.0251,
             "Color": "#B8874B",
             "Enable": true
@@ -20235,7 +20235,7 @@
             "FactionId": 34,
             "RegionId": 1,
             "PointOrder": 7,
-            "X": 0.5320,
+            "X": 0.532,
             "Y": 0.3663,
             "Color": "#B8874B",
             "Enable": true
@@ -20279,7 +20279,7 @@
             "FactionId": 35,
             "RegionId": 1,
             "PointOrder": 1,
-            "X": 0.7170,
+            "X": 0.717,
             "Y": 0.7314,
             "Color": "#688E4B",
             "Enable": true
@@ -20422,7 +20422,7 @@
             "FactionId": 36,
             "RegionId": 1,
             "PointOrder": 6,
-            "X": 0.7170,
+            "X": 0.717,
             "Y": 0.7314,
             "Color": "#2E8B57",
             "Enable": true
@@ -20510,7 +20510,7 @@
             "FactionId": 36,
             "RegionId": 1,
             "PointOrder": 14,
-            "X": 0.8310,
+            "X": 0.831,
             "Y": 0.6569,
             "Color": "#2E8B57",
             "Enable": true
@@ -20555,7 +20555,7 @@
             "RegionId": 1,
             "PointOrder": 18,
             "X": 0.8123,
-            "Y": 0.6620,
+            "Y": 0.662,
             "Color": "#2E8B57",
             "Enable": true
         },
@@ -20566,7 +20566,7 @@
             "RegionId": 1,
             "PointOrder": 19,
             "X": 0.8108,
-            "Y": 0.6630,
+            "Y": 0.663,
             "Color": "#2E8B57",
             "Enable": true
         },
@@ -20598,7 +20598,7 @@
             "FactionId": 36,
             "RegionId": 1,
             "PointOrder": 22,
-            "X": 0.8020,
+            "X": 0.802,
             "Y": 0.6726,
             "Color": "#2E8B57",
             "Enable": true
@@ -20697,7 +20697,7 @@
             "FactionId": 36,
             "RegionId": 1,
             "PointOrder": 31,
-            "X": 0.8040,
+            "X": 0.804,
             "Y": 0.7104,
             "Color": "#2E8B57",
             "Enable": true
@@ -20730,7 +20730,7 @@
             "FactionId": 36,
             "RegionId": 1,
             "PointOrder": 34,
-            "X": 0.7950,
+            "X": 0.795,
             "Y": 0.7178,
             "Color": "#2E8B57",
             "Enable": true
@@ -20753,7 +20753,7 @@
             "RegionId": 1,
             "PointOrder": 36,
             "X": 0.7872,
-            "Y": 0.7160,
+            "Y": 0.716,
             "Color": "#2E8B57",
             "Enable": true
         },
@@ -20885,7 +20885,7 @@
             "RegionId": 1,
             "PointOrder": 9,
             "X": 0.8466,
-            "Y": 0.5850,
+            "Y": 0.585,
             "Color": "#68A29B",
             "Enable": true
         },
@@ -20906,7 +20906,7 @@
             "FactionId": 37,
             "RegionId": 1,
             "PointOrder": 11,
-            "X": 0.8500,
+            "X": 0.85,
             "Y": 0.5885,
             "Color": "#68A29B",
             "Enable": true
@@ -21006,7 +21006,7 @@
             "RegionId": 1,
             "PointOrder": 20,
             "X": 0.8556,
-            "Y": 0.6120,
+            "Y": 0.612,
             "Color": "#68A29B",
             "Enable": true
         },
@@ -21028,7 +21028,7 @@
             "RegionId": 1,
             "PointOrder": 22,
             "X": 0.8599,
-            "Y": 0.6170,
+            "Y": 0.617,
             "Color": "#68A29B",
             "Enable": true
         },
@@ -21060,7 +21060,7 @@
             "FactionId": 37,
             "RegionId": 1,
             "PointOrder": 25,
-            "X": 0.8680,
+            "X": 0.868,
             "Y": 0.6204,
             "Color": "#68A29B",
             "Enable": true
@@ -21083,7 +21083,7 @@
             "RegionId": 1,
             "PointOrder": 27,
             "X": 0.8747,
-            "Y": 0.6190,
+            "Y": 0.619,
             "Color": "#68A29B",
             "Enable": true
         },
@@ -21236,7 +21236,7 @@
             "FactionId": 37,
             "RegionId": 1,
             "PointOrder": 41,
-            "X": 0.8930,
+            "X": 0.893,
             "Y": 0.6451,
             "Color": "#68A29B",
             "Enable": true
@@ -21347,7 +21347,7 @@
             "RegionId": 1,
             "PointOrder": 51,
             "X": 0.9445,
-            "Y": 0.6650,
+            "Y": 0.665,
             "Color": "#68A29B",
             "Enable": true
         },
@@ -21390,7 +21390,7 @@
             "FactionId": 37,
             "RegionId": 1,
             "PointOrder": 55,
-            "X": 0.9600,
+            "X": 0.96,
             "Y": 0.6631,
             "Color": "#68A29B",
             "Enable": true
@@ -21424,7 +21424,7 @@
             "RegionId": 1,
             "PointOrder": 58,
             "X": 0.9622,
-            "Y": 0.6650,
+            "Y": 0.665,
             "Color": "#68A29B",
             "Enable": true
         },
@@ -21434,7 +21434,7 @@
             "FactionId": 37,
             "RegionId": 1,
             "PointOrder": 59,
-            "X": 0.9640,
+            "X": 0.964,
             "Y": 0.6689,
             "Color": "#68A29B",
             "Enable": true
@@ -21456,8 +21456,8 @@
             "FactionId": 37,
             "RegionId": 1,
             "PointOrder": 61,
-            "X": 0.9680,
-            "Y": 0.6740,
+            "X": 0.968,
+            "Y": 0.674,
             "Color": "#68A29B",
             "Enable": true
         },
@@ -21467,7 +21467,7 @@
             "FactionId": 37,
             "RegionId": 1,
             "PointOrder": 62,
-            "X": 0.9640,
+            "X": 0.964,
             "Y": 0.6739,
             "Color": "#68A29B",
             "Enable": true
@@ -21512,7 +21512,7 @@
             "RegionId": 1,
             "PointOrder": 66,
             "X": 0.9492,
-            "Y": 0.6770,
+            "Y": 0.677,
             "Color": "#68A29B",
             "Enable": true
         },
@@ -21534,7 +21534,7 @@
             "RegionId": 1,
             "PointOrder": 68,
             "X": 0.9394,
-            "Y": 0.6770,
+            "Y": 0.677,
             "Color": "#68A29B",
             "Enable": true
         },
@@ -21555,7 +21555,7 @@
             "FactionId": 37,
             "RegionId": 1,
             "PointOrder": 70,
-            "X": 0.9290,
+            "X": 0.929,
             "Y": 0.6779,
             "Color": "#68A29B",
             "Enable": true
@@ -21577,7 +21577,7 @@
             "FactionId": 37,
             "RegionId": 1,
             "PointOrder": 72,
-            "X": 0.9220,
+            "X": 0.922,
             "Y": 0.6817,
             "Color": "#68A29B",
             "Enable": true
@@ -21621,7 +21621,7 @@
             "FactionId": 37,
             "RegionId": 1,
             "PointOrder": 76,
-            "X": 0.9010,
+            "X": 0.901,
             "Y": 0.6943,
             "Color": "#68A29B",
             "Enable": true
@@ -21709,7 +21709,7 @@
             "FactionId": 37,
             "RegionId": 1,
             "PointOrder": 84,
-            "X": 0.8570,
+            "X": 0.857,
             "Y": 0.6705,
             "Color": "#68A29B",
             "Enable": true
@@ -21786,7 +21786,7 @@
             "FactionId": 38,
             "RegionId": 1,
             "PointOrder": 5,
-            "X": 0.7400,
+            "X": 0.74,
             "Y": 0.7766,
             "Color": "#7286A6",
             "Enable": true
@@ -21929,8 +21929,8 @@
             "FactionId": 38,
             "RegionId": 1,
             "PointOrder": 18,
-            "X": 0.7980,
-            "Y": 0.7990,
+            "X": 0.798,
+            "Y": 0.799,
             "Color": "#7286A6",
             "Enable": true
         },
@@ -21984,7 +21984,7 @@
             "FactionId": 38,
             "RegionId": 1,
             "PointOrder": 23,
-            "X": 0.8070,
+            "X": 0.807,
             "Y": 0.8007,
             "Color": "#7286A6",
             "Enable": true
@@ -22029,7 +22029,7 @@
             "RegionId": 1,
             "PointOrder": 27,
             "X": 0.8185,
-            "Y": 0.8250,
+            "Y": 0.825,
             "Color": "#7286A6",
             "Enable": true
         },
@@ -22127,7 +22127,7 @@
             "FactionId": 38,
             "RegionId": 1,
             "PointOrder": 36,
-            "X": 0.8740,
+            "X": 0.874,
             "Y": 0.8631,
             "Color": "#7286A6",
             "Enable": true
@@ -22138,7 +22138,7 @@
             "FactionId": 38,
             "RegionId": 1,
             "PointOrder": 37,
-            "X": 0.8860,
+            "X": 0.886,
             "Y": 0.8825,
             "Color": "#7286A6",
             "Enable": true
@@ -22171,7 +22171,7 @@
             "FactionId": 38,
             "RegionId": 1,
             "PointOrder": 40,
-            "X": 0.8920,
+            "X": 0.892,
             "Y": 0.8888,
             "Color": "#7286A6",
             "Enable": true
@@ -22369,7 +22369,7 @@
             "FactionId": 38,
             "RegionId": 1,
             "PointOrder": 58,
-            "X": 0.9480,
+            "X": 0.948,
             "Y": 0.8981,
             "Color": "#7286A6",
             "Enable": true
@@ -22402,7 +22402,7 @@
             "FactionId": 38,
             "RegionId": 1,
             "PointOrder": 61,
-            "X": 0.9620,
+            "X": 0.962,
             "Y": 0.8838,
             "Color": "#7286A6",
             "Enable": true
@@ -22447,7 +22447,7 @@
             "RegionId": 1,
             "PointOrder": 65,
             "X": 0.9672,
-            "Y": 0.8690,
+            "Y": 0.869,
             "Color": "#7286A6",
             "Enable": true
         },
@@ -22468,7 +22468,7 @@
             "FactionId": 38,
             "RegionId": 1,
             "PointOrder": 67,
-            "X": 0.9640,
+            "X": 0.964,
             "Y": 0.8612,
             "Color": "#7286A6",
             "Enable": true
@@ -22513,7 +22513,7 @@
             "RegionId": 1,
             "PointOrder": 71,
             "X": 0.9517,
-            "Y": 0.8420,
+            "Y": 0.842,
             "Color": "#7286A6",
             "Enable": true
         },
@@ -22722,7 +22722,7 @@
             "RegionId": 1,
             "PointOrder": 90,
             "X": 0.9399,
-            "Y": 0.7890,
+            "Y": 0.789,
             "Color": "#7286A6",
             "Enable": true
         },
@@ -22777,7 +22777,7 @@
             "RegionId": 1,
             "PointOrder": 95,
             "X": 0.9491,
-            "Y": 0.7960,
+            "Y": 0.796,
             "Color": "#7286A6",
             "Enable": true
         },
@@ -22798,7 +22798,7 @@
             "FactionId": 38,
             "RegionId": 1,
             "PointOrder": 97,
-            "X": 0.9540,
+            "X": 0.954,
             "Y": 0.8031,
             "Color": "#7286A6",
             "Enable": true
@@ -22853,7 +22853,7 @@
             "FactionId": 38,
             "RegionId": 1,
             "PointOrder": 102,
-            "X": 0.9020,
+            "X": 0.902,
             "Y": 0.9504,
             "Color": "#7286A6",
             "Enable": true
@@ -22908,7 +22908,7 @@
             "FactionId": 2,
             "RegionId": 1,
             "PointOrder": 4,
-            "X": 0.5320,
+            "X": 0.532,
             "Y": 0.6218,
             "Color": "#4A6FA5",
             "Enable": true
@@ -22919,7 +22919,7 @@
             "FactionId": 2,
             "RegionId": 1,
             "PointOrder": 5,
-            "X": 0.5690,
+            "X": 0.569,
             "Y": 0.5914,
             "Color": "#4A6FA5",
             "Enable": true
@@ -23051,8 +23051,8 @@
             "FactionId": 3,
             "RegionId": 1,
             "PointOrder": 7,
-            "X": 0.6800,
-            "Y": 0.5610,
+            "X": 0.68,
+            "Y": 0.561,
             "Color": "#B23A48",
             "Enable": true
         },
@@ -23107,7 +23107,7 @@
             "RegionId": 1,
             "PointOrder": 12,
             "X": 0.8326,
-            "Y": 0.4210,
+            "Y": 0.421,
             "Color": "#B23A48",
             "Enable": true
         },
@@ -23139,7 +23139,7 @@
             "FactionId": 3,
             "RegionId": 1,
             "PointOrder": 15,
-            "X": 0.8320,
+            "X": 0.832,
             "Y": 0.5043,
             "Color": "#B23A48",
             "Enable": true
@@ -23381,7 +23381,7 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 18,
-            "X": 0.8230,
+            "X": 0.823,
             "Y": 0.5585,
             "Color": "#2E8B57",
             "Enable": true
@@ -23481,7 +23481,7 @@
             "RegionId": 1,
             "PointOrder": 27,
             "X": 0.8466,
-            "Y": 0.5850,
+            "Y": 0.585,
             "Color": "#2E8B57",
             "Enable": true
         },
@@ -23502,7 +23502,7 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 29,
-            "X": 0.8500,
+            "X": 0.85,
             "Y": 0.5885,
             "Color": "#2E8B57",
             "Enable": true
@@ -23602,7 +23602,7 @@
             "RegionId": 1,
             "PointOrder": 38,
             "X": 0.8556,
-            "Y": 0.6120,
+            "Y": 0.612,
             "Color": "#2E8B57",
             "Enable": true
         },
@@ -23624,7 +23624,7 @@
             "RegionId": 1,
             "PointOrder": 40,
             "X": 0.8599,
-            "Y": 0.6170,
+            "Y": 0.617,
             "Color": "#2E8B57",
             "Enable": true
         },
@@ -23656,7 +23656,7 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 43,
-            "X": 0.8680,
+            "X": 0.868,
             "Y": 0.6204,
             "Color": "#2E8B57",
             "Enable": true
@@ -23679,7 +23679,7 @@
             "RegionId": 1,
             "PointOrder": 45,
             "X": 0.8747,
-            "Y": 0.6190,
+            "Y": 0.619,
             "Color": "#2E8B57",
             "Enable": true
         },
@@ -23832,7 +23832,7 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 59,
-            "X": 0.8930,
+            "X": 0.893,
             "Y": 0.6451,
             "Color": "#2E8B57",
             "Enable": true
@@ -23943,7 +23943,7 @@
             "RegionId": 1,
             "PointOrder": 69,
             "X": 0.9445,
-            "Y": 0.6650,
+            "Y": 0.665,
             "Color": "#2E8B57",
             "Enable": true
         },
@@ -23986,7 +23986,7 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 73,
-            "X": 0.9600,
+            "X": 0.96,
             "Y": 0.6631,
             "Color": "#2E8B57",
             "Enable": true
@@ -24020,7 +24020,7 @@
             "RegionId": 1,
             "PointOrder": 76,
             "X": 0.9622,
-            "Y": 0.6650,
+            "Y": 0.665,
             "Color": "#2E8B57",
             "Enable": true
         },
@@ -24030,7 +24030,7 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 77,
-            "X": 0.9640,
+            "X": 0.964,
             "Y": 0.6689,
             "Color": "#2E8B57",
             "Enable": true
@@ -24052,8 +24052,8 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 79,
-            "X": 0.9680,
-            "Y": 0.6740,
+            "X": 0.968,
+            "Y": 0.674,
             "Color": "#2E8B57",
             "Enable": true
         },
@@ -24063,7 +24063,7 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 80,
-            "X": 0.9640,
+            "X": 0.964,
             "Y": 0.6739,
             "Color": "#2E8B57",
             "Enable": true
@@ -24108,7 +24108,7 @@
             "RegionId": 1,
             "PointOrder": 84,
             "X": 0.9492,
-            "Y": 0.6770,
+            "Y": 0.677,
             "Color": "#2E8B57",
             "Enable": true
         },
@@ -24130,7 +24130,7 @@
             "RegionId": 1,
             "PointOrder": 86,
             "X": 0.9394,
-            "Y": 0.6770,
+            "Y": 0.677,
             "Color": "#2E8B57",
             "Enable": true
         },
@@ -24151,7 +24151,7 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 88,
-            "X": 0.9290,
+            "X": 0.929,
             "Y": 0.6779,
             "Color": "#2E8B57",
             "Enable": true
@@ -24173,7 +24173,7 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 90,
-            "X": 0.9220,
+            "X": 0.922,
             "Y": 0.6817,
             "Color": "#2E8B57",
             "Enable": true
@@ -24217,7 +24217,7 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 94,
-            "X": 0.9010,
+            "X": 0.901,
             "Y": 0.6943,
             "Color": "#2E8B57",
             "Enable": true
@@ -24305,7 +24305,7 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 102,
-            "X": 0.8570,
+            "X": 0.857,
             "Y": 0.6705,
             "Color": "#2E8B57",
             "Enable": true
@@ -24349,7 +24349,7 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 106,
-            "X": 0.8310,
+            "X": 0.831,
             "Y": 0.6569,
             "Color": "#2E8B57",
             "Enable": true
@@ -24394,7 +24394,7 @@
             "RegionId": 1,
             "PointOrder": 110,
             "X": 0.8123,
-            "Y": 0.6620,
+            "Y": 0.662,
             "Color": "#2E8B57",
             "Enable": true
         },
@@ -24405,7 +24405,7 @@
             "RegionId": 1,
             "PointOrder": 111,
             "X": 0.8108,
-            "Y": 0.6630,
+            "Y": 0.663,
             "Color": "#2E8B57",
             "Enable": true
         },
@@ -24437,7 +24437,7 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 114,
-            "X": 0.8020,
+            "X": 0.802,
             "Y": 0.6726,
             "Color": "#2E8B57",
             "Enable": true
@@ -24536,7 +24536,7 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 123,
-            "X": 0.8040,
+            "X": 0.804,
             "Y": 0.7104,
             "Color": "#2E8B57",
             "Enable": true
@@ -24569,7 +24569,7 @@
             "FactionId": 4,
             "RegionId": 1,
             "PointOrder": 126,
-            "X": 0.7950,
+            "X": 0.795,
             "Y": 0.7178,
             "Color": "#2E8B57",
             "Enable": true
@@ -24592,7 +24592,7 @@
             "RegionId": 1,
             "PointOrder": 128,
             "X": 0.7872,
-            "Y": 0.7160,
+            "Y": 0.716,
             "Color": "#2E8B57",
             "Enable": true
         },
@@ -24724,7 +24724,7 @@
             "RegionId": 1,
             "PointOrder": 9,
             "X": 0.7411,
-            "Y": 0.7410,
+            "Y": 0.741,
             "Color": "#5B7C99",
             "Enable": true
         },
@@ -24932,8 +24932,8 @@
             "FactionId": 5,
             "RegionId": 1,
             "PointOrder": 28,
-            "X": 0.7980,
-            "Y": 0.7990,
+            "X": 0.798,
+            "Y": 0.799,
             "Color": "#5B7C99",
             "Enable": true
         },
@@ -24987,7 +24987,7 @@
             "FactionId": 5,
             "RegionId": 1,
             "PointOrder": 33,
-            "X": 0.8070,
+            "X": 0.807,
             "Y": 0.8007,
             "Color": "#5B7C99",
             "Enable": true
@@ -25032,7 +25032,7 @@
             "RegionId": 1,
             "PointOrder": 37,
             "X": 0.8185,
-            "Y": 0.8250,
+            "Y": 0.825,
             "Color": "#5B7C99",
             "Enable": true
         },
@@ -25130,7 +25130,7 @@
             "FactionId": 5,
             "RegionId": 1,
             "PointOrder": 46,
-            "X": 0.8740,
+            "X": 0.874,
             "Y": 0.8631,
             "Color": "#5B7C99",
             "Enable": true
@@ -25141,7 +25141,7 @@
             "FactionId": 5,
             "RegionId": 1,
             "PointOrder": 47,
-            "X": 0.8860,
+            "X": 0.886,
             "Y": 0.8825,
             "Color": "#5B7C99",
             "Enable": true
@@ -25174,7 +25174,7 @@
             "FactionId": 5,
             "RegionId": 1,
             "PointOrder": 50,
-            "X": 0.8920,
+            "X": 0.892,
             "Y": 0.8888,
             "Color": "#5B7C99",
             "Enable": true
@@ -25372,7 +25372,7 @@
             "FactionId": 5,
             "RegionId": 1,
             "PointOrder": 68,
-            "X": 0.9480,
+            "X": 0.948,
             "Y": 0.8981,
             "Color": "#5B7C99",
             "Enable": true
@@ -25405,7 +25405,7 @@
             "FactionId": 5,
             "RegionId": 1,
             "PointOrder": 71,
-            "X": 0.9620,
+            "X": 0.962,
             "Y": 0.8838,
             "Color": "#5B7C99",
             "Enable": true
@@ -25450,7 +25450,7 @@
             "RegionId": 1,
             "PointOrder": 75,
             "X": 0.9672,
-            "Y": 0.8690,
+            "Y": 0.869,
             "Color": "#5B7C99",
             "Enable": true
         },
@@ -25471,7 +25471,7 @@
             "FactionId": 5,
             "RegionId": 1,
             "PointOrder": 77,
-            "X": 0.9640,
+            "X": 0.964,
             "Y": 0.8612,
             "Color": "#5B7C99",
             "Enable": true
@@ -25516,7 +25516,7 @@
             "RegionId": 1,
             "PointOrder": 81,
             "X": 0.9517,
-            "Y": 0.8420,
+            "Y": 0.842,
             "Color": "#5B7C99",
             "Enable": true
         },
@@ -25725,7 +25725,7 @@
             "RegionId": 1,
             "PointOrder": 100,
             "X": 0.9399,
-            "Y": 0.7890,
+            "Y": 0.789,
             "Color": "#5B7C99",
             "Enable": true
         },
@@ -25780,7 +25780,7 @@
             "RegionId": 1,
             "PointOrder": 105,
             "X": 0.9491,
-            "Y": 0.7960,
+            "Y": 0.796,
             "Color": "#5B7C99",
             "Enable": true
         },
@@ -25801,7 +25801,7 @@
             "FactionId": 5,
             "RegionId": 1,
             "PointOrder": 107,
-            "X": 0.9540,
+            "X": 0.954,
             "Y": 0.8031,
             "Color": "#5B7C99",
             "Enable": true
@@ -25856,7 +25856,7 @@
             "FactionId": 5,
             "RegionId": 1,
             "PointOrder": 112,
-            "X": 0.9020,
+            "X": 0.902,
             "Y": 0.9504,
             "Color": "#5B7C99",
             "Enable": true
@@ -25867,7 +25867,7 @@
             "FactionId": 21,
             "RegionId": 1,
             "PointOrder": 1,
-            "X": 0.3750,
+            "X": 0.375,
             "Y": 0.0251,
             "Color": "#B45F43",
             "Enable": true
@@ -25889,7 +25889,7 @@
             "FactionId": 21,
             "RegionId": 1,
             "PointOrder": 3,
-            "X": 0.3840,
+            "X": 0.384,
             "Y": 0.0377,
             "Color": "#B45F43",
             "Enable": true
@@ -25978,7 +25978,7 @@
             "RegionId": 1,
             "PointOrder": 11,
             "X": 0.5597,
-            "Y": 0.4150,
+            "Y": 0.415,
             "Color": "#B45F43",
             "Enable": true
         },
@@ -26010,7 +26010,7 @@
             "FactionId": 21,
             "RegionId": 1,
             "PointOrder": 14,
-            "X": 0.6060,
+            "X": 0.606,
             "Y": 0.5367,
             "Color": "#B45F43",
             "Enable": true
@@ -26043,7 +26043,7 @@
             "FactionId": 21,
             "RegionId": 1,
             "PointOrder": 17,
-            "X": 0.5690,
+            "X": 0.569,
             "Y": 0.5914,
             "Color": "#B45F43",
             "Enable": true
@@ -26054,7 +26054,7 @@
             "FactionId": 21,
             "RegionId": 1,
             "PointOrder": 18,
-            "X": 0.5320,
+            "X": 0.532,
             "Y": 0.6218,
             "Color": "#B45F43",
             "Enable": true
@@ -26175,7 +26175,7 @@
             "FactionId": 21,
             "RegionId": 1,
             "PointOrder": 29,
-            "X": 0.0880,
+            "X": 0.088,
             "Y": 0.4941,
             "Color": "#B45F43",
             "Enable": true
@@ -26197,7 +26197,7 @@
             "FactionId": 21,
             "RegionId": 1,
             "PointOrder": 31,
-            "X": 0.0880,
+            "X": 0.088,
             "Y": 0.3724,
             "Color": "#B45F43",
             "Enable": true
@@ -26241,8 +26241,8 @@
             "FactionId": 21,
             "RegionId": 1,
             "PointOrder": 35,
-            "X": 0.2360,
-            "Y": 0.1290,
+            "X": 0.236,
+            "Y": 0.129,
             "Color": "#B45F43",
             "Enable": true
         },
@@ -26264,7 +26264,7 @@
             "RegionId": 1,
             "PointOrder": 37,
             "X": 0.3562,
-            "Y": 0.0620,
+            "Y": 0.062,
             "Color": "#B45F43",
             "Enable": true
         },
@@ -26297,7 +26297,7 @@
             "RegionId": 2,
             "PointOrder": 3,
             "X": 0.8326,
-            "Y": 0.4210,
+            "Y": 0.421,
             "Color": "#B45F43",
             "Enable": true
         },
@@ -26308,7 +26308,7 @@
             "RegionId": 2,
             "PointOrder": 4,
             "X": 0.8855,
-            "Y": 0.4210,
+            "Y": 0.421,
             "Color": "#B45F43",
             "Enable": true
         },
@@ -26373,7 +26373,7 @@
             "FactionId": 21,
             "RegionId": 2,
             "PointOrder": 10,
-            "X": 0.8720,
+            "X": 0.872,
             "Y": 0.4561,
             "Color": "#B45F43",
             "Enable": true
@@ -26517,7 +26517,7 @@
             "RegionId": 4,
             "PointOrder": 3,
             "X": 0.6707,
-            "Y": 0.4210,
+            "Y": 0.421,
             "Color": "#B45F43",
             "Enable": true
         },
@@ -26527,8 +26527,8 @@
             "FactionId": 21,
             "RegionId": 4,
             "PointOrder": 4,
-            "X": 0.7170,
-            "Y": 0.4210,
+            "X": 0.717,
+            "Y": 0.421,
             "Color": "#B45F43",
             "Enable": true
         },
@@ -26582,8 +26582,8 @@
             "FactionId": 21,
             "RegionId": 5,
             "PointOrder": 4,
-            "X": 0.6800,
-            "Y": 0.5610,
+            "X": 0.68,
+            "Y": 0.561,
             "Color": "#B45F43",
             "Enable": true
         },
@@ -26604,7 +26604,7 @@
             "FactionId": 21,
             "RegionId": 6,
             "PointOrder": 1,
-            "X": 0.6690,
+            "X": 0.669,
             "Y": 0.0251,
             "Color": "#B45F43",
             "Enable": true
@@ -26648,7 +26648,7 @@
             "FactionId": 31,
             "RegionId": 1,
             "PointOrder": 1,
-            "X": 0.4210,
+            "X": 0.421,
             "Y": 0.7557,
             "Color": "#84785B",
             "Enable": true
@@ -26780,7 +26780,7 @@
             "FactionId": 31,
             "RegionId": 1,
             "PointOrder": 13,
-            "X": 0.5320,
+            "X": 0.532,
             "Y": 0.8652,
             "Color": "#84785B",
             "Enable": true
@@ -26813,8 +26813,8 @@
             "FactionId": 40,
             "RegionId": 1,
             "PointOrder": 2,
-            "X": 0.6800,
-            "Y": 0.5610,
+            "X": 0.68,
+            "Y": 0.561,
             "Color": "#B98950",
             "Enable": true
         },
@@ -26846,7 +26846,7 @@
             "FactionId": 40,
             "RegionId": 1,
             "PointOrder": 5,
-            "X": 0.6060,
+            "X": 0.606,
             "Y": 0.5367,
             "Color": "#B98950",
             "Enable": true
@@ -26902,7 +26902,7 @@
             "RegionId": 1,
             "PointOrder": 2,
             "X": 0.8855,
-            "Y": 0.4210,
+            "Y": 0.421,
             "Color": "#89734B",
             "Enable": true
         },
@@ -26913,7 +26913,7 @@
             "RegionId": 1,
             "PointOrder": 3,
             "X": 0.8326,
-            "Y": 0.4210,
+            "Y": 0.421,
             "Color": "#89734B",
             "Enable": true
         },
@@ -26978,7 +26978,7 @@
             "FactionId": 41,
             "RegionId": 1,
             "PointOrder": 9,
-            "X": 0.7750,
+            "X": 0.775,
             "Y": 0.0919,
             "Color": "#89734B",
             "Enable": true
@@ -27034,7 +27034,7 @@
             "RegionId": 1,
             "PointOrder": 14,
             "X": 0.8851,
-            "Y": 0.1050,
+            "Y": 0.105,
             "Color": "#89734B",
             "Enable": true
         },
@@ -27078,7 +27078,7 @@
             "RegionId": 1,
             "PointOrder": 18,
             "X": 0.8844,
-            "Y": 0.1160,
+            "Y": 0.116,
             "Color": "#89734B",
             "Enable": true
         },
@@ -27099,7 +27099,7 @@
             "FactionId": 41,
             "RegionId": 1,
             "PointOrder": 20,
-            "X": 0.8900,
+            "X": 0.89,
             "Y": 0.1204,
             "Color": "#89734B",
             "Enable": true
@@ -27110,7 +27110,7 @@
             "FactionId": 41,
             "RegionId": 1,
             "PointOrder": 21,
-            "X": 0.8930,
+            "X": 0.893,
             "Y": 0.1206,
             "Color": "#89734B",
             "Enable": true
@@ -27253,7 +27253,7 @@
             "FactionId": 41,
             "RegionId": 1,
             "PointOrder": 34,
-            "X": 0.9210,
+            "X": 0.921,
             "Y": 0.1374,
             "Color": "#89734B",
             "Enable": true
@@ -27286,8 +27286,8 @@
             "FactionId": 41,
             "RegionId": 1,
             "PointOrder": 37,
-            "X": 0.9170,
-            "Y": 0.1500,
+            "X": 0.917,
+            "Y": 0.15,
             "Color": "#89734B",
             "Enable": true
         },
@@ -27353,7 +27353,7 @@
             "RegionId": 1,
             "PointOrder": 43,
             "X": 0.9208,
-            "Y": 0.1710,
+            "Y": 0.171,
             "Color": "#89734B",
             "Enable": true
         },
@@ -27419,7 +27419,7 @@
             "RegionId": 1,
             "PointOrder": 49,
             "X": 0.9198,
-            "Y": 0.1900,
+            "Y": 0.19,
             "Color": "#89734B",
             "Enable": true
         },
@@ -27473,7 +27473,7 @@
             "FactionId": 41,
             "RegionId": 1,
             "PointOrder": 54,
-            "X": 0.9190,
+            "X": 0.919,
             "Y": 0.2045,
             "Color": "#89734B",
             "Enable": true
@@ -27539,7 +27539,7 @@
             "FactionId": 41,
             "RegionId": 1,
             "PointOrder": 60,
-            "X": 0.9320,
+            "X": 0.932,
             "Y": 0.2222,
             "Color": "#89734B",
             "Enable": true
@@ -27562,7 +27562,7 @@
             "RegionId": 1,
             "PointOrder": 62,
             "X": 0.9177,
-            "Y": 0.2390,
+            "Y": 0.239,
             "Color": "#89734B",
             "Enable": true
         },
@@ -27572,7 +27572,7 @@
             "FactionId": 41,
             "RegionId": 1,
             "PointOrder": 63,
-            "X": 0.9150,
+            "X": 0.915,
             "Y": 0.2411,
             "Color": "#89734B",
             "Enable": true
@@ -27672,7 +27672,7 @@
             "RegionId": 1,
             "PointOrder": 72,
             "X": 0.8746,
-            "Y": 0.2390,
+            "Y": 0.239,
             "Color": "#89734B",
             "Enable": true
         },
@@ -27694,7 +27694,7 @@
             "RegionId": 1,
             "PointOrder": 74,
             "X": 0.8686,
-            "Y": 0.2390,
+            "Y": 0.239,
             "Color": "#89734B",
             "Enable": true
         },
@@ -27704,7 +27704,7 @@
             "FactionId": 41,
             "RegionId": 1,
             "PointOrder": 75,
-            "X": 0.8680,
+            "X": 0.868,
             "Y": 0.2387,
             "Color": "#89734B",
             "Enable": true
@@ -27738,7 +27738,7 @@
             "RegionId": 1,
             "PointOrder": 78,
             "X": 0.8596,
-            "Y": 0.2410,
+            "Y": 0.241,
             "Color": "#89734B",
             "Enable": true
         },
@@ -27792,7 +27792,7 @@
             "FactionId": 41,
             "RegionId": 1,
             "PointOrder": 83,
-            "X": 0.8640,
+            "X": 0.864,
             "Y": 0.2578,
             "Color": "#89734B",
             "Enable": true
@@ -27858,7 +27858,7 @@
             "FactionId": 41,
             "RegionId": 1,
             "PointOrder": 89,
-            "X": 0.8930,
+            "X": 0.893,
             "Y": 0.2653,
             "Color": "#89734B",
             "Enable": true
@@ -27891,7 +27891,7 @@
             "FactionId": 41,
             "RegionId": 1,
             "PointOrder": 92,
-            "X": 0.8990,
+            "X": 0.899,
             "Y": 0.2747,
             "Color": "#89734B",
             "Enable": true
@@ -27913,7 +27913,7 @@
             "FactionId": 41,
             "RegionId": 1,
             "PointOrder": 94,
-            "X": 0.9170,
+            "X": 0.917,
             "Y": 0.2875,
             "Color": "#89734B",
             "Enable": true
@@ -27958,7 +27958,7 @@
             "RegionId": 1,
             "PointOrder": 98,
             "X": 0.9322,
-            "Y": 0.2940,
+            "Y": 0.294,
             "Color": "#89734B",
             "Enable": true
         },
@@ -28001,7 +28001,7 @@
             "FactionId": 41,
             "RegionId": 1,
             "PointOrder": 102,
-            "X": 0.9280,
+            "X": 0.928,
             "Y": 0.3056,
             "Color": "#89734B",
             "Enable": true
@@ -28012,7 +28012,7 @@
             "FactionId": 41,
             "RegionId": 1,
             "PointOrder": 103,
-            "X": 0.9150,
+            "X": 0.915,
             "Y": 0.3147,
             "Color": "#89734B",
             "Enable": true
@@ -28089,8 +28089,8 @@
             "FactionId": 41,
             "RegionId": 1,
             "PointOrder": 110,
-            "X": 0.8870,
-            "Y": 0.3370,
+            "X": 0.887,
+            "Y": 0.337,
             "Color": "#89734B",
             "Enable": true
         },
@@ -28233,7 +28233,7 @@
             "RegionId": 1,
             "PointOrder": 123,
             "X": 0.8537,
-            "Y": 0.3580,
+            "Y": 0.358,
             "Color": "#89734B",
             "Enable": true
         },
@@ -28288,7 +28288,7 @@
             "RegionId": 1,
             "PointOrder": 128,
             "X": 0.8771,
-            "Y": 0.3690,
+            "Y": 0.369,
             "Color": "#89734B",
             "Enable": true
         },
@@ -28298,7 +28298,7 @@
             "FactionId": 41,
             "RegionId": 1,
             "PointOrder": 129,
-            "X": 0.8810,
+            "X": 0.881,
             "Y": 0.3695,
             "Color": "#89734B",
             "Enable": true
@@ -28310,7 +28310,7 @@
             "RegionId": 1,
             "PointOrder": 130,
             "X": 0.8875,
-            "Y": 0.3680,
+            "Y": 0.368,
             "Color": "#89734B",
             "Enable": true
         },
@@ -28342,7 +28342,7 @@
             "FactionId": 41,
             "RegionId": 1,
             "PointOrder": 133,
-            "X": 0.8970,
+            "X": 0.897,
             "Y": 0.3629,
             "Color": "#89734B",
             "Enable": true
@@ -28408,7 +28408,7 @@
             "FactionId": 41,
             "RegionId": 1,
             "PointOrder": 139,
-            "X": 0.9210,
+            "X": 0.921,
             "Y": 0.3539,
             "Color": "#89734B",
             "Enable": true
@@ -28508,7 +28508,7 @@
             "RegionId": 1,
             "PointOrder": 148,
             "X": 0.8992,
-            "Y": 0.3800,
+            "Y": 0.38,
             "Color": "#89734B",
             "Enable": true
         },
@@ -28584,7 +28584,7 @@
             "FactionId": 41,
             "RegionId": 1,
             "PointOrder": 155,
-            "X": 0.8900,
+            "X": 0.89,
             "Y": 0.4071,
             "Color": "#89734B",
             "Enable": true
@@ -28596,7 +28596,7 @@
             "RegionId": 1,
             "PointOrder": 1,
             "X": 0.6245,
-            "Y": 0.4150,
+            "Y": 0.415,
             "Color": "#CB8070",
             "Enable": true
         },
@@ -28607,7 +28607,7 @@
             "RegionId": 1,
             "PointOrder": 2,
             "X": 0.6707,
-            "Y": 0.4210,
+            "Y": 0.421,
             "Color": "#CB8070",
             "Enable": true
         },
@@ -28662,7 +28662,7 @@
             "RegionId": 1,
             "PointOrder": 7,
             "X": 0.5597,
-            "Y": 0.4150,
+            "Y": 0.415,
             "Color": "#CB8070",
             "Enable": true
         },
@@ -28694,7 +28694,7 @@
             "FactionId": 43,
             "RegionId": 1,
             "PointOrder": 2,
-            "X": 0.7750,
+            "X": 0.775,
             "Y": 0.0919,
             "Color": "#9A645F",
             "Enable": true
@@ -28760,8 +28760,8 @@
             "FactionId": 43,
             "RegionId": 1,
             "PointOrder": 8,
-            "X": 0.7170,
-            "Y": 0.4210,
+            "X": 0.717,
+            "Y": 0.421,
             "Color": "#9A645F",
             "Enable": true
         },
@@ -28772,7 +28772,7 @@
             "RegionId": 1,
             "PointOrder": 9,
             "X": 0.6707,
-            "Y": 0.4210,
+            "Y": 0.421,
             "Color": "#9A645F",
             "Enable": true
         },
@@ -28783,7 +28783,7 @@
             "RegionId": 1,
             "PointOrder": 10,
             "X": 0.6245,
-            "Y": 0.4150,
+            "Y": 0.415,
             "Color": "#9A645F",
             "Enable": true
         },
@@ -28980,7 +28980,7 @@
             "FactionId": 44,
             "RegionId": 1,
             "PointOrder": 11,
-            "X": 0.3840,
+            "X": 0.384,
             "Y": 0.0377,
             "Color": "#A1854B",
             "Enable": true

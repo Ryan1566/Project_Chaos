@@ -16,6 +16,7 @@ namespace Chaos.MVP.Presenter.Gameplay
             uint threshold = EraConfigService.Instance.GetMilestoneValue(meta.Era);
             if (meta.Era >= MetaProgressService.MaxEra) return "已是最后时代";
             if (!meta.BossClearedThisRun) return "需先击败当前时代 boss（本次通关未满足）";
+            if(GameSession.Instance.HasSession&&!OfficeTaskService.Instance.CanAdvanceEra(meta.Era,out var taskReason))return taskReason;
             return threshold != 0 && meta.Payload.clears < threshold ? "需累计通关 " + threshold + " 次（当前 " + meta.Payload.clears + "）" : null;
         }
         protected override EraProgressState CreateState()
@@ -48,9 +49,13 @@ namespace Chaos.MVP.Presenter.Gameplay
             if (intent.Action != PanelAction.Advance) return;
             if (Reason() != null) { _confirming = false; Refresh(); return; }
             if (!_confirming) { _confirming = true; Refresh(); return; }
-            MetaProgressService.Instance.TryAdvanceEra();
+            // 推进时代和相关标记作为同一玩法事务保存，存储失败沿用统一回滚。
+            bool advanced=MetaCommandRunner.Execute("Era.Advance",(out string reason)=>{
+                bool ok=MetaProgressService.Instance.TryAdvanceEra();reason=ok?null:Reason()??"时代推进条件尚未满足";return ok;
+            },out var failure);
             _confirming = false;
             Refresh();
+            if(!advanced)Message(failure);
         }
     }
 }

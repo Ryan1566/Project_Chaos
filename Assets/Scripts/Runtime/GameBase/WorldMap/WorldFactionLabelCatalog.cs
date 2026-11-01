@@ -12,7 +12,7 @@ public static class WorldFactionLabelCatalog
     {
         if (_entries != null) return;
         _entries = new List<WorldFactionLabelConfig>();
-        var asset = Resources.Load<TextAsset>(GlobalPath.data_JsonPathToRead + "WorldFactionLabelConfig");
+        var asset = ConfigTableAssets.Load(GlobalPath.data_JsonPathToRead + "WorldFactionLabelConfig");
         if (asset == null) return;
         try { _entries = JsonUtility.FromJson<DataList<WorldFactionLabelConfig>>(asset.text)?.datas ?? _entries; }
         catch (Exception error) { Debug.LogWarning("[世界观地图] 势力名称配置无效：" + error.Message); }

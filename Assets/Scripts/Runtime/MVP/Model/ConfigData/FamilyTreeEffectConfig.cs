@@ -1,12 +1,26 @@
-using System;	
+using System;
 
-[Serializable]	
+[Serializable]
 public class FamilyTreeEffectConfig
 {
-	public uint Index;//序号
-	public uint NodeId;//节点ID
-	public uint EffectId;//效果ID
-	public float Weight;//权重
-	public bool Enable;//是否启用
+    /// <summary>
+    /// 序号
+    /// </summary>
+    public uint Index;
+    /// <summary>
+    /// 节点ID
+    /// </summary>
+    public uint NodeId;
+    /// <summary>
+    /// 效果ID
+    /// </summary>
+    public uint EffectId;
+    /// <summary>
+    /// 权重
+    /// </summary>
+    public float Weight;
+    /// <summary>
+    /// 是否启用
+    /// </summary>
+    public bool Enable;
 }
-

@@ -1,17 +1,46 @@
-using System;	
+using System;
 
-[Serializable]	
+[Serializable]
 public class RetainerConfig
 {
-	public uint Index;//序号
-	public string NameKey;//名称key
-	public uint Quality;//品质
-	public uint Hp;//生命
-	public uint Attack;//攻击
-	public uint Defense;//防御
-	public uint Speed;//速度
-	public uint InitialConfidence;//初始信心
-	public uint RecruitWeight;//招募权重
-	public bool Enable;//是否启用
+    /// <summary>
+    /// 序号
+    /// </summary>
+    public uint Index;
+    /// <summary>
+    /// 名称key
+    /// </summary>
+    public string NameKey;
+    /// <summary>
+    /// 品质
+    /// </summary>
+    public uint Quality;
+    /// <summary>
+    /// 生命
+    /// </summary>
+    public uint Hp;
+    /// <summary>
+    /// 攻击
+    /// </summary>
+    public uint Attack;
+    /// <summary>
+    /// 防御
+    /// </summary>
+    public uint Defense;
+    /// <summary>
+    /// 速度
+    /// </summary>
+    public uint Speed;
+    /// <summary>
+    /// 初始信心
+    /// </summary>
+    public uint InitialConfidence;
+    /// <summary>
+    /// 招募权重
+    /// </summary>
+    public uint RecruitWeight;
+    /// <summary>
+    /// 是否启用
+    /// </summary>
+    public bool Enable;
 }
-

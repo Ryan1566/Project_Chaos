@@ -31,7 +31,7 @@ public static class CampService
         if (_loaded) return;
         _loaded = true;
         string path = GlobalPath.data_JsonPathToRead + "ItemConfig";
-        TextAsset asset = Resources.Load<TextAsset>(path);
+        TextAsset asset = ConfigTableAssets.Load(path);
         if (asset == null) { ChaosLog.Warn(LogChannel.Config, "[扎营] 找不到 " + path); _itemDefs = new List<ItemConfig>(); return; }
         DataList<ItemConfig> list = JsonUtility.FromJson<DataList<ItemConfig>>(asset.text);
         _itemDefs = (list == null || list.datas == null) ? new List<ItemConfig>() : list.datas;

@@ -109,6 +109,8 @@ public class UIManager : SingletonBase<UIManager>
         }
 
         if (panel == null) return null;//生成失败（缺预制体等），SpawnPanel 里已经报过错
+        // 游戏覆盖页退出可能隐藏整个画布，任何正式入栈都需先恢复父画布可见。
+        if(_canvas!=null&&!_canvas.gameObject.activeSelf)_canvas.gameObject.SetActive(true);
 
         BasePanel topPanel = panelStack.Count > 0 ? panelStack.Peek() : null;//堆栈最顶部的对象
 
@@ -151,10 +153,18 @@ public class UIManager : SingletonBase<UIManager>
     /// <summary>
     /// 关闭当前ui
     /// </summary>
-    /// <summary>Only the visible top panel receives one back press, before other shortcut drivers.</summary>
+    /// <summary>有面板时只处理栈顶返回，无面板的正式游戏场景中打开暂停页。</summary>
     public bool TryHandleBackNavigation()
     {
-        if (panelStack.Count == 0 || RunSceneFlow.IsTransitioning || VillageSceneFlow.IsLoading) return false;
+        if(RunSceneFlow.IsTransitioning||VillageSceneFlow.IsLoading)return false;
+        if(panelStack.Count==0)
+        {
+            var navigation=InputManager.Instance;
+            if((VillageSceneBootstrap.IsReady||RunEncounter.IsSceneReady)&&navigation.CanReadGameplayInput
+                &&navigation.WasNavigationPressed(InputManager.ActionMenu))
+            {navigation.ConsumeNavigationPress();PushPanel(PanelType.PausePanel);return true;}
+            return false;
+        }
         var top = panelStack.Peek(); var input = InputManager.Instance;
         if (top == null || !top.IsShowing || !top.gameObject.activeInHierarchy
             || input.HasGameplayBlockerOtherThan(this) || !input.WasNavigationPressed(InputManager.ActionMenu)) return false;
@@ -162,6 +172,10 @@ public class UIManager : SingletonBase<UIManager>
         top.HandleBack();
         return true;
     }
+
+    /// <summary>按面板类型查询整个导航栈，覆盖暂停菜单上再打开设置的情形。</summary>
+    public bool HasPanelInStack(PanelType type)
+    {return PanelDic.TryGetValue(type,out var panel)&&panel!=null&&panelStack.Contains(panel);}
 
     public void PopPanel()//移除最上层的ui，因为是动态管理ui，所以移除相当于关闭
     {
