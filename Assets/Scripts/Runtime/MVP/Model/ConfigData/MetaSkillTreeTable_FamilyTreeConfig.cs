@@ -35,4 +35,28 @@ public class MetaSkillTreeTable_FamilyTreeConfig
     /// 是否启用
     /// </summary>
     public bool Enable;
+    /// <summary>
+    /// 说明key
+    /// </summary>
+    public string DescriptionKey;
+    /// <summary>
+    /// 图标key
+    /// </summary>
+    public string IconKey;
+    /// <summary>
+    /// 布局横坐标
+    /// </summary>
+    public float LayoutX;
+    /// <summary>
+    /// 布局纵坐标
+    /// </summary>
+    public float LayoutY;
+    /// <summary>
+    /// 节点样式
+    /// </summary>
+    public uint NodeKind;
+    /// <summary>
+    /// 分支key
+    /// </summary>
+    public string BranchKey;
 }

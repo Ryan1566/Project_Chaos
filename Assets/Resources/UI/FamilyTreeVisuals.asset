@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b6bb06400c5e024c8e1bf22435799fe, type: 3}
+  m_Name: FamilyTreeVisuals
+  m_EditorClassIdentifier: 
+  SectionNormal: {fileID: 21300000, guid: af39053f7385d324a949c4d8bea5f902, type: 3}
+  SectionSelected: {fileID: 21300000, guid: e919a1c6d9ab33d469431fec9da04275, type: 3}
+  NodeLocked: {fileID: 21300000, guid: 10ad7ff6a1e1fb54fa70c1f2d2fc19d3, type: 3}
+  NodeReady: {fileID: 21300000, guid: 8b6702f35f075784189c5bff117a13e3, type: 3}
+  NodeUnlocked: {fileID: 21300000, guid: 97b995589b7d25a47b55a61dbb6e980a, type: 3}
+  NodeMilestone: {fileID: 21300000, guid: 97b995589b7d25a47b55a61dbb6e980a, type: 3}
+  DetailBackground: {fileID: 21300000, guid: 5a0559b5efed8cb4998aea0b9a6349cf, type: 3}

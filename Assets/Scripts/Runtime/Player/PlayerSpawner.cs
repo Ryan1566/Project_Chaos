@@ -92,8 +92,10 @@ public static class PlayerSpawner
         _spawnScope.Register(player);
         Spawned.Add(player);
 
-        //血量（W3.1b）
-        if (player.GetComponent<PlayerHealth>() == null) player.AddComponent<PlayerHealth>();
+        //血量（W3.1b）：出生时只叠加家族树生命层；局内成长/道具层由各自服务继续组合。
+        PlayerHealth health = player.GetComponent<PlayerHealth>();
+        if (health == null) health = player.AddComponent<PlayerHealth>();
+        health.InitializeSpawnedHealth(MetaCharacterStats.HealthBonus);
         if (player.GetComponent<RunInteractionHud>() == null) player.AddComponent<RunInteractionHud>();
 
         //AI 门客（W3.1b）：runTeam[1..] 最多 3 个

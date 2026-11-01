@@ -1,0 +1,574 @@
+{
+    "datas": [
+        {
+            "Index": 1,
+            "Key": "ft_101_name",
+            "ChineseSimplified": "乡里声望",
+            "English": "Local standing"
+        },
+        {
+            "Index": 2,
+            "Key": "ft_101_desc",
+            "ChineseSimplified": "乡邻熟悉往来路线，为远行队伍筹措随行物资。",
+            "English": "Permanent family development. See the effect preview below."
+        },
+        {
+            "Index": 3,
+            "Key": "ft_102_name",
+            "ChineseSimplified": "乡邻协助",
+            "English": "Community support"
+        },
+        {
+            "Index": 4,
+            "Key": "ft_102_desc",
+            "ChineseSimplified": "熟悉乡里物资去向，扩大归途能够带回的收获。",
+            "English": "Permanent family development. See the effect preview below."
+        },
+        {
+            "Index": 5,
+            "Key": "ft_103_name",
+            "ChineseSimplified": "远行筹备",
+            "English": "Expedition planning"
+        },
+        {
+            "Index": 6,
+            "Key": "ft_103_desc",
+            "ChineseSimplified": "提前整理人员与物资，使远征收获更易带回。",
+            "English": "Permanent family development. See the effect preview below."
+        },
+        {
+            "Index": 7,
+            "Key": "ft_201_name",
+            "ChineseSimplified": "田事营建",
+            "English": "Field construction"
+        },
+        {
+            "Index": 8,
+            "Key": "ft_201_desc",
+            "ChineseSimplified": "积累农田营建经验，减少田间设施的施工时间。",
+            "English": "Permanent family development. See the effect preview below."
+        },
+        {
+            "Index": 9,
+            "Key": "ft_202_name",
+            "ChineseSimplified": "仓储规整",
+            "English": "Warehouse order"
+        },
+        {
+            "Index": 10,
+            "Key": "ft_202_desc",
+            "ChineseSimplified": "分类整理家族仓储，为更多种类的物品腾出位置。",
+            "English": "Permanent family development. See the effect preview below."
+        },
+        {
+            "Index": 11,
+            "Key": "ft_203_name",
+            "ChineseSimplified": "精耕务农",
+            "English": "Careful cultivation"
+        },
+        {
+            "Index": 12,
+            "Key": "ft_203_desc",
+            "ChineseSimplified": "改进田间劳作方法，增加实际工作周期的收获。",
+            "English": "Permanent family development. See the effect preview below."
+        },
+        {
+            "Index": 13,
+            "Key": "ft_301_name",
+            "ChineseSimplified": "养士强身",
+            "English": "Retainer conditioning"
+        },
+        {
+            "Index": 14,
+            "Key": "ft_301_desc",
+            "ChineseSimplified": "以日常训练改善门客体魄，增进远行时的生命上限。",
+            "English": "Permanent family development. See the effect preview below."
+        },
+        {
+            "Index": 15,
+            "Key": "ft_302_name",
+            "ChineseSimplified": "随行整备",
+            "English": "Supply organization"
+        },
+        {
+            "Index": 16,
+            "Key": "ft_302_desc",
+            "ChineseSimplified": "改进归家后的物资归类，增加局外仓库可容纳的物品种类。",
+            "English": "Permanent family development. See the effect preview below."
+        },
+        {
+            "Index": 17,
+            "Key": "ft_303_name",
+            "ChineseSimplified": "营地补员",
+            "English": "Camp reinforcement"
+        },
+        {
+            "Index": 18,
+            "Key": "ft_303_desc",
+            "ChineseSimplified": "掌握安全营地中的整备方法，解锁扎营补充减员。",
+            "English": "Permanent family development. See the effect preview below."
+        },
+        {
+            "Index": 19,
+            "Key": "ft_401_name",
+            "ChineseSimplified": "守备习武",
+            "English": "Martial practice"
+        },
+        {
+            "Index": 20,
+            "Key": "ft_401_desc",
+            "ChineseSimplified": "将日常武艺操练用于门客实战，提高普通攻击伤害。",
+            "English": "Permanent family development. See the effect preview below."
+        },
+        {
+            "Index": 21,
+            "Key": "ft_402_name",
+            "ChineseSimplified": "防护操练",
+            "English": "Defensive practice"
+        },
+        {
+            "Index": 22,
+            "Key": "ft_402_desc",
+            "ChineseSimplified": "学习护身与协防，减少门客受到的普通伤害。",
+            "English": "Permanent family development. See the effect preview below."
+        },
+        {
+            "Index": 23,
+            "Key": "ft_403_name",
+            "ChineseSimplified": "后勤储备",
+            "English": "Return logistics"
+        },
+        {
+            "Index": 24,
+            "Key": "ft_403_desc",
+            "ChineseSimplified": "为远行与归途预留运载余力，提高结算带出件数。",
+            "English": "Permanent family development. See the effect preview below."
+        },
+        {
+            "Index": 25,
+            "Key": "ft_501_name",
+            "ChineseSimplified": "疾行练习",
+            "English": "Marching drills"
+        },
+        {
+            "Index": 26,
+            "Key": "ft_501_desc",
+            "ChineseSimplified": "熟悉负重行路，提高派遣角色的水平移动速度。",
+            "English": "Permanent family development. See the effect preview below."
+        },
+        {
+            "Index": 27,
+            "Key": "ft_502_name",
+            "ChineseSimplified": "行囊收整",
+            "English": "Pack organization"
+        },
+        {
+            "Index": 28,
+            "Key": "ft_502_desc",
+            "ChineseSimplified": "将归来物资分门别类，为局外仓库存放腾出位置。",
+            "English": "Permanent family development. See the effect preview below."
+        },
+        {
+            "Index": 29,
+            "Key": "ft_503_name",
+            "ChineseSimplified": "远征整备",
+            "English": "Expedition readiness"
+        },
+        {
+            "Index": 30,
+            "Key": "ft_503_desc",
+            "ChineseSimplified": "完善长途远行的物资准备，提高结算带出件数。",
+            "English": "Permanent family development. See the effect preview below."
+        },
+        {
+            "Index": 31,
+            "Key": "ft_104_name",
+            "ChineseSimplified": "乡里互助",
+            "English": "Shared storage"
+        },
+        {
+            "Index": 32,
+            "Key": "ft_104_desc",
+            "ChineseSimplified": "利用互助经验整理储藏位置，增加局外仓库格位。",
+            "English": "Permanent family development. See the effect preview below."
+        },
+        {
+            "Index": 33,
+            "Key": "ft_105_name",
+            "ChineseSimplified": "物资归整",
+            "English": "Stock organization"
+        },
+        {
+            "Index": 34,
+            "Key": "ft_105_desc",
+            "ChineseSimplified": "改进货物分类与入库次序，进一步增加局外仓库格位。",
+            "English": "Permanent family development. See the effect preview below."
+        },
+        {
+            "Index": 35,
+            "Key": "ft_106_name",
+            "ChineseSimplified": "工役协调",
+            "English": "Coordinated works"
+        },
+        {
+            "Index": 36,
+            "Key": "ft_106_desc",
+            "ChineseSimplified": "协调材料生产建筑的施工步骤，缩短新建和升级时间。",
+            "English": "Permanent family development. See the effect preview below."
+        },
+        {
+            "Index": 37,
+            "Key": "ft_107_name",
+            "ChineseSimplified": "匠作联络",
+            "English": "Artisan ties"
+        },
+        {
+            "Index": 38,
+            "Key": "ft_107_desc",
+            "ChineseSimplified": "借助工匠间的经验往来，缩短图纸生产建筑的施工时间。",
+            "English": "Permanent family development. See the effect preview below."
+        },
+        {
+            "Index": 39,
+            "Key": "ft_204_name",
+            "ChineseSimplified": "材场规制",
+            "English": "Material workflow"
+        },
+        {
+            "Index": 40,
+            "Key": "ft_204_desc",
+            "ChineseSimplified": "整理材料生产的作业步骤，增加每个实际工作周期的产出。",
+            "English": "Permanent family development. See the effect preview below."
+        },
+        {
+            "Index": 41,
+            "Key": "ft_205_name",
+            "ChineseSimplified": "工坊熟作",
+            "English": "Workshop practice"
+        },
+        {
+            "Index": 42,
+            "Key": "ft_205_desc",
+            "ChineseSimplified": "积累工坊经验，增加图纸生产建筑每个工作周期的产出。",
+            "English": "Permanent family development. See the effect preview below."
+        },
+        {
+            "Index": 43,
+            "Key": "ft_206_name",
+            "ChineseSimplified": "市业周转",
+            "English": "Trade workflow"
+        },
+        {
+            "Index": 44,
+            "Key": "ft_206_desc",
+            "ChineseSimplified": "优化经营作业流程，增加钱财生产建筑每个工作周期的产出。",
+            "English": "Permanent family development. See the effect preview below."
+        },
+        {
+            "Index": 45,
+            "Key": "ft_207_name",
+            "ChineseSimplified": "田事精作",
+            "English": "Improved fieldwork"
+        },
+        {
+            "Index": 46,
+            "Key": "ft_207_desc",
+            "ChineseSimplified": "将生产整备经验用于农田，进一步增加每个工作周期的收获。",
+            "English": "Permanent family development. See the effect preview below."
+        },
+        {
+            "Index": 47,
+            "Key": "ft_304_name",
+            "ChineseSimplified": "起居调养",
+            "English": "Daily conditioning"
+        },
+        {
+            "Index": 48,
+            "Key": "ft_304_desc",
+            "ChineseSimplified": "改善远行前的调养，提高派遣角色生命上限。",
+            "English": "Permanent family development. See the effect preview below."
+        },
+        {
+            "Index": 49,
+            "Key": "ft_305_name",
+            "ChineseSimplified": "体魄训练",
+            "English": "Physical training"
+        },
+        {
+            "Index": 50,
+            "Key": "ft_305_desc",
+            "ChineseSimplified": "持续锻炼体魄，进一步提高派遣角色生命上限。",
+            "English": "Permanent family development. See the effect preview below."
+        },
+        {
+            "Index": 51,
+            "Key": "ft_306_name",
+            "ChineseSimplified": "护行训练",
+            "English": "Travel defense"
+        },
+        {
+            "Index": 52,
+            "Key": "ft_306_desc",
+            "ChineseSimplified": "练习行路中的防护动作，减少派遣角色受到的普通伤害。",
+            "English": "Permanent family development. See the effect preview below."
+        },
+        {
+            "Index": 53,
+            "Key": "ft_307_name",
+            "ChineseSimplified": "携行整备",
+            "English": "Returning supplies"
+        },
+        {
+            "Index": 54,
+            "Key": "ft_307_desc",
+            "ChineseSimplified": "归纳门客带回物资的存放方式，增加局外仓库格位。",
+            "English": "Permanent family development. See the effect preview below."
+        },
+        {
+            "Index": 55,
+            "Key": "ft_404_name",
+            "ChineseSimplified": "守备操练",
+            "English": "Guard drills"
+        },
+        {
+            "Index": 56,
+            "Key": "ft_404_desc",
+            "ChineseSimplified": "加强基础攻防练习，提高派遣角色普通攻击伤害。",
+            "English": "Permanent family development. See the effect preview below."
+        },
+        {
+            "Index": 57,
+            "Key": "ft_405_name",
+            "ChineseSimplified": "协防规程",
+            "English": "Defensive coordination"
+        },
+        {
+            "Index": 58,
+            "Key": "ft_405_desc",
+            "ChineseSimplified": "统一协防动作，进一步减少派遣角色受到的普通伤害。",
+            "English": "Permanent family development. See the effect preview below."
+        },
+        {
+            "Index": 59,
+            "Key": "ft_406_name",
+            "ChineseSimplified": "固守准备",
+            "English": "Defensive readiness"
+        },
+        {
+            "Index": 60,
+            "Key": "ft_406_desc",
+            "ChineseSimplified": "改善守备人员的体魄准备，提高派遣角色生命上限。",
+            "English": "Permanent family development. See the effect preview below."
+        },
+        {
+            "Index": 61,
+            "Key": "ft_407_name",
+            "ChineseSimplified": "轮值整备",
+            "English": "Duty conditioning"
+        },
+        {
+            "Index": 62,
+            "Key": "ft_407_desc",
+            "ChineseSimplified": "以轮值调养改善远行状态，进一步提高派遣角色生命上限。",
+            "English": "Permanent family development. See the effect preview below."
+        },
+        {
+            "Index": 63,
+            "Key": "ft_504_name",
+            "ChineseSimplified": "轻装行进",
+            "English": "Light-footed travel"
+        },
+        {
+            "Index": 64,
+            "Key": "ft_504_desc",
+            "ChineseSimplified": "练习行装分配，提高派遣角色水平移动速度。",
+            "English": "Permanent family development. See the effect preview below."
+        },
+        {
+            "Index": 65,
+            "Key": "ft_505_name",
+            "ChineseSimplified": "山路适应",
+            "English": "Trail conditioning"
+        },
+        {
+            "Index": 66,
+            "Key": "ft_505_desc",
+            "ChineseSimplified": "通过山路行走锻炼，提高派遣角色生命上限。",
+            "English": "Permanent family development. See the effect preview below."
+        },
+        {
+            "Index": 67,
+            "Key": "ft_506_name",
+            "ChineseSimplified": "临阵配合",
+            "English": "Field coordination"
+        },
+        {
+            "Index": 68,
+            "Key": "ft_506_desc",
+            "ChineseSimplified": "练习行动中的攻击配合，提高派遣角色普通攻击伤害。",
+            "English": "Permanent family development. See the effect preview below."
+        },
+        {
+            "Index": 69,
+            "Key": "ft_507_name",
+            "ChineseSimplified": "防护整备",
+            "English": "Field protection"
+        },
+        {
+            "Index": 70,
+            "Key": "ft_507_desc",
+            "ChineseSimplified": "整理远行防护经验，减少派遣角色受到的普通伤害。",
+            "English": "Permanent family development. See the effect preview below."
+        },
+        {
+            "Index": 71,
+            "Key": "ft_board_1_name",
+            "ChineseSimplified": "影响力",
+            "English": "Influence"
+        },
+        {
+            "Index": 72,
+            "Key": "ft_board_1_desc",
+            "ChineseSimplified": "积累乡里联系与物资组织能力。",
+            "English": "Influence improvements."
+        },
+        {
+            "Index": 73,
+            "Key": "ft_branch_1_0",
+            "ChineseSimplified": "远行筹备",
+            "English": "Core"
+        },
+        {
+            "Index": 74,
+            "Key": "ft_branch_1_1",
+            "ChineseSimplified": "仓储互助",
+            "English": "Development"
+        },
+        {
+            "Index": 75,
+            "Key": "ft_branch_1_2",
+            "ChineseSimplified": "工役协作",
+            "English": "Preparation"
+        },
+        {
+            "Index": 76,
+            "Key": "ft_board_2_name",
+            "ChineseSimplified": "家族产业",
+            "English": "Family industry"
+        },
+        {
+            "Index": 77,
+            "Key": "ft_board_2_desc",
+            "ChineseSimplified": "改善营建与工作生产，让经营积累反哺远行。",
+            "English": "Family industry improvements."
+        },
+        {
+            "Index": 78,
+            "Key": "ft_branch_2_0",
+            "ChineseSimplified": "田事经营",
+            "English": "Core"
+        },
+        {
+            "Index": 79,
+            "Key": "ft_branch_2_1",
+            "ChineseSimplified": "工坊生产",
+            "English": "Development"
+        },
+        {
+            "Index": 80,
+            "Key": "ft_branch_2_2",
+            "ChineseSimplified": "产业整备",
+            "English": "Preparation"
+        },
+        {
+            "Index": 81,
+            "Key": "ft_board_3_name",
+            "ChineseSimplified": "门客培养",
+            "English": "Retainer training"
+        },
+        {
+            "Index": 82,
+            "Key": "ft_board_3_desc",
+            "ChineseSimplified": "以调养与训练改善派遣队伍的长期准备。",
+            "English": "Retainer training improvements."
+        },
+        {
+            "Index": 83,
+            "Key": "ft_branch_3_0",
+            "ChineseSimplified": "养士整备",
+            "English": "Core"
+        },
+        {
+            "Index": 84,
+            "Key": "ft_branch_3_1",
+            "ChineseSimplified": "体魄培养",
+            "English": "Development"
+        },
+        {
+            "Index": 85,
+            "Key": "ft_branch_3_2",
+            "ChineseSimplified": "护行准备",
+            "English": "Preparation"
+        },
+        {
+            "Index": 86,
+            "Key": "ft_board_4_name",
+            "ChineseSimplified": "局外战斗",
+            "English": "Defensive training"
+        },
+        {
+            "Index": 87,
+            "Key": "ft_board_4_desc",
+            "ChineseSimplified": "以守备训练改善派遣门客的通用攻防准备。",
+            "English": "Defensive training improvements."
+        },
+        {
+            "Index": 88,
+            "Key": "ft_branch_4_0",
+            "ChineseSimplified": "守备基础",
+            "English": "Core"
+        },
+        {
+            "Index": 89,
+            "Key": "ft_branch_4_1",
+            "ChineseSimplified": "武艺协防",
+            "English": "Development"
+        },
+        {
+            "Index": 90,
+            "Key": "ft_branch_4_2",
+            "ChineseSimplified": "固守调养",
+            "English": "Preparation"
+        },
+        {
+            "Index": 91,
+            "Key": "ft_board_5_name",
+            "ChineseSimplified": "局内战斗",
+            "English": "Expedition combat"
+        },
+        {
+            "Index": 92,
+            "Key": "ft_board_5_desc",
+            "ChineseSimplified": "改善远行队伍的行动、携行与临阵配合。",
+            "English": "Expedition combat improvements."
+        },
+        {
+            "Index": 93,
+            "Key": "ft_branch_5_0",
+            "ChineseSimplified": "远征基础",
+            "English": "Core"
+        },
+        {
+            "Index": 94,
+            "Key": "ft_branch_5_1",
+            "ChineseSimplified": "山路行进",
+            "English": "Development"
+        },
+        {
+            "Index": 95,
+            "Key": "ft_branch_5_2",
+            "ChineseSimplified": "临阵整备",
+            "English": "Preparation"
+        }
+    ]
+}

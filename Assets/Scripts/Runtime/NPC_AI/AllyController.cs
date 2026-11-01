@@ -104,7 +104,9 @@ public class AllyController : MonoBehaviour
             enabled = false;
             return;
         }
-        moveSpeed = _settings.moveSpeed;
+        //行为表数值只作为基础速度；门客最终速度要叠加家族树永久加成，
+        //并把这个最终值交给导航器，避免 Configure 仍使用未加成速度。
+        moveSpeed = MetaCharacterStats.MoveSpeed(_settings.moveSpeed);
         acceleration = _settings.acceleration;
         jumpForce = _settings.jumpForce;
         attackRange = _settings.attackRange;
@@ -155,9 +157,11 @@ public class AllyController : MonoBehaviour
             _recoverUntil = Time.time + _settings.attackRecovery;
             if (CanHit(victim))
             {
+                //普通攻击按基础伤害 + 家族树攻击加成结算；damage 字段保持基础值，避免重复初始化时叠加。
+                int appliedDamage = MetaCharacterStats.AttackDamage(damage);
                 _feedback.Strike(CombatQuery.Center(transform), CombatQuery.Center(victim.transform));
-                victim.TakeDamage(damage);
-                ChaosLog.Info(LogChannel.UI, "[门客] 「" + AllyName + "」攻击「" + victim.name + "」，伤害 " + damage);
+                victim.TakeDamage(appliedDamage);
+                ChaosLog.Info(LogChannel.UI, "[门客] 「" + AllyName + "」攻击「" + victim.name + "」，伤害 " + appliedDamage);
             }
             return;
         }
@@ -562,8 +566,10 @@ public class AllyController : MonoBehaviour
         _invulnUntil = Time.time + 0.5f;
         CancelAttack();
         if (!_hpInited) { _hp = MaxHp; _hpInited = true; }
-        _hp -= damage;
-        ChaosLog.Info(LogChannel.UI, "[门客] " + AllyName + " 受伤 -" + damage + " → HP " + _hp + "/" + MaxHp);
+        //普通受伤套用防御；TakeDamageDirect/ForceDown 仍保留直伤语义。
+        int received = MetaCharacterStats.ReceivedDamage(damage);
+        _hp -= received;
+        ChaosLog.Info(LogChannel.UI, "[门客] " + AllyName + " 受伤 -" + received + " → HP " + _hp + "/" + MaxHp);
         if (_hp <= 0) Down();
     }
 

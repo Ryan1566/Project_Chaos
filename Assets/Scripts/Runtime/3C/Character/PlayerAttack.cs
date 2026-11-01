@@ -68,6 +68,8 @@ public class PlayerAttack : MonoBehaviour
     {
         int facing = _locomotion == null ? 1 : _locomotion.Facing;
         Vector2 center = CombatQuery.Center(transform) + new Vector2(hitBoxOffsetX * facing, 0f);
+        // 普通攻击统一走家族树属性入口；damage 仍保留既有基础值，避免重复初始化时重复累加。
+        int appliedDamage = MetaCharacterStats.AttackDamage(damage);
 
         Collider2D[] hits = Physics2D.OverlapBoxAll(center, hitBoxSize, 0f);
         int damaged = 0;
@@ -84,7 +86,7 @@ public class PlayerAttack : MonoBehaviour
             EnemyPlaceholder enemy = target as EnemyPlaceholder;
             if (enemy != null && enemy.IsDead) continue;
 
-            target.TakeDamage(damage);
+            target.TakeDamage(appliedDamage);
             damaged++;
         }
         LastHitCount = damaged;
@@ -96,6 +98,6 @@ public class PlayerAttack : MonoBehaviour
         if (_skeleton != null) _skeleton.transform.localPosition = _spineBasePosition + new Vector3(0.12f * facing, 0f, 0f);
         _restoreUntil = Time.time + 0.1f;
 
-        ChaosLog.Info(LogChannel.UI, "[玩家] 攻击（占位表现），命中 " + damaged + " 个目标");
+        ChaosLog.Info(LogChannel.UI, "[玩家] 攻击（占位表现），伤害 " + appliedDamage + "，命中 " + damaged + " 个目标");
     }
 }

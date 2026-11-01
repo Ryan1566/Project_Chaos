@@ -288,7 +288,7 @@ public class VillageService : SingletonBase<VillageService>
         double cycles = System.Math.Floor(total / def.HarvestSeconds);
         save.productionSeconds = (float)(total % def.HarvestSeconds);
         if (cycles < 1) return;
-        int bonus = buildingId == 2001u ? EffectAggregator.Instance.Snapshot.FarmOutputDelta : 0;
+        int bonus = EffectAggregator.Instance.Snapshot.GetOutputDelta(buildingId);
         double output = System.Math.Max(0, (double)def.OutputAmount + bonus) * cycles;
         save.pendingOutput = (uint)System.Math.Min(uint.MaxValue, save.pendingOutput + output);
         save.pendingResourceType = def.OutputResourceType;
@@ -296,7 +296,7 @@ public class VillageService : SingletonBase<VillageService>
     }
     private static uint BuildDuration(BuildingTable_BuildingConfig definition)
     {
-        int change = definition.BuildingId == 2001u ? EffectAggregator.Instance.Snapshot.FarmBuildSecondsDelta : 0;
+        int change = EffectAggregator.Instance.Snapshot.GetBuildSecondsDelta(definition.BuildingId);
         return (uint)System.Math.Max(1L, (long)definition.BuildSeconds + change);
     }
 

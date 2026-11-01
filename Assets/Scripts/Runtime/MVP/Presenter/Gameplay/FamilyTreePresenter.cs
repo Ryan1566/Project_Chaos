@@ -1,38 +1,63 @@
-using System.Collections.Generic;
+using System;
+using Chaos.MVP.Model.Gameplay;
+using LocalizationSystem;
 
 namespace Chaos.MVP.Presenter.Gameplay
 {
-    public sealed class FamilyTreeState
+    public enum FamilyTreeAction { SelectBoard, SelectNode, Unlock, ResetView, Close }
+    public readonly struct FamilyTreeIntent
     {
-        public string Summary;
-        public IReadOnlyList<TextRow> Rows;
+        public readonly FamilyTreeAction Action; public readonly uint Id;
+        public FamilyTreeIntent(FamilyTreeAction action,uint id=0) { Action=action;Id=id; }
     }
-    public sealed class FamilyTreePresenter : GameplayPresenter<FamilyTreeState>
+    public sealed class FamilyTreeState { public FamilyTreeSnapshot Tree; }
+    public interface IFamilyTreeView
     {
-        protected override FamilyTreeState CreateState()
+        event Action<FamilyTreeIntent> Intent;
+        void Render(FamilyTreeState state);
+        void ShowMessage(string message,bool success);
+        void ClosePanel();
+        void ResetTreeView();
+    }
+    /// <summary>管理选择与面板订阅，解锁通过领域模型执行保存事务。</summary>
+    public sealed class FamilyTreePresenter : PresenterBase<IFamilyTreeView>
+    {
+        private readonly FamilyTreeModel _model=new FamilyTreeModel();
+        private uint _board,_selected; private LocalizationManager _language;
+        protected override void OnAttach()
         {
-            var svc = FamilyTreeService.Instance;
-            var rows = new List<TextRow>();
-            foreach (var def in svc.GetAll())
-            {
-                if (def == null) continue;
-                bool unlocked = svc.IsUnlocked(def.Index);
-                string reason = null;
-                bool ready = !unlocked && svc.CanUnlock(def.Index, out reason);
-                rows.Add(new TextRow { Id = def.Index, Group = def.Board, Enabled = ready,
-                    Tone = unlocked ? TextTone.Success : ready ? TextTone.Warning : TextTone.Dim,
-                    Text = "  " + def.Index + " " + def.NameKey + "　消耗 " + InventoryService.ResourceDisplayName(VillageService.ResourceKindOf(def.CostType))
-                        + " " + def.CostValue + "　" + (unlocked ? "已点亮" : ready ? "可点亮" : "锁定：" + reason) });
-            }
-            return new FamilyTreeState { Rows = rows.ToArray(), Summary = "已点亮 " + svc.UnlockedCount + "/15　　带出上限 "
-                + MetaProgressService.Instance.DeployCap + "　　格位 " + InventoryService.Instance.TotalSlots
-                + "　　扎营补员 " + (EffectAggregator.Instance.Snapshot.CampRefillUnlocked ? "已解锁" : "未解锁") };
+            View.Intent+=Handle;
+            MetaRuntimeDriver.Changed+=Refresh;
+            _language=LocalizationManager.GetInstance();
+            if(_language!=null) _language.OnLanguageChanged.AddListener(LanguageChanged);
+            Refresh();
         }
-        protected override void Execute(PanelIntent intent)
+        protected override void OnDetach()
         {
-            if (intent.Action != PanelAction.Unlock) return;
-            bool ok = FamilyTreeService.Instance.Unlock(intent.Id, out string reason);
-            Refresh(); Message(ok ? "节点已点亮" : reason, ok);
+            if(View!=null) View.Intent-=Handle;
+            MetaRuntimeDriver.Changed-=Refresh;
+            if(_language!=null) _language.OnLanguageChanged.RemoveListener(LanguageChanged);
+        }
+        private void LanguageChanged(LanguageType _) { Refresh(); }
+        public void Refresh()
+        {
+            if(IsDisposed || View==null) return;
+            var tree=_model.Read(_board,_selected); _board=tree.Board;_selected=tree.Selected;
+            View.Render(new FamilyTreeState { Tree=tree });
+        }
+        private void Handle(FamilyTreeIntent intent)
+        {
+            switch(intent.Action)
+            {
+                case FamilyTreeAction.Close:View.ClosePanel();return;
+                case FamilyTreeAction.ResetView:View.ResetTreeView();return;
+                case FamilyTreeAction.SelectBoard:_board=intent.Id;_selected=0;break;
+                case FamilyTreeAction.SelectNode:_selected=intent.Id;break;
+                case FamilyTreeAction.Unlock:
+                    bool ok=_model.Unlock(_selected,out string reason);
+                    Refresh();View.ShowMessage(ok?"已解锁，永久成长已保存":reason,ok);return;
+            }
+            Refresh();
         }
     }
 }

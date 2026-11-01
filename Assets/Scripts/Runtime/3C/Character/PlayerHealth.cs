@@ -26,6 +26,30 @@ public class PlayerHealth : MonoBehaviour
     private Rigidbody2D _body;
     private int _runHealthBonus;
     private int _itemHealthBonus;
+    private int _familyHealthBonus;
+    private bool _spawnHealthInitialized;
+
+    /// <summary>
+    /// 出生时套用家族树生命层。只调整“家族树”这一层，局内成长、道具层仍各自独立组合；
+    /// 同一个 PlayerHealth 重复初始化不会重复累加，首次初始化补满，之后刷新不治疗/不复活。
+    /// </summary>
+    public void InitializeSpawnedHealth(int familyBonus)
+    {
+        familyBonus = Mathf.Clamp(familyBonus, 0, 100000);
+        maxHp = Mathf.Max(1, maxHp - _familyHealthBonus + familyBonus);
+        _familyHealthBonus = familyBonus;
+
+        if (!_spawnHealthInitialized)
+        {
+            Hp = maxHp;
+            _spawnHealthInitialized = true;
+        }
+        else
+        {
+            Hp = Mathf.Min(Hp, maxHp);
+        }
+    }
+
     public void SetItemHealthBonus(int bonus)
     {
         bonus = Mathf.Clamp(bonus, 0, 100000);
@@ -61,12 +85,14 @@ public class PlayerHealth : MonoBehaviour
         if (IsInvulnerable) return false;
         if (Hp <= 0) return false;
 
-        Hp -= amount;
+        //普通接触伤害才套用防御；ForceDown 等直接 QA 入口保持绕过。
+        int received = MetaCharacterStats.ReceivedDamage(amount);
+        Hp -= received;
         _invulnUntil = Time.time + invulnSeconds;
         //受击表现只保留 Cinemachine 震动；根节点/Spine 缩放与朝向永远不由伤害表现改写。
         CombatCameraShake.NotifyHurt(transform, CombatQuery.Center(transform));
 
-        ChaosLog.Info(LogChannel.UI, "[玩家] 受到接触伤害 " + amount + "，HP=" + Mathf.Max(0, Hp) + "/" + maxHp
+        ChaosLog.Info(LogChannel.UI, "[玩家] 受到接触伤害 " + received + "，HP=" + Mathf.Max(0, Hp) + "/" + maxHp
             + "（无敌帧 " + invulnSeconds + "s）");
 
         if (Hp <= 0)

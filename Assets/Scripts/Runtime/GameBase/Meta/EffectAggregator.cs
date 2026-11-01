@@ -21,6 +21,22 @@ public class MetaEffectSnapshot
     public int FarmBuildSecondsDelta;
     /// <summary>农田收获产量增量（EffectType=7 Target=2001 相加）。</summary>
     public int FarmOutputDelta;
+    private readonly Dictionary<uint, int> _buildChanges = new Dictionary<uint, int>();
+    private readonly Dictionary<uint, int> _outputChanges = new Dictionary<uint, int>();
+
+    /// <summary>按建筑查询施工时长变化；旧农田字段继续兼容已有调用。</summary>
+    public int GetBuildSecondsDelta(uint buildingId)
+    { return _buildChanges.TryGetValue(buildingId, out int value) ? value : buildingId == 2001u ? FarmBuildSecondsDelta : 0; }
+    /// <summary>按建筑查询每个实际工作周期的产量变化。</summary>
+    public int GetOutputDelta(uint buildingId)
+    { return _outputChanges.TryGetValue(buildingId, out int value) ? value : buildingId == 2001u ? FarmOutputDelta : 0; }
+    internal void AddBuildChange(uint buildingId, int value)
+    { _buildChanges[buildingId] = AddClamped(GetBuildSecondsDelta(buildingId), value); }
+    internal void AddOutputChange(uint buildingId, int value)
+    { _outputChanges[buildingId] = AddClamped(GetOutputDelta(buildingId), value); }
+    private static int AddClamped(int current, int delta)
+    { return (int)System.Math.Max(int.MinValue, System.Math.Min(int.MaxValue, (long)current + delta)); }
+
     /// <summary>概率加成（EffectType=8，W1b 未用）。</summary>
     public int ProbabilityBonus;
     /// <summary>重算计数（UI 可据此刷新）。</summary>
@@ -65,23 +81,36 @@ public class EffectAggregator : SingletonBase<EffectAggregator>
         _dirty = true;
     }
 
-    /// <summary>整份重算（廉价：表已在内存，节点数 15）。</summary>
+    /// <summary>解锁和读档后整份重算，不在已有快照上累加。</summary>
     public MetaEffectSnapshot Recompute()
     {
+        var unlocked = MetaProgressService.Instance.Payload.familyTreeNodes ?? new List<uint>();
+        _snapshot = BuildSnapshot(unlocked, (_snapshot == null ? 0 : _snapshot.Version) + 1);
         _dirty = false;
+        ChaosLog.Info(LogChannel.Config, _snapshot.Dump());
+        return _snapshot;
+    }
 
-        var snap = new MetaEffectSnapshot();
-        snap.Version = (_snapshot == null ? 0 : _snapshot.Version) + 1;
+    /// <summary>在副本上计算选中节点的结果，预览不扣资源、不写存档、不改变实际快照版本。</summary>
+    public MetaEffectSnapshot PreviewAdditionalNode(uint nodeId)
+    {
+        var unlocked = new List<uint>(MetaProgressService.Instance.Payload.familyTreeNodes ?? new List<uint>());
+        if (!unlocked.Contains(nodeId)) unlocked.Add(nodeId);
+        return BuildSnapshot(unlocked, _snapshot == null ? 0 : _snapshot.Version);
+    }
 
-        List<uint> unlocked = MetaProgressService.Instance.Payload.familyTreeNodes;
-        if (unlocked == null) unlocked = new List<uint>();
+    /// <summary>只计算指定来源的贡献，用于当前板块摘要，不修改真实生效集合。</summary>
+    public MetaEffectSnapshot PreviewNodes(IEnumerable<uint> nodeIds)
+    { return BuildSnapshot(new HashSet<uint>(nodeIds), _snapshot == null ? 0 : _snapshot.Version); }
 
+    private static MetaEffectSnapshot BuildSnapshot(ICollection<uint> unlocked, int version)
+    {
+        var snap = new MetaEffectSnapshot { Version = version };
         List<MetaSkillTreeTable_FamilyTreeEffectConfig> links = LoadTable<MetaSkillTreeTable_FamilyTreeEffectConfig>("FamilyTreeEffect");
         List<EffectTable_EffectConfig> effects = LoadTable<EffectTable_EffectConfig>("Effect");
         if (links == null || effects == null)
         {
-            _snapshot = snap;
-            return _snapshot;
+            return snap;
         }
 
         var effectById = new Dictionary<uint, EffectTable_EffectConfig>();
@@ -128,10 +157,10 @@ public class EffectAggregator : SingletonBase<EffectAggregator>
                     if (effect.Value >= 1f) snap.CampRefillUnlocked = true;
                     break;
                 case 6u:
-                    if (effect.Target == 2001u) snap.FarmBuildSecondsDelta += Mathf.RoundToInt(value);
+                    snap.AddBuildChange(effect.Target, Mathf.RoundToInt(value));
                     break;
                 case 7u:
-                    if (effect.Target == 2001u) snap.FarmOutputDelta += Mathf.RoundToInt(value);
+                    snap.AddOutputChange(effect.Target, Mathf.RoundToInt(value));
                     break;
                 case 8u: snap.ProbabilityBonus += Mathf.RoundToInt(value); break;
                 default:
@@ -146,9 +175,9 @@ public class EffectAggregator : SingletonBase<EffectAggregator>
         snap.ConfidenceCapBonus = Mathf.Clamp(snap.ConfidenceCapBonus, 0, 100);
         snap.ProbabilityBonus = Mathf.Clamp(snap.ProbabilityBonus, 0, 100);
 
-        _snapshot = snap;
-        ChaosLog.Info(LogChannel.Config, snap.Dump());
-        return _snapshot;
+        snap.FarmBuildSecondsDelta = snap.GetBuildSecondsDelta(2001u);
+        snap.FarmOutputDelta = snap.GetOutputDelta(2001u);
+        return snap;
     }
 
     private static List<T> LoadTable<T>(string tableName) where T : class

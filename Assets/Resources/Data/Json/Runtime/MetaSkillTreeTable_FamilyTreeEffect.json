@@ -104,6 +104,146 @@
             "EffectId": 11,
             "Weight": 1,
             "Enable": true
+        },
+        {
+            "Index": 16,
+            "NodeId": 104,
+            "EffectId": 16,
+            "Weight": 1,
+            "Enable": true
+        },
+        {
+            "Index": 17,
+            "NodeId": 105,
+            "EffectId": 17,
+            "Weight": 1,
+            "Enable": true
+        },
+        {
+            "Index": 18,
+            "NodeId": 106,
+            "EffectId": 18,
+            "Weight": 1,
+            "Enable": true
+        },
+        {
+            "Index": 19,
+            "NodeId": 107,
+            "EffectId": 19,
+            "Weight": 1,
+            "Enable": true
+        },
+        {
+            "Index": 20,
+            "NodeId": 204,
+            "EffectId": 20,
+            "Weight": 1,
+            "Enable": true
+        },
+        {
+            "Index": 21,
+            "NodeId": 205,
+            "EffectId": 21,
+            "Weight": 1,
+            "Enable": true
+        },
+        {
+            "Index": 22,
+            "NodeId": 206,
+            "EffectId": 22,
+            "Weight": 1,
+            "Enable": true
+        },
+        {
+            "Index": 23,
+            "NodeId": 207,
+            "EffectId": 23,
+            "Weight": 1,
+            "Enable": true
+        },
+        {
+            "Index": 24,
+            "NodeId": 304,
+            "EffectId": 24,
+            "Weight": 1,
+            "Enable": true
+        },
+        {
+            "Index": 25,
+            "NodeId": 305,
+            "EffectId": 25,
+            "Weight": 1,
+            "Enable": true
+        },
+        {
+            "Index": 26,
+            "NodeId": 306,
+            "EffectId": 26,
+            "Weight": 1,
+            "Enable": true
+        },
+        {
+            "Index": 27,
+            "NodeId": 307,
+            "EffectId": 27,
+            "Weight": 1,
+            "Enable": true
+        },
+        {
+            "Index": 28,
+            "NodeId": 404,
+            "EffectId": 28,
+            "Weight": 1,
+            "Enable": true
+        },
+        {
+            "Index": 29,
+            "NodeId": 405,
+            "EffectId": 29,
+            "Weight": 1,
+            "Enable": true
+        },
+        {
+            "Index": 30,
+            "NodeId": 406,
+            "EffectId": 30,
+            "Weight": 1,
+            "Enable": true
+        },
+        {
+            "Index": 31,
+            "NodeId": 407,
+            "EffectId": 31,
+            "Weight": 1,
+            "Enable": true
+        },
+        {
+            "Index": 32,
+            "NodeId": 504,
+            "EffectId": 32,
+            "Weight": 1,
+            "Enable": true
+        },
+        {
+            "Index": 33,
+            "NodeId": 505,
+            "EffectId": 33,
+            "Weight": 1,
+            "Enable": true
+        },
+        {
+            "Index": 34,
+            "NodeId": 506,
+            "EffectId": 34,
+            "Weight": 1,
+            "Enable": true
+        },
+        {
+            "Index": 35,
+            "NodeId": 507,
+            "EffectId": 35,
+            "Weight": 1,
+            "Enable": true
         }
     ]
 }

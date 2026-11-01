@@ -1,0 +1,44 @@
+{
+    "datas": [
+        {
+            "Index": 1,
+            "NameKey": "ft_board_1_name",
+            "DescriptionKey": "ft_board_1_desc",
+            "IconKey": "",
+            "Order": 1,
+            "Enable": true
+        },
+        {
+            "Index": 2,
+            "NameKey": "ft_board_2_name",
+            "DescriptionKey": "ft_board_2_desc",
+            "IconKey": "",
+            "Order": 2,
+            "Enable": true
+        },
+        {
+            "Index": 3,
+            "NameKey": "ft_board_3_name",
+            "DescriptionKey": "ft_board_3_desc",
+            "IconKey": "",
+            "Order": 3,
+            "Enable": true
+        },
+        {
+            "Index": 4,
+            "NameKey": "ft_board_4_name",
+            "DescriptionKey": "ft_board_4_desc",
+            "IconKey": "",
+            "Order": 4,
+            "Enable": true
+        },
+        {
+            "Index": 5,
+            "NameKey": "ft_board_5_name",
+            "DescriptionKey": "ft_board_5_desc",
+            "IconKey": "",
+            "Order": 5,
+            "Enable": true
+        }
+    ]
+}

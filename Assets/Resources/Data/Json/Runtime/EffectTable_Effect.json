@@ -119,6 +119,166 @@
             "Value": 2,
             "Note": "家族树·家族产业·节点3：农田收获产量 +2",
             "Enable": true
+        },
+        {
+            "Index": 16,
+            "EffectType": 2,
+            "Target": 0,
+            "Value": 1,
+            "Note": "乡里互助：利用互助经验整理储藏位置，增加局外仓库格位。",
+            "Enable": true
+        },
+        {
+            "Index": 17,
+            "EffectType": 2,
+            "Target": 0,
+            "Value": 1,
+            "Note": "物资归整：改进货物分类与入库次序，进一步增加局外仓库格位。",
+            "Enable": true
+        },
+        {
+            "Index": 18,
+            "EffectType": 6,
+            "Target": 2002,
+            "Value": -2,
+            "Note": "工役协调：协调材料生产建筑的施工步骤，缩短新建和升级时间。",
+            "Enable": true
+        },
+        {
+            "Index": 19,
+            "EffectType": 6,
+            "Target": 2003,
+            "Value": -2,
+            "Note": "匠作联络：借助工匠间的经验往来，缩短图纸生产建筑的施工时间。",
+            "Enable": true
+        },
+        {
+            "Index": 20,
+            "EffectType": 7,
+            "Target": 2002,
+            "Value": 1,
+            "Note": "材场规制：整理材料生产的作业步骤，增加每个实际工作周期的产出。",
+            "Enable": true
+        },
+        {
+            "Index": 21,
+            "EffectType": 7,
+            "Target": 2003,
+            "Value": 1,
+            "Note": "工坊熟作：积累工坊经验，增加图纸生产建筑每个工作周期的产出。",
+            "Enable": true
+        },
+        {
+            "Index": 22,
+            "EffectType": 7,
+            "Target": 2004,
+            "Value": 1,
+            "Note": "市业周转：优化经营作业流程，增加钱财生产建筑每个工作周期的产出。",
+            "Enable": true
+        },
+        {
+            "Index": 23,
+            "EffectType": 7,
+            "Target": 2001,
+            "Value": 1,
+            "Note": "田事精作：将生产整备经验用于农田，进一步增加每个工作周期的收获。",
+            "Enable": true
+        },
+        {
+            "Index": 24,
+            "EffectType": 4,
+            "Target": 1,
+            "Value": 5,
+            "Note": "起居调养：改善远行前的调养，提高派遣角色生命上限。",
+            "Enable": true
+        },
+        {
+            "Index": 25,
+            "EffectType": 4,
+            "Target": 1,
+            "Value": 5,
+            "Note": "体魄训练：持续锻炼体魄，进一步提高派遣角色生命上限。",
+            "Enable": true
+        },
+        {
+            "Index": 26,
+            "EffectType": 4,
+            "Target": 3,
+            "Value": 1,
+            "Note": "护行训练：练习行路中的防护动作，减少派遣角色受到的普通伤害。",
+            "Enable": true
+        },
+        {
+            "Index": 27,
+            "EffectType": 2,
+            "Target": 0,
+            "Value": 1,
+            "Note": "携行整备：归纳门客带回物资的存放方式，增加局外仓库格位。",
+            "Enable": true
+        },
+        {
+            "Index": 28,
+            "EffectType": 4,
+            "Target": 2,
+            "Value": 1,
+            "Note": "守备操练：加强基础攻防练习，提高派遣角色普通攻击伤害。",
+            "Enable": true
+        },
+        {
+            "Index": 29,
+            "EffectType": 4,
+            "Target": 3,
+            "Value": 1,
+            "Note": "协防规程：统一协防动作，进一步减少派遣角色受到的普通伤害。",
+            "Enable": true
+        },
+        {
+            "Index": 30,
+            "EffectType": 4,
+            "Target": 1,
+            "Value": 5,
+            "Note": "固守准备：改善守备人员的体魄准备，提高派遣角色生命上限。",
+            "Enable": true
+        },
+        {
+            "Index": 31,
+            "EffectType": 4,
+            "Target": 1,
+            "Value": 5,
+            "Note": "轮值整备：以轮值调养改善远行状态，进一步提高派遣角色生命上限。",
+            "Enable": true
+        },
+        {
+            "Index": 32,
+            "EffectType": 4,
+            "Target": 4,
+            "Value": 1,
+            "Note": "轻装行进：练习行装分配，提高派遣角色水平移动速度。",
+            "Enable": true
+        },
+        {
+            "Index": 33,
+            "EffectType": 4,
+            "Target": 1,
+            "Value": 5,
+            "Note": "山路适应：通过山路行走锻炼，提高派遣角色生命上限。",
+            "Enable": true
+        },
+        {
+            "Index": 34,
+            "EffectType": 4,
+            "Target": 2,
+            "Value": 1,
+            "Note": "临阵配合：练习行动中的攻击配合，提高派遣角色普通攻击伤害。",
+            "Enable": true
+        },
+        {
+            "Index": 35,
+            "EffectType": 4,
+            "Target": 3,
+            "Value": 1,
+            "Note": "防护整备：整理远行防护经验，减少派遣角色受到的普通伤害。",
+            "Enable": true
         }
     ]
 }

@@ -186,6 +186,18 @@
             "resourcePath": "Data/Json/Runtime/WorldMapTable_WorldFactionLabel",
             "workbook": "WorldMapTable_世界观地图表",
             "worksheet": "历史名录派生"
+        },
+        {
+            "className": "MetaSkillTreeTable_FamilyTreeBoardConfig",
+            "resourcePath": "Data/Json/Runtime/MetaSkillTreeTable_FamilyTreeBoard",
+            "workbook": "MetaSkillTreeTable_局外技能树表",
+            "worksheet": "板块"
+        },
+        {
+            "className": "MetaSkillTreeTable_FamilyTreeTextConfig",
+            "resourcePath": "Data/Json/Runtime/MetaSkillTreeTable_FamilyTreeText",
+            "workbook": "MetaSkillTreeTable_局外技能树表",
+            "worksheet": "文案"
         }
     ]
 }
