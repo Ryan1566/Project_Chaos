@@ -29,7 +29,7 @@ public class DispatchService : SingletonBase<DispatchService>
     /// <summary>可以出发：1~4 人 且 不在局内。</summary>
     public bool CanDepart
     {
-        get { return GameSession.Instance.HasSession && !IsInRun && !RunSceneFlow.IsTransitioning && _selected.Count >= MinTeamSize && _selected.Count <= MaxTeamSize; }
+        get { return CanDepartWithReason(out _); }
     }
 
     /// <summary>存档里的本局队伍（出发时写入）。</summary>
@@ -114,11 +114,8 @@ public class DispatchService : SingletonBase<DispatchService>
         _selected.Clear();
     }
 
-    /// <summary>
-    /// 出发：写 runTeam / runs；正式入口经 LoadingScene 进入 WorldScene，TestScene 保留就地原型。
-    /// 两条入口共用 RunEncounter，不修改 RunMap 生成器。
-    /// </summary>
-    public bool Depart(out string reason)
+    /// <summary>完整的无副作用出发检查，界面不能只按人数判断可用状态。</summary>
+    public bool CanDepartWithReason(out string reason)
     {
         reason = null;
 
@@ -130,7 +127,9 @@ public class DispatchService : SingletonBase<DispatchService>
         if (_selected.Count < MinTeamSize) { reason = "至少选择 " + MinTeamSize + " 位门客"; return false; }
         if (_selected.Count > MaxTeamSize) { reason = "队伍超过上限 " + MaxTeamSize; return false; }
 
-        //出发前再校验一次（可能在面板里待久了，状态变了）
+        if (new HashSet<uint>(_selected).Count != _selected.Count) { reason = "编队中存在重复门客，请重新编队"; return false; }
+
+        //界面预览与实际出发使用同一套资格判断。
         RetainerService svc = RetainerService.Instance;
         for (int i = 0; i < _selected.Count; i++)
         {
@@ -147,6 +146,33 @@ public class DispatchService : SingletonBase<DispatchService>
                 return false;
             }
         }
+
+        return true;
+    }
+
+    /// <summary>仅调整局外草稿队伍首位，其他门客顺序稳定，出发时统一保存。</summary>
+    public bool SetControlled(uint id, out string reason)
+    {
+        reason = null;
+        if (!GameSession.Instance.HasSession || IsInRun || RunSceneFlow.IsTransitioning)
+        { reason = "当前不能调整操控角色"; return false; }
+        int index = _selected.IndexOf(id);
+        if (index < 0) { reason = "请先将门客加入队伍"; return false; }
+        if (!RetainerService.Instance.TryGet(id, out var member)) { reason = "门客已不存在"; return false; }
+        string unavailable = GetUnavailableReason(member);
+        if (!string.IsNullOrEmpty(unavailable)) { reason = unavailable; return false; }
+        if (index > 0) { _selected.RemoveAt(index); _selected.Insert(0, id); }
+        return true;
+    }
+
+    /// <summary>
+    /// 出发：写 runTeam / runs；正式入口经 LoadingScene 进入 WorldScene，TestScene 保留就地原型。
+    /// 两条入口共用 RunEncounter，不修改 RunMap 生成器。
+    /// </summary>
+    public bool Depart(out string reason)
+    {
+        if (!CanDepartWithReason(out reason)) return false;
+        bool prototype = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "TestScene";
 
         SavePayload payload = MetaProgressService.Instance.Payload;
         string beforeDeparture = JsonUtility.ToJson(payload);

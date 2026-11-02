@@ -119,6 +119,13 @@ public class UIManager : SingletonBase<UIManager>
             //重复打开栈顶面板：不退场也不再入栈。
             //不这样挡的话，同一个实例会被压两次，之后 Pop 会让堆栈永久错乱
             panel.transform.SetAsLastSibling();
+            // 局内流程会隐藏对象而保留栈；显式重开隐藏栈顶时重新走完整生命周期。
+            if (!panel.gameObject.activeSelf || !panel.IsShowing)
+            {
+                panel.Hide(true);
+                panel.Show(true);
+                InputManager.Instance.SetGameplayInputBlocked(this, true);
+            }
             return panel;
         }
 
