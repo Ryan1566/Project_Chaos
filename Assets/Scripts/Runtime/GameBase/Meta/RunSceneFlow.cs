@@ -60,7 +60,20 @@ public static class RunSceneFlow
         if (!CanReturnToMeta(out string reason)) throw new System.InvalidOperationException(reason);
         if (!SceneTransitionCoordinator.TryBegin(SceneTransitionCoordinator.TransitionKind.ReturnVillage, VillageSceneFlow.SceneName, false,
             () => { team = null; stage = 0; VillageSceneFlow.OnReturnedToVillage(); EventService.Instance.CheckAndShowOnReturnToMeta(); },
-            VillageSceneFlow.ReportEntryFailure, out reason)) throw new System.InvalidOperationException(reason);
+            HandleReturnFailure, out reason)) throw new System.InvalidOperationException(reason);
+    }
+
+    private static void HandleReturnFailure(string reason)
+    {
+        var settlement = Chaos.MVP.Model.Gameplay.RunSettlementModel.Current;
+        if (settlement?.Completed == true && SceneTransitionCoordinator.IsFormalRun)
+        {
+            RunSettlementPanel.Open(settlement.Win);
+            var panel = UIManager.Instance.panelStack.Count > 0 ? UIManager.Instance.panelStack.Peek() as RunSettlementPanel : null;
+            panel?.ShowMessage("结算已保存，返回村庄失败：" + reason, false);
+            return;
+        }
+        VillageSceneFlow.ReportEntryFailure(reason);
     }
     private static void FailFormalRun(string reason)
     {

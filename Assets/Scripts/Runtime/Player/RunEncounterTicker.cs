@@ -14,6 +14,7 @@ public class RunEncounterTicker : MonoBehaviour
 
     private void Update()
     {
+        RunEncounter.TickRunTime(Time.deltaTime);
         if (Time.time < _next) return;
         _next = Time.time + RunEncounter.ScanInterval;
         RunEncounter.ProcessPendingScene();

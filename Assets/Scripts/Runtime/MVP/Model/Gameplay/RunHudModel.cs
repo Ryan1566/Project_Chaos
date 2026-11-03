@@ -29,7 +29,7 @@ namespace Chaos.MVP.Model.Gameplay
         }
         public uint Depth => MetaProgressService.Instance.Depth;
         public uint DepthCap => MetaProgressService.Instance.DepthCap;
-        public int DeployCap => MetaProgressService.Instance.DeployCap;
+        public int DeployCap => MetaProgressService.Instance.FailureCarryCap;
         public int SceneIndex => RunEncounter.CurrentSceneIndex;
     }
 }

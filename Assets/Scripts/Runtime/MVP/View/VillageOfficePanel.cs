@@ -12,7 +12,7 @@ public sealed class VillageOfficePanel : BasePanel,IVillageOfficeView
     VillageOfficeModel model;
     VillageOfficePresenter presenter;
     TextMeshProUGUI title,body;
-    Button tasks,trade,tax,back;
+    Button tasks,trade,tax,back,manage;
     float nextRefresh;
     public static void Open(string facilityId)
     {
@@ -33,6 +33,7 @@ public sealed class VillageOfficePanel : BasePanel,IVillageOfficeView
         trade=GameplayUi.Button(card,"OfficeTrade","",new Vector2(310,-365),new Vector2(260,56),()=>Send(VillageOfficeIntent.Trade));
         tax=GameplayUi.Button(card,"OfficeTax","",new Vector2(596,-365),new Vector2(260,56),()=>Send(VillageOfficeIntent.Tax));
         back=GameplayUi.Button(card,"OfficeBack","",new Vector2(616,-475),new Vector2(240,54),()=>Send(VillageOfficeIntent.Back));
+        manage=GameplayUi.Button(card,"OfficeManagement","设施升级",new Vector2(24,-475),new Vector2(240,54),()=>Send(VillageOfficeIntent.Manage));
     }
     static TextMeshProUGUI Label(Transform parent,string name,Vector2 position,Vector2 size,float font)
     {var area=GameplayUi.Rect(parent,name+"Area",Vector2.up,Vector2.up,position,size);var value=GameplayUi.Text(area,name,"",font);value.alignment=TextAlignmentOptions.TopLeft;return value;}
@@ -48,6 +49,7 @@ public sealed class VillageOfficePanel : BasePanel,IVillageOfficeView
         title.text=state.Title;body.text=state.Body;
         bool menu=!state.TaxPage&&!state.TasksPage;
         tasks.gameObject.SetActive(menu);trade.gameObject.SetActive(menu);tax.gameObject.SetActive(menu);
+        manage.gameObject.SetActive(menu);manage.interactable=state.Available;
         Set(tasks,state.Tasks,state.Available);Set(trade,state.Trade,state.Available);Set(tax,state.Tax,state.Available);Set(back,state.Back,true);
     }
     static void Set(Button button,string text,bool enabled){button.interactable=enabled;button.GetComponentInChildren<TextMeshProUGUI>(true).text=text;}

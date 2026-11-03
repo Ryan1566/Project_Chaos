@@ -74,6 +74,7 @@ public class GameSession : SingletonBase<GameSession>
         DispatchService.Instance.ResetSelection();
         SelectedSlot = slot;
         LoadedPayload = payload ?? new SavePayload();
+        InventoryService.MigrateLegacyResourceItems(LoadedPayload);
         TargetSceneName = targetSceneName;
         HasSession = true;
         ContextChanged?.Invoke();
@@ -90,6 +91,7 @@ public class GameSession : SingletonBase<GameSession>
         EventService.Instance.ResetRuntime(); MetaProgressService.Instance.ResetSessionRuntime(); DispatchService.Instance.ResetSelection();
         Kind = SessionKind.Sandbox; SelectedSlot = 0; saveDirectory = null; TargetSceneName = null;
         LoadedPayload = initial == null ? new SavePayload() : JsonUtility.FromJson<SavePayload>(JsonUtility.ToJson(initial));
+        InventoryService.MigrateLegacyResourceItems(LoadedPayload);
         HasSession = true; ContextId++; ContextChanged?.Invoke();
     }
 

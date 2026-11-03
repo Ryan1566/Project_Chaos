@@ -321,6 +321,17 @@ public class EventService : SingletonBase<EventService>
 
         string result = null;
         bool committed = MetaCommandRunner.Execute("Event.Choose", (out string why) => {
+            var inventory = InventoryService.Instance;
+            if (TryMapResource(option.GiveResourceType, out var resource)
+                && inventory.ResourceRoom(resource) < option.GiveResourceAmount)
+            { why = InventoryService.ResourceDisplayName(resource) + "的仓库容量不足"; return false; }
+            if (InventoryService.TryGetResourceCommodity(option.GiveItemId, out var commodity))
+            {
+                uint capacity = inventory.ResourceRoom(commodity);
+                uint first = option.GiveResourceType != 0 && commodity == resource ? option.GiveResourceAmount : 0;
+                if ((ulong)first + option.GiveItemCount > capacity)
+                { why = InventoryService.ResourceDisplayName(commodity) + "的仓库容量不足"; return false; }
+            }
             // Keep the existing partial-reward rule; persistence still commits the whole disposition atomically.
             ApplyOption(optionIndex, out result);
             RecordDisposition(current, MetaProgressService.Instance.Payload);
@@ -407,9 +418,13 @@ public class EventService : SingletonBase<EventService>
             InventoryService.ResourceKind kind;
             if (TryMapResource(opt.GiveResourceType, out kind))
             {
-                uint now = InventoryService.Instance.AddResource(kind, opt.GiveResourceAmount);
-                parts.Add(InventoryService.ResourceDisplayName(kind) + " +" + opt.GiveResourceAmount + "（现有 " + now + "）");
-                any = true;
+                if (InventoryService.Instance.TryCreditResource(kind, opt.GiveResourceAmount, out string resourceReason))
+                {
+                    uint now = InventoryService.Instance.GetResource(kind);
+                    parts.Add(InventoryService.ResourceDisplayName(kind) + " +" + opt.GiveResourceAmount + "（现有 " + now + "）");
+                    any = true;
+                }
+                else parts.Add(resourceReason);
             }
             else
             {

@@ -2,16 +2,7 @@ using System.Collections.Generic;
 using ChaosDebug;
 using UnityEngine;
 
-/// <summary>
-/// 资源 + 库存（M2/M9）的服务层 —— **唯一读写入口**。
-///
-/// ══════════════ 两个概念别混（06 §3.3）══════════════
-/// * **格位 Slot** = 能放多少**种**物品（基础 8，可由 `EffectType=2` 提升，原型硬上限 24）。
-/// * **叠加上限 StackLimit** = 同一种能堆多少**个**（`Item.StackLimit`，默认 99）。
-///
-/// 判定优先级：**格位判定 &gt; 叠加判定**（06 §3.5）——新种类先要有格位，才谈叠加。
-/// 资源是 4 个**全局数字**，不占格位、不参与叠加。
-/// </summary>
+/// <summary>仓库物品与村庄资源账本。普通物品不限格位，资源逐种受仓库等级限制。</summary>
 public class InventoryService : SingletonBase<InventoryService>
 {
     /// <summary>基础格位（U3 裁决：8）。</summary>
@@ -26,7 +17,11 @@ public class InventoryService : SingletonBase<InventoryService>
         Goods = 0,      // 物资  → resGoods
         Material = 1,   // 材料  → resMaterial
         Blueprint = 2,  // 图纸  → resBlueprint
-        Money = 3,      // 钱财  → resMoney
+        Money = 3,
+        Wood = 4,
+        IronOre = 5,
+        Stone = 6,
+        RawSalt = 7,
     }
 
     private List<ItemTable_ItemConfig> _defs;
@@ -163,81 +158,80 @@ public class InventoryService : SingletonBase<InventoryService>
         return _slotBonus;
     }
 
-    /// <summary>
-    /// 入库。**先判格位（新种类），再判叠加**；返回 `true` 表示至少入了一部分，
-    /// `reason` 给出失败/部分成功原因（**不静默丢弃**）。
-    /// </summary>
     public bool AddItem(uint itemId, uint count, out string reason)
-            {
-        reason = null;
-        if (count == 0) { reason = "数量为 0"; return false; }
-
-        ItemTable_ItemConfig def = GetDefinition(itemId);
-        if (def == null) { reason = "道具表里没有 itemId=" + itemId; ChaosLog.Warn(LogChannel.Config, "[库存] " + reason); return false; }
-        if (!def.Enable) { reason = "道具 itemId=" + itemId + " 已禁用（Enable=false）"; ChaosLog.Warn(LogChannel.Config, "[库存] " + reason); return false; }
-
-        if (def.RunCategory == 1)
+    {
+        if (!CanReceive(itemId, count, out reason)) return false;
+        if (TryGetResourceCommodity(itemId, out var resource)) return TryCreditResource(resource, count, out reason);
+        var definition = GetDefinition(itemId);
+        if (definition.RunCategory == 1)
         {
             if (MetaCommandRunner.IsMutating)
-            { RunBagProgression.RegisterImportantInCommand(itemId); return true; }
+            {
+                RunBagProgression.RegisterImportantInCommand(itemId);
+                return true;
+            }
             return RunBagProgression.AcquireImportant(itemId, out reason);
         }
+        var stacks = GetStacks();
+        var stack = stacks.Find(entry => entry != null && entry.itemId == itemId);
+        if (stack == null) stacks.Add(new ItemStackSave { itemId = itemId, count = count });
+        else stack.count += count;
+        return true;
+    }
 
-        uint stackLimit = def.IsUnique ? 1u : (def.StackLimit == 0 ? 1u : def.StackLimit);
-        List<ItemStackSave> stacks = GetStacks();
-
-        //★W3.2c 裁决 C：局外保留"部分成功" —— 只加能加的部分，>0 就返回 true
-        uint addable = InventoryRules.MaxAddableStacks(stacks, TotalSlots, itemId, count, stackLimit);
-        if (addable == 0u)
+    public bool CanReceive(uint id, uint count, out string reason)
+    {
+        reason = null;
+        if (count == 0) { reason = "数量为零"; return false; }
+        var definition = GetDefinition(id);
+        if (definition == null || !definition.Enable) { reason = "物品或商品未配置或已禁用"; return false; }
+        if (TryGetResourceCommodity(id, out var resource))
         {
-            reason = "格位/叠加已满，无法入库（已有该物品上限 " + stackLimit + "，格位 " + UsedSlots + "/" + TotalSlots + "）";
-            ChaosLog.Warn(LogChannel.Config, "[库存] " + reason);
+            if (ResourceRoom(resource) >= count) return true;
+            reason = ResourceDisplayName(resource) + "已达到仓库容量";
             return false;
         }
-
-        InventoryRules.ApplyAddStacks(stacks, TotalSlots, itemId, addable, stackLimit);
-
-        if (addable < count)
+        if (definition.RunCategory == 1) return true;
+        uint owned = GetItemCount(id);
+        if (definition.IsUnique && (owned != 0 || count != 1))
         {
-            uint lost = count - addable;
-            reason = "实际入库 " + addable + "，剩余 " + lost + " 未入库（格位/叠加已满）";
-            ChaosLog.Warn(LogChannel.Config, "[库存] itemId=" + itemId + " " + reason);
+            reason = "该唯一物品只能持有一件";
+            return false;
         }
-        else
+        if (count > uint.MaxValue - owned)
         {
-            ChaosLog.Info(LogChannel.Config, "[库存] +" + addable + " itemId=" + itemId
-                + "（已用格 " + UsedSlots + "/" + TotalSlots + "，叠加上限 " + stackLimit + "）");
+            reason = "物品计数已达到存档数值上限";
+            return false;
         }
         return true;
     }
 
-    /// <summary>出库；减到 0 释放格位（R4）。</summary>
+    public uint GetItemCount(uint id)
+    {
+        ulong total = 0;
+        foreach (var stack in GetStacks())
+            if (stack != null && stack.itemId == id) total += stack.count;
+        return (uint)System.Math.Min(total, uint.MaxValue);
+    }
+
     public bool RemoveItem(uint itemId, uint count, out string reason)
     {
         reason = null;
+        if (TryGetResourceCommodity(itemId, out var resource)) return SpendResource(resource, count, out reason);
         if (RunInventory.IsImportant(itemId)) { reason = "重要道具永久保留，不能消耗或出售"; return false; }
-        List<ItemStackSave> stacks = GetStacks();
-        for (int i = 0; i < stacks.Count; i++)
+        if (GetItemCount(itemId) < count) { reason = "物品数量不足"; return false; }
+        var stacks = GetStacks();
+        for (int i = 0; i < stacks.Count && count > 0;)
         {
-            ItemStackSave stack = stacks[i];
-            if (stack == null || stack.itemId != itemId) continue;
-
-            if (stack.count < count)
-            {
-                reason = "库存不足（有 " + stack.count + "，要扣 " + count + "）";
-                ChaosLog.Warn(LogChannel.Config, "[库存] " + reason + " itemId=" + itemId);
-                return false;
-            }
-
-            stack.count -= count;
+            var stack = stacks[i];
+            if (stack == null || stack.itemId != itemId) { i++; continue; }
+            uint removed = System.Math.Min(stack.count, count);
+            stack.count -= removed;
+            count -= removed;
             if (stack.count == 0) stacks.RemoveAt(i);
-            ChaosLog.Info(LogChannel.Config, "[库存] itemId=" + itemId + " -" + count + "，已用 " + UsedSlots + "/" + TotalSlots);
-            return true;
+            else i++;
         }
-
-        reason = "库存里没有 itemId=" + itemId;
-        ChaosLog.Warn(LogChannel.Config, "[库存] " + reason);
-        return false;
+        return true;
     }
 
     /// <summary>清空库存（不动资源）。</summary>
@@ -248,59 +242,105 @@ public class InventoryService : SingletonBase<InventoryService>
     }
 
     // ══════════════ 4 资源（全局数字，不占格位）══════════════
+    public uint GetResource(ResourceKind kind) => ReadResource(MetaProgressService.Instance.Payload, kind);
 
-    public uint GetResource(ResourceKind kind)
+    private static uint ReadResource(SavePayload payload, ResourceKind kind)
     {
-        SavePayload p = MetaProgressService.Instance.Payload;
         switch (kind)
         {
-            case ResourceKind.Goods: return p.resGoods;
-            case ResourceKind.Material: return p.resMaterial;
-            case ResourceKind.Blueprint: return p.resBlueprint;
-            default: return p.resMoney;
+            case ResourceKind.Goods: return payload.resGoods;
+            case ResourceKind.Material: return payload.resMaterial;
+            case ResourceKind.Blueprint: return payload.resBlueprint;
+            case ResourceKind.Money: return payload.resMoney;
+            case ResourceKind.Wood: return payload.resWood;
+            case ResourceKind.IronOre: return payload.resIronOre;
+            case ResourceKind.Stone: return payload.resStone;
+            case ResourceKind.RawSalt: return payload.resRawSalt;
+            default: throw new System.ArgumentOutOfRangeException(nameof(kind));
         }
+    }
+
+    private static void WriteResource(SavePayload payload, ResourceKind kind, uint value)
+    {
+        switch (kind)
+        {
+            case ResourceKind.Goods: payload.resGoods = value; break;
+            case ResourceKind.Material: payload.resMaterial = value; break;
+            case ResourceKind.Blueprint: payload.resBlueprint = value; break;
+            case ResourceKind.Money: payload.resMoney = value; break;
+            case ResourceKind.Wood: payload.resWood = value; break;
+            case ResourceKind.IronOre: payload.resIronOre = value; break;
+            case ResourceKind.Stone: payload.resStone = value; break;
+            case ResourceKind.RawSalt: payload.resRawSalt = value; break;
+            default: throw new System.ArgumentOutOfRangeException(nameof(kind));
+        }
+    }
+
+    public uint ResourceRoom(ResourceKind kind)
+    {
+        uint have = GetResource(kind);
+        uint capacity = VillageService.Instance.ResourceCapacity;
+        return have >= capacity ? 0 : capacity - have;
     }
 
     public uint AddResource(ResourceKind kind, uint amount)
     {
-        SavePayload p = MetaProgressService.Instance.Payload;
-        switch (kind)
-        {
-            case ResourceKind.Goods: p.resGoods = SaturatingAdd(p.resGoods, amount); return p.resGoods;
-            case ResourceKind.Material: p.resMaterial = SaturatingAdd(p.resMaterial, amount); return p.resMaterial;
-            case ResourceKind.Blueprint: p.resBlueprint = SaturatingAdd(p.resBlueprint, amount); return p.resBlueprint;
-            default: p.resMoney = SaturatingAdd(p.resMoney, amount); return p.resMoney;
-        }
+        uint result = GetResource(kind) + System.Math.Min(amount, ResourceRoom(kind));
+        WriteResource(MetaProgressService.Instance.Payload, kind, result);
+        return result;
     }
 
-    /// <summary>消耗资源；不足则拒绝并返回 false（**不减到负**）。</summary>
-    public bool SpendResource(ResourceKind kind, uint amount, out string reason)
+    public bool TryCreditResource(ResourceKind kind, uint amount, out string reason)
     {
         reason = null;
-        uint have = GetResource(kind);
-        if (have < amount)
+        if (amount > ResourceRoom(kind))
         {
-            reason = "资源不足（有 " + have + "，要花 " + amount + "）";
-            ChaosLog.Warn(LogChannel.Config, "[库存] " + reason);
+            reason = ResourceDisplayName(kind) + "的仓库容量不足";
             return false;
         }
-
-        SavePayload p = MetaProgressService.Instance.Payload;
-        switch (kind)
-        {
-            case ResourceKind.Goods: p.resGoods -= amount; break;
-            case ResourceKind.Material: p.resMaterial -= amount; break;
-            case ResourceKind.Blueprint: p.resBlueprint -= amount; break;
-            default: p.resMoney -= amount; break;
-        }
+        AddResource(kind, amount);
         return true;
     }
 
-    private static uint SaturatingAdd(uint a, uint b)
+    public bool SpendResource(ResourceKind kind, uint amount, out string reason)
     {
-        uint sum = a + b;
-        if (sum < a) return uint.MaxValue;   //溢出 → 夹到 uint 上限
-        return sum;
+        uint have = GetResource(kind);
+        reason = null;
+        if (have < amount)
+        {
+            reason = $"资源不足（有 {have}，需要 {amount}）";
+            return false;
+        }
+        WriteResource(MetaProgressService.Instance.Payload, kind, have - amount);
+        return true;
+    }
+
+    // 旧商品编号继续作为交易、产出和奖励的稳定键，入库统一走资源账本。
+    public static bool TryGetResourceCommodity(uint id, out ResourceKind resource)
+    {
+        if (id >= 9101 && id <= 9104)
+        {
+            resource = (ResourceKind)(id - 9101 + (uint)ResourceKind.Wood);
+            return true;
+        }
+        resource = default;
+        return false;
+    }
+
+    public static void MigrateLegacyResourceItems(SavePayload payload)
+    {
+        var items = payload.items;
+        if (items == null) return;
+        for (int i = items.Count - 1; i >= 0; i--)
+        {
+            var item = items[i];
+            if (item == null || !TryGetResourceCommodity(item.itemId, out var kind)) continue;
+            uint balance = ReadResource(payload, kind);
+            uint migrated = System.Math.Min(item.count, uint.MaxValue - balance);
+            WriteResource(payload, kind, balance + migrated);
+            item.count -= migrated;
+            if (item.count == 0) items.RemoveAt(i);
+        }
     }
 
     public static string ResourceDisplayName(ResourceKind kind)
@@ -310,7 +350,12 @@ public class InventoryService : SingletonBase<InventoryService>
             case ResourceKind.Goods: return "物资";
             case ResourceKind.Material: return "材料";
             case ResourceKind.Blueprint: return "图纸";
-            default: return "钱财";
+            case ResourceKind.Money: return "钱财";
+            case ResourceKind.Wood: return "木材";
+            case ResourceKind.IronOre: return "铁矿石";
+            case ResourceKind.Stone: return "石料";
+            case ResourceKind.RawSalt: return "原盐";
+            default: throw new System.ArgumentOutOfRangeException(nameof(kind));
         }
     }
 

@@ -105,7 +105,7 @@ public static class WorldLocationFlowVerification
     }
     static void Domain()
     {
-        GameSession.Instance.BeginSandbox(new SavePayload{resMoney=10000,resMaterial=10000,resGoods=10000,resBlueprint=10000});
+        GameSession.Instance.BeginSandbox(new SavePayload{resMoney=300,resMaterial=300,resGoods=300,resBlueprint=300});
         var service=WorldLocationService.Instance;service.Reload();InventoryService.Instance.Reload();
         int[] expected={7,1,8,19,11};int sum=0;
         for(uint era=1;era<=5;era++)
@@ -136,7 +136,7 @@ public static class WorldLocationFlowVerification
         Check(service.TryBuy(market.Id,item,out _)&&P.resMoney==cash-price&&MarketService.Instance.GetCount(item)==count+1,"buy takes exact discounted money and one item");
         uint sell=service.GetSellPrice(market.Id,item);cash=P.resMoney;
         Check(service.TrySell(market.Id,item,out _)&&P.resMoney==cash+sell&&MarketService.Instance.GetCount(item)==count,"sell retains base price and removes one item");
-        P.resMoney=0;before=JsonUtility.ToJson(P);Check(!service.TryBuy(market.Id,item,out _)&&before==JsonUtility.ToJson(P),"insufficient money leaves full payload unchanged");P.resMoney=10000;
+        P.resMoney=0;before=JsonUtility.ToJson(P);Check(!service.TryBuy(market.Id,item,out _)&&before==JsonUtility.ToJson(P),"insufficient money leaves full payload unchanged");P.resMoney=300;
         var resource=family.First(x=>x.Kind==WorldLocationKind.Resource&&x.CanBuild&&service.GetLocation(4,x.Id,WorldLocationIdentity.Family)?.CanBuild!=true);
         var resourceAction=WorldLocationCatalog.Action((uint)resource.Kind);bool buildEnabled=resourceAction.CanBuild;
         try{resourceAction.CanBuild=false;before=JsonUtility.ToJson(P);
@@ -153,12 +153,16 @@ public static class WorldLocationFlowVerification
         finally{resourceAction.CanHarvest=harvestEnabled;}
         WorldResourceService.Instance.Tick(6000);point=service.GetLocation(1,resource.Id,WorldLocationIdentity.Family);
         Check(point.PendingOutput==10,"resource buffer caps at ten");
-        P.items=new List<ItemStackSave>{new ItemStackSave{itemId=point.OutputItemId,count=98}};
-        Check(WorldResourceService.Instance.Harvest(resource.Id,out uint amount,out _)&&amount==1&&MarketService.Instance.GetCount(point.OutputItemId)==99,"partial collection fills stack without losing remainder");
+        var inventory=InventoryService.Instance;
+        Check(InventoryService.TryGetResourceCommodity(point.OutputItemId,out var resourceKind),"facility output uses the resource ledger");
+        uint capacity=VillageService.Instance.ResourceCapacity;
+        inventory.AddResource(resourceKind,capacity-1);
+        Check(WorldResourceService.Instance.Harvest(resource.Id,out uint amount,out _)&&amount==1&&inventory.GetResource(resourceKind)==capacity,"partial collection fills resource capacity without losing remainder");
         Check(service.GetLocation(1,resource.Id,WorldLocationIdentity.Family).PendingOutput==9,"uncollected items remain at resource site");
         P.era=4;before=JsonUtility.ToJson(P);WorldResourceService.Instance.Tick(120);
         Check(!WorldResourceService.Instance.Harvest(resource.Id,out _,out _)&&JsonUtility.ToJson(P)==before,"era access loss freezes facility and prevents collection without confiscation");P.era=1;
-        P.items.Clear();Check(WorldResourceService.Instance.Harvest(resource.Id,out _,out _),"restored access can collect retained goods");
+        inventory.SpendResource(resourceKind,capacity,out _);
+        Check(WorldResourceService.Instance.Harvest(resource.Id,out _,out _),"restored access can collect retained goods");
         WorldResourceService.Instance.Tick(1);Check(service.GetLocation(1,resource.Id,WorldLocationIdentity.Family).PendingOutput==0,"full buffer never stores hidden production time");
         P.items.Clear();P.runs=5;P.clears=5;
         var temp=service.GetLocations(1,WorldLocationIdentity.Family).First(x=>x.Kind==WorldLocationKind.Temporary&&x.CanResolve);
@@ -190,7 +194,7 @@ public static class WorldLocationFlowVerification
     static IEnumerator Run()
     {
         Domain();
-        var payload=new SavePayload{resMoney=10000,resMaterial=10000,resGoods=10000,resBlueprint=10000,runs=1};
+        var payload=new SavePayload{resMoney=300,resMaterial=300,resGoods=300,resBlueprint=300,runs=1};
         Check(SaveSlotService.Instance.Save(3,payload),"owned formal save created");GameSession.Instance.Begin(3,payload,"MainScene");VillageSceneFlow.EnterFromSave();
         float deadline=Time.realtimeSinceStartup+90;
         while(!VillageSceneBootstrap.IsReady&&Time.realtimeSinceStartup<deadline)yield return null;
@@ -201,7 +205,7 @@ public static class WorldLocationFlowVerification
         Check(view!=null&&view.MarkerCount>=30,"formal map renders capital/trade/resource markers");
         var nav=map.GetComponentInChildren<WorldMapNavigation>(true);
         Check(nav!=null&&Math.Abs(nav.Zoom-1)<.01f,"map starts at one-to-one zoom");
-        nav.SetZoom(100,new Vector2(Screen.width*.4f,Screen.height*.5f));Check(Math.Abs(nav.Zoom-3)<.01f,"zoom upper bound clamps to three");
+        nav.SetZoom(100,new Vector2(Screen.width*.4f,Screen.height*.5f));Check(Math.Abs(nav.Zoom-6)<.01f,"zoom upper bound clamps to six");
         nav.SetZoom(.01f,new Vector2(Screen.width*.4f,Screen.height*.5f));Check(Math.Abs(nav.Zoom-1)<.01f,"zoom lower bound clamps to one");
         int count=view.MarkerCount;for(int i=0;i<5;i++){UIManager.Instance.PopPanel();yield return Press(Key.M);}
         map=(WorldMapPanel)Top;view=map.GetComponent<WorldLocationsView>();Check(view.MarkerCount==count,"five reopen cycles reuse markers without accumulation");

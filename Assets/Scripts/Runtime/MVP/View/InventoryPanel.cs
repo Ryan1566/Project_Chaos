@@ -69,6 +69,7 @@ public class InventoryPanel : BasePanel, IGameplayView<InventoryState>
     private TMP_FontAsset _font;
     private bool _built;
     private TextMeshProUGUI _closeLabel;
+    private Button _upgrade;
     private LocalizationManager _localization;
 
     private void Awake()
@@ -122,6 +123,12 @@ public class InventoryPanel : BasePanel, IGameplayView<InventoryState>
         _hint = CreateText("Hint", 128f, WarnColor, 20f);
 
         CreateCloseButton();
+        _upgrade = GameplayUi.Button(transform, "WarehouseManagement", "仓库升级", Vector2.zero, new Vector2(160f, 48f),
+            () => Send(PanelAction.Upgrade));
+        var upgradeRect = (RectTransform)_upgrade.transform;
+        upgradeRect.anchorMin = upgradeRect.anchorMax = Vector2.zero;
+        upgradeRect.pivot = Vector2.zero;
+        upgradeRect.anchoredPosition = new Vector2(24, 24);
     }
 
     private void Refresh()
@@ -330,15 +337,14 @@ public class InventoryPanel : BasePanel, IGameplayView<InventoryState>
         if (_slots != null)
         {
             _slots.text = state.Slots;
-            _slots.color = state.Full ? WarnColor : NormalColor;
             _slots.gameObject.SetActive(state.HasSession);
         }
         if (_hint != null)
         {
             _hint.text = state.Hint;
-            _hint.color = state.Full ? WarnColor : NormalColor;
             _hint.gameObject.SetActive(!string.IsNullOrEmpty(state.Hint));
         }
         RenderRows(state);
+        if (_upgrade != null) _upgrade.gameObject.SetActive(state.CanManageWarehouse);
     }
 }

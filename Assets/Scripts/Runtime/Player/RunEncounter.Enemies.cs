@@ -53,6 +53,7 @@ public static partial class RunEncounter
 
         //W3.2d：掉落死亡不触发掉落（防引诱跳崖刷装备 / 进局凭空多掉落）
         if (!allowDrop) return;
+        RunKills++;
 
         Chaos.Gameplay.RunTeam.RunTeamProgress.AwardNormalKill();
 

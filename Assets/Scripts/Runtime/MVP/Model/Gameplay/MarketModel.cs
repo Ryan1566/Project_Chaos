@@ -2,11 +2,11 @@ using System.Collections.Generic;
 
 namespace Chaos.MVP.Model.Gameplay
 {
-    public enum BuyBlock { None, Unavailable, InsufficientMoney, SlotsFull, StackFull }
+    public enum BuyBlock { None, Unavailable, InsufficientMoney, CannotReceive }
     public sealed class MarketOffer
     {
-        public uint Id, BuyPrice, SellPrice, Owned, StackLimit;
-        public string NameKey;
+        public uint Id, BuyPrice, SellPrice, Owned;
+        public string NameKey, BlockReason;
         public BuyBlock BuyBlock;
         public bool CanSell;
     }
@@ -20,13 +20,16 @@ namespace Chaos.MVP.Model.Gameplay
             {
                 if (def == null || !def.Enable || (def.BuyPrice == 0 && def.SellPrice == 0)) continue;
                 uint count = MarketService.Instance.GetCount(def.Index);
-                uint limit = def.StackLimit == 0 ? 1u : def.StackLimit;
+                bool canReceive = inv.CanReceive(def.Index, 1, out string reason);
+                if (RunInventory.IsImportant(def.Index) && count > 0)
+                { canReceive = false; reason = "已永久拥有"; }
                 BuyBlock block = def.BuyPrice == 0 ? BuyBlock.Unavailable
                     : inv.GetResource(InventoryService.ResourceKind.Money) < def.BuyPrice ? BuyBlock.InsufficientMoney
-                    : InventoryRules.MaxAddableStacks(inv.GetStacks(), inv.TotalSlots, def.Index, 1u, limit) >= 1 ? BuyBlock.None
-                    : count == 0 && inv.UsedSlots >= inv.TotalSlots ? BuyBlock.SlotsFull : BuyBlock.StackFull;
+                    : canReceive ? BuyBlock.None : BuyBlock.CannotReceive;
+                bool canSell = def.SellPrice > 0 && count > 0 && !RunInventory.IsImportant(def.Index)
+                    && inv.ResourceRoom(InventoryService.ResourceKind.Money) >= def.SellPrice;
                 rows.Add(new MarketOffer { Id = def.Index, NameKey = def.NameKey, BuyPrice = def.BuyPrice,
-                    SellPrice = def.SellPrice, Owned = count, StackLimit = limit, BuyBlock = block, CanSell = def.SellPrice > 0 && count > 0 });
+                    SellPrice = def.SellPrice, Owned = count, BlockReason = reason, BuyBlock = block, CanSell = canSell });
             }
             rows.Sort((a, b) => a.Id.CompareTo(b.Id));
             return rows.ToArray();

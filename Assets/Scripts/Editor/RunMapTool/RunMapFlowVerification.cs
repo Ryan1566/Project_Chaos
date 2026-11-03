@@ -198,6 +198,7 @@ public static class RunMapFlowVerification
             RunEncounter.KillAllEnemiesInScene(); RunEncounter.RefreshNow();
             if (stage < 3)
             {
+                Check(RunEncounter.TryUseExit(stage), "next stage requested by exit");
                 RunEncounter.ProcessPendingScene();
                 deadline = Time.realtimeSinceStartup + 30;
                 while ((RunEncounter.CurrentSceneIndex != stage + 1 || !NaturalMapRuntime.IsReady || RunSceneFlow.IsTransitioning
@@ -208,7 +209,10 @@ public static class RunMapFlowVerification
         }
         yield return new WaitForSecondsRealtime(.3f);
         Check(RunEncounter.RunCleared && Top is RunSettlementPanel, "formal three-map settlement");
-        Isolation(); Check(RunSettlementModel.Current.Confirm(true, out reason) && RunSettlementModel.Current.ReturnToMeta(out reason), "isolated settlement and return");
+        Isolation();
+        RunSettlementModel.Current.MovePage(1);
+        RunSettlementModel.Current.MovePage(1);
+        Check(RunSettlementModel.Current.Confirm(false, out reason) && RunSettlementModel.Current.ReturnToMeta(out reason), "isolated settlement and return");
         yield return new WaitForSecondsRealtime(4);
         Check(VillageSceneFlow.IsVillageScene && Time.timeScale == 1 && RunMapExplorationService.Fog == null, "village return clears map exploration");
         Check(InputManager.Instance.ActiveScope == InputManager.BindingScope.Outside, "outside input scope restored");

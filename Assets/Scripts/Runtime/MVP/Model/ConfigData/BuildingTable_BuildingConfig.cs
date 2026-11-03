@@ -47,4 +47,8 @@ public class BuildingTable_BuildingConfig
     /// 是否启用
     /// </summary>
     public bool Enable;
+    /// <summary>
+    /// 仓库每种资源容量
+    /// </summary>
+    public uint ResourceCapacity;
 }

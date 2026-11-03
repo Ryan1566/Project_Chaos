@@ -36,7 +36,7 @@ namespace Chaos.MVP.Presenter.Gameplay
         public void Refresh()
         {
             if (!IsDisposed && View != null)
-                View.RenderDepth("深度 " + _model.Depth + "/" + _model.DepthCap + " · 场景 " + _model.SceneIndex + "/3 · 可带出 " + _model.DeployCap + " 件");
+                View.RenderDepth("深度 " + _model.Depth + "/" + _model.DepthCap + " · 场景 " + _model.SceneIndex + "/3 · 失败可带 " + _model.DeployCap + " 种");
         }
     }
 }

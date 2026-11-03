@@ -79,6 +79,28 @@ public static class CampService
         }
     }
 
+    public static bool CanSetTime(out string reason)
+    {
+        reason = null;
+        if (!DispatchService.Instance.IsInRun || !RunEncounter.IsSceneReady || RunSceneFlow.IsTransitioning
+            || RunEncounter.RunCleared || RunEncounter.Defeated)
+        {
+            reason = "当前不在可扎营的关卡";
+            return false;
+        }
+        if (IsInSafeRoom) return true;
+        reason = "只有安全区域可以调整时间";
+        return false;
+    }
+
+    public static bool TrySetTime(int hour, out string reason)
+    {
+        if (!CanSetTime(out reason)) return false;
+        if (DayNightClock.TrySetRunHour(hour)) return true;
+        reason = "请选择有效的整点时间";
+        return false;
+    }
+
     /// <summary>是否允许"治疗"。</summary>
     public static bool CanHeal(out string reason)
     {

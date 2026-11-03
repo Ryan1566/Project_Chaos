@@ -92,7 +92,7 @@ namespace Chaos.Gameplay.Items
         internal static void DamageArea(Vector2 origin, float radius, int damage)
         {
             RunEncounter.CopyMapEnemies(Enemies);
-            foreach (var enemy in Enemies) if (enemy != null && !enemy.IsDead && ((Vector2)enemy.transform.position - origin).sqrMagnitude <= radius * radius) enemy.TakeDamage(damage);
+            foreach (var enemy in Enemies) if (enemy != null && !enemy.IsDead && ((Vector2)enemy.transform.position - origin).sqrMagnitude <= radius * radius) enemy.TakeRunDamage(damage);
         }
     }
 }

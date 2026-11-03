@@ -87,6 +87,7 @@ public class PlayerHealth : MonoBehaviour
 
         //普通接触伤害才套用防御；ForceDown 等直接 QA 入口保持绕过。
         int received = MetaCharacterStats.ReceivedDamage(amount);
+        DamageFloaters.Show(transform, Mathf.Min(Hp, received), true);
         Hp -= received;
         _invulnUntil = Time.time + invulnSeconds;
         //受击表现只保留 Cinemachine 震动；根节点/Spine 缩放与朝向永远不由伤害表现改写。

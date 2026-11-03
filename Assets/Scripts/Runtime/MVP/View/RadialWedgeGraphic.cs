@@ -9,15 +9,27 @@ public sealed class RadialWedgeGraphic : MaskableGraphic
     public float OuterRadius { get; private set; }
     public float CenterAngle { get; private set; }
     public float SweepAngle { get; private set; }
-    public void Configure(float innerRadius, float outerRadius, float centerAngleDegrees, float sweepAngleDegrees, Color tint)
+    public void Configure(float innerRadius, float outerRadius, float centerAngleDegrees, float sweepAngleDegrees, Color tint, bool interactive = false)
     {
-        raycastTarget = false;
+        raycastTarget = interactive;
         if (InnerRadius == innerRadius && OuterRadius == outerRadius && CenterAngle == centerAngleDegrees
             && SweepAngle == sweepAngleDegrees && color == tint) return;
         InnerRadius = Mathf.Max(0, innerRadius); OuterRadius = Mathf.Max(InnerRadius, outerRadius);
         CenterAngle = centerAngleDegrees; SweepAngle = Mathf.Clamp(sweepAngleDegrees, 0, 360); color = tint;
         SetVerticesDirty();
     }
+
+    public override bool Raycast(Vector2 screenPoint, Camera eventCamera)
+    {
+        if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(rectTransform, screenPoint, eventCamera, out Vector2 point))
+            return false;
+        float distance = point.sqrMagnitude;
+        float angle = Mathf.Atan2(point.x, point.y) * Mathf.Rad2Deg;
+        return distance >= InnerRadius * InnerRadius && distance <= OuterRadius * OuterRadius
+            && Mathf.Abs(Mathf.DeltaAngle(CenterAngle, angle)) <= SweepAngle * .5f
+            && base.Raycast(screenPoint, eventCamera);
+    }
+
     protected override void OnPopulateMesh(VertexHelper vh)
     {
         vh.Clear();

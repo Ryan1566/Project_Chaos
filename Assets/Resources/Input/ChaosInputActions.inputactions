@@ -189,7 +189,7 @@
         {
           "name": "",
           "id": "a0000000-0000-4000-8000-000000000208",
-          "path": "<Keyboard>/j",
+          "path": "<Mouse>/leftButton",
           "interactions": "",
           "processors": "",
           "groups": "Keyboard",

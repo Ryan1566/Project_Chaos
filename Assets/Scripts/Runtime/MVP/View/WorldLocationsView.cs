@@ -48,6 +48,8 @@ public sealed class WorldLocationsView : MonoBehaviour
     private static readonly Color MarkerInk = new Color(.16f, .13f, .10f, .86f);
     private static readonly Color MarkerCapital = new Color(.24f, .18f, .11f, .92f);
     private static readonly Color MarkerGold = new Color(.86f, .68f, .30f, .96f);
+    private static readonly Color MarkerPaper = new Color(.91f, .84f, .68f, .85f);
+    private static readonly Color CapitalPaper = new Color(.94f, .81f, .55f, .96f);
 
     private const float CapitalSize = 38f;
     private const float NormalSize = 30f;
@@ -320,8 +322,8 @@ public sealed class WorldLocationsView : MonoBehaviour
         marker.Initial.color = WarmText;
         marker.Initial.raycastTarget = false;
 
-        RectTransform labelRect = GameplayUi.Rect(marker.Root, "Label", new Vector2(.5f, 0f), new Vector2(.5f, 0f),
-            new Vector2(0f, -6f), new Vector2(160f, 22f));
+        RectTransform labelRect = GameplayUi.Rect(marker.Root, "Label", new Vector2(.5f, 0f), new Vector2(.5f, 1f),
+            new Vector2(0f, -2f), new Vector2(160f, 22f));
         marker.Label = labelRect.gameObject.AddComponent<TextMeshProUGUI>();
         marker.Label.font = RunTeamHud.ResolveFont();
         marker.Label.fontSize = 15;
@@ -378,7 +380,10 @@ public sealed class WorldLocationsView : MonoBehaviour
             if (marker == null || marker.Background == null) continue;
             bool selected = _selectedId != 0u && pair.Key == _selectedId;
             bool capital = marker.Data != null && marker.Data.Kind == WorldLocationKind.Capital;
-            marker.Background.color = selected ? MarkerGold : (capital ? MarkerCapital : MarkerInk);
+            var background = marker.Glyph.sprite != null
+                ? (capital ? CapitalPaper : MarkerPaper)
+                : (capital ? MarkerCapital : MarkerInk);
+            marker.Background.color = selected ? MarkerGold : background;
             marker.Initial.color = selected ? Ink : WarmText;
             marker.Icon.SetSelected(selected);
             marker.Label.color = selected ? Gold : WarmText;

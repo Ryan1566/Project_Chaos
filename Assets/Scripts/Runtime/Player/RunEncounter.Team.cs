@@ -22,15 +22,15 @@ public static partial class RunEncounter
     /// 失败时**全部门客**结算重伤 30s。</summary>
     public static void TriggerDefeat()
     {
-        if (Defeated) return;
+        if (Defeated || RunCleared) return;
         Defeated = true;
         _sceneReady = false;   //停止清房/切场景
+        _pendingNextScene = -1;
         IsSpectator = false;
-        int wounded = ApplyRunWounds(true);   //W3.3：全部门客 Wound(30)
         RunSettlementPanel.Open(false);   //W3.2e：弹失败态结算面板
         RunTeamHud.SetVisible(false);     //W3.3：结算隐藏队伍血条
         ChaosLog.Warn(LogChannel.UI, "[局内] TriggerDefeat：本局失败（全员倒下，sceneIndex=" + CurrentSceneIndex
-            + "，掉落条目 " + RunInventory.UsedSlots + " 种，重伤门客 " + wounded + " 名/30s）");
+            + "，掉落条目 " + RunInventory.UsedSlots + " 种）");
     }
 
     /// <summary>

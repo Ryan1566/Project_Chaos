@@ -187,7 +187,8 @@ public sealed class OfficeTaskService : SingletonBase<OfficeTaskService>
             result = InventoryService.Instance.GetResource(kind);
             return true;
         }
-        result = InventoryService.Instance.AddResource(kind, amount);
+        if (!InventoryService.Instance.TryCreditResource(kind, amount, out reason)) return false;
+        result = InventoryService.Instance.GetResource(kind);
         return true;
     }
 
@@ -641,7 +642,7 @@ public sealed class OfficeTaskService : SingletonBase<OfficeTaskService>
         ulong afterSpend = rewardHave;
         ulong spendSame;
         if (demand.TryGetValue(option.RewardResourceType, out spendSame)) afterSpend = rewardHave - spendSame;
-        if (afterSpend + option.RewardAmount > uint.MaxValue)
+        if (afterSpend + option.RewardAmount > VillageService.Instance.ResourceCapacity)
         {
             reason = "结算后资源会超过上限，本次操作已拒绝";
             return false;

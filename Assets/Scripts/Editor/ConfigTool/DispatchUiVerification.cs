@@ -130,8 +130,10 @@ public static class DispatchUiVerification
             Check(service.RunTeam.SequenceEqual(order)&&Chaos.Gameplay.RunTeam.RunTeamProgress.MemberIds.SequenceEqual(order),"saved and spawned team order agrees on map "+stage);
             Check(PlayerSpawner.CurrentPlayer!=null&&AllyController.All.Count(a=>a!=null&&RunEncounter.OwnsRuntimeObject(a.gameObject))==3,"one controlled plus three AI spawned on map "+stage);
             var enemies=new List<EnemyPlaceholder>();RunEncounter.CopyMapEnemies(enemies);foreach(var enemy in enemies){enemy.enabled=false;if(!enemy.IsDead)enemy.TakeDamage(99999);}RunEncounter.RefreshNow();
+            if(stage<3)Check(RunEncounter.TryUseExit(stage),"next stage requested by exit");
         }
-        float end=Time.realtimeSinceStartup+45;while(!(Top is RunSettlementPanel)&&Time.realtimeSinceStartup<end)yield return null;Check(Top is RunSettlementPanel,"four-person expedition reaches settlement");yield return Press(Key.Escape);yield return WaitVillage();
+        float end=Time.realtimeSinceStartup+45;while(!(Top is RunSettlementPanel)&&Time.realtimeSinceStartup<end)yield return null;Check(Top is RunSettlementPanel,"four-person expedition reaches settlement");
+        Click("Btn_Next");Click("Btn_Next");Click("Btn_Confirm");yield return WaitVillage();
         Check(P.runs==2,"failed departure not counted, one-person and four-person expeditions counted once each");
     }
 }

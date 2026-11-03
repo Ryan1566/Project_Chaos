@@ -3,7 +3,7 @@ using Chaos.MVP.Model.Gameplay;
 
 namespace Chaos.MVP.Presenter.Gameplay
 {
-    public enum VillageOfficeIntent {Tasks,Trade,Tax,Back}
+    public enum VillageOfficeIntent {Tasks,Trade,Tax,Back,Manage}
     public interface IVillageOfficeView
     {
         event Action<VillageOfficeIntent> Intent;
@@ -34,6 +34,7 @@ namespace Chaos.MVP.Presenter.Gameplay
             }
             else if(intent==VillageOfficeIntent.Trade)UIManager.Instance.PushPanel(PanelType.MarketPanel);
             else if(intent==VillageOfficeIntent.Tax){model.ShowTax();Refresh();}
+            else if(intent==VillageOfficeIntent.Manage)VillagePanel.OpenForBuilding(VillageService.OfficeId);
         }
     }
 }

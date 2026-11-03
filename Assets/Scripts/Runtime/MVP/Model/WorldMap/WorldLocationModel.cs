@@ -48,9 +48,10 @@ namespace Chaos.MVP.Model.WorldMap
                 offers.Add(new WorldLocationTradeRow {ItemId=id,Name=MarketService.Instance.GetDisplayName(id),
                     BuyPrice=buy,SellPrice=sell,Owned=owned,
                     CanBuy=buy>0&&inv.GetResource(InventoryService.ResourceKind.Money)>=buy
-                        &&InventoryRules.MaxAddableStacks(inv.GetStacks(),inv.TotalSlots,id,1,def.StackLimit==0?1:def.StackLimit)>0
+                        &&inv.CanReceive(id,1,out _)
                         &&(!RunInventory.IsImportant(id)||!RunBagProgression.Owns(id)),
-                    CanSell=sell>0&&owned>0&&!RunInventory.IsImportant(id)});
+                    CanSell=sell>0&&owned>0&&!RunInventory.IsImportant(id)
+                        &&inv.ResourceRoom(InventoryService.ResourceKind.Money)>=sell});
             }
             return new WorldLocationsDisplayState {Era=Era,Identity=Identity,Locations=locations,SelectedId=SelectedId,
                 Selected=selected,Offers=offers,Hint=Hint??"选择地点下达指令。滚轮缩放，拖动空白地图平移。"};

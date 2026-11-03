@@ -54,17 +54,17 @@ namespace Chaos.MVP.Model.Gameplay
                 result.Resources=string.Join("    ",Enumerable.Range(1,4).Select(i => InventoryService.ResourceDisplayName(VillageService.ResourceKindOf((uint)i))+" "+InventoryService.Instance.GetResource(VillageService.ResourceKindOf((uint)i))));
                 var snap=EffectAggregator.Instance.Snapshot;
                 var contribution=EffectAggregator.Instance.PreviewNodes(catalog.Nodes.Where(x=>x.Enable && x.Board==result.Board && service.IsUnlocked(x.Index)).Select(x=>x.Index));
-                result.Summary="本板块已获："+Contribution(contribution)+"\n家族总计：仓库 "+InventoryService.Instance.TotalSlots+" 格  ·  结算带出 "+MetaProgressService.Instance.DeployCap+" 件  ·  生命 +"+snap.HpBonus+"  攻击 +"+snap.AttackBonus+"  防御 +"+snap.DefenseBonus+"  移速 +"+snap.SpeedBonus;
+                result.Summary="本板块已获："+Contribution(contribution, result.Board == 5)+"\n失败带出 "+MetaProgressService.Instance.FailureCarryCap+" 种  ·  生命 +"+snap.HpBonus+"  攻击 +"+snap.AttackBonus+"  防御 +"+snap.DefenseBonus+"  移速 +"+snap.SpeedBonus;
             }
             catch(Exception error) { result.Error="家族树暂不可用："+error.Message; }
             return result;
         }
         public bool Unlock(uint id,out string reason) { return FamilyTreeService.Instance.Unlock(id,out reason); }
-        private static string Contribution(MetaEffectSnapshot snapshot)
+        private static string Contribution(MetaEffectSnapshot snapshot, bool runBoard)
         {
             var parts=new List<string>();
-            if(snapshot.TotalSlotsBonus!=0)parts.Add("仓库 +"+snapshot.TotalSlotsBonus+" 格");
-            if(snapshot.DeployCapBonus!=0)parts.Add("带出 +"+snapshot.DeployCapBonus+" 件");
+            if(snapshot.TotalSlotsBonus!=0)parts.Add("旧仓库格位效果（预留）");
+            if(snapshot.DeployCapBonus!=0)parts.Add(runBoard ? "失败带出 +"+snapshot.DeployCapBonus+" 种" : "旧带出效果（预留）");
             if(snapshot.HpBonus!=0)parts.Add("生命 +"+snapshot.HpBonus);
             if(snapshot.AttackBonus!=0)parts.Add("攻击 +"+snapshot.AttackBonus);
             if(snapshot.DefenseBonus!=0)parts.Add("防御 +"+snapshot.DefenseBonus);
@@ -92,8 +92,11 @@ namespace Chaos.MVP.Model.Gameplay
                 string title="", current="", next="";
                 switch(effect.EffectType)
                 {
-                    case 2: title="局外仓库格位"; current=Slots(before).ToString();next=Slots(after).ToString();break;
-                    case 3: title="结算带出件数";current=(1+before.DeployCapBonus).ToString();next=(1+after.DeployCapBonus).ToString();break;
+                    case 2: lines.Add("旧仓库格位效果 · 当前不参与仓库容量"); continue;
+                    case 3:
+                        if(catalog.Node(id).Board != 5) { lines.Add("旧带出效果 · 当前不参与失败带出额度"); continue; }
+                        title="失败可带出的物品种类";
+                        current=(1+before.FailureCarryCapBonus).ToString();next=(1+after.FailureCarryCapBonus).ToString();break;
                     case 4:
                         string[] names={"","全队永久生命加成","全队普通攻击加成","全队普通防御减伤","全队水平移速加成"};
                         title=names[effect.Target];current=Attribute(before,effect.Target).ToString();next=Attribute(after,effect.Target).ToString();break;
@@ -109,7 +112,6 @@ namespace Chaos.MVP.Model.Gameplay
             }
             return string.Join("\n",lines)+(notes.Count==0?"":"\n\n"+string.Join("\n",notes));
         }
-        private static int Slots(MetaEffectSnapshot s) { return Mathf.Clamp(InventoryService.BaseSlots+s.TotalSlotsBonus,0,InventoryService.HardMaxSlots); }
         private static int Attribute(MetaEffectSnapshot s,uint target)
         { return target==1?s.HpBonus:target==2?s.AttackBonus:target==3?s.DefenseBonus:s.SpeedBonus; }
     }

@@ -114,6 +114,12 @@ namespace RunMap
                 if (p.Kind == MapPlacementKind.Player || p.Kind == MapPlacementKind.Ally || p.Kind == MapPlacementKind.Enemy) continue;
                 if (p.Kind == MapPlacementKind.Npc || p.Kind == MapPlacementKind.Interactive || p.Kind == MapPlacementKind.Gatherable)
                 { Chaos.Gameplay.Interaction.RunContentWorldFactory.Create(plan, p, Root.transform); continue; }
+                if (p.Kind == MapPlacementKind.Exit)
+                {
+                    if (plan.SceneIndex < RunEncounter.MaxSceneIndex)
+                        Chaos.Gameplay.Interaction.RunExitDoor.Create(p, plan.SceneIndex, Root.transform);
+                    continue;
+                }
                 CreatePlaceholder(p);
             }
             Root.SetActive(true);

@@ -18,6 +18,7 @@ public class FamilyTreePanel : BasePanel, IFamilyTreeView
     private RectTransform _viewport, _graph;
     private TextMeshProUGUI _resources,_progress,_boardDescription,_detailTitle,_detailBody,_summary,_message,_zoomText;
     private Button _unlock;
+    private Button _manageFacility;
     private FamilyTreeSnapshot _tree;
     private uint _shownBoard;
     private bool _built;
@@ -51,6 +52,7 @@ public class FamilyTreePanel : BasePanel, IFamilyTreeView
         Label("Header",frame,.09f,.935f,.75f,.995f,"家族树  ·  长久之计",32,Gold);
         _resources=Label("Resources",frame,.02f,.88f,.83f,.935f,"",21,Paper);
         MakeButton("CloseButton",frame,.92f,.945f,.99f,.992f,"关闭",()=>Send(FamilyTreeAction.Close));
+        _manageFacility=MakeButton("FamilyFacilityManagement",frame,.74f,.945f,.91f,.992f,"",()=>Send(FamilyTreeAction.ManageFacility));
         _progress=Label("Progress",frame,.79f,.88f,.99f,.935f,"",20,Gold);
         var body=Area("Body",frame,.02f,.15f,.98f,.86f);
         var left=Area("Boards",body,0,0,.18f,1);
@@ -76,6 +78,8 @@ public class FamilyTreePanel : BasePanel, IFamilyTreeView
     public void Render(FamilyTreeState state)
     {
         BuildUi();_tree=state.Tree;
+        _manageFacility.gameObject.SetActive(state.CanManageFacility);
+        _manageFacility.GetComponentInChildren<TextMeshProUGUI>().text=$"府邸 Lv{state.FacilityLevel} · 升级";
         _resources.text=_tree.Resources??"";_progress.text="已解锁 "+_tree.Unlocked+" / "+_tree.Total;
         _summary.text=_tree.Summary??"";
         if(!string.IsNullOrEmpty(_tree.Error)) { _detailBody.text=_tree.Error;_unlock.interactable=false;return; }

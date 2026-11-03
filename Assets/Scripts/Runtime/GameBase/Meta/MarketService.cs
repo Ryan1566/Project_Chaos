@@ -49,15 +49,10 @@ public class MarketService : SingletonBase<MarketService>
     /// <summary>当前持有数（同一 itemId 的堆叠相加）。</summary>
     public uint GetCount(uint itemId)
     {
+        if (InventoryService.TryGetResourceCommodity(itemId, out var resource))
+            return InventoryService.Instance.GetResource(resource);
         if (RunInventory.IsImportant(itemId)) return RunBagProgression.Owns(itemId) ? 1u : 0u;
-        List<ItemStackSave> stacks = InventoryService.Instance.GetStacks();
-        uint total = 0u;
-        for (int i = 0; i < stacks.Count; i++)
-        {
-            if (stacks[i] == null || stacks[i].itemId != itemId) continue;
-            total += stacks[i].count;
-        }
-        return total;
+        return InventoryService.Instance.GetItemCount(itemId);
     }
 
     /// <summary>
@@ -137,38 +132,14 @@ public class MarketService : SingletonBase<MarketService>
             ChaosLog.Warn(LogChannel.Config, Tag + " 买入失败：" + name + " 扣钱被拒：" + spendReason);
             return false;
         }
-        uint moneyAfterSpend = inv.GetResource(InventoryService.ResourceKind.Money);
         uint countBefore = GetCount(itemId);
-
-        string addReason;
-        bool added = inv.AddItem(itemId, 1u, out addReason);
+        if (!inv.AddItem(itemId, 1u, out reason)) return false;
         uint countAfter = GetCount(itemId);
-
-        if (!added || countAfter <= countBefore)
-        {
-            //★ B3 / E2 / E3：入库失败 → 立刻退款，绝不出现"扣了钱没拿到货"
-            inv.AddResource(InventoryService.ResourceKind.Money, price);
-            reason = DescribeAddFailure(itemId, inv);
-            ChaosLog.Warn(LogChannel.Config, Tag + " 买入失败：" + name + " ×1 " + reason
-                + "（入库原因：" + addReason + "）；已退还 " + price + " 钱财（钱财 " + moneyAfterSpend
-                + " → " + inv.GetResource(InventoryService.ResourceKind.Money) + "），持有仍 " + countAfter);
-            return false;
-        }
 
         ChaosLog.Info(LogChannel.Config, Tag + " 买入 " + name + "（itemId=" + itemId + "）×1：钱财 "
             + moneyBefore + " → " + inv.GetResource(InventoryService.ResourceKind.Money) + "（-" + price + "），持有 "
-            + countBefore + " → " + countAfter + "，格位 " + inv.UsedSlots + "/" + inv.TotalSlots);
+            + countBefore + " → " + countAfter);
         return true;
-    }
-
-    /// <summary>把 `AddItem` 的原始原因（很长）翻译成面板/验收要的两句话（§9 E2 / E3）。</summary>
-    private string DescribeAddFailure(uint itemId, InventoryService inv)
-    {
-        ItemTable_ItemConfig def = inv.GetDefinition(itemId);
-        uint stackLimit = def == null ? 1u : (def.StackLimit == 0u ? 1u : def.StackLimit);
-        if (GetCount(itemId) == 0u && inv.UsedSlots >= inv.TotalSlots)
-            return "格位已满（" + inv.UsedSlots + "/" + inv.TotalSlots + "）";
-        return "已达叠加上限（" + stackLimit + "）";
     }
 
     // ══════════════════════ 卖 ══════════════════════
@@ -222,7 +193,8 @@ public class MarketService : SingletonBase<MarketService>
             return false;
         }
 
-        uint moneyNow = inv.AddResource(InventoryService.ResourceKind.Money, price);
+        if (!inv.TryCreditResource(InventoryService.ResourceKind.Money, price, out reason)) return false;
+        uint moneyNow = inv.GetResource(InventoryService.ResourceKind.Money);
         ChaosLog.Info(LogChannel.Config, Tag + " 卖出 " + name + "（itemId=" + itemId + "）×1：持有 "
             + have + " → " + GetCount(itemId) + "，钱财 " + moneyBefore + " → " + moneyNow + "（+" + price + "）");
         return true;

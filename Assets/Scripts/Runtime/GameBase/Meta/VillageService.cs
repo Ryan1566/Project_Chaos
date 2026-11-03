@@ -19,8 +19,32 @@ using UnityEngine;
 /// </summary>
 public class VillageService : SingletonBase<VillageService>
 {
-    public const int MaxLevel = 2u == 0u ? 2 : 2;
+    public const int MaxLevel = 2;
+    public const uint OfficeId = 2101, FamilyMansionId = 2102, WarehouseId = 2103;
     public const uint CancelRefundPercent = 50u;
+
+    public static uint FacilityBuildingId(VillageFacilityKind kind)
+    {
+        switch (kind)
+        {
+            case VillageFacilityKind.Office: return OfficeId;
+            case VillageFacilityKind.FamilyMansion: return FamilyMansionId;
+            case VillageFacilityKind.Warehouse: return WarehouseId;
+            default: return 0;
+        }
+    }
+
+    public static bool IsFixedFacility(uint id) => id == OfficeId || id == FamilyMansionId || id == WarehouseId;
+
+    public uint EffectiveLevel(uint id)
+    {
+        var save = MetaProgressService.Instance.Payload.buildings?.Find(b => b != null && b.buildingType == id);
+        if (save == null) return IsFixedFacility(id) ? 1u : 0u;
+        if (save.completed) return save.level;
+        return save.level > 1 ? save.level - 1 : 0;
+    }
+
+    public uint ResourceCapacity => GetDef(WarehouseId, EffectiveLevel(WarehouseId))?.ResourceCapacity ?? 500u;
 
     public enum BuildingState
     {
@@ -85,6 +109,10 @@ public class VillageService : SingletonBase<VillageService>
             case 2u: return InventoryService.ResourceKind.Material;
             case 3u: return InventoryService.ResourceKind.Blueprint;
             case 4u: return InventoryService.ResourceKind.Money;
+            case 5u: return InventoryService.ResourceKind.Wood;
+            case 6u: return InventoryService.ResourceKind.IronOre;
+            case 7u: return InventoryService.ResourceKind.Stone;
+            case 8u: return InventoryService.ResourceKind.RawSalt;
             default: return InventoryService.ResourceKind.Goods;
         }
     }
@@ -127,18 +155,19 @@ public class VillageService : SingletonBase<VillageService>
     public BuildingState GetState(uint buildingId)
     {
         BuildingSave save = Find(buildingId);
-        if (save == null) return BuildingState.NotBuilt;
-        if (!save.completed) return BuildingState.Building;
-        if (save.level >= MaxLevel) return BuildingState.MaxLevel;
-        return BuildingState.Upgradable;
+        if (save == null && !IsFixedFacility(buildingId)) return BuildingState.NotBuilt;
+        if (save != null && !save.completed) return BuildingState.Building;
+        uint level = save?.level ?? 1;
+        return GetDef(buildingId, level + 1)?.Enable == true ? BuildingState.Upgradable : BuildingState.MaxLevel;
     }
 
     /// <summary>开始建造（Lv1）；扣资源、占队列。</summary>
     private bool StartBuildCore(uint buildingId, out string reason)
     {
         reason = null;
+        if (IsFixedFacility(buildingId)) { reason = "固定设施已建成"; return false; }
         BuildingTable_BuildingConfig lv1 = GetDef(buildingId, 1u);
-        if (lv1 == null) { reason = "建筑 " + buildingId + " 在表里不存在"; return false; }
+        if (lv1 == null || !lv1.Enable) { reason = "建筑 " + buildingId + " 未配置或未启用"; return false; }
         if (Find(buildingId) != null) { reason = "建筑 " + buildingId + " 已经建过了"; return false; }
         if (IsQueueBusy) { reason = "已有建筑在建造/升级中（同时只能 1 条队列）"; return false; }
 
@@ -171,14 +200,13 @@ public class VillageService : SingletonBase<VillageService>
     {
         reason = null;
         BuildingSave save = Find(buildingId);
-        if (save == null) { reason = "还没建造 " + buildingId; return false; }
-        if (!save.completed) { reason = "建筑还在建造中"; return false; }
-        if (save.level >= MaxLevel) { reason = "已经是最高级（MVP 只到 " + MaxLevel + " 级）"; return false; }
+        if (save == null && !IsFixedFacility(buildingId)) { reason = "还没建造 " + buildingId; return false; }
+        if (save != null && !save.completed) { reason = "建筑还在建造中"; return false; }
         if (IsQueueBusy) { reason = "已有建筑在建造/升级中（同时只能 1 条队列）"; return false; }
 
-        uint targetLevel = save.level + 1u;
+        uint targetLevel = (save?.level ?? 1) + 1u;
         BuildingTable_BuildingConfig def = GetDef(buildingId, targetLevel);
-        if (def == null) { reason = "表里没有 " + buildingId + " 的 Lv" + targetLevel; return false; }
+        if (def == null || !def.Enable) { reason = "已经达到可升级的最高等级"; return false; }
 
         InventoryService.ResourceKind kind = ResourceKindOf(def.CostResourceType);
         string spendReason;
@@ -188,6 +216,15 @@ public class VillageService : SingletonBase<VillageService>
             return false;
         }
 
+        if (save == null)
+        {
+            var buildings = GetAll();
+            uint id = 1;
+            foreach (var building in buildings)
+                if (building != null && building.id >= id) id = building.id + 1;
+            save = new BuildingSave { id = id, buildingType = buildingId };
+            buildings.Add(save);
+        }
         save.level = targetLevel;
         save.completed = false;
         save.remainSeconds = BuildDuration(def);
@@ -211,8 +248,9 @@ public class VillageService : SingletonBase<VillageService>
         uint cost = def == null ? 0u : def.CostAmount;
         refunded = cost * CancelRefundPercent / 100u;   //向下取整
 
-        if (def != null && refunded > 0u)
-            InventoryService.Instance.AddResource(ResourceKindOf(def.CostResourceType), refunded);
+        if (def != null && refunded > 0u
+            && !InventoryService.Instance.TryCreditResource(ResourceKindOf(def.CostResourceType), refunded, out reason))
+            return false;
 
         //如果取消的是 Lv1 建造 → 整个建筑移除；若是升级 → 回退到上一级
         if (save.level <= 1u) GetAll().Remove(save);
@@ -263,7 +301,7 @@ public class VillageService : SingletonBase<VillageService>
 
         if (save.pendingOutput == 0) { reason = VillageText.Get("NoYield"); return false; }
         InventoryService.ResourceKind kind = ResourceKindOf(save.pendingResourceType == 0 ? def.OutputResourceType : save.pendingResourceType);
-        uint capacity = uint.MaxValue - InventoryService.Instance.GetResource(kind);
+        uint capacity = InventoryService.Instance.ResourceRoom(kind);
         amount = System.Math.Min(capacity, save.pendingOutput);
         if (amount == 0) { reason = "资源已达到上限"; return false; }
         uint now = InventoryService.Instance.AddResource(kind, amount);

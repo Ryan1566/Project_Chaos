@@ -50,6 +50,38 @@ public static partial class RunEncounter
     public static int CurrentSceneIndex { get; private set; }
     public static bool RunCleared { get; private set; }
     public static bool IsSceneReady => _sceneReady && !_entering;
+    public static int StagesPassed { get; private set; }
+    public static int RunKills { get; private set; }
+    public static int HighestRunDamage { get; private set; }
+    public static float RunPlaySeconds { get; private set; }
+    private static readonly HashSet<uint> StartingImportantItems = new HashSet<uint>();
+
+    public static bool IsNewRunImportant(uint id) => !StartingImportantItems.Contains(id);
+
+    public static bool CanUseExit(int stage) => IsSceneReady && !RunCleared && !Defeated
+        && !RunSceneFlow.IsTransitioning && _pendingNextScene < 0
+        && stage == CurrentSceneIndex && stage > 0 && stage < MaxSceneIndex;
+
+    public static bool TryUseExit(int stage)
+    {
+        if (!CanUseExit(stage)) return false;
+        StagesPassed = Mathf.Max(StagesPassed, stage);
+        _pendingNextScene = stage + 1;
+        return true;
+    }
+
+    internal static void TickRunTime(float seconds)
+    {
+        if (IsSceneReady && !RunCleared && !Defeated && _pendingNextScene < 0 && !RunSceneFlow.IsTransitioning
+            && !Chaos.MVP.Model.Gameplay.RunControlModel.IsWorldPaused)
+            RunPlaySeconds += seconds;
+    }
+
+    internal static void RecordRunDamage(EnemyPlaceholder enemy, int damage)
+    {
+        if (IsSceneReady && !RunCleared && !Defeated && OwnsRuntimeObject(enemy.gameObject))
+            HighestRunDamage = Mathf.Max(HighestRunDamage, damage);
+    }
     /// <summary>W3.3：观战模式 —— 受控角色倒地但门客还活着（不做控制权转移）。</summary>
     public static bool IsSpectator { get; private set; }
     /// <summary>W3.3：最近一次结算导致重伤（wounded=true，30s）的门客数（结算面板显示用）。</summary>
@@ -107,6 +139,12 @@ public static partial class RunEncounter
             // 已入库存的物品及扎营次数属于整局；只有未捡掉落物随场景清除。
             if (sceneIndex == 1)
             {
+                DayNightClock.BeginRun();
+                StagesPassed = RunKills = HighestRunDamage = 0;
+                RunPlaySeconds = 0;
+                StartingImportantItems.Clear();
+                StartingImportantItems.UnionWith(RunBagProgression.OwnedItems());
+                Chaos.MVP.Model.Gameplay.RunSettlementModel.Clear();
                 RunInventory.BeginRun();
                 CampService.ResetForNewRun();
                 _killSeq = 0u;
@@ -114,6 +152,7 @@ public static partial class RunEncounter
                 RunCleared = false;
             }
             else if (seed.HasValue) _runSeed = seed.Value;
+            DamageFloaters.Clear();
             ClearGroundDrops();
             RunDepthHud.DisableAndDestroy();   //W4e：关闸 + 销毁   //W4c：撤离销毁 HUD
             RunTeamHud.DisableAndDestroy();    //W3.3：队伍血条关闸 + 销毁
@@ -283,6 +322,7 @@ public static partial class RunEncounter
     /// <summary>正式阶段切换只清本场景对象；整局背包、扎营、队伍和种子保留。</summary>
     public static void SuspendForSceneTransition()
     {
+        DamageFloaters.Clear();
         _sceneReady = false;
         _pendingNextScene = -1;
         RunDepthHud.DisableAndDestroy();
@@ -360,6 +400,8 @@ public static partial class RunEncounter
     /// <summary>撤离：全清。</summary>
     public static void Clear()
     {
+        DayNightClock.ClearRun();
+        DamageFloaters.Clear();
         // Wounds are a gameplay transaction owned by Dispatch.Return, never a cleanup side effect.
         RunTeamHud.DisableAndDestroy();   //W3.3：撤离销毁队伍血条
         RunTerrainToast.DisableAndDestroy();   //W5.2：撤离销毁地形/阵营提示（验收：撤离后实例=0）

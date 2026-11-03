@@ -26,6 +26,7 @@ public sealed class GameplayCameraRig : MonoBehaviour
     bool _ownsBrain, _previousBrainEnabled, _ownsSettings;
     float _look, _lookVelocity, _villageY, _aspect = -1, _lens = -1;
     CombatCameraShake _shake;
+    DayNightSkyRenderer _sky;
 
     public static GameplayCameraRig For(Camera output)
     {
@@ -92,6 +93,7 @@ public sealed class GameplayCameraRig : MonoBehaviour
         if (_shake != null && Target != null) _shake.Detach(Target);
         _shake = null;
         Target = target; Bounds = bounds; Mode = mode; _villageY = fixedY;
+        _sky = DayNightSkyRenderer.Attach(OutputCamera, mode);
         VirtualCamera.Priority = _settings.priority;
         _framing.m_XDamping = GameplayCameraSettings.Finite(_settings.horizontalDamping, .3f, 0, 5);
         _framing.m_YDamping = mode == CameraMode.Village ? 0 : GameplayCameraSettings.Finite(_settings.verticalDamping, .65f, 0, 5);
@@ -170,6 +172,7 @@ public sealed class GameplayCameraRig : MonoBehaviour
         if (Mode == CameraMode.None || !ReferenceEquals(Target, expectedTarget)) return false;
         if (_shake != null) _shake.Detach(expectedTarget); _shake = null;
         Target = null; Mode = CameraMode.None;
+        if (_sky != null) _sky.enabled = false;
         if (VirtualCamera != null) VirtualCamera.gameObject.SetActive(false);
         if (_shape != null) _shape.enabled = false;
         Bounds = default; if (_finalBounds != null) _finalBounds.Bounds = default;

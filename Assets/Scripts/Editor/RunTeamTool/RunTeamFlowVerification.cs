@@ -155,6 +155,7 @@ public static class RunTeamFlowVerification
             deadline = Time.realtimeSinceStartup + 30;
             if (stage < 3)
             {
+                Check(RunEncounter.TryUseExit(stage), "next stage requested by exit");
                 while ((RunEncounter.CurrentSceneIndex != stage + 1 || !RunEncounter.IsSceneReady || RunSceneFlow.IsTransitioning) && Time.realtimeSinceStartup < deadline) yield return null;
                 Check(RunEncounter.CurrentSceneIndex == stage + 1 && RunEncounter.IsSceneReady, "stage " + (stage + 1) + " ready");
                 var model = new RunTeamModel(); var state = model.Read();
@@ -170,7 +171,10 @@ public static class RunTeamFlowVerification
             }
             else { while (!(Top is RunSettlementPanel) && Time.realtimeSinceStartup < deadline) yield return null; Check(Top is RunSettlementPanel, "three-map settlement reached"); }
         }
-        Isolation(); Check(RunSettlementModel.Current.Confirm(true, out reason), "isolated settlement confirmed");
+        Isolation();
+        RunSettlementModel.Current.MovePage(1);
+        RunSettlementModel.Current.MovePage(1);
+        Check(RunSettlementModel.Current.Confirm(false, out reason), "isolated settlement confirmed");
         Check(RunTeamProgress.MemberIds.Count == 0, "settlement clears growth");
         Check(RunSettlementModel.Current.ReturnToMeta(out reason), "formal return requested");
         deadline = Time.realtimeSinceStartup + 30; while ((!VillageSceneBootstrap.IsReady || !VillageSceneFlow.IsVillageScene) && Time.realtimeSinceStartup < deadline) yield return null;

@@ -56,17 +56,16 @@ public static partial class RunEncounter
 
         if (CurrentSceneIndex >= MaxSceneIndex)
         {
+            if (Defeated) return;
+            StagesPassed = MaxSceneIndex;
             RunCleared = true;
-            ApplyRunWounds(false);   //W3.3：通关 → 只把本局倒地的门客结算成重伤 30s
             ChaosLog.Success(LogChannel.UI, "[局内] 第 3 场景清空 → 本局通关（boss 占位）");
             RunSettlementPanel.Open(true);   //W3.2e：弹通关态结算面板
             RunTeamHud.SetVisible(false);    //W3.3：结算隐藏队伍血条
             return;
         }
 
-        //★W3.1l：只登记，交给 Ticker 下一帧执行（禁止同步递归 EnterScene）
-        _pendingNextScene = CurrentSceneIndex + 1;
-        ChaosLog.Info(LogChannel.UI, "[局内] 已登记下一场景 " + _pendingNextScene + "（下一帧由 Ticker 执行）");
+        // 前两场景的清场与通行独立，切图只由出口门登记。
     }
 
     /// <summary>玩家是否在指定房间内（用房间世界矩形近似）。</summary>

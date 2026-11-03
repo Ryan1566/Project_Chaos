@@ -71,6 +71,13 @@ public class SavePayload
 
     /// <summary>局外资源：图纸。</summary>
     public uint resBlueprint;
+    public uint resWood;
+    public uint resIronOre;
+    public uint resStone;
+    public uint resRawSalt;
+    // 单独标记已写入时间，旧档默认 08:00，午夜 00:00 仍然是有效存档值。
+    public bool hasVillageDayTime;
+    public float villageDayMinutes;
 
     /// <summary>局外资源：货物。</summary>
     public uint resGoods;

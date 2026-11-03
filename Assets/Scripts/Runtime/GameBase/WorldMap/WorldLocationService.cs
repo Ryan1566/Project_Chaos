@@ -244,9 +244,7 @@ public class WorldLocationService : SingletonBase<WorldLocationService>
         uint money = inv.GetResource(InventoryService.ResourceKind.Money);
         if (money < price) { reason = "钱财不足（有 " + money + "，需 " + price + "）。"; return false; }
         if (RunInventory.IsImportant(itemId) && RunBagProgression.Owns(itemId)) { reason = "已永久拥有该重要道具。"; return false; }
-        uint stackLimit = def.StackLimit == 0u ? 1u : def.StackLimit;
-        if (InventoryRules.MaxAddableStacks(inv.GetStacks(), inv.TotalSlots, itemId, 1u, stackLimit) < 1u)
-        { reason = "库存已满，无法买入。"; return false; }
+        if (!inv.CanReceive(itemId, 1u, out reason)) return false;
 
         string spendReason;
         if (!inv.SpendResource(InventoryService.ResourceKind.Money, price, out spendReason))
@@ -254,7 +252,6 @@ public class WorldLocationService : SingletonBase<WorldLocationService>
         string addReason;
         if (!inv.AddItem(itemId, 1u, out addReason))
         {
-            inv.AddResource(InventoryService.ResourceKind.Money, price);
             reason = "入库失败：" + addReason;
             return false;
         }
@@ -279,14 +276,13 @@ public class WorldLocationService : SingletonBase<WorldLocationService>
         if (def == null || !def.Enable || def.SellPrice == 0u) { reason = "该物品当前不可出售。"; return false; }
         if (MarketService.Instance.GetCount(itemId) == 0u) { reason = "没有可出售的该物品。"; return false; }
         if(RunInventory.IsImportant(itemId)){reason="永久归属的重要道具不可出售。";return false;}
-        if(InventoryService.Instance.GetResource(InventoryService.ResourceKind.Money)>uint.MaxValue-def.SellPrice)
+        if(InventoryService.Instance.ResourceRoom(InventoryService.ResourceKind.Money)<def.SellPrice)
         {reason="钱财已达上限，无法完整收款。";return false;}
 
         string removeReason;
         if (!InventoryService.Instance.RemoveItem(itemId, 1u, out removeReason))
         { reason = removeReason; return false; }
-        InventoryService.Instance.AddResource(InventoryService.ResourceKind.Money, def.SellPrice);
-        return true;
+        return InventoryService.Instance.TryCreditResource(InventoryService.ResourceKind.Money, def.SellPrice, out reason);
     }
 
     /// <summary>临时点处置：奖励入库与完成/冷却记录在同一命令内提交；满仓失败不标完成。</summary>
@@ -314,10 +310,6 @@ public class WorldLocationService : SingletonBase<WorldLocationService>
             ItemTable_ItemConfig def = InventoryService.Instance.GetDefinition(temp.RewardItemId);
             if (def == null || !def.Enable) { reason = "奖励物品缺失或已禁用（itemId=" + temp.RewardItemId + "）。"; return false; }
             uint count = temp.RewardCount == 0u ? 1u : temp.RewardCount;
-            uint stackLimit = def.StackLimit == 0u ? 1u : def.StackLimit;
-            if (InventoryRules.MaxAddableStacks(InventoryService.Instance.GetStacks(),
-                InventoryService.Instance.TotalSlots, temp.RewardItemId, count, stackLimit) < count)
-            { reason = "库存已满，无法领取奖励。"; return false; }
             string addReason;
             if (!InventoryService.Instance.AddItem(temp.RewardItemId, count, out addReason))
             { reason = "奖励入库失败：" + addReason; return false; }

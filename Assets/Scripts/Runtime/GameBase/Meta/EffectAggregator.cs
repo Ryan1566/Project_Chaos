@@ -9,6 +9,7 @@ public class MetaEffectSnapshot
     public int TotalSlotsBonus;
     /// <summary>带出上限加成（EffectType=3 相加；最终上限 = 1 + 这个，clamp 1~10）。</summary>
     public int DeployCapBonus;
+    public int FailureCarryCapBonus;
     /// <summary>门客属性加成（EffectType=4，按 Target：1 生命 / 2 攻击 / 3 防御 / 4 速度 / 5 信心上限）。</summary>
     public int HpBonus;
     public int AttackBonus;
@@ -138,7 +139,12 @@ public class EffectAggregator : SingletonBase<EffectAggregator>
             {
                 case 1u: break;   //资源产出：W1b 不用
                 case 2u: snap.TotalSlotsBonus += Mathf.RoundToInt(value); break;
-                case 3u: snap.DeployCapBonus += Mathf.RoundToInt(value); break;
+                case 3u:
+                    int carryBonus = Mathf.RoundToInt(value);
+                    snap.DeployCapBonus += carryBonus;
+                    var node = FamilyTreeService.Instance.GetDef(link.NodeId);
+                    if (node != null && node.Enable && node.Board == 5) snap.FailureCarryCapBonus += carryBonus;
+                    break;
                 case 4u:
                     switch (effect.Target)
                     {
@@ -172,6 +178,7 @@ public class EffectAggregator : SingletonBase<EffectAggregator>
         //硬范围 clamp（08_Effect §5.3 + Lead 裁决）
         snap.TotalSlotsBonus = Mathf.Clamp(snap.TotalSlotsBonus, 0, InventoryService.HardMaxSlots - InventoryService.BaseSlots);
         snap.DeployCapBonus = Mathf.Clamp(snap.DeployCapBonus, 0, 9);          //最终 DeployCap = 1+bonus，clamp 1~10
+        snap.FailureCarryCapBonus = Mathf.Clamp(snap.FailureCarryCapBonus, 0, 9);
         snap.ConfidenceCapBonus = Mathf.Clamp(snap.ConfidenceCapBonus, 0, 100);
         snap.ProbabilityBonus = Mathf.Clamp(snap.ProbabilityBonus, 0, 100);
 

@@ -10,7 +10,8 @@ public sealed class WorldMapNavigation : MonoBehaviour,
     IScrollHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     public const float MinZoom = 1f;
-    public const float MaxZoom = 3f;
+    public const float MaxZoom = 6f;
+    public const float DragSensitivity = .65f;
     /// <summary>按下到拖动的位移超过该值即视为拖动，点击随之失效。</summary>
     public const float DragThreshold = 8f;
 
@@ -22,7 +23,7 @@ public sealed class WorldMapNavigation : MonoBehaviour,
     private Vector2 _dragStartPointer;
     private bool _dragMoved;
 
-    /// <summary>每次缩放/拖动/复位后触发，参数为当前缩放（1..3）。</summary>
+    /// <summary>每次缩放、拖动或复位后报告当前缩放。</summary>
     public event Action<float> ZoomChanged;
 
     public float Zoom { get { return _zoom; } }
@@ -97,9 +98,12 @@ public sealed class WorldMapNavigation : MonoBehaviour,
             eventData.eligibleForClick = false;
         }
         if (!_dragMoved) return;
-        // delta 是屏幕像素，换算到本层局部坐标后再平移 content。
-        float scale = Mathf.Max(.0001f, transform.lossyScale.y);
-        _content.anchoredPosition += eventData.delta / scale;
+        // 相机 Canvas 的像素距离不能用世界缩放直接换算。
+        Camera camera = ResolveCamera();
+        if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(_viewport, eventData.position, camera, out Vector2 current)
+            || !RectTransformUtility.ScreenPointToLocalPointInRectangle(_viewport, eventData.position - eventData.delta, camera, out Vector2 previous))
+            return;
+        _content.anchoredPosition += (current - previous) * DragSensitivity;
         ClampPosition();
         Notify();
     }

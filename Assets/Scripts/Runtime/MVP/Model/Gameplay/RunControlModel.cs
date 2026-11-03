@@ -10,6 +10,7 @@ namespace Chaos.MVP.Model.Gameplay
         private static readonly Dictionary<Rigidbody2D, BodySnapshot> Bodies = new Dictionary<Rigidbody2D, BodySnapshot>();
         private static readonly Dictionary<Behaviour, bool> Behaviours = new Dictionary<Behaviour, bool>();
         private static bool worldPaused;
+        public static bool IsWorldPaused => worldPaused;
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         private static void Reset() { Bodies.Clear(); Behaviours.Clear(); worldPaused = false; }
         public static void SetPlayerInput(bool enabled)

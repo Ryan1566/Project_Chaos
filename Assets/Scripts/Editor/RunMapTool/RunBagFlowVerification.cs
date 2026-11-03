@@ -168,6 +168,7 @@ public static class RunBagFlowVerification
             RunEncounter.KillAllEnemiesInScene();RunEncounter.RefreshNow();
             if(scene<3)
             {
+                Check(RunEncounter.TryUseExit(scene),"next stage requested by exit");
                 RunEncounter.ProcessPendingScene();readyDeadline=Time.realtimeSinceStartup+30;
                 while((RunEncounter.CurrentSceneIndex!=scene+1||!RunMap.NaturalMapRuntime.IsReady||RunSceneFlow.IsTransitioning)
                     &&Time.realtimeSinceStartup<readyDeadline)yield return null;
@@ -176,7 +177,9 @@ public static class RunBagFlowVerification
         yield return new WaitForSecondsRealtime(.3f);
         Check(RunEncounter.RunCleared&&Top is RunSettlementPanel,"stage3 reaches formal settlement");
         Isolation();
-        Check(RunSettlementModel.Current.Confirm(true,out reason)&&RunSettlementModel.Current.ReturnToMeta(out reason),"settlement saves and returns");
+        RunSettlementModel.Current.MovePage(1);
+        RunSettlementModel.Current.MovePage(1);
+        Check(RunSettlementModel.Current.Confirm(false,out reason)&&RunSettlementModel.Current.ReturnToMeta(out reason),"settlement saves and returns");
         yield return new WaitForSecondsRealtime(4);
         Check(VillageSceneFlow.IsVillageScene&&Time.timeScale==1&&RunInventory.UsedSlots==0,"return restores village and clears temporary inventory");
     }

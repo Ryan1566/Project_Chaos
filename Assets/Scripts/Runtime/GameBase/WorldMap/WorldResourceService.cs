@@ -79,22 +79,15 @@ public class WorldResourceService : SingletonBase<WorldResourceService>
         if (state.pendingOutput == 0u) { reason = "暂无可领取产出。"; return false; }
 
         ItemTable_ItemConfig def = InventoryService.Instance.GetDefinition(facility.OutputItemId);
-        if (def == null || !def.Enable || WorldLocationCatalog.Output(facility.OutputItemId)==null)
+        if (def == null || !def.Enable || WorldLocationCatalog.Output(facility.OutputItemId)==null
+            || !InventoryService.TryGetResourceCommodity(facility.OutputItemId, out var resource))
         { reason = "产物物品缺失或已禁用（itemId=" + facility.OutputItemId + "）。"; return false; }
-        uint stackLimit = def.StackLimit == 0u ? 1u : def.StackLimit;
         InventoryService inv = InventoryService.Instance;
-        uint addable = InventoryRules.MaxAddableStacks(inv.GetStacks(), inv.TotalSlots,
-            facility.OutputItemId, state.pendingOutput, stackLimit);
-        if (addable == 0u) { reason = "库存已满，无法领取。"; return false; }
-        uint before = MarketService.Instance.GetCount(facility.OutputItemId);
-        string addReason;
-        if (!inv.AddItem(facility.OutputItemId, addable, out addReason))
-        { reason = "产出入库失败：" + addReason; return false; }
-        uint after = MarketService.Instance.GetCount(facility.OutputItemId);
-        uint actual = after > before ? after - before : 0u;
-        if (actual == 0u) { reason = "产出入库失败。"; return false; }
-        state.pendingOutput -= actual;
-        earned = actual;
+        uint addable = Math.Min(inv.ResourceRoom(resource), state.pendingOutput);
+        if (addable == 0u) { reason = "该资源仓储已满，产出仍留在经营点。"; return false; }
+        if (!inv.TryCreditResource(resource, addable, out reason)) return false;
+        state.pendingOutput -= addable;
+        earned = addable;
         return true;
     }
 

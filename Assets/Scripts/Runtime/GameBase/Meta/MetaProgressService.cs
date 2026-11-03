@@ -201,6 +201,7 @@ public class MetaProgressService : SingletonBase<MetaProgressService>
         p.resBlueprint = 0;
         p.resGoods = 0;
         p.resMoney = 0;
+        p.resWood = p.resIronOre = p.resStone = p.resRawSalt = 0;
         if (p.retainers == null) p.retainers = new List<RetainerSave>(); else p.retainers.Clear();
         if (p.buildings == null) p.buildings = new List<BuildingSave>(); else p.buildings.Clear();
         if (p.familyTreeNodes == null) p.familyTreeNodes = new List<uint>(); else p.familyTreeNodes.Clear();
@@ -217,6 +218,8 @@ public class MetaProgressService : SingletonBase<MetaProgressService>
     {
         get { return Mathf.Clamp(1 + EffectAggregator.Instance.Snapshot.DeployCapBonus, 1, 10); }
     }
+
+    public int FailureCarryCap => 1 + EffectAggregator.Instance.Snapshot.FailureCarryCapBonus;
 
     /// <summary>扎营「补充减员」是否已解锁（EffectType=5；W3 扎营用）。</summary>
     public bool CampRefillUnlocked

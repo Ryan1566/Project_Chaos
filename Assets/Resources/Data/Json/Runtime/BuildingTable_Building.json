@@ -11,7 +11,8 @@
             "HarvestSeconds": 30,
             "CostResourceType": 1,
             "CostAmount": 20,
-            "Enable": true
+            "Enable": true,
+            "ResourceCapacity": 0
         },
         {
             "Index": 2,
@@ -24,7 +25,8 @@
             "HarvestSeconds": 30,
             "CostResourceType": 1,
             "CostAmount": 40,
-            "Enable": true
+            "Enable": true,
+            "ResourceCapacity": 0
         },
         {
             "Index": 3,
@@ -37,7 +39,8 @@
             "HarvestSeconds": 30,
             "CostResourceType": 2,
             "CostAmount": 20,
-            "Enable": true
+            "Enable": true,
+            "ResourceCapacity": 0
         },
         {
             "Index": 4,
@@ -50,7 +53,8 @@
             "HarvestSeconds": 30,
             "CostResourceType": 2,
             "CostAmount": 40,
-            "Enable": true
+            "Enable": true,
+            "ResourceCapacity": 0
         },
         {
             "Index": 5,
@@ -63,7 +67,8 @@
             "HarvestSeconds": 30,
             "CostResourceType": 3,
             "CostAmount": 20,
-            "Enable": true
+            "Enable": true,
+            "ResourceCapacity": 0
         },
         {
             "Index": 6,
@@ -76,7 +81,8 @@
             "HarvestSeconds": 30,
             "CostResourceType": 3,
             "CostAmount": 40,
-            "Enable": true
+            "Enable": true,
+            "ResourceCapacity": 0
         },
         {
             "Index": 7,
@@ -89,7 +95,8 @@
             "HarvestSeconds": 30,
             "CostResourceType": 4,
             "CostAmount": 20,
-            "Enable": true
+            "Enable": true,
+            "ResourceCapacity": 0
         },
         {
             "Index": 8,
@@ -102,7 +109,190 @@
             "HarvestSeconds": 30,
             "CostResourceType": 4,
             "CostAmount": 40,
-            "Enable": true
+            "Enable": true,
+            "ResourceCapacity": 0
+        },
+        {
+            "Index": 9,
+            "BuildingId": 2101,
+            "NameKey": "办事单位",
+            "Level": 1,
+            "BuildSeconds": 0,
+            "OutputResourceType": 0,
+            "OutputAmount": 0,
+            "HarvestSeconds": 0,
+            "CostResourceType": 2,
+            "CostAmount": 0,
+            "Enable": true,
+            "ResourceCapacity": 0
+        },
+        {
+            "Index": 10,
+            "BuildingId": 2101,
+            "NameKey": "办事单位",
+            "Level": 2,
+            "BuildSeconds": 40,
+            "OutputResourceType": 0,
+            "OutputAmount": 0,
+            "HarvestSeconds": 0,
+            "CostResourceType": 2,
+            "CostAmount": 40,
+            "Enable": true,
+            "ResourceCapacity": 0
+        },
+        {
+            "Index": 11,
+            "BuildingId": 2102,
+            "NameKey": "家族府邸",
+            "Level": 1,
+            "BuildSeconds": 0,
+            "OutputResourceType": 0,
+            "OutputAmount": 0,
+            "HarvestSeconds": 0,
+            "CostResourceType": 2,
+            "CostAmount": 0,
+            "Enable": true,
+            "ResourceCapacity": 0
+        },
+        {
+            "Index": 12,
+            "BuildingId": 2102,
+            "NameKey": "家族府邸",
+            "Level": 2,
+            "BuildSeconds": 40,
+            "OutputResourceType": 0,
+            "OutputAmount": 0,
+            "HarvestSeconds": 0,
+            "CostResourceType": 2,
+            "CostAmount": 40,
+            "Enable": true,
+            "ResourceCapacity": 0
+        },
+        {
+            "Index": 13,
+            "BuildingId": 2103,
+            "NameKey": "仓库",
+            "Level": 1,
+            "BuildSeconds": 0,
+            "OutputResourceType": 0,
+            "OutputAmount": 0,
+            "HarvestSeconds": 0,
+            "CostResourceType": 2,
+            "CostAmount": 0,
+            "Enable": true,
+            "ResourceCapacity": 500
+        },
+        {
+            "Index": 14,
+            "BuildingId": 2103,
+            "NameKey": "仓库",
+            "Level": 2,
+            "BuildSeconds": 30,
+            "OutputResourceType": 0,
+            "OutputAmount": 0,
+            "HarvestSeconds": 0,
+            "CostResourceType": 2,
+            "CostAmount": 50,
+            "Enable": true,
+            "ResourceCapacity": 1000
+        },
+        {
+            "Index": 15,
+            "BuildingId": 2103,
+            "NameKey": "仓库",
+            "Level": 3,
+            "BuildSeconds": 60,
+            "OutputResourceType": 0,
+            "OutputAmount": 0,
+            "HarvestSeconds": 0,
+            "CostResourceType": 2,
+            "CostAmount": 100,
+            "Enable": true,
+            "ResourceCapacity": 1500
+        },
+        {
+            "Index": 16,
+            "BuildingId": 2103,
+            "NameKey": "仓库",
+            "Level": 4,
+            "BuildSeconds": 90,
+            "OutputResourceType": 0,
+            "OutputAmount": 0,
+            "HarvestSeconds": 0,
+            "CostResourceType": 2,
+            "CostAmount": 150,
+            "Enable": true,
+            "ResourceCapacity": 2500
+        },
+        {
+            "Index": 17,
+            "BuildingId": 2103,
+            "NameKey": "仓库",
+            "Level": 5,
+            "BuildSeconds": 120,
+            "OutputResourceType": 0,
+            "OutputAmount": 0,
+            "HarvestSeconds": 0,
+            "CostResourceType": 2,
+            "CostAmount": 250,
+            "Enable": true,
+            "ResourceCapacity": 3500
+        },
+        {
+            "Index": 18,
+            "BuildingId": 2103,
+            "NameKey": "仓库",
+            "Level": 6,
+            "BuildSeconds": 150,
+            "OutputResourceType": 0,
+            "OutputAmount": 0,
+            "HarvestSeconds": 0,
+            "CostResourceType": 2,
+            "CostAmount": 350,
+            "Enable": true,
+            "ResourceCapacity": 5000
+        },
+        {
+            "Index": 19,
+            "BuildingId": 2103,
+            "NameKey": "仓库",
+            "Level": 7,
+            "BuildSeconds": 180,
+            "OutputResourceType": 0,
+            "OutputAmount": 0,
+            "HarvestSeconds": 0,
+            "CostResourceType": 2,
+            "CostAmount": 500,
+            "Enable": true,
+            "ResourceCapacity": 6500
+        },
+        {
+            "Index": 20,
+            "BuildingId": 2103,
+            "NameKey": "仓库",
+            "Level": 8,
+            "BuildSeconds": 210,
+            "OutputResourceType": 0,
+            "OutputAmount": 0,
+            "HarvestSeconds": 0,
+            "CostResourceType": 2,
+            "CostAmount": 650,
+            "Enable": true,
+            "ResourceCapacity": 8000
+        },
+        {
+            "Index": 21,
+            "BuildingId": 2103,
+            "NameKey": "仓库",
+            "Level": 9,
+            "BuildSeconds": 240,
+            "OutputResourceType": 0,
+            "OutputAmount": 0,
+            "HarvestSeconds": 0,
+            "CostResourceType": 2,
+            "CostAmount": 800,
+            "Enable": true,
+            "ResourceCapacity": 9999
         }
     ]
 }

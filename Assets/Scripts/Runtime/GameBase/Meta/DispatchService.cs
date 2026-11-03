@@ -218,7 +218,11 @@ public class DispatchService : SingletonBase<DispatchService>
     }
 
     /// <summary>**撤离 / 返回局外**：清掉就地生成的地图，`IsInRun = false`。</summary>
-    public bool ReturnToMeta(out string reason)
+    public bool ReturnToMeta(out string reason) => ReturnToMeta(false, out reason);
+
+    internal bool ReturnAfterSettlement(out string reason) => ReturnToMeta(true, out reason);
+
+    private bool ReturnToMeta(bool settled, out string reason)
     {
         reason = null;
         if (RunSceneFlow.IsTransitioning) { reason = "场景切换中，请稍候"; return false; }
@@ -232,7 +236,7 @@ public class DispatchService : SingletonBase<DispatchService>
         if (formalRun && !RunSceneFlow.CanReturnToMeta(out reason)) return false;
 
         var wounds = RunEncounter.CaptureWounds();
-        if (!MetaCommandRunner.Execute("Dispatch.Return", (out string why) =>
+        if (!settled && !MetaCommandRunner.Execute("Dispatch.Return", (out string why) =>
             { RunEncounter.ApplyRunWounds(false); why = null; return true; }, out reason,
             onRolledBack: () => RunEncounter.RestoreWounds(wounds))) return false;
         RunDepthHud.DisableAndDestroy();

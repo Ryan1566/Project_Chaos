@@ -26,7 +26,9 @@ namespace Chaos.MVP.Model.Gameplay
         public VillageOfficeState Read()
         {
             var text=VillageFacilitySettings.Load();
-            return new VillageOfficeState {Title=(TaxPage?text.taxTitle:TasksPage?text.tasksLabel:text.officeTitle).Resolve(),
+            string title = (TaxPage?text.taxTitle:TasksPage?text.tasksLabel:text.officeTitle).Resolve();
+            if (!TaxPage && !TasksPage) title += $"  Lv{VillageService.Instance.EffectiveLevel(VillageService.OfficeId)}";
+            return new VillageOfficeState {Title=title,
                 Body=(TaxPage?text.taxBody:TasksPage?text.tasksEmptyBody:text.officeBody).Resolve(),Tasks=text.tasksLabel.Resolve(),Trade=text.tradeLabel.Resolve(),
                 Tax=text.taxLabel.Resolve(),Back=text.backLabel.Resolve(),TaxPage=TaxPage,TasksPage=TasksPage,Available=CanOperate};
         }

@@ -55,6 +55,14 @@ public sealed class MetaRuntimeDriver : MonoBehaviour
         bool taskWorldReady=!SceneTransitionCoordinator.IsBusy&&(VillageSceneBootstrap.IsReady||RunEncounter.IsSceneReady);
         var ui=UIManager.Instance;
         bool menuPaused=ui.HasPanelInStack(PanelType.PausePanel);
+        if (!SceneTransitionCoordinator.IsBusy && !menuPaused)
+        {
+            if (VillageSceneBootstrap.IsReady && VillageSceneFlow.IsVillageScene && !SceneTransitionCoordinator.HasRun)
+                DayNightClock.TickVillage(current, Time.deltaTime);
+            else if (RunEncounter.IsSceneReady && !RunEncounter.RunCleared && !RunEncounter.Defeated
+                && !Chaos.MVP.Model.Gameplay.RunControlModel.IsWorldPaused && !ui.HasPanelInStack(PanelType.RunCampPanel))
+                DayNightClock.TickRun(Time.deltaTime);
+        }
         if(taskWorldReady&&!menuPaused)
         {
             if(!_officeReady){OfficeTaskService.Instance.RefreshTriggers();_officeReady=true;}

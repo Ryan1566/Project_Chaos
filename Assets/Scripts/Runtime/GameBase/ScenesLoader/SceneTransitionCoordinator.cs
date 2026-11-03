@@ -96,6 +96,7 @@ public static class SceneTransitionCoordinator
         try { request.Ready?.Invoke(); }
         catch (Exception error)
         {
+            if (request.Kind == TransitionKind.ReturnVillage) Phase = GamePhase.Run;
             Cleanup(request);
             request.Failed?.Invoke("目标场景接管失败：" + error.Message);
         }
@@ -118,7 +119,8 @@ public static class SceneTransitionCoordinator
         if (!Owns(request.Id)) return;
         Active = null; Detach(); GameSession.Instance.SetTargetScene(null); Cleanup(request);
         bool sameSession = request.ContextId == GameSession.Instance.ContextId && GameSession.Instance.IsPersistent;
-        Phase = sameSession && (request.Kind == TransitionKind.EnterRun || request.Kind == TransitionKind.NextRunStage) ? GamePhase.Run : GamePhase.Outside;
+        Phase = sameSession && (request.Kind == TransitionKind.EnterRun || request.Kind == TransitionKind.NextRunStage
+            || request.Kind == TransitionKind.ReturnVillage) ? GamePhase.Run : GamePhase.Outside;
         if (sameSession) request.Failed?.Invoke(request.Error ?? "场景切换未完成");
         else SceneManager.LoadScene("EnterScene");
     }

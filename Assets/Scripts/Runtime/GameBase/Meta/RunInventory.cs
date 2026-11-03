@@ -137,6 +137,8 @@ public static class RunInventory
     public static bool AddItem(uint itemId, uint count, out string reason)
     {
         if (!Ready(out reason)) return false;
+        if (InventoryService.TryGetResourceCommodity(itemId, out _))
+        { reason = "村庄资源不能放入局内背包"; return false; }
         var def = InventoryService.Instance.GetDefinition(itemId);
         if (def == null || !def.Enable || def.RunCategory > 3) { reason = "道具定义无效或未启用"; return false; }
         if (count == 0) { reason = "数量必须大于零"; return false; }

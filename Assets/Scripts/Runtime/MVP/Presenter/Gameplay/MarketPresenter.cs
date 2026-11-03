@@ -30,9 +30,9 @@ namespace Chaos.MVP.Presenter.Gameplay
                 {
                     case BuyBlock.Unavailable: why = GameplayText.Text("ui_market_cannot_buy", "不可买"); break;
                     case BuyBlock.InsufficientMoney: why = GameplayText.Text("ui_market_insufficient_money", "钱财不足"); break;
-                    case BuyBlock.SlotsFull: why = GameplayText.Text("ui_market_slots_full", "格位已满（{0}/{1}）", inv.UsedSlots, inv.TotalSlots); break;
-                    case BuyBlock.StackFull: why = GameplayText.Text("ui_market_stack_full", "已达叠加上限（{0}）", offer.StackLimit); break;
-                    default: why = offer.CanSell ? "" : offer.SellPrice == 0 ? GameplayText.Text("ui_market_cannot_sell", "不可卖") : GameplayText.Text("ui_market_nothing_to_sell", "无可卖"); break;
+                    case BuyBlock.CannotReceive: why = offer.BlockReason; break;
+                    default: why = offer.CanSell ? "" : offer.SellPrice == 0 ? "不可卖"
+                        : offer.Owned == 0 ? "无可卖" : RunInventory.IsImportant(offer.Id) ? "永久收藏" : "钱财容量不足"; break;
                 }
                 rows.Add(new MarketRow { Id = offer.Id, Name = GameplayText.Text(offer.NameKey, offer.NameKey),
                     Price = GameplayText.Text("ui_market_price", "买 {0} / 卖 {1}", offer.BuyPrice, offer.SellPrice),
@@ -40,7 +40,7 @@ namespace Chaos.MVP.Presenter.Gameplay
                     CanBuy = offer.BuyBlock == BuyBlock.None, CanSell = offer.CanSell, HasPrice = offer.BuyPrice > 0, HasOwned = offer.Owned > 0 });
             }
             return new MarketState { Rows = rows.ToArray(),
-                Money = GameplayText.Text("ui_market_balance", "钱财：{0}　　格位：{1}/{2}", inv.GetResource(InventoryService.ResourceKind.Money), inv.UsedSlots, inv.TotalSlots),
+                Money = $"钱财 {inv.GetResource(InventoryService.ResourceKind.Money)}/{VillageService.Instance.ResourceCapacity}",
                 Hint = rows.Count == 0 ? GameplayText.Text("ui_market_empty", "暂无可交易物品") : GameplayText.Text("ui_market_hint", "每次买 / 卖各 1 个，使用钱财交易。") };
         }
         protected override void Execute(PanelIntent intent)

@@ -14,12 +14,14 @@ namespace Chaos.MVP.Presenter.Gameplay
     public sealed class InventoryState
     {
         public string Title, Resources, Slots, Hint, PermanentLabel;
-        public bool Full;
         public bool HasSession;
+        public bool CanManageWarehouse;
         public IReadOnlyList<InventoryRow> Rows;
     }
     public sealed class InventoryPresenter : GameplayPresenter<InventoryState>
     {
+        protected override void OnAttach() { base.OnAttach(); MetaRuntimeDriver.Changed += Refresh; }
+        protected override void OnDetach() { MetaRuntimeDriver.Changed -= Refresh; base.OnDetach(); }
         private static VillageFacilityText SettingsText(Func<VillageFacilityText> pick)
         {
             try { return pick(); } catch { return null; }
@@ -44,25 +46,25 @@ namespace Chaos.MVP.Presenter.Gameplay
                     Slots = string.Empty,
                     Hint = missingSession,
                     PermanentLabel = permanentLabel,
-                    Full = false,
                     HasSession = false,
                     Rows = rows.ToArray()
                 };
             }
 
             var svc = InventoryService.Instance;
-            int used = svc.UsedSlots, total = svc.TotalSlots;
+            uint capacity = VillageService.Instance.ResourceCapacity;
+            uint level = VillageService.Instance.EffectiveLevel(VillageService.WarehouseId);
             var owned = new HashSet<uint>(RunBagProgression.OwnedItems());
             var seen = new HashSet<uint>();
             // 普通库存：全部条目按存档顺序排列（不截断），供滚动查看。
             foreach (var stack in svc.GetStacks())
             {
-                if (stack == null || stack.count == 0) continue;
+                if (stack == null || stack.count == 0 || InventoryService.TryGetResourceCommodity(stack.itemId, out _)
+                    || !seen.Add(stack.itemId)) continue;
                 var def = svc.GetDefinition(stack.itemId);
                 rows.Add(new InventoryRow { ItemId = stack.itemId, Permanent = owned.Contains(stack.itemId),
                     Name = GameplayText.ItemName(def, stack.itemId),
-                    Count = owned.Contains(stack.itemId) ? permanentLabel : stack.count + "/" + (def == null ? 0u : def.StackLimit), Category = def == null ? 0u : def.Category });
-                seen.Add(stack.itemId);
+                    Count = owned.Contains(stack.itemId) ? permanentLabel : "×" + svc.GetItemCount(stack.itemId), Category = def == null ? 0u : def.Category });
             }
             // 永久重要道具：与普通库存按物品ID去重合并，不重复、不占普通格位提示。
             var permanent = new List<uint>(RunBagProgression.OwnedItems() ?? new List<uint>());
@@ -77,19 +79,32 @@ namespace Chaos.MVP.Presenter.Gameplay
             }
             return new InventoryState
             {
-                Title = title,
-                Resources = GameplayText.Text("ui_inventory_resources", "物资 {0}　　材料 {1}　　图纸 {2}　　钱财 {3}",
-                    svc.GetResource(InventoryService.ResourceKind.Goods), svc.GetResource(InventoryService.ResourceKind.Material),
-                    svc.GetResource(InventoryService.ResourceKind.Blueprint), svc.GetResource(InventoryService.ResourceKind.Money)),
-                Slots = GameplayText.Text("ui_inventory_slots", "格位 {0}/{1}　（基础 {2} + 效果 {3}）", used, total, InventoryService.BaseSlots, svc.SlotBonus),
+                Title = $"{title}  Lv{level}",
+                Resources = ResourceLine(svc, capacity, 0),
+                Slots = ResourceLine(svc, capacity, 4),
                 PermanentLabel = permanentLabel,
-                Full = used >= total,
                 HasSession = true,
-                Hint = used >= total ? GameplayText.Text("ui_inventory_full", "格位已满（{0}/{1}），新种类无法入库，已有种类仍可叠到上限", used, total)
-                    : rows.Count == 0 ? GameplayText.Text("ui_inventory_empty", "暂无库存") : "",
+                CanManageWarehouse = VillageSceneFlow.IsVillageScene,
+                Hint = rows.Count == 0 ? "暂无物品" : $"{rows.Count} 种物品",
                 Rows = rows.ToArray()
             };
         }
-        protected override void Execute(PanelIntent intent) { }
+        private static string ResourceLine(InventoryService inventory, uint capacity, int start)
+        {
+            var entries = new string[4];
+            for (int i = 0; i < entries.Length; i++)
+            {
+                var kind = (InventoryService.ResourceKind)(start + i);
+                uint value = inventory.GetResource(kind);
+                entries[i] = $"{InventoryService.ResourceDisplayName(kind)} {value}/{capacity}" + (value > capacity ? " 超限" : "");
+            }
+            return string.Join("　　", entries);
+        }
+
+        protected override void Execute(PanelIntent intent)
+        {
+            if (intent.Action == PanelAction.Upgrade && GameSession.Instance.HasSession && VillageSceneFlow.IsVillageScene)
+                VillagePanel.OpenForBuilding(VillageService.WarehouseId);
+        }
     }
 }

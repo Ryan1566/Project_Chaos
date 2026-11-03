@@ -86,7 +86,8 @@ public class PlayerAttack : MonoBehaviour
             EnemyPlaceholder enemy = target as EnemyPlaceholder;
             if (enemy != null && enemy.IsDead) continue;
 
-            target.TakeDamage(appliedDamage);
+            if (enemy != null) enemy.TakeRunDamage(appliedDamage);
+            else target.TakeDamage(appliedDamage);
             damaged++;
         }
         LastHitCount = damaged;

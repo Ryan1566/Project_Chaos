@@ -163,8 +163,24 @@ public class EnemyPlaceholder : MonoBehaviour, IDamageable
 
     public void TakeDamage(int amount)
     {
+        ApplyDamage(amount, false);
+    }
+
+    public void TakeRunDamage(int amount)
+    {
+        ApplyDamage(amount, true);
+    }
+
+    private void ApplyDamage(int amount, bool fromTeam)
+    {
         if (IsDead || amount <= 0) return;
 
+        if (fromTeam)
+        {
+            int actual = Mathf.Min(Hp, amount);
+            RunEncounter.RecordRunDamage(this, actual);
+            DamageFloaters.Show(transform, actual, false);
+        }
         Hp -= amount;
         if (State == BehaviorState.Windup)
         {

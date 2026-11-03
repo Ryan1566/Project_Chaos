@@ -184,6 +184,7 @@ public static class ItemWheelFlowVerification
             RunEncounter.RefreshNow(); deadline = Time.realtimeSinceStartup + 40;
             if (stage < 3)
             {
+                Check(RunEncounter.TryUseExit(stage), "next stage requested by exit");
                 while ((RunEncounter.CurrentSceneIndex != stage + 1 || !RunEncounter.IsSceneReady || RunSceneFlow.IsTransitioning) && Time.realtimeSinceStartup < deadline) yield return null;
                 Check(RunEncounter.IsSceneReady && RunEncounter.CurrentSceneIndex == stage + 1, "next map ready " + (stage + 1));
                 yield return null;
@@ -191,7 +192,9 @@ public static class ItemWheelFlowVerification
             }
             else { while (!(Top is RunSettlementPanel) && Time.realtimeSinceStartup < deadline) yield return null; Check(Top is RunSettlementPanel, "three-map settlement"); }
         }
-        Check(RunSettlementModel.Current.Confirm(true, out reason), "isolated settlement confirm");
+        RunSettlementModel.Current.MovePage(1);
+        RunSettlementModel.Current.MovePage(1);
+        Check(RunSettlementModel.Current.Confirm(false, out reason), "isolated settlement confirm");
         Check(RunSettlementModel.Current.ReturnToMeta(out reason), "return village requested");
         deadline = Time.realtimeSinceStartup + 40;
         while ((!VillageSceneBootstrap.IsReady || !VillageSceneFlow.IsVillageScene) && Time.realtimeSinceStartup < deadline) yield return null;

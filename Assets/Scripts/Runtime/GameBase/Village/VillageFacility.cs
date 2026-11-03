@@ -86,8 +86,9 @@ public sealed class VillageFacility : MonoBehaviour
         catch (System.InvalidOperationException) { return; }
         if (definition == null || definition.name == null) return;
         string resolved = definition.name.Resolve();
-        if (string.IsNullOrEmpty(resolved) || resolved == DisplayName) return;
+        if (string.IsNullOrEmpty(resolved)) return;
         DisplayName = resolved;
-        if (label != null) label.text = resolved;
+        uint id = VillageService.FacilityBuildingId(Kind);
+        if (label != null) label.text = id == 0 ? resolved : $"{resolved} Lv{VillageService.Instance.EffectiveLevel(id)}";
     }
 }

@@ -4,13 +4,13 @@ using LocalizationSystem;
 
 namespace Chaos.MVP.Presenter.Gameplay
 {
-    public enum FamilyTreeAction { SelectBoard, SelectNode, Unlock, ResetView, Close }
+    public enum FamilyTreeAction { SelectBoard, SelectNode, Unlock, ResetView, Close, ManageFacility }
     public readonly struct FamilyTreeIntent
     {
         public readonly FamilyTreeAction Action; public readonly uint Id;
         public FamilyTreeIntent(FamilyTreeAction action,uint id=0) { Action=action;Id=id; }
     }
-    public sealed class FamilyTreeState { public FamilyTreeSnapshot Tree; }
+    public sealed class FamilyTreeState { public FamilyTreeSnapshot Tree; public uint FacilityLevel; public bool CanManageFacility; }
     public interface IFamilyTreeView
     {
         event Action<FamilyTreeIntent> Intent;
@@ -43,7 +43,9 @@ namespace Chaos.MVP.Presenter.Gameplay
         {
             if(IsDisposed || View==null) return;
             var tree=_model.Read(_board,_selected); _board=tree.Board;_selected=tree.Selected;
-            View.Render(new FamilyTreeState { Tree=tree });
+            View.Render(new FamilyTreeState { Tree=tree,
+                FacilityLevel=VillageService.Instance.EffectiveLevel(VillageService.FamilyMansionId),
+                CanManageFacility=GameSession.Instance.HasSession&&VillageSceneFlow.IsVillageScene });
         }
         private void Handle(FamilyTreeIntent intent)
         {
@@ -51,6 +53,10 @@ namespace Chaos.MVP.Presenter.Gameplay
             {
                 case FamilyTreeAction.Close:View.ClosePanel();return;
                 case FamilyTreeAction.ResetView:View.ResetTreeView();return;
+                case FamilyTreeAction.ManageFacility:
+                    if (GameSession.Instance.HasSession && VillageSceneFlow.IsVillageScene)
+                        VillagePanel.OpenForBuilding(VillageService.FamilyMansionId);
+                    return;
                 case FamilyTreeAction.SelectBoard:_board=intent.Id;_selected=0;break;
                 case FamilyTreeAction.SelectNode:_selected=intent.Id;break;
                 case FamilyTreeAction.Unlock:
