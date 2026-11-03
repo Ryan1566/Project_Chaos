@@ -95,4 +95,12 @@ public class OfficeTaskTable_OfficeTaskConfig
     /// 是否启用
     /// </summary>
     public bool Enable;
+    /// <summary>
+    /// 是否需要接取
+    /// </summary>
+    public bool RequiresAcceptance;
+    /// <summary>
+    /// 世界地点ID
+    /// </summary>
+    public uint MapLocationId;
 }

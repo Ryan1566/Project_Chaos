@@ -13,13 +13,16 @@ namespace Chaos.MVP.Presenter.WorldMap
         public WorldMapIntent(WorldMapAction action, uint point = 0, int delta = 0, PanelType panel = default)
         { Action = action; Point = point; Delta = delta; Panel = panel; }
     }
-    public interface IWorldMapView : IPanelView<WorldMapSnapshot, WorldMapIntent> { }
+    public interface IWorldMapView : IPanelView<WorldMapSnapshot, WorldMapIntent>
+    { event Action<WorldLocationUiIntent> LocationIntent; }
     public sealed class WorldMapPresenter : PresenterBase<IWorldMapView>
     {
         private readonly WorldMapModel _model;
         public WorldMapPresenter(WorldMapModel model) { _model = model ?? throw new ArgumentNullException(nameof(model)); }
-        protected override void OnAttach() { View.Intent += Handle; View.Render(_model.Snapshot()); }
-        protected override void OnDetach() { if (View != null) View.Intent -= Handle; }
+        protected override void OnAttach() { View.Intent += Handle; View.LocationIntent+=Location; MetaRuntimeDriver.Changed+=Refresh; Refresh(); }
+        protected override void OnDetach() { MetaRuntimeDriver.Changed-=Refresh; if (View != null) {View.Intent -= Handle;View.LocationIntent-=Location;} }
+        void Refresh() { if(!IsDisposed&&View!=null)View.Render(_model.Snapshot()); }
+        void Location(WorldLocationUiIntent intent) { _model.HandleLocation(intent);Refresh(); }
         private void Handle(WorldMapIntent intent)
         {
             switch (intent.Action)

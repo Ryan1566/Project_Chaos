@@ -43,7 +43,7 @@ public static class GameplayUi
         image.color = new Color(.18f, .32f, .48f, 1);
         var button = rect.gameObject.AddComponent<Button>();
         button.targetGraphic = image;
-        button.onClick.AddListener(click);
+        if(click!=null)button.onClick.AddListener(click);
         Text(rect, "Text", text);
         return button;
     }

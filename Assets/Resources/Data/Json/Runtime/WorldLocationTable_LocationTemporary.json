@@ -1,0 +1,88 @@
+{
+    "datas": [
+        {
+            "Index": 1,
+            "LocationId": 4001,
+            "RewardItemId": 9101,
+            "RewardCount": 1,
+            "TriggerEra": 1,
+            "MinRuns": 2,
+            "MinClears": 1,
+            "PrerequisiteLocationId": 0,
+            "Repeatable": false,
+            "CooldownSeconds": 0,
+            "RequiredTaskId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 2,
+            "LocationId": 4002,
+            "RewardItemId": 9102,
+            "RewardCount": 1,
+            "TriggerEra": 1,
+            "MinRuns": 3,
+            "MinClears": 1,
+            "PrerequisiteLocationId": 4001,
+            "Repeatable": false,
+            "CooldownSeconds": 0,
+            "RequiredTaskId": 15001,
+            "Enable": true
+        },
+        {
+            "Index": 3,
+            "LocationId": 4003,
+            "RewardItemId": 9103,
+            "RewardCount": 1,
+            "TriggerEra": 2,
+            "MinRuns": 5,
+            "MinClears": 2,
+            "PrerequisiteLocationId": 4002,
+            "Repeatable": false,
+            "CooldownSeconds": 0,
+            "RequiredTaskId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 4,
+            "LocationId": 4004,
+            "RewardItemId": 9104,
+            "RewardCount": 1,
+            "TriggerEra": 1,
+            "MinRuns": 1,
+            "MinClears": 0,
+            "PrerequisiteLocationId": 0,
+            "Repeatable": true,
+            "CooldownSeconds": 300,
+            "RequiredTaskId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 5,
+            "LocationId": 4005,
+            "RewardItemId": 9101,
+            "RewardCount": 1,
+            "TriggerEra": 3,
+            "MinRuns": 6,
+            "MinClears": 2,
+            "PrerequisiteLocationId": 0,
+            "Repeatable": true,
+            "CooldownSeconds": 600,
+            "RequiredTaskId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 6,
+            "LocationId": 4006,
+            "RewardItemId": 9102,
+            "RewardCount": 1,
+            "TriggerEra": 5,
+            "MinRuns": 8,
+            "MinClears": 3,
+            "PrerequisiteLocationId": 0,
+            "Repeatable": true,
+            "CooldownSeconds": 900,
+            "RequiredTaskId": 0,
+            "Enable": true
+        }
+    ]
+}

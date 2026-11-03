@@ -1,0 +1,500 @@
+{
+    "datas": [
+        {
+            "Index": 1,
+            "LocationId": 1001,
+            "Name": "咸阳",
+            "Description": "咸阳：历史势力主城，官员可就近办理同属势力的既有事务。",
+            "ConditionText": "仅同属势力官员可进入既有办事任务；所有身份均可查看介绍。",
+            "Enable": true
+        },
+        {
+            "Index": 2,
+            "LocationId": 1002,
+            "Name": "邯郸",
+            "Description": "邯郸：历史势力主城，官员可就近办理同属势力的既有事务。",
+            "ConditionText": "仅同属势力官员可进入既有办事任务；所有身份均可查看介绍。",
+            "Enable": true
+        },
+        {
+            "Index": 3,
+            "LocationId": 1003,
+            "Name": "蓟",
+            "Description": "蓟：历史势力主城，官员可就近办理同属势力的既有事务。",
+            "ConditionText": "仅同属势力官员可进入既有办事任务；所有身份均可查看介绍。",
+            "Enable": true
+        },
+        {
+            "Index": 4,
+            "LocationId": 1004,
+            "Name": "临淄",
+            "Description": "临淄：历史势力主城，官员可就近办理同属势力的既有事务。",
+            "ConditionText": "仅同属势力官员可进入既有办事任务；所有身份均可查看介绍。",
+            "Enable": true
+        },
+        {
+            "Index": 5,
+            "LocationId": 1005,
+            "Name": "新郑",
+            "Description": "新郑：历史势力主城，官员可就近办理同属势力的既有事务。",
+            "ConditionText": "仅同属势力官员可进入既有办事任务；所有身份均可查看介绍。",
+            "Enable": true
+        },
+        {
+            "Index": 6,
+            "LocationId": 1006,
+            "Name": "大梁",
+            "Description": "大梁：历史势力主城，官员可就近办理同属势力的既有事务。",
+            "ConditionText": "仅同属势力官员可进入既有办事任务；所有身份均可查看介绍。",
+            "Enable": true
+        },
+        {
+            "Index": 7,
+            "LocationId": 1007,
+            "Name": "寿春",
+            "Description": "寿春：历史势力主城，官员可就近办理同属势力的既有事务。",
+            "ConditionText": "仅同属势力官员可进入既有办事任务；所有身份均可查看介绍。",
+            "Enable": true
+        },
+        {
+            "Index": 8,
+            "LocationId": 1008,
+            "Name": "沛县",
+            "Description": "沛县：历史势力主城，官员可就近办理同属势力的既有事务。",
+            "ConditionText": "仅同属势力官员可进入既有办事任务；所有身份均可查看介绍。",
+            "Enable": true
+        },
+        {
+            "Index": 9,
+            "LocationId": 1009,
+            "Name": "陈",
+            "Description": "陈：历史势力主城，官员可就近办理同属势力的既有事务。",
+            "ConditionText": "仅同属势力官员可进入既有办事任务；所有身份均可查看介绍。",
+            "Enable": true
+        },
+        {
+            "Index": 10,
+            "LocationId": 1010,
+            "Name": "狄",
+            "Description": "狄：历史势力主城，官员可就近办理同属势力的既有事务。",
+            "ConditionText": "仅同属势力官员可进入既有办事任务；所有身份均可查看介绍。",
+            "Enable": true
+        },
+        {
+            "Index": 11,
+            "LocationId": 1011,
+            "Name": "吴县",
+            "Description": "吴县：历史势力主城，官员可就近办理同属势力的既有事务。",
+            "ConditionText": "仅同属势力官员可进入既有办事任务；所有身份均可查看介绍。",
+            "Enable": true
+        },
+        {
+            "Index": 12,
+            "LocationId": 1012,
+            "Name": "南郑",
+            "Description": "南郑：历史势力主城，官员可就近办理同属势力的既有事务。",
+            "ConditionText": "仅同属势力官员可进入既有办事任务；所有身份均可查看介绍。",
+            "Enable": true
+        },
+        {
+            "Index": 13,
+            "LocationId": 1013,
+            "Name": "废丘",
+            "Description": "废丘：历史势力主城，官员可就近办理同属势力的既有事务。",
+            "ConditionText": "仅同属势力官员可进入既有办事任务；所有身份均可查看介绍。",
+            "Enable": true
+        },
+        {
+            "Index": 14,
+            "LocationId": 1014,
+            "Name": "栎阳",
+            "Description": "栎阳：历史势力主城，官员可就近办理同属势力的既有事务。",
+            "ConditionText": "仅同属势力官员可进入既有办事任务；所有身份均可查看介绍。",
+            "Enable": true
+        },
+        {
+            "Index": 15,
+            "LocationId": 1015,
+            "Name": "高奴",
+            "Description": "高奴：历史势力主城，官员可就近办理同属势力的既有事务。",
+            "ConditionText": "仅同属势力官员可进入既有办事任务；所有身份均可查看介绍。",
+            "Enable": true
+        },
+        {
+            "Index": 16,
+            "LocationId": 1016,
+            "Name": "平阳",
+            "Description": "平阳：历史势力主城，官员可就近办理同属势力的既有事务。",
+            "ConditionText": "仅同属势力官员可进入既有办事任务；所有身份均可查看介绍。",
+            "Enable": true
+        },
+        {
+            "Index": 17,
+            "LocationId": 1017,
+            "Name": "代",
+            "Description": "代：历史势力主城，官员可就近办理同属势力的既有事务。",
+            "ConditionText": "仅同属势力官员可进入既有办事任务；所有身份均可查看介绍。",
+            "Enable": true
+        },
+        {
+            "Index": 18,
+            "LocationId": 1018,
+            "Name": "襄国",
+            "Description": "襄国：历史势力主城，官员可就近办理同属势力的既有事务。",
+            "ConditionText": "仅同属势力官员可进入既有办事任务；所有身份均可查看介绍。",
+            "Enable": true
+        },
+        {
+            "Index": 19,
+            "LocationId": 1019,
+            "Name": "无终",
+            "Description": "无终：历史势力主城，官员可就近办理同属势力的既有事务。",
+            "ConditionText": "仅同属势力官员可进入既有办事任务；所有身份均可查看介绍。",
+            "Enable": true
+        },
+        {
+            "Index": 20,
+            "LocationId": 1020,
+            "Name": "博阳",
+            "Description": "博阳：历史势力主城，官员可就近办理同属势力的既有事务。",
+            "ConditionText": "仅同属势力官员可进入既有办事任务；所有身份均可查看介绍。",
+            "Enable": true
+        },
+        {
+            "Index": 21,
+            "LocationId": 1021,
+            "Name": "即墨",
+            "Description": "即墨：历史势力主城，官员可就近办理同属势力的既有事务。",
+            "ConditionText": "仅同属势力官员可进入既有办事任务；所有身份均可查看介绍。",
+            "Enable": true
+        },
+        {
+            "Index": 22,
+            "LocationId": 1022,
+            "Name": "洛阳",
+            "Description": "洛阳：历史势力主城，官员可就近办理同属势力的既有事务。",
+            "ConditionText": "仅同属势力官员可进入既有办事任务；所有身份均可查看介绍。",
+            "Enable": true
+        },
+        {
+            "Index": 23,
+            "LocationId": 1023,
+            "Name": "阳翟",
+            "Description": "阳翟：历史势力主城，官员可就近办理同属势力的既有事务。",
+            "ConditionText": "仅同属势力官员可进入既有办事任务；所有身份均可查看介绍。",
+            "Enable": true
+        },
+        {
+            "Index": 24,
+            "LocationId": 1024,
+            "Name": "朝歌",
+            "Description": "朝歌：历史势力主城，官员可就近办理同属势力的既有事务。",
+            "ConditionText": "仅同属势力官员可进入既有办事任务；所有身份均可查看介绍。",
+            "Enable": true
+        },
+        {
+            "Index": 25,
+            "LocationId": 1025,
+            "Name": "六",
+            "Description": "六：历史势力主城，官员可就近办理同属势力的既有事务。",
+            "ConditionText": "仅同属势力官员可进入既有办事任务；所有身份均可查看介绍。",
+            "Enable": true
+        },
+        {
+            "Index": 26,
+            "LocationId": 1026,
+            "Name": "邾",
+            "Description": "邾：历史势力主城，官员可就近办理同属势力的既有事务。",
+            "ConditionText": "仅同属势力官员可进入既有办事任务；所有身份均可查看介绍。",
+            "Enable": true
+        },
+        {
+            "Index": 27,
+            "LocationId": 1027,
+            "Name": "江陵",
+            "Description": "江陵：历史势力主城，官员可就近办理同属势力的既有事务。",
+            "ConditionText": "仅同属势力官员可进入既有办事任务；所有身份均可查看介绍。",
+            "Enable": true
+        },
+        {
+            "Index": 28,
+            "LocationId": 1028,
+            "Name": "彭城",
+            "Description": "彭城：历史势力主城，官员可就近办理同属势力的既有事务。",
+            "ConditionText": "仅同属势力官员可进入既有办事任务；所有身份均可查看介绍。",
+            "Enable": true
+        },
+        {
+            "Index": 29,
+            "LocationId": 1029,
+            "Name": "晋阳",
+            "Description": "晋阳：历史势力主城，官员可就近办理同属势力的既有事务。",
+            "ConditionText": "仅同属势力官员可进入既有办事任务；所有身份均可查看介绍。",
+            "Enable": true
+        },
+        {
+            "Index": 30,
+            "LocationId": 1030,
+            "Name": "定陶",
+            "Description": "定陶：历史势力主城，官员可就近办理同属势力的既有事务。",
+            "ConditionText": "仅同属势力官员可进入既有办事任务；所有身份均可查看介绍。",
+            "Enable": true
+        },
+        {
+            "Index": 31,
+            "LocationId": 1031,
+            "Name": "广陵",
+            "Description": "广陵：历史势力主城，官员可就近办理同属势力的既有事务。",
+            "ConditionText": "仅同属势力官员可进入既有办事任务；所有身份均可查看介绍。",
+            "Enable": true
+        },
+        {
+            "Index": 32,
+            "LocationId": 1032,
+            "Name": "临湘",
+            "Description": "临湘：历史势力主城，官员可就近办理同属势力的既有事务。",
+            "ConditionText": "仅同属势力官员可进入既有办事任务；所有身份均可查看介绍。",
+            "Enable": true
+        },
+        {
+            "Index": 33,
+            "LocationId": 1033,
+            "Name": "长安",
+            "Description": "长安：历史势力主城，官员可就近办理同属势力的既有事务。",
+            "ConditionText": "仅同属势力官员可进入既有办事任务；所有身份均可查看介绍。",
+            "Enable": true
+        },
+        {
+            "Index": 34,
+            "LocationId": 2001,
+            "Name": "狄道",
+            "Description": "狄道：历史贸易城，家族可按当前关系买卖，价格随关系浮动。",
+            "ConditionText": "关系为敌对时拒绝贸易；同属90%、友好95%、中立100%、戒备110%买价，卖价原价。",
+            "Enable": true
+        },
+        {
+            "Index": 35,
+            "LocationId": 2002,
+            "Name": "临邛",
+            "Description": "临邛：历史贸易城，家族可按当前关系买卖，价格随关系浮动。",
+            "ConditionText": "关系为敌对时拒绝贸易；同属90%、友好95%、中立100%、戒备110%买价，卖价原价。",
+            "Enable": true
+        },
+        {
+            "Index": 36,
+            "LocationId": 2003,
+            "Name": "江州",
+            "Description": "江州：历史贸易城，家族可按当前关系买卖，价格随关系浮动。",
+            "ConditionText": "关系为敌对时拒绝贸易；同属90%、友好95%、中立100%、戒备110%买价，卖价原价。",
+            "Enable": true
+        },
+        {
+            "Index": 37,
+            "LocationId": 2004,
+            "Name": "肤施",
+            "Description": "肤施：历史贸易城，家族可按当前关系买卖，价格随关系浮动。",
+            "ConditionText": "关系为敌对时拒绝贸易；同属90%、友好95%、中立100%、戒备110%买价，卖价原价。",
+            "Enable": true
+        },
+        {
+            "Index": 38,
+            "LocationId": 2005,
+            "Name": "榆次",
+            "Description": "榆次：历史贸易城，家族可按当前关系买卖，价格随关系浮动。",
+            "ConditionText": "关系为敌对时拒绝贸易；同属90%、友好95%、中立100%、戒备110%买价，卖价原价。",
+            "Enable": true
+        },
+        {
+            "Index": 39,
+            "LocationId": 2006,
+            "Name": "涿",
+            "Description": "涿：历史贸易城，家族可按当前关系买卖，价格随关系浮动。",
+            "ConditionText": "关系为敌对时拒绝贸易；同属90%、友好95%、中立100%、戒备110%买价，卖价原价。",
+            "Enable": true
+        },
+        {
+            "Index": 40,
+            "LocationId": 2007,
+            "Name": "商邑",
+            "Description": "商邑：历史贸易城，家族可按当前关系买卖，价格随关系浮动。",
+            "ConditionText": "关系为敌对时拒绝贸易；同属90%、友好95%、中立100%、戒备110%买价，卖价原价。",
+            "Enable": true
+        },
+        {
+            "Index": 41,
+            "LocationId": 2008,
+            "Name": "东阿",
+            "Description": "东阿：历史贸易城，家族可按当前关系买卖，价格随关系浮动。",
+            "ConditionText": "关系为敌对时拒绝贸易；同属90%、友好95%、中立100%、戒备110%买价，卖价原价。",
+            "Enable": true
+        },
+        {
+            "Index": 42,
+            "LocationId": 2009,
+            "Name": "莒",
+            "Description": "莒：历史贸易城，家族可按当前关系买卖，价格随关系浮动。",
+            "ConditionText": "关系为敌对时拒绝贸易；同属90%、友好95%、中立100%、戒备110%买价，卖价原价。",
+            "Enable": true
+        },
+        {
+            "Index": 43,
+            "LocationId": 2010,
+            "Name": "盱眙",
+            "Description": "盱眙：历史贸易城，家族可按当前关系买卖，价格随关系浮动。",
+            "ConditionText": "关系为敌对时拒绝贸易；同属90%、友好95%、中立100%、戒备110%买价，卖价原价。",
+            "Enable": true
+        },
+        {
+            "Index": 44,
+            "LocationId": 2011,
+            "Name": "句章",
+            "Description": "句章：历史贸易城，家族可按当前关系买卖，价格随关系浮动。",
+            "ConditionText": "关系为敌对时拒绝贸易；同属90%、友好95%、中立100%、戒备110%买价，卖价原价。",
+            "Enable": true
+        },
+        {
+            "Index": 45,
+            "LocationId": 2012,
+            "Name": "安陆",
+            "Description": "安陆：历史贸易城，家族可按当前关系买卖，价格随关系浮动。",
+            "ConditionText": "关系为敌对时拒绝贸易；同属90%、友好95%、中立100%、戒备110%买价，卖价原价。",
+            "Enable": true
+        },
+        {
+            "Index": 46,
+            "LocationId": 2013,
+            "Name": "白泉部落",
+            "Description": "白泉部落为虚构部落，位于地图北缘；家族可中立贸易，官员事务无授权。",
+            "ConditionText": "家族中立贸易；官员无授权。",
+            "Enable": true
+        },
+        {
+            "Index": 47,
+            "LocationId": 3001,
+            "Name": "林地·秦岭栎林",
+            "Description": "林地·秦岭栎林：资源经营点，设施建成后每60秒产出1件，库存上限10。",
+            "ConditionText": "仅家族可建造与领取；时代权限变化时停产停领取，已建资产保留。",
+            "Enable": true
+        },
+        {
+            "Index": 48,
+            "LocationId": 3002,
+            "Name": "林地·太行东麓",
+            "Description": "林地·太行东麓：资源经营点，设施建成后每60秒产出1件，库存上限10。",
+            "ConditionText": "仅家族可建造与领取；时代权限变化时停产停领取，已建资产保留。",
+            "Enable": true
+        },
+        {
+            "Index": 49,
+            "LocationId": 3003,
+            "Name": "林地·江汉林场",
+            "Description": "林地·江汉林场：资源经营点，设施建成后每60秒产出1件，库存上限10。",
+            "ConditionText": "仅家族可建造与领取；时代权限变化时停产停领取，已建资产保留。",
+            "Enable": true
+        },
+        {
+            "Index": 50,
+            "LocationId": 3004,
+            "Name": "铁矿·铁山",
+            "Description": "铁矿·铁山：资源经营点，设施建成后每60秒产出1件，库存上限10。",
+            "ConditionText": "仅家族可建造与领取；时代权限变化时停产停领取，已建资产保留。",
+            "Enable": true
+        },
+        {
+            "Index": 51,
+            "LocationId": 3005,
+            "Name": "铁矿·蜀中铁矿",
+            "Description": "铁矿·蜀中铁矿：资源经营点，设施建成后每60秒产出1件，库存上限10。",
+            "ConditionText": "仅家族可建造与领取；时代权限变化时停产停领取，已建资产保留。",
+            "Enable": true
+        },
+        {
+            "Index": 52,
+            "LocationId": 3006,
+            "Name": "铁矿·晋南铁冶",
+            "Description": "铁矿·晋南铁冶：资源经营点，设施建成后每60秒产出1件，库存上限10。",
+            "ConditionText": "仅家族可建造与领取；时代权限变化时停产停领取，已建资产保留。",
+            "Enable": true
+        },
+        {
+            "Index": 53,
+            "LocationId": 3007,
+            "Name": "石场·栎阳石场",
+            "Description": "石场·栎阳石场：资源经营点，设施建成后每60秒产出1件，库存上限10。",
+            "ConditionText": "仅家族可建造与领取；时代权限变化时停产停领取，已建资产保留。",
+            "Enable": true
+        },
+        {
+            "Index": 54,
+            "LocationId": 3008,
+            "Name": "石场·邯郸石场",
+            "Description": "石场·邯郸石场：资源经营点，设施建成后每60秒产出1件，库存上限10。",
+            "ConditionText": "仅家族可建造与领取；时代权限变化时停产停领取，已建资产保留。",
+            "Enable": true
+        },
+        {
+            "Index": 55,
+            "LocationId": 3009,
+            "Name": "盐源·河东盐池",
+            "Description": "盐源·河东盐池：资源经营点，设施建成后每60秒产出1件，库存上限10。",
+            "ConditionText": "仅家族可建造与领取；时代权限变化时停产停领取，已建资产保留。",
+            "Enable": true
+        },
+        {
+            "Index": 56,
+            "LocationId": 3010,
+            "Name": "盐源·蜀地卤泉",
+            "Description": "盐源·蜀地卤泉：资源经营点，设施建成后每60秒产出1件，库存上限10。",
+            "ConditionText": "仅家族可建造与领取；时代权限变化时停产停领取，已建资产保留。",
+            "Enable": true
+        },
+        {
+            "Index": 57,
+            "LocationId": 4001,
+            "Name": "关外旧简",
+            "Description": "废烽旁的土壁被雨水冲开，露出一束残简。上面记着早年戍卒轮值与乡里送粮的名目，末尾留了一句“来岁归”。你命随行者收起残简，并带回附近拾得的木料。",
+            "ConditionText": "完成一次局内行动后，在战国末期寻访此地；仅可发现一次。",
+            "Enable": true
+        },
+        {
+            "Index": 58,
+            "LocationId": 4002,
+            "Name": "邯郸残碑",
+            "Description": "办妥边地物资交接后，旧识捎来一段残碑拓记。碑上既有阵亡者姓名，也有乡人的修渠捐资。秦赵相争，百姓留下的名字却同样朴素。来人另赠一块矿石样品。",
+            "ConditionText": "先发现关外旧简，并办结“边地物资交接”；战国末期可寻访一次。",
+            "Enable": true
+        },
+        {
+            "Index": 59,
+            "LocationId": 4003,
+            "Name": "江畔渔火",
+            "Description": "江面渔火连成一线，舟人仍以旧乡音相呼。一位老人讲起商旅改换关牒后的不便，又托你将一枚刻有故乡记号的小石带给后辈。大一统的政令已到，乡人的牵挂尚在。",
+            "ConditionText": "秦朝时期，已有两次通关经历并寻访过邯郸残碑；仅可发现一次。",
+            "Enable": true
+        },
+        {
+            "Index": 60,
+            "LocationId": 4004,
+            "Name": "市井传闻",
+            "Description": "盐贩在市口歇脚，讲起北路泉水与马群的消息：有商旅曾在白泉部落换得皮革，能否成交，还得逐一问清当地规矩。说罢，他留下少许原盐，请你替他向乡人探问销路。",
+            "ConditionText": "战国末期，完成一次派遣后可听闻；再次出现需经过五分钟游戏时间。",
+            "Enable": true
+        },
+        {
+            "Index": 61,
+            "LocationId": 4005,
+            "Name": "边地急报",
+            "Description": "行旅带回一封辗转多次的家书。各地关津盘查渐严，有人弃路返乡，有人继续追随粮车北行。传信人盼乡中多备引路木牌，省得陌生客误入荒道。",
+            "ConditionText": "秦末起义时期，累计六次派遣、两次通关后可听闻；间隔十分钟。",
+            "Enable": true
+        },
+        {
+            "Index": 62,
+            "LocationId": 4006,
+            "Name": "故吏来访",
+            "Description": "一名故吏投宿乡中，席间说起新朝整理旧簿之事。他仍随身带着磨损的算筹，谈到田亩、粮价便精神起来。临行赠你一块矿样，约定日后再议乡里的生计。",
+            "ConditionText": "汉初，累计八次派遣、三次通关后可听闻；间隔十五分钟。",
+            "Enable": true
+        }
+    ]
+}

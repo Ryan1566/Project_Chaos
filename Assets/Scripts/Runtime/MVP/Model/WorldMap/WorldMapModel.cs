@@ -21,6 +21,7 @@ namespace Chaos.MVP.Model.WorldMap
         public string Info;
         public string Status, Hint;
         public bool ConfirmReturn;
+        public WorldLocationsDisplayState Locations;
     }
 
     public sealed class WorldMapModel : IDisposable
@@ -28,6 +29,7 @@ namespace Chaos.MVP.Model.WorldMap
         private static readonly string[] StageNames = { "未使用", "战国末期", "秦朝", "秦末起义初期", "楚汉争霸", "汉刘邦时期" };
         private uint _stage;
         private WorldMapPoint _selected;
+        readonly WorldLocationModel locations = new WorldLocationModel();
         public bool ConfirmReturn { get; private set; }
         public string Hint { get; private set; }
         public WorldMapModel()
@@ -37,6 +39,9 @@ namespace Chaos.MVP.Model.WorldMap
         }
         public WorldMapSnapshot Snapshot()
         {
+            // 正式地图始终以当前存档时代绘制，避免GM调整时代后地点与疆域分属两张图。
+            uint currentEra=GameSession.Instance.LoadedPayload?.era??1;
+            _stage=currentEra>=1&&currentEra<=5?currentEra:1;
             WorldMapService service = WorldMapService.Instance;
             List<WorldFactionArea> areas = service.Areas(_stage);
             List<WorldMapPoint> points = service.Points(1u);
@@ -49,7 +54,7 @@ namespace Chaos.MVP.Model.WorldMap
                 + "　材料 " + inv.GetResource(InventoryService.ResourceKind.Material) + "\n图纸 " + inv.GetResource(InventoryService.ResourceKind.Blueprint)
                 + "　钱财 " + inv.GetResource(InventoryService.ResourceKind.Money);
             return new WorldMapSnapshot { Stage = _stage, Areas = areas, Labels = WorldFactionLabelCatalog.Read(_stage, areas), Points = points, Selected = _selected, Info = info,
-                Status = status, Hint = Hint ?? "选择门客并派遣，开始本次出征。", ConfirmReturn = ConfirmReturn };
+                Status = status, Hint = Hint ?? "选择门客并派遣，开始本次出征。", ConfirmReturn = ConfirmReturn, Locations=locations.Read() };
         }
         public bool Save()
         {
@@ -67,6 +72,7 @@ namespace Chaos.MVP.Model.WorldMap
             return true;
         }
         public void Select(uint pointId) { _selected = WorldMapService.Instance.Points(1u).Find(p => p.index == pointId); }
+        public void HandleLocation(WorldLocationUiIntent intent) { locations.Handle(intent); }
         public void Preview(int delta)
         {
             int next = (int)_stage + delta;

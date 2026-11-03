@@ -1,0 +1,49 @@
+{
+    "datas": [
+        {
+            "Index": 1,
+            "RelationId": 1,
+            "RelationName": "同属",
+            "BuyPercent": 90,
+            "CanTrade": true,
+            "CanEnterOffice": true,
+            "Enable": true
+        },
+        {
+            "Index": 2,
+            "RelationId": 2,
+            "RelationName": "友好",
+            "BuyPercent": 95,
+            "CanTrade": true,
+            "CanEnterOffice": false,
+            "Enable": true
+        },
+        {
+            "Index": 3,
+            "RelationId": 3,
+            "RelationName": "中立",
+            "BuyPercent": 100,
+            "CanTrade": true,
+            "CanEnterOffice": false,
+            "Enable": true
+        },
+        {
+            "Index": 4,
+            "RelationId": 4,
+            "RelationName": "戒备",
+            "BuyPercent": 110,
+            "CanTrade": true,
+            "CanEnterOffice": false,
+            "Enable": true
+        },
+        {
+            "Index": 5,
+            "RelationId": 5,
+            "RelationName": "敌对",
+            "BuyPercent": 0,
+            "CanTrade": false,
+            "CanEnterOffice": false,
+            "Enable": true
+        }
+    ]
+}

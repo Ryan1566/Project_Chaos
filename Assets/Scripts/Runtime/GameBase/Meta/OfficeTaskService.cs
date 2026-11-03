@@ -90,6 +90,7 @@ public sealed class OfficeTaskService : SingletonBase<OfficeTaskService>
         var snapshot = new OfficeTaskSnapshot
         {
             TaskId = config.Index,
+            MapLocationId = config.MapLocationId,
             Cycle = record.cycle == 0u ? 1u : record.cycle,
             Category = (OfficeTaskCategory)config.Category,
             Status = record.status,
@@ -419,7 +420,8 @@ public sealed class OfficeTaskService : SingletonBase<OfficeTaskService>
         if (config.PrerequisiteTaskId != 0u && !IsPrerequisiteCompleted(payload, config.PrerequisiteTaskId)) return false;
         OfficeTaskSave record = FindRecord(payload, config.Index);
         if (record == null) return true;
-        if (record.status == OfficeTaskStatus.Active || record.status == OfficeTaskStatus.AwaitingBattle) return false;
+        if (record.status == OfficeTaskStatus.Active || record.status == OfficeTaskStatus.AwaitingBattle
+            || record.status == OfficeTaskStatus.Available) return false;
         if (!config.Repeatable) return false;                 // 郡县指派等一次性任务只触发一次
         return clock >= record.nextActivationClock;           // 冷却未到不重开
     }
@@ -446,10 +448,10 @@ public sealed class OfficeTaskService : SingletonBase<OfficeTaskService>
         {
             record.cycle = record.cycle == 0u ? 1u : record.cycle + 1u;
         }
-        record.status = OfficeTaskStatus.Active;
+        record.status = config.RequiresAcceptance ? OfficeTaskStatus.Available : OfficeTaskStatus.Active;
         record.selectedOptionId = 0u;
         record.startedClears = payload.clears;
-        record.deadlineClock = config.DurationSeconds > 0u
+        record.deadlineClock = !config.RequiresAcceptance && config.DurationSeconds > 0u
             ? payload.officeClockSeconds + config.DurationSeconds : 0.0;
         record.nextActivationClock = 0.0;
         return true;
@@ -476,11 +478,29 @@ public sealed class OfficeTaskService : SingletonBase<OfficeTaskService>
         record.nextActivationClock = config != null && config.Repeatable ? clock + config.CooldownSeconds : 0.0;
     }
 
-    /// <summary>
-    /// 选择选项。只接受当前存档的活动轮次：Choice / ResourceDelivery 立即完成并结算，
-    /// ClearRuns 达到次数后完成，VillageRaid 只记录策略并等待倒计时转战斗。
-    /// 同轮次 / 同选项重复提交、跨档 contextId、非活动轮次一律拒绝；全部改动由一次命令提交并保存。
-    /// </summary>
+    /// <summary>显式接取只作用于新配置；倒计时与通关基线从成功接取时开始。</summary>
+    public bool TryAccept(uint taskId, uint cycle, int contextId, out string reason)
+    {
+        if (!TryGetPayload(out var payload) || contextId != GameSession.Instance.ContextId)
+        { reason = "当前任务会话已失效"; return false; }
+        var entry = OfficeTaskCatalog.EnsureLoaded()?.GetEntry(taskId);
+        var record = FindRecord(payload, taskId);
+        if (entry == null || !entry.Config.RequiresAcceptance || record == null
+            || record.cycle != cycle || record.status != OfficeTaskStatus.Available)
+        { reason = "该轮事务当前不可接取"; return false; }
+        if (payload.era < entry.Config.MinEra || payload.era > entry.Config.MaxEra)
+        { reason = "该事务不属于当前时代"; return false; }
+        return RunAtomic("接取地图事务", (out string why) => {
+            why = null;
+            record.status = OfficeTaskStatus.Active;
+            record.startedClears = payload.clears;
+            record.deadlineClock = entry.Config.DurationSeconds == 0 ? 0
+                : payload.officeClockSeconds + entry.Config.DurationSeconds;
+            return true;
+        }, out reason);
+    }
+
+    /// <summary>只接受本存档活动轮次的选项；交付、奖励和完成记录由一次命令提交。</summary>
     public bool TryChoose(uint taskId, uint cycle, uint optionId, int contextId, out string reason)
     {
         SavePayload payload;

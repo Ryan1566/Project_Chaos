@@ -8,27 +8,40 @@ namespace Chaos.MVP.Model.Gameplay
     public sealed class OfficeTasksModel
     {
         readonly string facilityId;
+        readonly uint mapLocationId;
         readonly int contextId = GameSession.Instance.ContextId;
         readonly VillageWorldModel world = new VillageWorldModel();
         public OfficeTaskCategory Category {get;private set;} = OfficeTaskCategory.County;
         public uint SelectedId {get;private set;}
         public string Message {get;private set;}
-        public OfficeTasksModel(string id) { facilityId=id; }
+        public OfficeTasksModel(string id, uint locationId=0, uint selectedTask=0)
+        { facilityId=id;mapLocationId=locationId;SelectedId=selectedTask;
+            var selected=selectedTask==0?null:OfficeTaskService.Instance.GetTask(selectedTask);
+            if(selected!=null)Category=selected.Category; }
         public bool IsCurrent => GameSession.Instance.HasSession && contextId==GameSession.Instance.ContextId
-            && VillageSceneFlow.IsVillageScene && VillageSceneBootstrap.IsReady && world.CanUseFacility(facilityId);
+            && VillageSceneFlow.IsVillageScene && VillageSceneBootstrap.IsReady
+            && (mapLocationId==0 ? world.CanUseFacility(facilityId)
+                :WorldLocationService.Instance.GetLocation(GameSession.Instance.LoadedPayload.era,mapLocationId,WorldLocationIdentity.Official)?.CanOpenOffice==true);
         public void SelectCategory(OfficeTaskCategory value)
         { if(Enum.IsDefined(typeof(OfficeTaskCategory),value)){Category=value;SelectedId=0;Message=null;} }
         public void SelectTask(uint id) { SelectedId=id;Message=null; }
         public void Choose(uint id,uint cycle,uint option)
         {
             if(!IsCurrent){Message=OfficeTaskText.Get("stale");return;}
-            if(OfficeTaskService.Instance.TryChoose(id,cycle,option,contextId,out var reason))Message=OfficeTaskText.Get("saved");
+            var selected=OfficeTaskService.Instance.GetTask(id);
+            if(mapLocationId!=0&&selected!=null&&selected.MapLocationId!=0&&selected.MapLocationId!=mapLocationId)
+            {Message="该事务不属于当前地点。";return;}
+            string reason;
+            bool ok=option==0 ? OfficeTaskService.Instance.TryAccept(id,cycle,contextId,out reason)
+                : OfficeTaskService.Instance.TryChoose(id,cycle,option,contextId,out reason);
+            if(ok)Message=option==0?"事务已接取，可按M查看目标位置。":OfficeTaskText.Get("saved");
             else Message=reason;
         }
         public void NoReports() {Message=OfficeTaskText.Get("noReports");}
         public OfficeTasksDisplayState Read()
         {
-            var tasks=OfficeTaskService.Instance.GetTasks(Category);
+            var tasks=OfficeTaskService.Instance.GetTasks(Category)
+                .Where(t=>mapLocationId==0||t.MapLocationId==0||t.MapLocationId==mapLocationId).ToArray();
             if(!tasks.Any(t=>t.TaskId==SelectedId))SelectedId=tasks.Length==0?0:tasks[0].TaskId;
             var selected=tasks.FirstOrDefault(t=>t.TaskId==SelectedId);
             var payload=GameSession.Instance.LoadedPayload;
@@ -42,7 +55,9 @@ namespace Chaos.MVP.Model.Gameplay
                     Status=OfficeTaskText.Status(t.Status),Time=t.Timed&&t.Status==OfficeTaskStatus.Active?OfficeTaskText.Time(t.RemainingSeconds):"",Selected=t.TaskId==SelectedId}).ToArray(),
                 DetailTitle=selected?.Title??"",DetailBody=selected==null?"":selected.Body+"\n\n"+selected.Topic,
                 DetailProgress=selected==null?"":Progress(selected),
-                Options=selected==null?Array.Empty<OfficeTaskDisplayOption>():selected.Options.Select(o=>new OfficeTaskDisplayOption {
+                Options=selected==null?Array.Empty<OfficeTaskDisplayOption>():selected.Status==OfficeTaskStatus.Available
+                    ?new[]{new OfficeTaskDisplayOption {TaskId=selected.TaskId,Cycle=selected.Cycle,OptionId=0,Text="接取事务",Enabled=true}}
+                    :selected.Options.Select(o=>new OfficeTaskDisplayOption {
                     TaskId=selected.TaskId,Cycle=selected.Cycle,OptionId=o.Index,Text=Describe(o),
                     Enabled=selected.Status==OfficeTaskStatus.Active&&selected.SelectedOptionId==0
                         &&(selected.Required==0||selected.Progress>=selected.Required)}).ToArray()
@@ -50,6 +65,7 @@ namespace Chaos.MVP.Model.Gameplay
         }
         static string Progress(OfficeTaskSnapshot task)
         {
+            if(task.Status==OfficeTaskStatus.Available)return task.Timed?"可接取 · 接取成功后开始倒计时":"可接取";
             if(task.Status==OfficeTaskStatus.AwaitingBattle)return OfficeTaskText.Get("awaitBattle");
             string result=OfficeTaskText.Status(task.Status);
             if(task.Required>0)result+="　"+OfficeTaskText.Get("progress",task.Progress,task.Required);

@@ -78,6 +78,11 @@ public class WorldMapPanel : BasePanel, IWorldMapView
     private WorldMapModel _model;
     private WorldMapPresenter _presenter;
     public event System.Action<WorldMapIntent> Intent;
+    public event System.Action<WorldLocationUiIntent> LocationIntent;
+    WorldLocationsView _locationsView;
+    WorldMapNavigation _navigation;
+    RectTransform _mapViewport, _mapContent;
+    Vector2 _lastMapSize;
     private WorldMapPoint _selected;
 
     // ══════════════════ 生命周期 ══════════════════
@@ -87,6 +92,7 @@ public class WorldMapPanel : BasePanel, IWorldMapView
         FindNodes();
         BindButtons();   //⚠ 只在这里绑：OnEnter 每次打开都会跑（见类注释 R3）
         BuildMetaEntries();
+        BuildLocations();
     }
 
     public override void OnEnter()
@@ -118,9 +124,9 @@ public class WorldMapPanel : BasePanel, IWorldMapView
 
     private void FindNodes()
     {
-        _baseMap = FindComponent<Image>(NodeBaseMap);
-        _factionMask = FindComponent<WorldFactionMask>(NodeFactionMask);
-        _iconLayer = FindRect(NodeIconLayer);
+        if(_baseMap==null)_baseMap = FindComponent<Image>(NodeBaseMap);
+        if(_factionMask==null)_factionMask = FindComponent<WorldFactionMask>(NodeFactionMask);
+        if(_iconLayer==null)_iconLayer = FindRect(NodeIconLayer);
         _infoText = FindComponent<TextMeshProUGUI>(NodeInfoBar);
         _infoLocalized = FindComponent<LocalizedText>(NodeInfoBar);
         if (_infoText != null)
@@ -248,9 +254,9 @@ public class WorldMapPanel : BasePanel, IWorldMapView
         _selected = state.Selected;
         ApplyFactionMask(state.Areas);
         RenderFactionLabels(state.Labels);
-        RebuildIcons(state.Points);
-        UpdateSelectionScales();
-        SetInfoText(state.Info);
+        if(_locationsView!=null)_locationsView.Render(state.Locations);
+        else {RebuildIcons(state.Points);UpdateSelectionScales();}
+        SetInfoText("天下舆图 · "+(state.Status??"").Replace("\n","　"));
         if (_metaStatus != null) _metaStatus.text = state.Status;
         if (_metaHint != null) _metaHint.text = state.Hint;
         if (_returnConfirmation != null) _returnConfirmation.SetActive(state.ConfirmReturn);
@@ -278,8 +284,50 @@ public class WorldMapPanel : BasePanel, IWorldMapView
     {
         if (_returnConfirmation != null && _returnConfirmation.activeSelf)
             Intent?.Invoke(new WorldMapIntent(WorldMapAction.CancelReturn));
+        else if(_locationsView!=null&&_locationsView.CloseDetail())return;
         else ClosePanel();
     }
+
+    /// <summary>底图、疆域、名称与点位共用变换；正式地点表现独立于早期示例点。</summary>
+    void BuildLocations()
+    {
+        if(_baseMap==null||_iconLayer==null||_locationsView!=null)return;
+        var oldEntries=transform.Find("MetaEntries");if(oldEntries!=null)oldEntries.gameObject.SetActive(false);
+        _mapViewport=GameplayUi.Rect(transform,"WorldMapViewport",Vector2.zero,Vector2.one*.5f,Vector2.zero,Vector2.zero);
+        _mapViewport.anchorMin=new Vector2(.025f,.15f);_mapViewport.anchorMax=new Vector2(.72f,.86f);
+        _mapViewport.offsetMin=_mapViewport.offsetMax=Vector2.zero;
+        _mapViewport.gameObject.AddComponent<Image>().color=new Color(.11f,.09f,.06f,.94f);
+        _mapViewport.gameObject.AddComponent<RectMask2D>();
+        _mapContent=GameplayUi.Rect(_mapViewport,"MapContent",Vector2.one*.5f,Vector2.one*.5f,Vector2.zero,Vector2.zero);
+        StretchMapLayer(_baseMap.rectTransform);_baseMap.raycastTarget=false;
+        if(_factionMask!=null){StretchMapLayer(_factionMask.rectTransform);_factionMask.raycastTarget=false;}
+        StretchMapLayer(_iconLayer);
+        _locationsView=gameObject.AddComponent<WorldLocationsView>();
+        _locationsView.Initialize(_mapContent,transform as RectTransform);
+        _locationsView.Intent+=OnLocationIntent;
+        _navigation=_mapViewport.gameObject.AddComponent<WorldMapNavigation>();
+        Canvas.ForceUpdateCanvases();FitMap();_navigation.Initialize(_mapViewport,_mapContent);
+        _navigation.ZoomChanged+=_locationsView.SetZoom;
+        var bottom=transform.Find("BottomBar");if(bottom!=null)bottom.SetAsLastSibling();
+        if(_infoText!=null)_infoText.transform.SetAsLastSibling();
+    }
+    void StretchMapLayer(RectTransform layer)
+    {
+        layer.SetParent(_mapContent,false);layer.anchorMin=Vector2.zero;layer.anchorMax=Vector2.one;
+        layer.offsetMin=layer.offsetMax=Vector2.zero;layer.localScale=Vector3.one;
+    }
+    void FitMap()
+    {
+        if(_mapViewport==null||_mapContent==null)return;
+        var size=_mapViewport.rect.size;if(size.x<=0||size.y<=0)return;
+        float ratio=ResolveBaseMapAspect();float width=Mathf.Min(size.x,size.y/ratio);
+        _mapContent.sizeDelta=new Vector2(width,width*ratio);_lastMapSize=size;
+    }
+    void LateUpdate()
+    {
+        if(_mapViewport!=null&&_lastMapSize!=_mapViewport.rect.size){FitMap();_navigation?.ResetView();}
+    }
+    void OnLocationIntent(WorldLocationUiIntent intent){LocationIntent?.Invoke(intent);}
 
     private void ApplyFactionMask(List<WorldFactionArea> areas)
     {
@@ -489,6 +537,8 @@ public class WorldMapPanel : BasePanel, IWorldMapView
     private void ChangeStageForDebug(int delta) { Intent?.Invoke(new WorldMapIntent(WorldMapAction.Preview, delta: delta)); }
     private void OnDestroy()
     {
+        if(_locationsView!=null)_locationsView.Intent-=OnLocationIntent;
+        if(_navigation!=null&&_locationsView!=null)_navigation.ZoomChanged-=_locationsView.SetZoom;
         OnExit();
         ClearIcons();
 

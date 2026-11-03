@@ -25,13 +25,24 @@ public sealed class OfficeTasksPanel : BasePanel, IOfficeTasksView
         var panel=UIManager.Instance.PushPanel(PanelType.OfficeTasksPanel) as OfficeTasksPanel;
         if(panel!=null)panel.Bind(facilityId);
     }
+    /// <summary>世界地图官员入口独立验证所在地权限，不借用村庄建筑的物理交互限制。</summary>
+    public static void OpenFromWorldMap(uint locationId,uint selectedTask=0)
+    {
+        if(!GameSession.Instance.HasSession||!VillageSceneFlow.IsVillageScene||!VillageSceneBootstrap.IsReady)return;
+        var stack=UIManager.Instance.panelStack;
+        if(stack.Count==0||!(stack.Peek() is WorldMapPanel))return;
+        var location=WorldLocationService.Instance.GetLocation(GameSession.Instance.LoadedPayload.era,locationId,WorldLocationIdentity.Official);
+        if(location==null||!location.CanOpenOffice)return;
+        var panel=UIManager.Instance.PushPanel(PanelType.OfficeTasksPanel) as OfficeTasksPanel;
+        if(panel!=null)panel.Bind(null,locationId,selectedTask);
+    }
     void Awake()
     {
         var backdrop=GetComponent<Image>();if(backdrop!=null)backdrop.color=new Color(0,0,0,.7f);
         content=gameObject.AddComponent<OfficeTasksView>();
     }
-    void Bind(string id)
-    {presenter?.Dispose();model=new OfficeTasksModel(id);presenter=new OfficeTasksPresenter(model);presenter.Attach(this);}
+    void Bind(string id,uint locationId=0,uint taskId=0)
+    {presenter?.Dispose();model=new OfficeTasksModel(id,locationId,taskId);presenter=new OfficeTasksPresenter(model);presenter.Attach(this);}
     public override void OnEnter()
     {CursorEnable();if(model!=null){presenter?.Dispose();presenter=new OfficeTasksPresenter(model);presenter.Attach(this);}}
     public override void OnExit()

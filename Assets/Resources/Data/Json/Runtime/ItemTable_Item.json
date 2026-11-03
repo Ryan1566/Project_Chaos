@@ -125,6 +125,62 @@
             "SellPrice": 10,
             "RunCategory": 0,
             "IsUnique": false
+        },
+        {
+            "Index": 9101,
+            "NameKey": "木材",
+            "Category": 2,
+            "IsCampItem": false,
+            "StackLimit": 99,
+            "EffectId": 0,
+            "IconKey": "UI/WorldLocations/forest",
+            "Enable": true,
+            "BuyPrice": 8,
+            "SellPrice": 4,
+            "RunCategory": 0,
+            "IsUnique": false
+        },
+        {
+            "Index": 9102,
+            "NameKey": "铁矿石",
+            "Category": 2,
+            "IsCampItem": false,
+            "StackLimit": 99,
+            "EffectId": 0,
+            "IconKey": "UI/WorldLocations/iron_mine",
+            "Enable": true,
+            "BuyPrice": 8,
+            "SellPrice": 4,
+            "RunCategory": 0,
+            "IsUnique": false
+        },
+        {
+            "Index": 9103,
+            "NameKey": "石料",
+            "Category": 2,
+            "IsCampItem": false,
+            "StackLimit": 99,
+            "EffectId": 0,
+            "IconKey": "UI/WorldLocations/quarry",
+            "Enable": true,
+            "BuyPrice": 8,
+            "SellPrice": 4,
+            "RunCategory": 0,
+            "IsUnique": false
+        },
+        {
+            "Index": 9104,
+            "NameKey": "原盐",
+            "Category": 2,
+            "IsCampItem": false,
+            "StackLimit": 99,
+            "EffectId": 0,
+            "IconKey": "UI/WorldLocations/saltworks",
+            "Enable": true,
+            "BuyPrice": 8,
+            "SellPrice": 4,
+            "RunCategory": 0,
+            "IsUnique": false
         }
     ]
 }

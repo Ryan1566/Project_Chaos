@@ -23,7 +23,9 @@
             "FailureReputation": 0,
             "FailureInfluence": 0,
             "FailureDevelopment": 0,
-            "Enable": true
+            "Enable": true,
+            "RequiresAcceptance": false,
+            "MapLocationId": 0
         },
         {
             "Index": 9002,
@@ -48,7 +50,9 @@
             "FailureReputation": 0,
             "FailureInfluence": 0,
             "FailureDevelopment": 0,
-            "Enable": true
+            "Enable": true,
+            "RequiresAcceptance": false,
+            "MapLocationId": 0
         },
         {
             "Index": 9003,
@@ -73,7 +77,9 @@
             "FailureReputation": 0,
             "FailureInfluence": 0,
             "FailureDevelopment": 0,
-            "Enable": true
+            "Enable": true,
+            "RequiresAcceptance": false,
+            "MapLocationId": 0
         },
         {
             "Index": 9004,
@@ -98,7 +104,9 @@
             "FailureReputation": 0,
             "FailureInfluence": 0,
             "FailureDevelopment": 0,
-            "Enable": true
+            "Enable": true,
+            "RequiresAcceptance": false,
+            "MapLocationId": 0
         },
         {
             "Index": 9005,
@@ -123,7 +131,9 @@
             "FailureReputation": 0,
             "FailureInfluence": 0,
             "FailureDevelopment": 0,
-            "Enable": true
+            "Enable": true,
+            "RequiresAcceptance": false,
+            "MapLocationId": 0
         },
         {
             "Index": 9101,
@@ -148,7 +158,9 @@
             "FailureReputation": 0,
             "FailureInfluence": 0,
             "FailureDevelopment": 0,
-            "Enable": true
+            "Enable": true,
+            "RequiresAcceptance": false,
+            "MapLocationId": 0
         },
         {
             "Index": 9102,
@@ -173,7 +185,9 @@
             "FailureReputation": 0,
             "FailureInfluence": 0,
             "FailureDevelopment": 0,
-            "Enable": true
+            "Enable": true,
+            "RequiresAcceptance": false,
+            "MapLocationId": 0
         },
         {
             "Index": 9103,
@@ -198,7 +212,9 @@
             "FailureReputation": 0,
             "FailureInfluence": 0,
             "FailureDevelopment": 0,
-            "Enable": true
+            "Enable": true,
+            "RequiresAcceptance": false,
+            "MapLocationId": 0
         },
         {
             "Index": 9201,
@@ -223,7 +239,9 @@
             "FailureReputation": 0,
             "FailureInfluence": 0,
             "FailureDevelopment": 0,
-            "Enable": true
+            "Enable": true,
+            "RequiresAcceptance": false,
+            "MapLocationId": 0
         },
         {
             "Index": 9202,
@@ -248,7 +266,9 @@
             "FailureReputation": 0,
             "FailureInfluence": 0,
             "FailureDevelopment": 0,
-            "Enable": true
+            "Enable": true,
+            "RequiresAcceptance": false,
+            "MapLocationId": 0
         },
         {
             "Index": 9301,
@@ -273,7 +293,9 @@
             "FailureReputation": -1,
             "FailureInfluence": 0,
             "FailureDevelopment": 0,
-            "Enable": true
+            "Enable": true,
+            "RequiresAcceptance": false,
+            "MapLocationId": 0
         },
         {
             "Index": 9302,
@@ -298,7 +320,63 @@
             "FailureReputation": 0,
             "FailureInfluence": 0,
             "FailureDevelopment": 0,
-            "Enable": false
+            "Enable": false,
+            "RequiresAcceptance": false,
+            "MapLocationId": 0
+        },
+        {
+            "Index": 15001,
+            "Category": 3,
+            "TitleText": "边地物资交接",
+            "BodyText": "县中遣人来报：边地转运需补一批物资，请在限期内筹措交付，勿误戍卒粮用。",
+            "Topic": "边地采办",
+            "MinEra": 1,
+            "MaxEra": 3,
+            "MinRuns": 0,
+            "MinClearedDepth": 0,
+            "PrerequisiteTaskId": 0,
+            "Repeatable": false,
+            "CooldownSeconds": 0,
+            "DurationSeconds": 300,
+            "GoalType": 2,
+            "ResourceType": 1,
+            "RequiredAmount": 10,
+            "RequiredClears": 0,
+            "FailureResourceType": 0,
+            "FailureResourceAmount": 0,
+            "FailureReputation": 0,
+            "FailureInfluence": 0,
+            "FailureDevelopment": 0,
+            "Enable": true,
+            "RequiresAcceptance": true,
+            "MapLocationId": 1001
+        },
+        {
+            "Index": 15002,
+            "Category": 4,
+            "TitleText": "北路来报",
+            "BodyText": "北路行旅带来警讯：边地见有游骑窥探粮道。请尽快通知乡里，商议戒备。",
+            "Topic": "边境警讯",
+            "MinEra": 1,
+            "MaxEra": 3,
+            "MinRuns": 1,
+            "MinClearedDepth": 0,
+            "PrerequisiteTaskId": 0,
+            "Repeatable": true,
+            "CooldownSeconds": 600,
+            "DurationSeconds": 180,
+            "GoalType": 4,
+            "ResourceType": 0,
+            "RequiredAmount": 0,
+            "RequiredClears": 0,
+            "FailureResourceType": 0,
+            "FailureResourceAmount": 0,
+            "FailureReputation": 0,
+            "FailureInfluence": 0,
+            "FailureDevelopment": 0,
+            "Enable": true,
+            "RequiresAcceptance": true,
+            "MapLocationId": 1001
         }
     ]
 }

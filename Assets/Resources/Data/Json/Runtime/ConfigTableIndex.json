@@ -198,6 +198,66 @@
             "resourcePath": "Data/Json/Runtime/MetaSkillTreeTable_FamilyTreeText",
             "workbook": "MetaSkillTreeTable_局外技能树表",
             "worksheet": "文案"
+        },
+        {
+            "className": "WorldLocationTable_LocationConfig",
+            "resourcePath": "Data/Json/Runtime/WorldLocationTable_Location",
+            "workbook": "WorldLocationTable_世界地点表",
+            "worksheet": "地点"
+        },
+        {
+            "className": "WorldLocationTable_LocationEraConfig",
+            "resourcePath": "Data/Json/Runtime/WorldLocationTable_LocationEra",
+            "workbook": "WorldLocationTable_世界地点表",
+            "worksheet": "时代"
+        },
+        {
+            "className": "WorldLocationTable_LocationActionConfig",
+            "resourcePath": "Data/Json/Runtime/WorldLocationTable_LocationAction",
+            "workbook": "WorldLocationTable_世界地点表",
+            "worksheet": "操作"
+        },
+        {
+            "className": "WorldLocationTable_LocationRelationConfig",
+            "resourcePath": "Data/Json/Runtime/WorldLocationTable_LocationRelation",
+            "workbook": "WorldLocationTable_世界地点表",
+            "worksheet": "关系"
+        },
+        {
+            "className": "WorldLocationTable_LocationTemporaryConfig",
+            "resourcePath": "Data/Json/Runtime/WorldLocationTable_LocationTemporary",
+            "workbook": "WorldLocationTable_世界地点表",
+            "worksheet": "临时"
+        },
+        {
+            "className": "WorldLocationTable_LocationTextConfig",
+            "resourcePath": "Data/Json/Runtime/WorldLocationTable_LocationText",
+            "workbook": "WorldLocationTable_世界地点表",
+            "worksheet": "文案"
+        },
+        {
+            "className": "WorldResourceTable_ResourceFacilityConfig",
+            "resourcePath": "Data/Json/Runtime/WorldResourceTable_ResourceFacility",
+            "workbook": "WorldResourceTable_资源经营表",
+            "worksheet": "设施"
+        },
+        {
+            "className": "WorldResourceTable_ResourceOutputConfig",
+            "resourcePath": "Data/Json/Runtime/WorldResourceTable_ResourceOutput",
+            "workbook": "WorldResourceTable_资源经营表",
+            "worksheet": "产出"
+        },
+        {
+            "className": "MarketTable_MarketConfig",
+            "resourcePath": "Data/Json/Runtime/MarketTable_Market",
+            "workbook": "MarketTable_交易表",
+            "worksheet": "市场"
+        },
+        {
+            "className": "MarketTable_MarketOfferConfig",
+            "resourcePath": "Data/Json/Runtime/MarketTable_MarketOffer",
+            "workbook": "MarketTable_交易表",
+            "worksheet": "商品"
         }
     ]
 }

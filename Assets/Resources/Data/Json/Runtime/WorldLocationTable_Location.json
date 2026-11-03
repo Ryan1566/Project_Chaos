@@ -1,0 +1,624 @@
+{
+    "datas": [
+        {
+            "Index": 1001,
+            "LocationId": 1001,
+            "Kind": 1,
+            "MapId": 1,
+            "X": 0.3331,
+            "Y": 0.4971,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 1002,
+            "LocationId": 1002,
+            "Kind": 1,
+            "MapId": 1,
+            "X": 0.6014,
+            "Y": 0.634,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 1003,
+            "LocationId": 1003,
+            "Kind": 1,
+            "MapId": 1,
+            "X": 0.6893,
+            "Y": 0.8348,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 1004,
+            "LocationId": 1004,
+            "Kind": 1,
+            "MapId": 1,
+            "X": 0.7771,
+            "Y": 0.6462,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 1005,
+            "LocationId": 1005,
+            "Kind": 1,
+            "MapId": 1,
+            "X": 0.5658,
+            "Y": 0.5001,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 1006,
+            "LocationId": 1006,
+            "Kind": 1,
+            "MapId": 1,
+            "X": 0.5921,
+            "Y": 0.5245,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 1007,
+            "LocationId": 1007,
+            "Kind": 1,
+            "MapId": 1,
+            "X": 0.7068,
+            "Y": 0.3888,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 1008,
+            "LocationId": 1008,
+            "Kind": 1,
+            "MapId": 1,
+            "X": 0.7138,
+            "Y": 0.5202,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 1009,
+            "LocationId": 1009,
+            "Kind": 1,
+            "MapId": 1,
+            "X": 0.6199,
+            "Y": 0.4533,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 1010,
+            "LocationId": 1010,
+            "Kind": 1,
+            "MapId": 1,
+            "X": 0.7554,
+            "Y": 0.6705,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 1011,
+            "LocationId": 1011,
+            "Kind": 1,
+            "MapId": 1,
+            "X": 0.8835,
+            "Y": 0.3115,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 1012,
+            "LocationId": 1012,
+            "Kind": 1,
+            "MapId": 1,
+            "X": 0.2559,
+            "Y": 0.4192,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 1013,
+            "LocationId": 1013,
+            "Kind": 1,
+            "MapId": 1,
+            "X": 0.3234,
+            "Y": 0.4941,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 1014,
+            "LocationId": 1014,
+            "Kind": 1,
+            "MapId": 1,
+            "X": 0.3586,
+            "Y": 0.5154,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 1015,
+            "LocationId": 1015,
+            "Kind": 1,
+            "MapId": 1,
+            "X": 0.3701,
+            "Y": 0.634,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 1016,
+            "LocationId": 1016,
+            "Kind": 1,
+            "MapId": 1,
+            "X": 0.4626,
+            "Y": 0.6036,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 1017,
+            "LocationId": 1017,
+            "Kind": 1,
+            "MapId": 1,
+            "X": 0.606,
+            "Y": 0.8044,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 1018,
+            "LocationId": 1018,
+            "Kind": 1,
+            "MapId": 1,
+            "X": 0.6014,
+            "Y": 0.6626,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 1019,
+            "LocationId": 1019,
+            "Kind": 1,
+            "MapId": 1,
+            "X": 0.7517,
+            "Y": 0.8348,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 1020,
+            "LocationId": 1020,
+            "Kind": 1,
+            "MapId": 1,
+            "X": 0.7216,
+            "Y": 0.6097,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 1021,
+            "LocationId": 1021,
+            "Kind": 1,
+            "MapId": 1,
+            "X": 0.8558,
+            "Y": 0.6462,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 1022,
+            "LocationId": 1022,
+            "Kind": 1,
+            "MapId": 1,
+            "X": 0.5066,
+            "Y": 0.5135,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 1023,
+            "LocationId": 1023,
+            "Kind": 1,
+            "MapId": 1,
+            "X": 0.5551,
+            "Y": 0.488,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 1024,
+            "LocationId": 1024,
+            "Kind": 1,
+            "MapId": 1,
+            "X": 0.5875,
+            "Y": 0.5732,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 1025,
+            "LocationId": 1025,
+            "Kind": 1,
+            "MapId": 1,
+            "X": 0.6939,
+            "Y": 0.3359,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 1026,
+            "LocationId": 1026,
+            "Kind": 1,
+            "MapId": 1,
+            "X": 0.6199,
+            "Y": 0.2568,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 1027,
+            "LocationId": 1027,
+            "Kind": 1,
+            "MapId": 1,
+            "X": 0.495,
+            "Y": 0.2507,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 1028,
+            "LocationId": 1028,
+            "Kind": 1,
+            "MapId": 1,
+            "X": 0.7263,
+            "Y": 0.4916,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 1029,
+            "LocationId": 1029,
+            "Kind": 1,
+            "MapId": 1,
+            "X": 0.5089,
+            "Y": 0.7101,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 1030,
+            "LocationId": 1030,
+            "Kind": 1,
+            "MapId": 1,
+            "X": 0.6509,
+            "Y": 0.5409,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 1031,
+            "LocationId": 1031,
+            "Kind": 1,
+            "MapId": 1,
+            "X": 0.828,
+            "Y": 0.3785,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 1032,
+            "LocationId": 1032,
+            "Kind": 1,
+            "MapId": 1,
+            "X": 0.5292,
+            "Y": 0.1247,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 1033,
+            "LocationId": 1033,
+            "Kind": 1,
+            "MapId": 1,
+            "X": 0.3442,
+            "Y": 0.4916,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 2001,
+            "LocationId": 2001,
+            "Kind": 2,
+            "MapId": 1,
+            "X": 0.1093,
+            "Y": 0.5598,
+            "MarketId": 1,
+            "Enable": true
+        },
+        {
+            "Index": 2002,
+            "LocationId": 2002,
+            "Kind": 2,
+            "MapId": 1,
+            "X": 0.0908,
+            "Y": 0.258,
+            "MarketId": 2,
+            "Enable": true
+        },
+        {
+            "Index": 2003,
+            "LocationId": 2003,
+            "Kind": 2,
+            "MapId": 1,
+            "X": 0.2337,
+            "Y": 0.2056,
+            "MarketId": 3,
+            "Enable": true
+        },
+        {
+            "Index": 2004,
+            "LocationId": 2004,
+            "Kind": 2,
+            "MapId": 1,
+            "X": 0.3817,
+            "Y": 0.7362,
+            "MarketId": 4,
+            "Enable": true
+        },
+        {
+            "Index": 2005,
+            "LocationId": 2005,
+            "Kind": 2,
+            "MapId": 1,
+            "X": 0.5202,
+            "Y": 0.6996,
+            "MarketId": 5,
+            "Enable": true
+        },
+        {
+            "Index": 2006,
+            "LocationId": 2006,
+            "Kind": 2,
+            "MapId": 1,
+            "X": 0.6698,
+            "Y": 0.8093,
+            "MarketId": 6,
+            "Enable": true
+        },
+        {
+            "Index": 2007,
+            "LocationId": 2007,
+            "Kind": 2,
+            "MapId": 1,
+            "X": 0.4071,
+            "Y": 0.4576,
+            "MarketId": 7,
+            "Enable": true
+        },
+        {
+            "Index": 2008,
+            "LocationId": 2008,
+            "Kind": 2,
+            "MapId": 1,
+            "X": 0.6846,
+            "Y": 0.617,
+            "MarketId": 8,
+            "Enable": true
+        },
+        {
+            "Index": 2009,
+            "LocationId": 2009,
+            "Kind": 2,
+            "MapId": 1,
+            "X": 0.8016,
+            "Y": 0.572,
+            "MarketId": 9,
+            "Enable": true
+        },
+        {
+            "Index": 2010,
+            "LocationId": 2010,
+            "Kind": 2,
+            "MapId": 1,
+            "X": 0.7859,
+            "Y": 0.415,
+            "MarketId": 10,
+            "Enable": true
+        },
+        {
+            "Index": 2011,
+            "LocationId": 2011,
+            "Kind": 2,
+            "MapId": 1,
+            "X": 0.9205,
+            "Y": 0.23,
+            "MarketId": 11,
+            "Enable": true
+        },
+        {
+            "Index": 2012,
+            "LocationId": 2012,
+            "Kind": 2,
+            "MapId": 1,
+            "X": 0.5644,
+            "Y": 0.2945,
+            "MarketId": 12,
+            "Enable": true
+        },
+        {
+            "Index": 2013,
+            "LocationId": 2013,
+            "Kind": 3,
+            "MapId": 1,
+            "X": 0.45,
+            "Y": 0.96,
+            "MarketId": 13,
+            "Enable": true
+        },
+        {
+            "Index": 3001,
+            "LocationId": 3001,
+            "Kind": 4,
+            "MapId": 1,
+            "X": 0.2545,
+            "Y": 0.4636,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 3002,
+            "LocationId": 3002,
+            "Kind": 4,
+            "MapId": 1,
+            "X": 0.569,
+            "Y": 0.6462,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 3003,
+            "LocationId": 3003,
+            "Kind": 4,
+            "MapId": 1,
+            "X": 0.5089,
+            "Y": 0.2811,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 3004,
+            "LocationId": 3004,
+            "Kind": 4,
+            "MapId": 1,
+            "X": 0.6199,
+            "Y": 0.2446,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 3005,
+            "LocationId": 3005,
+            "Kind": 4,
+            "MapId": 1,
+            "X": 0.1389,
+            "Y": 0.2324,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 3006,
+            "LocationId": 3006,
+            "Kind": 4,
+            "MapId": 1,
+            "X": 0.4626,
+            "Y": 0.5793,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 3007,
+            "LocationId": 3007,
+            "Kind": 4,
+            "MapId": 1,
+            "X": 0.347,
+            "Y": 0.5032,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 3008,
+            "LocationId": 3008,
+            "Kind": 4,
+            "MapId": 1,
+            "X": 0.5968,
+            "Y": 0.6401,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 3009,
+            "LocationId": 3009,
+            "Kind": 4,
+            "MapId": 1,
+            "X": 0.4395,
+            "Y": 0.5367,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 3010,
+            "LocationId": 3010,
+            "Kind": 4,
+            "MapId": 1,
+            "X": 0.1158,
+            "Y": 0.2203,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 4001,
+            "LocationId": 4001,
+            "Kind": 5,
+            "MapId": 1,
+            "X": 0.3424,
+            "Y": 0.5002,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 4002,
+            "LocationId": 4002,
+            "Kind": 5,
+            "MapId": 1,
+            "X": 0.606,
+            "Y": 0.631,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 4003,
+            "LocationId": 4003,
+            "Kind": 5,
+            "MapId": 1,
+            "X": 0.5921,
+            "Y": 0.2689,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 4004,
+            "LocationId": 4004,
+            "Kind": 5,
+            "MapId": 1,
+            "X": 0.3447,
+            "Y": 0.4941,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 4005,
+            "LocationId": 4005,
+            "Kind": 5,
+            "MapId": 1,
+            "X": 0.5228,
+            "Y": 0.7192,
+            "MarketId": 0,
+            "Enable": true
+        },
+        {
+            "Index": 4006,
+            "LocationId": 4006,
+            "Kind": 5,
+            "MapId": 1,
+            "X": 0.6199,
+            "Y": 0.4515,
+            "MarketId": 0,
+            "Enable": true
+        }
+    ]
+}

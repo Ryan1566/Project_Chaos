@@ -1,0 +1,124 @@
+{
+    "datas": [
+        {
+            "Index": 1,
+            "LocationId": 3001,
+            "FacilityName": "秦岭栎林",
+            "OutputItemId": 9101,
+            "CycleSeconds": 60,
+            "OutputPerCycle": 1,
+            "StockLimit": 10,
+            "BuildMoney": 50,
+            "BuildMaterial": 20,
+            "Enable": true
+        },
+        {
+            "Index": 2,
+            "LocationId": 3002,
+            "FacilityName": "太行东麓",
+            "OutputItemId": 9101,
+            "CycleSeconds": 60,
+            "OutputPerCycle": 1,
+            "StockLimit": 10,
+            "BuildMoney": 50,
+            "BuildMaterial": 20,
+            "Enable": true
+        },
+        {
+            "Index": 3,
+            "LocationId": 3003,
+            "FacilityName": "江汉林场",
+            "OutputItemId": 9101,
+            "CycleSeconds": 60,
+            "OutputPerCycle": 1,
+            "StockLimit": 10,
+            "BuildMoney": 50,
+            "BuildMaterial": 20,
+            "Enable": true
+        },
+        {
+            "Index": 4,
+            "LocationId": 3004,
+            "FacilityName": "铁山",
+            "OutputItemId": 9102,
+            "CycleSeconds": 60,
+            "OutputPerCycle": 1,
+            "StockLimit": 10,
+            "BuildMoney": 50,
+            "BuildMaterial": 20,
+            "Enable": true
+        },
+        {
+            "Index": 5,
+            "LocationId": 3005,
+            "FacilityName": "蜀中铁矿",
+            "OutputItemId": 9102,
+            "CycleSeconds": 60,
+            "OutputPerCycle": 1,
+            "StockLimit": 10,
+            "BuildMoney": 50,
+            "BuildMaterial": 20,
+            "Enable": true
+        },
+        {
+            "Index": 6,
+            "LocationId": 3006,
+            "FacilityName": "晋南铁冶",
+            "OutputItemId": 9102,
+            "CycleSeconds": 60,
+            "OutputPerCycle": 1,
+            "StockLimit": 10,
+            "BuildMoney": 50,
+            "BuildMaterial": 20,
+            "Enable": true
+        },
+        {
+            "Index": 7,
+            "LocationId": 3007,
+            "FacilityName": "栎阳石场",
+            "OutputItemId": 9103,
+            "CycleSeconds": 60,
+            "OutputPerCycle": 1,
+            "StockLimit": 10,
+            "BuildMoney": 50,
+            "BuildMaterial": 20,
+            "Enable": true
+        },
+        {
+            "Index": 8,
+            "LocationId": 3008,
+            "FacilityName": "邯郸石场",
+            "OutputItemId": 9103,
+            "CycleSeconds": 60,
+            "OutputPerCycle": 1,
+            "StockLimit": 10,
+            "BuildMoney": 50,
+            "BuildMaterial": 20,
+            "Enable": true
+        },
+        {
+            "Index": 9,
+            "LocationId": 3009,
+            "FacilityName": "河东盐池",
+            "OutputItemId": 9104,
+            "CycleSeconds": 60,
+            "OutputPerCycle": 1,
+            "StockLimit": 10,
+            "BuildMoney": 50,
+            "BuildMaterial": 20,
+            "Enable": true
+        },
+        {
+            "Index": 10,
+            "LocationId": 3010,
+            "FacilityName": "蜀地卤泉",
+            "OutputItemId": 9104,
+            "CycleSeconds": 60,
+            "OutputPerCycle": 1,
+            "StockLimit": 10,
+            "BuildMoney": 50,
+            "BuildMaterial": 20,
+            "Enable": true
+        }
+    ]
+}

@@ -1,0 +1,54 @@
+{
+    "datas": [
+        {
+            "Index": 1,
+            "Kind": 1,
+            "CanTrade": false,
+            "CanBuild": false,
+            "CanHarvest": false,
+            "CanResolve": false,
+            "CanOpenOffice": true,
+            "Enable": true
+        },
+        {
+            "Index": 2,
+            "Kind": 2,
+            "CanTrade": true,
+            "CanBuild": false,
+            "CanHarvest": false,
+            "CanResolve": false,
+            "CanOpenOffice": true,
+            "Enable": true
+        },
+        {
+            "Index": 3,
+            "Kind": 3,
+            "CanTrade": true,
+            "CanBuild": false,
+            "CanHarvest": false,
+            "CanResolve": false,
+            "CanOpenOffice": false,
+            "Enable": true
+        },
+        {
+            "Index": 4,
+            "Kind": 4,
+            "CanTrade": false,
+            "CanBuild": true,
+            "CanHarvest": true,
+            "CanResolve": false,
+            "CanOpenOffice": false,
+            "Enable": true
+        },
+        {
+            "Index": 5,
+            "Kind": 5,
+            "CanTrade": false,
+            "CanBuild": false,
+            "CanHarvest": false,
+            "CanResolve": true,
+            "CanOpenOffice": false,
+            "Enable": true
+        }
+    ]
+}

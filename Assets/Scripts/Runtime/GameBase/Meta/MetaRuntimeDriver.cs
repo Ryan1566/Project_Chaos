@@ -40,23 +40,26 @@ public sealed class MetaRuntimeDriver : MonoBehaviour
         var current = GameSession.Instance.LoadedPayload;
         if (!ReferenceEquals(_payload, current) || _contextId != GameSession.Instance.ContextId)
         {
+            bool sessionReplaced = _payload != null;
             _payload = current;
             _contextId = GameSession.Instance.ContextId;
             _elapsed = _saveElapsed = 0;
             _officeElapsed=0;_officeReady=false;
             _savedSnapshot = JsonUtility.ToJson(current);
+            // 家族地点扩展许可只在当前会话有效，换档/重开时清空；首次进入保留已授予状态。
+            if (sessionReplaced) WorldLocationService.Instance.Reload();
         }
         _elapsed += Time.deltaTime;
         _saveElapsed += Time.unscaledDeltaTime;
         // 普通面板不冻结任务时限；暂停菜单（含其上层设置页）及读条阶段不推进。
-        bool taskWorldReady=VillageSceneBootstrap.IsReady||RunEncounter.IsSceneReady;
+        bool taskWorldReady=!SceneTransitionCoordinator.IsBusy&&(VillageSceneBootstrap.IsReady||RunEncounter.IsSceneReady);
         var ui=UIManager.Instance;
         bool menuPaused=ui.HasPanelInStack(PanelType.PausePanel);
         if(taskWorldReady&&!menuPaused)
         {
             if(!_officeReady){OfficeTaskService.Instance.RefreshTriggers();_officeReady=true;}
             _officeElapsed+=Time.unscaledDeltaTime;
-            if(_officeElapsed>=1){double seconds=Math.Floor(_officeElapsed);_officeElapsed-=seconds;OfficeTaskService.Instance.Tick(seconds);}
+            if(_officeElapsed>=1){double seconds=Math.Floor(_officeElapsed);_officeElapsed-=seconds;OfficeTaskService.Instance.Tick(seconds);WorldResourceService.Instance.Tick(seconds);}
         }
         if (_elapsed >= 1)
         {

@@ -194,6 +194,32 @@
             "InfluenceDelta": 0,
             "DevelopmentDelta": 0,
             "Enable": false
+        },
+        {
+            "Index": 150011,
+            "TaskId": 15001,
+            "OptionText": "交付物资",
+            "CostResourceType": 0,
+            "CostAmount": 0,
+            "RewardResourceType": 4,
+            "RewardAmount": 5,
+            "ReputationDelta": 1,
+            "InfluenceDelta": 0,
+            "DevelopmentDelta": 0,
+            "Enable": true
+        },
+        {
+            "Index": 150021,
+            "TaskId": 15002,
+            "OptionText": "通知乡里戒备",
+            "CostResourceType": 0,
+            "CostAmount": 0,
+            "RewardResourceType": 0,
+            "RewardAmount": 0,
+            "ReputationDelta": 0,
+            "InfluenceDelta": 0,
+            "DevelopmentDelta": 0,
+            "Enable": true
         }
     ]
 }

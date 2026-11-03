@@ -38,6 +38,6 @@ public static class OfficeTaskText
         string text=Texts.TryGetValue(key,out var row)?row[index]:key;
         return args.Length==0?text:string.Format(text,args);
     }
-    public static string Status(OfficeTaskStatus state) {return Get(state==OfficeTaskStatus.Completed?"completed":state==OfficeTaskStatus.Failed?"failed":state==OfficeTaskStatus.AwaitingBattle?"battle":"active");}
+    public static string Status(OfficeTaskStatus state) {return state==OfficeTaskStatus.Available?"可接取":Get(state==OfficeTaskStatus.Completed?"completed":state==OfficeTaskStatus.Failed?"failed":state==OfficeTaskStatus.AwaitingBattle?"battle":"active");}
     public static string Time(double seconds) {long value=(long)System.Math.Ceiling(System.Math.Max(0,seconds));return Get("time",value/60,(value%60).ToString("00"));}
 }

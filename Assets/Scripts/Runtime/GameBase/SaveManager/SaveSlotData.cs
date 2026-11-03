@@ -128,6 +128,23 @@ public class SavePayload
     public int influence;
     public int villageDevelopment;
     public double officeClockSeconds;
+
+    /// <summary>世界地点资产/临时点状态；旧档缺失时为空列表，按未建造、未完成处理。</summary>
+    public List<WorldLocationSave> worldLocations = new List<WorldLocationSave>();
+}
+
+/// <summary>单个地点的持久化状态：资源设施进度与临时点完成/冷却共用一条记录。</summary>
+[Serializable]
+public class WorldLocationSave
+{
+    /// <summary>成功处置次数；可重复前置内容也能解锁后续见闻。</summary>
+    public uint resolvedCount;
+    public uint locationId;
+    public bool built;
+    public double productionSeconds;
+    public uint pendingOutput;
+    public bool completed;
+    public double lastResolvedClock;
 }
 
 /// <summary>每个任务保留当前轮次及永久完成记录，重复任务不清除历史完成次数。</summary>

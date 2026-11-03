@@ -1,0 +1,95 @@
+{
+    "datas": [
+        {
+            "Index": 1,
+            "MarketId": 1,
+            "LocationId": 2001,
+            "Name": "狄道市场",
+            "Enable": true
+        },
+        {
+            "Index": 2,
+            "MarketId": 2,
+            "LocationId": 2002,
+            "Name": "临邛市场",
+            "Enable": true
+        },
+        {
+            "Index": 3,
+            "MarketId": 3,
+            "LocationId": 2003,
+            "Name": "江州市场",
+            "Enable": true
+        },
+        {
+            "Index": 4,
+            "MarketId": 4,
+            "LocationId": 2004,
+            "Name": "肤施市场",
+            "Enable": true
+        },
+        {
+            "Index": 5,
+            "MarketId": 5,
+            "LocationId": 2005,
+            "Name": "榆次市场",
+            "Enable": true
+        },
+        {
+            "Index": 6,
+            "MarketId": 6,
+            "LocationId": 2006,
+            "Name": "涿市场",
+            "Enable": true
+        },
+        {
+            "Index": 7,
+            "MarketId": 7,
+            "LocationId": 2007,
+            "Name": "商邑市场",
+            "Enable": true
+        },
+        {
+            "Index": 8,
+            "MarketId": 8,
+            "LocationId": 2008,
+            "Name": "东阿市场",
+            "Enable": true
+        },
+        {
+            "Index": 9,
+            "MarketId": 9,
+            "LocationId": 2009,
+            "Name": "莒市场",
+            "Enable": true
+        },
+        {
+            "Index": 10,
+            "MarketId": 10,
+            "LocationId": 2010,
+            "Name": "盱眙市场",
+            "Enable": true
+        },
+        {
+            "Index": 11,
+            "MarketId": 11,
+            "LocationId": 2011,
+            "Name": "句章市场",
+            "Enable": true
+        },
+        {
+            "Index": 12,
+            "MarketId": 12,
+            "LocationId": 2012,
+            "Name": "安陆市场",
+            "Enable": true
+        },
+        {
+            "Index": 13,
+            "MarketId": 13,
+            "LocationId": 2013,
+            "Name": "白泉部落市场",
+            "Enable": true
+        }
+    ]
+}

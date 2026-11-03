@@ -1,15 +1,8 @@
 using UnityEngine;
 
 /// <summary>
-/// 点位**元数据（名称 / 图标）**查询接口。
-///
-/// ══════════════ 为什么要有这层接口 ══════════════
-/// 世界观地图表 (`WorldMap`) **只存"在哪、什么类别、指向谁"**，不存名称与图标 ——
-/// 那是**地点表 / 兴趣点表**的职责（见 `03_地点表与兴趣点表_接口约定.md`）。
-/// 那两张表**本次尚未落地**，所以现在用一个恒返回 false 的占位实现，
-/// 面板据此退化成"只显示 `(Kind, Type, RefId)` 三元组"。
-///
-/// 等表落地后：**只需换一个实现**（或在这里加分支），`WorldMapPanel` 一行都不用改。
+/// 点位名称和图标的兼容查询接口。位置来自绘图表，业务内容来自地点配置。
+/// 完整详情由IWorldLocationMetaProvider按时代及身份提供。
 /// </summary>
 public interface IWorldMapMetaProvider
 {
@@ -20,16 +13,27 @@ public interface IWorldMapMetaProvider
     bool TryGetMeta(uint kind, uint type, uint refId, out string name, out Sprite icon);
 }
 
-/// <summary>
-/// **MVP 占位实现**：地点表 / 兴趣点表尚未落地 → **恒返回 false**。
-/// 于是面板只会显示三元组，不会有图标资产依赖（也就不会因为缺图标而报错）。
-/// </summary>
-public class WorldMapMetaProvider : IWorldMapMetaProvider
+/// <summary>地点详情的时代及身份查询，与旧名称图标接口兼容。</summary>
+public interface IWorldLocationMetaProvider : IWorldMapMetaProvider
 {
+    WorldLocationSnapshot GetLocationMeta(uint era,uint refId,WorldLocationIdentity identity);
+}
+
+/// <summary>正式地点表提供名称和图标；缺失PNG时仍可返回名称。</summary>
+public class WorldMapMetaProvider : IWorldLocationMetaProvider
+{
+    public WorldLocationSnapshot GetLocationMeta(uint era,uint refId,WorldLocationIdentity identity)
+        =>WorldLocationService.Instance.GetLocation(era,refId,identity);
     public bool TryGetMeta(uint kind, uint type, uint refId, out string name, out Sprite icon)
     {
         name = null;
         icon = null;
-        return false;
+        if(kind!=1&&kind!=2)return false;
+        uint era=GameSession.Instance.LoadedPayload?.era??1;
+        var place=GetLocationMeta(era,refId,WorldLocationIdentity.Family);
+        if(place==null)return false;
+        name=place.Name;
+        if(!string.IsNullOrEmpty(place.IconKey))icon=Resources.Load<Sprite>("UI/WorldLocations/"+place.IconKey);
+        return !string.IsNullOrEmpty(name);
     }
 }

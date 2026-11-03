@@ -1,0 +1,32 @@
+{
+    "datas": [
+        {
+            "Index": 1,
+            "OutputItemId": 9101,
+            "Name": "木材",
+            "IconKey": "forest",
+            "Enable": true
+        },
+        {
+            "Index": 2,
+            "OutputItemId": 9102,
+            "Name": "铁矿石",
+            "IconKey": "iron_mine",
+            "Enable": true
+        },
+        {
+            "Index": 3,
+            "OutputItemId": 9103,
+            "Name": "石料",
+            "IconKey": "quarry",
+            "Enable": true
+        },
+        {
+            "Index": 4,
+            "OutputItemId": 9104,
+            "Name": "原盐",
+            "IconKey": "saltworks",
+            "Enable": true
+        }
+    ]
+}
