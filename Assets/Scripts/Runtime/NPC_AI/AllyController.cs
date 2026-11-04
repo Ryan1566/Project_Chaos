@@ -615,6 +615,35 @@ public class AllyController : MonoBehaviour
 
         //W3.3：受控角色已在观战 + 这是最后一个站着的门客 → 全队倒下 → 失败
         RunEncounter.CheckTeamWipe();
+        if (RunEncounter.Defeated) RunEncounter.DiscardTeamVitalsOnDefeat();
+    }
+
+    /// <summary>
+    /// 跨场景继承：按上一图快照写回当前 HP 与倒地标记。
+    /// 不走 TakeDamage/Down/Revive，避免伤害飘字、结算和重复全队判负；倒地者保持禁用，不能自动复活。
+    /// </summary>
+    public void ApplyCarriedVitals(int hp, bool downed)
+    {
+        EnsureMaxHp();
+        if (downed)
+        {
+            IsDowned = true;
+            _hp = 0;
+            _hpInited = true;
+            StopMoving();
+            CancelAttack();
+            if (_body != null) _body.velocity = Vector2.zero;
+            if (_surface != null) _surface.SetSlideMaterial(false);
+            SetDownedVisual(true);
+            enabled = false;
+            return;
+        }
+
+        IsDowned = false;
+        _hp = Mathf.Clamp(hp, 1, MaxHp);
+        _hpInited = true;
+        SetDownedVisual(false);
+        enabled = true;
     }
 
     /// <summary>复活：回到指定 HP 并恢复跟随/攻击。</summary>

@@ -17,7 +17,8 @@ namespace Chaos.MVP.Presenter.Gameplay
         Depart,
         Return,
         Close,
-        Refresh
+        Refresh,
+        OpenRetainers
     }
 
     /// <summary>派遣界面的单向意图数据。</summary>
@@ -110,6 +111,12 @@ namespace Chaos.MVP.Presenter.Gameplay
             {
                 case DispatchAction.Close:
                     View.ClosePanel();
+                    return;
+                case DispatchAction.OpenRetainers:
+                    if (GameSession.Instance.IsPersistent && VillageSceneBootstrap.IsReady
+                        && VillageSceneFlow.IsVillageScene && !DispatchService.Instance.IsInRun
+                        && !RunSceneFlow.IsTransitioning)
+                        UIManager.Instance.PushPanel(PanelType.RetainerPanel);
                     return;
                 case DispatchAction.Refresh:
                     Refresh();

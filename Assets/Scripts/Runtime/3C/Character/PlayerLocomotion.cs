@@ -130,8 +130,8 @@ public class PlayerLocomotion : MonoBehaviour
         if (InputManager.Instance.GameplayInputBlocked) { ClearInput(); return; }
 
         _isGrounded = CheckGrounded();
-        //空中贴墙时不允许摩擦替重力“托住”角色；落地/离开侧墙立即恢复原材质。
-        if (_surface != null) _surface.SetSlideMaterial(!_isGrounded && _surface.HasSideContact());
+        // 起跳的第一物理帧也要关闭侧墙摩擦，避免离地前先损失向上速度。
+        if (_surface != null) _surface.SetSlideMaterial((!_isGrounded || _jumpRequested) && _surface.HasSideContact());
 
         //水平移动：基础速度只作为输入，最终速度叠加家族树永久加成。
         Vector2 velocity = _body.velocity;

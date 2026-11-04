@@ -26,6 +26,7 @@ public class PlayerHealth : MonoBehaviour
     private Rigidbody2D _body;
     private int _runHealthBonus;
     private int _itemHealthBonus;
+    public int ItemHealthBonus => _itemHealthBonus;
     private int _familyHealthBonus;
     private bool _spawnHealthInitialized;
 
@@ -78,6 +79,17 @@ public class PlayerHealth : MonoBehaviour
         _body = GetComponent<Rigidbody2D>();
     }
 
+    /// <summary>
+    /// 跨场景继承：把上一图抓取的当前 HP 与倒地标记写回新生成的角色。
+    /// 只做绝对赋值，不经过受伤/治疗/奖励入口；倒地视觉与观战控制由 RunEncounter 统一恢复。
+    /// </summary>
+    public void ApplyCarriedVitals(int hp, bool downed)
+    {
+        _spawnHealthInitialized = true;
+        if (downed) { Hp = 0; return; }
+        Hp = Mathf.Clamp(hp, 1, maxHp);
+    }
+
     /// <summary>接触伤害入口（由敌人调用）。无敌帧内会被忽略。</summary>
     public bool ApplyContactDamage(int amount)
     {
@@ -119,6 +131,8 @@ public class PlayerHealth : MonoBehaviour
     {
         ChaosLog.Warn(LogChannel.UI, "[玩家] 受控角色 HP 归零 → 倒地（等待 RunEncounter 判定观战/失败）");
         RunEncounter.OnPlayerDowned();
+        // 只有全队倒下才算本局失败；观战状态仍允许切图，不能在这里清掉生命快照。
+        if (RunEncounter.Defeated) RunEncounter.DiscardTeamVitalsOnDefeat();
     }
 
     /// <summary>倒地/复活的视觉：Spine 没有 _Color → 改 `skeleton.A`（0.4 = 半透明）。</summary>

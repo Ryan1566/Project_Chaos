@@ -114,6 +114,7 @@ public class DispatchPanel : BasePanel, IDispatchView
     private Button _depart;
     private Button _return;
     private Button _close;
+    private Button _retainers;
     private Image _filterAllImage;
     private Image _filterAvailableImage;
     private Image _filterTeamImage;
@@ -376,8 +377,10 @@ public class DispatchPanel : BasePanel, IDispatchView
     {
         _left = PanelArea("RosterPanel", body, 0f, 0f, 0.315f, 1f);
 
-        _leftHeader = Label("RosterHeader", _left, 0.04f, 0.94f, 0.96f, 0.995f,
+        _leftHeader = Label("RosterHeader", _left, 0.04f, 0.94f, 0.57f, 0.995f,
             L("ui_dispatch_roster", "门客列表"), 22f, Gold);
+        _retainers = MakeButton("Btn_Retainers", _left, .60f, .935f, .96f, .995f,
+            L("ui_retainer_recruit", "招募门客"), () => Send(DispatchAction.OpenRetainers), 16f);
         BuildSearchField();
         BuildFilterButtons();
         BuildRosterScroll();
@@ -1074,6 +1077,11 @@ public class DispatchPanel : BasePanel, IDispatchView
         bool canReturn = snapshot.IsInRun && !snapshot.IsTransitioning;
         if (_depart != null) _depart.gameObject.SetActive(!snapshot.IsInRun);
         if (_return != null) _return.gameObject.SetActive(snapshot.IsInRun);
+        if (_retainers != null)
+        {
+            _retainers.gameObject.SetActive(!snapshot.IsInRun);
+            _retainers.interactable = !snapshot.IsTransitioning;
+        }
         foreach (var primary in new[] { _depart, _return })
         {
             if (primary == null) continue;

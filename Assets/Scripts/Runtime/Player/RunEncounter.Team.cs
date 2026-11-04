@@ -24,6 +24,7 @@ public static partial class RunEncounter
     {
         if (Defeated || RunCleared) return;
         Defeated = true;
+        DiscardTeamVitalsOnDefeat();
         _sceneReady = false;   //停止清房/切场景
         _pendingNextScene = -1;
         IsSpectator = false;

@@ -135,6 +135,10 @@ public static partial class RunEncounter
         _entering = true;
         try
         {
+            // 跨场景生命继承：第 1 图是新局，直接清空旧快照；后续图必须在清场前抓取本局当前状态。
+            // 正式切图已在 SuspendForSceneTransition 抓取过，此时旧角色已卸载，CaptureTeamVitals 会保留原快照。
+            if (sceneIndex == 1) ClearTeamVitals();
+            else CaptureTeamVitals();
 
             // 已入库存的物品及扎营次数属于整局；只有未捡掉落物随场景清除。
             if (sceneIndex == 1)
@@ -237,6 +241,8 @@ public static partial class RunEncounter
                 return false;
             }
             Chaos.Gameplay.RunTeam.RunTeamProgress.ApplyToSpawnedTeam();
+            // 成长与生成初始化完成后再写回本局生命，避免被出生满血覆盖；道具生命上限仍由原服务后续刷新。
+            RestoreTeamVitals();
             EnsureTicker();
 
             RunDepthHud.EnableForRun();   //W4e：进局开闸 + 建 HUD（CurrentSceneIndex 已就位）
@@ -322,6 +328,8 @@ public static partial class RunEncounter
     /// <summary>正式阶段切换只清本场景对象；整局背包、扎营、队伍和种子保留。</summary>
     public static void SuspendForSceneTransition()
     {
+        // 正式切图会在加载新场景前卸载旧角色，必须在清场前抓取本局 HP/倒地状态。
+        CaptureTeamVitals();
         DamageFloaters.Clear();
         _sceneReady = false;
         _pendingNextScene = -1;
@@ -401,6 +409,8 @@ public static partial class RunEncounter
     public static void Clear()
     {
         DayNightClock.ClearRun();
+        // 撤离/回村即本局结束，跨场景生命快照不得留给下一局。
+        ClearTeamVitals();
         DamageFloaters.Clear();
         // Wounds are a gameplay transaction owned by Dispatch.Return, never a cleanup side effect.
         RunTeamHud.DisableAndDestroy();   //W3.3：撤离销毁队伍血条

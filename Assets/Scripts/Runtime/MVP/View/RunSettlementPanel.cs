@@ -51,6 +51,8 @@ public class RunSettlementPanel : BasePanel, IGameplayView<SettlementState>
 
     public static void Open(bool win)
     {
+        // 结算会冻结时间，先回收最后一击的飘字，避免数字长期覆盖结算内容。
+        DamageFloaters.Clear();
         SettlementPresenter.Begin(win);
         if (UIManager.Instance == null) return;
 
