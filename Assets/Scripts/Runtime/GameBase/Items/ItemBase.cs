@@ -12,7 +12,15 @@ namespace Chaos.Gameplay.Items
         public string Name => GameplayText.ItemName(Definition);
         public string IconKey => Definition.IconKey;
         public Sprite Icon => string.IsNullOrEmpty(IconKey) ? null : Resources.Load<Sprite>(IconKey);
-        public string Description => Profile?.description ?? "此道具暂无局内主动效果。";
+        public string Description
+        {
+            get
+            {
+                if (Profile != null && Profile.effect == ItemUseEffect.DoubleJump)
+                    return "获得后自动生效，无需也不能主动使用。" + (string.IsNullOrEmpty(Profile.description) ? "" : "\n" + Profile.description);
+                return Profile?.description ?? "此道具暂无局内主动效果。";
+            }
+        }
         public string SubCategory => Profile?.subCategory ?? "未细分";
         public ItemParentCategory ParentCategory => Definition.RunCategory == 1 ? ItemParentCategory.Important
             : Definition.RunCategory == 2 ? ItemParentCategory.Engineering : Definition.RunCategory == 3 ? ItemParentCategory.Recovery
@@ -46,6 +54,7 @@ namespace Chaos.Gameplay.Items
                 reason = null;
                 if (actor == null || actor.IsDowned) reason = "当前角色无法使用道具";
                 else if (Profile == null || Profile.effect == ItemUseEffect.None) reason = "此道具没有主动使用效果";
+                else if (Profile.effect == ItemUseEffect.DoubleJump) reason = "获得后自动生效，不能主动使用";
                 else if (!System.Enum.IsDefined(typeof(ItemUseEffect), Profile.effect) || Profile.value <= 0 || !Finite(Profile.cooldown) || !Finite(Profile.animationSeconds)
                     || (Profile.effect == ItemUseEffect.MaximumHealth && (!Finite(Profile.duration) || Profile.duration <= 0))
                     || (Profile.effect == ItemUseEffect.AreaDamage && (!Finite(Profile.radius) || Profile.radius <= 0))) reason = "道具效果配置无效";

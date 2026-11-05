@@ -4,7 +4,8 @@ using UnityEngine;
 namespace Chaos.Gameplay.Items
 {
     public enum ItemParentCategory { Important = 1, Recovery = 2, Engineering = 3, Material = 4, Misc = 5 }
-    public enum ItemUseEffect { None, Heal, MaximumHealth, AreaDamage }
+    /// <summary>道具使用效果；DoubleJump 为被动效果，追加在末尾以保持已有枚举值稳定。</summary>
+    public enum ItemUseEffect { None, Heal, MaximumHealth, AreaDamage, DoubleJump }
     [Serializable]
     public sealed class ItemUseProfile
     {

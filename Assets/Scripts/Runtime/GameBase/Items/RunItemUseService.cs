@@ -58,6 +58,25 @@ namespace Chaos.Gameplay.Items
             RunInventory.NotifyUseCommitted();
             reason = "已使用：" + item.Name; return true;
         }
+        /// <summary>
+        /// 查询永久被动效果：效果类型来自 Catalog，归属实时读取永久重要道具，不做结果缓存。
+        /// 这里不初始化或清理本局上下文，避免一次查询清掉已有增益。
+        /// </summary>
+        public static bool HasPermanentEffect(ItemUseEffect effect)
+        {
+            if (!GameSession.Instance.HasSession || GameSession.Instance.LoadedPayload == null) return false;
+            var catalog = ItemUseCatalog.Load();
+            if (catalog == null || catalog.profiles == null) return false;
+            foreach (var profile in catalog.profiles)
+            {
+                if (profile == null || profile.effect != effect) continue;
+                var definition = InventoryService.Instance.GetDefinition(profile.itemId);
+                // 仅启用的重要道具可提供永久效果；不依赖它是否占用当前背包格位。
+                if (definition == null || !definition.Enable || definition.RunCategory != 1) continue;
+                if (RunBagProgression.Owns(profile.itemId)) return true;
+            }
+            return false;
+        }
         public static void Tick(float deltaTime)
         {
             EnsureContext();

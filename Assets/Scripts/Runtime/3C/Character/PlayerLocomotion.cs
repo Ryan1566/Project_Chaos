@@ -1,3 +1,4 @@
+using Chaos.Gameplay.Items;
 using ChaosDebug;
 using Spine.Unity;
 using UnityEngine;
@@ -23,6 +24,8 @@ public class PlayerLocomotion : MonoBehaviour
     public Vector2 feetOffset = new Vector2(0f, -0.05f);
 
     private const float IdleThreshold = 0.1f;
+    /// <summary>落地后允许的残余下降速度；高速擦过台阶圆角不算真正着陆。</summary>
+    private const float LandingSettleSpeed = 0.5f;
 
     private Rigidbody2D _body;
     private PlayerSurfacePhysics _surface;
@@ -30,6 +33,8 @@ public class PlayerLocomotion : MonoBehaviour
     private int _facing = 1;
     private bool _isGrounded;
     private bool _jumpRequested;
+    /// <summary>本次腾空是否已用掉空中跳；不随面板开关或组件启停重置。</summary>
+    private bool _airJumpUsed;
     private string _currentAnimation;
 
     /// <summary>朝向：1 = 右，-1 = 左。</summary>
@@ -135,13 +140,26 @@ public class PlayerLocomotion : MonoBehaviour
 
         //水平移动：基础速度只作为输入，最终速度叠加家族树永久加成。
         Vector2 velocity = _body.velocity;
+        // 只有脚底可站立面且竖直速度已停稳才算真正着陆；上升或高速擦过墙角/台阶不恢复空中次数。
+        bool groundedAndSettled = _isGrounded && velocity.y <= 0f && velocity.y >= -LandingSettleSpeed;
+        if (groundedAndSettled) _airJumpUsed = false;
         velocity.x = _horizontalInput * (RunEncounter.OwnsRuntimeObject(gameObject) ? MetaCharacterStats.MoveSpeed(moveSpeed) : moveSpeed);
 
-        //跳跃（落地才可跳）
-        if (_jumpRequested && _isGrounded)
+        //跳跃：地面起跳保留原逻辑；腾空后拥有“上云术”时追加一次，第三次点按无效。
+        if (_jumpRequested)
         {
-            velocity.y = jumpForce;
-            ChaosLog.Info(LogChannel.UI, "[玩家] 跳跃（无跳跃动画，占位表现）");
+            if (_isGrounded)
+            {
+                velocity.y = jumpForce;
+                _airJumpUsed = false;
+                ChaosLog.Info(LogChannel.UI, "[玩家] 跳跃（无跳跃动画，占位表现）");
+            }
+            else if (!_airJumpUsed && RunItemUseService.HasPermanentEffect(ItemUseEffect.DoubleJump))
+            {
+                velocity.y = jumpForce;
+                _airJumpUsed = true;
+                ChaosLog.Info(LogChannel.UI, "[玩家] 二段跳（上云术，无跳跃动画，占位表现）");
+            }
         }
         _jumpRequested = false;
 
