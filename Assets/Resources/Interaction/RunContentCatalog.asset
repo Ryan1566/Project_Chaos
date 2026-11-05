@@ -50,6 +50,28 @@ MonoBehaviour:
         zhTW: 
         jaJP: 
         koKR: 
+    quest:
+      enabled: 1
+      id: healer_gather_herbs
+      targetContentId: herbs
+      title:
+        zhCN: "\u6CBF\u9014\u91C7\u836F"
+        enUS: Herbs Along the Road
+        zhTW: "\u6CBF\u9014\u63A1\u85E5"
+        jaJP: "\u9053\u4E2D\u306E\u85AC\u8349"
+        koKR: "\uAE38 \uC704\uC758 \uC57D\uCD08"
+      description:
+        zhCN: "\u8BF7\u91C7\u96C6\u4E00\u5904\u91CE\u751F\u836F\u8349\uFF0C\u518D\u5411\u4EFB\u610F\u884C\u811A\u533B\u8005\u590D\u547D\u3002\u63A5\u53D6\u540E\u6210\u529F\u91C7\u96C6\u624D\u8BA1\u6570\uFF0C\u4E09\u56FE\u5185\u6709\u6548\u3002"
+        enUS: Gather one wild herb patch after accepting, then report to any travelling
+          healer. Progress lasts this expedition.
+        zhTW: "\u8ACB\u63A1\u96C6\u4E00\u8655\u91CE\u751F\u85E5\u8349\uFF0C\u518D\u5411\u4EFB\u610F\u884C\u8173\u91AB\u8005\u5FA9\u547D\u3002\u63A5\u53D6\u5F8C\u6210\u529F\u63A1\u96C6\u624D\u8A08\u6578\uFF0C\u4E09\u5716\u5167\u6709\u6548\u3002"
+        jaJP: "\u53D7\u6CE8\u5F8C\u306B\u91CE\u751F\u306E\u85AC\u8349\u3092\u4E00\u304B\u6240\u63A1\u53D6\u3057\u3001\u65C5\u306E\u533B\u5E2B\u306B\u5831\u544A\u3057\u3088\u3046\u3002\u9032\u6357\u306F\u4ECA\u56DE\u306E\u63A2\u7D22\u4E2D\u306E\u307F\u6709\u52B9\u3002"
+        koKR: "\uC218\uB77D \uD6C4 \uC57C\uC0DD \uC57D\uCD08 \uD55C \uACF3\uC744
+          \uCC44\uC9D1\uD558\uACE0 \uB5A0\uB3CC\uC774 \uC758\uC6D0\uC5D0\uAC8C \uBCF4\uACE0\uD558\uC138\uC694.
+          \uC9C4\uD589\uB3C4\uB294 \uC774\uBC88 \uC6D0\uC815 \uB3D9\uC548 \uC720\uC9C0\uB429\uB2C8\uB2E4."
+      requiredCount: 1
+      rewardItemId: 1
+      rewardCount: 1
   - id: chest
     kind: 1
     name:
@@ -95,6 +117,25 @@ MonoBehaviour:
         zhTW: 
         jaJP: 
         koKR: 
+    quest:
+      enabled: 0
+      id: 
+      targetContentId: 
+      title:
+        zhCN: 
+        enUS: 
+        zhTW: 
+        jaJP: 
+        koKR: 
+      description:
+        zhCN: 
+        enUS: 
+        zhTW: 
+        jaJP: 
+        koKR: 
+      requiredCount: 1
+      rewardItemId: 0
+      rewardCount: 1
   - id: herbs
     kind: 2
     name:
@@ -122,6 +163,25 @@ MonoBehaviour:
         zhTW: 
         jaJP: 
         koKR: 
+    quest:
+      enabled: 0
+      id: 
+      targetContentId: 
+      title:
+        zhCN: 
+        enUS: 
+        zhTW: 
+        jaJP: 
+        koKR: 
+      description:
+        zhCN: 
+        enUS: 
+        zhTW: 
+        jaJP: 
+        koKR: 
+      requiredCount: 1
+      rewardItemId: 0
+      rewardCount: 1
   - id: ore
     kind: 2
     name:
@@ -149,4 +209,23 @@ MonoBehaviour:
         zhTW: 
         jaJP: 
         koKR: 
+    quest:
+      enabled: 0
+      id: 
+      targetContentId: 
+      title:
+        zhCN: 
+        enUS: 
+        zhTW: 
+        jaJP: 
+        koKR: 
+      description:
+        zhCN: 
+        enUS: 
+        zhTW: 
+        jaJP: 
+        koKR: 
+      requiredCount: 1
+      rewardItemId: 0
+      rewardCount: 1
   gatherableCount: 2

@@ -12,6 +12,18 @@ public static class RunContentSetup
     static RunContentText T(string cn, string en, string tw, string jp, string kr) =>
         new RunContentText { zhCN = cn, enUS = en, zhTW = tw, jaJP = jp, koKR = kr };
     static RunContentReward R(uint id, uint min, uint max) => new RunContentReward { itemId = id, minCount = min, maxCount = max };
+    /// <summary>首条架空生活委托；仅在明确配置时接入，不覆盖用户编辑的其他内容。</summary>
+    public static RunNpcQuestDefinition CreateHerbQuest() => new RunNpcQuestDefinition
+    {
+        enabled = true, id = "healer_gather_herbs", targetContentId = "herbs", requiredCount = 1,
+        rewardItemId = 1, rewardCount = 1,
+        title = T("沿途采药", "Herbs Along the Road", "沿途採藥", "道中の薬草", "길 위의 약초"),
+        description = T("请采集一处野生药草，再向任意行脚医者复命。接取后成功采集才计数，三图内有效。",
+            "Gather one wild herb patch after accepting, then report to any travelling healer. Progress lasts this expedition.",
+            "請採集一處野生藥草，再向任意行腳醫者復命。接取後成功採集才計數，三圖內有效。",
+            "受注後に野生の薬草を一か所採取し、旅の医師に報告しよう。進捗は今回の探索中のみ有効。",
+            "수락 후 야생 약초 한 곳을 채집하고 떠돌이 의원에게 보고하세요. 진행도는 이번 원정 동안 유지됩니다.")
+    };
     public static string Apply()
     {
         if (Application.isPlaying) throw new System.InvalidOperationException("Edit mode only");
@@ -22,7 +34,7 @@ public static class RunContentSetup
         {
             catalog = ScriptableObject.CreateInstance<RunContentCatalog>(); catalog.gatherableCount = 2;
             catalog.definitions = new[] {
-                new RunContentDefinition { id="traveller",kind=RunContentKind.Npc,
+                new RunContentDefinition { id="traveller",kind=RunContentKind.Npc,quest=CreateHerbQuest(),
                     name=T("行脚医者","Travelling Healer","行腳醫者","旅の医師","떠돌이 의원"),
                     body=T("乱世行路不易。我还有些补给，你可以从中选一份。药材可用于疗伤，干粮能暂时提高生命上限。保重！", "These roads are dangerous. Take one of my supplies: medicine for wounds, or rations for a temporary health boost. Travel safely!", "亂世行路不易。我還有些補給，你可以從中選一份。藥材可用於療傷，乾糧能暫時提高生命上限。保重！", "危険な旅路だ。薬か携行食を一つ選んでくれ。薬は治療に、携行食は一時的な体力強化に使える。気をつけて。", "험한 길이군요. 약재나 식량 중 하나를 가져가세요. 약재는 치료에, 식량은 일시적인 최대 체력 증가에 쓰입니다. 조심하세요!"), rewards=new[]{R(1,1,1),R(5,1,1)} },
                 new RunContentDefinition { id="chest",kind=RunContentKind.Chest,

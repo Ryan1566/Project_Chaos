@@ -21,6 +21,7 @@ namespace Chaos.Gameplay.Interaction
         public bool IsValid { get { string reason; return !closed && Owns(out reason); } }
         public bool Completed { get { return target != null && target.Completed; } }
         public IReadOnlyList<RunContentRewardState> Rewards { get { return readOnlyRewards; } }
+        public RunNpcQuestSnapshot Quest => RunNpcQuestService.Read(target == null ? null : target.Definition);
         public event Action Changed;
 
         internal RunContentSession(RunContentInteractable target, GameObject actor)
@@ -41,6 +42,13 @@ namespace Chaos.Gameplay.Interaction
             if (!target.TryClaimReward(index, out reason)) return false;
             RaiseChanged();
             return true;
+        }
+
+        public bool TryAdvanceQuest(out string reason)
+        {
+            if (!Owns(out reason) || !WithinReach(out reason)) return false;
+            if (!RunNpcQuestService.TryAdvance(target.Definition, out reason)) return false;
+            RaiseChanged(); return true;
         }
 
         public void Close()

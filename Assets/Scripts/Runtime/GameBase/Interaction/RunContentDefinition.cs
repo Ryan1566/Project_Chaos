@@ -44,6 +44,18 @@ namespace Chaos.Gameplay.Interaction
         public RunContentKind kind;
         public RunContentText name, body;
         public RunContentReward[] rewards;
+        public RunNpcQuestDefinition quest;
+    }
+
+    /// <summary>医者可选委托；独立开关兼容Unity对内联空对象的序列化。</summary>
+    [Serializable]
+    public sealed class RunNpcQuestDefinition
+    {
+        public bool enabled;
+        public string id, targetContentId;
+        public RunContentText title, description;
+        public int requiredCount = 1;
+        public uint rewardItemId, rewardCount = 1;
     }
 
     /// <summary>Read-only view of one configured reward after its stable count has been snapshotted.</summary>
