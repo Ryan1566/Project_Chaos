@@ -67,6 +67,7 @@
     <Compile Include="Assets\Scripts\Runtime\GameBase\Interaction\RunContentPresentation.cs" />
     <Compile Include="Assets\Scripts\Runtime\MVP\Model\ConfigData\LoadingTable_LoadingConfig.cs" />
     <Compile Include="Assets\Scripts\Runtime\GameBase\UIManager\OtherUIManager\BasePanel.cs" />
+    <Compile Include="Assets\Scripts\Runtime\Player\RunEncounter.Vitals.cs" />
     <Compile Include="Assets\Scripts\Runtime\GameBase\Interaction\RunContentVisualSettings.cs" />
     <Compile Include="Assets\Scripts\Runtime\MVP\View\RunBagSlotView.cs" />
     <Compile Include="Assets\Scripts\Runtime\GameBase\Village\VillageSceneSettings.cs" />
@@ -246,6 +247,7 @@
     <Compile Include="Assets\Scripts\Runtime\Player\PlayerSpawner.cs" />
     <Compile Include="Assets\Scripts\Runtime\MVP\Model\ConfigData\RunMapTable_MapBiomeConfig.cs" />
     <Compile Include="Assets\Scripts\Runtime\GameBase\Meta\OfficeTaskCatalog.cs" />
+    <Compile Include="Assets\Scripts\Runtime\GameBase\Interaction\RunNpcQuestService.cs" />
     <Compile Include="Assets\Scripts\Runtime\MVP\Model\Gameplay\RunMapModel.cs" />
     <Compile Include="Assets\Scripts\Runtime\GameBase\DialogueManager\DialogueManager.cs" />
     <Compile Include="Assets\Scripts\Runtime\3C\Camera\CombatCameraShakeSettings.cs" />
@@ -439,6 +441,7 @@
     <None Include="Assets\QA\WorldLocations\clock.txt" />
     <None Include="Assets\AI\runmap-art\src\RunMapValidator.cs.txt" />
     <None Include="Assets\QA\InputRedirect\final-navigation-tool-body.cs.txt" />
+    <None Include="Assets\QA\NaturalPlay\vitals-regression.txt" />
     <None Include="Assets\QA\ActorMapBugs\flow.txt" />
     <None Include="Assets\QA\MapGeneration\Preview-3-0.txt" />
     <None Include="Assets\QA\RunTeam\build.txt" />
@@ -449,6 +452,7 @@
     <None Include="Assets\QA\RunMapUI\protected-data.txt" />
     <None Include="Assets\QA\WorldLocations\Baseline\misplaced-configs\WorldLocationTable_LocationTextConfig.cs.meta.txt" />
     <None Include="Assets\QA\InputRedirect\gamepad-tool-body.cs.txt" />
+    <None Include="Assets\QA\NaturalPlay\jump.txt" />
     <None Include="Assets\QA\Village\restored.txt" />
     <None Include="Assets\QA\InputRedirect\restored.txt" />
     <None Include="Assets\QA\W5Closeout\scene-state.txt" />
@@ -515,9 +519,11 @@
     <None Include="Assets\QA\WorldLocations\Baseline\misplaced-configs\WorldLocationTable_LocationTemporaryConfig.cs.meta.txt" />
     <None Include="Assets\_ArtStaging2\libs\reportlab\fonts\00readme.txt" />
     <None Include="Assets\QA\WorldLocations\Baseline\misplaced-configs\MarketTable_MarketOfferConfig.cs.meta.txt" />
+    <None Include="Assets\QA\RunNpcQuest\configuration.txt" />
     <None Include="Assets\QA\WorldLocations\player-compile.txt" />
     <None Include="Assets\QA\Behavior\build.txt" />
     <None Include="Assets\AI\runmap-art\src\RunMapGenerator.cs.txt" />
+    <None Include="Assets\QA\NaturalPlay\input-play.txt" />
     <None Include="Assets\QA\ActorMapBugs\SourceGeometry.txt" />
     <None Include="Assets\QA\MapGeneration\restored.txt" />
     <None Include="Assets\QA\DayNight\flow.txt" />
@@ -604,6 +610,7 @@
     <None Include="Assets\QA\Village\config_incremental.txt" />
     <None Include="Assets\QA\MVP\restored.txt" />
     <None Include="Assets\QA\Refactor\family-transactions.txt" />
+    <None Include="Assets\QA\NaturalPlay\input-play-20261104-214046.txt" />
     <None Include="Assets\_ArtStaging2\libs\reportlab\fonts\DarkGarden-readme.txt" />
     <None Include="Assets\QA\W5Closeout\baseline.txt" />
     <None Include="Assets\QA\MapGeneration\contracts.txt" />
@@ -619,11 +626,15 @@
     <None Include="Assets\QA\GameplayPolish\gm-back.txt" />
     <None Include="Assets\QA\DispatchUI\flow.txt" />
     <None Include="Assets\_ArtStaging2\libs\freetype_py-2.5.1.dist-info\LICENSE.txt" />
+    <None Include="Assets\QA\NaturalPlay\jump-stage3.txt" />
     <None Include="Assets\QA\ConfigEnglish\index-load.txt" />
     <None Include="Assets\QA\ConfigEnglish\data-equality.txt" />
     <None Include="Assets\QA\RunCompletion\player-compile.txt" />
+    <None Include="Assets\QA\RunNpcQuest\flow.txt" />
+    <None Include="Assets\QA\NaturalPlay\settlement-display.txt" />
     <None Include="Assets\QA\ConfigEnglish\worldmap-workbook.txt" />
     <None Include="Assets\QA\RunCompletion\worldmap-clock.txt" />
+    <None Include="Assets\QA\NaturalPlay\jump-after.txt" />
     <None Include="Assets\QA\InputRedirect\reset-tool-body.cs.txt" />
     <None Include="Assets\QA\MVP\services-regression.txt" />
     <None Include="Assets\QA\OfficeTasks\export-contracts.txt" />
