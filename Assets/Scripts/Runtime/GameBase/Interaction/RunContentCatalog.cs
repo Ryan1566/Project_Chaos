@@ -42,6 +42,19 @@ namespace Chaos.Gameplay.Interaction
                 if (!ids.Add(definition.id))
                     throw new InvalidOperationException("局内交互定义 ID 重复：" + definition.id);
             }
+            var quests = new Dictionary<string, string>(StringComparer.Ordinal);
+            foreach (var definition in definitions)
+            {
+                var quest = definition.quest;
+                if (quest == null || !quest.enabled) continue;
+                var target = Array.Find(definitions, d => d.id == quest.targetContentId);
+                if (target == null || target.kind != RunContentKind.Gatherable)
+                    throw new InvalidOperationException("委托目标必须是目录内的采集内容：" + quest.id);
+                string fingerprint = JsonUtility.ToJson(quest);
+                if (quests.TryGetValue(quest.id, out var previous) && previous != fingerprint)
+                    throw new InvalidOperationException("同一委托ID的配置不一致：" + quest.id);
+                quests[quest.id] = fingerprint;
+            }
         }
 
         public static void ValidateDefinition(RunContentDefinition definition)
@@ -73,6 +86,19 @@ namespace Chaos.Gameplay.Interaction
                     throw new InvalidOperationException("局内交互奖励超过该物品的持有上限：" + definition.id + "[" + i + "]");
             }
             ValidateKnownKind(definition);
+            var quest = definition.quest;
+            if (quest != null && quest.enabled)
+            {
+                if (definition.kind != RunContentKind.Npc || string.IsNullOrWhiteSpace(quest.id)
+                    || string.IsNullOrWhiteSpace(quest.targetContentId) || quest.requiredCount < 1 || quest.requiredCount > 100)
+                    throw new InvalidOperationException("NPC委托ID、目标或次数非法：" + definition.id);
+                ValidateText(quest.title, quest.id, "委托标题"); ValidateText(quest.description, quest.id, "委托说明");
+                var reward = InventoryService.Instance.GetDefinition(quest.rewardItemId);
+                if (reward == null || !reward.Enable || reward.RunCategory > 3
+                    || InventoryService.TryGetResourceCommodity(quest.rewardItemId, out _) || quest.rewardCount == 0
+                    || quest.rewardCount > (reward.RunCategory == 1 || reward.IsUnique ? 1u : Math.Max(1u, reward.StackLimit)))
+                    throw new InvalidOperationException("委托奖励须为有效的局内物品且数量在上限内：" + quest.id);
+            }
         }
 
         static void ValidateText(RunContentText text, string id, string field)

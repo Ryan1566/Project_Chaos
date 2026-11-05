@@ -117,6 +117,8 @@ namespace Chaos.Gameplay.Interaction
                 if (!RunInventory.AddItem(state.ItemId, state.Count, out reason)) return false;
                 state.MarkClaimed();
                 if (definition.kind == RunContentKind.Npc) npcCompleted = true;
+                if (definition.kind == RunContentKind.Gatherable)
+                    RunNpcQuestService.RecordGathering(map, StableId, definition);
                 if (reason == null) reason = string.Empty;
                 return true;
             }

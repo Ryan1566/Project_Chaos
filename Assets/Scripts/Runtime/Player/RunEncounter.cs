@@ -150,6 +150,7 @@ public static partial class RunEncounter
                 StartingImportantItems.UnionWith(RunBagProgression.OwnedItems());
                 Chaos.MVP.Model.Gameplay.RunSettlementModel.Clear();
                 RunInventory.BeginRun();
+                Chaos.Gameplay.Interaction.RunNpcQuestService.BeginRun();
                 CampService.ResetForNewRun();
                 _killSeq = 0u;
                 _runSeed = seed ?? NaturalMapRuntime.PreviewSeed ?? NaturalMapRuntime.CreateRunSeed();
@@ -409,6 +410,7 @@ public static partial class RunEncounter
     public static void Clear()
     {
         DayNightClock.ClearRun();
+        Chaos.Gameplay.Interaction.RunNpcQuestService.Clear();
         // 撤离/回村即本局结束，跨场景生命快照不得留给下一局。
         ClearTeamVitals();
         DamageFloaters.Clear();
