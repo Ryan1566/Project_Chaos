@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.mvp.view.gameplay",
+  "updated_at": "2026-11-07T13:52:41.009Z",
+  "mode": "groups",
+  "max_columns": 3,
+  "reading": {
+    "zh": "左带是真正在玩时看到的东西（HUD、局内地图、道具轮盘、暂停/结算）；右带是从村庄或世界观地图打开的各个面板：村庄、派遣、市场与事件、技能树、队伍与世界地点。",
+    "en": "Left band is what the player sees while actually playing (HUD, run map, item wheel, pause/settlement). Right band is every panel opened from the village or the world map: village, dispatch, market and events, skill tree, team and world locations."
+  },
+  "order": [
+    "project-chaos.mvp.view.gameplay.run-hud",
+    "project-chaos.mvp.view.gameplay.run-map",
+    "project-chaos.mvp.view.gameplay.inventory-wheel",
+    "project-chaos.mvp.view.gameplay.run-menu",
+    "project-chaos.mvp.view.gameplay.village",
+    "project-chaos.mvp.view.gameplay.dispatch",
+    "project-chaos.mvp.view.gameplay.market-event",
+    "project-chaos.mvp.view.gameplay.family-tree",
+    "project-chaos.mvp.view.gameplay.team",
+    "project-chaos.mvp.view.gameplay.world-locations"
+  ],
+  "groups": [
+    {
+      "id": "in-run",
+      "title": {
+        "zh": "局内 HUD",
+        "en": "In-run HUD"
+      },
+      "children": [
+        "project-chaos.mvp.view.gameplay.run-hud",
+        "project-chaos.mvp.view.gameplay.run-map",
+        "project-chaos.mvp.view.gameplay.inventory-wheel",
+        "project-chaos.mvp.view.gameplay.run-menu"
+      ]
+    },
+    {
+      "id": "meta",
+      "title": {
+        "zh": "局外面板",
+        "en": "Meta panels"
+      },
+      "children": [
+        "project-chaos.mvp.view.gameplay.village",
+        "project-chaos.mvp.view.gameplay.dispatch",
+        "project-chaos.mvp.view.gameplay.market-event",
+        "project-chaos.mvp.view.gameplay.family-tree",
+        "project-chaos.mvp.view.gameplay.team",
+        "project-chaos.mvp.view.gameplay.world-locations"
+      ]
+    }
+  ]
+}

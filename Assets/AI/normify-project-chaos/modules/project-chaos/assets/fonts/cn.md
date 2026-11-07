@@ -10,9 +10,9 @@ description:
   en: >
       Chinese fonts: MSYH SDF (primary) and XiangcuiDengcusong SDF, with their raw TTC/TTF sources.
       
-revision: 3e9431e3172f8f81c73452994a04db100947fac0
-updated_at: "2026-10-31T16:20:37.038Z"
-fingerprint: 55eccd9145a58707705f29bc5bc712c3d346d031279982d3c89000d53c07963f
+revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
+updated_at: "2026-11-07T13:43:40.727Z"
+fingerprint: 489e3fb9270150746abb567e26474946e150528fde5810067b2021d5ec43113e
 source:
   - path: "Assets/Fonts/cn/MSYH SDF.asset"
   - path: "Assets/Fonts/cn/MSYH.TTC"

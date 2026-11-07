@@ -10,9 +10,9 @@ description:
   en: >
       Loads and caches the generated WorldMap/WorldFaction JSON, exposing Points(mapId), Areas(stage), FactionIds(stage) and TryGetFactionAt(stage, normalized, out factionId, out regionId). Enclaves are one faction with several RegionIds: any-region containment decides ownership, and all regions of a faction are normalised to the first region's colour (a conflicting table logs one warning).
       
-revision: 3e9431e3172f8f81c73452994a04db100947fac0
-updated_at: "2026-10-31T16:20:47.032Z"
-fingerprint: a368bd83d4426e2b11b2c7448dc4386e260007c90c29b1173bdbe0fa2b79cf55
+revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
+updated_at: "2026-11-07T13:53:11.989Z"
+fingerprint: a0ba0b897c96109a21d81feea619346b9e0a6b16c62859504d7a5f8377c5f86e
 source:
   - path: "Assets/Scripts/Runtime/GameBase/WorldMap/WorldMapService.cs"
 apis:

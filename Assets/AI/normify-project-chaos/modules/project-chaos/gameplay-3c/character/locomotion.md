@@ -11,9 +11,9 @@ description:
   en: >
       Ground movement and jumping, ground/side-wall surface physics with low-friction handling (a wall push in the air now drops instead of sticking), and the fall guard that respawns the player below a threshold Y.
       
-revision: 3e9431e3172f8f81c73452994a04db100947fac0
-updated_at: "2026-10-31T16:29:20.162Z"
-fingerprint: 1f58b8583cc7eea79d00626ae60d16bbf083659be59732bcbb7798d9ee6adb16
+revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
+updated_at: "2026-11-07T13:43:40.747Z"
+fingerprint: 9caed20e5152a2caa36dd4825a4de04c6b6a7971d62397f8bf47b74a485ae9d1
 source:
   - path: "Assets/Scripts/Runtime/3C/Character/PlayerLocomotion.cs"
   - path: "Assets/Scripts/Runtime/3C/Character/PlayerSurfacePhysics.cs"

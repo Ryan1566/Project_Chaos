@@ -1,63 +1,95 @@
 {
   "schema_version": 1,
   "id": "project-chaos.config-pipeline.generated-json",
-  "updated_at": "2026-10-31T09:01:21.543Z",
+  "updated_at": "2026-11-07T13:53:42.056Z",
   "mode": "groups",
-  "max_columns": 3,
+  "max_columns": 4,
   "reading": {
-    "zh": "Resources/Data/Json/Runtime 下的运行时 Json（Resources 加载不带扩展名），与源表同构分组：示例/读条、局外世界地图、地图生成表组。本层全部是导出产物：禁止手改，改表后重跑导出。",
-    "en": "Runtime JSON under Resources/Data/Json/Runtime (loaded without extension), grouped the same way as the source tables: smoke/loading, meta world map, and the runmap generation set. Every file here is export output - never hand-edit; change the table and re-export."
+    "zh": "每张 xlsx 工作簿一个盒子，里面是它的各子表 Json。先看索引（加载器读的就是它），再按产品层分组的表：基础、世界观、局外、局内。",
+    "en": "One box per xlsx workbook, each holding its sub-table JSONs. Read the index first (it is what the loader reads), then the tables grouped by product layer: core, world, meta, run."
   },
   "order": [
-    "project-chaos.config-pipeline.generated-json.test-table",
-    "project-chaos.config-pipeline.generated-json.loading-table",
+    "project-chaos.config-pipeline.generated-json.table-index",
+    "project-chaos.config-pipeline.generated-json.building",
+    "project-chaos.config-pipeline.generated-json.effect",
+    "project-chaos.config-pipeline.generated-json.item",
+    "project-chaos.config-pipeline.generated-json.test",
     "project-chaos.config-pipeline.generated-json.world-map",
-    "project-chaos.config-pipeline.generated-json.world-faction",
-    "project-chaos.config-pipeline.generated-json.map-biome",
-    "project-chaos.config-pipeline.generated-json.map-preset",
-    "project-chaos.config-pipeline.generated-json.preset-layer",
-    "project-chaos.config-pipeline.generated-json.map-chunk",
-    "project-chaos.config-pipeline.generated-json.chunk-socket",
-    "project-chaos.config-pipeline.generated-json.chunk-slot",
-    "project-chaos.config-pipeline.generated-json.map-loading"
+    "project-chaos.config-pipeline.generated-json.world-location",
+    "project-chaos.config-pipeline.generated-json.world-resource",
+    "project-chaos.config-pipeline.generated-json.retainer",
+    "project-chaos.config-pipeline.generated-json.office-task",
+    "project-chaos.config-pipeline.generated-json.progress",
+    "project-chaos.config-pipeline.generated-json.market",
+    "project-chaos.config-pipeline.generated-json.meta-skill-tree",
+    "project-chaos.config-pipeline.generated-json.event",
+    "project-chaos.config-pipeline.generated-json.run-map",
+    "project-chaos.config-pipeline.generated-json.run-content",
+    "project-chaos.config-pipeline.generated-json.village",
+    "project-chaos.config-pipeline.generated-json.loading"
   ],
   "groups": [
     {
-      "id": "basics",
+      "id": "index",
       "title": {
-        "zh": "示例表与读条表",
-        "en": "Smoke & loading tables"
+        "zh": "索引",
+        "en": "Index"
       },
       "children": [
-        "project-chaos.config-pipeline.generated-json.test-table",
-        "project-chaos.config-pipeline.generated-json.loading-table"
+        "project-chaos.config-pipeline.generated-json.table-index"
       ]
     },
     {
-      "id": "worldmap",
+      "id": "basics",
       "title": {
-        "zh": "局外世界地图表组",
-        "en": "World map tables"
+        "zh": "基础表",
+        "en": "Core tables"
+      },
+      "children": [
+        "project-chaos.config-pipeline.generated-json.building",
+        "project-chaos.config-pipeline.generated-json.effect",
+        "project-chaos.config-pipeline.generated-json.item",
+        "project-chaos.config-pipeline.generated-json.test"
+      ]
+    },
+    {
+      "id": "world",
+      "title": {
+        "zh": "世界观层",
+        "en": "World layer"
       },
       "children": [
         "project-chaos.config-pipeline.generated-json.world-map",
-        "project-chaos.config-pipeline.generated-json.world-faction"
+        "project-chaos.config-pipeline.generated-json.world-location",
+        "project-chaos.config-pipeline.generated-json.world-resource"
       ]
     },
     {
-      "id": "runmap",
+      "id": "meta",
       "title": {
-        "zh": "地图生成表组",
-        "en": "RunMap generation set"
+        "zh": "局外层",
+        "en": "Meta layer"
       },
       "children": [
-        "project-chaos.config-pipeline.generated-json.map-biome",
-        "project-chaos.config-pipeline.generated-json.map-preset",
-        "project-chaos.config-pipeline.generated-json.preset-layer",
-        "project-chaos.config-pipeline.generated-json.map-chunk",
-        "project-chaos.config-pipeline.generated-json.chunk-socket",
-        "project-chaos.config-pipeline.generated-json.chunk-slot",
-        "project-chaos.config-pipeline.generated-json.map-loading"
+        "project-chaos.config-pipeline.generated-json.retainer",
+        "project-chaos.config-pipeline.generated-json.office-task",
+        "project-chaos.config-pipeline.generated-json.progress",
+        "project-chaos.config-pipeline.generated-json.market",
+        "project-chaos.config-pipeline.generated-json.meta-skill-tree",
+        "project-chaos.config-pipeline.generated-json.event"
+      ]
+    },
+    {
+      "id": "run",
+      "title": {
+        "zh": "局内与村庄",
+        "en": "Run and village"
+      },
+      "children": [
+        "project-chaos.config-pipeline.generated-json.run-map",
+        "project-chaos.config-pipeline.generated-json.run-content",
+        "project-chaos.config-pipeline.generated-json.village",
+        "project-chaos.config-pipeline.generated-json.loading"
       ]
     }
   ]

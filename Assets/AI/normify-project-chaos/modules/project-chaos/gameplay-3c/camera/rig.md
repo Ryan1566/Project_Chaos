@@ -11,9 +11,9 @@ description:
   en: >
       The only controller of the output camera. Wraps a CinemachineVirtualCamera (FramingTransposer + Confiner2D) under a CinemachineBrain, switching between village and run modes; the only hand-written logic left is the anchor position and the manual brain update in LateUpdate.
       
-revision: 3e9431e3172f8f81c73452994a04db100947fac0
-updated_at: "2026-10-31T16:29:20.158Z"
-fingerprint: 1540b8dd18954287d815272e5d91d443176f084237baf3fc2a22f401089b74c4
+revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
+updated_at: "2026-11-07T13:53:11.989Z"
+fingerprint: 65bbe9854bdec801fe1a294c61f532359c12c471aa371bc52afd60e644050cf7
 source:
   - path: "Assets/Scripts/Runtime/3C/Camera/GameplayCameraRig.cs"
 apis:

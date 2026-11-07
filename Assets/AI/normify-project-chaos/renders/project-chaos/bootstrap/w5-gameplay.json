@@ -1,18 +1,19 @@
 {
   "schema_version": 1,
   "id": "project-chaos.bootstrap.w5-gameplay",
-  "updated_at": "2026-10-31T09:01:50.040Z",
+  "updated_at": "2026-11-07T13:52:34.411Z",
   "mode": "groups",
   "max_columns": 3,
   "reading": {
-    "zh": "这层按一局的时间线读：run-flow 受理派遣并开启局内会话；encounter 在其中推进战斗；interaction 与 village 是场景侧玩法（局内地图的交互寻路、实体村庄的生产循环）；meta-events 与 team-supply 把奖励、市场交易与队伍状态结算回存档。team-supply 是计划态占位，等对应代码抽出后再落地。",
-    "en": "Read this layer as a run's timeline. run-flow accepts the dispatch and opens the run session; encounter runs the fighting inside it; interaction and village are the scene-side play (interacting/pathfinding in the run map, and the physical village production loop); meta-events and team-supply close the loop by settling rewards, market trades and team state back into saves. team-supply is a planned placeholder until that code is extracted."
+    "zh": "三个环：局内核心环（进入、tick、结算），然后是世界里发生的一切（交互、村庄生产、昼夜时钟），最后是衔接局内外的局外层与补给。",
+    "en": "Three rings: the run core loop (enter, tick, settle), then everything that happens in the world (interaction, village production, day/night clock), then the meta layer and supplies that bridge between runs."
   },
   "order": [
     "project-chaos.bootstrap.w5-gameplay.run-flow",
     "project-chaos.bootstrap.w5-gameplay.encounter",
     "project-chaos.bootstrap.w5-gameplay.interaction",
     "project-chaos.bootstrap.w5-gameplay.village",
+    "project-chaos.bootstrap.w5-gameplay.day-night",
     "project-chaos.bootstrap.w5-gameplay.meta-events",
     "project-chaos.bootstrap.w5-gameplay.team-supply"
   ],
@@ -20,8 +21,8 @@
     {
       "id": "run-core",
       "title": {
-        "zh": "局内主干：派遣与遭遇",
-        "en": "Run Core: Dispatch & Encounter"
+        "zh": "局内核心环",
+        "en": "Run core loop"
       },
       "children": [
         "project-chaos.bootstrap.w5-gameplay.run-flow",
@@ -31,19 +32,20 @@
     {
       "id": "world-play",
       "title": {
-        "zh": "场景内玩法：交互与村庄",
-        "en": "In-World Play: Interaction & Village"
+        "zh": "世界玩法",
+        "en": "World play"
       },
       "children": [
         "project-chaos.bootstrap.w5-gameplay.interaction",
-        "project-chaos.bootstrap.w5-gameplay.village"
+        "project-chaos.bootstrap.w5-gameplay.village",
+        "project-chaos.bootstrap.w5-gameplay.day-night"
       ]
     },
     {
       "id": "meta-and-supply",
       "title": {
-        "zh": "局外经济与队伍补给",
-        "en": "Meta Economy & Team Supply"
+        "zh": "局外与补给",
+        "en": "Meta and supply"
       },
       "children": [
         "project-chaos.bootstrap.w5-gameplay.meta-events",

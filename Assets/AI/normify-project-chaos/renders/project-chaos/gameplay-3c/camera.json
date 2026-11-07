@@ -1,46 +1,48 @@
 {
   "schema_version": 1,
   "id": "project-chaos.gameplay-3c.camera",
-  "updated_at": "2026-10-31T16:27:38.865Z",
+  "updated_at": "2026-11-07T13:52:26.920Z",
   "mode": "groups",
   "max_columns": 3,
   "reading": {
-    "zh": "GameplayCameraRig 是唯一的控制器；视口边界扩展与 Impulse 抖动挂在同一条 Cinemachine 输出链上；门面与设置资产只负责喂入或包装它。",
-    "en": "GameplayCameraRig is the single controller; the boundary extension and the impulse-based shake hang off the same Cinemachine output chain; the facades and the settings asset only feed or wrap it."
+    "zh": "从机架开始：GameplayCameraRig 是唯一持有输出相机并把它绑到 Village / Run 模式的组件，CameraViewportBounds 在舞台内夹住最终视口。接着是反馈一对——基于 Cinemachine Impulse 的战斗震屏与昼夜天空背景。最后是旧调用点仍在使用的兼容外壳。",
+    "en": "Start at the rig: GameplayCameraRig is the only component that owns an output camera and binds it to Village or Run mode, with CameraViewportBounds clamping the final viewport inside the stage. Then the feedback pair — combat shake via Cinemachine Impulse and the day/night sky background. Last the compatibility facades that older call sites still use."
   },
   "order": [
     "project-chaos.gameplay-3c.camera.rig",
     "project-chaos.gameplay-3c.camera.viewport",
     "project-chaos.gameplay-3c.camera.shake",
+    "project-chaos.gameplay-3c.camera.day-night-sky",
     "project-chaos.gameplay-3c.camera.facade"
   ],
   "groups": [
     {
       "id": "core",
       "title": {
-        "zh": "控制器",
-        "en": "Controller"
+        "zh": "Cinemachine 机架",
+        "en": "Cinemachine rig"
       },
       "children": [
-        "project-chaos.gameplay-3c.camera.rig"
+        "project-chaos.gameplay-3c.camera.rig",
+        "project-chaos.gameplay-3c.camera.viewport"
       ]
     },
     {
-      "id": "limits",
+      "id": "feedback",
       "title": {
-        "zh": "约束与反馈",
-        "en": "Limits & feedback"
+        "zh": "反馈与天空",
+        "en": "Feedback and sky"
       },
       "children": [
-        "project-chaos.gameplay-3c.camera.viewport",
-        "project-chaos.gameplay-3c.camera.shake"
+        "project-chaos.gameplay-3c.camera.shake",
+        "project-chaos.gameplay-3c.camera.day-night-sky"
       ]
     },
     {
       "id": "compat",
       "title": {
-        "zh": "门面与设置",
-        "en": "Facades & settings"
+        "zh": "兼容外壳",
+        "en": "Compatibility facades"
       },
       "children": [
         "project-chaos.gameplay-3c.camera.facade"

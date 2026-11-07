@@ -10,9 +10,9 @@ description:
   en: >
       Index-based record CRUD over the cached .record payloads: LoadData<T> deserialises the cached text into DataList<T>, SaveData serialises with JsonUtility and pretty-prints it before storing and optionally writing, and Create/Update/Read/Delete operate on the datas list. Errors are rethrown with their original text, so a missing cache key surfaces as an exception.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.406Z"
-fingerprint: a4f45a2229b4a5a8f6377de9fa5c8685696b8a5d9c964b0b8c110e062bc07823
+revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
+updated_at: "2026-11-07T13:53:11.983Z"
+fingerprint: fbe24babc899733b90af3580c3252690c4f37edaf54fda5eba2be135af69a7c0
 source:
   - path: "Assets/Scripts/Runtime/GameBase/ConfigManager/SL/Recorder.cs"
     line: 93

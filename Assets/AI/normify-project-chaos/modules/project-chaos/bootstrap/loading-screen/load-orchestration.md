@@ -11,9 +11,9 @@ description:
   en: >
       The Run coroutine: raises the background loading thread priority to High, advances carousel and progress on unscaled time, normalises the 0.9 ceiling (progress jumps to 1.0 after activation, hence the Clamp01 belt-and-braces), and sets allowSceneActivation=true only once progress is full, assets are ready and a frame has rendered; restores the original priority on exit.
       
-revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
-updated_at: "2026-10-31T08:54:10.103Z"
-fingerprint: 3c1cad158685b77698b5133115ab31efdbfd3f85713842163821e086c42559fd
+revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
+updated_at: "2026-11-07T13:53:11.974Z"
+fingerprint: 170a354b326bb906c6d913739e7f93ed4a1ac4aef439f917df73cc28f4f0732e
 source:
   - path: "Assets/Scripts/Runtime/GameBase/ScenesLoader/LoadingController.cs"
     line: 249

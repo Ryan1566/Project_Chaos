@@ -10,9 +10,9 @@ description:
   en: >
       Save payload structure. SavePayload currently carries version plus uint era = 1 (the current era/stage, driving which faction layer the world map shows). Appending a field is a zero-migration change: JsonUtility keeps the field initialiser for keys missing from older saves.
       
-revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
-updated_at: "2026-10-31T08:54:34.944Z"
-fingerprint: 96b43579715b745fa400a7e1f225cf6a186a15b152da078e6501d7a42619d982
+revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
+updated_at: "2026-11-07T13:53:11.988Z"
+fingerprint: 710246fd93f2725934280cc2313d0fba85da1bf60f1d8bae70abf673bb531a3c
 source:
   - path: "Assets/Scripts/Runtime/GameBase/SaveManager/SaveSlotData.cs"
     line: 1

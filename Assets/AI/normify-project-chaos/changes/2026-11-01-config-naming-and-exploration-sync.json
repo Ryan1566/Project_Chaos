@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "id": "2026-11-01-config-naming-and-exploration-sync",
+  "title": {
+    "en": "Architecture tree sync: config-table renaming, exploration map, day/night and the gameplay UI layer",
+    "zh": "架构树同步：配置表改名、探索地图、昼夜系统与局内 UI 层"
+  },
+  "status": "verified",
+  "intent": {
+    "en": "Two weeks of commits (baa8e65 through d12129f) landed a config-table renaming (e68f18e rewrote every xlsx and generated JSON/model name, orphaning 31 modules), an exploration map generator with fog and ladders, a day/night cycle, a reworked skill tree, a dispatch UI, world-map towns and points of interest, and a full gameplay UI layer that had never been modelled. validate reported 31 stale modules plus 29 fingerprint drifts, so the diagram no longer described the project.",
+    "zh": "两周内的提交（baa8e65 到 d12129f）带来：配置表统一改名（e68f18e 重写了所有 xlsx 与生成的 Json/模型名，31 个模块变成悬空证据）、带迷雾与梯子的探索地图生成器、昼夜系统、重做技能树、派遣界面、世界观主城小城与兴趣点，以及一整套此前从未被建模的局内 UI 层。validate 报 31 个 stale 模块与 29 个指纹漂移，图谱已经不能描述项目。"
+  },
+  "modules": {
+    "create": [
+      "project-chaos.config-pipeline.table-repo",
+      "project-chaos.config-pipeline.generated-json",
+      "project-chaos.config-pipeline.generated-models",
+      "project-chaos.framework.runmap.exploration",
+      "project-chaos.framework.runmap.exploration.data",
+      "project-chaos.framework.runmap.exploration.generator",
+      "project-chaos.framework.runmap.exploration.service",
+      "project-chaos.framework.runmap.exploration.presentation",
+      "project-chaos.gameplay-3c.character.ladder",
+      "project-chaos.gameplay-3c.camera.day-night-sky",
+      "project-chaos.bootstrap.w5-gameplay.day-night",
+      "project-chaos.mvp.view.gameplay",
+      "project-chaos.mvp.presenter",
+      "project-chaos.mvp.presenter.base",
+      "project-chaos.mvp.presenter.gameplay-run",
+      "project-chaos.mvp.presenter.gameplay-meta",
+      "project-chaos.mvp.presenter.gameplay-village",
+      "project-chaos.mvp.model.gameplay",
+      "project-chaos.mvp.model.gameplay.run",
+      "project-chaos.mvp.model.gameplay.meta",
+      "project-chaos.mvp.model.gameplay.village"
+    ],
+    "modify": [
+      "project-chaos",
+      "project-chaos.framework.runmap",
+      "project-chaos.gameplay-3c.camera",
+      "project-chaos.gameplay-3c.character",
+      "project-chaos.bootstrap.w5-gameplay",
+      "project-chaos.bootstrap.w5-gameplay.interaction",
+      "project-chaos.mvp.view",
+      "project-chaos.mvp.model",
+      "project-chaos.editor-tools",
+      "project-chaos.editor-tools.runmap-verify",
+      "project-chaos.config-pipeline"
+    ]
+  },
+  "acceptance": [
+    "config-pipeline 的 table-repo / generated-json / generated-models 三棵子树按 e68f18e 的新命名规范重建（17 表 + 索引 + 测试数据），stale 模块归零",
+    "新增 framework.runmap.exploration（data/generator/service/presentation）覆盖探索地图生成与迷雾系统",
+    "新增 gameplay-3c.character.ladder、gameplay-3c.camera.day-night-sky、bootstrap.w5-gameplay.day-night，覆盖梯子与昼夜系统",
+    "新增 mvp.view.gameplay（10 叶）、mvp.presenter（base + 三个 gameplay 分组）、mvp.model.gameplay（run/meta/village），补齐此前不在树里的 39 个 View / 22 个 Presenter / 19 个 Model",
+    "bootstrap.w5-gameplay.interaction 挂上 RunLadderInteractable，editor-tools.runmap-verify 挂上探索与昼夜的 4 个校验脚本",
+    "各层渲染数据已写入（framework.runmap、camera、character、w5-gameplay、mvp 三层、config-pipeline 三容器、root）",
+    "normify_validate 0 error"
+  ],
+  "note": "配置表改名 + 探索地图/梯子/昼夜/局内 UI 层 的架构树同步。\n配置表改名后重建 config-pipeline 三棵子树；新增探索地图（runmap.exploration 四件套）、梯子、昼夜系统模块；补齐 MVP 的 View/Presenter/Model 局内层；各层布局已写入。validate 0 error / 19 warning。",
+  "revision": {
+    "before": null,
+    "after": "d12129f7c898c717078ccbcc210fe5eaf82aa2f3"
+  },
+  "created_at": "2026-11-07T13:54:13.539Z",
+  "updated_at": "2026-11-07T13:54:24.444Z",
+  "closed_at": "2026-11-07T13:54:24.444Z"
+}

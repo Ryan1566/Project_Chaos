@@ -10,9 +10,9 @@ description:
   en: >
       Input assets: the ChaosInputActions .inputactions asset (1 map, 3 actions, 14 bindings) and KeyIconMap mapping controls to icon sprites.
       
-revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
-updated_at: "2026-10-31T08:56:27.356Z"
-fingerprint: 4058011ee89889c3674f3f5170e922125083795a45e5b38f95dc5a9034b21b01
+revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
+updated_at: "2026-11-07T13:43:40.729Z"
+fingerprint: f9c499a78ab89408575d979652eca1ad88841923d8f8c48890bb2d5562402caf
 source:
   - path: "Assets/Resources/Input/ChaosInputActions.inputactions"
   - path: "Assets/Resources/Data/Input/KeyIconMap.asset"

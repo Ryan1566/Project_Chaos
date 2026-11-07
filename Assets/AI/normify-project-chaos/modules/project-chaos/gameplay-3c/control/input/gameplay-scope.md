@@ -11,9 +11,9 @@ description:
   en: >
       The gameplay half of InputManager (a partial class in its own file): per-action binding scopes (Global/InRun/Outside) with Move redirected to VillageMove outside a run, multi-owner gameplay input blocking for overlapping UI, latch refreshing and the read primitives gameplay code uses (ReadMove, WasGameplayPressed, IsPointerAttackHeld, navigation press/consume).
       
-revision: 3e9431e3172f8f81c73452994a04db100947fac0
-updated_at: "2026-10-31T16:29:20.165Z"
-fingerprint: aade8b9e315bd9227b5456add5985258dbbe10702cef2419b59bc94203c877f9
+revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
+updated_at: "2026-11-07T13:43:40.748Z"
+fingerprint: fd389284fc5aee2502fdbfac50b5b1f1705a4fd19a52291551b47a782a983214
 source:
   - path: "Assets/Scripts/Runtime/3C/Control/InputManager/InputManager.Gameplay.cs"
 apis:

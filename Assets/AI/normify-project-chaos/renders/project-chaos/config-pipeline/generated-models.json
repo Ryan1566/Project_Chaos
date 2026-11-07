@@ -1,65 +1,86 @@
 {
   "schema_version": 1,
   "id": "project-chaos.config-pipeline.generated-models",
-  "updated_at": "2026-10-31T09:01:40.163Z",
+  "updated_at": "2026-11-07T13:53:46.984Z",
   "mode": "groups",
-  "max_columns": 3,
+  "max_columns": 4,
   "reading": {
-    "zh": "生成的数据类（Config 模式 → *Config.cs，Data 模式 → *Data.cs），public 字段供 JsonUtility 序列化，与表同构分组：示例/读条、局外世界地图、地图生成。禁止手改；字段含义回指同名的 table-repo 模块。",
-    "en": "Generated C# data classes (Config mode -> *Config.cs, Data mode -> *Data.cs) with public fields for JsonUtility, grouped like the tables: smoke/loading, meta world map, runmap generation set. Never hand-edit; field meanings point back to the matching table-repo module."
+    "zh": "上一层的 C# 镜像：每个子表一个 Config 类，加上非表驱动的测试数据类。分组与 Json 层一致，方便左右对照 Json 与模型。",
+    "en": "The C# mirror of the previous layer: one Config class per sub-table plus the non-table test data class. Same grouping by product layer so you can cross-read JSON and model side by side."
   },
   "order": [
-    "project-chaos.config-pipeline.generated-models.test-table-config",
-    "project-chaos.config-pipeline.generated-models.test-table-data",
-    "project-chaos.config-pipeline.generated-models.loading-table-config",
-    "project-chaos.config-pipeline.generated-models.world-map-config",
-    "project-chaos.config-pipeline.generated-models.world-faction-config",
-    "project-chaos.config-pipeline.generated-models.map-biome-config",
-    "project-chaos.config-pipeline.generated-models.map-preset-config",
-    "project-chaos.config-pipeline.generated-models.preset-layer-config",
-    "project-chaos.config-pipeline.generated-models.map-chunk-config",
-    "project-chaos.config-pipeline.generated-models.chunk-socket-config",
-    "project-chaos.config-pipeline.generated-models.chunk-slot-config",
-    "project-chaos.config-pipeline.generated-models.map-loading-config"
+    "project-chaos.config-pipeline.generated-models.building",
+    "project-chaos.config-pipeline.generated-models.effect",
+    "project-chaos.config-pipeline.generated-models.item",
+    "project-chaos.config-pipeline.generated-models.test",
+    "project-chaos.config-pipeline.generated-models.test-data",
+    "project-chaos.config-pipeline.generated-models.world-map",
+    "project-chaos.config-pipeline.generated-models.world-location",
+    "project-chaos.config-pipeline.generated-models.world-resource",
+    "project-chaos.config-pipeline.generated-models.retainer",
+    "project-chaos.config-pipeline.generated-models.office-task",
+    "project-chaos.config-pipeline.generated-models.progress",
+    "project-chaos.config-pipeline.generated-models.market",
+    "project-chaos.config-pipeline.generated-models.meta-skill-tree",
+    "project-chaos.config-pipeline.generated-models.event",
+    "project-chaos.config-pipeline.generated-models.run-map",
+    "project-chaos.config-pipeline.generated-models.run-content",
+    "project-chaos.config-pipeline.generated-models.village",
+    "project-chaos.config-pipeline.generated-models.loading"
   ],
   "groups": [
     {
       "id": "basics",
       "title": {
-        "zh": "示例表与读条类",
-        "en": "Smoke & loading classes"
+        "zh": "基础表",
+        "en": "Core tables"
       },
       "children": [
-        "project-chaos.config-pipeline.generated-models.test-table-config",
-        "project-chaos.config-pipeline.generated-models.test-table-data",
-        "project-chaos.config-pipeline.generated-models.loading-table-config"
+        "project-chaos.config-pipeline.generated-models.building",
+        "project-chaos.config-pipeline.generated-models.effect",
+        "project-chaos.config-pipeline.generated-models.item",
+        "project-chaos.config-pipeline.generated-models.test",
+        "project-chaos.config-pipeline.generated-models.test-data"
       ]
     },
     {
-      "id": "worldmap",
+      "id": "world",
       "title": {
-        "zh": "局外世界地图类组",
-        "en": "World map classes"
+        "zh": "世界观层",
+        "en": "World layer"
       },
       "children": [
-        "project-chaos.config-pipeline.generated-models.world-map-config",
-        "project-chaos.config-pipeline.generated-models.world-faction-config"
+        "project-chaos.config-pipeline.generated-models.world-map",
+        "project-chaos.config-pipeline.generated-models.world-location",
+        "project-chaos.config-pipeline.generated-models.world-resource"
       ]
     },
     {
-      "id": "runmap",
+      "id": "meta",
       "title": {
-        "zh": "地图生成类组",
-        "en": "RunMap generation classes"
+        "zh": "局外层",
+        "en": "Meta layer"
       },
       "children": [
-        "project-chaos.config-pipeline.generated-models.map-biome-config",
-        "project-chaos.config-pipeline.generated-models.map-preset-config",
-        "project-chaos.config-pipeline.generated-models.preset-layer-config",
-        "project-chaos.config-pipeline.generated-models.map-chunk-config",
-        "project-chaos.config-pipeline.generated-models.chunk-socket-config",
-        "project-chaos.config-pipeline.generated-models.chunk-slot-config",
-        "project-chaos.config-pipeline.generated-models.map-loading-config"
+        "project-chaos.config-pipeline.generated-models.retainer",
+        "project-chaos.config-pipeline.generated-models.office-task",
+        "project-chaos.config-pipeline.generated-models.progress",
+        "project-chaos.config-pipeline.generated-models.market",
+        "project-chaos.config-pipeline.generated-models.meta-skill-tree",
+        "project-chaos.config-pipeline.generated-models.event"
+      ]
+    },
+    {
+      "id": "run",
+      "title": {
+        "zh": "局内与村庄",
+        "en": "Run and village"
+      },
+      "children": [
+        "project-chaos.config-pipeline.generated-models.run-map",
+        "project-chaos.config-pipeline.generated-models.run-content",
+        "project-chaos.config-pipeline.generated-models.village",
+        "project-chaos.config-pipeline.generated-models.loading"
       ]
     }
   ]

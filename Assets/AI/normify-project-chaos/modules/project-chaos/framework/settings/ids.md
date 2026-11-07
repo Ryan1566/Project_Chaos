@@ -10,9 +10,9 @@ description:
   en: >
       SettingIds: stable string ids for every setting row (graphics.*, audio.*, gameplay.*, keybind.*) used to bind UI rows to settings.
       
-revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
-updated_at: "2026-10-31T08:54:47.487Z"
-fingerprint: 4f570750ff24bfb7b0f9254f2775ee21b02d98dffbb1c86567fbec192518ca65
+revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
+updated_at: "2026-11-07T13:43:40.744Z"
+fingerprint: a6311e933110412c122c845b947c9daf6997c5cfe5c188b942be42f29f89780f
 source:
   - path: "Assets/Scripts/Runtime/GameBase/SettingsManager/SettingIds.cs"
     line: 1

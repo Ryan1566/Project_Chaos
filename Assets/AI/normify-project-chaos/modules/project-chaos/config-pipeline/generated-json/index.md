@@ -1,15 +1,18 @@
 ---
-uid: c1a20006
+uid: cf000200
 id: project-chaos.config-pipeline.generated-json
 parent: project-chaos.config-pipeline
-name: {zh: "导出 Json 产物", en: "Generated JSON Artifacts"}
+tags: [config, generated]
+name: {zh: "导出 Json 产物", en: "Generated JSON"}
 description:
   zh: >
-      ExcelTool/ExportExcelConfigs 生成的运行期常量 Json，位于 Resources/Data/Json/Runtime，固定结构为 {"datas":[...]}，由 ConfigLoader 用 JsonUtility 反序列化为 DataList<T>。属派生产物，表改了要重跑导出。
+      导出器逐表写出的 Json 产物，落在 Resources/Data/Json/Runtime 下，命名「表名_子表.json」，供运行时按类型名寻址加载。
+      
   en: >
-      Runtime constant JSON produced by ExcelTool/ExportExcelConfigs under Resources/Data/Json/Runtime. Every file has the fixed shape {"datas":[...]}, which ConfigLoader deserialises into DataList<T> with JsonUtility. Derived artifacts: re-run the export after editing a table.
-revision: 75df668e8bb1abec0b4352190c3082c585e2deef
-updated_at: "2026-10-06T12:10:00Z"
-fingerprint: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+      Per-table JSON artifacts emitted by the exporter into Resources/Data/Json/Runtime, named <Table>_<Sub>.json so the runtime loader can address them by type name.
+      
+revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
+updated_at: "2026-11-07T13:48:14.404Z"
+fingerprint: pending
 source: []
 ---

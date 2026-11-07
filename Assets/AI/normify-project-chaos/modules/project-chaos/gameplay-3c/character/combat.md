@@ -11,9 +11,9 @@ description:
   en: >
       Melee attack with a box overlap query and the player's health: item and run bonuses, invulnerability window, contact damage, downed state and refill. Hit feedback is forwarded to the combat camera shake rather than rewriting the character's scale or facing.
       
-revision: 3e9431e3172f8f81c73452994a04db100947fac0
-updated_at: "2026-10-31T16:29:20.163Z"
-fingerprint: 726bc182e93a35267335fa4afb68dea9266dd6eb0905861237af9bec338d8a7e
+revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
+updated_at: "2026-11-07T13:43:40.746Z"
+fingerprint: 28a925945dd516a05d8326b09541ac3909fe7901f63959bea951a3f1b2535fcd
 source:
   - path: "Assets/Scripts/Runtime/3C/Character/PlayerAttack.cs"
   - path: "Assets/Scripts/Runtime/3C/Character/PlayerHealth.cs"

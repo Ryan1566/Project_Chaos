@@ -1,39 +1,42 @@
 {
   "schema_version": 1,
   "id": "project-chaos.mvp.view",
-  "updated_at": "2026-10-31T09:01:00.617Z",
+  "updated_at": "2026-11-07T13:52:37.364Z",
   "mode": "groups",
+  "max_columns": 2,
   "reading": {
-    "zh": "主菜单是入口；从这里局外世界地图承接 meta 循环，设置与存档面板都由它按 PanelType 推入 UIManager 的栈。",
-    "en": "The main menu is the entry; from there the world map carries the meta loop and the settings and save/load panels are pushed onto the UIManager stack by PanelType."
+    "zh": "两层：局外的外壳界面（主菜单、存档读档、设置），然后是游玩界面——局外世界观地图与玩法面板家族。",
+    "en": "Two bands: the shell screens outside a run (main menu, save/load, settings), then the playing screens — the meta world map and the gameplay panels family."
   },
   "order": [
     "project-chaos.mvp.view.main-menu",
-    "project-chaos.mvp.view.world-map",
+    "project-chaos.mvp.view.save-load",
     "project-chaos.mvp.view.settings",
-    "project-chaos.mvp.view.save-load"
+    "project-chaos.mvp.view.world-map",
+    "project-chaos.mvp.view.gameplay"
   ],
   "groups": [
     {
-      "id": "entry-ui",
+      "id": "shell",
       "title": {
-        "zh": "入口界面",
-        "en": "Entry UI"
+        "zh": "外壳界面",
+        "en": "Shell screens"
       },
       "children": [
-        "project-chaos.mvp.view.main-menu"
+        "project-chaos.mvp.view.main-menu",
+        "project-chaos.mvp.view.save-load",
+        "project-chaos.mvp.view.settings"
       ]
     },
     {
-      "id": "flow-ui",
+      "id": "play",
       "title": {
-        "zh": "局外地图·设置·存档界面",
-        "en": "World Map / Settings / Save UI"
+        "zh": "世界与玩法",
+        "en": "World and gameplay"
       },
       "children": [
         "project-chaos.mvp.view.world-map",
-        "project-chaos.mvp.view.settings",
-        "project-chaos.mvp.view.save-load"
+        "project-chaos.mvp.view.gameplay"
       ]
     }
   ]

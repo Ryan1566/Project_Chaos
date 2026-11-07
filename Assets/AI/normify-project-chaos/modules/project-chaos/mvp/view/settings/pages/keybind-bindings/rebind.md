@@ -11,9 +11,9 @@ description:
   en: >
       Rebind capture flow: guards against re-entry (an in-flight routine or InputManager.IsRebinding), walks the steps given by InputManager.GetRebindSteps, and passes a rebound result back through OnStepFinished. While waiting for a key the whole page is locked; the immediate write to the InputActionAsset is deliberate so the player sees the key they just pressed.
       
-revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
-updated_at: "2026-10-31T08:58:29.742Z"
-fingerprint: 5fe21e38a92b79fdc1b7b9b863dc02e227abbbc9adc2c99b0e6b0931c0e0f35d
+revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
+updated_at: "2026-11-07T13:43:40.750Z"
+fingerprint: c76a0438dd82a40c8850121ab0cf4a1a08a30f3205d0b778845844c50e5253ef
 source:
   - path: "Assets/Scripts/Runtime/MVP/View/SettingsPage/KeybindBindingsPage.cs"
     line: 347

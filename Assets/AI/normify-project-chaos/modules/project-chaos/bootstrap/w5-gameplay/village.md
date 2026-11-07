@@ -11,9 +11,9 @@ description:
   en: >
       Enter the physical village through the loading screen (VillageSceneFlow/VillageSceneBootstrap/VillageSceneSettings); VillageWorkforce assigns jobs and VillagePlot owns plots; VillageService handles build/upgrade/cancel/harvest atomically and TickProduction only accumulates for the exclusive building-job owner; a behaviour tree and production NPCs drive workers, with the model/presenter/view trio driving the village HUD.
       
-revision: 3e9431e3172f8f81c73452994a04db100947fac0
-updated_at: "2026-10-31T16:20:37.066Z"
-fingerprint: b37c532502666ae471df42da0c1385caecbf1b6b10f601f8432a65507bdd2bc4
+revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
+updated_at: "2026-11-07T13:53:11.981Z"
+fingerprint: fc57ef4f56446fefc977d8ccce8212b08dfe047aa10165858e9b0c4f1a57de65
 source:
   - path: "Assets/Scripts/Runtime/GameBase/Village/VillageSceneFlow.cs"
   - path: "Assets/Scripts/Runtime/GameBase/Village/VillageSceneBootstrap.cs"

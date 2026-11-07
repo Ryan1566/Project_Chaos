@@ -11,9 +11,9 @@ description:
   en: >
       TryFail switches the screen to a dark-red background with a red bar and records LastRunFailed, so the player sees a failure instead of a frozen black screen. IsSceneInBuildSettings is only a soft pre-check — Application.CanStreamedLevelBeLoaded is deliberately avoided because on this Unity version it returns false even for registered scenes in the editor.
       
-revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
-updated_at: "2026-10-31T08:57:59.778Z"
-fingerprint: 3c1cad158685b77698b5133115ab31efdbfd3f85713842163821e086c42559fd
+revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
+updated_at: "2026-11-07T13:53:11.974Z"
+fingerprint: 170a354b326bb906c6d913739e7f93ed4a1ac4aef439f917df73cc28f4f0732e
 source:
   - path: "Assets/Scripts/Runtime/GameBase/ScenesLoader/LoadingController.cs"
     line: 598

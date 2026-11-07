@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.mvp.presenter",
+  "updated_at": "2026-11-07T13:52:44.330Z",
+  "mode": "groups",
+  "max_columns": 2,
+  "reading": {
+    "zh": "先看基类，再看三族界面 Presenter——按玩家所处位置分组：局内、村庄/局外界面、实体村庄内。",
+    "en": "The base class first, then the three families of screen presenters grouped by where the player is: in a run, in the village/meta screens, or inside the physical village."
+  },
+  "order": [
+    "project-chaos.mvp.presenter.base",
+    "project-chaos.mvp.presenter.gameplay-run",
+    "project-chaos.mvp.presenter.gameplay-meta",
+    "project-chaos.mvp.presenter.gameplay-village"
+  ],
+  "groups": [
+    {
+      "id": "base",
+      "title": {
+        "zh": "基类",
+        "en": "Base"
+      },
+      "children": [
+        "project-chaos.mvp.presenter.base"
+      ]
+    },
+    {
+      "id": "screens",
+      "title": {
+        "zh": "界面 Presenter",
+        "en": "Screen presenters"
+      },
+      "children": [
+        "project-chaos.mvp.presenter.gameplay-run",
+        "project-chaos.mvp.presenter.gameplay-meta",
+        "project-chaos.mvp.presenter.gameplay-village"
+      ]
+    }
+  ]
+}

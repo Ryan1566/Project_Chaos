@@ -10,9 +10,9 @@ description:
   en: >
       Per-table JSON writer: walks the columns, skips server-marked and blank-marked ones, converts each cell through the type whitelist, joins key-value pairs, reshapes the flat text into a datas array, wraps it for JsonUtility, pretty-prints it, and saves as .json (Config) or .record (Data). Conversion failures are rethrown with sheet, row, column, field and type context.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.400Z"
-fingerprint: 8317ca6bb94bcacbc47c1bf98e79594b0f8559b3aa88a4c40c48d717703dcd5f
+revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
+updated_at: "2026-11-07T13:53:11.983Z"
+fingerprint: c36e05801bd99f1c4242cc6e4fa756962c262e19fd2e05ec4214c2674d2c6b03
 source:
   - path: "Assets/Scripts/Runtime/GameBase/ConfigManager/Config/ConfigManager.cs"
     line: 182
@@ -62,16 +62,6 @@ deps:
     from_api: "rpc:ConfigManager.ExportJson"
     to_api: "rpc:FileUtil.SaveFile"
     label: {zh: "写出产物文件", en: "Writes the artifact"}
-  - kind: dataflow
-    to: project-chaos.config-pipeline.generated-json.test-table
-    from_api: "rpc:ConfigManager.ExportJson"
-    to_api: "file:Assets/Resources/Data/Json/Runtime/TestTableConfig.json"
-    label: {zh: "产出运行期 Json", en: "Emits runtime JSON"}
-  - kind: dataflow
-    to: project-chaos.config-pipeline.generated-json.loading-table
-    from_api: "rpc:ConfigManager.ExportJson"
-    to_api: "file:Assets/Resources/Data/Json/Runtime/LoadingTableConfig.json"
-    label: {zh: "产出轮播表 Json", en: "Emits carousel JSON"}
   - kind: dataflow
     to: project-chaos.config-pipeline.record-store
     from_api: "rpc:ConfigManager.ExportJson"

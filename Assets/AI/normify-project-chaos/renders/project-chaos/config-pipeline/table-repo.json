@@ -1,67 +1,97 @@
 {
   "schema_version": 1,
   "id": "project-chaos.config-pipeline.table-repo",
-  "updated_at": "2026-10-31T09:01:15.218Z",
+  "updated_at": "2026-11-07T13:53:51.422Z",
   "mode": "groups",
-  "max_columns": 3,
+  "max_columns": 4,
   "reading": {
-    "zh": "左组是示例表与读条表；中组是局外世界地图表（WorldMap / WorldFaction）及世界地图工具的工作区状态；右组是地图生成的 7 张表，按生成器消费顺序读：主题（MapBiome）→ 原型图预算（MapPreset）→ 层序（PresetLayer）→ 房间块池（MapChunk）→ 接口（ChunkSocket）→ 标记点（ChunkSlot），外加读条文案表（MapLoading）。",
-    "en": "Left: the smoke-test and loading tables. Middle: the meta world-map set (WorldMap / WorldFaction) plus the world-map tool's workspace state. Right: the seven-table runmap set, read as the generator consumes it - biome (theme/layer) -> preset (layout budget) -> preset layer (layer order) -> chunk pool -> sockets -> slots, plus the loading-caption table."
+    "zh": "真源层：17 个工作簿，命名 Table_中文名.xlsx，一个工作簿一个模块。先看仓库说明（命名规范与填写约定），再按产品层分组的表。世界观地图工具的草稿与历史地图集 Json 归在 workspace 里。",
+    "en": "The source of truth: 17 workbooks named Table_ChineseName.xlsx, one module per workbook. Read the repo readme first (naming rule and authoring conventions), then the tables grouped by product layer. The world-map tool workspace holds the editor tool's draft and historical atlas JSONs."
   },
   "order": [
-    "project-chaos.config-pipeline.table-repo.test-table",
-    "project-chaos.config-pipeline.table-repo.loading-table",
     "project-chaos.config-pipeline.table-repo.repo-readme",
-    "project-chaos.config-pipeline.table-repo.world-map",
-    "project-chaos.config-pipeline.table-repo.world-faction",
     "project-chaos.config-pipeline.table-repo.worldmap-tool-workspace",
-    "project-chaos.config-pipeline.table-repo.map-biome",
-    "project-chaos.config-pipeline.table-repo.map-preset",
-    "project-chaos.config-pipeline.table-repo.preset-layer",
-    "project-chaos.config-pipeline.table-repo.map-chunk",
-    "project-chaos.config-pipeline.table-repo.chunk-socket",
-    "project-chaos.config-pipeline.table-repo.chunk-slot",
-    "project-chaos.config-pipeline.table-repo.map-loading"
+    "project-chaos.config-pipeline.table-repo.building",
+    "project-chaos.config-pipeline.table-repo.effect",
+    "project-chaos.config-pipeline.table-repo.item",
+    "project-chaos.config-pipeline.table-repo.test",
+    "project-chaos.config-pipeline.table-repo.world-map",
+    "project-chaos.config-pipeline.table-repo.world-location",
+    "project-chaos.config-pipeline.table-repo.world-resource",
+    "project-chaos.config-pipeline.table-repo.retainer",
+    "project-chaos.config-pipeline.table-repo.office-task",
+    "project-chaos.config-pipeline.table-repo.progress",
+    "project-chaos.config-pipeline.table-repo.market",
+    "project-chaos.config-pipeline.table-repo.meta-skill-tree",
+    "project-chaos.config-pipeline.table-repo.event",
+    "project-chaos.config-pipeline.table-repo.run-map",
+    "project-chaos.config-pipeline.table-repo.run-content",
+    "project-chaos.config-pipeline.table-repo.village",
+    "project-chaos.config-pipeline.table-repo.loading"
   ],
   "groups": [
     {
-      "id": "basics",
+      "id": "shelf",
       "title": {
-        "zh": "示例表与读条表",
-        "en": "Smoke & loading tables"
+        "zh": "仓库附属",
+        "en": "Repo furniture"
       },
       "children": [
-        "project-chaos.config-pipeline.table-repo.test-table",
-        "project-chaos.config-pipeline.table-repo.loading-table",
-        "project-chaos.config-pipeline.table-repo.repo-readme"
-      ]
-    },
-    {
-      "id": "worldmap",
-      "title": {
-        "zh": "局外世界地图表组与工具工作区",
-        "en": "World map tables & tool workspace"
-      },
-      "children": [
-        "project-chaos.config-pipeline.table-repo.world-map",
-        "project-chaos.config-pipeline.table-repo.world-faction",
+        "project-chaos.config-pipeline.table-repo.repo-readme",
         "project-chaos.config-pipeline.table-repo.worldmap-tool-workspace"
       ]
     },
     {
-      "id": "runmap",
+      "id": "basics",
       "title": {
-        "zh": "地图生成表组",
-        "en": "RunMap generation set"
+        "zh": "基础表",
+        "en": "Core tables"
       },
       "children": [
-        "project-chaos.config-pipeline.table-repo.map-biome",
-        "project-chaos.config-pipeline.table-repo.map-preset",
-        "project-chaos.config-pipeline.table-repo.preset-layer",
-        "project-chaos.config-pipeline.table-repo.map-chunk",
-        "project-chaos.config-pipeline.table-repo.chunk-socket",
-        "project-chaos.config-pipeline.table-repo.chunk-slot",
-        "project-chaos.config-pipeline.table-repo.map-loading"
+        "project-chaos.config-pipeline.table-repo.building",
+        "project-chaos.config-pipeline.table-repo.effect",
+        "project-chaos.config-pipeline.table-repo.item",
+        "project-chaos.config-pipeline.table-repo.test"
+      ]
+    },
+    {
+      "id": "world",
+      "title": {
+        "zh": "世界观层",
+        "en": "World layer"
+      },
+      "children": [
+        "project-chaos.config-pipeline.table-repo.world-map",
+        "project-chaos.config-pipeline.table-repo.world-location",
+        "project-chaos.config-pipeline.table-repo.world-resource"
+      ]
+    },
+    {
+      "id": "meta",
+      "title": {
+        "zh": "局外层",
+        "en": "Meta layer"
+      },
+      "children": [
+        "project-chaos.config-pipeline.table-repo.retainer",
+        "project-chaos.config-pipeline.table-repo.office-task",
+        "project-chaos.config-pipeline.table-repo.progress",
+        "project-chaos.config-pipeline.table-repo.market",
+        "project-chaos.config-pipeline.table-repo.meta-skill-tree",
+        "project-chaos.config-pipeline.table-repo.event"
+      ]
+    },
+    {
+      "id": "run",
+      "title": {
+        "zh": "局内与村庄",
+        "en": "Run and village"
+      },
+      "children": [
+        "project-chaos.config-pipeline.table-repo.run-map",
+        "project-chaos.config-pipeline.table-repo.run-content",
+        "project-chaos.config-pipeline.table-repo.village",
+        "project-chaos.config-pipeline.table-repo.loading"
       ]
     }
   ]

@@ -1,61 +1,73 @@
 {
   "schema_version": 1,
   "id": "project-chaos.framework.runmap",
-  "updated_at": "2026-10-10T16:05:47.019Z",
+  "updated_at": "2026-11-07T13:52:20.159Z",
   "mode": "groups",
-  "max_columns": 2,
+  "max_columns": 3,
+  "max_api_rows": 4,
   "reading": {
-    "zh": "按流水线顺序读：数据与种子 → 块名录（代码内置或表驱动）→ 配置表装载与读条文案 → 规划器（图→网格→选块）→ 校验器 → 编排器（重试与降级）→ 运行时装配（Pass E + 块瓦片引用 + 场景入口）。前七个是纯逻辑、可单测。",
-    "en": "Read in pipeline order: data/seed → chunk catalog (code or table) → config loader & loading text → planner (graph→grid→picking) → validator → orchestrator (retry & fallback) → runtime assembly (Pass E + chunk tile refs + scene bootstrap). The first seven are pure logic and unit-testable."
+    "zh": "按生成管线从左到右读：先是输入（配置加载与表目录），再是生成管线本体，然后是探索地图这一族（在同一套 plan 数据之上加 v3 探索层），最后是运行时装配。",
+    "en": "Read left to right as the generation pipeline: inputs first (config loader and catalog), then the generation pipeline itself, then the exploration-map family that adds the v3 exploration layer on top of the same plan data, and finally the runtime wiring."
   },
   "order": [
-    "project-chaos.framework.runmap.data-model",
-    "project-chaos.framework.runmap.catalog",
     "project-chaos.framework.runmap.config-loader",
-    "project-chaos.framework.runmap.loading-text",
-    "project-chaos.framework.runmap.planner",
-    "project-chaos.framework.runmap.validator",
+    "project-chaos.framework.runmap.catalog",
     "project-chaos.framework.runmap.generator",
+    "project-chaos.framework.runmap.planner",
     "project-chaos.framework.runmap.assembler",
+    "project-chaos.framework.runmap.validator",
+    "project-chaos.framework.runmap.exploration",
+    "project-chaos.framework.runmap.data-model",
     "project-chaos.framework.runmap.chunk-tiles",
-    "project-chaos.framework.runmap.bootstrap"
+    "project-chaos.framework.runmap.bootstrap",
+    "project-chaos.framework.runmap.loading-text"
   ],
   "groups": [
     {
-      "id": "pure",
+      "id": "inputs",
       "title": {
-        "zh": "纯逻辑与数据源",
-        "en": "Pure logic & data sources"
+        "zh": "输入",
+        "en": "Inputs"
       },
       "children": [
-        "project-chaos.framework.runmap.data-model",
-        "project-chaos.framework.runmap.catalog",
         "project-chaos.framework.runmap.config-loader",
-        "project-chaos.framework.runmap.loading-text",
-        "project-chaos.framework.runmap.planner"
+        "project-chaos.framework.runmap.catalog"
       ]
     },
     {
-      "id": "gate",
+      "id": "pipeline",
       "title": {
-        "zh": "校验与编排",
-        "en": "Validation & orchestration"
+        "zh": "生成管线",
+        "en": "Generation pipeline"
       },
       "children": [
-        "project-chaos.framework.runmap.validator",
-        "project-chaos.framework.runmap.generator"
+        "project-chaos.framework.runmap.generator",
+        "project-chaos.framework.runmap.planner",
+        "project-chaos.framework.runmap.assembler",
+        "project-chaos.framework.runmap.validator"
+      ]
+    },
+    {
+      "id": "exploration",
+      "title": {
+        "zh": "探索地图",
+        "en": "Exploration map"
+      },
+      "children": [
+        "project-chaos.framework.runmap.exploration",
+        "project-chaos.framework.runmap.data-model",
+        "project-chaos.framework.runmap.chunk-tiles"
       ]
     },
     {
       "id": "runtime",
       "title": {
-        "zh": "运行时装配与入口",
-        "en": "Runtime assembly & entry"
+        "zh": "运行时装配",
+        "en": "Runtime wiring"
       },
       "children": [
-        "project-chaos.framework.runmap.assembler",
-        "project-chaos.framework.runmap.chunk-tiles",
-        "project-chaos.framework.runmap.bootstrap"
+        "project-chaos.framework.runmap.bootstrap",
+        "project-chaos.framework.runmap.loading-text"
       ]
     }
   ]

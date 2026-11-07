@@ -11,9 +11,9 @@ description:
   en: >
       Gameplay page: today it only holds the language selector, whose index doubles as the LanguageType enum value stored in SettingsData.language. Option texts come from LocalizationManager.GetAllLanguages so enabling a new language needs no change here — but the prefab is hand-built and must be regenerated.
       
-revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
-updated_at: "2026-10-31T08:58:29.741Z"
-fingerprint: 8f391dc7c6fbbd0b53c7604a8c46018d8a4affcf21440cf69d35cd49027deaf6
+revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
+updated_at: "2026-11-07T13:43:40.749Z"
+fingerprint: e2ac299c5cf92619f4682167c46b813641f59e439c1db0db97609980b9fc2dbf
 source:
   - path: "Assets/Scripts/Runtime/MVP/View/SettingsPage/GameplaySettingsPage.cs"
     line: 18

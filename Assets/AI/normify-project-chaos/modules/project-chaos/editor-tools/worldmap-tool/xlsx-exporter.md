@@ -10,9 +10,9 @@ description:
   en: >
       EPPlus 4.5.3 writer producing the project's 7-row header workbooks: the map table at the top level, the five per-era faction parts into the _worldmap_tool subfolder (never scanned by the exporter), and the merged faction table. All regions of one (Stage, FactionId) are written with the faction's first-region colour, so the colour clash is stopped at the source.
       
-revision: a7c3b8fe6345669cb33b508b5355f6a13e4cf0af
-updated_at: "2026-10-14T13:18:15.974Z"
-fingerprint: 9043b05f4d2c5674d8a6390058d766b7d2db59f915be09b49b8872de189d24c9
+revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
+updated_at: "2026-11-07T13:53:11.985Z"
+fingerprint: c1b55e72aa62d0fea6c31daed21f22d5742acdcc233af5bbc74467975fd7e80b
 source:
   - path: "Assets/Scripts/Editor/WorldMapTool/WorldMapToolXlsxExporter.cs"
 apis:

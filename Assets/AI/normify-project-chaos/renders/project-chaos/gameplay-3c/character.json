@@ -1,15 +1,16 @@
 {
   "schema_version": 1,
   "id": "project-chaos.gameplay-3c.character",
-  "updated_at": "2026-10-31T16:27:42.632Z",
+  "updated_at": "2026-11-07T13:52:30.143Z",
   "mode": "groups",
-  "max_columns": 3,
+  "max_columns": 2,
   "reading": {
-    "zh": "按角色每帧的顺序从左往右读：移动与曲面物理决定身体去向，攻击与生命结算命中与伤害，表现模块只承载数据与动画。",
-    "en": "Read left to right as the player's frame loop: locomotion and surface physics decide where the body goes, combat resolves hits and health, presentation only carries data and animation."
+    "zh": "先移动：带曲面物理的地面移动，然后是作为同一套移动能力垂直延伸的爬梯。再是战斗（攻击与血量）与表现（道具使用动画与角色皮肤数据）。",
+    "en": "Motion first: ground movement with surface physics, then ladder climbing as the vertical extension of the same locomotion. Then combat (attack and health) and presentation (item-use animation and character skin data)."
   },
   "order": [
     "project-chaos.gameplay-3c.character.locomotion",
+    "project-chaos.gameplay-3c.character.ladder",
     "project-chaos.gameplay-3c.character.combat",
     "project-chaos.gameplay-3c.character.presentation"
   ],
@@ -17,18 +18,19 @@
     {
       "id": "motion",
       "title": {
-        "zh": "移动与物理",
-        "en": "Motion & physics"
+        "zh": "移动",
+        "en": "Motion"
       },
       "children": [
-        "project-chaos.gameplay-3c.character.locomotion"
+        "project-chaos.gameplay-3c.character.locomotion",
+        "project-chaos.gameplay-3c.character.ladder"
       ]
     },
     {
       "id": "fight",
       "title": {
         "zh": "战斗与表现",
-        "en": "Fight & looks"
+        "en": "Combat and look"
       },
       "children": [
         "project-chaos.gameplay-3c.character.combat",

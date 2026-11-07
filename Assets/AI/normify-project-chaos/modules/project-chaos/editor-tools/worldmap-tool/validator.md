@@ -10,9 +10,9 @@ description:
   en: >
       Pre-export validation: zero data rows and duplicate top-level prefixes are hard refusals; coordinates out of range, duplicate (Kind,Type,RefId), colour format, vertex count/order, self-intersection and tiny areas are reported. Added: two regions of the same (Stage, FactionId) with different colours is an Error that blocks the top-level export — otherwise one faction would be drawn as two.
       
-revision: a7c3b8fe6345669cb33b508b5355f6a13e4cf0af
-updated_at: "2026-10-14T13:18:15.974Z"
-fingerprint: 5474cf2dbb1d41df2743aeaa0635311bf9cd24b2535f83f5c35a79daca17b00a
+revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
+updated_at: "2026-11-07T13:53:11.984Z"
+fingerprint: a930db1ae60511778557796f904ae4c29c8a3456ef38ca00f9277f819fb8dcce
 source:
   - path: "Assets/Scripts/Editor/WorldMapTool/WorldMapToolValidator.cs"
 apis:

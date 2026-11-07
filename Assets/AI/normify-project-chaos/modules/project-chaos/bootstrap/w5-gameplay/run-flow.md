@@ -11,9 +11,9 @@ description:
   en: >
       DispatchService accepts a dispatch and RunSceneFlow drives the cross-stage flow: dispatch is accepted, LoadingScene loads WorldScene, the prepared map is adopted, the team is spawned, then settlement or retreat returns to the meta layer, carrying run inventory, camping use, and seed across stages.
       
-revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
-updated_at: "2026-10-31T09:03:54.686Z"
-fingerprint: 8a5e97375c6c511ddd0507e7eb86544cf376deae55f1596f871c382afcdf2a0c
+revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
+updated_at: "2026-11-07T13:53:11.979Z"
+fingerprint: 28f4b40ea3e92b7c708167e26d42371a781045837395e38cf7ed7a5866d727e9
 source:
   - path: "Assets/Scripts/Runtime/GameBase/Meta/RunSceneFlow.cs"
   - path: "Assets/Scripts/Runtime/GameBase/Meta/DispatchService.cs"

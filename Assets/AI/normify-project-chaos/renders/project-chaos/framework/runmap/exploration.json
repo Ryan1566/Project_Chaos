@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "id": "project-chaos.framework.runmap.exploration",
+  "updated_at": "2026-11-07T13:52:23.411Z",
+  "mode": "groups",
+  "max_columns": 2,
+  "reading": {
+    "zh": "分两半：data + generator 把配置预设变成探索平面（双环 / 分层分支 / 汇聚三种布局，带梯子）；service + presentation 在运行时消费该平面——迷雾、视野半径与地图表现。",
+    "en": "Two halves: data + generator turn a config preset into an exploration plan (double loop / layered branches / convergence, with ladders); service + presentation consume that plan at runtime — fog of war, vision radius and the map visuals."
+  },
+  "order": [
+    "project-chaos.framework.runmap.exploration.data",
+    "project-chaos.framework.runmap.exploration.generator",
+    "project-chaos.framework.runmap.exploration.service",
+    "project-chaos.framework.runmap.exploration.presentation"
+  ],
+  "groups": [
+    {
+      "id": "produce",
+      "title": {
+        "zh": "平面生产",
+        "en": "Plan production"
+      },
+      "children": [
+        "project-chaos.framework.runmap.exploration.data",
+        "project-chaos.framework.runmap.exploration.generator"
+      ]
+    },
+    {
+      "id": "consume",
+      "title": {
+        "zh": "运行时消费",
+        "en": "Runtime consumption"
+      },
+      "children": [
+        "project-chaos.framework.runmap.exploration.service",
+        "project-chaos.framework.runmap.exploration.presentation"
+      ]
+    }
+  ]
+}

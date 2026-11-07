@@ -1,28 +1,35 @@
 ---
-uid: aa910005
+uid: cf000210
 id: project-chaos.config-pipeline.generated-json.world-map
 parent: project-chaos.config-pipeline.generated-json
-name: {zh: "WorldMap 导出 Json", en: "WorldMap JSON"}
+tags: [config, generated]
+name: {zh: "世界观地图 Json", en: "World Map JSON"}
 description:
   zh: >
-      WorldMapConfig.json：导出器把 WorldMap_世界观地图表.xlsx 转成的运行时产物（{"datas":[...]} 结构），由 WorldMapService 通过 ConfigLoader 读取。不可手改。
+      世界观地图本体、势力范围与标签的运行时 Json 产物。
       
   en: >
-      WorldMapConfig.json: the runtime artifact produced by the exporter from the WorldMap workbook ({"datas":[...]}), read by WorldMapService through ConfigLoader. Do not hand-edit.
+      Runtime JSON for the world map layout, faction areas and labels.
       
-revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:30:54.568Z"
-fingerprint: 722b0c8d34f7f82142f36b559ae189ea6ba589a949ddc14af5c3d387d2389ff9
+revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
+updated_at: "2026-11-07T13:48:14.431Z"
+fingerprint: 127d19f1d3e5d2bca2854b9d6147abc06f58b074a3b28fb476d21036c2a1fe93
 source:
-  - path: "Assets/Resources/Data/Json/Runtime/WorldMapConfig.json"
+  - path: "Assets/Resources/Data/Json/Runtime/WorldMapTable_WorldMap.json"
+  - path: "Assets/Resources/Data/Json/Runtime/WorldMapTable_WorldFaction.json"
+  - path: "Assets/Resources/Data/Json/Runtime/WorldMapTable_WorldFactionLabel.json"
 apis:
   - protocol: file
-    path: "Assets/Resources/Data/Json/Runtime/WorldMapConfig.json"
+    path: "file:Assets/Resources/Data/Json/Runtime/WorldMapTable_WorldMap.json"
     description:
       zh: >
-          地图表运行时 Json（datas 数组）。
+          世界观地图运行时 Json
           
       en: >
-          Runtime JSON of the map workbook (datas array).
+          World map runtime JSON
           
+deps:
+  - kind: dataflow
+    to: project-chaos.config-pipeline.table-repo.world-map
+    label: {zh: "由源表导出", en: "Exported from workbook"}
 ---

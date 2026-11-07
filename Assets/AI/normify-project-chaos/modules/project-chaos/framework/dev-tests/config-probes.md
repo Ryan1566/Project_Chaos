@@ -10,9 +10,9 @@ description:
   en: >
       Config/save dev probes: raw xlsx reading via EPPlus, async config loading via ConfigLoader and record read/update via Recorder. Assert no failure; most are commented-out examples.
       
-revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
-updated_at: "2026-10-31T08:56:54.864Z"
-fingerprint: b4564f2251178a9c42f112fa398630cb184176226b3dcc3d5f9f73e67116d235
+revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
+updated_at: "2026-11-07T13:53:11.986Z"
+fingerprint: c1d45c9d6e34d94abc4498c4dffb4633bece024b3fb8eaaec2367f84d4fb08da
 source:
   - path: "Assets/Scripts/Runtime/GameTest/DataConfigTest/ImpTableTest.cs"
     line: 1
