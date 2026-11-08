@@ -48,6 +48,31 @@ namespace Chaos.Gameplay.Interaction
         static void Reset() { entries.Clear(); context = -1; generation = 0; active = mutating = false; Changed = null; }
         public static void BeginRun() { Clear(); context = GameSession.Instance.ContextId; active = GameSession.Instance.HasSession; }
         public static void Clear() { entries.Clear(); active = false; generation++; Publish(); }
+
+        internal static void Capture(List<RunQuestSave> destination)
+        {
+            if (!OwnsRun()) return;
+            foreach (var pair in entries)
+                destination.Add(new RunQuestSave { id = pair.Key,
+                    definition = JsonUtility.FromJson<RunNpcQuestDefinition>(JsonUtility.ToJson(pair.Value.Definition)),
+                    progress = pair.Value.Progress, completed = pair.Value.Completed,
+                    gathered = new List<string>(pair.Value.Gathered) });
+        }
+
+        internal static bool Restore(IReadOnlyList<RunQuestSave> snapshot)
+        {
+            BeginRun();
+            foreach (var quest in snapshot)
+            {
+                if (quest?.definition == null || string.IsNullOrEmpty(quest.id) || quest.definition.id != quest.id
+                    || quest.progress < 0 || quest.progress > quest.definition.requiredCount || entries.ContainsKey(quest.id)) return false;
+                var entry = new Entry { Definition = quest.definition, Progress = quest.progress, Completed = quest.completed };
+                if (quest.gathered != null) entry.Gathered.UnionWith(quest.gathered);
+                entries.Add(quest.id, entry);
+            }
+            Publish();
+            return true;
+        }
         static bool OwnsRun()
         {
             var session = GameSession.Instance;
@@ -88,30 +113,42 @@ namespace Chaos.Gameplay.Interaction
             int ownerGeneration = generation;
             try
             {
-                if (!RunInventory.AddItem(entry.Definition.rewardItemId, entry.Definition.rewardCount, out reason)) return false;
+                if (!RunInventory.AddItem(entry.Definition.rewardItemId, entry.Definition.rewardCount, out reason, () =>
+                {
+                    entry.Completed = true;
+                    return () => entry.Completed = false;
+                })) return false;
                 // 背包事件可能同步触发界面或切换会话；不能把旧任务的完成状态写进新局。
                 if (ownerGeneration != generation || !OwnsRun()) { reason = "奖励发放时会话已结束"; return false; }
-                entry.Completed = true;
                 reason = "委托完成，奖励已加入局内背包。";
             }
             finally { mutating = false; }
             Publish(); return true;
         }
-        internal static void RecordGathering(NaturalMapPlan map, string stableId, RunContentDefinition source)
+        internal static Action StageGathering(NaturalMapPlan map, string stableId, RunContentDefinition source)
         {
             if (!Ready(out _) || map == null || !ReferenceEquals(map, NaturalMapRuntime.Current)
-                || source?.kind != RunContentKind.Gatherable || string.IsNullOrEmpty(stableId)) return;
-            bool changed = false;
+                || source?.kind != RunContentKind.Gatherable || string.IsNullOrEmpty(stableId)) return null;
+            var changed = new List<Entry>();
             string key = map.SceneIndex + "/" + stableId;
             foreach (var entry in entries.Values)
             {
                 if (entry.Completed || entry.Progress >= entry.Definition.requiredCount || entry.Definition.targetContentId != source.id
                     || !entry.Gathered.Add(key)) continue;
-                entry.Progress++; changed = true;
+                entry.Progress++;
+                changed.Add(entry);
             }
-            if (changed) Publish();
+            if (changed.Count == 0) return null;
+            return () =>
+            {
+                foreach (var entry in changed)
+                {
+                    entry.Progress--;
+                    entry.Gathered.Remove(key);
+                }
+            };
         }
-        static void Publish()
+        internal static void Publish()
         {
             var listeners = Changed;
             if (listeners == null) return;

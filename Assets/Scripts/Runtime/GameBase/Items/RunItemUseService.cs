@@ -29,6 +29,26 @@ namespace Chaos.Gameplay.Items
         public static bool IsReady => DispatchService.Instance.IsInRun && RunMap.NaturalMapRuntime.IsReady
             && RunEncounter.IsSceneReady && !RunSceneFlow.IsTransitioning && !RunEncounter.Defeated && !RunEncounter.RunCleared;
         public static PlayerHealth Actor => PlayerSpawner.CurrentPlayer == null ? null : PlayerSpawner.CurrentPlayer.GetComponent<PlayerHealth>();
+
+        internal static void Capture(ActiveRunSave save)
+        {
+            foreach (var buff in Buffs)
+                if (buff.Left > 0) save.buffs.Add(new RunTimedItemSave { id = buff.CharacterId, seconds = buff.Left, value = buff.Value });
+            foreach (var cooldown in Cooldowns)
+                if (cooldown.Value > 0) save.cooldowns.Add(new RunTimedItemSave { id = cooldown.Key, seconds = cooldown.Value });
+        }
+
+        internal static void Restore(ActiveRunSave save)
+        {
+            Clear();
+            _context = GameSession.Instance.ContextId;
+            foreach (var entry in save.buffs)
+                if (entry != null && entry.id == CurrentCharacterId() && entry.value > 0 && RunCheckpoint.IsPositiveTime(entry.seconds))
+                    Buffs.Add(new Buff { CharacterId = entry.id, Value = entry.value, Left = entry.seconds });
+            foreach (var entry in save.cooldowns)
+                if (entry != null && entry.id != 0 && RunCheckpoint.IsPositiveTime(entry.seconds)) Cooldowns[entry.id] = entry.seconds;
+            ApplyCurrentBuff();
+        }
         public static bool CanUse(ItemBase item, out string reason)
         {
             EnsureContext(); reason = null;

@@ -56,6 +56,20 @@ namespace Chaos.MVP.Model.Gameplay
                 Page = UnityEngine.Mathf.Clamp(Page + delta, 0, 2);
         }
 
+        internal void CaptureChoices(ActiveRunSave save)
+        {
+            save.settlementPage = Page;
+            save.retained.AddRange(_selected);
+        }
+
+        internal void RestoreChoices(ActiveRunSave save)
+        {
+            Page = save.settlementPage;
+            _selected.Clear();
+            if (!Win) foreach (uint id in save.retained)
+                if (_selected.Count < FailureCarryCap && _ids.Contains(id)) _selected.Add(id);
+        }
+
         public static void Begin(bool win)
         {
             var owner = MetaProgressService.Instance.Payload;
@@ -101,6 +115,7 @@ namespace Chaos.MVP.Model.Gameplay
                     if ((Win || _selected.Contains(_ids[i]))
                         && !InventoryService.Instance.AddItem(_ids[i], _counts[i], out why)) return false;
                 RunEncounter.ApplyRunWounds(!Win);
+                _owner.activeRun = null;
                 if (Win)
                 {
                     var meta = MetaProgressService.Instance;

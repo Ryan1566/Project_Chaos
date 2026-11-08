@@ -328,7 +328,7 @@ public static class RunCompletionVerification
         Check(Top is WorldMapPanel, "M opens map for formal dispatch");
         Click("EnterRunBtn");
         yield return null;
-        Click("Btn_Depart");
+        Click("Btn_Depart"); yield return RunMapFlowVerification.ConfirmBattlePreparation();
         yield return Until(() => RunEncounter.IsSceneReady && !RunSceneFlow.IsTransitioning
             && RunEncounter.CurrentSceneIndex == 1, "formal first scene ready");
     }

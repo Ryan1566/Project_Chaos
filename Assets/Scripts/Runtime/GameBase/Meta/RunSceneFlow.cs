@@ -9,24 +9,51 @@ public static class RunSceneFlow
     private static List<uint> team;
     private static uint seed;
     private static int stage;
+    private static List<BattleSlotSave> entryLoadout;
+    private static ActiveRunSave resume;
+    private static bool nextStage;
     public static bool IsTransitioning => SceneTransitionCoordinator.IsBusy;
     public static bool IsFormalRun => SceneTransitionCoordinator.IsFormalRun;
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-    private static void Reset() { team = null; stage = 0; seed = 0; }
+    private static void Reset() { team = null; stage = 0; seed = 0; entryLoadout = null; resume = null; nextStage = false; }
 
-    public static bool Begin(List<uint> selected, out string reason)
+    public static bool Begin(List<uint> selected, IReadOnlyList<BattleSlotSave> loadout, out string reason)
     {
         reason = null;
         if (!VillageSceneFlow.IsVillageScene || !VillageSceneBootstrap.IsReady || !GameSession.Instance.IsPersistent)
         { reason = "请先读取存档进入村庄"; return false; }
         if (selected == null || selected.Count == 0) { reason = "出征队伍为空"; return false; }
         if (SceneTransitionCoordinator.IsBusy || SceneTransitionCoordinator.HasRun) { reason = "已有出征或场景切换"; return false; }
+        if (RunCheckpoint.Current != null) { reason = "先处理尚未完成的出征"; return false; }
+        if (!BattleLoadout.Validate(loadout, true, out reason)) return false;
+        resume = null;
+        nextStage = false;
+        entryLoadout = new List<BattleSlotSave>();
+        foreach (var slot in loadout) entryLoadout.Add(slot.Copy());
         team = new List<uint>(selected); seed = RunMap.NaturalMapRuntime.PreviewSeed ?? RunMap.NaturalMapRuntime.CreateRunSeed(); stage = 1;
-        return LoadStage(SceneTransitionCoordinator.TransitionKind.EnterRun, out reason);
+        if (LoadStage(SceneTransitionCoordinator.TransitionKind.EnterRun, out reason)) return true;
+        Reset();
+        return false;
+    }
+
+    public static bool Resume(out string reason)
+    {
+        var saved = RunCheckpoint.Current;
+        if (!RunCheckpoint.Validate(saved, out reason)) return false;
+        if (SceneTransitionCoordinator.IsBusy) { reason = "已有场景切换，请稍候"; return false; }
+        Reset();
+        resume = saved;
+        team = new List<uint>(saved.team);
+        seed = saved.seed;
+        stage = saved.stage;
+        if (LoadStage(SceneTransitionCoordinator.TransitionKind.EnterRun, out reason)) return true;
+        Reset();
+        return false;
     }
     public static bool BeginNextStage(int index, List<uint> selected, uint runSeed)
     {
         if (!IsFormalRun || index < 2 || index > RunEncounter.MaxSceneIndex || selected == null || selected.Count == 0) return false;
+        nextStage = true;
         team = new List<uint>(selected); seed = runSeed; stage = index;
         RunEncounter.SuspendForSceneTransition();
         if (LoadStage(SceneTransitionCoordinator.TransitionKind.NextRunStage, out string reason)) return true;
@@ -44,8 +71,26 @@ public static class RunSceneFlow
     }
     private static void AdoptStage()
     {
-        if (!RunEncounter.EnterPreparedScene(stage, team, seed))
+        var restored = resume;
+        System.Action<ActiveRunSave> commit = null;
+        if (entryLoadout != null)
+            commit = save =>
+            {
+                if (!RunCheckpoint.CommitEntry(save, entryLoadout, out string reason))
+                    throw new System.InvalidOperationException(reason);
+            };
+        else if (nextStage)
+            commit = save =>
+            {
+                if (!RunCheckpoint.CommitStage(save, out string reason)) throw new System.InvalidOperationException(reason);
+            };
+        if (!RunEncounter.EnterPreparedScene(stage, team, seed, restored, entryLoadout, commit))
             throw new System.InvalidOperationException("第 " + stage + " 阶段无法接管已准备地图");
+        if (entryLoadout != null) BattlePreparationFlow.Clear();
+        entryLoadout = null;
+        resume = null;
+        nextStage = false;
+        if (restored?.outcome > 0) RunEncounter.RestoreSettlement(restored);
     }
     public static bool CanReturnToMeta(out string reason)
     {
@@ -78,10 +123,20 @@ public static class RunSceneFlow
     private static void FailFormalRun(string reason)
     {
         Debug.LogError("[RunFlow] " + reason);
-        if (!DispatchService.Instance.ReturnToMeta(out string failure))
+        bool failedNewEntry = entryLoadout != null && RunCheckpoint.Current == null;
+        Reset();
+        RunEncounter.Clear();
+        Chaos.MVP.Model.Gameplay.RunControlModel.PauseWorld(false);
+        Time.timeScale = 1;
+        if (failedNewEntry)
         {
-            UIManager.Instance.RestoreAfterGameplay();
-            Debug.LogError("[RunFlow] 返回未完成，可重试：" + failure);
+            try
+            {
+                VillageSceneFlow.EnterFromSave(() => BattlePreparationFlow.ReopenAfterFailure(reason));
+                return;
+            }
+            catch (System.Exception error) { reason += "；回村失败：" + error.Message; }
         }
+        VillageSceneFlow.ReportEntryFailure(reason);
     }
 }

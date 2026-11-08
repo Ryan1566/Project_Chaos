@@ -77,9 +77,9 @@ public class DispatchService : SingletonBase<DispatchService>
 
         if (_selected.Contains(id))
         {
-            _selected.Remove(id);
-            ChaosLog.Info(LogChannel.Config, "[派遣] 取消选择门客 #" + id + "，当前 " + _selected.Count + "/" + MaxTeamSize);
-            return true;
+            var next = new List<uint>(_selected);
+            next.Remove(id);
+            return SaveSelection(next, out reason);
         }
 
         RetainerSave retainer;
@@ -104,14 +104,38 @@ public class DispatchService : SingletonBase<DispatchService>
             return false;
         }
 
-        _selected.Add(id);
-        ChaosLog.Info(LogChannel.Config, "[派遣] 选中门客 #" + id + "，当前 " + _selected.Count + "/" + MaxTeamSize);
-        return true;
+        var updated = new List<uint>(_selected) { id };
+        return SaveSelection(updated, out reason);
     }
 
     public void ResetSelection()
     {
         _selected.Clear();
+    }
+
+    internal void RestoreSelection(SavePayload payload)
+    {
+        _selected.Clear();
+        var ids = payload.hasDispatchRoster ? payload.dispatchRoster : payload.runTeam;
+        if (ids == null || payload.retainers == null) return;
+        foreach (uint id in ids)
+        {
+            if (id == 0 || _selected.Contains(id) || !payload.retainers.Exists(member => member != null && member.id == id)) continue;
+            _selected.Add(id);
+            if (_selected.Count == MaxTeamSize) break;
+        }
+    }
+
+    private bool SaveSelection(List<uint> next, out string reason)
+    {
+        return MetaCommandRunner.Execute("Dispatch.Roster", (out string why) =>
+        {
+            var payload = GameSession.Instance.LoadedPayload;
+            payload.hasDispatchRoster = true;
+            payload.dispatchRoster = new List<uint>(next);
+            why = null;
+            return true;
+        }, out reason, () => { _selected.Clear(); _selected.AddRange(next); });
     }
 
     /// <summary>完整的无副作用出发检查，界面不能只按人数判断可用状态。</summary>
@@ -122,6 +146,8 @@ public class DispatchService : SingletonBase<DispatchService>
         if (IsInRun || RunSceneFlow.IsTransitioning)
         { reason = "已经出发或正在切换场景，请先返回局外"; return false; }
         bool prototype = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "TestScene";
+        if (!prototype && RunCheckpoint.Current != null)
+        { reason = "请先继续或放弃上一次未完成的出征"; return false; }
         if (prototype ? !GameSession.Instance.IsSandbox : !GameSession.Instance.IsPersistent || !VillageSceneBootstrap.IsReady || !VillageSceneFlow.IsVillageScene)
         { reason = prototype ? "TestScene 需要显式测试会话" : "请先读档并进入已就绪的村庄"; return false; }
         if (_selected.Count < MinTeamSize) { reason = "至少选择 " + MinTeamSize + " 位门客"; return false; }
@@ -161,8 +187,11 @@ public class DispatchService : SingletonBase<DispatchService>
         if (!RetainerService.Instance.TryGet(id, out var member)) { reason = "门客已不存在"; return false; }
         string unavailable = GetUnavailableReason(member);
         if (!string.IsNullOrEmpty(unavailable)) { reason = unavailable; return false; }
-        if (index > 0) { _selected.RemoveAt(index); _selected.Insert(0, id); }
-        return true;
+        if (index == 0) return true;
+        var next = new List<uint>(_selected);
+        next.RemoveAt(index);
+        next.Insert(0, id);
+        return SaveSelection(next, out reason);
     }
 
     /// <summary>
@@ -173,6 +202,7 @@ public class DispatchService : SingletonBase<DispatchService>
     {
         if (!CanDepartWithReason(out reason)) return false;
         bool prototype = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "TestScene";
+        if (!prototype) return DepartPrepared(new BattleLoadout(), out reason);
 
         SavePayload payload = MetaProgressService.Instance.Payload;
         string beforeDeparture = JsonUtility.ToJson(payload);
@@ -184,12 +214,6 @@ public class DispatchService : SingletonBase<DispatchService>
         }, out reason)) return false;
 
         PlayerSpawner.CaptureOutsideCameraState();   //必须在生图前记局外相机尺寸
-        if (!prototype)
-        {
-            if (RunSceneFlow.Begin(selected, out reason)) return true;
-            CompensateDeparture(beforeDeparture, payload, ref reason);
-            return false;
-        }
         // 隐藏发生在生成 HUD 之前，避免把新建的局内 HUD 也一起隐藏。
         if (UIManager.Instance != null) UIManager.Instance.HideAllPanelsForGameplay();
         //W3.1a：统一走 RunEncounter.EnterScene（清旧 → 生图 → 出生点 → 玩家 → 边界 → 敌人）
@@ -207,6 +231,14 @@ public class DispatchService : SingletonBase<DispatchService>
             + "（" + _selected.Count + " 人），runs=" + payload.runs
             + "，就地生成场景 " + StartSceneIndex + "（容器 PrototypeRunMap，不切场景）");
         return true;
+    }
+
+    public bool DepartPrepared(BattleLoadout draft, out string reason)
+    {
+        if (!CanDepartWithReason(out reason)) return false;
+        if (draft == null || !draft.IsCurrent) { reason = "战备草稿已失效，请重新打开"; return false; }
+        PlayerSpawner.CaptureOutsideCameraState();
+        return RunSceneFlow.Begin(new List<uint>(_selected), draft.Snapshot(), out reason);
     }
 
     private static void CompensateDeparture(string before, SavePayload payload, ref string reason)
@@ -237,7 +269,7 @@ public class DispatchService : SingletonBase<DispatchService>
 
         var wounds = RunEncounter.CaptureWounds();
         if (!settled && !MetaCommandRunner.Execute("Dispatch.Return", (out string why) =>
-            { RunEncounter.ApplyRunWounds(false); why = null; return true; }, out reason,
+            { RunEncounter.ApplyRunWounds(false); GameSession.Instance.LoadedPayload.activeRun = null; why = null; return true; }, out reason,
             onRolledBack: () => RunEncounter.RestoreWounds(wounds))) return false;
         RunDepthHud.DisableAndDestroy();
 

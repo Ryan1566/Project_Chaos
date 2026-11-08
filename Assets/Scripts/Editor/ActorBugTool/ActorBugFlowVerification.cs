@@ -71,7 +71,7 @@ public static class ActorBugFlowVerification
         yield return WallPhysics(false);
         yield return Press(Key.M); Check(Top is WorldMapPanel, "M opens world map"); Click("EnterRunBtn"); yield return new WaitForSecondsRealtime(.3f);
         string reason; foreach (var r in RetainerService.Instance.GetAll()) DispatchService.Instance.Toggle(r.id, out reason);
-        Click("Btn_Depart"); deadline = Time.realtimeSinceStartup + 40;
+        Click("Btn_Depart"); yield return RunMapFlowVerification.ConfirmBattlePreparation(); deadline = Time.realtimeSinceStartup + 40;
         while ((!RunEncounter.IsSceneReady || RunSceneFlow.IsTransitioning) && Time.realtimeSinceStartup < deadline) yield return null;
         Check(RunEncounter.IsSceneReady && AllyController.All.Count == 3, "formal map1 ready with three dispatched allies");
         var enemies = new List<EnemyPlaceholder>(); RunEncounter.CopyMapEnemies(enemies);

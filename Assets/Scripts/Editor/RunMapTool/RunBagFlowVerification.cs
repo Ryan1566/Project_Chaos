@@ -105,7 +105,7 @@ public static class RunBagFlowVerification
         Check(Top is WorldMapPanel,"village M opens world map"); Key();yield return null;
         Click("EnterRunBtn");yield return new WaitForSecondsRealtime(.6f);
         Isolation();foreach(var r in RetainerService.Instance.GetAll())DispatchService.Instance.Toggle(r.id,out reason);
-        Click("Btn_Depart");
+        Click("Btn_Depart"); yield return RunMapFlowVerification.ConfirmBattlePreparation();
         float readyDeadline=Time.realtimeSinceStartup+30;
         while((RunEncounter.CurrentSceneIndex!=1||!RunMap.NaturalMapRuntime.IsReady||RunSceneFlow.IsTransitioning)
             &&Time.realtimeSinceStartup<readyDeadline)yield return null;

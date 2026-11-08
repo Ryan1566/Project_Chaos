@@ -33,5 +33,7 @@ public enum PanelType
     RunMenuPanel, // Formal in-run bag and menu
     RunContentPanel, // Run NPC, chest and gathering dialogue
     VillageOfficePanel, // Civic office navigation and tax information
-    OfficeTasksPanel
+    OfficeTasksPanel,
+    BattlePreparationPanel,
+    RunResumeRecoveryPanel
 }

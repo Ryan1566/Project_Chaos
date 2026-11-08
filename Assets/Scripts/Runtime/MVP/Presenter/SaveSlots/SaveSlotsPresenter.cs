@@ -52,7 +52,7 @@ namespace Chaos.MVP.Presenter.SaveSlots
         protected override void OnDetach() { if (View != null) View.Intent -= Handle; _model.Cancel(); }
         private void Handle(SaveSlotsIntent intent)
         {
-            if (VillageSceneFlow.IsLoading && intent.Action != SaveSlotsAction.EntryFailure) return;
+            if (SceneTransitionCoordinator.IsBusy && intent.Action != SaveSlotsAction.EntryFailure) return;
             bool entered = false;
             switch (intent.Action)
             {

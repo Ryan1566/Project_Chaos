@@ -118,12 +118,22 @@ public static class DispatchUiVerification
         P.familyTreeNodes=new List<uint>{301,401,402,501};EffectAggregator.Instance.MarkDirty();Check(GameSession.Instance.SaveCurrent(out _),"owned mixed-status roster fixture saved");
         DraftChecks();MetaRuntimeDriver.NotifyChanged();yield return null;Status="ui-ready";while(!Continue)yield return null;Status="running";UiChecks();
         var service=DispatchService.Instance;service.ResetSelection();Check(service.Toggle(MemberIds[0],out _),"single-person formal team prepared");MetaRuntimeDriver.NotifyChanged();yield return null;
-        string payload=JsonUtility.ToJson(P);
+        Click("Btn_Depart");yield return new WaitForSecondsRealtime(.35f);
+        Check(Top is BattlePreparationPanel && !RunSceneFlow.IsTransitioning,"departure opens preparation before loading");
         using(var locked=new FileStream(SaveSlotService.Instance.GetSlotPath(3),FileMode.Open,FileAccess.ReadWrite,FileShare.None))
-        { Click("Btn_Depart");Check(!service.IsInRun&&!RunSceneFlow.IsTransitioning&&JsonUtility.ToJson(P)==payload,"actual departure button save failure keeps scene and payload unchanged"); }
-        Click("Btn_Depart");yield return WaitRun(1);Check(service.RunTeam.Count==1,"one-person team reaches actual world scene");
+        {
+            Click("EnterRun");
+            float deadline = Time.realtimeSinceStartup + 40;
+            while ((RunSceneFlow.IsTransitioning || !(Top is BattlePreparationPanel)) && Time.realtimeSinceStartup < deadline)
+                yield return null;
+            Check(!service.IsInRun && !RunSceneFlow.IsTransitioning && Top is BattlePreparationPanel && P.runs == 0
+                && RunCheckpoint.Current == null,"entry commit failure returns to preparation and leaves run unregistered");
+        }
+        yield return RunMapFlowVerification.ConfirmBattlePreparation();
+        yield return WaitRun(1);Check(service.RunTeam.Count==1,"one-person team reaches actual world scene");
         UIManager.Instance.PushPanel(PanelType.DispatchPanel);yield return null;Check(!Top.GetComponentsInChildren<Button>(true).First(x=>x.name=="Btn_Depart").gameObject.activeInHierarchy,"in-run dispatch hides departure and cannot depart a second time");Click("Btn_Return");yield return WaitVillage();
         yield return OpenDispatch();service.ResetSelection();foreach(uint id in MemberIds.Take(4))service.Toggle(id,out _);Check(service.SetControlled(MemberIds[2],out _),"four-person controlled order prepared");var order=service.SelectedIds.ToArray();MetaRuntimeDriver.NotifyChanged();yield return null;Click("Btn_Depart");
+        yield return RunMapFlowVerification.ConfirmBattlePreparation();
         for(int stage=1;stage<=3;stage++)
         {
             yield return WaitRun(stage);

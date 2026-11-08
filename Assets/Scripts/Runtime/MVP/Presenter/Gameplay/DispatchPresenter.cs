@@ -236,6 +236,12 @@ namespace Chaos.MVP.Presenter.Gameplay
                 return;
             }
 
+            if (GameSession.Instance.IsPersistent)
+            {
+                if (!BattlePreparationFlow.Open()) { Refresh(); Message("战备界面未能打开", false); }
+                return;
+            }
+
             // 出发期间屏蔽同步事件触发的重绘；成功后场景流程所有者接管旧面板。
             _suppressRefresh = true;
             if (!service.Depart(out reason))

@@ -44,6 +44,16 @@ namespace Chaos.Gameplay.RunTeam
         internal static bool TryRead(uint id, out RunCharacterGrowth growth)
         { EnsureContext(); return Members.TryGetValue(id, out growth); }
 
+        internal static bool Restore(IReadOnlyList<uint> team, IReadOnlyList<RunMemberSave> snapshot)
+        {
+            if (snapshot == null || snapshot.Count != team.Count) return false;
+            BeginRun(team);
+            for (int i = 0; i < team.Count; i++)
+                if (!TryRead(team[i], out var growth) || !growth.Restore(snapshot[i])) return false;
+            Changed?.Invoke();
+            return true;
+        }
+
         /// <summary>Called once from the encounter's owned-enemy removal transaction.</summary>
         public static void AwardNormalKill()
         {

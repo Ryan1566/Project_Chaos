@@ -9,7 +9,7 @@ public static partial class RunEncounter
     /// <summary>**按活体重算清房**：每房间统计"存活且在本房间矩形内"的敌人；0 即已清。</summary>
     private static void RefreshRooms()
     {
-        if (!_sceneReady) return;
+        if (!_sceneReady || RunCleared || Defeated) return;
         if (_pendingNextScene > 0) return;          //已有待切场景，本帧不再判
         if (TotalRooms == 0) return;
 
@@ -69,6 +69,7 @@ public static partial class RunEncounter
             RunCleared = true;
             ChaosLog.Success(LogChannel.UI, "[局内] 第 3 场景目标已完成 → 本局通关");
             RunSettlementPanel.Open(true);   //W3.2e：弹通关态结算面板
+            RunCheckpoint.RequestSave();
             RunTeamHud.SetVisible(false);    //W3.3：结算隐藏队伍血条
             return;
         }

@@ -29,6 +29,7 @@ public static partial class RunEncounter
         _pendingNextScene = -1;
         IsSpectator = false;
         RunSettlementPanel.Open(false);   //W3.2e：弹失败态结算面板
+        RunCheckpoint.RequestSave();
         RunTeamHud.SetVisible(false);     //W3.3：结算隐藏队伍血条
         ChaosLog.Warn(LogChannel.UI, "[局内] TriggerDefeat：本局失败（全员倒下，sceneIndex=" + CurrentSceneIndex
             + "，掉落条目 " + RunInventory.UsedSlots + " 种）");

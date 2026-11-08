@@ -166,6 +166,7 @@ public class DispatchPanel : BasePanel, IDispatchView
     public override void OnExit()
     {
         DisposePresenter();
+        BattlePreparationFlow.DiscardWhenDispatchClosed();
         _flowCommandIssued = false;
         _messageUntil = 0f;
         if (_message != null) _message.gameObject.SetActive(false);
@@ -267,6 +268,7 @@ public class DispatchPanel : BasePanel, IDispatchView
 
     public override void ClosePanel()
     {
+        if (!BattlePreparationFlow.IsStarting) BattlePreparationFlow.Clear();
         if (UIManager.Instance != null) UIManager.Instance.PopPanel();
         else Hide();
     }
@@ -1114,7 +1116,7 @@ public class DispatchPanel : BasePanel, IDispatchView
         if (_joinText != null) _joinText.text = L("ui_dispatch_join", "加入队伍");
         if (_removeText != null) _removeText.text = L("ui_dispatch_remove", "移出队伍");
         if (_controlText != null) _controlText.text = L("ui_dispatch_control", "设为操控");
-        if (_departText != null) _departText.text = L("ui_dispatch_depart", "出发");
+        if (_departText != null) _departText.text = "派遣 · 战备";
         if (_returnText != null) _returnText.text = L("ui_dispatch_return", "撤离");
         if (_searchPlaceholder != null) _searchPlaceholder.text = L("ui_dispatch_search", "搜索姓名");
     }

@@ -19,13 +19,18 @@ public static class VillageSceneFlow
             throw new InvalidOperationException("MainScene/LoadingScene未加入构建列表");
         VillageSceneSettings.Load();
     }
-    public static void EnterFromSave()
+    public static void EnterFromSave(Action onReady = null)
     {
+        if (onReady == null && RunCheckpoint.Current != null)
+        {
+            if (!RunSceneFlow.Resume(out string failure)) RunResumeRecoveryPanel.Open(failure);
+            return;
+        }
         ValidateEntry(); if (IsLoading) return;
-        if (IsVillageScene && VillageSceneBootstrap.IsReady) { OnReturnedToVillage(); return; }
+        if (IsVillageScene && VillageSceneBootstrap.IsReady) { OnReturnedToVillage(); onReady?.Invoke(); return; }
         RecoveringToSaveSlots = false; entryFailure = null;
         if (!SceneTransitionCoordinator.TryBegin(SceneTransitionCoordinator.TransitionKind.EnterVillage, SceneName, true,
-            OnReturnedToVillage, RecoverToSlots, out string reason)) throw new InvalidOperationException(reason);
+            () => { OnReturnedToVillage(); onReady?.Invoke(); }, RecoverToSlots, out string reason)) throw new InvalidOperationException(reason);
     }
     public static void OnReturnedToVillage()
     {
@@ -49,6 +54,7 @@ public static class VillageSceneFlow
         UIManager.Instance.SetSceneBackgroundVisible(true); UIManager.Instance.SetRootPanel(PanelType.MainMenuPanel);
         var panel = UIManager.Instance.PushPanel(PanelType.SLPanel) as SLPanel;
         panel?.ShowEntryFailure(entryFailure); RecoveringToSaveSlots = false;
+        if (RunCheckpoint.Current != null) RunResumeRecoveryPanel.Open(entryFailure);
     }
     public static bool ReturnToTitle(out string reason)
     {

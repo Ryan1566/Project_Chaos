@@ -205,6 +205,7 @@
     <Compile Include="Assets\Scripts\Runtime\Combat\DamageFloaters.cs" />
     <Compile Include="Assets\Scripts\Runtime\GameBase\Items\ItemBase.cs" />
     <Compile Include="Assets\Scripts\Runtime\3C\Character\LadderClimber.cs" />
+    <Compile Include="Assets\Scripts\Runtime\GameBase\Meta\RunCheckpoint.cs" />
     <Compile Include="Assets\Scripts\Runtime\GameBase\WorldMap\WorldFactionArea.cs" />
     <Compile Include="Assets\Scripts\Runtime\GameBase\RunMap\RunMapConfigLoader.cs" />
     <Compile Include="Assets\Scripts\Runtime\GameBase\ScenesLoader\LoadingController.cs" />
@@ -248,6 +249,7 @@
     <Compile Include="Assets\Scripts\Runtime\MVP\Model\ConfigData\MetaSkillTreeTable_FamilyTreeBoardConfig.cs" />
     <Compile Include="Assets\Scripts\Runtime\GameBase\LogManager\LogBootstrap.cs" />
     <Compile Include="Assets\Scripts\Runtime\Player\PlayerSpawner.cs" />
+    <Compile Include="Assets\Scripts\Runtime\GameBase\SaveManager\ActiveRunSave.cs" />
     <Compile Include="Assets\Scripts\Runtime\MVP\Model\ConfigData\RunMapTable_MapBiomeConfig.cs" />
     <Compile Include="Assets\Scripts\Runtime\GameBase\Meta\OfficeTaskCatalog.cs" />
     <Compile Include="Assets\Scripts\Runtime\GameBase\Interaction\RunNpcQuestService.cs" />
@@ -267,6 +269,7 @@
     <Compile Include="Assets\Scripts\Runtime\MVP\View\RunCampPanel.cs" />
     <Compile Include="Assets\Scripts\Runtime\MVP\Presenter\Gameplay\RunMapPresenter.cs" />
     <Compile Include="Assets\Scripts\Runtime\MVP\Model\Settings\SettingsEditingModel.cs" />
+    <Compile Include="Assets\Scripts\Runtime\MVP\Presenter\Gameplay\BattlePreparationPresenter.cs" />
     <Compile Include="Assets\Scripts\Runtime\GameBase\EventCenter\EventCenter.cs" />
     <Compile Include="Assets\Scripts\Runtime\MVP\Model\Gameplay\OfficeTasksDisplayState.cs" />
     <Compile Include="Assets\Scripts\Runtime\MVP\Presenter\Gameplay\InventoryPresenter.cs" />
@@ -348,7 +351,9 @@
     <Compile Include="Assets\Scripts\Runtime\MVP\View\WorldLocationsView.cs" />
     <Compile Include="Assets\Scripts\Runtime\3C\Camera\GameplayCameraSettings.cs" />
     <Compile Include="Assets\Scripts\Runtime\3C\Camera\CameraViewportBounds.cs" />
+    <Compile Include="Assets\Scripts\Runtime\MVP\View\BattlePreparationPanel.cs" />
     <Compile Include="Assets\Scripts\Runtime\MVP\View\SettingsPage\GraphicsSettingsPage.cs" />
+    <Compile Include="Assets\Scripts\Runtime\Player\RunEncounter.Checkpoint.cs" />
     <Compile Include="Assets\Scripts\Runtime\MVP\View\RadialMenuView.cs" />
     <Compile Include="Assets\Scripts\Runtime\GameBase\RunMap\MapPopulationPlaceholder.cs" />
     <Compile Include="Assets\Scripts\Runtime\GameTest\DataConfigTest\LoadConfigTest.cs" />
@@ -377,6 +382,7 @@
     <Compile Include="Assets\Scripts\Runtime\MVP\View\VillageHud.cs" />
     <Compile Include="Assets\Scripts\Runtime\GameBase\Meta\InventoryService.cs" />
     <Compile Include="Assets\Scripts\Runtime\GameBase\Singleton\SingletonMono.cs" />
+    <Compile Include="Assets\Scripts\Runtime\MVP\View\RunResumeRecoveryPanel.cs" />
     <Compile Include="Assets\Scripts\Runtime\GameBase\UIManager\UIPanelAnimator.cs" />
     <Compile Include="Assets\Scripts\Runtime\MVP\Model\ConfigData\EventTable_EventOptionConfig.cs" />
     <Compile Include="Assets\Scripts\Runtime\GameBase\SettingsManager\ItemWheelTriggerMode.cs" />
@@ -385,6 +391,7 @@
     <Compile Include="Assets\Scripts\Runtime\GameBase\RunMap\RunMapExplorationService.cs" />
     <Compile Include="Assets\Scripts\Runtime\Enemy\EnemyDummy.cs" />
     <Compile Include="Assets\Scripts\Runtime\MVP\Model\ConfigData\ItemTable_DropConfig.cs" />
+    <Compile Include="Assets\Scripts\Runtime\GameBase\Meta\BattleLoadout.cs" />
     <Compile Include="Assets\Scripts\Runtime\MVP\View\OfficeTasksView.cs" />
     <Compile Include="Assets\Scripts\Runtime\MVP\View\RunMenuPanel.cs" />
     <Compile Include="Assets\Scripts\Runtime\GameBase\RunTeam\RunCharacterGrowth.cs" />
@@ -408,6 +415,7 @@
     <Compile Include="Assets\Scripts\Runtime\Path&amp;Type\GlobalPath.cs" />
     <Compile Include="Assets\Scripts\Runtime\MVP\View\RunSettlementPanel.cs" />
     <Compile Include="Assets\Scripts\Runtime\MVP\Model\ConfigData\RunMapTable_MapPresetConfig.cs" />
+    <Compile Include="Assets\Scripts\Runtime\MVP\Presenter\Gameplay\BattlePreparationFlow.cs" />
     <Compile Include="Assets\Scripts\Runtime\GameBase\Meta\MetaRuntimeDriver.cs" />
     <Compile Include="Assets\Scripts\Runtime\MVP\Presenter\Gameplay\MarketPresenter.cs" />
     <Compile Include="Assets\Scripts\Runtime\MVP\Presenter\Startup\MainMenuPresenter.cs" />
@@ -419,6 +427,7 @@
     <Compile Include="Assets\Scripts\Runtime\GameBase\SaveManager\GameSession.cs" />
     <Compile Include="Assets\Scripts\Runtime\GameBase\Items\ItemUseCatalog.cs" />
     <Compile Include="Assets\Scripts\Runtime\GameTest\ObjPoolTest\ObjPoolTest.cs" />
+    <Compile Include="Assets\Scripts\Runtime\MVP\View\RadialMenuSkin.cs" />
     <Compile Include="Assets\Scripts\Runtime\MVP\Model\Gameplay\RetainerRecruitmentModel.cs" />
     <Compile Include="Assets\Scripts\Runtime\3C\Character\ItemUseAnimation.cs" />
     <Compile Include="Assets\Scripts\Runtime\GameBase\LocalizationManager\LocalizedText.cs" />
@@ -432,6 +441,7 @@
     <None Include="Assets\QA\Village\incremental_expected_errors.txt" />
     <None Include="Assets\QA\DispatchUI\view-checks.txt" />
     <None Include="Assets\QA\ConfigModules\worksheet-access.txt" />
+    <None Include="Assets\tmp_uidump_prefabs.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
     <None Include="Assets\QA\Refactor\scope-contracts.txt" />
     <None Include="Assets\QA\W5Closeout\ui-input.txt" />

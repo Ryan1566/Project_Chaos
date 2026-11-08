@@ -67,14 +67,25 @@ public static class RunMapFlowVerification
     }
     private static Button Button(string name)
     { return Top.GetComponentsInChildren<Button>().Single(b => b.name == name); }
-    private static void Click(string name)
+    internal static IEnumerator ConfirmBattlePreparation()
+    {
+        yield return new WaitForSecondsRealtime(.35f);
+        var ui = UIManager.Instance;
+        if (ui.panelStack.Count == 0 || !(ui.panelStack.Peek() is BattlePreparationPanel))
+            throw new InvalidOperationException("派遣没有打开战备界面");
+        Click("EnterRun", report: false);
+    }
+
+    private static void Click(string name, bool report = true)
     {
         var button = Button(name); Canvas.ForceUpdateCanvases();
         var rect = (RectTransform)button.transform; var canvas = button.GetComponentInParent<Canvas>();
         var data = new PointerEventData(EventSystem.current) { position = RectTransformUtility.WorldToScreenPoint(
             canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : canvas.worldCamera, rect.TransformPoint(rect.rect.center)) };
         var hits = new List<RaycastResult>(); EventSystem.current.RaycastAll(data, hits);
-        Check(hits.Count > 0 && (hits[0].gameObject == button.gameObject || hits[0].gameObject.transform.IsChildOf(button.transform)), "top raycast " + name);
+        bool hit = hits.Count > 0 && (hits[0].gameObject == button.gameObject || hits[0].gameObject.transform.IsChildOf(button.transform));
+        if (!hit) throw new InvalidOperationException("按钮未收到射线：" + name);
+        if (report) Check(true, "top raycast " + name);
         ExecuteEvents.Execute(button.gameObject, data, ExecuteEvents.pointerClickHandler);
     }
     private static IEnumerator Run()
@@ -104,7 +115,7 @@ public static class RunMapFlowVerification
         Check(Top is WorldMapPanel, "outside M opens world map");
         Click("EnterRunBtn"); yield return new WaitForSecondsRealtime(.6f);
         Isolation(); foreach (var member in RetainerService.Instance.GetAll()) DispatchService.Instance.Toggle(member.id, out reason);
-        Click("Btn_Depart");
+        Click("Btn_Depart"); yield return RunMapFlowVerification.ConfirmBattlePreparation();
         float deadline = Time.realtimeSinceStartup + 30;
         while ((RunEncounter.CurrentSceneIndex != 1 || !NaturalMapRuntime.IsReady || RunSceneFlow.IsTransitioning) && Time.realtimeSinceStartup < deadline) yield return null;
         Check(RunEncounter.CurrentSceneIndex == 1 && NaturalMapRuntime.IsReady, "formal WorldScene ready");

@@ -77,7 +77,7 @@ public static class RunContentFlowVerification
         Check(SaveSlotService.Instance.Save(3,payload),"owned isolated slot created");GameSession.Instance.Begin(3,payload,"MainScene");VillageSceneFlow.EnterFromSave();
         float deadline=Time.realtimeSinceStartup+40;while(!VillageSceneBootstrap.IsReady&&Time.realtimeSinceStartup<deadline)yield return null;
         Check(VillageSceneBootstrap.IsReady,"formal village ready");yield return Press(Key.M);Click("EnterRunBtn");yield return new WaitForSecondsRealtime(.3f);
-        string reason;foreach(var member in RetainerService.Instance.GetAll())DispatchService.Instance.Toggle(member.id,out reason);Click("Btn_Depart");
+        string reason;foreach(var member in RetainerService.Instance.GetAll())DispatchService.Instance.Toggle(member.id,out reason);Click("Btn_Depart"); yield return RunMapFlowVerification.ConfirmBattlePreparation();
         deadline=Time.realtimeSinceStartup+40;while((!RunEncounter.IsSceneReady||RunSceneFlow.IsTransitioning)&&Time.realtimeSinceStartup<deadline)yield return null;
         Check(RunEncounter.IsSceneReady,"formal expedition ready");var enemies=new List<EnemyPlaceholder>();RunEncounter.CopyMapEnemies(enemies);foreach(var e in enemies)e.enabled=false;
         var health=PlayerSpawner.CurrentPlayer.GetComponent<PlayerHealth>();health.invulnSeconds=100000;health.ApplyContactDamage(1);

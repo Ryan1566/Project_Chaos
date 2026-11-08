@@ -47,6 +47,7 @@ public static class DayNightClock
     public const float StartMinutes = 480;
     private static bool runStarted;
     public static float RunMinutes { get; private set; } = StartMinutes;
+    internal static void RestoreRunTime(float minutes) => RunMinutes = Mathf.Repeat(minutes, DayLength);
     public static float VillageMinutes
     {
         get

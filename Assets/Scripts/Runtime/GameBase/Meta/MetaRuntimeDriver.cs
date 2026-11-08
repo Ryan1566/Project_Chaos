@@ -87,8 +87,22 @@ public sealed class MetaRuntimeDriver : MonoBehaviour
         if (_payload == null || !GameSession.Instance.HasSession
             || !ReferenceEquals(_payload, GameSession.Instance.LoadedPayload)) return;
         string snapshot = JsonUtility.ToJson(_payload);
-        if (snapshot == _savedSnapshot) return;
-        if (MetaProgressService.Instance.SaveProgress(out string reason)) _savedSnapshot = snapshot;
+        if (snapshot == _savedSnapshot && !RunCheckpoint.IsPlayable) return;
+        if (MetaProgressService.Instance.SaveProgress(out string reason)) _savedSnapshot = JsonUtility.ToJson(_payload);
+    }
+
+    private void LateUpdate() => RunCheckpoint.FlushRequested();
+    private void OnEnable() => Application.wantsToQuit += SaveBeforeQuit;
+    private void OnDisable() => Application.wantsToQuit -= SaveBeforeQuit;
+    private bool SaveBeforeQuit()
+    {
+        if (!RunCheckpoint.IsPlayable || RunCheckpoint.Save(out string reason)) return true;
+        Debug.LogWarning("[续档] " + reason);
+        var ui = UIManager.Instance;
+        var panel = ui.panelStack.Count > 0 ? ui.panelStack.Peek() as PausePanel : null;
+        if (panel == null) panel = ui.PushPanel(PanelType.PausePanel) as PausePanel;
+        panel?.ShowSaveFailure(reason);
+        return false;
     }
 
     private void OnApplicationPause(bool paused) { if (paused) SaveIfChanged(); }

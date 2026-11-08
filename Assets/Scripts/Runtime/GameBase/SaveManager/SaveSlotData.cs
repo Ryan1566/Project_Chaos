@@ -97,6 +97,11 @@ public class SavePayload
     /// <summary>本局派遣队伍（门客 id 列表；出发时写入，零迁移）。</summary>
     public List<uint> runTeam = new List<uint>();
 
+    public bool hasDispatchRoster;
+    public List<uint> dispatchRoster = new List<uint>();
+    public List<BattlePresetSave> battlePresets = new List<BattlePresetSave>();
+    public ActiveRunSave activeRun;
+
     /// <summary>进入局内的次数（M15 局内计数）。</summary>
     public uint runs;
 

@@ -103,6 +103,26 @@ namespace Chaos.Gameplay.Interaction
             return rewards ?? Array.Empty<RunContentRewardState>();
         }
 
+        internal RunContentClaimSave CaptureClaims()
+        {
+            var snapshot = new RunContentClaimSave { id = StableId };
+            if (rewards != null) foreach (var reward in rewards)
+                if (reward.Claimed) snapshot.claimed.Add(reward.Index);
+            return snapshot;
+        }
+
+        internal bool RestoreClaims(RunContentClaimSave snapshot)
+        {
+            if (rewards == null || snapshot.claimed == null) return false;
+            foreach (int index in snapshot.claimed)
+            {
+                if (index < 0 || index >= rewards.Length) return false;
+                rewards[index].MarkClaimed();
+                if (definition.kind == RunContentKind.Npc) npcCompleted = true;
+            }
+            return true;
+        }
+
         internal bool TryClaimReward(int index, out string reason)
         {
             if (claiming) { reason = "正在领取奖励"; return false; }
@@ -114,11 +134,22 @@ namespace Chaos.Gameplay.Interaction
             claiming = true;
             try
             {
-                if (!RunInventory.AddItem(state.ItemId, state.Count, out reason)) return false;
-                state.MarkClaimed();
-                if (definition.kind == RunContentKind.Npc) npcCompleted = true;
-                if (definition.kind == RunContentKind.Gatherable)
-                    RunNpcQuestService.RecordGathering(map, StableId, definition);
+                System.Action undoGathering = null;
+                if (!RunInventory.AddItem(state.ItemId, state.Count, out reason, () =>
+                {
+                    bool wasCompleted = npcCompleted;
+                    state.MarkClaimed();
+                    if (definition.kind == RunContentKind.Npc) npcCompleted = true;
+                    if (definition.kind == RunContentKind.Gatherable)
+                        undoGathering = RunNpcQuestService.StageGathering(map, StableId, definition);
+                    return () =>
+                    {
+                        state.MarkClaimed(false);
+                        npcCompleted = wasCompleted;
+                        undoGathering?.Invoke();
+                    };
+                })) return false;
+                if (undoGathering != null) RunNpcQuestService.Publish();
                 if (reason == null) reason = string.Empty;
                 return true;
             }

@@ -215,7 +215,7 @@ public static class DayNightFlowVerification
         CheckMap();
         Click("EnterRunBtn");
         yield return null;
-        Click("Btn_Depart");
+        Click("Btn_Depart"); yield return RunMapFlowVerification.ConfirmBattlePreparation();
         yield return Until(() => RunEncounter.IsSceneReady && !RunSceneFlow.IsTransitioning, "formal run ready");
         Check(DayNightClock.RunMinutes >= 480 && DayNightClock.RunMinutes < 482, "new run starts at eight");
         CheckSky();

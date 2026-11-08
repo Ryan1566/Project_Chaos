@@ -79,7 +79,7 @@ public static class ExplorationFlowVerification
         foreach(var member in RetainerService.Instance.GetAll())DispatchService.Instance.Toggle(member.id,out _);
         deadline=Time.realtimeSinceStartup+5;
         while(!Top.GetComponentsInChildren<Button>(false).Any(b=>b.name=="Btn_Depart"&&b.interactable)&&Time.realtimeSinceStartup<deadline)yield return null;
-        Click("Btn_Depart");yield return MapReady(1);
+        Click("Btn_Depart"); yield return RunMapFlowVerification.ConfirmBattlePreparation();yield return MapReady(1);
     }
     static IEnumerator MapReady(int stage)
     {

@@ -40,7 +40,7 @@ public static class RunInventory
         return RunBagProgression.GetCapacity(section);
     }
     private static bool Valid(RunBagSection section) => (uint)section <= 3;
-    private static bool Address(RunBagSection section, int index)
+    internal static bool Address(RunBagSection section, int index)
     { return Valid(section) && index >= 0 && index < GetCapacity(section); }
     public static Stack GetSlot(RunBagSection section, int index)
     {
@@ -79,7 +79,7 @@ public static class RunInventory
         return true;
     }
     internal static void NotifyUseCommitted() { Publish(); }
-    private static bool Accepts(RunBagSection section, uint id)
+    internal static bool Accepts(RunBagSection section, uint id)
     {
         if (section == RunBagSection.Misc) return true;
         var def = InventoryService.Instance.GetDefinition(id);
@@ -94,6 +94,34 @@ public static class RunInventory
         foreach (var id in RunBagProgression.OwnedItems())
             PlaceImportant(id);
         Publish();
+    }
+
+    internal static List<BattleSlotSave> CaptureSlots()
+    {
+        EnsureContext();
+        var result = new List<BattleSlotSave>();
+        for (int row = 0; row < Slots.Length; row++)
+            for (int index = 0; index < Slots[row].Length; index++)
+            {
+                var item = Slots[row][index];
+                if (item != null) result.Add(new BattleSlotSave { section = (RunBagSection)row, index = index, itemId = item.itemId, count = item.count });
+            }
+        return result;
+    }
+
+    internal static uint StackLimit(ItemTable_ItemConfig definition) =>
+        definition.IsUnique || definition.RunCategory == 1 ? 1u : Math.Max(1u, definition.StackLimit);
+
+    internal static bool TryInstallSlots(IReadOnlyList<BattleSlotSave> snapshot, out string reason)
+    {
+        if (!BattleLoadout.Validate(snapshot, false, out reason)) return false;
+        EnsureContext();
+        ClearSlots();
+        _started = true;
+        foreach (var slot in snapshot)
+            Slots[(int)slot.section][slot.index] = new Stack { itemId = slot.itemId, count = slot.count };
+        Publish();
+        return true;
     }
     public static void Clear()
     {
@@ -134,7 +162,11 @@ public static class RunInventory
         Slots[(int)section][index] = new Stack { itemId = id, count = 1 };
         return true;
     }
-    public static bool AddItem(uint itemId, uint count, out string reason)
+    public static bool AddItem(uint itemId, uint count, out string reason) =>
+        AddItem(itemId, count, out reason, null);
+
+    // 记录来源的领取状态并返回回滚动作，永久收藏、背包和来源会写入同一份存档。
+    internal static bool AddItem(uint itemId, uint count, out string reason, Func<Action> recordClaim)
     {
         if (!Ready(out reason)) return false;
         if (InventoryService.TryGetResourceCommodity(itemId, out _))
@@ -144,22 +176,46 @@ public static class RunInventory
         if (count == 0) { reason = "数量必须大于零"; return false; }
         if (IsImportant(itemId))
         {
-            // Domain acquisition commits first; ground drops can disappear only after this returns success.
-            if (!RunBagProgression.AcquireImportant(itemId, out reason)) return false;
-            bool carried = PlaceImportant(itemId);
+            bool carried = false;
+            if (RunBagProgression.Owns(itemId))
+            {
+                carried = PlaceImportant(itemId);
+                recordClaim?.Invoke();
+            }
+            else
+            {
+                Action undoClaim = null;
+                if (!MetaCommandRunner.Execute("RunBag.AcquireImportant", (out string why) =>
+                {
+                    RunBagProgression.RegisterImportantInCommand(itemId);
+                    carried = PlaceImportant(itemId);
+                    undoClaim = recordClaim?.Invoke();
+                    why = null;
+                    return true;
+                }, out reason, onRolledBack: () =>
+                {
+                    if (carried)
+                        foreach (var row in Slots)
+                            for (int index = 0; index < row.Length; index++)
+                                if (row[index]?.itemId == itemId) row[index] = null;
+                    undoClaim?.Invoke();
+                })) return false;
+            }
             if (carried) Publish();
             if (GetCount(itemId) == 0) reason = "已永久收藏，背包满时可稍后带入";
             return true;
         }
-        uint limit = def.IsUnique ? 1u : Math.Max(1, def.StackLimit);
+        uint limit = StackLimit(def);
         uint have = GetCount(itemId);
         if (have > limit || count > limit - have) { reason = "超过该物品的叠加上限 " + limit; return false; }
         foreach (var row in Slots)
             foreach (var item in row)
-                if (item != null && item.itemId == itemId) { item.count += count; Publish(); return true; }
+                if (item != null && item.itemId == itemId)
+                { item.count += count; recordClaim?.Invoke(); Publish(); return true; }
         if (!FindDestination(def, false, out RunBagSection target, out int free))
         { reason = "杂物区及对应专用行没有空格"; return false; }
         Slots[(int)target][free] = new Stack { itemId = itemId, count = count };
+        recordClaim?.Invoke();
         Publish(); return true;
     }
     public static bool RemoveItem(uint itemId, uint count, out string reason)

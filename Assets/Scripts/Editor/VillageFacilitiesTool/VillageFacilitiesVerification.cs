@@ -174,7 +174,7 @@ public static class VillageFacilitiesVerification
         bool rebound=false;input.BeginRebind(InputManager.ActionVillageInteract,step.BindingIndex,InputManager.BindingKind.Keyboard,r=>rebound=true);yield return Press(Key.F);yield return new WaitForSecondsRealtime(.3f);
         Check(rebound&&!input.IsRebinding&&model.Read().Hint.Contains("F"),"facility hint follows rebound interaction key");
         yield return Press(Key.E);Check(Top==null,"previous interaction key no longer opens facility");yield return Press(Key.F);Check(Top is VillageOfficePanel,"new interaction key opens office");yield return Press(Key.Escape);input.LoadOverridesJson("");
-        yield return Press(Key.M);Check(Top is WorldMapPanel,"M still opens world map from village");Click("EnterRunBtn");yield return new WaitForSecondsRealtime(.3f);foreach(var member in RetainerService.Instance.GetAll())DispatchService.Instance.Toggle(member.id,out reason);Click("Btn_Depart");
+        yield return Press(Key.M);Check(Top is WorldMapPanel,"M still opens world map from village");Click("EnterRunBtn");yield return new WaitForSecondsRealtime(.3f);foreach(var member in RetainerService.Instance.GetAll())DispatchService.Instance.Toggle(member.id,out reason);Click("Btn_Depart"); yield return RunMapFlowVerification.ConfirmBattlePreparation();
         for(int stage=1;stage<=3;stage++)
         {
             float deadline=Time.realtimeSinceStartup+40;while((RunEncounter.CurrentSceneIndex!=stage||!RunEncounter.IsSceneReady||RunSceneFlow.IsTransitioning)&&Time.realtimeSinceStartup<deadline)yield return null;

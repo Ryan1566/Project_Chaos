@@ -75,6 +75,35 @@ namespace RunMap
             get { return _exploredCount; }
         }
 
+        internal string CaptureExplored()
+        {
+            var bytes = new byte[(_width * _height + 7) / 8];
+            foreach (int index in _exploredCells) bytes[index >> 3] |= (byte)(1 << (index & 7));
+            return Convert.ToBase64String(bytes);
+        }
+
+        internal bool RestoreExplored(string snapshot)
+        {
+            if (string.IsNullOrEmpty(snapshot)) return true;
+            byte[] bytes;
+            try { bytes = Convert.FromBase64String(snapshot); }
+            catch (FormatException) { return false; }
+            int count = _width * _height;
+            if (bytes.Length != (count + 7) / 8) return false;
+            for (int index = 0; index < count; index++)
+                if ((bytes[index >> 3] & (1 << (index & 7))) != 0 && !GetBit(_exploredBits, index))
+                {
+                    SetBit(_exploredBits, index);
+                    _exploredCells.Add(index);
+                    _exploredCount++;
+                }
+            _dirtyCells.Clear();
+            _dirtyCells.AddRange(_exploredCells);
+            _dirtyCells.Sort();
+            _revision++;
+            return true;
+        }
+
         /// <summary>
         /// Cells whose visible/explored state changed during the most recent successful update or clear.
         /// Indices are <c>y * Width + x</c>, ascending and unique.

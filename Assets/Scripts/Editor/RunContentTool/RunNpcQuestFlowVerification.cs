@@ -95,7 +95,7 @@ public static class RunNpcQuestFlowVerification
         end = Time.realtimeSinceStartup + 5;
         while (!Top.GetComponentsInChildren<Button>(false).Any(b => b.name == "Btn_Depart" && b.interactable)
             && Time.realtimeSinceStartup < end) yield return null;
-        Click("Btn_Depart");
+        Click("Btn_Depart"); yield return RunMapFlowVerification.ConfirmBattlePreparation();
         yield return WaitForMap(1);
         Check(Content("traveller").GetComponentInChildren<Spine.Unity.SkeletonAnimation>() != null, "医者仍使用Spine占位");
     }

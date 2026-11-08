@@ -84,7 +84,7 @@ public static class ItemWheelFlowVerification
         Key(UnityEngine.InputSystem.Key.M); yield return new WaitForSecondsRealtime(.4f); Key(); yield return null;
         Check(Top is WorldMapPanel, "outside M opens world map"); Click("EnterRunBtn"); yield return new WaitForSecondsRealtime(.3f);
         foreach (var member in RetainerService.Instance.GetAll()) DispatchService.Instance.Toggle(member.id, out reason);
-        Click("Btn_Depart"); deadline = Time.realtimeSinceStartup + 40;
+        Click("Btn_Depart"); yield return RunMapFlowVerification.ConfirmBattlePreparation(); deadline = Time.realtimeSinceStartup + 40;
         while ((!RunEncounter.IsSceneReady || RunSceneFlow.IsTransitioning) && Time.realtimeSinceStartup < deadline) yield return null;
         Check(RunItemUseService.IsReady && RunEncounter.CurrentSceneIndex == 1, "formal loading to WorldScene ready");
         var actor = RunItemUseService.Actor; actor.invulnSeconds = 100000;

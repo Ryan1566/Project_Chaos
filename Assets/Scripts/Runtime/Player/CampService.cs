@@ -17,6 +17,7 @@ public static class CampService
 {
     /// <summary>本局是否已扎营过（每局 1 次）。</summary>
     public static bool CampUsed { get; private set; }
+    internal static void RestoreRunState(bool used) => CampUsed = used;
 
     /// <summary>治疗消耗药数。</summary>
     public const int HealCost = 1;

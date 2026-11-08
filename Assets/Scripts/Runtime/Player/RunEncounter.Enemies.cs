@@ -50,6 +50,7 @@ public static partial class RunEncounter
         List<EnemyPlaceholder> list;
         if (enemy == null || !OwnsRuntimeObject(enemy.gameObject)
             || !AliveByRoom.TryGetValue(roomId, out list) || !list.Remove(enemy)) return;
+        DefeatedEnemyIds.Add(enemy.gameObject.name);
 
         //W3.2d：掉落死亡不触发掉落（防引诱跳崖刷装备 / 进局凭空多掉落）
         if (!allowDrop) return;
@@ -72,13 +73,13 @@ public static partial class RunEncounter
     }
 
     /// <summary>在指定位置生成可捡掉落物（挂在 PrototypeDropRoot 下）。</summary>
-    private static void SpawnGroundDrop(uint itemId, uint count, Vector3 position, string reason)
+    private static void SpawnGroundDrop(uint itemId, uint count, Vector3 position, string reason, bool restoring = false)
     {
         GameObject root = _dropRoot = EnsureObjectScope().GetOrCreateRoot(DropRootName);
 
         GameObject go = new GameObject("Drop_" + itemId + "x" + count, typeof(BoxCollider2D), typeof(SpriteRenderer));
         go.transform.SetParent(root.transform, false);
-        go.transform.position = position + new Vector3(0f, 0.5f, 0f);
+        go.transform.position = restoring ? position : position + new Vector3(0f, 0.5f, 0f);
         go.GetComponent<BoxCollider2D>().isTrigger = true;
         go.GetComponent<BoxCollider2D>().size = new Vector2(1.2f, 1.2f);
         SpriteRenderer sr = go.GetComponent<SpriteRenderer>();

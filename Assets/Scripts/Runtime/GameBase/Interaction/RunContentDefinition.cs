@@ -72,6 +72,6 @@ namespace Chaos.Gameplay.Interaction
             Index = index; ItemId = itemId; Count = count; Label = label;
         }
 
-        internal void MarkClaimed() { Claimed = true; }
+        internal void MarkClaimed(bool value = true) { Claimed = value; }
     }
 }

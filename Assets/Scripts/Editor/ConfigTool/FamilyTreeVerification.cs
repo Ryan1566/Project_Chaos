@@ -116,7 +116,7 @@ public static class FamilyTreeVerification
         yield return Press(Key.Escape);
         P.resGoods=P.resMoney=P.resMaterial=P.resBlueprint=10000;
         foreach(var node in FamilyTreeService.Instance.GetAll().OrderBy(n=>n.Index))if(!FamilyTreeService.Instance.IsUnlocked(node.Index))Check(FamilyTreeService.Instance.Unlock(node.Index,out _),"prepare actual expedition node "+node.Index);
-        yield return Press(Key.M);Click("EnterRunBtn");yield return new WaitForSecondsRealtime(.3f);foreach(var member in RetainerService.Instance.GetAll())DispatchService.Instance.Toggle(member.id,out _);Click("Btn_Depart");
+        yield return Press(Key.M);Click("EnterRunBtn");yield return new WaitForSecondsRealtime(.3f);foreach(var member in RetainerService.Instance.GetAll())DispatchService.Instance.Toggle(member.id,out _);Click("Btn_Depart"); yield return RunMapFlowVerification.ConfirmBattlePreparation();
         for(int stage=1;stage<=3;stage++)
         {
             float end=Time.realtimeSinceStartup+50;while((!RunEncounter.IsSceneReady||RunEncounter.CurrentSceneIndex!=stage||RunSceneFlow.IsTransitioning)&&Time.realtimeSinceStartup<end)yield return null;

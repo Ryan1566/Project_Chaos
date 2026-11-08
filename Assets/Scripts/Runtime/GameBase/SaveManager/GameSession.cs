@@ -69,6 +69,7 @@ public class GameSession : SingletonBase<GameSession>
         Kind = SessionKind.Persistent;
         saveDirectory = SaveSlotService.SavesDirectory;
         ContextId++;
+        BattlePreparationFlow.Clear();
         EventService.Instance.ResetRuntime();
         MetaProgressService.Instance.ResetSessionRuntime();
         DispatchService.Instance.ResetSelection();
@@ -77,6 +78,7 @@ public class GameSession : SingletonBase<GameSession>
         InventoryService.MigrateLegacyResourceItems(LoadedPayload);
         TargetSceneName = targetSceneName;
         HasSession = true;
+        DispatchService.Instance.RestoreSelection(LoadedPayload);
         ContextChanged?.Invoke();
 
         ChaosLog.Info(LogChannel.Save,
@@ -89,10 +91,13 @@ public class GameSession : SingletonBase<GameSession>
     {
         if (MetaCommandRunner.IsExecuting) throw new InvalidOperationException("玩法命令执行中不能切换会话");
         EventService.Instance.ResetRuntime(); MetaProgressService.Instance.ResetSessionRuntime(); DispatchService.Instance.ResetSelection();
+        BattlePreparationFlow.Clear();
         Kind = SessionKind.Sandbox; SelectedSlot = 0; saveDirectory = null; TargetSceneName = null;
         LoadedPayload = initial == null ? new SavePayload() : JsonUtility.FromJson<SavePayload>(JsonUtility.ToJson(initial));
         InventoryService.MigrateLegacyResourceItems(LoadedPayload);
-        HasSession = true; ContextId++; ContextChanged?.Invoke();
+        HasSession = true; ContextId++;
+        DispatchService.Instance.RestoreSelection(LoadedPayload);
+        ContextChanged?.Invoke();
     }
 
     public bool CanCommit(out string reason)
@@ -108,7 +113,10 @@ public class GameSession : SingletonBase<GameSession>
     {
         if (!CanCommit(out reason)) return false;
         if (IsSandbox) return true; // An in-memory commit, never an implicit slot 3 save.
+        var previousRun = LoadedPayload.activeRun;
+        if (!RunCheckpoint.RefreshForSave(LoadedPayload, out reason)) return false;
         bool saved = SaveSlotService.Instance.Save(SelectedSlot, LoadedPayload);
+        if (!saved) LoadedPayload.activeRun = previousRun;
         reason = saved ? null : "保存失败，请检查磁盘后重试（槽 " + SelectedSlot + "）";
         return saved;
     }
@@ -136,6 +144,7 @@ public class GameSession : SingletonBase<GameSession>
         LoadedPayload = null;
         TargetSceneName = null;
         HasSession = false;
+        BattlePreparationFlow.Clear();
         Kind = SessionKind.None; saveDirectory = null; ContextId++;
         MetaProgressService.Instance.ResetSessionRuntime();
         DispatchService.Instance.ResetSelection();

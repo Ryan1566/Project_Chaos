@@ -79,7 +79,7 @@ public static class RunTeamFlowVerification
         Key(UnityEngine.InputSystem.Key.M); yield return new WaitForSecondsRealtime(.5f); Key(); yield return null;
         Check(Top is WorldMapPanel, "outside M world map"); Click("EnterRunBtn"); yield return new WaitForSecondsRealtime(.5f);
         Isolation(); foreach (var retainer in RetainerService.Instance.GetAll()) DispatchService.Instance.Toggle(retainer.id, out reason);
-        Click("Btn_Depart"); deadline = Time.realtimeSinceStartup + 30;
+        Click("Btn_Depart"); yield return RunMapFlowVerification.ConfirmBattlePreparation(); deadline = Time.realtimeSinceStartup + 30;
         while ((!RunEncounter.IsSceneReady || RunSceneFlow.IsTransitioning) && Time.realtimeSinceStartup < deadline) yield return null;
         Check(RunEncounter.IsSceneReady && RunEncounter.CurrentSceneIndex == 1, "formal WorldScene stage1 ready");
         Key(UnityEngine.InputSystem.Key.Tab); yield return new WaitForSecondsRealtime(.4f); Key(); yield return null;

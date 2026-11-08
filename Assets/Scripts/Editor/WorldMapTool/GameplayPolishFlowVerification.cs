@@ -121,7 +121,7 @@ public static class GameplayPolishFlowVerification
         Check(Top is WorldMapPanel, "discard returns to parent world map");
         Click("EnterRunBtn"); yield return new WaitForSecondsRealtime(.4f); string reason;
         foreach (var member in RetainerService.Instance.GetAll()) DispatchService.Instance.Toggle(member.id, out reason);
-        Click("Btn_Depart"); deadline = Time.realtimeSinceStartup + 40;
+        Click("Btn_Depart"); yield return RunMapFlowVerification.ConfirmBattlePreparation(); deadline = Time.realtimeSinceStartup + 40;
         while ((!RunEncounter.IsSceneReady || RunSceneFlow.IsTransitioning) && Time.realtimeSinceStartup < deadline) yield return null;
         Check(RunEncounter.IsSceneReady && RunItemUseService.IsReady, "formal run ready"); RunItemUseService.Actor.invulnSeconds = 100000;
         yield return GameplayWallPlayVerification.Run(Check);

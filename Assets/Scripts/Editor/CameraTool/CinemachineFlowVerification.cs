@@ -101,7 +101,7 @@ public static class CinemachineFlowVerification
         yield return Press(UnityEngine.InputSystem.Key.M); Check(Top is WorldMapPanel, "village M world map remains usable");
         Click("EnterRunBtn"); yield return new WaitForSecondsRealtime(.3f); string reason;
         foreach (var member in RetainerService.Instance.GetAll()) DispatchService.Instance.Toggle(member.id, out reason);
-        Click("Btn_Depart"); deadline = Time.realtimeSinceStartup + 40;
+        Click("Btn_Depart"); yield return RunMapFlowVerification.ConfirmBattlePreparation(); deadline = Time.realtimeSinceStartup + 40;
         while ((!RunEncounter.IsSceneReady || RunSceneFlow.IsTransitioning) && Time.realtimeSinceStartup < deadline) yield return null;
         Check(RunEncounter.IsSceneReady, "formal expedition ready"); yield return new WaitForSecondsRealtime(.4f);
         CheckOutput("run1"); CheckMapView("run1"); Check(Mathf.Abs(Output.orthographicSize - 6) < .01f, "run size remains 6");

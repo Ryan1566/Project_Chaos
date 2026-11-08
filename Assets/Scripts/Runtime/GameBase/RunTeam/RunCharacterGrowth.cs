@@ -16,6 +16,36 @@ namespace Chaos.Gameplay.RunTeam
 
         public RunCharacterGrowth(uint memberId) { MemberId = memberId; }
 
+        internal void Capture(RunMemberSave member)
+        {
+            member.level = Level;
+            member.experience = Experience;
+            member.points = UnspentPoints;
+            member.health = HealthBonus;
+            member.stamina = StaminaBonus;
+            member.mana = ManaBonus;
+        }
+
+        internal bool Restore(RunMemberSave member)
+        {
+            if (member == null || member.id != MemberId || member.level < 1 || member.level > RunCharacterGrowthRules.MaxLevel
+                || member.experience < 0 || member.points < 0 || member.health < 0 || member.stamina < 0 || member.mana < 0)
+                return false;
+            int increment = RunCharacterGrowthRules.AttributeIncrement;
+            long spent = (long)member.health + member.stamina + member.mana;
+            if (member.health % increment != 0 || member.stamina % increment != 0 || member.mana % increment != 0
+                || spent / increment + member.points != member.level - 1
+                || (member.level == RunCharacterGrowthRules.MaxLevel ? member.experience != 0
+                    : member.experience >= RunCharacterGrowthRules.ExperienceForLevel(member.level))) return false;
+            Level = member.level;
+            Experience = member.experience;
+            UnspentPoints = member.points;
+            HealthBonus = member.health;
+            StaminaBonus = member.stamina;
+            ManaBonus = member.mana;
+            return true;
+        }
+
         public bool TryAddExperience(int amount, out string reason)
         {
             reason = null;

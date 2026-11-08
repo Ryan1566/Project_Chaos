@@ -9,13 +9,18 @@ public class RunDropItem : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other == null) return;
+        if (other == null || count == 0 || !RunEncounter.IsSceneReady || RunEncounter.Defeated || RunEncounter.RunCleared) return;
         if (other.GetComponentInParent<PlayerLocomotion>() == null) return;   //只认受控玩家
 
         string reason;
-        if (RunInventory.AddItem(itemId, count, out reason))
+        uint pickedUp = count;
+        if (RunInventory.AddItem(itemId, pickedUp, out reason, () =>
         {
-            ChaosLog.Info(LogChannel.Config, "[局内库存] 捡起掉落物 " + name + "（物品 " + itemId + " ×" + count + "）");
+            count = 0;
+            return () => count = pickedUp;
+        }))
+        {
+            ChaosLog.Info(LogChannel.Config, "[局内库存] 捡起掉落物 " + name + "（物品 " + itemId + " ×" + pickedUp + "）");
             Destroy(gameObject);
         }
         else

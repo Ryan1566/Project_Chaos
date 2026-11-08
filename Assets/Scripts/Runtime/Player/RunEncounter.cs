@@ -65,7 +65,7 @@ public static partial class RunEncounter
     public static bool TryUseExit(int stage)
     {
         if (!CanUseExit(stage)) return false;
-        StagesPassed = Mathf.Max(StagesPassed, stage);
+        if (!RunSceneFlow.IsFormalRun) StagesPassed = Mathf.Max(StagesPassed, stage);
         _pendingNextScene = stage + 1;
         return true;
     }
@@ -113,7 +113,14 @@ public static partial class RunEncounter
         return EnterSceneInternal(sceneIndex, runTeam, true, seed);
     }
 
-    private static bool EnterSceneInternal(int sceneIndex, List<uint> runTeam, bool prepared, uint? seed)
+    internal static bool EnterPreparedScene(int sceneIndex, List<uint> runTeam, uint seed,
+        ActiveRunSave resume, IReadOnlyList<BattleSlotSave> loadout, System.Action<ActiveRunSave> commit)
+    {
+        return EnterSceneInternal(sceneIndex, runTeam, true, seed, resume, loadout, commit);
+    }
+
+    private static bool EnterSceneInternal(int sceneIndex, List<uint> runTeam, bool prepared, uint? seed,
+        ActiveRunSave resume = null, IReadOnlyList<BattleSlotSave> loadout = null, System.Action<ActiveRunSave> commit = null)
     {
         if (sceneIndex < 1 || sceneIndex > MaxSceneIndex)
         {
@@ -135,13 +142,16 @@ public static partial class RunEncounter
         _entering = true;
         try
         {
+            _sceneReady = false;
+            DefeatedEnemyIds.Clear();
+            bool initializeRun = sceneIndex == 1 || resume != null;
             // 跨场景生命继承：第 1 图是新局，直接清空旧快照；后续图必须在清场前抓取本局当前状态。
             // 正式切图已在 SuspendForSceneTransition 抓取过，此时旧角色已卸载，CaptureTeamVitals 会保留原快照。
-            if (sceneIndex == 1) ClearTeamVitals();
+            if (initializeRun) ClearTeamVitals();
             else CaptureTeamVitals();
 
             // 已入库存的物品及扎营次数属于整局；只有未捡掉落物随场景清除。
-            if (sceneIndex == 1)
+            if (initializeRun)
             {
                 DayNightClock.BeginRun();
                 StagesPassed = RunKills = HighestRunDamage = 0;
@@ -149,7 +159,14 @@ public static partial class RunEncounter
                 StartingImportantItems.Clear();
                 StartingImportantItems.UnionWith(RunBagProgression.OwnedItems());
                 Chaos.MVP.Model.Gameplay.RunSettlementModel.Clear();
-                RunInventory.BeginRun();
+                var initialBag = resume != null ? resume.bag : loadout;
+                if (initialBag == null) RunInventory.BeginRun();
+                else
+                {
+                    RunInventory.Clear();
+                    if (!RunInventory.TryInstallSlots(initialBag, out string inventoryError))
+                        throw new System.InvalidOperationException(inventoryError);
+                }
                 Chaos.Gameplay.Interaction.RunNpcQuestService.BeginRun();
                 CampService.ResetForNewRun();
                 _killSeq = 0u;
@@ -194,7 +211,12 @@ public static partial class RunEncounter
                 ChaosLog.Warn(LogChannel.UI, "[局内] EnterScene 收到的队伍为空且 Team 也为空 → 门客将不会生成");
             }
 
-            if (sceneIndex == 1) Chaos.Gameplay.RunTeam.RunTeamProgress.BeginRun(Team);
+            if (resume != null)
+            {
+                if (!Chaos.Gameplay.RunTeam.RunTeamProgress.Restore(Team, resume.members))
+                    throw new System.InvalidOperationException("局内队伍成长记录无效");
+            }
+            else if (sceneIndex == 1) Chaos.Gameplay.RunTeam.RunTeamProgress.BeginRun(Team);
 
             ClearEnemies();
             PlayerSpawner.Clear(false);
@@ -220,8 +242,8 @@ public static partial class RunEncounter
             CurrentSceneIndex = sceneIndex;
 
             //★W5.2：进第 1 场景 = 本次「出发」，把本局阵营定格（整局不变，17 号文档 §9 E7）
-            if (sceneIndex == 1)
-                FactionService.LockRunFaction(MetaProgressService.Instance == null ? 1u : MetaProgressService.Instance.Era);
+            if (initializeRun)
+                FactionService.LockRunFaction(resume?.era ?? MetaProgressService.Instance.Era);
             _clearedCurrentScene = false;
             _clearedRooms = 0;
             AliveByRoom.Clear();
@@ -244,11 +266,19 @@ public static partial class RunEncounter
             Chaos.Gameplay.RunTeam.RunTeamProgress.ApplyToSpawnedTeam();
             // 成长与生成初始化完成后再写回本局生命，避免被出生满血覆盖；道具生命上限仍由原服务后续刷新。
             RestoreTeamVitals();
+            if (resume != null && !ApplyCheckpoint(resume, naturalPlan))
+                throw new System.InvalidOperationException("地图版本、布局或局内进度与检查点不兼容");
             EnsureTicker();
 
             RunDepthHud.EnableForRun();   //W4e：进局开闸 + 建 HUD（CurrentSceneIndex 已就位）
             RunTeamHud.EnableForRun();    //W3.3：队伍血条（左侧，独立 Canvas）
             ShowTerrainToast(sceneIndex);   //W5.2：进场提示「地形：X · 阵营：Y」，3 秒淡出
+            // 仓库、阶段记录和初始背包统一提交，再开放游戏输入。
+            if (commit != null)
+            {
+                StagesPassed = Mathf.Max(StagesPassed, sceneIndex - 1);
+                commit(CaptureCheckpoint(GameSession.Instance.LoadedPayload.runs));
+            }
             _sceneReady = true;
 
             ChaosLog.Success(LogChannel.UI,
@@ -317,6 +347,11 @@ public static partial class RunEncounter
         if (_pendingNextScene < 0) return;
         int next = _pendingNextScene;
         _pendingNextScene = -1;
+        if (RunSceneFlow.IsFormalRun && !RunCheckpoint.Save(out string reason))
+        {
+            Debug.LogWarning("[切图] 检查点未保存，请重试出口：" + reason);
+            return;
+        }
         _sceneReady = false;
         if (RunSceneFlow.IsFormalRun)
         {
