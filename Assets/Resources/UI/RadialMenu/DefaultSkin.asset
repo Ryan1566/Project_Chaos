@@ -1,0 +1,93 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01ce50417ed80b04abc3a520201205b7, type: 3}
+  m_Name: DefaultSkin
+  m_EditorClassIdentifier: 
+  primary:
+  - normal: {fileID: 6592040560272379924, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+    selected: {fileID: 0}
+    disabled: {fileID: 0}
+  - normal: {fileID: -2302897865742960100, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+    selected: {fileID: 0}
+    disabled: {fileID: 0}
+  - normal: {fileID: -3147215332263895916, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+    selected: {fileID: 0}
+    disabled: {fileID: 0}
+  - normal: {fileID: 4057456374274115973, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+    selected: {fileID: 0}
+    disabled: {fileID: 0}
+  - normal: {fileID: -2973205795236411499, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+    selected: {fileID: 0}
+    disabled: {fileID: 0}
+  - normal: {fileID: -5038034205905444792, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+    selected: {fileID: 0}
+    disabled: {fileID: 0}
+  - normal: {fileID: 3363454416706156307, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+    selected: {fileID: 0}
+    disabled: {fileID: 0}
+  - normal: {fileID: 3890977315614012937, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+    selected: {fileID: 0}
+    disabled: {fileID: 0}
+  - normal: {fileID: 6179460758739319108, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+    selected: {fileID: 0}
+    disabled: {fileID: 0}
+  - normal: {fileID: -537665318175169857, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+    selected: {fileID: 0}
+    disabled: {fileID: 0}
+  - normal: {fileID: -5609878182939147526, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+    selected: {fileID: 0}
+    disabled: {fileID: 0}
+  - normal: {fileID: 1179888077876240375, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+    selected: {fileID: 0}
+    disabled: {fileID: 0}
+  secondary:
+  - normal: {fileID: 1453004349583316222, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+    selected: {fileID: 0}
+    disabled: {fileID: 0}
+  - normal: {fileID: 6564516513039947614, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+    selected: {fileID: 0}
+    disabled: {fileID: 0}
+  - normal: {fileID: 2585345472277037960, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+    selected: {fileID: 0}
+    disabled: {fileID: 0}
+  - normal: {fileID: -24893353134894500, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+    selected: {fileID: 0}
+    disabled: {fileID: 0}
+  - normal: {fileID: 8193994211331099135, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+    selected: {fileID: 0}
+    disabled: {fileID: 0}
+  - normal: {fileID: -3509709748225807619, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+    selected: {fileID: 0}
+    disabled: {fileID: 0}
+  - normal: {fileID: 2628864830040222256, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+    selected: {fileID: 0}
+    disabled: {fileID: 0}
+  - normal: {fileID: -5758900957937559660, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+    selected: {fileID: 0}
+    disabled: {fileID: 0}
+  - normal: {fileID: 2058698371082429119, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+    selected: {fileID: 0}
+    disabled: {fileID: 0}
+  - normal: {fileID: 2650930891873513670, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+    selected: {fileID: 0}
+    disabled: {fileID: 0}
+  - normal: {fileID: 1000974041340806021, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+    selected: {fileID: 0}
+    disabled: {fileID: 0}
+  - normal: {fileID: 529053128189529073, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+    selected: {fileID: 0}
+    disabled: {fileID: 0}
+  normalTint: {r: 0.07, g: 0.14, b: 0.23, a: 0.96}
+  selectedTint: {r: 0.7, g: 0.48, b: 0.12, a: 0.96}
+  disabledTint: {r: 0.13, g: 0.14, b: 0.16, a: 0.95}
+  pointer: {fileID: -3530364720934859057, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+  pointerTint: {r: 1, g: 0.86, b: 0.4, a: 1}

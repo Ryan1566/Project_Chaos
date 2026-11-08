@@ -3,12 +3,18 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-/// <summary>Passive pooled view. Input, confirmation and item effects belong to its presenter/provider.</summary>
+/// <summary>用 Sprite 显示轮盘。输入、确认和道具效果由 Presenter 与选项提供端处理。</summary>
 public sealed class RadialMenuView : MonoBehaviour
 {
     sealed class Cell
-    { public GameObject Root; public RadialWedgeGraphic Wedge; public RectTransform LabelRoot; public TextMeshProUGUI Name, Count, Key; public Image Icon; }
-    readonly Cell[][] _cells = { new Cell[12], new Cell[12] };
+    {
+        public GameObject Root;
+        public Image Background, Icon;
+        public RectTransform LabelRoot;
+        public TextMeshProUGUI Name, Count, Key;
+    }
+    readonly Cell[][] _cells = { new Cell[RadialMenuSkin.MaxEntries], new Cell[RadialMenuSkin.MaxEntries] };
+    RadialMenuSkin _skin;
     RectTransform _root, _primary, _secondary, _pointer;
     TextMeshProUGUI _hint;
     bool _initialized, _secondaryTarget;
@@ -17,13 +23,17 @@ public sealed class RadialMenuView : MonoBehaviour
     {
         if (_initialized) return;
         _initialized = true;
+        _skin = Resources.Load<RadialMenuSkin>(RadialMenuSkin.ResourcePath);
+        if (_skin == null) Debug.LogError("缺少快捷轮盘皮肤：" + RadialMenuSkin.ResourcePath, this);
         _root = GameplayUi.Rect(transform, "WheelCenter", Vector2.one * .5f, Vector2.one * .5f, Vector2.zero, Vector2.one * 620);
         _primary = GameplayUi.Rect(_root, "Primary", Vector2.one * .5f, Vector2.one * .5f, Vector2.zero, Vector2.one * 600);
         _secondary = GameplayUi.Rect(_root, "Secondary", Vector2.one * .5f, Vector2.one * .5f, Vector2.zero, Vector2.one * 600);
-        for (int tier = 0; tier < 2; tier++) for (int i = 0; i < 12; i++)
+        for (int tier = 0; tier < _cells.Length; tier++) for (int i = 0; i < _cells[tier].Length; i++)
         {
             var rect = GameplayUi.Rect(tier == 0 ? _primary : _secondary, "Entry" + i, Vector2.one * .5f, Vector2.one * .5f, Vector2.zero, Vector2.one * 600);
-            var c = new Cell { Root = rect.gameObject, Wedge = rect.gameObject.AddComponent<RadialWedgeGraphic>() };
+            var backgroundRect = GameplayUi.Rect(rect, "Background", Vector2.one * .5f, Vector2.one * .5f, Vector2.zero, Vector2.one * 600);
+            var c = new Cell { Root = rect.gameObject, Background = backgroundRect.gameObject.AddComponent<Image>() };
+            c.Background.raycastTarget = false;
             c.LabelRoot = GameplayUi.Rect(rect, "Label", Vector2.one * .5f, Vector2.one * .5f, Vector2.zero, new Vector2(100, 90));
             var iconRect = GameplayUi.Rect(c.LabelRoot, "Icon", Vector2.one * .5f, Vector2.one * .5f, new Vector2(0, 17), Vector2.one * 30);
             c.Icon = iconRect.gameObject.AddComponent<Image>(); c.Icon.preserveAspect = true; c.Icon.raycastTarget = false;
@@ -33,7 +43,9 @@ public sealed class RadialMenuView : MonoBehaviour
             _cells[tier][i] = c; c.Root.SetActive(false);
         }
         _pointer = GameplayUi.Rect(_root, "RelativePointer", Vector2.one * .5f, Vector2.one * .5f, Vector2.zero, Vector2.one * 8);
-        var dot = _pointer.gameObject.AddComponent<Image>(); dot.color = new Color(1, .86f, .4f); dot.raycastTarget = false;
+        var dot = _pointer.gameObject.AddComponent<Image>();
+        if (_skin != null) { dot.sprite = _skin.Pointer; dot.color = _skin.PointerTint; }
+        dot.raycastTarget = false;
         _hint = Label(_root, "Hint", new Vector2(0, -320), new Vector2(700, 60), 20);
     }
     static TextMeshProUGUI Label(Transform parent, string name, Vector2 position, Vector2 size, int fontSize)
@@ -51,14 +63,18 @@ public sealed class RadialMenuView : MonoBehaviour
     }
     void Draw(int tier, RadialOptionViewState[] options, int selected)
     {
-        int count = options == null ? 0 : Mathf.Min(12, options.Length);
-        for (int i = 0; i < 12; i++)
+        int count = options == null ? 0 : Mathf.Min(_cells[tier].Length, options.Length);
+        for (int i = 0; i < _cells[tier].Length; i++)
         {
             var c = _cells[tier][i]; c.Root.SetActive(i < count);
             if (i >= count) continue;
             var option = options[i]; float angle = i * 360f / count;
-            c.Wedge.Configure(tier == 0 ? 80 : 185, tier == 0 ? 180 : 280, angle, 360f / count - 3,
-                i == selected ? new Color(.7f, .48f, .12f, .96f) : option.Enabled ? new Color(.07f, .14f, .23f, .96f) : new Color(.13f, .14f, .16f, .95f));
+            Color tint = Color.white;
+            c.Background.sprite = _skin == null ? null : _skin.GetSlice(tier, count, i == selected, option.Enabled, out tint);
+            c.Background.enabled = c.Background.sprite != null;
+            c.Background.color = tint;
+            // 只旋转背景扇区。图标和文字始终保持正向。
+            c.Background.rectTransform.localRotation = Quaternion.Euler(0, 0, -angle);
             float radius = tier == 0 ? 133 : 234;
             c.LabelRoot.anchoredPosition = new Vector2(Mathf.Sin(angle * Mathf.Deg2Rad), Mathf.Cos(angle * Mathf.Deg2Rad)) * radius;
             c.Name.text = option.Name; c.Name.color = option.Enabled ? Color.white : Color.gray;
