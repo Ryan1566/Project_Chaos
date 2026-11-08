@@ -25,6 +25,9 @@ public sealed class RunMapMarkerView : MonoBehaviour
         _dot.gameObject.SetActive(marker.Kind == RunMapMarkerKind.Player || !avatar);
         _portrait.gameObject.SetActive(avatar);
         _dot.color = tint; _border.color = tint;
+        _dot.Style=marker.Kind==RunMapMarkerKind.Ladder?RunMapGlyph.Shape.Ladder:marker.Kind==RunMapMarkerKind.Objective?RunMapGlyph.Shape.Objective:RunMapGlyph.Shape.Circle;
+        _dot.rectTransform.sizeDelta=Vector2.one*(marker.Kind==RunMapMarkerKind.Ladder||marker.Kind==RunMapMarkerKind.Objective?18:10);
+        _dot.SetAllDirty();
         _portrait.anchoredPosition = marker.Kind == RunMapMarkerKind.Player ? new Vector2(0, 27) : Vector2.zero;
         _image.Portrait = marker.Portrait; _image.Chest = marker.Kind == RunMapMarkerKind.Interactive;
         _image.color = marker.Dimmed ? new Color(.55f, .55f, .55f, 1) : Color.white;
@@ -38,6 +41,8 @@ public sealed class RunMapMarkerView : MonoBehaviour
             case RunMapMarkerKind.Ally: return new Color(.25f, .65f, 1);
             case RunMapMarkerKind.Enemy: return new Color(1, .23f, .23f);
             case RunMapMarkerKind.Npc: return new Color(.35f, .95f, .74f);
+            case RunMapMarkerKind.Ladder:return new Color(.92f,.82f,.55f);
+            case RunMapMarkerKind.Objective:return new Color(1f,.45f,.16f);
             default: return new Color(.92f, .69f, .33f);
         }
     }
@@ -54,7 +59,7 @@ public sealed class RunMapMarkerView : MonoBehaviour
 [RequireComponent(typeof(CanvasRenderer))]
 public sealed class RunMapGlyph : MaskableGraphic
 {
-    public enum Shape { Circle, Diamond, Portrait }
+    public enum Shape { Circle, Diamond, Portrait, Ladder, Objective }
     public Shape Style;
     public Sprite Portrait;
     public bool Chest;
@@ -63,6 +68,14 @@ public sealed class RunMapGlyph : MaskableGraphic
     protected override void OnPopulateMesh(VertexHelper vh)
     {
         vh.Clear(); var r = GetPixelAdjustedRect();
+        if(Style==Shape.Ladder)
+        {
+            Quad(vh,new Rect(r.xMin+r.width*.22f,r.yMin+r.height*.1f,r.width*.12f,r.height*.8f),color);
+            Quad(vh,new Rect(r.xMin+r.width*.66f,r.yMin+r.height*.1f,r.width*.12f,r.height*.8f),color);
+            for(int i=0;i<4;i++)Quad(vh,new Rect(r.xMin+r.width*.25f,r.yMin+r.height*(.18f+i*.2f),r.width*.5f,r.height*.08f),color);
+            return;
+        }
+        if(Style==Shape.Objective){Diamond(vh,r,color,new Rect(0,0,1,1));Quad(vh,new Rect(r.center.x-r.width*.12f,r.center.y-r.height*.12f,r.width*.24f,r.height*.24f),new Color(.12f,.09f,.05f));return;}
         if (Style == Shape.Circle)
         {
             Circle(vh, r.center, r.size * .75f, new Color(color.r, color.g, color.b, .15f * color.a));

@@ -116,11 +116,17 @@ namespace Chaos.MVP.Model.Gameplay
                 var inspectable = target as MapInspectable;
                 bool npc = portrait != null ? portrait.Kind == RunMapMarkerKind.Npc : inspectable != null && inspectable.Kind == MapPlacementKind.Npc;
                 bool remember = portrait != null ? portrait.RememberWhenHidden : !npc;
-                bool visible = Visible(fog, target.InteractionPoint);
+                Vector2 markerPosition=target.InteractionPoint;
+                bool visible = Visible(fog, markerPosition);
+                if(target is RunLadderInteractable ladder&&ladder.Ladder!=null)
+                {
+                    markerPosition=((Vector2)ladder.Ladder.Bottom+(Vector2)ladder.Ladder.Top)*.5f;
+                    visible=Visible(fog,ladder.Ladder.Bottom)||Visible(fog,ladder.Ladder.Top);
+                }
                 if (visible)
                 {
-                    var marker = new RunMapMarkerState { Id = id, Name = target.DisplayName, Position = target.InteractionPoint,
-                        Kind = npc ? RunMapMarkerKind.Npc : RunMapMarkerKind.Interactive, Portrait = PortraitFor(target.gameObject),
+                    var marker = new RunMapMarkerState { Id = id, Name = target.DisplayName, Position = markerPosition,
+                        Kind = portrait!=null?portrait.Kind:npc ? RunMapMarkerKind.Npc : RunMapMarkerKind.Interactive, Portrait = PortraitFor(target.gameObject),
                         Dimmed = target.Completed };
                     Markers.Add(marker);
                     if (remember) _remembered[id] = new RunMapMarkerState { Id = marker.Id, Name = marker.Name, Position = marker.Position,

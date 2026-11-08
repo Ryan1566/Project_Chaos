@@ -4,23 +4,26 @@ using UnityEngine;
 
 namespace RunMap
 {
-    public enum MapMotionKind { Walk, Jump, Drop }
+    public enum MapMotionKind { Walk, Jump, Drop, Climb }
     public struct MapPathStep
     {
         public Vector2Int From, To;
         public MapMotionKind Kind;
         public float FlightTime;
         public float HorizontalSpeed;
+        public MapLadder Ladder;
         public Vector2 Destination => new Vector2(To.x + .5f, To.y + .03f);
     }
     public struct MapMotionProfile
     {
+        public bool CanClimb;
+        public float ClimbSpeed;
         public float Speed, JumpForce, Gravity, Width, Height;
         public string Key => Speed.ToString("R", System.Globalization.CultureInfo.InvariantCulture) + "/"
             + JumpForce.ToString("R", System.Globalization.CultureInfo.InvariantCulture) + "/"
             + Gravity.ToString("R", System.Globalization.CultureInfo.InvariantCulture) + "/"
             + Width.ToString("R", System.Globalization.CultureInfo.InvariantCulture) + "/"
-            + Height.ToString("R", System.Globalization.CultureInfo.InvariantCulture);
+            + Height.ToString("R", System.Globalization.CultureInfo.InvariantCulture) + "/" + CanClimb + "/" + ClimbSpeed.ToString("R", System.Globalization.CultureInfo.InvariantCulture);
     }
 
     /// <summary>Directed walking/jumping graph. Edges use the actor's actual ballistic capability.</summary>
@@ -99,6 +102,15 @@ namespace RunMap
             int index = map.Index(from.x, from.y); List<MapPathStep> result;
             if (edges.TryGetValue(index, out result)) return result;
             result = new List<MapPathStep>(); edges.Add(index, result);
+            if(actor.CanClimb)
+                foreach(var ladder in map.Ladders)
+                {
+                    if(from!=ladder.Bottom&&from!=ladder.Top)continue;
+                    var destination=from==ladder.Bottom?ladder.Top:ladder.Bottom;
+                    if(!map.CanStand(destination.x,destination.y))continue;
+                    result.Add(new MapPathStep{From=from,To=destination,Kind=MapMotionKind.Climb,Ladder=ladder,
+                        FlightTime=Vector2.Distance(from,destination)/Mathf.Max(.1f,actor.ClimbSpeed)});
+                }
             int reach = Mathf.Min(map.Actor.MaxJumpDistance, Mathf.CeilToInt(actor.Speed * actor.JumpForce * 2 / actor.Gravity));
             for (int distance = 1; distance <= Mathf.Max(1, reach); distance++) for (int sign = -1; sign <= 1; sign += 2)
             {

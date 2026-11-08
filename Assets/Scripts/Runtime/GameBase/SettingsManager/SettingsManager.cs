@@ -119,6 +119,8 @@ public class SettingsManager : SingletonBase<SettingsManager>
         {
             data.version = SettingsData.CurrentVersion;
         }
+        // 新字段/脏存档统一收敛到合法值；在克隆 Pending 之前修正，避免伪“未应用改动”。
+        data.ladderEntryMode = data.ladderEntryMode == 1 ? 1 : 0;
 
         Applied = data;
         Pending = data.Clone();
@@ -172,6 +174,8 @@ public class SettingsManager : SingletonBase<SettingsManager>
     {
         EnsureInited();
         if (Pending == null) return;
+        //面板正常只会写 0/1；这里再收一次，保证落盘值合法。
+        Pending.ladderEntryMode = Pending.ladderEntryMode == 1 ? 1 : 0;
 
         Applied = Pending.Clone();
         Save();
@@ -241,6 +245,7 @@ public class SettingsManager : SingletonBase<SettingsManager>
     {
         if (data == null) return;
         data.itemWheelMode = data.itemWheelMode == (int)ItemWheelTriggerMode.Toggle ? 0 : 1;
+        data.ladderEntryMode = data.ladderEntryMode == 1 ? 1 : 0;
         ApplyGraphics(data);
         ApplyAudio(data);
         ApplyInput(data);

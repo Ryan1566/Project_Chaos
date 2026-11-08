@@ -258,6 +258,12 @@
             "resourcePath": "Data/Json/Runtime/MarketTable_MarketOffer",
             "workbook": "MarketTable_交易表",
             "worksheet": "商品"
+        },
+        {
+            "className": "RunMapTable_ExplorationSceneConfig",
+            "resourcePath": "Data/Json/Runtime/RunMapTable_ExplorationScene",
+            "workbook": "RunMapTable_地图生成表",
+            "worksheet": "场景组合"
         }
     ]
 }

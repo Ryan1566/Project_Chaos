@@ -25,7 +25,8 @@ namespace RunMap
             seed = runSeed; stage = sceneIndex; settings = parameters.Copy(); templates = structures;
             var sourceActor = profile ?? new MapTraversalProfile();
             actor = new MapTraversalProfile { Height = sourceActor.Height, BodyWidth = sourceActor.BodyWidth, MaxJumpHeight = sourceActor.MaxJumpHeight,
-                MaxJumpDistance = sourceActor.MaxJumpDistance, MaxDrop = Math.Min(sourceActor.MaxDrop, settings.maxDropHeight) };
+                MaxJumpDistance = sourceActor.MaxJumpDistance, MaxDrop = Math.Min(sourceActor.MaxDrop, settings.maxDropHeight),
+                Speed=sourceActor.Speed,JumpForce=sourceActor.JumpForce,Gravity=sourceActor.Gravity };
             extensions = population;
             var identity = new System.Text.StringBuilder(settings.Fingerprint).Append('/').Append(JsonUtility.ToJson(actor));
             if (structures != null) foreach (var t in structures)
@@ -46,6 +47,13 @@ namespace RunMap
 
         public IEnumerable<string> Steps()
         {
+            if (settings.generationVersion >= 3)
+            {
+                var exploration = new ExplorationMapBuild(seed, stage, settings, actor, extensions);
+                foreach (var step in exploration.Steps()) yield return step;
+                Plan = exploration.Plan; LastAttempt = exploration.LastAttempt; Error = exploration.Error;
+                yield break;
+            }
             Plan = null; Error = null;
             var errors = settings.Validate(actor);
             if (stage < 1 || stage > 3) errors.Add("关卡编号必须在1..3");
@@ -468,6 +476,24 @@ namespace RunMap
             if (!m.CanStand(sx, sy)) yield break;
             var queue = new Queue<Vector2Int>();
             queue.Enqueue(new Vector2Int(sx, sy)); m.Reachable[m.Index(sx, sy)] = true;
+            if(m.Version>=3)
+            {
+                // 用与运行时相同的扫掠运动图验证；禁用攀梯证明必需通路不依赖特殊能力。
+                var motion=new MapMotionProfile{Speed=m.Actor.Speed,JumpForce=m.Actor.JumpForce,Gravity=m.Actor.Gravity,
+                    Width=m.Actor.BodyWidth,Height=m.Actor.Height,CanClimb=false,ClimbSpeed=3.5f};
+                var graph=new RunMapPathfinder(m,motion);int explored=0;
+                while(queue.Count>0)
+                {
+                    var cell=queue.Dequeue();
+                    foreach(var edge in graph.Neighbors(cell))
+                    {
+                        int next=m.Index(edge.To.x,edge.To.y);if(m.Reachable[next])continue;
+                        m.Reachable[next]=true;m.RouteParents[next]=m.Index(cell.x,cell.y);queue.Enqueue(edge.To);
+                    }
+                    if(++explored%64==0)yield return explored;
+                }
+                yield break;
+            }
             int work = 0;
             while (queue.Count > 0)
             {

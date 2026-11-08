@@ -50,7 +50,14 @@
             "frameBudgetMs": 5,
             "mainRouteMinLength": 200,
             "mainRouteMaxLength": 600,
-            "startOnRightChance": 50
+            "startOnRightChance": 50,
+            "generationVersion": 3,
+            "enemyBudget": 22,
+            "placeMin": 9,
+            "placeMax": 11,
+            "ladderMin": 0,
+            "ladderMax": 1,
+            "fallbackLayoutSeed": 99
         },
         {
             "Id": 2,
@@ -102,7 +109,14 @@
             "frameBudgetMs": 5,
             "mainRouteMinLength": 200,
             "mainRouteMaxLength": 600,
-            "startOnRightChance": 50
+            "startOnRightChance": 50,
+            "generationVersion": 3,
+            "enemyBudget": 14,
+            "placeMin": 9,
+            "placeMax": 11,
+            "ladderMin": 1,
+            "ladderMax": 2,
+            "fallbackLayoutSeed": 17
         },
         {
             "Id": 3,
@@ -154,7 +168,14 @@
             "frameBudgetMs": 5,
             "mainRouteMinLength": 200,
             "mainRouteMaxLength": 600,
-            "startOnRightChance": 50
+            "startOnRightChance": 50,
+            "generationVersion": 3,
+            "enemyBudget": 14,
+            "placeMin": 9,
+            "placeMax": 11,
+            "ladderMin": 0,
+            "ladderMax": 1,
+            "fallbackLayoutSeed": 1
         }
     ]
 }

@@ -115,19 +115,19 @@ public sealed class RunMapView : MonoBehaviour
     {
         var overlay = GameplayUi.Rect(transform.parent, "MapLegendModal", Vector2.one * .5f, Vector2.one * .5f, Vector2.zero, new Vector2(1100, 700));
         _legend = overlay.gameObject; overlay.gameObject.AddComponent<Image>().color = new Color(0, 0, 0, .88f);
-        var box = GameplayUi.Rect(overlay, "LegendBox", Vector2.one * .5f, Vector2.one * .5f, Vector2.zero, new Vector2(630, 580));
+        var box = GameplayUi.Rect(overlay, "LegendBox", Vector2.one * .5f, Vector2.one * .5f, Vector2.zero, new Vector2(630, 640));
         box.gameObject.AddComponent<Image>().color = new Color(.08f, .12f, .17f);
         Label(box, "Title", "地图图例", new Vector2(40, -18), new Vector2(500, 44), 28);
-        string[] names = { "受控角色 · 黄色光点与菱形头像", "派遣队友 · 蓝色光点（倒地变暗）", "敌人 · 红色光点（仅当前视野）", "可交互人物 · 菱形头像", "宝箱等交互物 · 菱形头像" };
+        string[] names = { "受控角色 · 黄色光点与菱形头像", "派遣队友 · 蓝色光点（倒地变暗）", "敌人 · 红色光点（仅当前视野）", "可交互人物 · 菱形头像", "宝箱等交互物 · 菱形头像", "梯子 · 浅黄色标记", "核心目标区 · 橙色标记" };
         for (int i = 0; i < names.Length; i++)
         {
-            var area = GameplayUi.Rect(box, "LegendMarker" + i, Vector2.up, Vector2.up, new Vector2(56, -100 - i * 57), Vector2.one * 12);
+            var area = GameplayUi.Rect(box, "LegendMarker" + i, Vector2.up, Vector2.up, new Vector2(56, -100 - i * 45), Vector2.one * 12);
             var icon = area.gameObject.AddComponent<RunMapMarkerView>(); icon.Initialize();
             icon.Render(new RunMapMarkerState { Id = "legend", Kind = (RunMapMarkerKind)i }, Vector2.zero);
-            Label(box, "LegendText" + i, names[i], new Vector2(100, -77 - i * 57), new Vector2(500, 44), 20);
+            Label(box, "LegendText" + i, names[i], new Vector2(100, -77 - i * 45), new Vector2(500, 44), 20);
         }
-        Label(box, "TerrainLegend", "绿：地表　灰：地下　棕：建筑\n黑：未探索　暗：已探索　亮：当前视野\n滚轮 / + − 缩放 · 拖动平移 · M / Esc 先关闭图例", new Vector2(28, -380), new Vector2(574, 105), 19);
-        GameplayUi.Button(box, "CloseMapLegend", "关闭图例", new Vector2(180, -510), new Vector2(270, 44), () => CloseSecondary());
+        Label(box, "TerrainLegend", "绿：地表　灰：地下　棕：建筑\n黑：未探索　暗：已探索　亮：当前视野\n滚轮 / + − 缩放 · 拖动平移 · M / Esc 先关闭图例", new Vector2(28, -420), new Vector2(574, 105), 19);
+        GameplayUi.Button(box, "CloseMapLegend", "关闭图例", new Vector2(180, -560), new Vector2(270, 44), () => CloseSecondary());
         _legend.SetActive(false);
     }
     private static TextMeshProUGUI Label(Transform parent, string name, string text, Vector2 position, Vector2 size, int fontSize)

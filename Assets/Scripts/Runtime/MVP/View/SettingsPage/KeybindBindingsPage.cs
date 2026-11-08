@@ -123,6 +123,10 @@ public class KeybindBindingsPage : SettingsPageBase
         BindKeyRow(SettingIds.Inventory, InputManager.ActionInventory, InputManager.BindingKind.Keyboard, true);
         BindKeyRow(SettingIds.Team, InputManager.ActionTeam, InputManager.BindingKind.Keyboard, true);
         BindKeyRow(SettingIds.ItemWheel, InputManager.ActionItemWheel, InputManager.BindingKind.Keyboard, true);
+        BindKeyRow(SettingIds.ClimbUp, InputManager.ActionClimbUp, InputManager.BindingKind.Keyboard, true);
+        BindKeyRow(SettingIds.ClimbDown, InputManager.ActionClimbDown, InputManager.BindingKind.Keyboard, true);
+        BindKeyRow(SettingIds.ClimbUpGamepad, InputManager.ActionClimbUp, InputManager.BindingKind.Gamepad, false);
+        BindKeyRow(SettingIds.ClimbDownGamepad, InputManager.ActionClimbDown, InputManager.BindingKind.Gamepad, false);
 
         //手柄三行：一个格子。
         //手柄的移动不拆：它是 <Gamepad>/leftStick/x 单轴绑定，没有 negative/positive 段
@@ -169,6 +173,8 @@ public class KeybindBindingsPage : SettingsPageBase
             EnsureShortcutRow(source, keyboard ? SettingIds.Interact : SettingIds.InteractGamepad, 1);
             EnsureShortcutRow(source, keyboard ? SettingIds.Map : SettingIds.MapGamepad, 2);
             EnsureShortcutRow(source, keyboard ? SettingIds.Functions : SettingIds.FunctionsGamepad, 3);
+            EnsureShortcutRow(source, keyboard ? SettingIds.ClimbUp : SettingIds.ClimbUpGamepad, 7);
+            EnsureShortcutRow(source, keyboard ? SettingIds.ClimbDown : SettingIds.ClimbDownGamepad, 8);
             if (keyboard)
             {
                 EnsureShortcutRow(source, SettingIds.Inventory, 4);
@@ -180,6 +186,8 @@ public class KeybindBindingsPage : SettingsPageBase
             SetShortcutText(SettingIds.Inventory, "局内背包");
             SetShortcutText(SettingIds.Team, "派遣队伍");
             SetShortcutText(SettingIds.ItemWheel, "道具快捷轮盘");
+            foreach(string id in new[]{SettingIds.ClimbUp,SettingIds.ClimbUpGamepad})SetShortcutText(id,"向上攀梯");
+            foreach(string id in new[]{SettingIds.ClimbDown,SettingIds.ClimbDownGamepad})SetShortcutText(id,"向下攀梯");
             foreach (string id in new[] { SettingIds.Interact, SettingIds.InteractGamepad })
                 SetShortcutText(id, Chaos.Gameplay.Interaction.RunInteractionText.Get("ActionName"));
             foreach (string id in new[] { SettingIds.Map, SettingIds.MapGamepad })

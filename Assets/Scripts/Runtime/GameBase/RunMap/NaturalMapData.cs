@@ -28,10 +28,19 @@ namespace RunMap
         public int retryMax = 6, repairMax = 8, maxTileCells = 262144, maxContentObjects = 256;
         public int workColumnsPerFrame = 16;
         public float frameBudgetMs = 5f;
+        public int generationVersion = 2, enemyBudget = 20, placeMin = 9, placeMax = 11;
+        public int ladderMin = 0, ladderMax = 1;
+        public uint fallbackLayoutSeed = 17;
+        public RunMapTable_ExplorationSceneConfig[] compositions;
         public float mainRouteMinLength = 200f, mainRouteMaxLength = 600f;
         public int startOnRightChance = 50;
 
-        public NaturalMapParameters Copy() { return (NaturalMapParameters)MemberwiseClone(); }
+        public NaturalMapParameters Copy()
+        {
+            var copy=(NaturalMapParameters)MemberwiseClone();
+            if(compositions!=null)copy.compositions=Array.ConvertAll(compositions,c=>JsonUtility.FromJson<RunMapTable_ExplorationSceneConfig>(JsonUtility.ToJson(c)));
+            return copy;
+        }
         public string Fingerprint { get { return MapRandom.Hash(JsonUtility.ToJson(this)).ToString("X8"); } }
         public List<string> Validate(MapTraversalProfile actor)
         {
@@ -85,6 +94,7 @@ namespace RunMap
     {
         public int Height = 2, MaxJumpHeight = 2, MaxJumpDistance = 4, MaxDrop = 3;
         public float BodyWidth = 0.7f;
+        public float Speed = 5f, JumpForce = 11f, Gravity = 30f;
     }
 
     public static class MapRandom
@@ -153,9 +163,9 @@ namespace RunMap
         public bool MirrorX;
     }
 
-    public sealed class NaturalMapPlan
+    public sealed partial class NaturalMapPlan
     {
-        public const int GeneratorVersion = 2;
+        public const int GeneratorVersion = 3;
         public NaturalMapParameters Parameters;
         public MapTraversalProfile Actor;
         public uint RunSeed;
@@ -203,6 +213,7 @@ namespace RunMap
         }
         public MapSpaceKind SpaceAt(int x, int y)
         {
+            if (SpaceCells != null && Inside(x, y)) return (MapSpaceKind)SpaceCells[Index(x, y)];
             foreach (var b in Structures) if (b.Bounds.Contains(new Vector2Int(x, y))) return MapSpaceKind.Building;
             return y < SurfaceY[Mathf.Clamp(x, 0, Width - 1)] - 3 ? MapSpaceKind.Underground : MapSpaceKind.Outdoor;
         }
@@ -229,6 +240,14 @@ namespace RunMap
             for (int i = 0; i < Solid.Length; i++) h = unchecked((h ^ (Solid[i] ? 1u : 0u)) * 16777619);
             s.Append(h.ToString("X8"));
             foreach (var r in Regions) s.Append('|').Append(r.StableId).Append(':').Append((int)r.Space);
+            if(Version>=3)
+            {
+                s.Append("|v3/").Append((int)Layout);
+                foreach(var p in Places)s.Append('|').Append(p.StableId).Append('@').Append(p.Anchor.x).Append(',').Append(p.Anchor.y)
+                    .Append(':').Append((int)p.Role).Append(':').Append(p.Composition);
+                foreach(var link in Links)s.Append("|link/").Append(link.From).Append('>').Append(link.To).Append(':').Append(link.UsesLadder);
+                foreach(var ladder in Ladders)s.Append('|').Append(ladder.StableId).Append('@').Append(ladder.Bottom).Append('>').Append(ladder.Top);
+            }
             foreach (var p in Placements)
             {
                 if (!includeDecorations && p.Kind == MapPlacementKind.Decoration) continue;
@@ -236,7 +255,7 @@ namespace RunMap
             }
             return s.ToString();
         }
-        public string Report { get { return "v2 seed=" + RunSeed + " stage=" + SceneIndex + " config=" + ConfigFingerprint
+        public string Report { get { return "v" + Version + " seed=" + RunSeed + " stage=" + SceneIndex + " config=" + ConfigFingerprint
             + " bounds=" + Width + "x" + Height + " attempt=" + Attempt + " repairs=" + Repairs + " degraded=" + Degraded
             + " regions=" + Regions.Count + " structures=" + Structures.Count + " placements=" + Placements.Count
             + " route=" + MainRouteLength.ToString("F1", System.Globalization.CultureInfo.InvariantCulture) + " direction=" + (StartsOnRight ? "left" : "right")
@@ -274,7 +293,7 @@ namespace RunMap
             if (regionId != 0 && region == null) return result;
             foreach (var cell in Plan.StandingCells)
                 if (Plan.Reachable[Plan.Index(cell.x, cell.y)] && Plan.CanStand(cell.x, cell.y)
-                    && (region == null || region.Bounds.Contains(new Vector2(cell.x + .5f, cell.y + .05f)))
+                    && (region == null || (Plan.Version >= 3 ? Plan.RegionAt(cell.x, cell.y) == region.Id : region.Bounds.Contains(new Vector2(cell.x + .5f, cell.y + .05f))))
                     && (!solid || !Plan.Protected[Plan.Index(cell.x, cell.y)]))
                 {
                     if (required != MapCellTags.None || forbidden != MapCellTags.None)

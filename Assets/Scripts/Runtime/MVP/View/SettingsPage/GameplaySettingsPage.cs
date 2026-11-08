@@ -21,6 +21,9 @@ public class GameplaySettingsPage : SettingsPageBase
     {
         BindSelector(SettingIds.ItemWheelMode, new[] { "点按弹出", "长按显示" },
             data => data.itemWheelMode, (data, index) => data.itemWheelMode = index);
+        //梯子进入方式：0 自动上下、1 手动 E；切换只影响之后的进入，不打断当前攀爬。
+        BindSelector(SettingIds.LadderEntryMode, new[] { "自动爬梯（上下）", "手动爬梯（交互键）" },
+            data => data.ladderEntryMode, (data, index) => data.ladderEntryMode = index);
         //语言：档位就是 LanguageType 的序号，值直接存 SettingsData.language。
         //选项文案来自 LocalizationManager，所以以后启用新语言只改枚举，界面自动跟上。
         BindSelector(SettingIds.Language, GetLanguageOptions(),

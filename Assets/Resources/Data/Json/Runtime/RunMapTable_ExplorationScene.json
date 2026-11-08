@@ -1,0 +1,100 @@
+{
+    "datas": [
+        {
+            "Id": 101,
+            "stage": 1,
+            "key": "ridge_fork",
+            "nameCN": "山脊岔道",
+            "weight": 10,
+            "style": 0
+        },
+        {
+            "Id": 102,
+            "stage": 1,
+            "key": "forest_clearing",
+            "nameCN": "林间空地",
+            "weight": 10,
+            "style": 1
+        },
+        {
+            "Id": 103,
+            "stage": 1,
+            "key": "dry_valley",
+            "nameCN": "旱谷",
+            "weight": 10,
+            "style": 2
+        },
+        {
+            "Id": 104,
+            "stage": 1,
+            "key": "abandoned_post",
+            "nameCN": "废弃驿舍",
+            "weight": 10,
+            "style": 3
+        },
+        {
+            "Id": 201,
+            "stage": 2,
+            "key": "narrow_passage",
+            "nameCN": "狭道",
+            "weight": 10,
+            "style": 0
+        },
+        {
+            "Id": 202,
+            "stage": 2,
+            "key": "open_chamber",
+            "nameCN": "开阔洞厅",
+            "weight": 10,
+            "style": 1
+        },
+        {
+            "Id": 203,
+            "stage": 2,
+            "key": "timber_mine",
+            "nameCN": "支架矿道",
+            "weight": 10,
+            "style": 2
+        },
+        {
+            "Id": 204,
+            "stage": 2,
+            "key": "collapse_detour",
+            "nameCN": "塌方绕路",
+            "weight": 10,
+            "style": 3
+        },
+        {
+            "Id": 301,
+            "stage": 3,
+            "key": "courtyard",
+            "nameCN": "院落",
+            "weight": 10,
+            "style": 0
+        },
+        {
+            "Id": 302,
+            "stage": 3,
+            "key": "broken_alley",
+            "nameCN": "断墙巷道",
+            "weight": 10,
+            "style": 1
+        },
+        {
+            "Id": 303,
+            "stage": 3,
+            "key": "storeyard",
+            "nameCN": "仓院",
+            "weight": 10,
+            "style": 2
+        },
+        {
+            "Id": 304,
+            "stage": 3,
+            "key": "cellar_entrance",
+            "nameCN": "地窖入口",
+            "weight": 10,
+            "style": 3
+        }
+    ]
+}

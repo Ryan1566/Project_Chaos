@@ -185,11 +185,15 @@ public static partial class RunEncounter
         // Required regions must have their complete planned population before gameplay starts.
         foreach (EncounterRegion region in plan.Regions)
         {
-            if (region == null || region.IsEntry || !region.Required) continue;
+            if (region == null || region.IsEntry) continue;
+            if(plan.Version>=3)
+            {var place=plan.Places.Find(p=>p.Id==region.Id);if(place==null||!place.HasEncounter)continue;}
+            else if(!region.Required)continue;
             int planned = 0;
             foreach (MapPlacement placement in plan.Placements)
                 if (placement != null && placement.Kind == MapPlacementKind.Enemy && placement.RegionId == region.Id) planned++;
-            int expected = plan.Parameters.enemiesPerRegion;
+            if(plan.Version>=3&&planned==0)continue;
+            int expected = plan.Version>=3?planned:plan.Parameters.enemiesPerRegion;
             if (planned != expected)
             {
                 ChaosLog.Error(LogChannel.UI, "[局内] 遭遇区 " + region.StableId + " 敌人投放数 " + planned + "，预期 " + expected);
@@ -228,6 +232,8 @@ public static partial class RunEncounter
         }
         ChaosLog.Info(LogChannel.UI, "[局内] 自然地图遭遇区 " + TotalByRoom.Count + "，计划敌人 " + AllEnemies.Count
             + "，runSeed=" + plan.RunSeed + " scene=" + plan.SceneIndex);
+        if(plan.Version>=3&&AllEnemies.Count!=plan.Parameters.enemyBudget)
+        {ChaosLog.Error(LogChannel.UI,"[局内] 敌人实际装配数量与总预算不一致");return false;}
         return true;
     }
 

@@ -564,6 +564,7 @@ public class AllyController : MonoBehaviour
         if (IsDowned || damage <= 0) return;
         if (Time.time < _invulnUntil) return;
         _invulnUntil = Time.time + 0.5f;
+        GetComponent<LadderClimber>()?.Detach(false);
         CancelAttack();
         if (!_hpInited) { _hp = MaxHp; _hpInited = true; }
         //普通受伤套用防御；TakeDamageDirect/ForceDown 仍保留直伤语义。
@@ -578,6 +579,7 @@ public class AllyController : MonoBehaviour
     public void TakeDamageDirect(int damage)
     {
         if (IsDowned || damage <= 0) return;
+        GetComponent<LadderClimber>()?.Detach(false);
         CancelAttack();
         int before = Hp;   //触发懒初始化
         _hp = Mathf.Max(0, before - damage);

@@ -29,6 +29,7 @@ public class PlayerLocomotion : MonoBehaviour
 
     private Rigidbody2D _body;
     private PlayerSurfacePhysics _surface;
+    private LadderClimber _ladder;
     private SkeletonAnimation _skeleton;
     private int _facing = 1;
     private bool _isGrounded;
@@ -68,6 +69,9 @@ public class PlayerLocomotion : MonoBehaviour
         _body = GetComponent<Rigidbody2D>();
         _surface = GetComponent<PlayerSurfacePhysics>();
         if (_surface == null) _surface = gameObject.AddComponent<PlayerSurfacePhysics>();
+        _ladder = GetComponent<LadderClimber>();
+        // 玩家默认具备攀梯 motor；队友/敌人由各自预制体挂同一组件后走 Navigate。
+        if (_ladder == null) _ladder = gameObject.AddComponent<LadderClimber>();
         _skeleton = GetComponentInChildren<SkeletonAnimation>(true);
         if (_skeleton != null)
         {
@@ -82,9 +86,25 @@ public class PlayerLocomotion : MonoBehaviour
 
     private void Update()
     {
+        if (_ladder != null && _ladder.IsClimbing) { UpdateLadderClimbing(); return; }
         if (!InputManager.Instance.CanReadGameplayInput) { ClearInput(); UpdateAnimation(); return; }
         float horizontal = InputManager.Instance.ReadMove();
-        if (InputManager.Instance.WasGameplayPressed(InputManager.ActionJump)) _jumpRequested = true;
+        bool jumpPressed = InputManager.Instance.WasGameplayPressed(InputManager.ActionJump);
+        if (jumpPressed) _jumpRequested = true;
+
+        // 自动模式：接近入口后按 W/S 吸附；手动模式不在这里抢 E。
+        // 跳键同帧不吸附，保证梯子旁正常起跳不回归。
+        float climb = InputManager.Instance.ReadClimb();
+        _ladder.NoteClimbInput(climb);
+        if (!jumpPressed && Mathf.Abs(climb) > 0.2f && !LadderManualMode
+            && _ladder.AutoAttachReady && _ladder.TryAutoAttach(climb))
+        {
+            _ladder.Drive(climb);
+            _horizontalInput = 0f;
+            _jumpRequested = false;
+            UpdateAnimation();
+            return;
+        }
 
         if (Time.time < _injectedInputUntil) horizontal = _injectedInput;   //调试注入优先
         horizontal = Mathf.Clamp(horizontal, -1f, 1f);
@@ -99,6 +119,45 @@ public class PlayerLocomotion : MonoBehaviour
         UpdateAnimation();
     }
 
+    /// <summary>
+    /// 梯上分支：空格跳离；W/S 上下；菜单只阻止输入、不强制退出。
+    /// 端点自动离开和受击/倒地退出由 LadderClimber / PlayerHealth 处理。
+    /// </summary>
+    private void UpdateLadderClimbing()
+    {
+        _horizontalInput = 0f;
+        _jumpRequested = false;
+
+        if (!InputManager.Instance.CanReadGameplayInput)
+        {
+            _ladder.Drive(0f);
+            UpdateAnimation();
+            return;
+        }
+
+        if (InputManager.Instance.WasGameplayPressed(InputManager.ActionJump))
+        {
+            _ladder.Detach(true);
+            UpdateAnimation();
+            return;
+        }
+
+        float climb = InputManager.Instance.ReadClimb();
+        _ladder.NoteClimbInput(climb);
+        _ladder.Drive(climb);
+        UpdateAnimation();
+    }
+
+    /// <summary>只在“未上梯、决定是否自动吸附”时读取；切换设置不会打断正在进行的攀爬。</summary>
+    private static bool LadderManualMode
+    {
+        get
+        {
+            SettingsManager manager = SettingsManager.Instance;
+            return manager != null && manager.Applied != null && manager.Applied.ladderEntryMode == 1;
+        }
+    }
+
     private InputManager _inputManager;
     private void OnEnable()
     {
@@ -110,6 +169,8 @@ public class PlayerLocomotion : MonoBehaviour
     private void OnDisable()
     {
         if (_inputManager != null) _inputManager.GameplayInputBlockedChanged -= OnInputBlocked;
+        // 控制组件停用时恢复重力；普通菜单只拦截输入，不会停用本组件。
+        if (_ladder != null) {_ladder.Drive(0f);_ladder.Detach(false);}
         ClearInput();
     }
     private void OnInputBlocked(bool blocked) { if (blocked) ClearInput(); }
@@ -132,6 +193,13 @@ public class PlayerLocomotion : MonoBehaviour
     private void FixedUpdate()
     {
         if (_body == null) return;
+        // 攀梯期间由 LadderClimber 接管位置与速度；菜单阻止输入也不强制退出。
+        if (_ladder != null && _ladder.IsClimbing)
+        {
+            _horizontalInput = 0f;
+            _jumpRequested = false;
+            return;
+        }
         if (InputManager.Instance.GameplayInputBlocked) { ClearInput(); return; }
 
         _isGrounded = CheckGrounded();

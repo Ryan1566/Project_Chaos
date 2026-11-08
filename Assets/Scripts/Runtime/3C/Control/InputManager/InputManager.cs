@@ -151,8 +151,29 @@ public partial class InputManager : SingletonBase<InputManager>
         //克隆件的改动只活在这次运行里，落盘由 SettingsData.inputOverridesJson 负责。
         _asset = UnityEngine.Object.Instantiate(source);
 
+        // 源 asset 可能还没补攀梯动作（Root 会补）。运行期克隆件在这里补一次默认绑定，
+        // 必须发生在任何 LoadOverridesJson 之前；若源 asset 已有动作则完全不动，避免隐藏备用键。
+        EnsureClimbActions();
         _asset.Enable();
         ChaosLog.Success(LogChannel.Input, "输入动作表已加载并启用：" + MapName);
+    }
+
+    /// <summary>ClimbUp/ClimbDown：W/S + 手柄左摇杆上下；仅当动作缺失时创建，且只创建一次。</summary>
+    private void EnsureClimbActions()
+    {
+        if (_asset == null) return;
+        InputActionMap map = _asset.FindActionMap(MapName, false);
+        if (map == null) return;
+        EnsureClimbAction(map, ActionClimbUp, "<Keyboard>/w", "<Gamepad>/leftStick/up");
+        EnsureClimbAction(map, ActionClimbDown, "<Keyboard>/s", "<Gamepad>/leftStick/down");
+    }
+
+    private static void EnsureClimbAction(InputActionMap map, string name, string keyboardPath, string gamepadPath)
+    {
+        if (map.FindAction(name, false) != null) return;
+        InputAction action = map.AddAction(name, InputActionType.Value);
+        action.AddBinding(keyboardPath, groups: GroupKeyboard);
+        action.AddBinding(gamepadPath, groups: GroupGamepad);
     }
 
     private void EnsureInited()

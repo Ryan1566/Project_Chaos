@@ -54,7 +54,7 @@ namespace RunMap
                 {
                     if (!plan.Solid[plan.Index(x, y)])
                     {
-                        if (y < plan.SurfaceY[x] - 3) backgroundCells.Add(new Vector3Int(x, y, 0));
+                        if (plan.SpaceAt(x,y)==MapSpaceKind.Underground) backgroundCells.Add(new Vector3Int(x, y, 0));
                         continue;
                     }
                     int space = (int)plan.SpaceAt(x, y);
@@ -64,7 +64,15 @@ namespace RunMap
                 var backgrounds = new TileBase[backgroundCells.Count];
                 for (int i = 0; i < backgrounds.Length; i++) backgrounds[i] = backgroundTile;
                 backdrop.SetTiles(backgroundCells.ToArray(), backgrounds);
-                foreach (var cell in cells) ground.SetColliderType(cell, Tile.ColliderType.Grid);
+                foreach (var cell in cells)
+                {
+                    ground.SetColliderType(cell, Tile.ColliderType.Grid);
+                    if(plan.Version<3)continue;
+                    var space=plan.SpaceAt(cell.x,cell.y);
+                    Color tint=space==MapSpaceKind.Outdoor?new Color(.72f,.83f,.57f):space==MapSpaceKind.Building?new Color(.85f,.74f,.60f):new Color(.68f,.73f,.80f);
+                    float variation=((MapRandom.Hash((cell.x/7)+"/"+(cell.y/5))%7)-3f)*.012f;
+                    tint*=1f+variation;ground.SetTileFlags(cell,TileFlags.None);ground.SetColor(cell,tint);
+                }
                 if ((x + 1) % plan.Parameters.workColumnsPerFrame == 0 || clock.Elapsed.TotalMilliseconds >= plan.Parameters.frameBudgetMs)
                 { yield return null; clock.Restart(); }
             }
@@ -122,6 +130,7 @@ namespace RunMap
                 }
                 CreatePlaceholder(p);
             }
+            ExplorationMapPresentation.Build(plan,Root.transform);
             Root.SetActive(true);
             Physics2D.SyncTransforms();
             if (!VerifyPhysics(groundGo)) { Error = "场景碰撞与计划中的必需支撑面不一致"; Dispose(); yield break; }

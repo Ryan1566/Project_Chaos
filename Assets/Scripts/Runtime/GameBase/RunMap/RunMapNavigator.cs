@@ -15,6 +15,7 @@ namespace RunMap
         private List<MapPathStep> path;
         private int cursor;
         private float speed = 5, jumpForce = 11, acceleration = 30, nextRepath;
+        private float motionGravity;
         private Vector2 lastGoal, progressFeet;
         private float progressAt, flightStarted;
         private bool inFlight;
@@ -33,6 +34,7 @@ namespace RunMap
             body = GetComponent<Rigidbody2D>(); shape = GetComponent<Collider2D>();
             settings = RunBehaviorSettings.Load(GetComponent<EnemyPlaceholder>() != null ? "Enemy" : "Ally");
             progressFeet = Feet; progressAt = Time.time;
+            if(GetComponent<LadderClimber>()==null)gameObject.AddComponent<LadderClimber>();
         }
         public void Configure(float speed, float jumpForce, float acceleration = 30f)
         {
@@ -48,8 +50,10 @@ namespace RunMap
             if (!ReferenceEquals(map, current)) { map = current; graph = null; path = null; inFlight = false; HasPath = false; }
             if (map == null || graph != null) return;
             var size = shape.bounds.size;
+            if(body.gravityScale>0)motionGravity=Mathf.Abs(Physics2D.gravity.y*body.gravityScale);
             graph = RunMapPathfinder.For(map, new MapMotionProfile { Speed = speed, JumpForce = jumpForce,
-                Gravity = Mathf.Abs(Physics2D.gravity.y * body.gravityScale), Width = size.x, Height = size.y });
+                Gravity = Mathf.Max(.1f,motionGravity), Width = size.x, Height = size.y,
+                CanClimb = true, ClimbSpeed=3.5f });
         }
         public bool MoveTo(Vector2 feetDestination, float stopDistance = .35f, Rect? allowedBounds = null)
         {
@@ -59,7 +63,8 @@ namespace RunMap
             if (map == null || graph == null || !NaturalMapRuntime.IsReady) { Stop(); return false; }
             Vector2 feet = Feet;
             bool grounded = RunMapPhysics.IsGrounded(shape);
-            if (!grounded && !inFlight)
+            var climber=GetComponent<LadderClimber>();
+            if (!grounded && !inFlight && (climber==null||!climber.IsClimbing))
             {
                 if (path != null && cursor < path.Count && path[cursor].Kind == MapMotionKind.Drop)
                 {
@@ -83,6 +88,14 @@ namespace RunMap
             while (cursor < path.Count)
             {
                 var step = path[cursor]; Vector2 target = step.Destination;
+                if(step.Kind==MapMotionKind.Climb)
+                {
+                    if(Vector2.Distance(feet,target)<.3f&&(climber==null||!climber.IsClimbing)) {cursor++;continue;}
+                    if(climber==null)return false;
+                    if(!climber.IsClimbing&&Vector2.Distance(feet,new Vector2(step.From.x+.5f,step.From.y+.03f))>1.1f)
+                    {SetVelocity(Mathf.Clamp((step.From.x+.5f-feet.x)/Mathf.Max(.01f,Time.deltaTime),-speed,speed));return true;}
+                    climber.Navigate(step.Ladder,step.To.y>step.From.y);return true;
+                }
                 if (inFlight)
                 {
                     if (Time.time - flightStarted > step.FlightTime + .75f || IsStuck)

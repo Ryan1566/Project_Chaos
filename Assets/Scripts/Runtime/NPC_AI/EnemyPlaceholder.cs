@@ -174,6 +174,7 @@ public class EnemyPlaceholder : MonoBehaviour, IDamageable
     private void ApplyDamage(int amount, bool fromTeam)
     {
         if (IsDead || amount <= 0) return;
+        GetComponent<LadderClimber>()?.Detach(false);
 
         if (fromTeam)
         {

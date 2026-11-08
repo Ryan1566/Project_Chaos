@@ -203,4 +203,32 @@ public class RunMapTable_MapGenerationConfig
     /// 入口在右侧概率百分比
     /// </summary>
     public int startOnRightChance;
+    /// <summary>
+    /// 生成器版本
+    /// </summary>
+    public int generationVersion;
+    /// <summary>
+    /// 敌人总预算
+    /// </summary>
+    public int enemyBudget;
+    /// <summary>
+    /// 最少地点数
+    /// </summary>
+    public int placeMin;
+    /// <summary>
+    /// 最多地点数
+    /// </summary>
+    public int placeMax;
+    /// <summary>
+    /// 最少梯子数
+    /// </summary>
+    public int ladderMin;
+    /// <summary>
+    /// 最多梯子数
+    /// </summary>
+    public int ladderMax;
+    /// <summary>
+    /// 保底布局种子
+    /// </summary>
+    public uint fallbackLayoutSeed;
 }

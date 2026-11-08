@@ -15,6 +15,11 @@ public static class SettingIds
     // ══════════════════ 游戏性页 ══════════════════
     public const string Language = "gameplay.language";
     public const string ItemWheelMode = "gameplay.itemWheelMode";
+    public const string LadderEntryMode = "gameplay.ladderEntryMode";
+    public const string ClimbUp = "keybind.climbUp";
+    public const string ClimbDown = "keybind.climbDown";
+    public const string ClimbUpGamepad = "keybind.climbUp.pad";
+    public const string ClimbDownGamepad = "keybind.climbDown.pad";
     public const string Inventory = "keybind.inventory";
     public const string Team = "keybind.team";
     public const string ItemWheel = "keybind.itemWheel";

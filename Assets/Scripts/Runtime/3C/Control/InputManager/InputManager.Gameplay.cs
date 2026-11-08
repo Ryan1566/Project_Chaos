@@ -9,6 +9,8 @@ public partial class InputManager
     public const string ActionCamp = "Camp";
     public const string ActionMenu = "Menu";
     public const string ActionInteract = "Interact";
+    public const string ActionClimbUp = "ClimbUp";
+    public const string ActionClimbDown = "ClimbDown";
     public const string ActionMap = "Map";
     public const string ActionFunctions = "Functions";
     public const string ActionInventory = "Inventory";
@@ -119,6 +121,21 @@ public partial class InputManager
         if (!_suppressHeldAttack || _asset == null) return;
         var attack = _asset.FindAction(MapName + "/" + ActionAttack, false);
         if (attack == null || !attack.IsPressed()) _suppressHeldAttack = false;
+    }
+
+    /// <summary>
+    /// 攀爬方向：+1 上（ClimbUp）、-1 下（ClimbDown），同时按或都松开时为 0。
+    /// 沿用 FindScopedAction，因此自动遵守局内作用域、改键、菜单/重绑定阻断与输入边界。
+    /// </summary>
+    public float ReadClimb()
+    {
+        if (!CanReadGameplayInput) return 0;
+        var up = FindScopedAction(ActionClimbUp);
+        var down = FindScopedAction(ActionClimbDown);
+        float value = 0f;
+        if (up != null && up.enabled) value += Mathf.Max(0f, up.ReadValue<float>());
+        if (down != null && down.enabled) value -= Mathf.Max(0f, down.ReadValue<float>());
+        return Mathf.Clamp(value, -1f, 1f);
     }
 
     public float ReadMove()

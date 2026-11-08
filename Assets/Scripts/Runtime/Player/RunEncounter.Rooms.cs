@@ -37,7 +37,15 @@ public static partial class RunEncounter
             ChaosLog.Info(LogChannel.UI, "[局内] 房间 " + clearedNow[k] + " 已清空（剩余未清房间 " + (TotalRooms - _clearedRooms) + "）");
         }
 
-        if (_clearedRooms >= TotalRooms) OnSceneCleared();
+        var currentPlan=NaturalMapRuntime.Current;
+        if(CurrentSceneIndex==MaxSceneIndex&&currentPlan!=null&&currentPlan.Version>=3)
+        {
+            bool registered=false,alive=false;
+            foreach(var regionId in currentPlan.ObjectiveRegionIds)
+            {registered|=TotalByRoom.ContainsKey(regionId);alive|=AliveByRoom.ContainsKey(regionId);}
+            if(registered&&!alive)OnSceneCleared();
+        }
+        else if (_clearedRooms >= TotalRooms) OnSceneCleared();
     }
 
     private static bool InsideRoom(EnemyPlaceholder enemy)
@@ -59,7 +67,7 @@ public static partial class RunEncounter
             if (Defeated) return;
             StagesPassed = MaxSceneIndex;
             RunCleared = true;
-            ChaosLog.Success(LogChannel.UI, "[局内] 第 3 场景清空 → 本局通关（boss 占位）");
+            ChaosLog.Success(LogChannel.UI, "[局内] 第 3 场景目标已完成 → 本局通关");
             RunSettlementPanel.Open(true);   //W3.2e：弹通关态结算面板
             RunTeamHud.SetVisible(false);    //W3.3：结算隐藏队伍血条
             return;
@@ -73,6 +81,8 @@ public static partial class RunEncounter
     {
         GameObject player = PlayerSpawner.CurrentPlayer;
         if (player == null) return false;
+        var plan=NaturalMapRuntime.Current;
+        if(plan!=null&&plan.Version>=3)return plan.RegionAt(Mathf.FloorToInt(player.transform.position.x),Mathf.FloorToInt(player.transform.position.y))==roomId;
         Rect rect;
         if (!TryGetRoomRectById(roomId, out rect)) return false;
         Vector3 p = player.transform.position;
@@ -82,6 +92,8 @@ public static partial class RunEncounter
     /// <summary>W3.3：任意世界坐标是否在指定房间内（敌人选目标用：门客与受控角色都要在房间里）。</summary>
     public static bool IsPositionInRoom(ushort roomId, Vector3 worldPosition)
     {
+        var plan=NaturalMapRuntime.Current;
+        if(plan!=null&&plan.Version>=3)return plan.RegionAt(Mathf.FloorToInt(worldPosition.x),Mathf.FloorToInt(worldPosition.y))==roomId;
         Rect rect;
         if (!TryGetRoomRectById(roomId, out rect)) return false;
         return worldPosition.x >= rect.xMin && worldPosition.x <= rect.xMax
@@ -94,6 +106,11 @@ public static partial class RunEncounter
         NaturalMapPlan plan = NaturalMapRuntime.Current;
         if (plan != null)
         {
+            if(plan.Version>=3)
+            {
+                var region=plan.FindRegion(plan.RegionAt(Mathf.FloorToInt(worldPosition.x),Mathf.FloorToInt(worldPosition.y)));
+                rect=region==null?new Rect():region.Bounds;return region!=null;
+            }
             foreach (EncounterRegion region in plan.Regions)
             {
                 if (region == null) continue;

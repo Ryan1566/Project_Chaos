@@ -15,6 +15,7 @@ public class PlayerAttack : MonoBehaviour
     public float hitBoxOffsetX = 0.5f;
 
     private PlayerLocomotion _locomotion;
+    private LadderClimber _ladder;
     private SkeletonAnimation _skeleton;
     private MeshRenderer _meshRenderer;
     private Color _baseColor;
@@ -24,9 +25,20 @@ public class PlayerAttack : MonoBehaviour
     private readonly HashSet<IDamageable> _hitTargets = new HashSet<IDamageable>();
     public int LastHitCount { get; private set; }
 
+    /// <summary>组件添加顺序不保证，攀梯组件由 PlayerLocomotion 补挂时也能拿到。</summary>
+    private LadderClimber Ladder
+    {
+        get
+        {
+            if (_ladder == null) _ladder = GetComponent<LadderClimber>();
+            return _ladder;
+        }
+    }
+
     private void Awake()
     {
         _locomotion = GetComponent<PlayerLocomotion>();
+        _ladder = GetComponent<LadderClimber>();
         if (_locomotion != null) _skeleton = _locomotion.Skeleton;
         if (_skeleton == null) _skeleton = GetComponentInChildren<SkeletonAnimation>(true);
         if (_skeleton != null)
@@ -41,6 +53,9 @@ public class PlayerAttack : MonoBehaviour
     private void Update()
     {
         RestoreVisual();
+        // 攀爬中禁止普攻（含鼠标按住触发），也不消耗攻击冷却/输入。
+        LadderClimber ladder = Ladder;
+        if (ladder != null && ladder.IsClimbing) return;
         bool pressed = InputManager.Instance.WasGameplayPressed(InputManager.ActionAttack);
         if (SettingsManager.Instance.Applied?.attackTriggerMode == (int)MouseTriggerMode.Hold)
             pressed |= InputManager.Instance.IsPointerAttackHeld();

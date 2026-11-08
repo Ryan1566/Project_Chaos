@@ -42,6 +42,13 @@ namespace RunMap
             var row = rows == null ? null : rows.datas.Find(r => r.enable && r.presetId == preset);
             if (row == null) throw new InvalidOperationException("MapGeneration缺少预设" + preset + "的启用参数");
             var p = JsonUtility.FromJson<NaturalMapParameters>(JsonUtility.ToJson(row));
+            if(p.generationVersion>=3)
+            {
+                var scenes=ConfigLoader.Instance.LoadData<RunMapTable_ExplorationSceneConfig>();
+                if(scenes==null)throw new InvalidOperationException("地图缺少场景组合配置");
+                p.compositions=scenes.datas.FindAll(s=>s.stage==sceneIndex&&s.weight>0).ToArray();
+                if(p.compositions.Length<4)throw new InvalidOperationException("探索地图每个主题至少需要四种场景组合");
+            }
             var content = Chaos.Gameplay.Interaction.RunContentCatalog.Load();
             p.gatherableCount = content.gatherableCount;
             p.contentFingerprint = MapRandom.Hash(JsonUtility.ToJson(content)).ToString("X8");
@@ -59,6 +66,7 @@ namespace RunMap
             var collider = player.GetComponent<CapsuleCollider2D>();
             if (move == null || body == null || collider == null || body.gravityScale <= 0) throw new InvalidOperationException("角色通行能力配置不完整");
             float gravity = Mathf.Abs(Physics2D.gravity.y * body.gravityScale);
+            profile.Speed=move.moveSpeed;profile.JumpForce=move.jumpForce;profile.Gravity=gravity;
             profile.MaxJumpHeight = Mathf.FloorToInt(move.jumpForce * move.jumpForce / (2f * gravity));
             profile.MaxJumpDistance = Mathf.Max(1, Mathf.FloorToInt(move.moveSpeed * move.jumpForce * 2f / gravity));
             profile.Height = Mathf.CeilToInt(collider.size.y * player.transform.localScale.y);
@@ -74,6 +82,7 @@ namespace RunMap
                     float ag = Mathf.Abs(Physics2D.gravity.y * ab.gravityScale);
                     float jump = ai == null ? AllyController.DefaultJumpForce : ai.jumpForce;
                     float speed = ai == null ? AllyController.DefaultMoveSpeed : ai.moveSpeed;
+                    profile.Speed=Mathf.Min(profile.Speed,speed);profile.JumpForce=Mathf.Min(profile.JumpForce,jump);profile.Gravity=Mathf.Max(profile.Gravity,ag);
                     profile.MaxJumpHeight = Mathf.Min(profile.MaxJumpHeight, Mathf.FloorToInt(jump * jump / (2f * ag)));
                     profile.MaxJumpDistance = Mathf.Min(profile.MaxJumpDistance, Mathf.FloorToInt(speed * jump * 2f / ag));
                 }
@@ -129,7 +138,7 @@ namespace RunMap
         {
             var layout = new MapLayout { Seed = RunMapSeed.Derive(plan.RunSeed, plan.SceneIndex), SceneIndex = plan.SceneIndex,
                 PresetId = (int)plan.Parameters.presetId, ThemeKey = plan.SceneIndex == 1 ? "Surface" : plan.SceneIndex == 2 ? "Underground" : "Building",
-                Version = 2, EntryId = plan.EntryRegionId, BossId = plan.ExitRegionId, Attempts = plan.Attempt, Degraded = plan.Degraded };
+                Version = (uint)plan.Version, EntryId = plan.EntryRegionId, BossId = plan.ExitRegionId, Attempts = plan.Attempt, Degraded = plan.Degraded };
             foreach (var r in plan.Regions)
                 layout.Nodes.Add(new RoomNode { Id = r.Id, Layer = r.Space == MapSpaceKind.Underground ? MapLayer.Underground : r.Space == MapSpaceKind.Building ? MapLayer.Building : MapLayer.Surface,
                     Kind = r.IsEntry ? ChunkKind.Entry : ChunkKind.Combat, IsMainPath = r.Required });

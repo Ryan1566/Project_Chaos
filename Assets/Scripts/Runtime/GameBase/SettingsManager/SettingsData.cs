@@ -52,6 +52,12 @@ public class SettingsData
 
     public int itemWheelMode = (int)ItemWheelTriggerMode.Hold;
 
+    /// <summary>
+    /// 梯子进入方式：0 = 自动上下（W/S 接近后吸附），1 = 手动交互（E 进入/退出）。
+    /// 旧配置没有该字段时保留初始值 0，即默认自动，不需要迁移版本号。
+    /// </summary>
+    public int ladderEntryMode = 0;
+
     // ══════════════════ 声音 ══════════════════
     // 四路音量统一 0~100 整数（UI 上是拉条，步进 1）。
 
@@ -155,6 +161,7 @@ public class SettingsData
                 //其余游戏性项（屏幕震动、伤害数字等）后续加在这里。
                 language = d.language;
                 itemWheelMode = d.itemWheelMode;
+                ladderEntryMode = d.ladderEntryMode;
                 break;
         }
     }

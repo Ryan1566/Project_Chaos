@@ -24,7 +24,18 @@ public class PlayerHealth : MonoBehaviour
 
     private float _invulnUntil;
     private Rigidbody2D _body;
+    private LadderClimber _ladder;
     private int _runHealthBonus;
+
+    /// <summary>组件添加顺序不保证，延迟取一次，避免 Awake 早于 PlayerLocomotion 时永远拿不到。</summary>
+    private LadderClimber Ladder
+    {
+        get
+        {
+            if (_ladder == null) _ladder = GetComponent<LadderClimber>();
+            return _ladder;
+        }
+    }
     private int _itemHealthBonus;
     public int ItemHealthBonus => _itemHealthBonus;
     private int _familyHealthBonus;
@@ -77,6 +88,7 @@ public class PlayerHealth : MonoBehaviour
     {
         Hp = maxHp;
         _body = GetComponent<Rigidbody2D>();
+        _ladder = GetComponent<LadderClimber>();
     }
 
     /// <summary>
@@ -104,6 +116,9 @@ public class PlayerHealth : MonoBehaviour
         _invulnUntil = Time.time + invulnSeconds;
         //受击表现只保留 Cinemachine 震动；根节点/Spine 缩放与朝向永远不由伤害表现改写。
         CombatCameraShake.NotifyHurt(transform, CombatQuery.Center(transform));
+        //受击必须离开梯子并恢复重力，避免在梯上被击倒后悬空。
+        LadderClimber ladder = Ladder;
+        if (ladder != null) ladder.Detach(false);
 
         ChaosLog.Info(LogChannel.UI, "[玩家] 受到接触伤害 " + received + "，HP=" + Mathf.Max(0, Hp) + "/" + maxHp
             + "（无敌帧 " + invulnSeconds + "s）");
@@ -129,6 +144,8 @@ public class PlayerHealth : MonoBehaviour
     /// <summary>W3.3：HP 归零 → 交给 RunEncounter 判定「观战」还是「全队倒下 → 失败」。</summary>
     private void OnDowned()
     {
+        LadderClimber ladder = Ladder;
+        if (ladder != null) ladder.Detach(false);
         ChaosLog.Warn(LogChannel.UI, "[玩家] 受控角色 HP 归零 → 倒地（等待 RunEncounter 判定观战/失败）");
         RunEncounter.OnPlayerDowned();
         // 只有全队倒下才算本局失败；观战状态仍允许切图，不能在这里清掉生命快照。
