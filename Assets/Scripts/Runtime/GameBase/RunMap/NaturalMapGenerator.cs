@@ -457,8 +457,9 @@ namespace RunMap
             return m.Reachable[m.Index(exitX, exitY)];
         }
 
-        public static IEnumerable<int> NavigationSteps(NaturalMapPlan m)
+        public static IEnumerable<int> NavigationSteps(NaturalMapPlan m, Dictionary<int, List<int>> incoming = null)
         {
+            incoming?.Clear();
             Array.Clear(m.Reachable, 0, m.Reachable.Length); m.StandingCells.Clear();
             m.RouteParents = new int[m.Solid.Length];
             for (int i = 0; i < m.RouteParents.Length; i++) m.RouteParents[i] = -1;
@@ -485,10 +486,18 @@ namespace RunMap
                 while(queue.Count>0)
                 {
                     var cell=queue.Dequeue();
+                    int origin = m.Index(cell.x, cell.y);
                     foreach(var edge in graph.Neighbors(cell))
                     {
-                        int next=m.Index(edge.To.x,edge.To.y);if(m.Reachable[next])continue;
-                        m.Reachable[next]=true;m.RouteParents[next]=m.Index(cell.x,cell.y);queue.Enqueue(edge.To);
+                        int next=m.Index(edge.To.x,edge.To.y);
+                        if (incoming != null)
+                        {
+                            if (!incoming.TryGetValue(next, out var predecessors))
+                                incoming.Add(next, predecessors = new List<int>());
+                            predecessors.Add(origin);
+                        }
+                        if(m.Reachable[next])continue;
+                        m.Reachable[next]=true;m.RouteParents[next]=origin;queue.Enqueue(edge.To);
                     }
                     if(++explored%64==0)yield return explored;
                 }

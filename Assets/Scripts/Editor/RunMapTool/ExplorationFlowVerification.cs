@@ -20,6 +20,7 @@ public static class ExplorationFlowVerification
     static Keyboard keyboard;
     static string overrides;
     static int ladderMode;
+    static int teamCount;
     static uint? oldSeed;
     public static string Status{get;private set;}="idle";
     public static string Storage{get;private set;}
@@ -28,7 +29,7 @@ public static class ExplorationFlowVerification
     public static void Start(int teamSize=1,uint seed=17)
     {
         if(!Application.isPlaying||Status=="running")throw new InvalidOperationException("需要空闲Play环境");
-        log.Clear();Storage=Path.Combine(Path.GetTempPath(),"ChaosVillageIsolated-Exploration-"+Guid.NewGuid().ToString("N"));
+        teamCount=teamSize;log.Clear();Storage=Path.Combine(Path.GetTempPath(),"ChaosVillageIsolated-Exploration-"+Guid.NewGuid().ToString("N"));
         SaveSlotService.UseEditorTestDirectory(Storage);overrides=InputManager.Instance.SaveOverridesJson();InputManager.Instance.LoadOverridesJson("");
         ladderMode=SettingsManager.Instance.Applied.ladderEntryMode;SettingsManager.Instance.Applied.ladderEntryMode=0;
         oldSeed=NaturalMapRuntime.PreviewSeed;typeof(NaturalMapRuntime).GetProperty("PreviewSeed").SetValue(null,(uint?)seed);
@@ -40,7 +41,7 @@ public static class ExplorationFlowVerification
         log.AppendLine("PASS "+description);Flush();
     }
     static void Flush()
-    {Directory.CreateDirectory(Application.dataPath+"/QA/ExplorationMap");File.WriteAllText(Application.dataPath+"/QA/ExplorationMap/flow.txt",log.ToString());}
+    {Directory.CreateDirectory(Application.dataPath+"/QA/ExplorationMap");File.WriteAllText(Application.dataPath+"/QA/ExplorationMap/flow-"+teamCount+".txt",log.ToString());}
     static void Run(IEnumerator source)
     {Status="running";UnityEngine.Object.FindObjectOfType<MonoController>().StartCoroutine(Guard(source));}
     static IEnumerator Guard(IEnumerator source)
@@ -86,14 +87,26 @@ public static class ExplorationFlowVerification
         while((!RunEncounter.IsSceneReady||RunSceneFlow.IsTransitioning||RunEncounter.CurrentSceneIndex!=stage)&&Time.realtimeSinceStartup<deadline)yield return null;
         Check(RunEncounter.IsSceneReady&&RunEncounter.CurrentSceneIndex==stage&&!RunSceneFlow.IsTransitioning,"正式地图Ready "+stage);
         Check(NaturalMapRuntime.Current.Version==3,"正式入口消费v3地图");
-        // 战斗与导航证据分开：先停敌人行为，保留实体碰撞与全队真实跟随。
-        var enemies=new List<EnemyPlaceholder>();RunEncounter.CopyMapEnemies(enemies);foreach(var enemy in enemies)enemy.enabled=false;
+        // 隔离地图通行测试。敌人仍登记为活体，停用其行为和物理，避免静止敌人堵住测试路线。
+        var enemies=new List<EnemyPlaceholder>();
+        RunEncounter.CopyMapEnemies(enemies);
+        Check(enemies.Count==NaturalMapRuntime.Current.Parameters.enemyBudget,"正式场景敌人投放数="+enemies.Count);
+        foreach(var enemy in enemies)
+        {
+            enemy.enabled=false;
+            enemy.GetComponent<Rigidbody2D>().simulated=false;
+        }
         Check(NaturalMapAssembler.VerifyActive(NaturalMapRuntime.Current,RunMapBootstrap.CurrentMapRoot),"实际Tilemap碰撞支撑正确");
+        Check(AllyController.All.Count==teamCount-1,"真实出战队伍人数="+teamCount);
+        int objects = RunMapBootstrap.CurrentMapRoot.GetComponentsInChildren<Transform>(true).Length;
+        Check(objects < NaturalMapRuntime.Current.Parameters.maxContentObjects,
+            $"地图根内对象={objects} 最大规划单步={RunMapBootstrap.LastPlanningStepMs:F2}ms 最大装配单步={RunMapBootstrap.LastAssemblyStepMs:F2}ms");
     }
     public static void Travel(Vector2 destination){Target=destination;Run(TravelRoutine(destination));}
     public static void TravelToGoal(){var cell=NaturalMapRuntime.Current.GoalCell;Travel(new Vector2(cell.x+.5f,cell.y+.05f));}
     static IEnumerator TravelRoutine(Vector2 destination)
     {
+        Target = destination;
         var player=PlayerSpawner.CurrentPlayer;var shape=player.GetComponent<Collider2D>();var movement=player.GetComponent<PlayerLocomotion>();
         var body=player.GetComponent<Rigidbody2D>();var map=NaturalMapRuntime.Current;
         var graph=RunMapPathfinder.For(map,new MapMotionProfile{Speed=movement.moveSpeed,JumpForce=movement.jumpForce,
@@ -112,7 +125,9 @@ public static class ExplorationFlowVerification
                 var step=flight.Value;float age=Time.time-flightAt;
                 if(grounded&&age>.18f){flight=null;Keys();nextPath=0;yield return null;continue;}
                 if(age>step.FlightTime+1.2f){flight=null;nextPath=0;Keys();yield return null;continue;}
-                Steer(step.Destination.x-feet.x,age<.12f);yield return null;continue;
+                float nextX = step.HorizontalSpeed > 0f ? step.Destination.x
+                    : Mathf.Lerp(step.From.x + .5f, step.Destination.x, (age + .02f) / Mathf.Max(.02f, step.FlightTime));
+                Steer(nextX-feet.x,age<.12f);yield return null;continue;
             }
             if(Time.time>=nextPath&&!climber.IsClimbing)
             {
@@ -151,6 +166,160 @@ public static class ExplorationFlowVerification
     public static void UseExit(){Run(ExitRoutine());}
     static IEnumerator ExitRoutine()
     {int next=RunEncounter.CurrentSceneIndex+1;yield return PressRoutine(Key.E);yield return MapReady(next);}
+
+    public static void Journey(bool defeat = false) { Run(JourneyRoutine(defeat)); }
+
+    static Vector2 Foot(Vector2Int cell) => new Vector2(cell.x + .5f, cell.y + .03f);
+
+    static IEnumerator JourneyRoutine(bool defeat)
+    {
+        for (int stage = RunEncounter.CurrentSceneIndex; stage <= 3; stage++)
+        {
+            var map = NaturalMapRuntime.Current;
+            using (var model = new Chaos.MVP.Model.Gameplay.RunMapModel())
+                Check(model.Refresh() && !model.Markers.Any(m => m.Kind.ToString() == "Objective"
+                    || m.Id == "interactive/exit"), "目标尚未探索 " + stage);
+
+            if (stage == 2 && map.Ladders.Count > 0)
+                yield return LadderRoutine(map.Ladders[0]);
+
+            yield return TravelRoutine(Foot(map.GoalCell));
+            yield return WaitForTeam(Foot(map.GoalCell));
+            var enemies = new List<EnemyPlaceholder>();
+            RunEncounter.CopyMapEnemies(enemies);
+            if (stage < 3)
+            {
+                Check(enemies.Count == map.Parameters.enemyBudget, "未清怪已到达出口 " + stage);
+                yield return ExitRoutine();
+                continue;
+            }
+
+            using (var model = new Chaos.MVP.Model.Gameplay.RunMapModel())
+                Check(model.Refresh() && model.Markers.Any(m => m.Kind.ToString() == "Objective"), "探索后显示核心区");
+            if (defeat)
+            {
+                PlayerSpawner.CurrentPlayer.GetComponent<PlayerHealth>().ForceDown();
+                if (teamCount > 1) Check(!RunEncounter.Defeated && RunEncounter.IsSpectator, "受控角色先倒地进入观战");
+                foreach (var ally in AllyController.All.ToArray()) ally.ForceDown();
+                Check(RunEncounter.Defeated && !RunEncounter.RunCleared, "全队倒地进入失败结算");
+            }
+            else
+            {
+                var core = enemies.Where(e => map.ObjectiveRegionIds.Contains(e.roomId)).ToArray();
+                Check(core.Length > 0 && core.Length < enemies.Count, "核心与支线分别登记");
+                foreach (var enemy in core) enemy.TakeRunDamage(enemy.Hp);
+                // 遭遇统计按固定节奏刷新，等待结果发布后再判定结算。
+                float resultDeadline = Time.realtimeSinceStartup + 2f;
+                while (!RunEncounter.RunCleared && !RunEncounter.Defeated
+                    && Time.realtimeSinceStartup < resultDeadline) yield return null;
+                RunEncounter.CopyMapEnemies(enemies);
+                Check(RunEncounter.RunCleared && !RunEncounter.Defeated && enemies.Count > 0,
+                    "只消灭核心区进入成功结算，支线存活=" + enemies.Count);
+            }
+        }
+        Click("Btn_Next"); Click("Btn_Next"); Click("Btn_Confirm");
+        float deadline = Time.realtimeSinceStartup + 30f;
+        while ((!VillageSceneBootstrap.IsReady || NaturalMapRuntime.Current != null)
+            && Time.realtimeSinceStartup < deadline) yield return null;
+        Check(VillageSceneBootstrap.IsReady && NaturalMapRuntime.Current == null, "三页结算返回村庄并清理地图");
+    }
+
+    static IEnumerator WaitForTeam(Vector2 target)
+    {
+        if (teamCount <= 1) yield break;
+        float deadline = Time.realtimeSinceStartup + 28f;
+        bool AtTarget(AllyController ally)
+        {
+            var feet = RunMapPhysics.Feet(ally.GetComponent<Collider2D>());
+            return !ally.IsDowned && Mathf.Abs(feet.x - target.x) <= 8f && Mathf.Abs(feet.y - target.y) <= 2f
+                && !ally.GetComponent<LadderClimber>().IsClimbing;
+        }
+        while (!AllyController.All.All(AtTarget) && Time.realtimeSinceStartup < deadline) yield return null;
+        Check(AllyController.All.All(a => a.TeleportCount == 0 && AtTarget(a)),
+            "全队正常导航到达 " + target + " " + Snapshot());
+    }
+
+    static IEnumerator LadderRoutine(MapLadder ladder)
+    {
+        yield return TravelRoutine(Foot(ladder.Top));
+        yield return WaitForTeam(Foot(ladder.Top));
+        var player = PlayerSpawner.CurrentPlayer;
+        var motor = player.GetComponent<LadderClimber>();
+        var body = player.GetComponent<Rigidbody2D>();
+        var collider = player.GetComponent<Collider2D>();
+        float gravity = body.gravityScale;
+        yield return PressRoutine(Key.S);
+        Check(motor.IsClimbing && body.gravityScale == 0 && collider.enabled, "自动 S 附着，保留碰撞");
+        SettingsManager.Instance.Applied.ladderEntryMode = 1;
+        Check(motor.IsClimbing, "切换到手动模式保留附着");
+        yield return PressRoutine(Key.M);
+        Check(InputManager.Instance.GameplayInputBlocked && motor.IsClimbing, "打开地图保持附着");
+        var pausedAt = body.position;
+        yield return PressRoutine(Key.S);
+        Check(Vector2.Distance(body.position, pausedAt) < .02f, "地图面板拦截攀梯键");
+        yield return PressRoutine(Key.Escape);
+        Check(motor.IsClimbing && !InputManager.Instance.GameplayInputBlocked, "关闭地图继续攀爬");
+        yield return MoveOnLadder(motor, Key.S);
+        Check(Vector2.Distance(Foot(ladder.Bottom), RunMapPhysics.Feet(collider)) < .25f && body.gravityScale == gravity,
+            "真实下梯到底并恢复重力");
+        yield return WaitForTeam(Foot(ladder.Bottom));
+        yield return PressRoutine(Key.E);
+        Check(motor.IsClimbing, "手动 E 进入");
+        yield return PressRoutine(Key.E);
+        Check(!motor.IsClimbing && body.gravityScale == gravity, "手动 E 退出");
+        yield return PressRoutine(Key.E);
+        Check(motor.IsClimbing, "重新进入梯子");
+        var attack = player.GetComponent<PlayerAttack>();
+        var attackClock = typeof(PlayerAttack).GetField("_nextAttackTime", BindingFlags.Instance | BindingFlags.NonPublic);
+        var readyAt = (float)attackClock.GetValue(attack);
+        var mouse = InputSystem.AddDevice<Mouse>("ExplorationMouse");
+        try
+        {
+            InputSystem.QueueStateEvent(mouse, new MouseState { buttons = 1 });
+            yield return new WaitForSecondsRealtime(.2f);
+        }
+        finally { InputSystem.RemoveDevice(mouse); }
+        Check((float)attackClock.GetValue(attack) == readyAt, "攀梯期间左键不触发攻击");
+        yield return PressRoutine(Key.W);
+        Check(player.GetComponent<PlayerHealth>().ApplyContactDamage(1) && !motor.IsClimbing && body.gravityScale == gravity,
+            "受击离梯并恢复重力");
+        yield return new WaitForSeconds(.5f);
+        yield return PressRoutine(Key.E);
+        Check(motor.IsClimbing, "受击落地后可重新进入");
+        var locomotion = player.GetComponent<PlayerLocomotion>();
+        var airJumpUsed = typeof(PlayerLocomotion).GetField("_airJumpUsed", BindingFlags.Instance | BindingFlags.NonPublic);
+        airJumpUsed.SetValue(locomotion, true);
+        yield return PressRoutine(Key.Space);
+        Check(!motor.IsClimbing && body.gravityScale == gravity, "跳离梯子并恢复重力");
+        Check((bool)airJumpUsed.GetValue(locomotion), "离梯跳不重置空中跳次数");
+        yield return new WaitForSeconds(1.2f);
+        yield return PressRoutine(Key.E);
+        Check(motor.IsClimbing, "跳离落地后可重新进入");
+        var input = InputManager.Instance;
+        var binding = input.GetRebindSteps(InputManager.ActionClimbUp, InputManager.BindingKind.Keyboard).Single();
+        InputManager.RebindResult? rebound = null;
+        input.BeginRebind(InputManager.ActionClimbUp, binding.BindingIndex, InputManager.BindingKind.Keyboard, result => rebound = result);
+        yield return PressRoutine(Key.U);
+        Check(rebound == InputManager.RebindResult.Completed, "攀梯键只有一个键鼠绑定且可改绑");
+        var oldKeyAt = body.position;
+        yield return PressRoutine(Key.W);
+        Check(Vector2.Distance(oldKeyAt, body.position) < .02f, "改绑后旧 W 键不再攀梯");
+        yield return MoveOnLadder(motor, Key.U);
+        input.LoadOverridesJson("");
+        Check(Vector2.Distance(Foot(ladder.Top), RunMapPhysics.Feet(collider)) < .25f && body.gravityScale == gravity,
+            "真实上梯并通过顶部落脚口");
+        yield return WaitForTeam(Foot(ladder.Top));
+        SettingsManager.Instance.Applied.ladderEntryMode = 0;
+    }
+
+    static IEnumerator MoveOnLadder(LadderClimber motor, Key key)
+    {
+        Keys(key);
+        float deadline = Time.realtimeSinceStartup + 18f;
+        while (motor.IsClimbing && Time.realtimeSinceStartup < deadline) yield return null;
+        Keys();
+        Check(!motor.IsClimbing, "攀爬在预算时间内结束");
+    }
     public static string Snapshot()
     {
         var player=PlayerSpawner.CurrentPlayer;return Status+" stage="+RunEncounter.CurrentSceneIndex+" player="+(player==null?"none":RunMapPhysics.Feet(player.GetComponent<Collider2D>()).ToString())

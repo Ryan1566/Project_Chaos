@@ -177,10 +177,12 @@ namespace RunMap
             LastPlanningStepMs = LastAssemblyStepMs = LastPreparationMs = 0;
             NaturalMapBuild job = null;
             string error = null;
+            float planningBudgetMs = 0f;
             var prepareClock = System.Diagnostics.Stopwatch.StartNew();
             try
             {
                 var p = NaturalMapRuntime.LoadParameters(index);
+                if (p.generationVersion >= 3) planningBudgetMs = p.frameBudgetMs;
                 var actor = NaturalMapRuntime.CaptureActorProfile();
                 var problems = p.Validate(actor);
                 if (problems.Count > 0) throw new ArgumentException(string.Join("；", problems));
@@ -190,9 +192,16 @@ namespace RunMap
             catch (Exception exception) { error = exception.Message; }
             LastPreparationMs = prepareClock.Elapsed.TotalMilliseconds;
             if (error != null) { GenerationFailed(error); yield break; }
+            var frameClock = System.Diagnostics.Stopwatch.StartNew();
             foreach (var step in SafeSteps(job.Steps().GetEnumerator(), value => error = value,
                 ms => LastPlanningStepMs = Math.Max(LastPlanningStepMs, ms)))
-            { if (step != null) TellNatural(step); yield return step; }
+            {
+                if (step != null) TellNatural(step);
+                // 一帧内合并轻量的寻路批次，阶段变化和达到预算时才让出主线程。
+                if (step == null && frameClock.Elapsed.TotalMilliseconds < planningBudgetMs) continue;
+                yield return step;
+                frameClock.Restart();
+            }
             if (error != null || job.Plan == null) { GenerationFailed(error ?? job.Error); yield break; }
             var assembler = new NaturalMapAssembler(job.Plan);
             foreach (var step in SafeSteps(assembler.Steps(parent).GetEnumerator(), value => error = value,

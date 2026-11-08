@@ -76,6 +76,7 @@ namespace RunMap
             if (!TryNearest(feet, radius, allowedBounds, out start) || !TryNearest(destination, radius, allowedBounds, out goal)) return false;
             int s = map.Index(start.x, start.y), g = map.Index(goal.x, goal.y);
             if (s == g) return true;
+            if (map.Version >= 3) return FindExplorationPath(s, g, goal.x, budget, allowedBounds, path);
             var queue = new Queue<int>(); queue.Enqueue(s);
             var parents = new Dictionary<int, MapPathStep>(); var seen = new HashSet<int> { s };
             while (queue.Count > 0 && LastExpanded++ < budget)
@@ -93,6 +94,50 @@ namespace RunMap
                         path.Reverse(); return true;
                     }
                     queue.Enqueue(next);
+                }
+            }
+            return false;
+        }
+        private bool FindExplorationPath(int start, int goal, int goalX, int budget, Rect? bounds, List<MapPathStep> path)
+        {
+            float Estimate(int x) => Mathf.Abs(x - goalX) / actor.Speed;
+            var open = new SortedSet<(float Priority, int Cell)> { (Estimate(start % map.Width), start) };
+            var costs = new Dictionary<int, float> { [start] = 0f };
+            var previous = new Dictionary<int, MapPathStep>();
+            var closed = new HashSet<int>();
+            while (open.Count > 0 && LastExpanded < budget)
+            {
+                var current = open.Min;
+                open.Remove(current);
+                if (!closed.Add(current.Cell)) continue;
+                LastExpanded++;
+                if (current.Cell == goal)
+                {
+                    for (int cursor = goal; cursor != start;)
+                    {
+                        var step = previous[cursor];
+                        path.Add(step);
+                        cursor = map.Index(step.From.x, step.From.y);
+                    }
+                    path.Reverse();
+                    return true;
+                }
+                foreach (var step in Neighbors(new Vector2Int(current.Cell % map.Width, current.Cell / map.Width)))
+                {
+                    if (bounds.HasValue && !bounds.Value.Contains(step.Destination)) continue;
+                    int next = map.Index(step.To.x, step.To.y);
+                    if (closed.Contains(next)) continue;
+                    float walkTime = Mathf.Abs(step.To.x - step.From.x) / actor.Speed;
+                    float moveTime = walkTime;
+                    // 按执行时间而非边数选路。跳跃有落脚成本，平地和短台阶优先。
+                    if (step.Kind == MapMotionKind.Jump) moveTime = Mathf.Max(walkTime, step.FlightTime) + .25f;
+                    else if (step.Kind == MapMotionKind.Climb) moveTime = Mathf.Max(walkTime, step.FlightTime);
+                    else if (step.Kind == MapMotionKind.Drop) moveTime += .12f;
+                    float total = costs[current.Cell] + moveTime;
+                    if (costs.TryGetValue(next, out var old) && old <= total) continue;
+                    costs[next] = total;
+                    previous[next] = step;
+                    open.Add((total + Estimate(step.To.x), next));
                 }
             }
             return false;
@@ -156,25 +201,34 @@ namespace RunMap
                     if (!Clear(from.x + .5f + dx * t, from.y + .03f)) clear = false;
                     if (!Clear(to.x + .5f, Mathf.Lerp(from.y + .03f, to.y + .03f, t))) clear = false;
                 }
+                if (OneWayLanding(to.x + .5f, from.y + .03f, to.y + .03f)) clear = false;
                 if (clear) { edge.Kind = MapMotionKind.Drop; return true; }
             }
-            float discriminant = actor.JumpForce * actor.JumpForce - 2 * actor.Gravity * dy;
+            // Rigidbody2D 每个物理步先积分重力，再移动。连续抛物线会高估临界台阶。
+            float launch = actor.JumpForce;
+            if (map.Version >= 3) launch -= actor.Gravity * Time.fixedDeltaTime * .5f;
+            float discriminant = launch * launch - 2 * actor.Gravity * dy;
             if (discriminant < 0) return false;
-            float time = (actor.JumpForce + Mathf.Sqrt(discriminant)) / actor.Gravity;
+            float time = (launch + Mathf.Sqrt(discriminant)) / actor.Gravity;
             if (Mathf.Abs(dx) / time > actor.Speed + .01f) return false;
             int samples = Mathf.Max(16, Mathf.CeilToInt(time / .025f));
+            float previousY = from.y + .03f;
             for (int i = 0; i <= samples; i++)
             {
                 float t = time * i / samples;
-                if (!Clear(from.x + .5f + dx * t / time, from.y + .03f + actor.JumpForce * t - .5f * actor.Gravity * t * t))
-                    return TryWallAscent(from, to, out edge);
+                float x = from.x + .5f + dx * t / time;
+                float y = from.y + .03f + launch * t - .5f * actor.Gravity * t * t;
+                if (!Clear(x, y) || OneWayLanding(x, previousY, y))
+                    return TryWallAscent(from, to, launch, out edge);
+                previousY = y;
             }
             edge.Kind = MapMotionKind.Jump; edge.FlightTime = time; return true;
         }
-        private bool TryWallAscent(Vector2Int from, Vector2Int to, out MapPathStep edge)
+        private bool TryWallAscent(Vector2Int from, Vector2Int to, float launch, out MapPathStep edge)
         {
             edge = new MapPathStep { From = from, To = to };
             if (to.y <= from.y || Mathf.Abs(to.x - from.x) > 2) return false;
+            if (map.Version >= 3) return TrySteppedAscent(from, to, launch, out edge);
             // Horizontal collision holds the body against the face during ascent; vertical motion continues.
             // This is a physical jump onto a ledge, not a straight parabolic sweep through the wall.
             float x = from.x + .5f, y = from.y + .03f, t = 0;
@@ -183,16 +237,47 @@ namespace RunMap
                 t = i * .01f;
                 float nx = Mathf.MoveTowards(x, to.x + .5f, actor.Speed * .01f);
                 if (Clear(nx, y)) x = nx;
-                float ny = from.y + .03f + actor.JumpForce * t - .5f * actor.Gravity * t * t;
+                float ny = from.y + .03f + launch * t - .5f * actor.Gravity * t * t;
                 if (!Clear(x, ny))
                 {
-                    if (actor.JumpForce - actor.Gravity * t < 0 && Mathf.Abs(y - to.y) < .2f
+                    if (launch - actor.Gravity * t < 0 && Mathf.Abs(y - to.y) < .2f
                         && Mathf.Abs(x - (to.x + .5f)) < .7f && Clear(x, to.y + .03f))
                     { edge.Kind = MapMotionKind.Jump; edge.FlightTime = t; edge.HorizontalSpeed = actor.Speed; return true; }
                     return false;
                 }
                 y = ny;
-                if (y < to.y - .15f && actor.JumpForce - actor.Gravity * t < 0) return false;
+                if (y < to.y - .15f && launch - actor.Gravity * t < 0) return false;
+            }
+            return false;
+        }
+        private bool TrySteppedAscent(Vector2Int from, Vector2Int to, float launch, out MapPathStep edge)
+        {
+            edge = new MapPathStep { From = from, To = to };
+            const float step = .01f;
+            float x = from.x + .5f, y = from.y + .03f, vy = launch;
+            float goalX = to.x + .5f, goalY = to.y + .03f;
+            for (int i = 1; i <= 100; i++)
+            {
+                float nextX = Mathf.MoveTowards(x, goalX, actor.Speed * step);
+                if (Clear(nextX, y)) x = nextX;
+                vy -= actor.Gravity * step;
+                float nextY = y + vy * step;
+                if (Clear(x, nextY) && !OneWayLanding(x, y, nextY)) y = nextY;
+                else if (vy > 0f)
+                {
+                    // 顶到洞壁时只停止上升。若脚底已越过台阶，仍允许向前落脚。
+                    vy = 0f;
+                }
+                else
+                {
+                    if (Mathf.Abs(y - goalY) > .18f || Mathf.Abs(x - goalX) > .38f || !Clear(x, goalY))
+                        return false;
+                    edge.Kind = MapMotionKind.Jump;
+                    edge.FlightTime = i * step;
+                    edge.HorizontalSpeed = actor.Speed;
+                    return true;
+                }
+                if (vy < 0f && y < goalY - .12f) return false;
             }
             return false;
         }
@@ -200,8 +285,18 @@ namespace RunMap
         {
             int x0 = Mathf.FloorToInt(x - actor.Width * .5f + .025f), x1 = Mathf.FloorToInt(x + actor.Width * .5f - .025f);
             int y0 = Mathf.FloorToInt(y + .025f), y1 = Mathf.FloorToInt(y + actor.Height - .04f);
-            for (int cx = x0; cx <= x1; cx++) for (int cy = y0; cy <= y1; cy++) if (map.IsSolid(cx, cy)) return false;
+            for (int cx = x0; cx <= x1; cx++) for (int cy = y0; cy <= y1; cy++) if (map.BlocksBody(cx, cy)) return false;
             return true;
+        }
+        private bool OneWayLanding(float x, float previousY, float nextY)
+        {
+            if (map.OneWay == null || nextY >= previousY) return false;
+            int left = Mathf.FloorToInt(x - actor.Width * .5f + .025f);
+            int right = Mathf.FloorToInt(x + actor.Width * .5f - .025f);
+            for (int y = Mathf.CeilToInt(nextY); y <= Mathf.FloorToInt(previousY); y++)
+                for (int column = left; column <= right; column++)
+                    if (map.IsOneWay(column, y - 1)) return true;
+            return false;
         }
     }
 }

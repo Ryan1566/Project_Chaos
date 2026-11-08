@@ -42,6 +42,12 @@ namespace RunMap
         public readonly HashSet<ushort> ObjectiveRegionIds = new HashSet<ushort>();
         public ushort[] RegionCells;
         public byte[] SpaceCells;
+        public bool[] GoalReachable;
+        public bool[] OneWay;
+        internal bool[] TrailSupports;
+
+        public bool IsOneWay(int x, int y) => OneWay != null && Inside(x,y) && OneWay[Index(x,y)];
+        public bool BlocksBody(int x, int y) => IsSolid(x,y) && !IsOneWay(x,y);
         public Vector2Int EntryCell, GoalCell;
         public bool IsObjectiveRegion(ushort id) => Version < 3 || ObjectiveRegionIds.Contains(id);
         public ushort RegionAt(int x, int y)

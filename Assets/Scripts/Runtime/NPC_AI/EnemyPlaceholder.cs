@@ -253,6 +253,7 @@ public class EnemyPlaceholder : MonoBehaviour, IDamageable
     private void UpdateAi()
     {
         if (_body == null || _settings == null || Time.time < _knockUntil) return;
+        if (GetComponent<LadderClimber>() is LadderClimber climber && climber.IsClimbing) return;
         if (State == BehaviorState.Windup)
         {
             StopMoving();

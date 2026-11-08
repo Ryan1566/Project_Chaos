@@ -26,7 +26,7 @@ namespace Chaos.Gameplay.Interaction
             Vector2 origin = CombatQuery.Center(actor.transform);
 
             // 攀爬中当前梯子的“退出”优先于附近的 NPC/出口；其余目标仍按原距离排序。
-            // 先对每个目标调用 CanInteract：自动模式梯子会在这里被过滤，绝不抢交互。
+            // 自动模式过滤梯子，普通内容仍显示原有的完成和不可用提示。
             var climber = actor.GetComponent<LadderClimber>();
             if (climber != null && climber.IsClimbing && climber.Current != null)
             {
@@ -46,8 +46,8 @@ namespace Chaos.Gameplay.Interaction
             foreach (var target in RunInteractable.Active)
             {
                 if (target == null || !target.isActiveAndEnabled) continue;
-                string reason;
-                if (!target.CanInteract(actor, out reason)) continue;
+                if (target is RunObjectiveMarker) continue;
+                if (target is RunLadderInteractable && !target.CanInteract(actor, out _)) continue;
                 Vector2 point = target.InteractionPoint;
                 float d = (point - origin).sqrMagnitude;
                 if (d > range * range || !RunMapPhysics.HasLineOfSight(origin, point)) continue;

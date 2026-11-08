@@ -194,7 +194,7 @@ namespace RunMap
         public bool CanStand(int x, int y)
         {
             if (!Inside(x, y + Actor.Height - 1) || y < 1 || !IsSolid(x, y - 1)) return false;
-            for (int h = 0; h < Actor.Height; h++) if (IsSolid(x, y + h)) return false;
+            for (int h = 0; h < Actor.Height; h++) if (BlocksBody(x, y + h)) return false;
             return true;
         }
         public EncounterRegion FindRegion(ushort id) { return Regions.Find(r => r.Id == id); }
@@ -237,7 +237,8 @@ namespace RunMap
             if (includeSeed) s.Append(RunSeed).Append('/').Append(SceneIndex).Append('/').Append(ConfigFingerprint);
             s.Append('|').Append(Width).Append('x').Append(Height).Append('|');
             uint h = 2166136261;
-            for (int i = 0; i < Solid.Length; i++) h = unchecked((h ^ (Solid[i] ? 1u : 0u)) * 16777619);
+            for (int i = 0; i < Solid.Length; i++)
+                h = unchecked((h ^ (OneWay != null && OneWay[i] ? 2u : Solid[i] ? 1u : 0u)) * 16777619);
             s.Append(h.ToString("X8"));
             foreach (var r in Regions) s.Append('|').Append(r.StableId).Append(':').Append((int)r.Space);
             if(Version>=3)

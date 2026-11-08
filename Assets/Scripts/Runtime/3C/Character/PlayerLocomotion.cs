@@ -169,8 +169,8 @@ public class PlayerLocomotion : MonoBehaviour
     private void OnDisable()
     {
         if (_inputManager != null) _inputManager.GameplayInputBlockedChanged -= OnInputBlocked;
-        // 控制组件停用时恢复重力；普通菜单只拦截输入，不会停用本组件。
-        if (_ladder != null) {_ladder.Drive(0f);_ladder.Detach(false);}
+        // 地图、扎营和结算会停用输入组件，梯子本身的生命周期由 motor 和受击处理。
+        if (_ladder != null) _ladder.Drive(0f);
         ClearInput();
     }
     private void OnInputBlocked(bool blocked) { if (blocked) ClearInput(); }

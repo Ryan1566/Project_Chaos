@@ -34,7 +34,7 @@ namespace RunMap
         {
             var center = feet + Vector2.up * (size.y * .5f + .06f);
             foreach (var c in Physics2D.OverlapBoxAll(center, size - new Vector2(.06f, .06f), 0))
-                if (IsTerrain(c)) return false;
+                if (IsTerrain(c) && !(c.usedByEffector && c.GetComponent<PlatformEffector2D>() != null)) return false;
             foreach (var hit in Physics2D.RaycastAll(feet + Vector2.up * .12f, Vector2.down, .25f))
                 if (IsTerrain(hit.collider) && hit.normal.y > .5f) return true;
             return false;

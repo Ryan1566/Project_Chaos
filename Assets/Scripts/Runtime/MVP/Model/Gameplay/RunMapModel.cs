@@ -118,16 +118,18 @@ namespace Chaos.MVP.Model.Gameplay
                 bool remember = portrait != null ? portrait.RememberWhenHidden : !npc;
                 Vector2 markerPosition=target.InteractionPoint;
                 bool visible = Visible(fog, markerPosition);
+                bool explored = Explored(fog, markerPosition);
                 if(target is RunLadderInteractable ladder&&ladder.Ladder!=null)
                 {
-                    markerPosition=((Vector2)ladder.Ladder.Bottom+(Vector2)ladder.Ladder.Top)*.5f;
+                    markerPosition=new Vector2(ladder.Ladder.Bottom.x+.5f,(ladder.Ladder.Bottom.y+ladder.Ladder.Top.y)*.5f);
                     visible=Visible(fog,ladder.Ladder.Bottom)||Visible(fog,ladder.Ladder.Top);
+                    explored=Explored(fog,ladder.Ladder.Bottom)||Explored(fog,ladder.Ladder.Top);
                 }
-                if (visible)
+                if (visible || (remember && explored))
                 {
                     var marker = new RunMapMarkerState { Id = id, Name = target.DisplayName, Position = markerPosition,
                         Kind = portrait!=null?portrait.Kind:npc ? RunMapMarkerKind.Npc : RunMapMarkerKind.Interactive, Portrait = PortraitFor(target.gameObject),
-                        Dimmed = target.Completed };
+                        Dimmed = target.Completed || !visible };
                     Markers.Add(marker);
                     if (remember) _remembered[id] = new RunMapMarkerState { Id = marker.Id, Name = marker.Name, Position = marker.Position,
                         Kind = marker.Kind, Portrait = marker.Portrait, Dimmed = true };
@@ -143,6 +145,8 @@ namespace Chaos.MVP.Model.Gameplay
 
         public static bool Visible(RunMapFogGrid fog, Vector2 position)
         { var cell = Vector2Int.FloorToInt(position); return fog.IsVisible(cell.x, cell.y); }
+        private static bool Explored(RunMapFogGrid fog, Vector2 position)
+        { var cell = Vector2Int.FloorToInt(position); return fog.IsExplored(cell.x, cell.y); }
         private static bool OwnsContent(GameObject target)
         {
             var root = RunMapBootstrap.CurrentMapRoot;

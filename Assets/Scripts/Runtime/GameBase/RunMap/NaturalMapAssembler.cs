@@ -16,11 +16,19 @@ namespace RunMap
 
         public IEnumerable<string> Steps(Transform parent)
         {
-            Root = new GameObject("NaturalRunMap_v2", typeof(Grid));
+            Root = new GameObject("NaturalRunMap_v" + plan.Version, typeof(Grid));
             Root.SetActive(false); Root.transform.SetParent(parent, false);
             var groundGo = new GameObject("Tilemap_Ground", typeof(Tilemap), typeof(TilemapRenderer));
             groundGo.transform.SetParent(Root.transform, false);
             var ground = groundGo.GetComponent<Tilemap>();
+            Tilemap bridge = null;
+            if (plan.OneWay != null && System.Array.Exists(plan.OneWay, value => value))
+            {
+                var bridgeGo = new GameObject("Tilemap_TrailBridges", typeof(Tilemap), typeof(TilemapRenderer));
+                bridgeGo.transform.SetParent(Root.transform, false);
+                bridge = bridgeGo.GetComponent<Tilemap>();
+                bridge.color = new Color(.88f, .83f, .73f);
+            }
             var backdropGo = new GameObject("Tilemap_UndergroundBackdrop", typeof(Tilemap), typeof(TilemapRenderer));
             backdropGo.transform.SetParent(Root.transform, false);
             var backdrop = backdropGo.GetComponent<Tilemap>();
@@ -58,6 +66,15 @@ namespace RunMap
                         continue;
                     }
                     int space = (int)plan.SpaceAt(x, y);
+                    if (bridge != null && plan.IsOneWay(x,y))
+                    {
+                        var cell = new Vector3Int(x,y,0);
+                        bridge.SetTile(cell, tops[space]);
+                        bridge.SetTileFlags(cell, TileFlags.None);
+                        // 把可穿越瓦片画成薄桥，桥顶与边碰撞同高。
+                        bridge.SetTransformMatrix(cell, Matrix4x4.TRS(new Vector3(0,.35f,0), Quaternion.identity, new Vector3(1,.30f,1)));
+                        continue;
+                    }
                     cells.Add(new Vector3Int(x, y, 0)); tiles.Add(!plan.IsSolid(x, y + 1) ? tops[space] : fills[space]);
                 }
                 ground.SetTiles(cells.ToArray(), tiles.ToArray());
@@ -115,6 +132,7 @@ namespace RunMap
             var tileCollider = groundGo.AddComponent<TilemapCollider2D>(); tileCollider.usedByComposite = true;
             var composite = groundGo.AddComponent<CompositeCollider2D>(); composite.geometryType = CompositeCollider2D.GeometryType.Polygons;
             tileCollider.ProcessTilemapChanges(); composite.GenerateGeometry();
+            if (bridge != null) BuildBridgeColliders(bridge.gameObject);
             yield return null;
             yield return "创建内容占位物";
             foreach (var p in plan.Placements)
@@ -133,34 +151,55 @@ namespace RunMap
             ExplorationMapPresentation.Build(plan,Root.transform);
             Root.SetActive(true);
             Physics2D.SyncTransforms();
-            if (!VerifyPhysics(groundGo)) { Error = "场景碰撞与计划中的必需支撑面不一致"; Dispose(); yield break; }
+            if (Root.activeInHierarchy && !VerifyActive(plan, Root))
+            { Error = "场景碰撞与计划中的必需支撑面不一致"; Dispose(); yield break; }
             yield return "场景地图校验完成";
         }
 
-        private bool VerifyPhysics(GameObject ground)
+        private void BuildBridgeColliders(GameObject bridges)
         {
-            // Pending containers are inactive during loading: use the component's local geometry there.
-            // An active-root verification runs again when the pending map moves into WorldScene.
-            if (!Root.activeInHierarchy) return true;
-            var collider = ground.GetComponent<CompositeCollider2D>();
-            foreach (var p in plan.Placements)
+            // 只给连续桥面添加一条边碰撞。演员从下方上跳可以通过，落下时由桥面承托。
+            var body = bridges.AddComponent<Rigidbody2D>();
+            body.bodyType = RigidbodyType2D.Static;
+            var effector = bridges.AddComponent<PlatformEffector2D>();
+            effector.useOneWay = true;
+            effector.useOneWayGrouping = true;
+            // 排除线段端点的侧向法线，避免桥面在角色腰部形成隐形墙。
+            effector.surfaceArc = 140f;
+            effector.useSideFriction = false;
+            effector.useSideBounce = false;
+            for (int y = 0; y < plan.Height; y++)
             {
-                if (p.Solid || p.Kind == MapPlacementKind.Decoration) continue;
-                Vector2 support = p.Position + Vector2.down * .10f;
-                if (!collider.OverlapPoint(support)) return false;
+                for (int x = 0; x < plan.Width;)
+                {
+                    if (!plan.IsOneWay(x,y)) { x++; continue; }
+                    int left = x++;
+                    while (x < plan.Width && plan.IsOneWay(x,y)) x++;
+                    var edge = bridges.AddComponent<EdgeCollider2D>();
+                    edge.usedByEffector = true;
+                    edge.points = new[] { new Vector2(left, y+1), new Vector2(x, y+1) };
+                }
             }
-            return true;
         }
 
         public static bool VerifyActive(NaturalMapPlan plan, GameObject root)
         {
             if (plan == null || root == null || !root.activeInHierarchy) return false;
             var ground = root.transform.Find("Tilemap_Ground");
+            var bridges = root.transform.Find("Tilemap_TrailBridges");
             var collider = ground == null ? null : ground.GetComponent<CompositeCollider2D>();
             if (collider == null || collider.pathCount == 0) return false;
             foreach (var p in plan.Placements)
             {
                 if (p.Solid || p.Kind == MapPlacementKind.Decoration) continue;
+                if (plan.IsOneWay(p.Footprint.x,p.Footprint.y-1))
+                {
+                    bool supported = false;
+                    foreach (var hit in Physics2D.RaycastAll(p.Position + Vector2.up * .1f,Vector2.down,.3f))
+                        if (hit.collider != null && hit.collider.transform == bridges && hit.normal.y > .5f) { supported = true; break; }
+                    if (!supported) return false;
+                    continue;
+                }
                 if (!collider.OverlapPoint(p.Position + Vector2.down * .10f)) return false;
             }
             return true;

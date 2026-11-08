@@ -26,8 +26,9 @@ public sealed class LadderClimber : MonoBehaviour
     private const float JumpReattachCooldown = 0.3f;
     /// <summary>端点自动离开后的短冷却；仍需松开上下键。</summary>
     private const float EndpointReattachCooldown = 0.15f;
-    /// <summary>到达端点的浮点容差。</summary>
-    private const float EndpointEpsilon = 0.01f;
+    // 梯顶横移时给脚底留出越过瓦片棱边的余量。
+    private const float LandingClearance = .14f;
+    private const float EndpointTolerance = .055f;
 
     [SerializeField] private float jumpOffSpeed = 11f;
 
@@ -39,8 +40,6 @@ public sealed class LadderClimber : MonoBehaviour
     private bool _gravitySaved;
     private Vector2 _bottomFoot;
     private Vector2 _topFoot;
-    private float _pathLength;
-    private float _progress;
     private float _drive;
     private bool _navigate;
     private bool _navigateUp;
@@ -49,6 +48,7 @@ public sealed class LadderClimber : MonoBehaviour
     private MapLadder _completedLadder;
     private bool _completedUpward;
     private bool _aligning;
+    private bool _atTopTurn;
     private Vector2 _alignPoint, _lastFoot;
     private float _lastProgressAt;
     private readonly RaycastHit2D[] _castHits = new RaycastHit2D[16];
@@ -93,6 +93,7 @@ public sealed class LadderClimber : MonoBehaviour
         }
 
         float direction = _navigate ? (_navigateUp ? 1f : -1f) : Mathf.Clamp(_drive, -1f, 1f);
+        if (!_body.simulated) return;
         if (Mathf.Abs(direction) < ReleaseDeadzone)
         {
             // 无输入停留在梯上：重力已为 0，再清速度防止残余冲量滑走。
@@ -110,30 +111,47 @@ public sealed class LadderClimber : MonoBehaviour
             if(Vector2.Distance(feet,_alignPoint)>.04f){MoveFoot(_alignPoint);return;}
             _aligning=false;
         }
-        // 进度来自物理执行后的脚底位置，而不是假定角色已经穿过碰撞体。
-        float rise=_topFoot.y+.06f-_bottomFoot.y;
-        Vector2 corner=new Vector2(_bottomFoot.x,_topFoot.y+.06f);
-        float side=Vector2.Distance(corner,_topFoot);
-        float travelled=feet.y<corner.y-.04f?Mathf.Clamp(feet.y-_bottomFoot.y,0,rise)
-            :rise+Mathf.Clamp(Vector2.Dot(feet-corner,(_topFoot-corner).normalized),0,side);
-        _progress=Mathf.Clamp01(travelled/_pathLength);
-        float speed = Current != null && Current.Speed > 0f ? Current.Speed : 3.5f;
-        float next=Mathf.Clamp(travelled+direction*speed*Time.fixedDeltaTime,0,_pathLength);
-        MoveFoot(next<=rise?_bottomFoot+Vector2.up*next:Vector2.Lerp(corner,_topFoot,(next-rise)/Mathf.Max(.001f,side)));
+        bool upward = direction > 0f;
+        Vector2 destination = upward ? _topFoot : _bottomFoot;
+        if (Vector2.Distance(feet, destination) < EndpointTolerance)
+        {
+            RecordArrival(upward);
+            Detach();
+            return;
+        }
 
-        // 到达目标端：自动离开，恢复重力，让上下端成为真实落脚口。
-        if (direction > 0f && Vector2.Distance(feet,_topFoot)<.055f)
+        // 梯顶按物理落脚顺序行进。先升到棱边上方、横移、最后降到落脚点。
+        // 明确保留转弯状态，避免脚底偏离折线时反复退回梯身。
+        float cornerY = _topFoot.y + LandingClearance;
+        if (upward)
         {
-            _body.velocity=Vector2.zero;
-            RecordArrival(true);
-            Detach(false);
+            if (!_atTopTurn && feet.y < cornerY - .025f)
+            {
+                MoveFoot(new Vector2(_bottomFoot.x, cornerY));
+                return;
+            }
+            _atTopTurn = true;
+            if (Mathf.Abs(feet.x - _topFoot.x) >= .04f)
+                MoveFoot(new Vector2(_topFoot.x, cornerY));
+            else
+                MoveFoot(_topFoot);
+            return;
         }
-        else if (direction < 0f && Vector2.Distance(feet,_bottomFoot)<.055f)
+        if (_atTopTurn)
         {
-            _body.velocity=Vector2.zero;
-            RecordArrival(false);
-            Detach(false);
+            if (feet.y < cornerY - .025f)
+            {
+                MoveFoot(new Vector2(feet.x, cornerY));
+                return;
+            }
+            if (Mathf.Abs(feet.x - _bottomFoot.x) >= .04f)
+            {
+                MoveFoot(new Vector2(_bottomFoot.x, cornerY));
+                return;
+            }
+            _atTopTurn = false;
         }
+        MoveFoot(_bottomFoot);
     }
 
     private void OnDisable()
@@ -159,7 +177,7 @@ public sealed class LadderClimber : MonoBehaviour
 
         NaturalMapPlan plan = NaturalMapRuntime.Current;
         if (!ContainsLadder(plan, ladder)) return false;
-        // Top 必须在 Bottom 上方；横向错开由两端连线自然处理。
+        // Top 必须在 Bottom 上方，梯顶可在梯身旁保留落脚平台。
         if (ladder.Top.y <= ladder.Bottom.y) return false;
 
         Vector2 feet = Feet;
@@ -169,14 +187,9 @@ public sealed class LadderClimber : MonoBehaviour
         float topDistance = (feet - topFoot).sqrMagnitude;
         if (Mathf.Min(bottomDistance, topDistance) > AttachRange * AttachRange) return false;
 
-        float pathLength = topFoot.y+.06f-bottomFoot.y+Vector2.Distance(new Vector2(bottomFoot.x,topFoot.y+.06f),topFoot);
-        if (pathLength < 0.05f) return false;
-
         _map = plan;
         _bottomFoot = bottomFoot;
         _topFoot = topFoot;
-        _pathLength = pathLength;
-        _progress = bottomDistance <= topDistance ? 0f : 1f;
         _savedGravityScale = _body.gravityScale;
         _gravitySaved = true;
         _body.gravityScale = 0f;
@@ -189,7 +202,8 @@ public sealed class LadderClimber : MonoBehaviour
         _drive = 0f;
         _navigate = false;
         _climbNeutral = false;
-        _alignPoint=_progress<.5f?_bottomFoot:_topFoot;
+        _atTopTurn = topDistance < bottomDistance;
+        _alignPoint = _atTopTurn ? _topFoot : _bottomFoot;
         _aligning=true;_lastFoot=feet;_lastProgressAt=Time.time;
         return true;
     }
@@ -217,17 +231,6 @@ public sealed class LadderClimber : MonoBehaviour
         else if (!IsAttachedTo(ladder))
         {
             return false;
-        }
-        else
-        {
-            // 已经站在目标端：直接退出，避免“附着→同帧离开”的空转。
-            bool atTarget = upward ? _progress >= 1f - EndpointEpsilon : _progress <= EndpointEpsilon;
-            if (atTarget)
-            {
-                RecordArrival(upward);
-                Detach(false);
-                return false;
-            }
         }
 
         _navigate = true;
@@ -262,6 +265,8 @@ public sealed class LadderClimber : MonoBehaviour
                 _body.velocity = velocity;
                 _body.WakeUp();
             }
+            else
+                _body.velocity = Vector2.zero;
         }
         _gravitySaved = false;
 

@@ -77,7 +77,12 @@ namespace RunMap
             { progressFeet = feet; progressAt = Time.time; IsStuck = false; }
             else if (Time.time - progressAt > settings.stuckSeconds) IsStuck = true;
 
-            if (!inFlight && Time.time >= nextRepath && (path == null || (lastGoal - feetDestination).sqrMagnitude > .7f * .7f || IsStuck))
+            // 玩家移动时只在落脚点更新跟随路径，避免门客在斜坡边缘反复换目标。
+            bool atWaypoint = path == null || cursor >= path.Count
+                || (cursor > 0 && Vector2.Distance(feet, path[cursor - 1].Destination) <= .3f)
+                || (cursor < path.Count && Vector2.Distance(feet, path[cursor].Destination) <= .22f);
+            bool targetMoved = (lastGoal - feetDestination).sqrMagnitude > .7f * .7f;
+            if (!inFlight && Time.time >= nextRepath && (path == null || IsStuck || (atWaypoint && targetMoved)))
             {
                 nextRepath = Time.time + settings.repathInterval; RepathCount++;
                 HasPath = graph.TryPath(feet, feetDestination, settings.searchRadius, settings.maxExpandedNodes, allowedBounds, out path);

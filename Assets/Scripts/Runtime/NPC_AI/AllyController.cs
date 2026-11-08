@@ -40,6 +40,8 @@ public class AllyController : MonoBehaviour
     private int _facing = 1;
     private EnemyPlaceholder _target;
     private float _nextRecoveryAttempt;
+    private Vector2 _lastControlledGround;
+    private GameObject _lastControlledActor;
     private float _stuckSince = -1f;
     private float _jumpCheckAt = -1f;
     private float _jumpStartY;
@@ -143,6 +145,8 @@ public class AllyController : MonoBehaviour
             return;
         }
         _belowFallThreshold = false;
+        // 进入梯子后先完成当前运动边，避免中段重新寻路或触发攻击。
+        if (GetComponent<LadderClimber>() is LadderClimber climber && climber.IsClimbing) return;
 
         if (_attackTarget != null)
         {
@@ -201,6 +205,13 @@ public class AllyController : MonoBehaviour
         }
 
         Vector2 playerFeet = CombatQuery.Feet(controlled.transform);
+        if (_lastControlledActor != controlled || RunMap.RunMapPhysics.IsGrounded(CombatQuery.Body(controlled.transform)))
+        {
+            _lastControlledActor = controlled;
+            _lastControlledGround = playerFeet;
+        }
+        // 跟随玩家的实际落脚层，避免腾空和攀爬时把目标来回投影到不同洞层。
+        if (_navigator != null) playerFeet = _lastControlledGround;
         float offset = FollowOffsets[Mathf.Clamp(followIndex - 1, 0, FollowOffsets.Length - 1)];
         Vector2 destination = _target != null ? _targetFeet : playerFeet + Vector2.right * offset;
         if (_navigator != null)
@@ -210,7 +221,8 @@ public class AllyController : MonoBehaviour
             if (_target == null)
             {
                 Vector2 safe;
-                if (_navigator.TryFindSafePosition(destination, out safe, _settings.searchRadius)) destination = safe;
+                if (_navigator.TryFindSafePosition(destination, out safe, _settings.searchRadius)
+                    && Mathf.Abs(safe.y - playerFeet.y) <= 2f) destination = safe;
                 else destination = playerFeet;
             }
             _navigator.MoveTo(destination, _target != null ? _settings.waypointTolerance : 1.4f);
@@ -251,7 +263,7 @@ public class AllyController : MonoBehaviour
 
     private bool IsEligibleEnemy(EnemyPlaceholder enemy)
     {
-        return enemy != null && !enemy.IsDead && enemy.Hp > 0
+        return enemy != null && enemy.isActiveAndEnabled && !enemy.IsDead && enemy.Hp > 0
             && RunEncounter.IsPlayerInRoom(enemy.roomId);
     }
 
