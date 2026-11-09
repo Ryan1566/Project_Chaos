@@ -619,6 +619,16 @@
             "Y": 0.4515,
             "MarketId": 0,
             "Enable": true
+        },
+        {
+            "Index": 6001,
+            "LocationId": 6001,
+            "Kind": 7,
+            "MapId": 1,
+            "X": 0.354,
+            "Y": 0.712,
+            "MarketId": 0,
+            "Enable": true
         }
     ]
 }

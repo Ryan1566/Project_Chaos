@@ -2291,6 +2291,66 @@
             "IsCapital": false,
             "Visible": true,
             "Enable": true
+        },
+        {
+            "Index": 192,
+            "LocationId": 6001,
+            "Era": 1,
+            "Name": "榆川里",
+            "FactionId": 1,
+            "FactionName": "秦",
+            "RelationId": 1,
+            "IsCapital": false,
+            "Visible": true,
+            "Enable": true
+        },
+        {
+            "Index": 193,
+            "LocationId": 6001,
+            "Era": 2,
+            "Name": "榆川里",
+            "FactionId": 1,
+            "FactionName": "秦",
+            "RelationId": 1,
+            "IsCapital": false,
+            "Visible": true,
+            "Enable": true
+        },
+        {
+            "Index": 194,
+            "LocationId": 6001,
+            "Era": 3,
+            "Name": "榆川里",
+            "FactionId": 1,
+            "FactionName": "秦（仍辖区）",
+            "RelationId": 1,
+            "IsCapital": false,
+            "Visible": true,
+            "Enable": true
+        },
+        {
+            "Index": 195,
+            "LocationId": 6001,
+            "Era": 4,
+            "Name": "榆川里",
+            "FactionId": 25,
+            "FactionName": "翟",
+            "RelationId": 5,
+            "IsCapital": false,
+            "Visible": true,
+            "Enable": true
+        },
+        {
+            "Index": 196,
+            "LocationId": 6001,
+            "Era": 5,
+            "Name": "榆川里",
+            "FactionId": 21,
+            "FactionName": "汉直辖",
+            "RelationId": 1,
+            "IsCapital": false,
+            "Visible": true,
+            "Enable": true
         }
     ]
 }

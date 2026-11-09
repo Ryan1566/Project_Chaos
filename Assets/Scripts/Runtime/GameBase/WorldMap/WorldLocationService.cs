@@ -83,7 +83,8 @@ public class WorldLocationService : SingletonBase<WorldLocationService>
             {
                 index = snap.Id,
                 mapId = loc.MapId,
-                kind = snap.Kind == WorldLocationKind.Capital || snap.Kind == WorldLocationKind.Trade || snap.Kind == WorldLocationKind.Tribe ? 1u : 2u,
+                kind = snap.Kind == WorldLocationKind.Capital || snap.Kind == WorldLocationKind.Trade
+                    || snap.Kind == WorldLocationKind.Tribe || snap.Kind == WorldLocationKind.PlayerVillage ? 1u : 2u,
                 type = (uint)snap.Kind,
                 refId = snap.Id,
                 position = snap.Position,
@@ -98,6 +99,7 @@ public class WorldLocationService : SingletonBase<WorldLocationService>
     {
         switch (kind)
         {
+            case WorldLocationKind.PlayerVillage: return 45u;
             case WorldLocationKind.Capital: return 40u;
             case WorldLocationKind.Trade: return 30u;
             case WorldLocationKind.Resource: return 20u;
@@ -153,7 +155,7 @@ public class WorldLocationService : SingletonBase<WorldLocationService>
             FactionId = row.FactionId,
             Name = row.Name,
             FactionName = row.FactionName,
-            RelationName = relation == null ? "未知" : relation.RelationName,
+            RelationName = kind == WorldLocationKind.PlayerVillage ? "辖乡聚落" : relation == null ? "未知" : relation.RelationName,
             Kind = kind,
             Position = WorldMapService.Instance.Points(loc.MapId).Find(p=>p.refId==loc.LocationId)?.position??new Vector2(loc.X, loc.Y),
             Description = text == null ? (row.Name ?? "") : text.Description,
@@ -172,7 +174,8 @@ public class WorldLocationService : SingletonBase<WorldLocationService>
             CanResolve = canResolve,
             CanOpenOffice = canOpenOffice,
         };
-        snap.LockReason = BuildLockReason(snap, identity, relation, temp, tempOk, tempReason, text);
+        snap.LockReason = kind == WorldLocationKind.PlayerVillage ? null
+            : BuildLockReason(snap, identity, relation, temp, tempOk, tempReason, text);
         if(kind==WorldLocationKind.Resource&&configuredFacility)
         {
             var output=WorldLocationCatalog.Output(facility.OutputItemId);
@@ -187,6 +190,7 @@ public class WorldLocationService : SingletonBase<WorldLocationService>
     {
         switch (kind)
         {
+            case WorldLocationKind.PlayerVillage: return "player_village";
             case WorldLocationKind.Capital: return "capital";
             case WorldLocationKind.Trade: return "market_town";
             case WorldLocationKind.Tribe: return "tribe";

@@ -197,7 +197,8 @@ public sealed class WorldLocationsView : MonoBehaviour
         ApplyFilters();
         ApplySelection();
         RenderDetail(state);
-        if (_hint != null) _hint.text = state.Hint ?? string.Empty;
+        if (_hint != null) _hint.text = state.Selected?.Kind == WorldLocationKind.PlayerVillage
+            ? "滚轮缩放，拖动地图平移。" : state.Hint ?? string.Empty;
     }
 
     /// <summary>父面板处理 Escape 时先调用：详情打开则关闭、清选中并发出 CloseDetail，返回 true。</summary>
@@ -364,8 +365,8 @@ public sealed class WorldLocationsView : MonoBehaviour
         {
             Marker marker = pair.Value;
             if (marker == null || marker.Root == null) continue;
-            bool capital = marker.Data != null && marker.Data.Kind == WorldLocationKind.Capital;
-            float size = capital ? CapitalSize : NormalSize;
+            bool prominent = marker.Data?.Kind == WorldLocationKind.Capital || marker.Data?.Kind == WorldLocationKind.PlayerVillage;
+            float size = prominent ? CapitalSize : NormalSize;
             marker.Root.sizeDelta = new Vector2(size, size);
             marker.Point.scale=1f/Mathf.Max(1,_zoom);
             marker.Icon.Bind(marker.Point,null);
@@ -380,14 +381,15 @@ public sealed class WorldLocationsView : MonoBehaviour
             if (marker == null || marker.Background == null) continue;
             bool selected = _selectedId != 0u && pair.Key == _selectedId;
             bool capital = marker.Data != null && marker.Data.Kind == WorldLocationKind.Capital;
+            bool home = marker.Data?.Kind == WorldLocationKind.PlayerVillage;
             var background = marker.Glyph.sprite != null
                 ? (capital ? CapitalPaper : MarkerPaper)
                 : (capital ? MarkerCapital : MarkerInk);
-            marker.Background.color = selected ? MarkerGold : background;
-            marker.Initial.color = selected ? Ink : WarmText;
+            marker.Background.color = selected || home ? MarkerGold : background;
+            marker.Initial.color = selected || home ? Ink : WarmText;
             marker.Icon.SetSelected(selected);
-            marker.Label.color = selected ? Gold : WarmText;
-            marker.Label.gameObject.SetActive(selected || capital || _zoom >= LabelZoomThreshold);
+            marker.Label.color = selected || home ? Gold : WarmText;
+            marker.Label.gameObject.SetActive(selected || capital || home || _zoom >= LabelZoomThreshold);
         }
     }
 
@@ -400,7 +402,7 @@ public sealed class WorldLocationsView : MonoBehaviour
             Marker marker = pair.Value;
             if (marker == null || marker.Root == null) continue;
             WorldLocationKind kind = marker.Data != null ? marker.Data.Kind : WorldLocationKind.Task;
-            bool visible = IsFilterEnabled(WorldLocationKindFilter.Of(kind));
+            bool visible = IsLocationVisible(kind);
             marker.Root.gameObject.SetActive(visible);
             if (!visible && _selectedId == marker.Id) _selectedId = 0u;
         }
@@ -408,11 +410,15 @@ public sealed class WorldLocationsView : MonoBehaviour
         ApplySelection();
     }
 
+    // 辖乡聚落是固定参照点，其他地点筛选不隐藏它。
+    private bool IsLocationVisible(WorldLocationKind kind) =>
+        kind == WorldLocationKind.PlayerVillage || IsFilterEnabled(WorldLocationKindFilter.Of(kind));
+
     private void ToggleFilter(WorldLocationFilter filter)
     {
         _filters[filter] = !IsFilterEnabled(filter);
         ApplyFilters();
-        if(_state?.Selected!=null&&!IsFilterEnabled(WorldLocationKindFilter.Of(_state.Selected.Kind)))CloseDetail();
+        if (_state?.Selected != null && !IsLocationVisible(_state.Selected.Kind)) CloseDetail();
     }
 
     private void BuildFilterBar()
@@ -493,6 +499,7 @@ public sealed class WorldLocationsView : MonoBehaviour
         }
         switch (data.Kind)
         {
+            case WorldLocationKind.PlayerVillage: return "里";
             case WorldLocationKind.Capital: return "城";
             case WorldLocationKind.Trade: return "市";
             case WorldLocationKind.Tribe: return "营";
@@ -506,6 +513,7 @@ public sealed class WorldLocationsView : MonoBehaviour
     {
         switch (kind)
         {
+            case WorldLocationKind.PlayerVillage: return "玩家村庄";
             case WorldLocationKind.Capital: return "主城";
             case WorldLocationKind.Trade: return "贸易城邑";
             case WorldLocationKind.Tribe: return "部落";
@@ -514,6 +522,8 @@ public sealed class WorldLocationsView : MonoBehaviour
             default: return "任务";
         }
     }
+
+    private RectTransform _identityContent;
 
     private void BuildDetailCard()
     {
@@ -565,7 +575,7 @@ public sealed class WorldLocationsView : MonoBehaviour
         PlaceTop(_lock.rectTransform, 10f, 228f, 42f, 16f);
 
         // 身份区：顶部 264 以下到提示条（底部 58）之上，可随卡片高度伸缩。
-        RectTransform content = Stretch(GameplayUi.Rect(body, "IdentityContent", Vector2.zero, new Vector2(.5f, .5f), Vector2.zero, Vector2.zero));
+        RectTransform content = _identityContent = Stretch(GameplayUi.Rect(body, "IdentityContent", Vector2.zero, new Vector2(.5f, .5f), Vector2.zero, Vector2.zero));
         content.offsetMin = new Vector2(12f, 58f);
         content.offsetMax = new Vector2(-12f, -278f);
 
@@ -752,16 +762,20 @@ public sealed class WorldLocationsView : MonoBehaviour
         }
         _card.gameObject.SetActive(true);
 
+        bool home = data.Kind == WorldLocationKind.PlayerVillage;
+        _identityContent.gameObject.SetActive(!home);
         _title.text = string.IsNullOrEmpty(data.Name) ? "未命名地点" : data.Name;
-        _meta.text = KindName(data.Kind) + " · 势力 " + (string.IsNullOrEmpty(data.FactionName) ? "无主" : data.FactionName)
+        _meta.text = KindName(data.Kind) + (home ? " · 所在疆域 " : " · 势力 ") + (string.IsNullOrEmpty(data.FactionName) ? "无主" : data.FactionName)
             + " · 时代 " + state.Era;
-        _relation.text = "关系：" + (string.IsNullOrEmpty(data.RelationName) ? "未建立" : data.RelationName);
+        _relation.text = home ? data.RelationName : "关系：" + (string.IsNullOrEmpty(data.RelationName) ? "未建立" : data.RelationName);
         _description.text = string.IsNullOrEmpty(data.Description) ? "尚无可考记述。" : data.Description;
         float descriptionHeight=_description.GetPreferredValues(_description.text,Mathf.Max(100,_description.rectTransform.rect.width),0).y+10;
         _description.rectTransform.sizeDelta=new Vector2(_description.rectTransform.sizeDelta.x,Mathf.Max(112,descriptionHeight));
         if(_descriptionLocation!=data.Id){_descriptionLocation=data.Id;_descriptionScroll.verticalNormalizedPosition=1;}
-        _lock.text = string.IsNullOrEmpty(data.LockReason) ? string.Empty : "限制：" + data.LockReason;
+        _lock.color = home ? MutedText : LockText;
+        _lock.text = home ? data.ConditionText : string.IsNullOrEmpty(data.LockReason) ? string.Empty : "限制：" + data.LockReason;
 
+        if (home) return;
         RenderOfficial(data);
         RenderFamily(data, state.Offers);
     }

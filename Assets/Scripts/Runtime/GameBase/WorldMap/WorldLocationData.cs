@@ -11,6 +11,7 @@ public enum WorldLocationKind
     Resource = 4,
     Temporary = 5,
     Task = 6,
+    PlayerVillage = 7,
 }
 
 /// <summary>玩家身份；官员只处理同属既有事务，家族按关系贸易与经营。</summary>
