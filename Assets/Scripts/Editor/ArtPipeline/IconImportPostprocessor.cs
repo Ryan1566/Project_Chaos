@@ -34,7 +34,7 @@ namespace ArtPipeline.Editor
     public class IconImportPostprocessor : AssetPostprocessor
     {
         /// <summary>按键图标所在目录（工程内路径，Assets/ 开头）。工具与图集构建共用它。</summary>
-        public const string IconRoot = "Assets/Art/icon";
+        public const string IconRoot = "Assets/Art/Input_icon";
 
         /// <summary>
         /// 走脚本路径时置 true，跳过确认对话框。

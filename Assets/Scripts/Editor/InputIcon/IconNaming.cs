@@ -64,7 +64,7 @@ namespace InputIcon.Editor
         /// <summary>一个图标文件识别出来的全部信息。</summary>
         public class IconInfo
         {
-            /// <summary>工程内路径，如 <c>Assets/Art/icon/keyboard&amp;mouse/keyboard_space.png</c>。</summary>
+            /// <summary>工程内路径，如 <c>Assets/Art/Input_icon/keyboard&amp;mouse/keyboard_space.png</c>。</summary>
             public string assetPath;
             /// <summary>不含扩展名的文件名，如 <c>keyboard_space_icon_outline</c>。</summary>
             public string fileName;
