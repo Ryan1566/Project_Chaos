@@ -332,7 +332,7 @@ public class VillageService : SingletonBase<VillageService>
         save.pendingResourceType = def.OutputResourceType;
         MetaRuntimeDriver.NotifyChanged();
     }
-    private static uint BuildDuration(BuildingTable_BuildingConfig definition)
+    internal static uint BuildDuration(BuildingTable_BuildingConfig definition)
     {
         int change = EffectAggregator.Instance.Snapshot.GetBuildSecondsDelta(definition.BuildingId);
         return (uint)System.Math.Max(1L, (long)definition.BuildSeconds + change);
