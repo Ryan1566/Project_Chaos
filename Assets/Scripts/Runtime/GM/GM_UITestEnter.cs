@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class GM_UITestEnter : MonoBehaviour
 {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
     private Button _uiTestBtn;
     private BasePanel testPanel;
 
@@ -29,4 +30,5 @@ public class GM_UITestEnter : MonoBehaviour
 
         this.TriggerEvent(EventConstName.CloseGM);
     }
+#endif
 }

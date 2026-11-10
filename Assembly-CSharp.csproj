@@ -519,6 +519,7 @@
     <None Include="Assets\QA\EnterSceneMigration\flow.txt" />
     <None Include="Assets\Excel\Chaos_excel\_worldmap_tool\_backup_20261031_140931_historical\manifest.txt" />
     <None Include="Assets\QA\MapGeneration\flow.txt" />
+    <None Include="Assets\Resources\UI\WorldMapPaper.shader" />
     <None Include="Assets\QA\RunBag\item-config.txt" />
     <None Include="Assets\QA\Village\incremental.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />
