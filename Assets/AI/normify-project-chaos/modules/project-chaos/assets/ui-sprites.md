@@ -11,12 +11,16 @@ description:
       Three loading illustrations in Resources/UI/Loading (~400 bytes each, placeholder-quality) used by the Loading UI.
       
 revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
-updated_at: "2026-10-31T08:56:40.598Z"
-fingerprint: 95a8be2053f3dcf8441050dbdfedcb5acf1b525dedc7f09a4d8137d85265d25a
+updated_at: "2026-11-10T14:57:10.700Z"
+fingerprint: 1da049463aadfd7c622620b757bbf293e60972bfd3f244a6654ace2d687f2ce3
 source:
   - path: "Assets/Resources/UI/Loading/Loading_01.png"
   - path: "Assets/Resources/UI/Loading/Loading_02.png"
   - path: "Assets/Resources/UI/Loading/Loading_03.png"
+  - path: "Assets/Resources/UI/RadialMenu/DefaultSkin.asset"
+  - path: "Assets/Resources/UI/RadialMenu/DefaultSlices.png"
+  - path: "Assets/Resources/UI/RadialMenu/DefaultSkin.asset"
+  - path: "Assets/Resources/UI/RadialMenu/DefaultSlices.png"
 apis:
   - protocol: file
     path: "Assets/Resources/UI/Loading/Loading_01.png"
@@ -44,5 +48,23 @@ apis:
           
       en: >
           Loading screen illustration 03.
+          
+  - protocol: file
+    path: "Assets/Resources/UI/RadialMenu/DefaultSkin.asset"
+    description:
+      zh: >
+          轮盘默认皮肤配置
+          
+      en: >
+          Default radial menu skin asset
+          
+  - protocol: file
+    path: "Assets/Resources/UI/RadialMenu/DefaultSlices.png"
+    description:
+      zh: >
+          轮盘默认切片图集源图
+          
+      en: >
+          Default radial slice source image
           
 ---

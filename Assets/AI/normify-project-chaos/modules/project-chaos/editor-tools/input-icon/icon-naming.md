@@ -11,8 +11,8 @@ description:
       Icon naming rules: parses family folders and file names into device family, token, style and variant, resolves token to control keys through a ranked table, marks glyph-only and unknown tokens, scans the whole library, picks the best match honouring style preference and variant penalty, and describes the result.
       
 revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.411Z"
-fingerprint: 67619e6de8498e8d8fa4131d6c7b324c8f73b0f577705923e1a348fcc12051be
+updated_at: "2026-11-10T14:52:00.914Z"
+fingerprint: 0fd7d0d550a4f4c9dc063cd8bfe0067e5cb18a318009a568029c33ed31834bef
 source:
   - path: "Assets/Scripts/Editor/InputIcon/IconNaming.cs"
     line: 49

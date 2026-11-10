@@ -12,8 +12,8 @@ description:
       Data model of the exploration map: NaturalMapPlan v3 with places, links, ladders, objective regions and per-cell region/space arrays.
       
 revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
-updated_at: "2026-11-07T13:54:15.831Z"
-fingerprint: 356ac8b2d2971bbf8015d5ad9abd84e535305c8533e57bc7859b3400193388a9
+updated_at: "2026-11-10T14:52:00.919Z"
+fingerprint: 9483ca849aabb4f631a0af7d97731dd101612a1fde9596f75cd6d69f910fb12f
 source:
   - path: "Assets/Scripts/Runtime/GameBase/RunMap/ExplorationMapData.cs"
 apis:

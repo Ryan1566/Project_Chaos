@@ -12,8 +12,8 @@ description:
       Repository-root metadata and Unity-generated artifacts: README stub, .gitignore, .vsconfig and the generated solution file. The .csproj files are regenerated on every Unity refresh and .vs/ holds Roslyn/IDE caches; acl-backup-*/acl-report-* are leftover files from DSH sandbox ACL repair, not source assets.
       
 revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
-updated_at: "2026-11-07T13:43:40.755Z"
-fingerprint: 84ef01a003e87b2edd2d0fad32d9d29caf65f7965220ad8f2dc94ee03dc9ea95
+updated_at: "2026-11-10T14:52:00.954Z"
+fingerprint: ea3bfc7fc94afb43044f2b4b9cd2e63189a68ee1121a1448b4b2e29710d2357d
 source:
   - path: "README.md"
   - path: ".gitignore"

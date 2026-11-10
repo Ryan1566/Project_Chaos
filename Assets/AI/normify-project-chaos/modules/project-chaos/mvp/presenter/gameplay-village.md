@@ -12,8 +12,8 @@ description:
       Presenters for the physical village: village panel and HUD state, office tasks inside the village and the world-map-to-village handoff.
       
 revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
-updated_at: "2026-11-07T13:54:15.837Z"
-fingerprint: 9a726ee9815e1ee09dcacc823cd12934e6f88e4d2ee03f9c443aec6ddc1429b5
+updated_at: "2026-11-10T14:52:00.936Z"
+fingerprint: 9d92a41995f4f9e481cedff1dabffd25b27d9d39d3092801ca573c71a30696f1
 source:
   - path: "Assets/Scripts/Runtime/MVP/Presenter/Gameplay/VillagePresenter.cs"
   - path: "Assets/Scripts/Runtime/MVP/Presenter/Gameplay/VillageOfficePresenter.cs"

@@ -12,8 +12,8 @@ description:
       Meta office tasks, their options and era gates (three sub-sheets).
       
 revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
-updated_at: "2026-11-07T13:47:48.886Z"
-fingerprint: 145c3995a6e1b69d30c7d105cea6b729aeba01ea548f161928a75b30e2a1580b
+updated_at: "2026-11-10T14:52:00.911Z"
+fingerprint: eb887d5a971941c7d870712a36111f7112ee228e9f35983565e5df2081a8d9e8
 source:
   - path: "Assets/Excel/Chaos_excel/OfficeTaskTable_办事任务表.xlsx"
 apis:

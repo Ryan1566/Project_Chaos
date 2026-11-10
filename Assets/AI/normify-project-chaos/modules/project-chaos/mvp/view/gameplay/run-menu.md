@@ -12,13 +12,15 @@ description:
       Run menus: camp (rest, day/night shift, save), the in-run pause menu with retreat/settle, and the settlement screen after leaving the map.
       
 revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
-updated_at: "2026-11-07T13:51:57.360Z"
-fingerprint: d2927a38f51d3bba0759fefbfd4817720845ae045a0d045d9979bfbeea6f6a35
+updated_at: "2026-11-10T14:57:10.692Z"
+fingerprint: 1bcff612916eb81a1169aa398992d25bf806308cba65c0d726e732d6d74a06af
 source:
   - path: "Assets/Scripts/Runtime/MVP/View/RunCampPanel.cs"
   - path: "Assets/Scripts/Runtime/MVP/View/RunMenuPanel.cs"
   - path: "Assets/Scripts/Runtime/MVP/View/RunSettlementPanel.cs"
   - path: "Assets/Scripts/Runtime/MVP/View/PausePanel.cs"
+  - path: "Assets/Scripts/Runtime/MVP/View/RunResumeRecoveryPanel.cs"
+  - path: "Assets/Scripts/Runtime/MVP/View/RunResumeRecoveryPanel.cs"
 apis:
   - protocol: file
     path: "file:Assets/Scripts/Runtime/MVP/View/RunCampPanel.cs"
@@ -55,6 +57,24 @@ apis:
           
       en: >
           Pause panel
+          
+  - protocol: file
+    path: "Assets/Scripts/Runtime/MVP/View/RunResumeRecoveryPanel.cs"
+    description:
+      zh: >
+          局内恢复提示面板（回标题后继续/放弃）
+          
+      en: >
+          Run resume recovery panel (continue/abandon from title)
+          
+  - protocol: rpc
+    path: "rpc:RunResumeRecoveryPanel.Open"
+    description:
+      zh: >
+          按原因弹出恢复提示
+          
+      en: >
+          Opens the recovery panel with a reason
           
 deps:
   - kind: reference

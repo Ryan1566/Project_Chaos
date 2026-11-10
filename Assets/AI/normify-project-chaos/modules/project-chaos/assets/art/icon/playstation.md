@@ -11,15 +11,15 @@ description:
       104 PlayStation icons named playstation_*.png covering PS3/4/5 buttons, D-pad, sticks, triggers and whole controllers, with outline variants.
       
 revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
-updated_at: "2026-10-31T08:56:15.085Z"
-fingerprint: 230d750d9de9d2aae8d5b8fcc8a5a4dc00a6c717123cc263078e426f22fdd558
+updated_at: "2026-11-10T14:54:04.852Z"
+fingerprint: f921f23ccd0f5110fa02accba05c7150f06db7e2f9bd1691caea087753e95958
 source:
-  - path: "Assets/Art/icon/ps/playstation_button_cross.png"
-  - path: "Assets/Art/icon/ps/playstation_dpad_up.png"
-  - path: "Assets/Art/icon/ps/controller_playstation4.png"
+  - path: "Assets/Art/Input_icon/ps/playstation_button_cross.png"
+  - path: "Assets/Art/Input_icon/ps/playstation_dpad_up.png"
+  - path: "Assets/Art/Input_icon/ps/controller_playstation4.png"
 apis:
   - protocol: file
-    path: "Assets/Art/icon/ps/playstation_button_cross.png"
+    path: "Assets/Art/Input_icon/ps/playstation_button_cross.png"
     description:
       zh: >
           PS 叉键图标。
@@ -28,7 +28,7 @@ apis:
           PlayStation cross button icon.
           
   - protocol: file
-    path: "Assets/Art/icon/ps/playstation_dpad_up.png"
+    path: "Assets/Art/Input_icon/ps/playstation_dpad_up.png"
     description:
       zh: >
           PS 方向键上图标。
@@ -37,7 +37,7 @@ apis:
           PlayStation D-pad up icon.
           
   - protocol: file
-    path: "Assets/Art/icon/ps/controller_playstation4.png"
+    path: "Assets/Art/Input_icon/ps/controller_playstation4.png"
     description:
       zh: >
           PS4 手柄整机图。

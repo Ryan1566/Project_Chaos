@@ -12,8 +12,8 @@ description:
       Village screens: village building/production panel, village HUD and the run-content chooser shown before entering a map.
       
 revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
-updated_at: "2026-11-07T13:51:57.367Z"
-fingerprint: 07b4f6a409c90fcf3fff4b15a62c78317ccd824a10538faf4532483eca45b72a
+updated_at: "2026-11-10T14:52:00.943Z"
+fingerprint: ac2836859c11fd0a0dac1c8bc7f6a287ef4dbdbae0ade18f4fff1cdc94019b8c
 source:
   - path: "Assets/Scripts/Runtime/MVP/View/VillagePanel.cs"
   - path: "Assets/Scripts/Runtime/MVP/View/VillageHud.cs"

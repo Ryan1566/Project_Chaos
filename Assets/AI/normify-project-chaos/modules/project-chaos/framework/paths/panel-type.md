@@ -11,8 +11,8 @@ description:
       PanelType enum (15 values after WorldMapPanel was appended) used to build panel prefab paths. WorldMapPanel is the meta world map screen; appending a value is safe, reordering existing ones is not.
       
 revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
-updated_at: "2026-11-07T13:53:11.987Z"
-fingerprint: fc70151827909b870620be7a8996c9aa75fa70f6a5dba7bc030960f7f4d2201e
+updated_at: "2026-11-10T14:52:00.918Z"
+fingerprint: 8c991341c3922535cf3977a26180c164b557ed67584a6ac0296d90c72442b06e
 source:
   - path: "Assets/Scripts/Runtime/Path&Type/PanelType.cs"
     line: 1

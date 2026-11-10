@@ -12,8 +12,8 @@ description:
       Builds the v3 exploration map: lays out places and corridors in one of three layouts (double loop / layered branches / convergence), inserts ladders, then validates reachability and completion coverage.
       
 revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
-updated_at: "2026-11-07T13:54:15.831Z"
-fingerprint: 2b66be91416281b71954af87b5f9e8931492665dd7250d06d80df3a1f8410fb1
+updated_at: "2026-11-10T14:52:00.920Z"
+fingerprint: 4218aacf3a94ac1f8b3c43d4e96de0a074b03b0dd6c43b9a0c1fd9a333638e3e
 source:
   - path: "Assets/Scripts/Runtime/GameBase/RunMap/ExplorationMapGenerator.cs"
 apis:

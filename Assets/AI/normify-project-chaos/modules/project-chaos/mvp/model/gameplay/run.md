@@ -12,8 +12,8 @@ description:
       Run-side view state: settlement tally, map/explored cells, control and menu state, HUD and team selection.
       
 revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
-updated_at: "2026-11-07T13:54:15.839Z"
-fingerprint: 5669729e90d929b3dfd66384e75c4cce73bfddd6cc1e37a16b0ef020bf2d65d0
+updated_at: "2026-11-10T14:52:00.929Z"
+fingerprint: 1fe6f7d2c9ac70d549cb8765e1d14e299c4431155be5fb7848fa9260b477f899
 source:
   - path: "Assets/Scripts/Runtime/MVP/Model/Gameplay/RunControlModel.cs"
   - path: "Assets/Scripts/Runtime/MVP/Model/Gameplay/RunHudModel.cs"

@@ -11,7 +11,7 @@ description:
       Input assets: the ChaosInputActions .inputactions asset (1 map, 3 actions, 14 bindings) and KeyIconMap mapping controls to icon sprites.
       
 revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
-updated_at: "2026-11-07T13:43:40.729Z"
+updated_at: "2026-11-10T14:54:04.855Z"
 fingerprint: f9c499a78ab89408575d979652eca1ad88841923d8f8c48890bb2d5562402caf
 source:
   - path: "Assets/Resources/Input/ChaosInputActions.inputactions"
@@ -39,6 +39,6 @@ deps:
   - kind: reference
     to: project-chaos.assets.art.icon.atlas
     from_api: "file:Assets/Resources/Data/Input/KeyIconMap.asset"
-    to_api: "file:Assets/Art/icon/IconAtlas_Input.spriteatlasv2"
+    to_api: "file:Assets/Art/Input_icon/IconAtlas_Input.spriteatlasv2"
     label: {zh: "映射到输入图标图集", en: "Maps to input icon atlas"}
 ---

@@ -12,8 +12,8 @@ description:
       Editor map toolset under Assets/Scripts/Editor/RunMapTool: RunMapVerifyTool stress-tests the generator over many seeds and renders whole-map previews; ExplorationMapSetup, ExplorationMapVerification and ExplorationFlowVerification switch to the v3 exploration generator and run baseline plus end-to-end flow checks; DayNightFlowVerification checks day/night phases and time advancement.
       
 revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
-updated_at: "2026-11-07T13:54:15.852Z"
-fingerprint: 09fe01f4dcf4f43d9726edea022776a577185585d74171aff012fd3740b7a0a8
+updated_at: "2026-11-10T14:52:00.917Z"
+fingerprint: b92d7138ce7709032b78f0134d506d4f57de8bcbb60a8bb2fa3774cb47bd1390
 source:
   - path: "Assets/Scripts/Editor/RunMapTool/RunMapVerifyTool.cs"
     line: 1

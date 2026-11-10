@@ -11,13 +11,13 @@ description:
       IconAtlas_Input.spriteatlasv2 packs the input icons under Art/icon into a single SpriteAtlas looked up by sprite name at runtime.
       
 revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
-updated_at: "2026-10-31T08:56:15.080Z"
-fingerprint: 6b4b6999be57437df9f68826ffbc82e6be41c884e6733b29480a0073cbbf13df
+updated_at: "2026-11-10T14:54:04.847Z"
+fingerprint: c47f48ad304c6c7ca84b715f94df679c5091ed7a4ef80f37a703bcd08ef76d50
 source:
-  - path: "Assets/Art/icon/IconAtlas_Input.spriteatlasv2"
+  - path: "Assets/Art/Input_icon/IconAtlas_Input.spriteatlasv2"
 apis:
   - protocol: file
-    path: "Assets/Art/icon/IconAtlas_Input.spriteatlasv2"
+    path: "Assets/Art/Input_icon/IconAtlas_Input.spriteatlasv2"
     description:
       zh: >
           输入图标 SpriteAtlas（v2 格式），键位提示的取图入口。

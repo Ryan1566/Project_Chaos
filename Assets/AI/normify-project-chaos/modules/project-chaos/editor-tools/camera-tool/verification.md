@@ -12,8 +12,8 @@ description:
       Verifications that assert the shipped camera stack behaves: CombatCameraShakeVerification checks hit/hurt/heavy impulses, the intensity cap and the min trigger interval; CinemachineFlowVerification walks follow, framing and village-mode switching. Both add a temporary menu entry under Tools/Project Chaos/验证.
       
 revision: 3e9431e3172f8f81c73452994a04db100947fac0
-updated_at: "2026-10-31T16:29:20.166Z"
-fingerprint: dd421110442033b87b259048dd0c52be9cd5df6cdd589e1088c57f132ac95ab2
+updated_at: "2026-11-10T14:52:00.914Z"
+fingerprint: b923d8b90504fc142d9cf0b346db5824dd6da6cdef4977d539ba46090ff8d9fb
 source:
   - path: "Assets/Scripts/Editor/CameraTool/CombatCameraShakeVerification.cs"
   - path: "Assets/Scripts/Editor/CameraTool/CinemachineFlowVerification.cs"

@@ -11,15 +11,15 @@ description:
       241 keyboard/mouse icons named keyboard_<key>.png and mouse_<part>.png, most with *_outline variants; letters, function keys, arrows and numpad.
       
 revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
-updated_at: "2026-10-31T08:56:15.082Z"
-fingerprint: 391b4ab95fedfa32cef143e7ab01491688e3ec46d7f4459e979d2f890d640f49
+updated_at: "2026-11-10T14:54:04.850Z"
+fingerprint: 68af5a1c9807c6bd70cfe2f4420c9927e0c1bcdb166a7031ea093972c8cdea80
 source:
-  - path: "Assets/Art/icon/keyboard&mouse/keyboard_a.png"
-  - path: "Assets/Art/icon/keyboard&mouse/keyboard_space.png"
-  - path: "Assets/Art/icon/keyboard&mouse/mouse_left.png"
+  - path: "Assets/Art/Input_icon/keyboard&mouse/keyboard_a.png"
+  - path: "Assets/Art/Input_icon/keyboard&mouse/keyboard_space.png"
+  - path: "Assets/Art/Input_icon/keyboard&mouse/mouse_left.png"
 apis:
   - protocol: file
-    path: "Assets/Art/icon/keyboard&mouse/keyboard_a.png"
+    path: "Assets/Art/Input_icon/keyboard&mouse/keyboard_a.png"
     description:
       zh: >
           字母键 A 图标。
@@ -28,7 +28,7 @@ apis:
           Letter key A icon.
           
   - protocol: file
-    path: "Assets/Art/icon/keyboard&mouse/keyboard_space.png"
+    path: "Assets/Art/Input_icon/keyboard&mouse/keyboard_space.png"
     description:
       zh: >
           空格键图标。
@@ -37,7 +37,7 @@ apis:
           Space key icon.
           
   - protocol: file
-    path: "Assets/Art/icon/keyboard&mouse/mouse_left.png"
+    path: "Assets/Art/Input_icon/keyboard&mouse/mouse_left.png"
     description:
       zh: >
           鼠标左键图标。

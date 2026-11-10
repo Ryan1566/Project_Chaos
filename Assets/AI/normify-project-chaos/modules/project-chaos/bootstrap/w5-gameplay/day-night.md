@@ -12,8 +12,8 @@ description:
       Single source of day/night truth: keeps village time from the save and run minutes from camping, exposes Day/Night/Dusk/Dawn sampling and localised clock text for HUD and sky.
       
 revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
-updated_at: "2026-11-07T13:54:15.833Z"
-fingerprint: 3af5431a39d438506589b298670433614f4487408ce9c6f3b8e304201c1e6716
+updated_at: "2026-11-10T14:52:00.884Z"
+fingerprint: 96a975ce5fffd38f12c25a9bd6a675d2e272fec429765fd0a1ecaabc60db8dda
 source:
   - path: "Assets/Scripts/Runtime/GameBase/Meta/DayNightClock.cs"
 apis:

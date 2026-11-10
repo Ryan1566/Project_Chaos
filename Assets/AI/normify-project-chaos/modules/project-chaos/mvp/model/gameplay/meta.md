@@ -12,8 +12,8 @@ description:
       Meta-side view state: dispatch roster/route planning, skill tree board, market offers, event options, office tasks, retainer recruitment and item wheel state.
       
 revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
-updated_at: "2026-11-07T13:54:15.841Z"
-fingerprint: 7e4cd57d1f1b5b9c646fb4ed11277c1fd7979add83619807e7f4cd6daaf850e5
+updated_at: "2026-11-10T14:52:00.926Z"
+fingerprint: 6130a69e775fc1b6744efd683edbb844cead033bd9535f15596d3078e184dc5d
 source:
   - path: "Assets/Scripts/Runtime/MVP/Model/Gameplay/DispatchModel.cs"
   - path: "Assets/Scripts/Runtime/MVP/Model/Gameplay/FamilyTreeModel.cs"

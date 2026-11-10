@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "id": "project-chaos.bootstrap.w5-gameplay",
-  "updated_at": "2026-11-07T13:52:34.411Z",
+  "updated_at": "2026-11-10T14:57:30.771Z",
   "mode": "groups",
   "max_columns": 3,
   "reading": {
-    "zh": "三个环：局内核心环（进入、tick、结算），然后是世界里发生的一切（交互、村庄生产、昼夜时钟），最后是衔接局内外的局外层与补给。",
-    "en": "Three rings: the run core loop (enter, tick, settle), then everything that happens in the world (interaction, village production, day/night clock), then the meta layer and supplies that bridge between runs."
+    "zh": "三个环：局内核心环（进入、tick、结算），然后是世界里发生的一切（交互、村庄生产、昼夜时钟），最后是衔接局内外的局外层与补给——战备装载在这里决定带什么进本局。",
+    "en": "Three rings: the run core loop (enter, tick, settle), then everything that happens in the world (interaction, village production, day/night clock), then the meta layer and supplies that bridge between runs — the loadout module decides what is carried in."
   },
   "order": [
     "project-chaos.bootstrap.w5-gameplay.run-flow",
@@ -15,7 +15,8 @@
     "project-chaos.bootstrap.w5-gameplay.village",
     "project-chaos.bootstrap.w5-gameplay.day-night",
     "project-chaos.bootstrap.w5-gameplay.meta-events",
-    "project-chaos.bootstrap.w5-gameplay.team-supply"
+    "project-chaos.bootstrap.w5-gameplay.team-supply",
+    "project-chaos.bootstrap.w5-gameplay.battle-prep"
   ],
   "groups": [
     {
@@ -49,7 +50,8 @@
       },
       "children": [
         "project-chaos.bootstrap.w5-gameplay.meta-events",
-        "project-chaos.bootstrap.w5-gameplay.team-supply"
+        "project-chaos.bootstrap.w5-gameplay.team-supply",
+        "project-chaos.bootstrap.w5-gameplay.battle-prep"
       ]
     }
   ]

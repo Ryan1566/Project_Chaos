@@ -11,8 +11,8 @@ description:
       Builds and inspects IconAtlas_Input.spriteatlas: applies platform packing settings, packs only sprites referenced by the key icon map, reads back packed page textures, estimates GPU bytes per platform format, ensures the output folder exists and formats human-readable reports.
       
 revision: 797aecab3ffa406505de00c7dd0baa0f15578bb7
-updated_at: "2026-10-12T14:28:55.410Z"
-fingerprint: 051e876fe544d55a0a113398b5fafbc0176041fd027378a7701f27b881c7eaad
+updated_at: "2026-11-10T14:52:00.912Z"
+fingerprint: 55369bc806ad5bb2b20c669c9a5b0cd144aa2626dc9f2176671d6b3b3d7a858e
 source:
   - path: "Assets/Scripts/Editor/ArtPipeline/IconAtlasBuilder.cs"
     line: 49

@@ -12,8 +12,8 @@ description:
       Concept part 2: the gameplay module overview (in-run roguelite + meta management/battle/market/camping) and the numeric framework constrained by the config-type whitelist.
       
 revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
-updated_at: "2026-11-07T13:53:11.990Z"
-fingerprint: d40049626d0584ff7c0449cae78eb266954846ab20d42797aafe5cc86a7f4ff5
+updated_at: "2026-11-10T14:52:00.957Z"
+fingerprint: 6aecf6ad01854d76d46c555fbd59229ebbb6086f485e5350b9ce6b33f6946a01
 source:
   - path: "Assets/Chaos_Story/Story/01_企划/01_游戏概念案.md"
     line: 166

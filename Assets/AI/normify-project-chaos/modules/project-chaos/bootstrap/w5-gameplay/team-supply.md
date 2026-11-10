@@ -12,8 +12,8 @@ description:
       Planned placeholder with pending fingerprint: retainer health/death, camping/rest and in-run bag withdraw are not a separate assembly yet - the current entry points sit on RunEncounter.Team and RunSceneFlow and will move here once extracted.
       
 revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
-updated_at: "2026-11-07T13:53:11.979Z"
-fingerprint: 110d42751eac390a0eea57d8c3e7bb022038ea0b2c27434f75c3ed3231b64ace
+updated_at: "2026-11-10T14:52:00.896Z"
+fingerprint: 504a475ce4aa007f4b6445c4d60c020b330e8638c67e5f0eb5626d5d6a25622f
 source:
   - path: "Assets/Scripts/Runtime/Player/RunEncounter.Team.cs"
   - path: "Assets/Scripts/Runtime/GameBase/Meta/RunSceneFlow.cs"

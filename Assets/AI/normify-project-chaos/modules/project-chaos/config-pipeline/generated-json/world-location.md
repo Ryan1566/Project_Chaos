@@ -12,8 +12,8 @@ description:
       Runtime JSON for world locations, actions, era placement, relations, temporary states and text.
       
 revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
-updated_at: "2026-11-07T13:48:14.427Z"
-fingerprint: 1480c48db29e7b5ed12d0ef973581dad601b2b8c73e0385b2a94f068defc3b72
+updated_at: "2026-11-10T14:52:00.909Z"
+fingerprint: a5e4899f7d30d91ce44f6665994553600693669d847576f0e59d321de7f89dfc
 source:
   - path: "Assets/Resources/Data/Json/Runtime/WorldLocationTable_Location.json"
   - path: "Assets/Resources/Data/Json/Runtime/WorldLocationTable_LocationAction.json"

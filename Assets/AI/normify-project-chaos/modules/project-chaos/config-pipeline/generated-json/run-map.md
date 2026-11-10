@@ -12,8 +12,8 @@ description:
       Runtime JSON for map generation: chunks, biomes, presets, plus the new MapGeneration and ExplorationScene sheets.
       
 revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
-updated_at: "2026-11-07T13:48:14.422Z"
-fingerprint: 23d7ad8ef951811a12d922cdec62c377751d2ebc486b7ea8b0275eabcddda664
+updated_at: "2026-11-10T14:52:00.906Z"
+fingerprint: 6ac4bd772b15bb67df9648114a17c2d54cc164f1e8107562bd42bb1cb4cdf3ba
 source:
   - path: "Assets/Resources/Data/Json/Runtime/RunMapTable_MapGeneration.json"
   - path: "Assets/Resources/Data/Json/Runtime/RunMapTable_ExplorationScene.json"

@@ -12,14 +12,16 @@ description:
       Meta-side errand UI: the dispatch panel (roster, routes, rewards), the office-task board and the era-progress panel that gates them.
       
 revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
-updated_at: "2026-11-07T13:51:57.363Z"
-fingerprint: 591fcf65311571e0899955c56c305f30953256eb80e333d66e405c874c97bf3d
+updated_at: "2026-11-10T14:57:10.689Z"
+fingerprint: 8e995c942ca204b4b3bdc193ddb28e25499359c55e538e820171a7a5f2a014cd
 source:
   - path: "Assets/Scripts/Runtime/MVP/View/DispatchPanel.cs"
   - path: "Assets/Scripts/Runtime/MVP/View/DispatchVisuals.cs"
   - path: "Assets/Scripts/Runtime/MVP/View/OfficeTasksView.cs"
   - path: "Assets/Scripts/Runtime/MVP/View/OfficeTasksPanel.cs"
   - path: "Assets/Scripts/Runtime/MVP/View/EraProgressPanel.cs"
+  - path: "Assets/Scripts/Runtime/MVP/View/BattlePreparationPanel.cs"
+  - path: "Assets/Scripts/Runtime/MVP/View/BattlePreparationPanel.cs"
 apis:
   - protocol: file
     path: "file:Assets/Scripts/Runtime/MVP/View/DispatchPanel.cs"
@@ -47,6 +49,15 @@ apis:
           
       en: >
           Era progress panel
+          
+  - protocol: file
+    path: "Assets/Scripts/Runtime/MVP/View/BattlePreparationPanel.cs"
+    description:
+      zh: >
+          战备装载面板（槽位拖拽、预设页、数量确认）
+          
+      en: >
+          Battle preparation panel (slot drag, presets, quantity confirm)
           
 deps:
   - kind: reference

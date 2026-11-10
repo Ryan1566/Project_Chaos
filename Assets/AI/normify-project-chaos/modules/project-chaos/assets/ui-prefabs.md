@@ -11,13 +11,17 @@ description:
       Panel prefabs under Assets/Resources/UIPanels, instantiated by UIManager from the PanelType name (MainMenuPanel, SettingPanel, SLPanel, plus WorldMapPanel added 2026-10-12, and the RecordCell sub-prefab). A PanelType without a matching prefab is reported by ValidatePanelPrefabs.
       
 revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
-updated_at: "2026-11-07T13:43:40.732Z"
-fingerprint: dabc48efac54f08fb51003f470ca2482e06ce9329f22a2efb0d95da9814b66e0
+updated_at: "2026-11-10T14:57:10.697Z"
+fingerprint: 9e7db4515ca30bd2dd2135e6f936d432f065a9e646536eef7c41ae6fc4d66943
 source:
   - path: "Assets/Resources/UIPanels/MainMenuPanel.prefab"
   - path: "Assets/Resources/UIPanels/SettingPanel.prefab"
   - path: "Assets/Resources/UIPanels/SLPanel.prefab"
   - path: "Assets/Resources/UIPanels/SubUI_Prefab/RecordCell.prefab"
+  - path: "Assets/Resources/UIPanels/BattlePreparationPanel.prefab"
+  - path: "Assets/Resources/UIPanels/RunResumeRecoveryPanel.prefab"
+  - path: "Assets/Resources/UIPanels/BattlePreparationPanel.prefab"
+  - path: "Assets/Resources/UIPanels/RunResumeRecoveryPanel.prefab"
 apis:
   - protocol: file
     path: "Assets/Resources/UIPanels/MainMenuPanel.prefab"
@@ -54,6 +58,24 @@ apis:
           
       en: >
           Record cell prefab used by list sub-views.
+          
+  - protocol: file
+    path: "Assets/Resources/UIPanels/BattlePreparationPanel.prefab"
+    description:
+      zh: >
+          战备装载面板预制体
+          
+      en: >
+          Battle preparation panel prefab
+          
+  - protocol: file
+    path: "Assets/Resources/UIPanels/RunResumeRecoveryPanel.prefab"
+    description:
+      zh: >
+          局内恢复提示面板预制体
+          
+      en: >
+          Run resume recovery panel prefab
           
 deps:
   - kind: reference

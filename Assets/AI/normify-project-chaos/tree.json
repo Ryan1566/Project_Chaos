@@ -9,20 +9,20 @@
         "repository": "https://github.com/Ryan1566/Project_Chaos.git"
       }
     ],
-    "compiled_at": "2026-11-07T13:54:25.684Z",
+    "compiled_at": "2026-11-10T14:58:15.348Z",
     "stats": {
       "tree_count": 1,
-      "module_count": 499,
-      "leaf_count": 404,
-      "api_count": 1102,
-      "dep_count": 293,
+      "module_count": 502,
+      "leaf_count": 407,
+      "api_count": 1127,
+      "dep_count": 299,
       "cross_tree_dep_count": 0,
       "max_depth": 7,
       "layout_count": 95,
       "planned_count": 0,
       "deprecated_count": 0,
       "policy_rule_count": 5,
-      "change_count": 9,
+      "change_count": 10,
       "open_change_count": 0
     }
   },
@@ -52,9 +52,9 @@
       "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "repository": "https://github.com/Ryan1566/Project_Chaos.git",
       "aggregate": {
-        "descendant_count": 498,
+        "descendant_count": 501,
         "own_api_count": 0,
-        "inherited_api_count": 1102,
+        "inherited_api_count": 1127,
         "dep_out": 0,
         "dep_in": 0
       }
@@ -84,7 +84,7 @@
       "aggregate": {
         "descendant_count": 46,
         "own_api_count": 0,
-        "inherited_api_count": 102,
+        "inherited_api_count": 106,
         "dep_out": 0,
         "dep_in": 3
       }
@@ -300,21 +300,21 @@
       },
       "source": [
         {
-          "path": "Assets/Art/icon/IconAtlas_Input.spriteatlasv2"
+          "path": "Assets/Art/Input_icon/IconAtlas_Input.spriteatlasv2"
         }
       ],
       "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
-      "updated_at": "2026-10-31T08:56:15.080Z",
-      "fingerprint": "6b4b6999be57437df9f68826ffbc82e6be41c884e6733b29480a0073cbbf13df",
+      "updated_at": "2026-11-10T14:54:04.847Z",
+      "fingerprint": "c47f48ad304c6c7ca84b715f94df679c5091ed7a4ef80f37a703bcd08ef76d50",
       "apis": [
         {
           "protocol": "file",
-          "path": "Assets/Art/icon/IconAtlas_Input.spriteatlasv2",
+          "path": "Assets/Art/Input_icon/IconAtlas_Input.spriteatlasv2",
           "description": {
             "zh": "输入图标 SpriteAtlas（v2 格式），键位提示的取图入口。\n",
             "en": "Input icon SpriteAtlas (v2 format), the lookup entry for key prompts.\n"
           },
-          "key": "file:Assets/Art/icon/IconAtlas_Input.spriteatlasv2"
+          "key": "file:Assets/Art/Input_icon/IconAtlas_Input.spriteatlasv2"
         }
       ],
       "aggregate": {
@@ -341,45 +341,45 @@
       },
       "source": [
         {
-          "path": "Assets/Art/icon/keyboard&mouse/keyboard_a.png"
+          "path": "Assets/Art/Input_icon/keyboard&mouse/keyboard_a.png"
         },
         {
-          "path": "Assets/Art/icon/keyboard&mouse/keyboard_space.png"
+          "path": "Assets/Art/Input_icon/keyboard&mouse/keyboard_space.png"
         },
         {
-          "path": "Assets/Art/icon/keyboard&mouse/mouse_left.png"
+          "path": "Assets/Art/Input_icon/keyboard&mouse/mouse_left.png"
         }
       ],
       "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
-      "updated_at": "2026-10-31T08:56:15.082Z",
-      "fingerprint": "391b4ab95fedfa32cef143e7ab01491688e3ec46d7f4459e979d2f890d640f49",
+      "updated_at": "2026-11-10T14:54:04.850Z",
+      "fingerprint": "68af5a1c9807c6bd70cfe2f4420c9927e0c1bcdb166a7031ea093972c8cdea80",
       "apis": [
         {
           "protocol": "file",
-          "path": "Assets/Art/icon/keyboard&mouse/keyboard_a.png",
+          "path": "Assets/Art/Input_icon/keyboard&mouse/keyboard_a.png",
           "description": {
             "zh": "字母键 A 图标。\n",
             "en": "Letter key A icon.\n"
           },
-          "key": "file:Assets/Art/icon/keyboard&mouse/keyboard_a.png"
+          "key": "file:Assets/Art/Input_icon/keyboard&mouse/keyboard_a.png"
         },
         {
           "protocol": "file",
-          "path": "Assets/Art/icon/keyboard&mouse/keyboard_space.png",
+          "path": "Assets/Art/Input_icon/keyboard&mouse/keyboard_space.png",
           "description": {
             "zh": "空格键图标。\n",
             "en": "Space key icon.\n"
           },
-          "key": "file:Assets/Art/icon/keyboard&mouse/keyboard_space.png"
+          "key": "file:Assets/Art/Input_icon/keyboard&mouse/keyboard_space.png"
         },
         {
           "protocol": "file",
-          "path": "Assets/Art/icon/keyboard&mouse/mouse_left.png",
+          "path": "Assets/Art/Input_icon/keyboard&mouse/mouse_left.png",
           "description": {
             "zh": "鼠标左键图标。\n",
             "en": "Mouse left-button icon.\n"
           },
-          "key": "file:Assets/Art/icon/keyboard&mouse/mouse_left.png"
+          "key": "file:Assets/Art/Input_icon/keyboard&mouse/mouse_left.png"
         }
       ],
       "aggregate": {
@@ -406,45 +406,45 @@
       },
       "source": [
         {
-          "path": "Assets/Art/icon/ps/playstation_button_cross.png"
+          "path": "Assets/Art/Input_icon/ps/playstation_button_cross.png"
         },
         {
-          "path": "Assets/Art/icon/ps/playstation_dpad_up.png"
+          "path": "Assets/Art/Input_icon/ps/playstation_dpad_up.png"
         },
         {
-          "path": "Assets/Art/icon/ps/controller_playstation4.png"
+          "path": "Assets/Art/Input_icon/ps/controller_playstation4.png"
         }
       ],
       "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
-      "updated_at": "2026-10-31T08:56:15.085Z",
-      "fingerprint": "230d750d9de9d2aae8d5b8fcc8a5a4dc00a6c717123cc263078e426f22fdd558",
+      "updated_at": "2026-11-10T14:54:04.852Z",
+      "fingerprint": "f921f23ccd0f5110fa02accba05c7150f06db7e2f9bd1691caea087753e95958",
       "apis": [
         {
           "protocol": "file",
-          "path": "Assets/Art/icon/ps/playstation_button_cross.png",
+          "path": "Assets/Art/Input_icon/ps/playstation_button_cross.png",
           "description": {
             "zh": "PS 叉键图标。\n",
             "en": "PlayStation cross button icon.\n"
           },
-          "key": "file:Assets/Art/icon/ps/playstation_button_cross.png"
+          "key": "file:Assets/Art/Input_icon/ps/playstation_button_cross.png"
         },
         {
           "protocol": "file",
-          "path": "Assets/Art/icon/ps/playstation_dpad_up.png",
+          "path": "Assets/Art/Input_icon/ps/playstation_dpad_up.png",
           "description": {
             "zh": "PS 方向键上图标。\n",
             "en": "PlayStation D-pad up icon.\n"
           },
-          "key": "file:Assets/Art/icon/ps/playstation_dpad_up.png"
+          "key": "file:Assets/Art/Input_icon/ps/playstation_dpad_up.png"
         },
         {
           "protocol": "file",
-          "path": "Assets/Art/icon/ps/controller_playstation4.png",
+          "path": "Assets/Art/Input_icon/ps/controller_playstation4.png",
           "description": {
             "zh": "PS4 手柄整机图。\n",
             "en": "PlayStation 4 controller image.\n"
           },
-          "key": "file:Assets/Art/icon/ps/controller_playstation4.png"
+          "key": "file:Assets/Art/Input_icon/ps/controller_playstation4.png"
         }
       ],
       "aggregate": {
@@ -471,45 +471,45 @@
       },
       "source": [
         {
-          "path": "Assets/Art/icon/xbox/xbox_button_a.png"
+          "path": "Assets/Art/Input_icon/xbox/xbox_button_a.png"
         },
         {
-          "path": "Assets/Art/icon/xbox/xbox_dpad_round_up.png"
+          "path": "Assets/Art/Input_icon/xbox/xbox_dpad_round_up.png"
         },
         {
-          "path": "Assets/Art/icon/xbox/controller_xboxone.png"
+          "path": "Assets/Art/Input_icon/xbox/controller_xboxone.png"
         }
       ],
       "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
-      "updated_at": "2026-10-31T08:56:15.086Z",
-      "fingerprint": "a91359517cfd0c7e5498f5006a39e74eafda7ec0c28a6bdd1c04b4afc479e205",
+      "updated_at": "2026-11-10T14:54:04.854Z",
+      "fingerprint": "97bfea79e79215326d3bd33840939462cefc85817db7b4d0a63c2e397838aa77",
       "apis": [
         {
           "protocol": "file",
-          "path": "Assets/Art/icon/xbox/xbox_button_a.png",
+          "path": "Assets/Art/Input_icon/xbox/xbox_button_a.png",
           "description": {
             "zh": "Xbox A 键图标。\n",
             "en": "Xbox A button icon.\n"
           },
-          "key": "file:Assets/Art/icon/xbox/xbox_button_a.png"
+          "key": "file:Assets/Art/Input_icon/xbox/xbox_button_a.png"
         },
         {
           "protocol": "file",
-          "path": "Assets/Art/icon/xbox/xbox_dpad_round_up.png",
+          "path": "Assets/Art/Input_icon/xbox/xbox_dpad_round_up.png",
           "description": {
             "zh": "Xbox 圆形方向键上图标。\n",
             "en": "Xbox round D-pad up icon.\n"
           },
-          "key": "file:Assets/Art/icon/xbox/xbox_dpad_round_up.png"
+          "key": "file:Assets/Art/Input_icon/xbox/xbox_dpad_round_up.png"
         },
         {
           "protocol": "file",
-          "path": "Assets/Art/icon/xbox/controller_xboxone.png",
+          "path": "Assets/Art/Input_icon/xbox/controller_xboxone.png",
           "description": {
             "zh": "Xbox One 手柄整机图。\n",
             "en": "Xbox One controller image.\n"
           },
-          "key": "file:Assets/Art/icon/xbox/controller_xboxone.png"
+          "key": "file:Assets/Art/Input_icon/xbox/controller_xboxone.png"
         }
       ],
       "aggregate": {
@@ -1427,15 +1427,15 @@
       },
       "source": [
         {
-          "path": "Assets/Art/PNG/GameWorld_Map/Map_tianxia_zhongyuan.png"
+          "path": "Assets/Art/PNG/GameWorld_Map/Map_tianxia_zhongyuan.png.meta"
         },
         {
-          "path": "Assets/Art/PNG/east_asia_map_fantasy_equirect_4096x3072.png"
+          "path": "Assets/Art/PNG/east_asia_map_fantasy_equirect_4096x3072.png.meta"
         }
       ],
       "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
-      "updated_at": "2026-10-31T08:56:26.941Z",
-      "fingerprint": "4e5ef1c6580064387c38f40fd2a29b86962cefad2559cf57ff5700809dce3426",
+      "updated_at": "2026-11-10T14:54:04.872Z",
+      "fingerprint": "3c0a09fc9591dce05510eb3bdcaf58baf8c8d21e665993783b51cb1cecc40132",
       "apis": [
         {
           "protocol": "file",
@@ -1647,21 +1647,21 @@
       },
       "source": [
         {
-          "path": "Assets/Fonts/cn/MSYH SDF.asset"
+          "path": "Assets/Fonts/cn/MSYH SDF.asset.meta"
         },
         {
-          "path": "Assets/Fonts/cn/MSYH.TTC"
+          "path": "Assets/Fonts/cn/MSYH.TTC.meta"
         },
         {
-          "path": "Assets/Fonts/cn/XiangcuiDengcusong SDF.asset"
+          "path": "Assets/Fonts/cn/XiangcuiDengcusong SDF.asset.meta"
         },
         {
-          "path": "Assets/Fonts/cn/XiangcuiDengcusong.ttf"
+          "path": "Assets/Fonts/cn/XiangcuiDengcusong.ttf.meta"
         }
       ],
       "revision": "d12129f7c898c717078ccbcc210fe5eaf82aa2f3",
-      "updated_at": "2026-11-07T13:43:40.727Z",
-      "fingerprint": "489e3fb9270150746abb567e26474946e150528fde5810067b2021d5ec43113e",
+      "updated_at": "2026-11-10T14:54:04.857Z",
+      "fingerprint": "3661985bf935e7a7fae047e2850f497ff7811ed9c7286021a63ce4de57a6cfa0",
       "apis": [
         {
           "protocol": "file",
@@ -1808,15 +1808,12 @@
           "path": "Assets/Fonts/jp/Ichigayamincho.ttf"
         },
         {
-          "path": "Assets/Fonts/jp/MojiwYoiMincho-Standard SDF.asset"
-        },
-        {
           "path": "Assets/Fonts/jp/MojiwYoiMincho-Standard.ttf"
         }
       ],
       "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
-      "updated_at": "2026-10-31T08:56:27.269Z",
-      "fingerprint": "999f8a5bff960492ad498098f01b4d3d063835fd9b12f03d7777964e34737e66",
+      "updated_at": "2026-11-10T14:54:04.869Z",
+      "fingerprint": "ae7777819bf15744618b7c90d68f57c214b31aaac8ada0baf39d77bcbb842ca6",
       "apis": [
         {
           "protocol": "file",
@@ -1879,15 +1876,15 @@
       },
       "source": [
         {
-          "path": "Assets/Fonts/kr/Hangeuljaemin4-Regular SDF.asset"
+          "path": "Assets/Fonts/kr/Hangeuljaemin4-Regular SDF.asset.meta"
         },
         {
-          "path": "Assets/Fonts/kr/Hangeuljaemin4-Regular.ttf"
+          "path": "Assets/Fonts/kr/Hangeuljaemin4-Regular.ttf.meta"
         }
       ],
       "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
-      "updated_at": "2026-10-31T08:56:27.354Z",
-      "fingerprint": "3cd02a455d58351f125f58bbc8afc0a69cc28e0d0645455e111e5a1fa042a5df",
+      "updated_at": "2026-11-10T14:54:04.870Z",
+      "fingerprint": "1ef7f8a6365df8dd4ed0599f82a56d4c58ea34204c6228460f12f03eaa19992c",
       "apis": [
         {
           "protocol": "file",
@@ -1939,7 +1936,7 @@
         }
       ],
       "revision": "d12129f7c898c717078ccbcc210fe5eaf82aa2f3",
-      "updated_at": "2026-11-07T13:43:40.729Z",
+      "updated_at": "2026-11-10T14:54:04.855Z",
       "fingerprint": "f9c499a78ab89408575d979652eca1ad88841923d8f8c48890bb2d5562402caf",
       "apis": [
         {
@@ -1966,7 +1963,7 @@
           "kind": "reference",
           "to": "project-chaos.assets.art.icon.atlas",
           "from_api": "file:Assets/Resources/Data/Input/KeyIconMap.asset",
-          "to_api": "file:Assets/Art/icon/IconAtlas_Input.spriteatlasv2",
+          "to_api": "file:Assets/Art/Input_icon/IconAtlas_Input.spriteatlasv2",
           "label": {
             "zh": "映射到输入图标图集",
             "en": "Maps to input icon atlas"
@@ -3471,11 +3468,23 @@
         },
         {
           "path": "Assets/Resources/UIPanels/SubUI_Prefab/RecordCell.prefab"
+        },
+        {
+          "path": "Assets/Resources/UIPanels/BattlePreparationPanel.prefab"
+        },
+        {
+          "path": "Assets/Resources/UIPanels/RunResumeRecoveryPanel.prefab"
+        },
+        {
+          "path": "Assets/Resources/UIPanels/BattlePreparationPanel.prefab"
+        },
+        {
+          "path": "Assets/Resources/UIPanels/RunResumeRecoveryPanel.prefab"
         }
       ],
       "revision": "d12129f7c898c717078ccbcc210fe5eaf82aa2f3",
-      "updated_at": "2026-11-07T13:43:40.732Z",
-      "fingerprint": "dabc48efac54f08fb51003f470ca2482e06ce9329f22a2efb0d95da9814b66e0",
+      "updated_at": "2026-11-10T14:57:10.697Z",
+      "fingerprint": "9e7db4515ca30bd2dd2135e6f936d432f065a9e646536eef7c41ae6fc4d66943",
       "apis": [
         {
           "protocol": "file",
@@ -3512,6 +3521,24 @@
             "en": "Record cell prefab used by list sub-views.\n"
           },
           "key": "file:Assets/Resources/UIPanels/SubUI_Prefab/RecordCell.prefab"
+        },
+        {
+          "protocol": "file",
+          "path": "Assets/Resources/UIPanels/BattlePreparationPanel.prefab",
+          "description": {
+            "zh": "战备装载面板预制体\n",
+            "en": "Battle preparation panel prefab\n"
+          },
+          "key": "file:Assets/Resources/UIPanels/BattlePreparationPanel.prefab"
+        },
+        {
+          "protocol": "file",
+          "path": "Assets/Resources/UIPanels/RunResumeRecoveryPanel.prefab",
+          "description": {
+            "zh": "局内恢复提示面板预制体\n",
+            "en": "Run resume recovery panel prefab\n"
+          },
+          "key": "file:Assets/Resources/UIPanels/RunResumeRecoveryPanel.prefab"
         }
       ],
       "deps": [
@@ -3529,7 +3556,7 @@
       ],
       "aggregate": {
         "descendant_count": 0,
-        "own_api_count": 4,
+        "own_api_count": 6,
         "inherited_api_count": 0,
         "dep_out": 1,
         "dep_in": 0
@@ -3558,11 +3585,23 @@
         },
         {
           "path": "Assets/Resources/UI/Loading/Loading_03.png"
+        },
+        {
+          "path": "Assets/Resources/UI/RadialMenu/DefaultSkin.asset"
+        },
+        {
+          "path": "Assets/Resources/UI/RadialMenu/DefaultSlices.png"
+        },
+        {
+          "path": "Assets/Resources/UI/RadialMenu/DefaultSkin.asset"
+        },
+        {
+          "path": "Assets/Resources/UI/RadialMenu/DefaultSlices.png"
         }
       ],
       "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
-      "updated_at": "2026-10-31T08:56:40.598Z",
-      "fingerprint": "95a8be2053f3dcf8441050dbdfedcb5acf1b525dedc7f09a4d8137d85265d25a",
+      "updated_at": "2026-11-10T14:57:10.700Z",
+      "fingerprint": "1da049463aadfd7c622620b757bbf293e60972bfd3f244a6654ace2d687f2ce3",
       "apis": [
         {
           "protocol": "file",
@@ -3590,11 +3629,29 @@
             "en": "Loading screen illustration 03.\n"
           },
           "key": "file:Assets/Resources/UI/Loading/Loading_03.png"
+        },
+        {
+          "protocol": "file",
+          "path": "Assets/Resources/UI/RadialMenu/DefaultSkin.asset",
+          "description": {
+            "zh": "轮盘默认皮肤配置\n",
+            "en": "Default radial menu skin asset\n"
+          },
+          "key": "file:Assets/Resources/UI/RadialMenu/DefaultSkin.asset"
+        },
+        {
+          "protocol": "file",
+          "path": "Assets/Resources/UI/RadialMenu/DefaultSlices.png",
+          "description": {
+            "zh": "轮盘默认切片图集源图\n",
+            "en": "Default radial slice source image\n"
+          },
+          "key": "file:Assets/Resources/UI/RadialMenu/DefaultSlices.png"
         }
       ],
       "aggregate": {
         "descendant_count": 0,
-        "own_api_count": 3,
+        "own_api_count": 5,
         "inherited_api_count": 0,
         "dep_out": 0,
         "dep_in": 0
@@ -3644,9 +3701,9 @@
         }
       ],
       "aggregate": {
-        "descendant_count": 31,
+        "descendant_count": 32,
         "own_api_count": 0,
-        "inherited_api_count": 75,
+        "inherited_api_count": 81,
         "dep_out": 2,
         "dep_in": 0
       }
@@ -4557,7 +4614,7 @@
       "aggregate": {
         "descendant_count": 5,
         "own_api_count": 0,
-        "inherited_api_count": 5,
+        "inherited_api_count": 6,
         "dep_out": 0,
         "dep_in": 0
       }
@@ -4739,11 +4796,17 @@
           "path": "Assets/Scenes/TestScene.unity",
           "line": 1,
           "end_line": 4604
+        },
+        {
+          "path": "Assets/Scenes/URP_TestScene.unity"
+        },
+        {
+          "path": "Assets/Scenes/URP_TestScene.unity"
         }
       ],
       "revision": "b6dae190152cdcce64be3587bb098f7af5b42563",
-      "updated_at": "2026-10-17T09:35:47.637Z",
-      "fingerprint": "5679929fc6eff75b2cac1cd10a2acc67dd9405e433ae740f453f9ac8a5bf33e9",
+      "updated_at": "2026-11-10T14:57:10.701Z",
+      "fingerprint": "b0692b9edfc99a8cfd394dfd13e159ea99c90ba20ac01c764556d152075fe128",
       "apis": [
         {
           "protocol": "file",
@@ -4753,6 +4816,15 @@
             "en": "Test scene asset (hosts Entry).\n"
           },
           "key": "file:Assets/Scenes/TestScene.unity"
+        },
+        {
+          "protocol": "file",
+          "path": "Assets/Scenes/URP_TestScene.unity",
+          "description": {
+            "zh": "URP 渲染与图集打包测试场景\n",
+            "en": "URP rendering and atlas packing test scene\n"
+          },
+          "key": "file:Assets/Scenes/URP_TestScene.unity"
         }
       ],
       "deps": [
@@ -4770,7 +4842,7 @@
       ],
       "aggregate": {
         "descendant_count": 0,
-        "own_api_count": 1,
+        "own_api_count": 2,
         "inherited_api_count": 0,
         "dep_out": 1,
         "dep_in": 1
@@ -5148,13 +5220,106 @@
         }
       ],
       "revision": "d12129f7c898c717078ccbcc210fe5eaf82aa2f3",
-      "updated_at": "2026-11-07T13:54:15.848Z",
-      "fingerprint": "b9da2f7e7ea05fda5c834175a0ed2c2ad4003836dc7038d717afe93a1cb1e9f5",
+      "updated_at": "2026-11-10T14:52:00.881Z",
+      "fingerprint": "75e0da49b5e7f8431d6e9e7a139a6b867d7a64736de3900935780ad5eff59e13",
       "aggregate": {
-        "descendant_count": 7,
+        "descendant_count": 8,
         "own_api_count": 0,
-        "inherited_api_count": 28,
+        "inherited_api_count": 33,
         "dep_out": 0,
+        "dep_in": 0
+      }
+    },
+    "project-chaos.bootstrap.w5-gameplay.battle-prep": {
+      "uid": "b2c00210",
+      "id": "project-chaos.bootstrap.w5-gameplay.battle-prep",
+      "parent": "project-chaos.bootstrap.w5-gameplay",
+      "tree": "project-chaos",
+      "depth": 4,
+      "tags": [
+        "bootstrap",
+        "gameplay",
+        "loadout"
+      ],
+      "name": {
+        "zh": "战备装载",
+        "en": "Battle Loadout"
+      },
+      "description": {
+        "zh": "入局前的战备草稿：把仓库与局内背包的物资按槽位摆好，维护 3~10 个预设，校验数量上限与重要道具规则，最后交给派遣流程带入本局。\n",
+        "en": "Pre-run loadout draft: arranges warehouse and run-bag items into battle slots, keeps 3-10 presets, validates quantity limits and important-item rules, then hands the layout to the dispatch flow.\n"
+      },
+      "source": [
+        {
+          "path": "Assets/Scripts/Runtime/GameBase/Meta/BattleLoadout.cs"
+        }
+      ],
+      "revision": "08f9a356150c4617b28273d13535c6f14ae4d299",
+      "updated_at": "2026-11-10T14:57:10.676Z",
+      "fingerprint": "170a7304681fa798bd8d0c326531ddd26bfa9fd347905289d21a2fb8135f0f91",
+      "apis": [
+        {
+          "protocol": "file",
+          "path": "Assets/Scripts/Runtime/GameBase/Meta/BattleLoadout.cs",
+          "description": {
+            "zh": "战备装载模型（槽位、数量、预设）\n",
+            "en": "Battle loadout model (slots, quantities, presets)\n"
+          },
+          "key": "file:Assets/Scripts/Runtime/GameBase/Meta/BattleLoadout.cs"
+        },
+        {
+          "protocol": "rpc",
+          "path": "rpc:BattleLoadout.SetQuantity",
+          "description": {
+            "zh": "设置某个道具的携带数量\n",
+            "en": "Sets how many of an item are carried\n"
+          },
+          "key": "rpc:rpc:BattleLoadout.SetQuantity"
+        },
+        {
+          "protocol": "rpc",
+          "path": "rpc:BattleLoadout.Move",
+          "description": {
+            "zh": "在仓库与背包之间移动槽位\n",
+            "en": "Moves a slot between warehouse and bag\n"
+          },
+          "key": "rpc:rpc:BattleLoadout.Move"
+        },
+        {
+          "protocol": "rpc",
+          "path": "rpc:BattleLoadout.LoadPreset",
+          "description": {
+            "zh": "套用备战后预设\n",
+            "en": "Applies a saved loadout preset\n"
+          },
+          "key": "rpc:rpc:BattleLoadout.LoadPreset"
+        }
+      ],
+      "deps": [
+        {
+          "kind": "reference",
+          "to": "project-chaos.bootstrap.w5-gameplay.meta-events",
+          "label": {
+            "zh": "读取仓库与道具",
+            "en": "Reads warehouse and items"
+          },
+          "cross_tree": false
+        },
+        {
+          "kind": "call",
+          "to": "project-chaos.bootstrap.w5-gameplay.run-flow",
+          "label": {
+            "zh": "携带入局",
+            "en": "Carries into the run"
+          },
+          "cross_tree": false
+        }
+      ],
+      "aggregate": {
+        "descendant_count": 0,
+        "own_api_count": 4,
+        "inherited_api_count": 0,
+        "dep_out": 2,
         "dep_in": 0
       }
     },
@@ -5183,8 +5348,8 @@
         }
       ],
       "revision": "d12129f7c898c717078ccbcc210fe5eaf82aa2f3",
-      "updated_at": "2026-11-07T13:54:15.833Z",
-      "fingerprint": "3af5431a39d438506589b298670433614f4487408ce9c6f3b8e304201c1e6716",
+      "updated_at": "2026-11-10T14:52:00.884Z",
+      "fingerprint": "96a975ce5fffd38f12c25a9bd6a675d2e272fec429765fd0a1ecaabc60db8dda",
       "apis": [
         {
           "protocol": "rpc",
@@ -5303,11 +5468,17 @@
         },
         {
           "path": "Assets/Scripts/Runtime/Combat/CombatQuery.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/Player/RunEncounter.Checkpoint.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/Player/RunEncounter.Checkpoint.cs"
         }
       ],
       "revision": "d12129f7c898c717078ccbcc210fe5eaf82aa2f3",
-      "updated_at": "2026-11-07T13:43:40.734Z",
-      "fingerprint": "2020bc6bf3c765c6279d7277010ff86096c1a824513b9abd86bdf2fe4e187ba3",
+      "updated_at": "2026-11-10T14:57:10.682Z",
+      "fingerprint": "dec9f2d1a55e286d0c1249044960e973593e68c4518c3bb54e9d797d31a18407",
       "apis": [
         {
           "protocol": "rpc",
@@ -5335,6 +5506,15 @@
             "en": "Apply damage to the team and resolve deaths\n"
           },
           "key": "rpc:RunEncounter.ApplyTeamDamage"
+        },
+        {
+          "protocol": "file",
+          "path": "Assets/Scripts/Runtime/Player/RunEncounter.Checkpoint.cs",
+          "description": {
+            "zh": "局内检查点快照与恢复（CaptureCheckpoint / RestoreSettlement）\n",
+            "en": "Run checkpoint capture and restore\n"
+          },
+          "key": "file:Assets/Scripts/Runtime/Player/RunEncounter.Checkpoint.cs"
         }
       ],
       "deps": [
@@ -5359,10 +5539,10 @@
       ],
       "aggregate": {
         "descendant_count": 0,
-        "own_api_count": 3,
+        "own_api_count": 4,
         "inherited_api_count": 0,
         "dep_out": 2,
-        "dep_in": 0
+        "dep_in": 1
       }
     },
     "project-chaos.bootstrap.w5-gameplay.interaction": {
@@ -5414,8 +5594,8 @@
         }
       ],
       "revision": "d12129f7c898c717078ccbcc210fe5eaf82aa2f3",
-      "updated_at": "2026-11-07T13:54:15.850Z",
-      "fingerprint": "1454644aaaab730f52a4df2543ebc86d9ed4ee39b6f54aeeda4f6a73d4f7ea93",
+      "updated_at": "2026-11-10T14:52:00.892Z",
+      "fingerprint": "70bd4efe19aaa284103d08a0b6f5fd362d42a5bbf60f8e340c72388b548fc3b8",
       "apis": [
         {
           "protocol": "rpc",
@@ -5538,8 +5718,8 @@
         }
       ],
       "revision": "d12129f7c898c717078ccbcc210fe5eaf82aa2f3",
-      "updated_at": "2026-11-07T13:53:11.978Z",
-      "fingerprint": "6086db589fbe542a96a264bac5e6b59526d1a022fdce4fa28fdffe4eab5f0b91",
+      "updated_at": "2026-11-10T14:52:00.894Z",
+      "fingerprint": "d7e9e1ea08a7035b3a9371d5ec315527d85b47477d5ec7999b40375d23d1ee38",
       "apis": [
         {
           "protocol": "rpc",
@@ -5594,7 +5774,7 @@
         "own_api_count": 3,
         "inherited_api_count": 0,
         "dep_out": 2,
-        "dep_in": 3
+        "dep_in": 5
       }
     },
     "project-chaos.bootstrap.w5-gameplay.run-flow": {
@@ -5625,8 +5805,8 @@
         }
       ],
       "revision": "d12129f7c898c717078ccbcc210fe5eaf82aa2f3",
-      "updated_at": "2026-11-07T13:53:11.979Z",
-      "fingerprint": "28f4b40ea3e92b7c708167e26d42371a781045837395e38cf7ed7a5866d727e9",
+      "updated_at": "2026-11-10T14:52:00.895Z",
+      "fingerprint": "ea556afdc8db64ca22fbfc1069d3e64394787f4d85f0a54b179b85787b3cf48d",
       "apis": [
         {
           "protocol": "rpc",
@@ -5690,7 +5870,7 @@
         "own_api_count": 4,
         "inherited_api_count": 0,
         "dep_out": 2,
-        "dep_in": 6
+        "dep_in": 7
       }
     },
     "project-chaos.bootstrap.w5-gameplay.team-supply": {
@@ -5721,8 +5901,8 @@
         }
       ],
       "revision": "d12129f7c898c717078ccbcc210fe5eaf82aa2f3",
-      "updated_at": "2026-11-07T13:53:11.979Z",
-      "fingerprint": "110d42751eac390a0eea57d8c3e7bb022038ea0b2c27434f75c3ed3231b64ace",
+      "updated_at": "2026-11-10T14:52:00.896Z",
+      "fingerprint": "504a475ce4aa007f4b6445c4d60c020b330e8638c67e5f0eb5626d5d6a25622f",
       "apis": [
         {
           "protocol": "rpc",
@@ -5815,8 +5995,8 @@
         }
       ],
       "revision": "d12129f7c898c717078ccbcc210fe5eaf82aa2f3",
-      "updated_at": "2026-11-07T13:53:11.981Z",
-      "fingerprint": "fc57ef4f56446fefc977d8ccce8212b08dfe047aa10165858e9b0c4f1a57de65",
+      "updated_at": "2026-11-10T14:52:00.901Z",
+      "fingerprint": "8a3efbb2fcc781ba2c1f2e547ef2c7ffb492f0d1b2ce7eb7f225e31aca7c7c93",
       "apis": [
         {
           "protocol": "rpc",
@@ -7028,8 +7208,8 @@
         }
       ],
       "revision": "d12129f7c898c717078ccbcc210fe5eaf82aa2f3",
-      "updated_at": "2026-11-07T13:48:14.416Z",
-      "fingerprint": "f5f39dde9bf4dc8f974b3644a3519c00e78a9e7a8b14b35011a23f9fbb331ff4",
+      "updated_at": "2026-11-10T14:52:00.903Z",
+      "fingerprint": "abfc86c3774e22f3fc8eef5b6f453e4222a972430f6fbbe595d799318f92dda7",
       "apis": [
         {
           "protocol": "file",
@@ -7279,8 +7459,8 @@
         }
       ],
       "revision": "d12129f7c898c717078ccbcc210fe5eaf82aa2f3",
-      "updated_at": "2026-11-07T13:48:14.422Z",
-      "fingerprint": "23d7ad8ef951811a12d922cdec62c377751d2ebc486b7ea8b0275eabcddda664",
+      "updated_at": "2026-11-10T14:52:00.906Z",
+      "fingerprint": "6ac4bd772b15bb67df9648114a17c2d54cc164f1e8107562bd42bb1cb4cdf3ba",
       "apis": [
         {
           "protocol": "file",
@@ -7522,8 +7702,8 @@
         }
       ],
       "revision": "d12129f7c898c717078ccbcc210fe5eaf82aa2f3",
-      "updated_at": "2026-11-07T13:48:14.427Z",
-      "fingerprint": "1480c48db29e7b5ed12d0ef973581dad601b2b8c73e0385b2a94f068defc3b72",
+      "updated_at": "2026-11-10T14:52:00.909Z",
+      "fingerprint": "a5e4899f7d30d91ce44f6665994553600693669d847576f0e59d321de7f89dfc",
       "apis": [
         {
           "protocol": "file",
@@ -8148,8 +8328,8 @@
         }
       ],
       "revision": "d12129f7c898c717078ccbcc210fe5eaf82aa2f3",
-      "updated_at": "2026-11-07T13:48:14.440Z",
-      "fingerprint": "e46e275738fa79dac1815b6b2faaca30eb21e61bd8b88570cba1f3f96ba8989b",
+      "updated_at": "2026-11-10T14:52:00.910Z",
+      "fingerprint": "24314f3c8493576c6da5eb60cb32b7d1a0e42feef08780ae2d7d4fe46c93a9d6",
       "apis": [
         {
           "protocol": "file",
@@ -9660,8 +9840,8 @@
         }
       ],
       "revision": "d12129f7c898c717078ccbcc210fe5eaf82aa2f3",
-      "updated_at": "2026-11-07T13:47:48.886Z",
-      "fingerprint": "145c3995a6e1b69d30c7d105cea6b729aeba01ea548f161928a75b30e2a1580b",
+      "updated_at": "2026-11-10T14:52:00.911Z",
+      "fingerprint": "eb887d5a971941c7d870712a36111f7112ee228e9f35983565e5df2081a8d9e8",
       "apis": [
         {
           "protocol": "file",
@@ -9678,7 +9858,7 @@
         "own_api_count": 1,
         "inherited_api_count": 0,
         "dep_out": 0,
-        "dep_in": 1
+        "dep_in": 2
       }
     },
     "project-chaos.config-pipeline.table-repo.progress": {
@@ -9881,8 +10061,8 @@
         }
       ],
       "revision": "d12129f7c898c717078ccbcc210fe5eaf82aa2f3",
-      "updated_at": "2026-11-07T13:47:48.887Z",
-      "fingerprint": "4fd487f87f35bcd31ea65dd8a7f0c59548e59e929618942b16d2a72bfdbda33c",
+      "updated_at": "2026-11-10T14:52:00.911Z",
+      "fingerprint": "19592defcbe2a2d0faa73218b1f85b35b80ebe21f95a65aad9cbd5f7f784538b",
       "apis": [
         {
           "protocol": "file",
@@ -10014,8 +10194,8 @@
         }
       ],
       "revision": "d12129f7c898c717078ccbcc210fe5eaf82aa2f3",
-      "updated_at": "2026-11-07T13:47:48.889Z",
-      "fingerprint": "e22130d30bcb04c1095c375e6097f47009334f971abf8b492a63dee4bc9b5422",
+      "updated_at": "2026-11-10T14:52:00.912Z",
+      "fingerprint": "36629f8840591cfb56664650741deec51fdf22b4ec619f9d2ce18b291c8c5432",
       "apis": [
         {
           "protocol": "file",
@@ -10275,9 +10455,9 @@
         }
       ],
       "aggregate": {
-        "descendant_count": 44,
+        "descendant_count": 45,
         "own_api_count": 0,
-        "inherited_api_count": 162,
+        "inherited_api_count": 165,
         "dep_out": 2,
         "dep_in": 0
       }
@@ -10330,8 +10510,8 @@
         }
       ],
       "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.410Z",
-      "fingerprint": "051e876fe544d55a0a113398b5fafbc0176041fd027378a7701f27b881c7eaad",
+      "updated_at": "2026-11-10T14:52:00.912Z",
+      "fingerprint": "55369bc806ad5bb2b20c669c9a5b0cd144aa2626dc9f2176671d6b3b3d7a858e",
       "apis": [
         {
           "protocol": "file",
@@ -10422,8 +10602,8 @@
         }
       ],
       "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.410Z",
-      "fingerprint": "f5e6e581490536ff4b1338ecf5e41e78951285fd5cf3b2e09f1613be1ee836a1",
+      "updated_at": "2026-11-10T14:52:00.913Z",
+      "fingerprint": "970f31755383e45fb4a271046291e1ebd65ca742a50bc1669ec40e3c88371243",
       "apis": [
         {
           "protocol": "file",
@@ -10626,8 +10806,8 @@
         }
       ],
       "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
-      "updated_at": "2026-10-31T16:29:20.166Z",
-      "fingerprint": "dd421110442033b87b259048dd0c52be9cd5df6cdd589e1088c57f132ac95ab2",
+      "updated_at": "2026-11-10T14:52:00.914Z",
+      "fingerprint": "b923d8b90504fc142d9cf0b346db5824dd6da6cdef4977d539ba46090ff8d9fb",
       "apis": [
         {
           "protocol": "rpc",
@@ -11459,8 +11639,8 @@
         }
       ],
       "revision": "797aecab3ffa406505de00c7dd0baa0f15578bb7",
-      "updated_at": "2026-10-12T14:28:55.411Z",
-      "fingerprint": "67619e6de8498e8d8fa4131d6c7b324c8f73b0f577705923e1a348fcc12051be",
+      "updated_at": "2026-11-10T14:52:00.914Z",
+      "fingerprint": "0fd7d0d550a4f4c9dc063cd8bfe0067e5cb18a318009a568029c33ed31834bef",
       "apis": [
         {
           "protocol": "file",
@@ -12497,6 +12677,90 @@
         "dep_in": 1
       }
     },
+    "project-chaos.editor-tools.office-task-tool": {
+      "uid": "b2c00212",
+      "id": "project-chaos.editor-tools.office-task-tool",
+      "parent": "project-chaos.editor-tools",
+      "tree": "project-chaos",
+      "depth": 3,
+      "tags": [
+        "editor",
+        "tool",
+        "office-task"
+      ],
+      "name": {
+        "zh": "办事任务校验器",
+        "en": "Office Task Verification"
+      },
+      "description": {
+        "zh": "编辑器侧的办事任务校验：按表格与时代门槛核对任务链路，输出通过/失败状态，给内容配置改完后的自检用。\n",
+        "en": "Editor-side office-task verification: walks the task chain against the workbook and era gates and reports pass/fail status for post-edit self-checks.\n"
+      },
+      "source": [
+        {
+          "path": "Assets/Scripts/Editor/OfficeTaskTool/OfficeTaskVerification.cs"
+        }
+      ],
+      "revision": "08f9a356150c4617b28273d13535c6f14ae4d299",
+      "updated_at": "2026-11-10T14:57:10.678Z",
+      "fingerprint": "21b33cac8fcbd5b49ebdd4c5601756ae61785ecd4fe245f8ba8f6f190c7a4f72",
+      "apis": [
+        {
+          "protocol": "file",
+          "path": "Assets/Scripts/Editor/OfficeTaskTool/OfficeTaskVerification.cs",
+          "description": {
+            "zh": "办事任务校验器\n",
+            "en": "Office task verifier\n"
+          },
+          "key": "file:Assets/Scripts/Editor/OfficeTaskTool/OfficeTaskVerification.cs"
+        },
+        {
+          "protocol": "rpc",
+          "path": "rpc:OfficeTaskVerification.Start",
+          "description": {
+            "zh": "启动校验\n",
+            "en": "Starts verification\n"
+          },
+          "key": "rpc:rpc:OfficeTaskVerification.Start"
+        },
+        {
+          "protocol": "rpc",
+          "path": "rpc:OfficeTaskVerification.Status",
+          "description": {
+            "zh": "最近一次校验状态\n",
+            "en": "Last verification status\n"
+          },
+          "key": "rpc:rpc:OfficeTaskVerification.Status"
+        }
+      ],
+      "deps": [
+        {
+          "kind": "reference",
+          "to": "project-chaos.config-pipeline.table-repo.office-task",
+          "label": {
+            "zh": "校验任务表",
+            "en": "Verifies task table"
+          },
+          "cross_tree": false
+        },
+        {
+          "kind": "reference",
+          "to": "project-chaos.bootstrap.w5-gameplay.meta-events",
+          "label": {
+            "zh": "对照运行时任务服务",
+            "en": "Against runtime task service"
+          },
+          "cross_tree": false
+        }
+      ],
+      "aggregate": {
+        "descendant_count": 0,
+        "own_api_count": 3,
+        "inherited_api_count": 0,
+        "dep_out": 2,
+        "dep_in": 0
+      }
+    },
     "project-chaos.editor-tools.runmap-placeholder": {
       "uid": "e0a10009",
       "id": "project-chaos.editor-tools.runmap-placeholder",
@@ -12613,8 +12877,8 @@
         }
       ],
       "revision": "d12129f7c898c717078ccbcc210fe5eaf82aa2f3",
-      "updated_at": "2026-11-07T13:54:15.852Z",
-      "fingerprint": "09fe01f4dcf4f43d9726edea022776a577185585d74171aff012fd3740b7a0a8",
+      "updated_at": "2026-11-10T14:52:00.917Z",
+      "fingerprint": "b92d7138ce7709032b78f0134d506d4f57de8bcbb60a8bb2fa3774cb47bd1390",
       "apis": [
         {
           "protocol": "file",
@@ -13476,9 +13740,9 @@
         }
       ],
       "aggregate": {
-        "descendant_count": 111,
+        "descendant_count": 112,
         "own_api_count": 0,
-        "inherited_api_count": 307,
+        "inherited_api_count": 311,
         "dep_out": 1,
         "dep_in": 4
       }
@@ -16795,8 +17059,8 @@
         }
       ],
       "revision": "d12129f7c898c717078ccbcc210fe5eaf82aa2f3",
-      "updated_at": "2026-11-07T13:53:11.987Z",
-      "fingerprint": "fc70151827909b870620be7a8996c9aa75fa70f6a5dba7bc030960f7f4d2201e",
+      "updated_at": "2026-11-10T14:52:00.918Z",
+      "fingerprint": "8c991341c3922535cf3977a26180c164b557ed67584a6ac0296d90c72442b06e",
       "apis": [
         {
           "protocol": "file",
@@ -17201,8 +17465,8 @@
         }
       ],
       "revision": "3e9431e3172f8f81c73452994a04db100947fac0",
-      "updated_at": "2026-10-31T16:20:37.067Z",
-      "fingerprint": "87e9265042d906b3a43da83b48de665bb13965d3fd1b837fee98efa8757990f3",
+      "updated_at": "2026-11-10T14:52:00.919Z",
+      "fingerprint": "3dfafaa0db3325ee14621a1b3a6e27fcfaa595a60caa3ed44281abed79baa634",
       "apis": [
         {
           "protocol": "file",
@@ -17482,8 +17746,8 @@
         }
       ],
       "revision": "d12129f7c898c717078ccbcc210fe5eaf82aa2f3",
-      "updated_at": "2026-11-07T13:54:15.831Z",
-      "fingerprint": "356ac8b2d2971bbf8015d5ad9abd84e535305c8533e57bc7859b3400193388a9",
+      "updated_at": "2026-11-10T14:52:00.919Z",
+      "fingerprint": "9483ca849aabb4f631a0af7d97731dd101612a1fde9596f75cd6d69f910fb12f",
       "apis": [
         {
           "protocol": "rpc",
@@ -17565,8 +17829,8 @@
         }
       ],
       "revision": "d12129f7c898c717078ccbcc210fe5eaf82aa2f3",
-      "updated_at": "2026-11-07T13:54:15.831Z",
-      "fingerprint": "2b66be91416281b71954af87b5f9e8931492665dd7250d06d80df3a1f8410fb1",
+      "updated_at": "2026-11-10T14:52:00.920Z",
+      "fingerprint": "4218aacf3a94ac1f8b3c43d4e96de0a074b03b0dd6c43b9a0c1fd9a333638e3e",
       "apis": [
         {
           "protocol": "rpc",
@@ -18018,11 +18282,107 @@
       "updated_at": "2026-10-06T12:10:00Z",
       "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "aggregate": {
-        "descendant_count": 4,
+        "descendant_count": 5,
         "own_api_count": 0,
-        "inherited_api_count": 18,
+        "inherited_api_count": 22,
         "dep_out": 0,
         "dep_in": 2
+      }
+    },
+    "project-chaos.framework.save.run-checkpoint": {
+      "uid": "b2c00211",
+      "id": "project-chaos.framework.save.run-checkpoint",
+      "parent": "project-chaos.framework.save",
+      "tree": "project-chaos",
+      "depth": 4,
+      "tags": [
+        "framework",
+        "save",
+        "run"
+      ],
+      "name": {
+        "zh": "局内检查点存档",
+        "en": "Run Checkpoint Save"
+      },
+      "description": {
+        "zh": "局内存档检查点：把当前局的门客、计时道具、委托、内容领取与地面掉落快照成 ActiveRunSave，供回到标题后继续或放弃。\n",
+        "en": "In-run checkpoint save: snapshots retainers, timed items, quests, content claims and ground drops into ActiveRunSave so the run can be resumed or abandoned from the title screen.\n"
+      },
+      "source": [
+        {
+          "path": "Assets/Scripts/Runtime/GameBase/Meta/RunCheckpoint.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/GameBase/SaveManager/ActiveRunSave.cs"
+        }
+      ],
+      "revision": "08f9a356150c4617b28273d13535c6f14ae4d299",
+      "updated_at": "2026-11-10T14:57:10.677Z",
+      "fingerprint": "cb5c38f9034def97bac40b6af6044e3e1a298799d5bc0b614bb4f8229004b471",
+      "apis": [
+        {
+          "protocol": "file",
+          "path": "Assets/Scripts/Runtime/GameBase/Meta/RunCheckpoint.cs",
+          "description": {
+            "zh": "检查点保存与放弃入口\n",
+            "en": "Checkpoint save and abandon entry points\n"
+          },
+          "key": "file:Assets/Scripts/Runtime/GameBase/Meta/RunCheckpoint.cs"
+        },
+        {
+          "protocol": "file",
+          "path": "Assets/Scripts/Runtime/GameBase/SaveManager/ActiveRunSave.cs",
+          "description": {
+            "zh": "局内存档数据模型\n",
+            "en": "Run save data model\n"
+          },
+          "key": "file:Assets/Scripts/Runtime/GameBase/SaveManager/ActiveRunSave.cs"
+        },
+        {
+          "protocol": "rpc",
+          "path": "rpc:RunCheckpoint.SaveAndReturnToTitle",
+          "description": {
+            "zh": "存档并回到标题\n",
+            "en": "Saves and returns to the title\n"
+          },
+          "key": "rpc:rpc:RunCheckpoint.SaveAndReturnToTitle"
+        },
+        {
+          "protocol": "rpc",
+          "path": "rpc:RunCheckpoint.Abandon",
+          "description": {
+            "zh": "放弃本局存档\n",
+            "en": "Abandons the checkpoint\n"
+          },
+          "key": "rpc:rpc:RunCheckpoint.Abandon"
+        }
+      ],
+      "deps": [
+        {
+          "kind": "reference",
+          "to": "project-chaos.framework.save.session",
+          "label": {
+            "zh": "写入会话存档",
+            "en": "Writes session save"
+          },
+          "cross_tree": false
+        },
+        {
+          "kind": "reference",
+          "to": "project-chaos.bootstrap.w5-gameplay.encounter",
+          "label": {
+            "zh": "快照局内遭遇状态",
+            "en": "Snapshots encounter state"
+          },
+          "cross_tree": false
+        }
+      ],
+      "aggregate": {
+        "descendant_count": 0,
+        "own_api_count": 4,
+        "inherited_api_count": 0,
+        "dep_out": 2,
+        "dep_in": 0
       }
     },
     "project-chaos.framework.save.service-read": {
@@ -18275,8 +18635,8 @@
         }
       ],
       "revision": "d12129f7c898c717078ccbcc210fe5eaf82aa2f3",
-      "updated_at": "2026-11-07T13:53:11.987Z",
-      "fingerprint": "fe28d1d380e60aa1408c3214b6b966b2a1a4917b3a89db2bb5d67572eb18c6ec",
+      "updated_at": "2026-11-10T14:52:00.920Z",
+      "fingerprint": "cca1b7b4ccb60681a25ea82d0709966784801f7831cc5ed6b950849cd520cd33",
       "apis": [
         {
           "protocol": "rpc",
@@ -18344,7 +18704,7 @@
         "own_api_count": 4,
         "inherited_api_count": 0,
         "dep_out": 2,
-        "dep_in": 0
+        "dep_in": 1
       }
     },
     "project-chaos.framework.save.slot-data": {
@@ -18369,8 +18729,8 @@
         }
       ],
       "revision": "d12129f7c898c717078ccbcc210fe5eaf82aa2f3",
-      "updated_at": "2026-11-07T13:53:11.988Z",
-      "fingerprint": "710246fd93f2725934280cc2313d0fba85da1bf60f1d8bae70abf673bb531a3c",
+      "updated_at": "2026-11-10T14:52:00.921Z",
+      "fingerprint": "89e104b5526ddae5feb4dbb4d14783f63b2f09f8ceda980752b65e8395017d15",
       "apis": [
         {
           "protocol": "rpc",
@@ -21760,8 +22120,8 @@
         }
       ],
       "revision": "d12129f7c898c717078ccbcc210fe5eaf82aa2f3",
-      "updated_at": "2026-11-07T13:54:15.832Z",
-      "fingerprint": "b8600f0aba5a0d137e59884089677ecde78993f66fdf7220a3b26953e160d0e6",
+      "updated_at": "2026-11-10T14:52:00.921Z",
+      "fingerprint": "ef44c8ec5c983d5c65c59df6d4fe642fb9381652f74cce71c95d1a0217ba8965",
       "apis": [
         {
           "protocol": "rpc",
@@ -21868,8 +22228,8 @@
         }
       ],
       "revision": "d12129f7c898c717078ccbcc210fe5eaf82aa2f3",
-      "updated_at": "2026-11-07T13:43:40.747Z",
-      "fingerprint": "9caed20e5152a2caa36dd4825a4de04c6b6a7971d62397f8bf47b74a485ae9d1",
+      "updated_at": "2026-11-10T14:52:00.923Z",
+      "fingerprint": "b95c591baa22a3874bdbffd9243ee4c7e60d71cfe6a729e5d425359c503bd4ad",
       "apis": [
         {
           "protocol": "rpc",
@@ -23181,7 +23541,7 @@
       "aggregate": {
         "descendant_count": 54,
         "own_api_count": 0,
-        "inherited_api_count": 124,
+        "inherited_api_count": 132,
         "dep_out": 3,
         "dep_in": 1
       }
@@ -23291,8 +23651,8 @@
         }
       ],
       "revision": "d12129f7c898c717078ccbcc210fe5eaf82aa2f3",
-      "updated_at": "2026-11-07T13:54:15.841Z",
-      "fingerprint": "7e4cd57d1f1b5b9c646fb4ed11277c1fd7979add83619807e7f4cd6daaf850e5",
+      "updated_at": "2026-11-10T14:52:00.926Z",
+      "fingerprint": "6130a69e775fc1b6744efd683edbb844cead033bd9535f15596d3078e184dc5d",
       "apis": [
         {
           "protocol": "file",
@@ -23387,8 +23747,8 @@
         }
       ],
       "revision": "d12129f7c898c717078ccbcc210fe5eaf82aa2f3",
-      "updated_at": "2026-11-07T13:54:15.839Z",
-      "fingerprint": "5669729e90d929b3dfd66384e75c4cce73bfddd6cc1e37a16b0ef020bf2d65d0",
+      "updated_at": "2026-11-10T14:52:00.929Z",
+      "fingerprint": "1fe6f7d2c9ac70d549cb8765e1d14e299c4431155be5fb7848fa9260b477f899",
       "apis": [
         {
           "protocol": "file",
@@ -23625,7 +23985,7 @@
       "aggregate": {
         "descendant_count": 4,
         "own_api_count": 0,
-        "inherited_api_count": 9,
+        "inherited_api_count": 12,
         "dep_out": 0,
         "dep_in": 9
       }
@@ -23724,11 +24084,23 @@
         },
         {
           "path": "Assets/Scripts/Runtime/MVP/Presenter/Gameplay/GameplayPresenter.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/MVP/Presenter/Gameplay/BattlePreparationFlow.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/MVP/Presenter/Gameplay/BattlePreparationPresenter.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/MVP/Presenter/Gameplay/BattlePreparationFlow.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/MVP/Presenter/Gameplay/BattlePreparationPresenter.cs"
         }
       ],
       "revision": "d12129f7c898c717078ccbcc210fe5eaf82aa2f3",
-      "updated_at": "2026-11-07T13:54:15.837Z",
-      "fingerprint": "4cd2d13b67e50f75c2c46be6ce23cc508f9879b84e088c10f2ec257c87b910ff",
+      "updated_at": "2026-11-10T14:57:10.687Z",
+      "fingerprint": "5c592ad212711770d8729a861783b9ad3bc1c1cb12f1b3e01308608f72f922df",
       "apis": [
         {
           "protocol": "file",
@@ -23756,6 +24128,33 @@
             "en": "Inventory presenter\n"
           },
           "key": "file:file:Assets/Scripts/Runtime/MVP/Presenter/Gameplay/InventoryPresenter.cs"
+        },
+        {
+          "protocol": "file",
+          "path": "Assets/Scripts/Runtime/MVP/Presenter/Gameplay/BattlePreparationFlow.cs",
+          "description": {
+            "zh": "战备界面的流程编排（打开/开始/失败重开）\n",
+            "en": "Battle-prep flow orchestration (open/start/reopen)\n"
+          },
+          "key": "file:Assets/Scripts/Runtime/MVP/Presenter/Gameplay/BattlePreparationFlow.cs"
+        },
+        {
+          "protocol": "file",
+          "path": "Assets/Scripts/Runtime/MVP/Presenter/Gameplay/BattlePreparationPresenter.cs",
+          "description": {
+            "zh": "战备界面的 Presenter（仓库行、槽位手势、预设）\n",
+            "en": "Battle-prep presenter (warehouse rows, slot gestures, presets)\n"
+          },
+          "key": "file:Assets/Scripts/Runtime/MVP/Presenter/Gameplay/BattlePreparationPresenter.cs"
+        },
+        {
+          "protocol": "rpc",
+          "path": "rpc:BattlePreparationPresenter.EnterRun",
+          "description": {
+            "zh": "确认战备并进入本局\n",
+            "en": "Confirms loadout and enters the run\n"
+          },
+          "key": "rpc:rpc:BattlePreparationPresenter.EnterRun"
         }
       ],
       "deps": [
@@ -23780,7 +24179,7 @@
       ],
       "aggregate": {
         "descendant_count": 0,
-        "own_api_count": 3,
+        "own_api_count": 6,
         "inherited_api_count": 0,
         "dep_out": 2,
         "dep_in": 0
@@ -23922,8 +24321,8 @@
         }
       ],
       "revision": "d12129f7c898c717078ccbcc210fe5eaf82aa2f3",
-      "updated_at": "2026-11-07T13:54:15.837Z",
-      "fingerprint": "9a726ee9815e1ee09dcacc823cd12934e6f88e4d2ee03f9c443aec6ddc1429b5",
+      "updated_at": "2026-11-10T14:52:00.936Z",
+      "fingerprint": "9d92a41995f4f9e481cedff1dabffd25b27d9d39d3092801ca573c71a30696f1",
       "apis": [
         {
           "protocol": "file",
@@ -23993,7 +24392,7 @@
       "aggregate": {
         "descendant_count": 42,
         "own_api_count": 0,
-        "inherited_api_count": 101,
+        "inherited_api_count": 106,
         "dep_out": 0,
         "dep_in": 0
       }
@@ -24024,7 +24423,7 @@
       "aggregate": {
         "descendant_count": 10,
         "own_api_count": 0,
-        "inherited_api_count": 30,
+        "inherited_api_count": 35,
         "dep_out": 0,
         "dep_in": 2
       }
@@ -24063,11 +24462,17 @@
         },
         {
           "path": "Assets/Scripts/Runtime/MVP/View/EraProgressPanel.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/MVP/View/BattlePreparationPanel.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/MVP/View/BattlePreparationPanel.cs"
         }
       ],
       "revision": "d12129f7c898c717078ccbcc210fe5eaf82aa2f3",
-      "updated_at": "2026-11-07T13:51:57.363Z",
-      "fingerprint": "591fcf65311571e0899955c56c305f30953256eb80e333d66e405c874c97bf3d",
+      "updated_at": "2026-11-10T14:57:10.689Z",
+      "fingerprint": "8e995c942ca204b4b3bdc193ddb28e25499359c55e538e820171a7a5f2a014cd",
       "apis": [
         {
           "protocol": "file",
@@ -24095,6 +24500,15 @@
             "en": "Era progress panel\n"
           },
           "key": "file:file:Assets/Scripts/Runtime/MVP/View/EraProgressPanel.cs"
+        },
+        {
+          "protocol": "file",
+          "path": "Assets/Scripts/Runtime/MVP/View/BattlePreparationPanel.cs",
+          "description": {
+            "zh": "战备装载面板（槽位拖拽、预设页、数量确认）\n",
+            "en": "Battle preparation panel (slot drag, presets, quantity confirm)\n"
+          },
+          "key": "file:Assets/Scripts/Runtime/MVP/View/BattlePreparationPanel.cs"
         }
       ],
       "deps": [
@@ -24119,7 +24533,7 @@
       ],
       "aggregate": {
         "descendant_count": 0,
-        "own_api_count": 3,
+        "own_api_count": 4,
         "inherited_api_count": 0,
         "dep_out": 2,
         "dep_in": 0
@@ -24231,11 +24645,17 @@
         },
         {
           "path": "Assets/Scripts/Runtime/MVP/View/RadialWedgeGraphic.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/MVP/View/RadialMenuSkin.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/MVP/View/RadialMenuSkin.cs"
         }
       ],
       "revision": "d12129f7c898c717078ccbcc210fe5eaf82aa2f3",
-      "updated_at": "2026-11-07T13:51:57.361Z",
-      "fingerprint": "6fd543d1e1fe53bc1d321322b8c4e6bcec18c72232b4b684f3f863ea8520b55c",
+      "updated_at": "2026-11-10T14:57:10.693Z",
+      "fingerprint": "75186c4882521f0ea9d4fc92bfb65e7751bc739fe0770d3b8d9bd990a6698a6f",
       "apis": [
         {
           "protocol": "file",
@@ -24263,6 +24683,24 @@
             "en": "Radial wedge graphic\n"
           },
           "key": "file:file:Assets/Scripts/Runtime/MVP/View/RadialWedgeGraphic.cs"
+        },
+        {
+          "protocol": "file",
+          "path": "Assets/Scripts/Runtime/MVP/View/RadialMenuSkin.cs",
+          "description": {
+            "zh": "轮盘皮肤资产（按层级/数量取切片与着色）\n",
+            "en": "Radial menu skin asset (slice and tint by tier/count)\n"
+          },
+          "key": "file:Assets/Scripts/Runtime/MVP/View/RadialMenuSkin.cs"
+        },
+        {
+          "protocol": "rpc",
+          "path": "rpc:RadialMenuSkin.GetSlice",
+          "description": {
+            "zh": "取当前轮盘扇区的精灵与颜色\n",
+            "en": "Resolves wedge sprite and tint\n"
+          },
+          "key": "rpc:rpc:RadialMenuSkin.GetSlice"
         }
       ],
       "deps": [
@@ -24287,7 +24725,7 @@
       ],
       "aggregate": {
         "descendant_count": 0,
-        "own_api_count": 3,
+        "own_api_count": 5,
         "inherited_api_count": 0,
         "dep_out": 2,
         "dep_in": 0
@@ -24597,11 +25035,17 @@
         },
         {
           "path": "Assets/Scripts/Runtime/MVP/View/PausePanel.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/MVP/View/RunResumeRecoveryPanel.cs"
+        },
+        {
+          "path": "Assets/Scripts/Runtime/MVP/View/RunResumeRecoveryPanel.cs"
         }
       ],
       "revision": "d12129f7c898c717078ccbcc210fe5eaf82aa2f3",
-      "updated_at": "2026-11-07T13:51:57.360Z",
-      "fingerprint": "d2927a38f51d3bba0759fefbfd4817720845ae045a0d045d9979bfbeea6f6a35",
+      "updated_at": "2026-11-10T14:57:10.692Z",
+      "fingerprint": "1bcff612916eb81a1169aa398992d25bf806308cba65c0d726e732d6d74a06af",
       "apis": [
         {
           "protocol": "file",
@@ -24638,6 +25082,24 @@
             "en": "Pause panel\n"
           },
           "key": "file:file:Assets/Scripts/Runtime/MVP/View/PausePanel.cs"
+        },
+        {
+          "protocol": "file",
+          "path": "Assets/Scripts/Runtime/MVP/View/RunResumeRecoveryPanel.cs",
+          "description": {
+            "zh": "局内恢复提示面板（回标题后继续/放弃）\n",
+            "en": "Run resume recovery panel (continue/abandon from title)\n"
+          },
+          "key": "file:Assets/Scripts/Runtime/MVP/View/RunResumeRecoveryPanel.cs"
+        },
+        {
+          "protocol": "rpc",
+          "path": "rpc:RunResumeRecoveryPanel.Open",
+          "description": {
+            "zh": "按原因弹出恢复提示\n",
+            "en": "Opens the recovery panel with a reason\n"
+          },
+          "key": "rpc:rpc:RunResumeRecoveryPanel.Open"
         }
       ],
       "deps": [
@@ -24662,7 +25124,7 @@
       ],
       "aggregate": {
         "descendant_count": 0,
-        "own_api_count": 4,
+        "own_api_count": 6,
         "inherited_api_count": 0,
         "dep_out": 2,
         "dep_in": 0
@@ -24783,8 +25245,8 @@
         }
       ],
       "revision": "d12129f7c898c717078ccbcc210fe5eaf82aa2f3",
-      "updated_at": "2026-11-07T13:51:57.367Z",
-      "fingerprint": "07b4f6a409c90fcf3fff4b15a62c78317ccd824a10538faf4532483eca45b72a",
+      "updated_at": "2026-11-10T14:52:00.943Z",
+      "fingerprint": "ac2836859c11fd0a0dac1c8bc7f6a287ef4dbdbae0ade18f4fff1cdc94019b8c",
       "apis": [
         {
           "protocol": "file",
@@ -24873,8 +25335,8 @@
         }
       ],
       "revision": "d12129f7c898c717078ccbcc210fe5eaf82aa2f3",
-      "updated_at": "2026-11-07T13:51:57.368Z",
-      "fingerprint": "11a5785c2d6b03554234fd90b45e0b61463b0dfca901f39dccb8a181409febe5",
+      "updated_at": "2026-11-10T14:52:00.944Z",
+      "fingerprint": "29512a8f8c04d708de5c9ef951e0aa266037b3c7f8e2c8f012f7fbe39981b9a9",
       "apis": [
         {
           "protocol": "file",
@@ -28750,8 +29212,8 @@
         }
       ],
       "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
-      "updated_at": "2026-10-31T08:56:15.072Z",
-      "fingerprint": "0478d3c201a5d2865bad641db06e3477d4affaf50b4958327af2d283d8508352",
+      "updated_at": "2026-11-10T14:52:00.947Z",
+      "fingerprint": "f3e7a625248b38486133d984b6f74ea14c629e74471203cd3b3d52eb38ff8f96",
       "apis": [
         {
           "protocol": "file",
@@ -29319,8 +29781,8 @@
         }
       ],
       "revision": "d12129f7c898c717078ccbcc210fe5eaf82aa2f3",
-      "updated_at": "2026-11-07T13:43:40.755Z",
-      "fingerprint": "84ef01a003e87b2edd2d0fad32d9d29caf65f7965220ad8f2dc94ee03dc9ea95",
+      "updated_at": "2026-11-10T14:52:00.954Z",
+      "fingerprint": "ea3bfc7fc94afb43044f2b4b9cd2e63189a68ee1121a1448b4b2e29710d2357d",
       "apis": [
         {
           "protocol": "file",
@@ -30597,8 +31059,8 @@
         }
       ],
       "revision": "7230b3db925288f8a01b1f2255de1e42f792f0cd",
-      "updated_at": "2026-10-31T08:58:40.814Z",
-      "fingerprint": "d36bd152a342132f3224433386deac36954d5a63b670f42460e619fad493629f",
+      "updated_at": "2026-11-10T14:52:00.955Z",
+      "fingerprint": "cfcace34d3205e426ecf7bf1c61b95068d8c55693980af9cea7fcce8d3120a9e",
       "apis": [
         {
           "protocol": "file",
@@ -30768,8 +31230,8 @@
         }
       ],
       "revision": "d12129f7c898c717078ccbcc210fe5eaf82aa2f3",
-      "updated_at": "2026-11-07T13:53:11.990Z",
-      "fingerprint": "d40049626d0584ff7c0449cae78eb266954846ab20d42797aafe5cc86a7f4ff5",
+      "updated_at": "2026-11-10T14:52:00.955Z",
+      "fingerprint": "6aecf6ad01854d76d46c555fbd59229ebbb6086f485e5350b9ce6b33f6946a01",
       "apis": [
         {
           "protocol": "file",
@@ -30815,8 +31277,8 @@
         }
       ],
       "revision": "d12129f7c898c717078ccbcc210fe5eaf82aa2f3",
-      "updated_at": "2026-11-07T13:53:11.990Z",
-      "fingerprint": "d40049626d0584ff7c0449cae78eb266954846ab20d42797aafe5cc86a7f4ff5",
+      "updated_at": "2026-11-10T14:52:00.956Z",
+      "fingerprint": "6aecf6ad01854d76d46c555fbd59229ebbb6086f485e5350b9ce6b33f6946a01",
       "apis": [
         {
           "protocol": "file",
@@ -30862,8 +31324,8 @@
         }
       ],
       "revision": "d12129f7c898c717078ccbcc210fe5eaf82aa2f3",
-      "updated_at": "2026-11-07T13:53:11.990Z",
-      "fingerprint": "d40049626d0584ff7c0449cae78eb266954846ab20d42797aafe5cc86a7f4ff5",
+      "updated_at": "2026-11-10T14:52:00.957Z",
+      "fingerprint": "6aecf6ad01854d76d46c555fbd59229ebbb6086f485e5350b9ce6b33f6946a01",
       "apis": [
         {
           "protocol": "file",
@@ -32221,16 +32683,16 @@
     "file:Assets/Art/FBX/Citizen_001/citizen_001_SkeletonData.asset": "project-chaos.assets.art.citizen-001",
     "file:Assets/Art/FBX/Citizen_001/citizen_001.atlas.txt": "project-chaos.assets.art.citizen-001",
     "file:Assets/Art/FBX/Citizen_001/citizen_001.json": "project-chaos.assets.art.citizen-001",
-    "file:Assets/Art/icon/IconAtlas_Input.spriteatlasv2": "project-chaos.assets.art.icon.atlas",
-    "file:Assets/Art/icon/keyboard&mouse/keyboard_a.png": "project-chaos.assets.art.icon.keyboard-mouse",
-    "file:Assets/Art/icon/keyboard&mouse/keyboard_space.png": "project-chaos.assets.art.icon.keyboard-mouse",
-    "file:Assets/Art/icon/keyboard&mouse/mouse_left.png": "project-chaos.assets.art.icon.keyboard-mouse",
-    "file:Assets/Art/icon/ps/controller_playstation4.png": "project-chaos.assets.art.icon.playstation",
-    "file:Assets/Art/icon/ps/playstation_button_cross.png": "project-chaos.assets.art.icon.playstation",
-    "file:Assets/Art/icon/ps/playstation_dpad_up.png": "project-chaos.assets.art.icon.playstation",
-    "file:Assets/Art/icon/xbox/controller_xboxone.png": "project-chaos.assets.art.icon.xbox",
-    "file:Assets/Art/icon/xbox/xbox_button_a.png": "project-chaos.assets.art.icon.xbox",
-    "file:Assets/Art/icon/xbox/xbox_dpad_round_up.png": "project-chaos.assets.art.icon.xbox",
+    "file:Assets/Art/Input_icon/IconAtlas_Input.spriteatlasv2": "project-chaos.assets.art.icon.atlas",
+    "file:Assets/Art/Input_icon/keyboard&mouse/keyboard_a.png": "project-chaos.assets.art.icon.keyboard-mouse",
+    "file:Assets/Art/Input_icon/keyboard&mouse/keyboard_space.png": "project-chaos.assets.art.icon.keyboard-mouse",
+    "file:Assets/Art/Input_icon/keyboard&mouse/mouse_left.png": "project-chaos.assets.art.icon.keyboard-mouse",
+    "file:Assets/Art/Input_icon/ps/controller_playstation4.png": "project-chaos.assets.art.icon.playstation",
+    "file:Assets/Art/Input_icon/ps/playstation_button_cross.png": "project-chaos.assets.art.icon.playstation",
+    "file:Assets/Art/Input_icon/ps/playstation_dpad_up.png": "project-chaos.assets.art.icon.playstation",
+    "file:Assets/Art/Input_icon/xbox/controller_xboxone.png": "project-chaos.assets.art.icon.xbox",
+    "file:Assets/Art/Input_icon/xbox/xbox_button_a.png": "project-chaos.assets.art.icon.xbox",
+    "file:Assets/Art/Input_icon/xbox/xbox_dpad_round_up.png": "project-chaos.assets.art.icon.xbox",
     "file:Assets/Art/PNG/east_asia_map_fantasy_equirect_4096x3072.png": "project-chaos.assets.art.world-maps",
     "file:Assets/Art/PNG/GameWorld_Map/Map_tianxia_zhongyuan.png": "project-chaos.assets.art.world-maps",
     "file:Assets/Art/PNG/Grass_001map001.png": "project-chaos.assets.art.tile-textures",
@@ -32381,7 +32843,11 @@
     "file:Assets/Resources/UI/Loading/Loading_01.png": "project-chaos.assets.ui-sprites",
     "file:Assets/Resources/UI/Loading/Loading_02.png": "project-chaos.assets.ui-sprites",
     "file:Assets/Resources/UI/Loading/Loading_03.png": "project-chaos.assets.ui-sprites",
+    "file:Assets/Resources/UI/RadialMenu/DefaultSkin.asset": "project-chaos.assets.ui-sprites",
+    "file:Assets/Resources/UI/RadialMenu/DefaultSlices.png": "project-chaos.assets.ui-sprites",
+    "file:Assets/Resources/UIPanels/BattlePreparationPanel.prefab": "project-chaos.assets.ui-prefabs",
     "file:Assets/Resources/UIPanels/MainMenuPanel.prefab": "project-chaos.assets.ui-prefabs",
+    "file:Assets/Resources/UIPanels/RunResumeRecoveryPanel.prefab": "project-chaos.assets.ui-prefabs",
     "file:Assets/Resources/UIPanels/SettingPanel.prefab": "project-chaos.assets.ui-prefabs",
     "file:Assets/Resources/UIPanels/SLPanel.prefab": "project-chaos.assets.ui-prefabs",
     "file:Assets/Resources/UIPanels/SubUI_Prefab/RecordCell.prefab": "project-chaos.assets.ui-prefabs",
@@ -32390,6 +32856,7 @@
     "file:Assets/Scenes/LoadingScene.unity": "project-chaos.bootstrap.scenes.loading-scene",
     "file:Assets/Scenes/MainScene.unity": "project-chaos.bootstrap.scenes.main-scene",
     "file:Assets/Scenes/TestScene.unity": "project-chaos.bootstrap.scenes.test-scene",
+    "file:Assets/Scenes/URP_TestScene.unity": "project-chaos.bootstrap.scenes.test-scene",
     "file:Assets/Scenes/WorldScene.unity": "project-chaos.bootstrap.scenes.world-scene",
     "file:Assets/Scripts/Editor/ArtPipeline/IconAtlasBuilder.cs#L49-L397": "project-chaos.editor-tools.art-pipeline.icon-atlas",
     "file:Assets/Scripts/Editor/ArtPipeline/IconImportPostprocessor.cs#L34-L187": "project-chaos.editor-tools.art-pipeline.icon-import-policy",
@@ -32412,6 +32879,7 @@
     "file:Assets/Scripts/Editor/LocalizationEditor/PrefabTextCollectorWindow.cs#L32-L491": "project-chaos.editor-tools.localization.collector-window",
     "file:Assets/Scripts/Editor/LocalizationEditor/PrefabTextCollectorWindow.cs#L492-L929": "project-chaos.editor-tools.localization.collector-scan",
     "file:Assets/Scripts/Editor/LocalizationEditor/PrefabTextCollectorWindow.cs#L930-L1312": "project-chaos.editor-tools.localization.collector-import",
+    "file:Assets/Scripts/Editor/OfficeTaskTool/OfficeTaskVerification.cs": "project-chaos.editor-tools.office-task-tool",
     "file:Assets/Scripts/Editor/RunMapTool/RunMapPlaceholderPipeline.cs#L1-L733": "project-chaos.editor-tools.runmap-placeholder",
     "file:Assets/Scripts/Editor/RunMapTool/RunMapVerifyTool.cs#L1-L294": "project-chaos.editor-tools.runmap-verify",
     "file:Assets/Scripts/Editor/SceneUIOverviewTool/SceneUIOverviewTool.cs#L371-L669": "project-chaos.editor-tools.scene-ui-overview.preview-panel",
@@ -32452,6 +32920,8 @@
     "file:Assets/Scripts/Runtime/GameBase/LogManager/ChaosLog.cs#L116-L298": "project-chaos.framework.logging.core",
     "file:Assets/Scripts/Runtime/GameBase/LogManager/LogBootstrap.cs": "project-chaos.framework.logging.bootstrap",
     "file:Assets/Scripts/Runtime/GameBase/LogManager/LogColor.cs": "project-chaos.framework.logging.colors",
+    "file:Assets/Scripts/Runtime/GameBase/Meta/BattleLoadout.cs": "project-chaos.bootstrap.w5-gameplay.battle-prep",
+    "file:Assets/Scripts/Runtime/GameBase/Meta/RunCheckpoint.cs": "project-chaos.framework.save.run-checkpoint",
     "file:Assets/Scripts/Runtime/GameBase/MonoTool/MonoController.cs#L8-L45": "project-chaos.bootstrap.mono-tick.controller",
     "file:Assets/Scripts/Runtime/GameBase/MonoTool/MonoManager.cs#L9-L52": "project-chaos.bootstrap.mono-tick.manager",
     "file:Assets/Scripts/Runtime/GameBase/ResourcesLoader/ResManager.cs": "project-chaos.framework.resources.manager",
@@ -32465,6 +32935,7 @@
     "file:Assets/Scripts/Runtime/GameBase/RunMap/RunMapLoadingText.cs#L1-L112": "project-chaos.framework.runmap.loading-text",
     "file:Assets/Scripts/Runtime/GameBase/RunMap/RunMapPlanner.cs#L1-L408": "project-chaos.framework.runmap.planner",
     "file:Assets/Scripts/Runtime/GameBase/RunMap/RunMapValidator.cs#L1-L248": "project-chaos.framework.runmap.validator",
+    "file:Assets/Scripts/Runtime/GameBase/SaveManager/ActiveRunSave.cs": "project-chaos.framework.save.run-checkpoint",
     "file:Assets/Scripts/Runtime/GameBase/ScenesLoader/LoadingController.cs#L155-L211": "project-chaos.bootstrap.loading-screen.node-binding",
     "file:Assets/Scripts/Runtime/GameBase/ScenesLoader/LoadingController.cs#L213-L247": "project-chaos.bootstrap.loading-screen.metrics",
     "file:Assets/Scripts/Runtime/GameBase/ScenesLoader/LoadingController.cs#L251-L387": "project-chaos.bootstrap.loading-screen.load-orchestration",
@@ -32508,9 +32979,14 @@
     "file:Assets/Scripts/Runtime/GM/GM_UITestEnter.cs": "project-chaos.framework.dev-tests.gm-console.ui-test-entry",
     "file:Assets/Scripts/Runtime/GM/GMPanel.cs": "project-chaos.framework.dev-tests.gm-console.section-catalog",
     "file:Assets/Scripts/Runtime/MVP/Model/DialogueRuntimeData.cs#L10-L59": "project-chaos.mvp.model.runtime-data",
+    "file:Assets/Scripts/Runtime/MVP/Presenter/Gameplay/BattlePreparationFlow.cs": "project-chaos.mvp.presenter.gameplay-meta",
+    "file:Assets/Scripts/Runtime/MVP/Presenter/Gameplay/BattlePreparationPresenter.cs": "project-chaos.mvp.presenter.gameplay-meta",
+    "file:Assets/Scripts/Runtime/MVP/View/BattlePreparationPanel.cs": "project-chaos.mvp.view.gameplay.dispatch",
     "file:Assets/Scripts/Runtime/MVP/View/MainMenuPanel.cs#L1-L26": "project-chaos.mvp.view.main-menu",
     "file:Assets/Scripts/Runtime/MVP/View/MainMenuPanel.cs#L28-L36": "project-chaos.mvp.view.main-menu",
     "file:Assets/Scripts/Runtime/MVP/View/MainMenuPanel.cs#L38-L65": "project-chaos.mvp.view.main-menu",
+    "file:Assets/Scripts/Runtime/MVP/View/RadialMenuSkin.cs": "project-chaos.mvp.view.gameplay.inventory-wheel",
+    "file:Assets/Scripts/Runtime/MVP/View/RunResumeRecoveryPanel.cs": "project-chaos.mvp.view.gameplay.run-menu",
     "file:Assets/Scripts/Runtime/MVP/View/SettingPanel.cs#L136-L192": "project-chaos.mvp.view.settings.panel.node-finder",
     "file:Assets/Scripts/Runtime/MVP/View/SettingPanel.cs#L193-L248": "project-chaos.mvp.view.settings.panel.node-finder",
     "file:Assets/Scripts/Runtime/MVP/View/SettingPanel.cs#L249-L300": "project-chaos.mvp.view.settings.panel.lifecycle",
@@ -32548,6 +33024,7 @@
     "file:Assets/Scripts/Runtime/MVP/View/SLPanel.cs#L496-L509": "project-chaos.mvp.view.save-load.panel.business-actions",
     "file:Assets/Scripts/Runtime/MVP/View/WorldMapPanel.cs": "project-chaos.mvp.view.world-map.panel",
     "file:Assets/Scripts/Runtime/Path&Type/PanelType.cs": "project-chaos.framework.paths.panel-type",
+    "file:Assets/Scripts/Runtime/Player/RunEncounter.Checkpoint.cs": "project-chaos.bootstrap.w5-gameplay.encounter",
     "file:Assets/TextMesh Pro/Fonts/LiberationSans.ttf": "project-chaos.assets.tmp.fonts",
     "file:Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Drop Shadow.mat": "project-chaos.assets.tmp.fonts",
     "file:Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Fallback.asset": "project-chaos.assets.tmp.fonts",
@@ -33131,6 +33608,16 @@
     "rpc:ResolutionHelper.GetDisplayMax": "project-chaos.framework.settings.resolution",
     "rpc:ResolutionHelper.GetPresetAt": "project-chaos.framework.settings.resolution",
     "rpc:ResolutionHelper.PresetCount": "project-chaos.framework.settings.resolution",
+    "rpc:rpc:BattleLoadout.LoadPreset": "project-chaos.bootstrap.w5-gameplay.battle-prep",
+    "rpc:rpc:BattleLoadout.Move": "project-chaos.bootstrap.w5-gameplay.battle-prep",
+    "rpc:rpc:BattleLoadout.SetQuantity": "project-chaos.bootstrap.w5-gameplay.battle-prep",
+    "rpc:rpc:BattlePreparationPresenter.EnterRun": "project-chaos.mvp.presenter.gameplay-meta",
+    "rpc:rpc:OfficeTaskVerification.Start": "project-chaos.editor-tools.office-task-tool",
+    "rpc:rpc:OfficeTaskVerification.Status": "project-chaos.editor-tools.office-task-tool",
+    "rpc:rpc:RadialMenuSkin.GetSlice": "project-chaos.mvp.view.gameplay.inventory-wheel",
+    "rpc:rpc:RunCheckpoint.Abandon": "project-chaos.framework.save.run-checkpoint",
+    "rpc:rpc:RunCheckpoint.SaveAndReturnToTitle": "project-chaos.framework.save.run-checkpoint",
+    "rpc:rpc:RunResumeRecoveryPanel.Open": "project-chaos.mvp.view.gameplay.run-menu",
     "rpc:RunEncounter.ApplyTeamDamage": "project-chaos.bootstrap.w5-gameplay.encounter",
     "rpc:RunEncounter.EnterPreparedScene": "project-chaos.bootstrap.w5-gameplay.encounter",
     "rpc:RunEncounter.Team.GetHealth": "project-chaos.bootstrap.w5-gameplay.team-supply",
@@ -33333,7 +33820,7 @@
       "from": "project-chaos.assets.input-assets",
       "from_api": "file:Assets/Resources/Data/Input/KeyIconMap.asset",
       "to": "project-chaos.assets.art.icon.atlas",
-      "to_api": "file:Assets/Art/icon/IconAtlas_Input.spriteatlasv2",
+      "to_api": "file:Assets/Art/Input_icon/IconAtlas_Input.spriteatlasv2",
       "kind": "reference",
       "cross_tree": false,
       "label": {
@@ -33527,6 +34014,26 @@
       "label": {
         "zh": "启动场景挂载 Entry",
         "en": "Startup scene hosts Entry"
+      }
+    },
+    {
+      "from": "project-chaos.bootstrap.w5-gameplay.battle-prep",
+      "to": "project-chaos.bootstrap.w5-gameplay.meta-events",
+      "kind": "reference",
+      "cross_tree": false,
+      "label": {
+        "zh": "读取仓库与道具",
+        "en": "Reads warehouse and items"
+      }
+    },
+    {
+      "from": "project-chaos.bootstrap.w5-gameplay.battle-prep",
+      "to": "project-chaos.bootstrap.w5-gameplay.run-flow",
+      "kind": "call",
+      "cross_tree": false,
+      "label": {
+        "zh": "携带入局",
+        "en": "Carries into the run"
       }
     },
     {
@@ -34418,6 +34925,26 @@
       }
     },
     {
+      "from": "project-chaos.editor-tools.office-task-tool",
+      "to": "project-chaos.bootstrap.w5-gameplay.meta-events",
+      "kind": "reference",
+      "cross_tree": false,
+      "label": {
+        "zh": "对照运行时任务服务",
+        "en": "Against runtime task service"
+      }
+    },
+    {
+      "from": "project-chaos.editor-tools.office-task-tool",
+      "to": "project-chaos.config-pipeline.table-repo.office-task",
+      "kind": "reference",
+      "cross_tree": false,
+      "label": {
+        "zh": "校验任务表",
+        "en": "Verifies task table"
+      }
+    },
+    {
       "from": "project-chaos.editor-tools.runmap-verify",
       "to": "project-chaos.bootstrap.w5-gameplay.day-night",
       "kind": "reference",
@@ -35047,6 +35574,26 @@
       "label": {
         "zh": "读探索图数据",
         "en": "Reads exploration plan"
+      }
+    },
+    {
+      "from": "project-chaos.framework.save.run-checkpoint",
+      "to": "project-chaos.bootstrap.w5-gameplay.encounter",
+      "kind": "reference",
+      "cross_tree": false,
+      "label": {
+        "zh": "快照局内遭遇状态",
+        "en": "Snapshots encounter state"
+      }
+    },
+    {
+      "from": "project-chaos.framework.save.run-checkpoint",
+      "to": "project-chaos.framework.save.session",
+      "kind": "reference",
+      "cross_tree": false,
+      "label": {
+        "zh": "写入会话存档",
+        "en": "Writes session save"
       }
     },
     {
@@ -37217,12 +37764,12 @@
     "project-chaos.bootstrap.w5-gameplay": {
       "schema_version": 1,
       "id": "project-chaos.bootstrap.w5-gameplay",
-      "updated_at": "2026-11-07T13:52:34.411Z",
+      "updated_at": "2026-11-10T14:57:30.771Z",
       "mode": "groups",
       "max_columns": 3,
       "reading": {
-        "zh": "三个环：局内核心环（进入、tick、结算），然后是世界里发生的一切（交互、村庄生产、昼夜时钟），最后是衔接局内外的局外层与补给。",
-        "en": "Three rings: the run core loop (enter, tick, settle), then everything that happens in the world (interaction, village production, day/night clock), then the meta layer and supplies that bridge between runs."
+        "zh": "三个环：局内核心环（进入、tick、结算），然后是世界里发生的一切（交互、村庄生产、昼夜时钟），最后是衔接局内外的局外层与补给——战备装载在这里决定带什么进本局。",
+        "en": "Three rings: the run core loop (enter, tick, settle), then everything that happens in the world (interaction, village production, day/night clock), then the meta layer and supplies that bridge between runs — the loadout module decides what is carried in."
       },
       "order": [
         "project-chaos.bootstrap.w5-gameplay.run-flow",
@@ -37231,7 +37778,8 @@
         "project-chaos.bootstrap.w5-gameplay.village",
         "project-chaos.bootstrap.w5-gameplay.day-night",
         "project-chaos.bootstrap.w5-gameplay.meta-events",
-        "project-chaos.bootstrap.w5-gameplay.team-supply"
+        "project-chaos.bootstrap.w5-gameplay.team-supply",
+        "project-chaos.bootstrap.w5-gameplay.battle-prep"
       ],
       "groups": [
         {
@@ -37265,7 +37813,8 @@
           },
           "children": [
             "project-chaos.bootstrap.w5-gameplay.meta-events",
-            "project-chaos.bootstrap.w5-gameplay.team-supply"
+            "project-chaos.bootstrap.w5-gameplay.team-supply",
+            "project-chaos.bootstrap.w5-gameplay.battle-prep"
           ]
         }
       ]
@@ -37745,12 +38294,12 @@
     "project-chaos.editor-tools": {
       "schema_version": 1,
       "id": "project-chaos.editor-tools",
-      "updated_at": "2026-10-31T16:28:39.481Z",
+      "updated_at": "2026-11-10T14:57:31.504Z",
       "mode": "groups",
       "max_columns": 3,
       "reading": {
-        "zh": "四簇，从左到右读：内容编辑（本地化合并、对话编辑器），工作流工具（Git、场景 UI 总览、世界地图编辑窗口），美术/图标/局内地图工具，最后一簇是验证与预制体/插件设置——镜头工具是 3C Cinemachine 重构时新增的成员。",
-        "en": "Four clusters, read left to right: content editing (localization merge, dialogue editor), workflow tools (git, scene UI overview, world-map editor window), art/icon/run-map utilities, and finally verification plus prefab & plugin settings — the camera tool is the newest member, added with the 3C Cinemachine refactor."
+        "zh": "四簇，从左到右读：内容编辑（本地化合并、对话编辑器），工作流工具（Git、场景 UI 总览、世界地图编辑窗口），美术/图标/局内地图工具，最后是验证与预制体/插件设置——镜头工具与办事任务校验器都属于这一簇。",
+        "en": "Four clusters, read left to right: content editing, workflow tools, art/icon/run-map utilities, and finally verification plus prefab & plugin settings — both the camera tool and the office-task verifier live here."
       },
       "order": [
         "project-chaos.editor-tools.localization",
@@ -37763,6 +38312,7 @@
         "project-chaos.editor-tools.runmap-verify",
         "project-chaos.editor-tools.input-icon",
         "project-chaos.editor-tools.camera-tool",
+        "project-chaos.editor-tools.office-task-tool",
         "project-chaos.editor-tools.ui-animator",
         "project-chaos.editor-tools.spine-settings"
       ],
@@ -37811,6 +38361,7 @@
           },
           "children": [
             "project-chaos.editor-tools.camera-tool",
+            "project-chaos.editor-tools.office-task-tool",
             "project-chaos.editor-tools.ui-animator",
             "project-chaos.editor-tools.spine-settings"
           ]
@@ -38615,17 +39166,18 @@
     "project-chaos.framework.save": {
       "schema_version": 1,
       "id": "project-chaos.framework.save",
-      "updated_at": "2026-10-06T12:00:40.950Z",
+      "updated_at": "2026-11-10T14:57:31.139Z",
       "mode": "groups",
       "reading": {
-        "zh": "从左到右：先看存档数据结构，再看服务读取（恒返 3 槽）与写入（保存/新建/删除），最后是跨场景传递选中槽与负载的 GameSession。",
-        "en": "Left to right: the save data types, the service read side (always 3 slots), the write side (save/create/delete), and finally GameSession carrying the selected slot and payload across scenes."
+        "zh": "从左到右：先看存档数据结构，再看服务读取（恒返 3 槽）与写入（保存/新建/删除），然后是跨场景传递选中槽与负载的 GameSession，最后是本局检查点——它把一局中途状态单独快照，与三槽存档互不干扰。",
+        "en": "Left to right: the save data types, the service read side (always 3 slots), the write side (save/create/delete), the GameSession carrying the selected slot across scenes, and finally the in-run checkpoint that snapshots mid-run state separately from the three slots."
       },
       "order": [
         "project-chaos.framework.save.slot-data",
         "project-chaos.framework.save.service-read",
         "project-chaos.framework.save.service-write",
-        "project-chaos.framework.save.session"
+        "project-chaos.framework.save.session",
+        "project-chaos.framework.save.run-checkpoint"
       ],
       "groups": [
         {
@@ -38657,6 +39209,16 @@
           },
           "children": [
             "project-chaos.framework.save.session"
+          ]
+        },
+        {
+          "id": "in-run",
+          "title": {
+            "zh": "局内检查点",
+            "en": "In-run Checkpoint"
+          },
+          "children": [
+            "project-chaos.framework.save.run-checkpoint"
           ]
         }
       ]
@@ -40183,6 +40745,15 @@
         "zh": "架构树同步：配置表改名、探索地图、昼夜系统与局内 UI 层"
       },
       "updated_at": "2026-11-07T13:54:24.444Z"
+    },
+    {
+      "id": "2026-11-10-battle-prep-and-checkpoint-sync",
+      "status": "verified",
+      "title": {
+        "zh": "架构树对齐 11 月批次：战备装载、局内检查点、办事任务校验器",
+        "en": "Architecture sync: battle loadout, run checkpoint and office-task verifier"
+      },
+      "updated_at": "2026-11-10T14:58:14.946Z"
     }
   ]
 }

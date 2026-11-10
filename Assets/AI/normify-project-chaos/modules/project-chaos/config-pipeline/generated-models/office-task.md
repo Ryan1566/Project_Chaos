@@ -12,8 +12,8 @@ description:
       C# data classes for office tasks, options and era gates.
       
 revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
-updated_at: "2026-11-07T13:48:14.440Z"
-fingerprint: e46e275738fa79dac1815b6b2faaca30eb21e61bd8b88570cba1f3f96ba8989b
+updated_at: "2026-11-10T14:52:00.910Z"
+fingerprint: 24314f3c8493576c6da5eb60cb32b7d1a0e42feef08780ae2d7d4fe46c93a9d6
 source:
   - path: "Assets/Scripts/Runtime/MVP/Model/ConfigData/OfficeTaskTable_OfficeTaskConfig.cs"
   - path: "Assets/Scripts/Runtime/MVP/Model/ConfigData/OfficeTaskTable_OfficeTaskOptionConfig.cs"

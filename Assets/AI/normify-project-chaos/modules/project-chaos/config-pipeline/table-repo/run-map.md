@@ -12,8 +12,8 @@ description:
       Core in-run map generation config: chunk slots/sockets, biomes, presets and layers, plus the new MapGeneration and ExplorationScene exploration sheets (8 sub-sheets).
       
 revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
-updated_at: "2026-11-07T13:47:48.887Z"
-fingerprint: 4fd487f87f35bcd31ea65dd8a7f0c59548e59e929618942b16d2a72bfdbda33c
+updated_at: "2026-11-10T14:52:00.911Z"
+fingerprint: 19592defcbe2a2d0faa73218b1f85b35b80ebe21f95a65aad9cbd5f7f784538b
 source:
   - path: "Assets/Excel/Chaos_excel/RunMapTable_地图生成表.xlsx"
 apis:

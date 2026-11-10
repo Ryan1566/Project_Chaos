@@ -11,11 +11,11 @@ description:
       Korean fonts: Hangeuljaemin4-Regular SDF plus its raw TTF source.
       
 revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
-updated_at: "2026-10-31T08:56:27.354Z"
-fingerprint: 3cd02a455d58351f125f58bbc8afc0a69cc28e0d0645455e111e5a1fa042a5df
+updated_at: "2026-11-10T14:54:04.870Z"
+fingerprint: 1ef7f8a6365df8dd4ed0599f82a56d4c58ea34204c6228460f12f03eaa19992c
 source:
-  - path: "Assets/Fonts/kr/Hangeuljaemin4-Regular SDF.asset"
-  - path: "Assets/Fonts/kr/Hangeuljaemin4-Regular.ttf"
+  - path: "Assets/Fonts/kr/Hangeuljaemin4-Regular SDF.asset.meta"
+  - path: "Assets/Fonts/kr/Hangeuljaemin4-Regular.ttf.meta"
 apis:
   - protocol: file
     path: "Assets/Fonts/kr/Hangeuljaemin4-Regular SDF.asset"

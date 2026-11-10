@@ -12,8 +12,8 @@ description:
       RunInteractionService executes one interaction after input, range, visibility and target-condition checks; RunInteractable is the scene-side interactable, and RunLadderInteractable binds a generated MapLadder so using it hands control to LadderClimber; the model/presenter/view trio drives the interaction HUD. RunMapPathfinder and RunMapNavigator execute walk/jump/drop over the real capability graph, with RunBehaviorSettings supplying behaviour parameters.
       
 revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
-updated_at: "2026-11-07T13:54:15.850Z"
-fingerprint: 1454644aaaab730f52a4df2543ebc86d9ed4ee39b6f54aeeda4f6a73d4f7ea93
+updated_at: "2026-11-10T14:52:00.892Z"
+fingerprint: 70bd4efe19aaa284103d08a0b6f5fd362d42a5bbf60f8e340c72388b548fc3b8
 source:
   - path: "Assets/Scripts/Runtime/GameBase/Interaction/RunInteractionService.cs"
   - path: "Assets/Scripts/Runtime/GameBase/Interaction/RunInteractable.cs"

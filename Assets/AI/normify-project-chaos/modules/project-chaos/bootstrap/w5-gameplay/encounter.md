@@ -12,8 +12,8 @@ description:
       RunEncounter is split by team health (Team), room progression (Rooms), and enemies/drops (Enemies), with RunEncounterTicker as the per-frame driver and the ground drop owned by the settlement module. Combat query plus placeholder enemy and ally controllers back in-run fighting.
       
 revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
-updated_at: "2026-11-07T13:43:40.734Z"
-fingerprint: 2020bc6bf3c765c6279d7277010ff86096c1a824513b9abd86bdf2fe4e187ba3
+updated_at: "2026-11-10T14:57:10.682Z"
+fingerprint: dec9f2d1a55e286d0c1249044960e973593e68c4518c3bb54e9d797d31a18407
 source:
   - path: "Assets/Scripts/Runtime/Player/RunEncounter.cs"
   - path: "Assets/Scripts/Runtime/Player/RunEncounter.Team.cs"
@@ -23,6 +23,8 @@ source:
   - path: "Assets/Scripts/Runtime/NPC_AI/EnemyPlaceholder.cs"
   - path: "Assets/Scripts/Runtime/NPC_AI/AllyController.cs"
   - path: "Assets/Scripts/Runtime/Combat/CombatQuery.cs"
+  - path: "Assets/Scripts/Runtime/Player/RunEncounter.Checkpoint.cs"
+  - path: "Assets/Scripts/Runtime/Player/RunEncounter.Checkpoint.cs"
 apis:
   - protocol: rpc
     path: "RunEncounter.EnterPreparedScene"
@@ -50,6 +52,15 @@ apis:
           
       en: >
           Apply damage to the team and resolve deaths
+          
+  - protocol: file
+    path: "Assets/Scripts/Runtime/Player/RunEncounter.Checkpoint.cs"
+    description:
+      zh: >
+          局内检查点快照与恢复（CaptureCheckpoint / RestoreSettlement）
+          
+      en: >
+          Run checkpoint capture and restore
           
 deps:
   - kind: call

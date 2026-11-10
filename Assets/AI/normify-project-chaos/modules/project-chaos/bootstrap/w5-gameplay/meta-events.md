@@ -12,8 +12,8 @@ description:
       EventService handles story events and option rewards, MarketService executes trades with rollback on failure, and MetaProgressService saves meta progress; rewards and one-shot IDs are saved atomically and settlement saves retry idempotently. GameplayText collects in-run text keys; RunDropItem is the world drop settled before withdraw. Retainer death, camping and bag withdraw still live inside RunEncounter.Team/RunSceneFlow.
       
 revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
-updated_at: "2026-11-07T13:53:11.978Z"
-fingerprint: 6086db589fbe542a96a264bac5e6b59526d1a022fdce4fa28fdffe4eab5f0b91
+updated_at: "2026-11-10T14:52:00.894Z"
+fingerprint: d7e9e1ea08a7035b3a9371d5ec315527d85b47477d5ec7999b40375d23d1ee38
 source:
   - path: "Assets/Scripts/Runtime/GameBase/Meta/EventService.cs"
   - path: "Assets/Scripts/Runtime/GameBase/Meta/MarketService.cs"

@@ -11,15 +11,15 @@ description:
       91 Xbox icons named xbox_*.png covering ABXY, D-pad (incl. round), sticks, LB/RB/LT/RT and whole controllers.
       
 revision: 7230b3db925288f8a01b1f2255de1e42f792f0cd
-updated_at: "2026-10-31T08:56:15.086Z"
-fingerprint: a91359517cfd0c7e5498f5006a39e74eafda7ec0c28a6bdd1c04b4afc479e205
+updated_at: "2026-11-10T14:54:04.854Z"
+fingerprint: 97bfea79e79215326d3bd33840939462cefc85817db7b4d0a63c2e397838aa77
 source:
-  - path: "Assets/Art/icon/xbox/xbox_button_a.png"
-  - path: "Assets/Art/icon/xbox/xbox_dpad_round_up.png"
-  - path: "Assets/Art/icon/xbox/controller_xboxone.png"
+  - path: "Assets/Art/Input_icon/xbox/xbox_button_a.png"
+  - path: "Assets/Art/Input_icon/xbox/xbox_dpad_round_up.png"
+  - path: "Assets/Art/Input_icon/xbox/controller_xboxone.png"
 apis:
   - protocol: file
-    path: "Assets/Art/icon/xbox/xbox_button_a.png"
+    path: "Assets/Art/Input_icon/xbox/xbox_button_a.png"
     description:
       zh: >
           Xbox A 键图标。
@@ -28,7 +28,7 @@ apis:
           Xbox A button icon.
           
   - protocol: file
-    path: "Assets/Art/icon/xbox/xbox_dpad_round_up.png"
+    path: "Assets/Art/Input_icon/xbox/xbox_dpad_round_up.png"
     description:
       zh: >
           Xbox 圆形方向键上图标。
@@ -37,7 +37,7 @@ apis:
           Xbox round D-pad up icon.
           
   - protocol: file
-    path: "Assets/Art/icon/xbox/controller_xboxone.png"
+    path: "Assets/Art/Input_icon/xbox/controller_xboxone.png"
     description:
       zh: >
           Xbox One 手柄整机图。

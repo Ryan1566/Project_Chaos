@@ -1,17 +1,18 @@
 {
   "schema_version": 1,
   "id": "project-chaos.framework.save",
-  "updated_at": "2026-10-06T12:00:40.950Z",
+  "updated_at": "2026-11-10T14:57:31.139Z",
   "mode": "groups",
   "reading": {
-    "zh": "从左到右：先看存档数据结构，再看服务读取（恒返 3 槽）与写入（保存/新建/删除），最后是跨场景传递选中槽与负载的 GameSession。",
-    "en": "Left to right: the save data types, the service read side (always 3 slots), the write side (save/create/delete), and finally GameSession carrying the selected slot and payload across scenes."
+    "zh": "从左到右：先看存档数据结构，再看服务读取（恒返 3 槽）与写入（保存/新建/删除），然后是跨场景传递选中槽与负载的 GameSession，最后是本局检查点——它把一局中途状态单独快照，与三槽存档互不干扰。",
+    "en": "Left to right: the save data types, the service read side (always 3 slots), the write side (save/create/delete), the GameSession carrying the selected slot across scenes, and finally the in-run checkpoint that snapshots mid-run state separately from the three slots."
   },
   "order": [
     "project-chaos.framework.save.slot-data",
     "project-chaos.framework.save.service-read",
     "project-chaos.framework.save.service-write",
-    "project-chaos.framework.save.session"
+    "project-chaos.framework.save.session",
+    "project-chaos.framework.save.run-checkpoint"
   ],
   "groups": [
     {
@@ -43,6 +44,16 @@
       },
       "children": [
         "project-chaos.framework.save.session"
+      ]
+    },
+    {
+      "id": "in-run",
+      "title": {
+        "zh": "局内检查点",
+        "en": "In-run Checkpoint"
+      },
+      "children": [
+        "project-chaos.framework.save.run-checkpoint"
       ]
     }
   ]

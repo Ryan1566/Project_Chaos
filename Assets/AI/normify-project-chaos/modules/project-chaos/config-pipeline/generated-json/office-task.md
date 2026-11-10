@@ -12,8 +12,8 @@ description:
       Runtime JSON for office tasks, options and era gates.
       
 revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
-updated_at: "2026-11-07T13:48:14.416Z"
-fingerprint: f5f39dde9bf4dc8f974b3644a3519c00e78a9e7a8b14b35011a23f9fbb331ff4
+updated_at: "2026-11-10T14:52:00.903Z"
+fingerprint: abfc86c3774e22f3fc8eef5b6f453e4222a972430f6fbbe595d799318f92dda7
 source:
   - path: "Assets/Resources/Data/Json/Runtime/OfficeTaskTable_OfficeTask.json"
   - path: "Assets/Resources/Data/Json/Runtime/OfficeTaskTable_OfficeTaskOption.json"

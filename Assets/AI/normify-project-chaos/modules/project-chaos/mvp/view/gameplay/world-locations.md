@@ -12,8 +12,8 @@ description:
       World-map POI layer: the location list/board (capital, town, interest points), pan/zoom navigation and faction labels on the 6x-zoomed map.
       
 revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
-updated_at: "2026-11-07T13:51:57.368Z"
-fingerprint: 11a5785c2d6b03554234fd90b45e0b61463b0dfca901f39dccb8a181409febe5
+updated_at: "2026-11-10T14:52:00.944Z"
+fingerprint: 29512a8f8c04d708de5c9ef951e0aa266037b3c7f8e2c8f012f7fbe39981b9a9
 source:
   - path: "Assets/Scripts/Runtime/MVP/View/WorldLocationsView.cs"
   - path: "Assets/Scripts/Runtime/MVP/View/WorldMapNavigation.cs"

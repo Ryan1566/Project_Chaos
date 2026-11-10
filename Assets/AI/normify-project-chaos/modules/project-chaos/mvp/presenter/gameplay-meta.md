@@ -12,8 +12,8 @@ description:
       Presenters for village/meta screens: dispatch, skill tree, market, event, inventory/wheel, office tasks, retainer recruitment and era progress.
       
 revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
-updated_at: "2026-11-07T13:54:15.837Z"
-fingerprint: 4cd2d13b67e50f75c2c46be6ce23cc508f9879b84e088c10f2ec257c87b910ff
+updated_at: "2026-11-10T14:57:10.687Z"
+fingerprint: 5c592ad212711770d8729a861783b9ad3bc1c1cb12f1b3e01308608f72f922df
 source:
   - path: "Assets/Scripts/Runtime/MVP/Presenter/Gameplay/DispatchPresenter.cs"
   - path: "Assets/Scripts/Runtime/MVP/Presenter/Gameplay/FamilyTreePresenter.cs"
@@ -25,6 +25,10 @@ source:
   - path: "Assets/Scripts/Runtime/MVP/Presenter/Gameplay/RetainerPresenter.cs"
   - path: "Assets/Scripts/Runtime/MVP/Presenter/Gameplay/EraProgressPresenter.cs"
   - path: "Assets/Scripts/Runtime/MVP/Presenter/Gameplay/GameplayPresenter.cs"
+  - path: "Assets/Scripts/Runtime/MVP/Presenter/Gameplay/BattlePreparationFlow.cs"
+  - path: "Assets/Scripts/Runtime/MVP/Presenter/Gameplay/BattlePreparationPresenter.cs"
+  - path: "Assets/Scripts/Runtime/MVP/Presenter/Gameplay/BattlePreparationFlow.cs"
+  - path: "Assets/Scripts/Runtime/MVP/Presenter/Gameplay/BattlePreparationPresenter.cs"
 apis:
   - protocol: file
     path: "file:Assets/Scripts/Runtime/MVP/Presenter/Gameplay/DispatchPresenter.cs"
@@ -52,6 +56,33 @@ apis:
           
       en: >
           Inventory presenter
+          
+  - protocol: file
+    path: "Assets/Scripts/Runtime/MVP/Presenter/Gameplay/BattlePreparationFlow.cs"
+    description:
+      zh: >
+          战备界面的流程编排（打开/开始/失败重开）
+          
+      en: >
+          Battle-prep flow orchestration (open/start/reopen)
+          
+  - protocol: file
+    path: "Assets/Scripts/Runtime/MVP/Presenter/Gameplay/BattlePreparationPresenter.cs"
+    description:
+      zh: >
+          战备界面的 Presenter（仓库行、槽位手势、预设）
+          
+      en: >
+          Battle-prep presenter (warehouse rows, slot gestures, presets)
+          
+  - protocol: rpc
+    path: "rpc:BattlePreparationPresenter.EnterRun"
+    description:
+      zh: >
+          确认战备并进入本局
+          
+      en: >
+          Confirms loadout and enters the run
           
 deps:
   - kind: reference

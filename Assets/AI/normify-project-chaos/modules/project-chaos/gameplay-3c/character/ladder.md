@@ -12,8 +12,8 @@ description:
       Ladder traversal for the player: auto-attach on vertical input, drive vertical motion with ladders clamping, detach on jump or leaving the ladder, and hand control back to PlayerLocomotion.
       
 revision: d12129f7c898c717078ccbcc210fe5eaf82aa2f3
-updated_at: "2026-11-07T13:54:15.832Z"
-fingerprint: b8600f0aba5a0d137e59884089677ecde78993f66fdf7220a3b26953e160d0e6
+updated_at: "2026-11-10T14:52:00.921Z"
+fingerprint: ef44c8ec5c983d5c65c59df6d4fe642fb9381652f74cce71c95d1a0217ba8965
 source:
   - path: "Assets/Scripts/Runtime/3C/Character/LadderClimber.cs"
 apis:

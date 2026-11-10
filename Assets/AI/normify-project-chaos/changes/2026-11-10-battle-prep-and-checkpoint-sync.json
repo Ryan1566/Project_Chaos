@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "id": "2026-11-10-battle-prep-and-checkpoint-sync",
+  "title": {
+    "zh": "架构树对齐 11 月批次：战备装载、局内检查点、办事任务校验器",
+    "en": "Architecture sync: battle loadout, run checkpoint and office-task verifier"
+  },
+  "status": "verified",
+  "intent": {
+    "zh": "把 2026-11-07 之后的 10 个提交带来的新增功能（战备装载与携带物资、局内检查点与恢复、办事任务链路）纳入架构树；同时修复美术目录改名与大文件指纹上限造成的 8 条证据缺失，并把漂移模块的指纹重算到当前 HEAD。",
+    "en": "Fold the features added by the 10 commits since 2026-11-07 (battle loadout and carry-over items, in-run checkpoint and recovery, office-task chain) into the module tree; repair the 8 broken evidence entries caused by the art directory rename and the large-file fingerprint limit; recompute drifted fingerprints against the current HEAD."
+  },
+  "modules": {
+    "create": [
+      "project-chaos.bootstrap.w5-gameplay.battle-prep",
+      "project-chaos.framework.save.run-checkpoint",
+      "project-chaos.editor-tools.office-task-tool"
+    ],
+    "modify": [
+      "project-chaos.bootstrap.w5-gameplay.encounter",
+      "project-chaos.mvp.presenter.gameplay-meta",
+      "project-chaos.mvp.view.gameplay.dispatch",
+      "project-chaos.mvp.view.gameplay.run-menu",
+      "project-chaos.mvp.view.gameplay.inventory-wheel",
+      "project-chaos.assets.ui-prefabs",
+      "project-chaos.assets.ui-sprites",
+      "project-chaos.bootstrap.scenes.test-scene"
+    ]
+  },
+  "acceptance": [
+    "validate 0 error",
+    "新建 battle-prep / run-checkpoint / office-task-tool 三个模块进入树并 active",
+    "encounter、presenter.gameplay-meta、view.gameplay.{dispatch,run-menu,inventory-wheel}、assets.{ui-prefabs,ui-sprites}、scenes.test-scene 的 source 与 API 覆盖本轮新增文件",
+    "w5-gameplay / framework.save / editor-tools 三层布局纳入新成员",
+    "build 与 render 成功产出 normify.html"
+  ],
+  "revision": {
+    "before": null,
+    "after": null
+  },
+  "created_at": "2026-11-10T14:58:08.993Z",
+  "updated_at": "2026-11-10T14:58:14.946Z",
+  "closed_at": "2026-11-10T14:58:14.946Z"
+}
