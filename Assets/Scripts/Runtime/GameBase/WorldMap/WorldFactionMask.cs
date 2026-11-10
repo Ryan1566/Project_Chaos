@@ -23,8 +23,8 @@ using UnityEngine.UI;
 /// </summary>
 public class WorldFactionMask : RawImage
 {
-    /// <summary>光栅化宽度（高度按底图宽高比算）。512 够用且开销小。</summary>
-    public const int RasterWidth = 512;
+    /// <summary>光栅化宽度，高度按底图比例计算；给放大浏览留出细线精度。</summary>
+    public const int RasterWidth = 768;
 
     /// <summary>2×2 超采样抗锯齿（先放大 2 倍画，再盒式降采样）。</summary>
     public const int Supersample = 2;
@@ -32,13 +32,14 @@ public class WorldFactionMask : RawImage
     /// <summary>势力色块的透明度（MVP 取值；将来可由配置驱动）。</summary>
     public const float FactionAlpha = 0.35f;
 
-    [SerializeField, Range(0, 4)] private float borderWidthPixels = 1.25f;
-    [SerializeField] private Color borderColor = new Color(0, 0, 0, .95f);
+    [SerializeField, Range(0, 4)] private float borderWidthPixels = 1.5f;
+    [SerializeField] private Color borderColor = new Color(.17f, .13f, .085f, .84f);
     public int RasterGeneration { get; private set; }
     private int _lastSignature;
     private bool _hasSignature;
     private Texture2D _texture;
     private Color32[] _hi;              //超采样缓冲（复用，避免每次重建都分配几 MB）
+    private byte[] _borderCoverage;
     private int _hiWidth;
     private int _hiHeight;
     private readonly List<float> _scanXs = new List<float>(64);
@@ -80,9 +81,21 @@ public class WorldFactionMask : RawImage
             }
         }
 
-        // Stroke after every fill, so adjacent polygons cannot paint over their common border.
-        if (areas != null && borderWidthPixels > 0) foreach (var area in areas)
-            if (area != null && area.IsValid) StrokePolygon(area, sw, sh);
+        if (drawn > 0 && borderWidthPixels > 0)
+        {
+            // 共享边只取最大覆盖率，防止接壤处因两侧重复描边而更黑。
+            System.Array.Clear(_borderCoverage, 0, _borderCoverage.Length);
+            foreach (var area in areas)
+                if (area != null && area.IsValid) StrokePolygon(area, sw, sh);
+            Color32 stroke = borderColor;
+            byte alpha = stroke.a;
+            for (int i = 0; i < _borderCoverage.Length; i++)
+            {
+                if (_borderCoverage[i] == 0) continue;
+                stroke.a = (byte)((alpha * _borderCoverage[i] + 127) / 255);
+                BlendSourceOver(i, stroke);
+            }
+        }
         EnsureTexture(width, height);
         Downsample(width, height);
         RasterGeneration++;
@@ -129,8 +142,8 @@ public class WorldFactionMask : RawImage
                 float t = length <= .00001f ? 0 : Mathf.Clamp01(Vector2.Dot(point - a, segment) / length);
                 float coverage = Mathf.Clamp01(radius + .5f - (point - a - segment * t).magnitude);
                 if (coverage <= 0) continue;
-                Color color = borderColor; color.a *= coverage;
-                BlendSourceOver(y * _hiWidth + x, (Color32)color);
+                int index = y * _hiWidth + x;
+                _borderCoverage[index] = (byte)Mathf.Max(_borderCoverage[index], Mathf.RoundToInt(coverage * 255f));
             }
         }
     }
@@ -142,6 +155,7 @@ public class WorldFactionMask : RawImage
             _hiWidth = sw;
             _hiHeight = sh;
             _hi = new Color32[sw * sh];
+            _borderCoverage = new byte[sw * sh];
         }
     }
 
@@ -293,6 +307,7 @@ public class WorldFactionMask : RawImage
     {
         ReleaseTexture();
         _hi = null;
+        _borderCoverage = null;
         base.OnDestroy();
     }
 

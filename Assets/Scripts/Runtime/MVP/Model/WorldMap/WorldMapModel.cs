@@ -14,6 +14,7 @@ namespace Chaos.MVP.Model.WorldMap
     public sealed class WorldMapSnapshot
     {
         public uint Stage;
+        public string EraCaption;
         public List<WorldFactionArea> Areas;
         public List<WorldFactionLabel> Labels;
         public List<WorldMapPoint> Points;
@@ -27,6 +28,7 @@ namespace Chaos.MVP.Model.WorldMap
     public sealed class WorldMapModel : IDisposable
     {
         private static readonly string[] StageNames = { "未使用", "战国末期", "秦朝", "秦末起义初期", "楚汉争霸", "汉刘邦时期" };
+        private static readonly int[] StageYears = { 0, 233, 214, 209, 206, 195 };
         private uint _stage;
         private WorldMapPoint _selected;
         readonly WorldLocationModel locations = new WorldLocationModel();
@@ -53,7 +55,8 @@ namespace Chaos.MVP.Model.WorldMap
             string status = "时代 " + meta.Era + " / 深度 " + meta.Depth + "\n物资 " + inv.GetResource(InventoryService.ResourceKind.Goods)
                 + "　材料 " + inv.GetResource(InventoryService.ResourceKind.Material) + "\n图纸 " + inv.GetResource(InventoryService.ResourceKind.Blueprint)
                 + "　钱财 " + inv.GetResource(InventoryService.ResourceKind.Money);
-            return new WorldMapSnapshot { Stage = _stage, Areas = areas, Labels = WorldFactionLabelCatalog.Read(_stage, areas), Points = points, Selected = _selected, Info = info,
+            return new WorldMapSnapshot { Stage = _stage, EraCaption = $"{StageNames[_stage]}  /  公元前 {StageYears[_stage]} 年",
+                Areas = areas, Labels = WorldFactionLabelCatalog.Read(_stage, areas), Points = points, Selected = _selected, Info = info,
                 Status = status, Hint = Hint ?? "选择门客并派遣，开始本次出征。", ConfirmReturn = ConfirmReturn, Locations=locations.Read() };
         }
         public bool Save()

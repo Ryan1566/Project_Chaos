@@ -1421,12 +1421,12 @@ public class WorldMapToolWindow : EditorWindow
             WorldMapFactionRegion region = regions[r];
             if (region.stage != _stage || region.vertices.Count == 0) continue;
 
-            Color fill;
-            if (!ColorUtility.TryParseHtmlString(region.color, out fill)) fill = Color.magenta;
-            fill.a = 0.18f;
-
-            Color lineColor = r == _selectedRegion ? new Color(1f, 0.3f, 0.3f, 1f) : fill;
-            lineColor.a = 1f;
+            if (!ColorUtility.TryParseHtmlString(region.color, out var fill)) fill = Color.magenta;
+            bool selected = r == _selectedRegion;
+            // 成图用淡色铺底、墨色分界；选区保留明显的朱色编辑反馈。
+            Color lineColor = selected ? new Color(1f, .38f, .26f)
+                : Color.Lerp(fill, new Color(.17f, .13f, .085f), .74f);
+            float lineWidth = selected ? 2f : 1.25f;
 
             var canvasVertices = new List<Vector2>();
             for (int k = 0; k < region.vertices.Count; k++)
@@ -1440,7 +1440,7 @@ public class WorldMapToolWindow : EditorWindow
             //  以前是对每个顶点都画 (k+1)%N，于是"末点→首点"也被画成实线 ——
             //  用户看到的"连线总是从固定一个点出发连到最新的点"就是那条假边。
             for (int k = 0; k < chainCount; k++)
-                DrawLine(canvasVertices[k], canvasVertices[k + 1], lineColor, 2f);
+                DrawLine(canvasVertices[k], canvasVertices[k + 1], lineColor, lineWidth);
 
             //★ 收口边：仅 N>=3，且用**淡虚线**。虚线 ≠ 生成顺序，只表示"导出时会自动闭合"。
             if (hasClosing)

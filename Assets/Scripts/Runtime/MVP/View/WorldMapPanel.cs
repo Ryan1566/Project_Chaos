@@ -48,6 +48,13 @@ public class WorldMapPanel : BasePanel, IWorldMapView
 
     /// <summary>当前只有 1 = 天下中原（多图预留）。</summary>
     private const uint CurrentMapId = 1;
+    private const float MapTop = 157f;
+    private const float MapBottom = 99f;
+    private static readonly Color PanelInk = new Color(.082f, .100f, .105f);
+    private static readonly Color Frame = new Color(.36f, .32f, .24f);
+    private static readonly Color Paper = new Color(.95f, .89f, .76f);
+    private static readonly Color Muted = new Color(.69f, .66f, .57f);
+    private static readonly Color Gold = new Color(.85f, .70f, .45f);
 
     [Header("点位图标（可留空；留空则运行时生成白色圆点，按 Kind 上色）")]
     [SerializeField] private Sprite[] kindIcons;
@@ -64,12 +71,10 @@ public class WorldMapPanel : BasePanel, IWorldMapView
     private Button _enterRunBtn;
     private Button _stagePrevBtn;
     private Button _stageNextBtn;
-    private TextMeshProUGUI _retainerEntryLabel;
-    private TextMeshProUGUI _inventoryEntryLabel;
-    private TextMeshProUGUI _marketEntryLabel;
-    private TextMeshProUGUI _villageEntryLabel, _familyEntryLabel, _eraEntryLabel, _saveEntryLabel, _settingsEntryLabel;
-    private TextMeshProUGUI _metaStatus, _metaHint, _returnPrompt;
+    private TextMeshProUGUI _metaStatus, _eraStamp, _zoomReadout, _returnPrompt;
     private GameObject _returnConfirmation;
+    private Material _paperMaterial;
+    private Button _zoomOut, _zoomIn;
 
     private readonly List<GameObject> _iconObjects = new List<GameObject>();
     private readonly Dictionary<uint, Sprite> _fallbackIcons = new Dictionary<uint, Sprite>();
@@ -91,7 +96,7 @@ public class WorldMapPanel : BasePanel, IWorldMapView
     {
         FindNodes();
         BindButtons();   //⚠ 只在这里绑：OnEnter 每次打开都会跑（见类注释 R3）
-        BuildMetaEntries();
+        BuildChrome();
         BuildLocations();
     }
 
@@ -103,7 +108,6 @@ public class WorldMapPanel : BasePanel, IWorldMapView
         FindNodes();
 
         _selected = null;
-        RefreshMetaEntryLabels();
         _model = new WorldMapModel();
         _presenter = new WorldMapPresenter(_model);
         _presenter.Attach(this);
@@ -129,18 +133,6 @@ public class WorldMapPanel : BasePanel, IWorldMapView
         if(_iconLayer==null)_iconLayer = FindRect(NodeIconLayer);
         _infoText = FindComponent<TextMeshProUGUI>(NodeInfoBar);
         _infoLocalized = FindComponent<LocalizedText>(NodeInfoBar);
-        if (_infoText != null)
-        {
-            // Keep the development GM toggle clear of the normal map information.
-            RectTransform infoRect = _infoText.rectTransform;
-            infoRect.anchorMin = new Vector2(0, 1);
-            infoRect.anchorMax = new Vector2(1, 1);
-            infoRect.pivot = new Vector2(.5f, 1);
-            infoRect.offsetMin = new Vector2(150, -64);
-            infoRect.offsetMax = new Vector2(-24, -18);
-            _infoText.fontSize = 23;
-        }
-
         if (_iconLayer == null) ChaosLog.Error(LogChannel.UI, "[局外地图] 找不到 " + NodeIconLayer + "，点位无法显示");
         if (_baseMap == null) ChaosLog.Warn(LogChannel.UI, "[局外地图] 找不到 " + NodeBaseMap + "，底图不可用（其余功能仍可用）");
         if (_factionMask == null) ChaosLog.Warn(LogChannel.UI, "[局外地图] 找不到 " + NodeFactionMask + "，势力范围不可见");
@@ -179,32 +171,49 @@ public class WorldMapPanel : BasePanel, IWorldMapView
         return node as RectTransform;
     }
 
-    /// <summary>Formal outside navigation. The map hierarchy remains available to the map tools.</summary>
-    private void BuildMetaEntries()
+    private void BuildChrome()
     {
-        RectTransform toolbar = GameplayUi.Rect(transform, "MetaEntries", Vector2.one, Vector2.one,
-            new Vector2(-24, -100), new Vector2(280, 430));
-        toolbar.gameObject.AddComponent<Image>().color = new Color(.07f, .10f, .14f, .96f);
-        RectTransform status = GameplayUi.Rect(toolbar, "StatusArea", new Vector2(0, 1), new Vector2(0, 1),
-            new Vector2(8, -8), new Vector2(264, 98));
-        _metaStatus = GameplayUi.Text(status, "Status", "", 20);
-        _metaStatus.alignment = TextAlignmentOptions.Left;
-        _retainerEntryLabel = Entry(toolbar, "Retainers", "门客", 0, () => OpenMetaPanel(PanelType.RetainerPanel));
-        _inventoryEntryLabel = Entry(toolbar, "Inventory", "库存", 1, () => OpenMetaPanel(PanelType.InventoryPanel));
-        _villageEntryLabel = Entry(toolbar, "Village", "村庄", 2, () => OpenMetaPanel(PanelType.VillagePanel));
-        _familyEntryLabel = Entry(toolbar, "FamilyTree", "家族树", 3, () => OpenMetaPanel(PanelType.FamilyTreePanel));
-        _marketEntryLabel = Entry(toolbar, "Market", "市场", 4, () => OpenMetaPanel(PanelType.MarketPanel));
-        _eraEntryLabel = Entry(toolbar, "EraProgress", "时代进度", 5, () => OpenMetaPanel(PanelType.EraProgressPanel));
-        _saveEntryLabel = Entry(toolbar, "Save", "保存进度", 6, () => Intent?.Invoke(new WorldMapIntent(WorldMapAction.Save)));
-        _settingsEntryLabel = Entry(toolbar, "Settings", "设置", 7, () => OpenMetaPanel(PanelType.SettingPanel));
-        RectTransform hint = GameplayUi.Rect(toolbar, "HintArea", new Vector2(0, 1), new Vector2(0, 1),
-            new Vector2(8, -342), new Vector2(264, 80));
-        _metaHint = GameplayUi.Text(hint, "Hint", "", 19);
-        _metaHint.color = new Color(1, .85f, .5f);
+        if (TryGetComponent<Image>(out var surface)) surface.color = PanelInk;
+        if (_infoText != null)
+        {
+            Place(_infoText.rectTransform, Vector2.up, new Vector2(141f, -33f), new Vector2(228f, 57f));
+            _infoText.fontSize = 43;
+            _infoText.fontStyle = FontStyles.Bold;
+            _infoText.alignment = TextAlignmentOptions.Left;
+            _infoText.color = Paper;
+            _infoText.raycastTarget = false;
+        }
+        ChromeText("Kicker", "天下形势", 15, Gold, Vector2.up, new Vector2(129f, -14f), new Vector2(220f, 24f));
+        _eraStamp = ChromeText("EraStamp", "", 22, Gold, Vector2.up, new Vector2(368f, -48f), new Vector2(380f, 40f));
+        _metaStatus = ChromeText("MapResources", "", 18, Muted, Vector2.one,
+            new Vector2(-558f, -32f), new Vector2(530f, 44f), TextAlignmentOptions.Right);
+        AddRule("HeaderRule", true, 99f);
+        AddRule("FooterRule", false, 91f);
 
-        // Preview controls stay out of the normal player flow; GM retains progress setup tools.
         if (_stagePrevBtn != null) _stagePrevBtn.gameObject.SetActive(false);
         if (_stageNextBtn != null) _stageNextBtn.gameObject.SetActive(false);
+        var bottom = transform.Find("BottomBar");
+        if (bottom != null && bottom.TryGetComponent<HorizontalLayoutGroup>(out var layout))
+        {
+            layout.childAlignment = TextAnchor.MiddleRight;
+            var rect = (RectTransform)bottom;
+            rect.anchoredPosition = new Vector2(0f, 9f);
+            rect.sizeDelta = new Vector2(-40f, 72f);
+        }
+        StyleButton(_returnBtn, new Color(.19f, .22f, .22f), Paper);
+        StyleButton(_enterRunBtn, Gold, PanelInk);
+        if (_enterRunBtn != null)
+        {
+            _enterRunBtn.transform.SetAsLastSibling();
+            var label = _enterRunBtn.GetComponentInChildren<TextMeshProUGUI>();
+            if (label != null)
+            {
+                var localized = label.GetComponent<LocalizedText>();
+                if (localized != null) localized.enabled = false;
+                label.text = "派遣门客";
+            }
+        }
+
         _returnConfirmation = new GameObject("ReturnConfirmation", typeof(RectTransform), typeof(Image));
         var overlay = (RectTransform)_returnConfirmation.transform;
         overlay.SetParent(transform, false);
@@ -220,25 +229,46 @@ public class WorldMapPanel : BasePanel, IWorldMapView
         GameplayUi.Button(box, "Cancel", "继续游戏", new Vector2(334, -140), new Vector2(250, 56),
             () => Intent?.Invoke(new WorldMapIntent(WorldMapAction.CancelReturn)));
         _returnConfirmation.SetActive(false);
-        RefreshMetaEntryLabels();
     }
 
-    private TextMeshProUGUI Entry(RectTransform parent, string name, string label, int index, UnityEngine.Events.UnityAction action)
+    private void AddRule(string name, bool top, float inset)
     {
-        var button = GameplayUi.Button(parent, name, label, new Vector2(10 + index % 2 * 134, -116 - index / 2 * 54), new Vector2(126, 46), action);
-        return button.GetComponentInChildren<TextMeshProUGUI>();
+        var y = top ? 1f : 0f;
+        var rect = GameplayUi.Rect(transform, name, new Vector2(0f, y), Vector2.one * .5f, Vector2.zero, Vector2.zero);
+        rect.anchorMax = new Vector2(1f, y);
+        float edge = top ? -inset : inset;
+        rect.offsetMin = new Vector2(28f, edge - 1f);
+        rect.offsetMax = new Vector2(-28f, edge);
+        var line = rect.gameObject.AddComponent<Image>();
+        line.color = Frame;
+        line.raycastTarget = false;
     }
 
-    private void RefreshMetaEntryLabels()
+    private TextMeshProUGUI ChromeText(string name, string value, float size, Color color, Vector2 anchor,
+        Vector2 position, Vector2 dimensions, TextAlignmentOptions alignment = TextAlignmentOptions.Left)
     {
-        GameplayText.Bind(_retainerEntryLabel, "ui_world_retainer", "门客");
-        GameplayText.Bind(_inventoryEntryLabel, "ui_world_inventory", "库存");
-        GameplayText.Bind(_marketEntryLabel, "ui_world_market", "市场");
-        GameplayText.Bind(_villageEntryLabel, "ui_village_title", "村庄");
-        GameplayText.Bind(_familyEntryLabel, "ui_familytree_title", "家族树");
-        GameplayText.Bind(_eraEntryLabel, "ui_era_progress_title", "时代进度");
-        GameplayText.Bind(_saveEntryLabel, "ui_world_save", "保存进度");
-        GameplayText.Bind(_settingsEntryLabel, "ui_world_settings", "设置");
+        var rect = GameplayUi.Rect(transform, name, anchor, Vector2.up, position, dimensions);
+        var label = GameplayUi.Text(rect, "Text", value, size);
+        label.color = color;
+        label.alignment = alignment;
+        label.enableWordWrapping = false;
+        return label;
+    }
+
+    private static void Place(RectTransform rect, Vector2 anchor, Vector2 position, Vector2 size)
+    {
+        rect.anchorMin = rect.anchorMax = anchor;
+        rect.pivot = Vector2.up;
+        rect.anchoredPosition = position;
+        rect.sizeDelta = size;
+    }
+
+    private static void StyleButton(Button button, Color surface, Color ink)
+    {
+        if (button == null) return;
+        button.targetGraphic.color = surface;
+        var label = button.GetComponentInChildren<TextMeshProUGUI>();
+        if (label != null) label.color = ink;
     }
 
     private void OpenMetaPanel(PanelType type)
@@ -253,13 +283,17 @@ public class WorldMapPanel : BasePanel, IWorldMapView
     {
         _selected = state.Selected;
         ApplyFactionMask(state.Areas);
-        RenderFactionLabels(state.Labels);
+        RenderFactionLabels(state);
         if(_locationsView!=null)_locationsView.Render(state.Locations);
         else {RebuildIcons(state.Points);UpdateSelectionScales();}
-        SetInfoText("天下舆图 · "+(state.Status??"").Replace("\n","　"));
-        if (_metaStatus != null) _metaStatus.text = state.Status;
-        if (_metaHint != null) _metaHint.text = state.Hint;
-        if (_returnConfirmation != null) _returnConfirmation.SetActive(state.ConfirmReturn);
+        SetInfoText("天下舆图");
+        _eraStamp.text = state.EraCaption;
+        _metaStatus.text = (state.Status ?? "").Replace("\n", "　");
+        if (_returnConfirmation != null)
+        {
+            _returnConfirmation.SetActive(state.ConfirmReturn);
+            if (state.ConfirmReturn) _returnConfirmation.transform.SetAsLastSibling();
+        }
         if (_returnPrompt != null) _returnPrompt.text = state.Hint;
         if (_returnBtn != null)
         {
@@ -267,7 +301,7 @@ public class WorldMapPanel : BasePanel, IWorldMapView
             if (label != null) GameplayText.Bind(label, "ui_return", "返回村庄");
         }
     }
-    private void RenderFactionLabels(List<WorldFactionLabel> labels)
+    private void RenderFactionLabels(WorldMapSnapshot state)
     {
         if (_iconLayer == null) return;
         if (_factionLabels == null)
@@ -278,7 +312,9 @@ public class WorldMapPanel : BasePanel, IWorldMapView
             layer.SetAsFirstSibling(); // POI children remain above this display-only layer.
             _factionLabels = layer.gameObject.AddComponent<WorldMapFactionLabelView>();
         }
-        _factionLabels.Render(labels);
+        _factionLabels.Render(state.Labels, state.Areas, state.Locations?.Locations,
+            _mapContent != null ? _mapContent.sizeDelta : Vector2.zero);
+        _factionLabels.SetZoom(_navigation != null ? _navigation.Zoom : 1f);
     }
     public override void HandleBack()
     {
@@ -292,24 +328,68 @@ public class WorldMapPanel : BasePanel, IWorldMapView
     void BuildLocations()
     {
         if(_baseMap==null||_iconLayer==null||_locationsView!=null)return;
-        var oldEntries=transform.Find("MetaEntries");if(oldEntries!=null)oldEntries.gameObject.SetActive(false);
-        _mapViewport=GameplayUi.Rect(transform,"WorldMapViewport",Vector2.zero,Vector2.one*.5f,Vector2.zero,Vector2.zero);
-        _mapViewport.anchorMin=new Vector2(.025f,.15f);_mapViewport.anchorMax=new Vector2(.72f,.86f);
-        _mapViewport.offsetMin=_mapViewport.offsetMax=Vector2.zero;
-        _mapViewport.gameObject.AddComponent<Image>().color=new Color(.11f,.09f,.06f,.94f);
+        _mapViewport=GameplayUi.Rect(transform,"WorldMapViewport",Vector2.up,Vector2.one*.5f,Vector2.zero,Vector2.zero);
+        _mapViewport.gameObject.AddComponent<Image>().color = Gold;
         _mapViewport.gameObject.AddComponent<RectMask2D>();
         _mapContent=GameplayUi.Rect(_mapViewport,"MapContent",Vector2.one*.5f,Vector2.one*.5f,Vector2.zero,Vector2.zero);
         StretchMapLayer(_baseMap.rectTransform);_baseMap.raycastTarget=false;
+        var paperShader = Resources.Load<Shader>("UI/WorldMapPaper");
+        if (paperShader != null && paperShader.isSupported)
+        {
+            _paperMaterial = new Material(paperShader) { name = "WorldMapPaper" };
+            _baseMap.material = _paperMaterial;
+        }
         if(_factionMask!=null){StretchMapLayer(_factionMask.rectTransform);_factionMask.raycastTarget=false;}
         StretchMapLayer(_iconLayer);
+        AddSeaLabel("Bohai", "渤 海", new Vector2(.81f, .75f));
+        AddSeaLabel("EastSea", "东 海", new Vector2(.95f, .35f));
         _locationsView=gameObject.AddComponent<WorldLocationsView>();
         _locationsView.Initialize(_mapContent,transform as RectTransform);
         _locationsView.Intent+=OnLocationIntent;
         _navigation=_mapViewport.gameObject.AddComponent<WorldMapNavigation>();
+        BuildZoomControls();
+        _navigation.ZoomChanged += OnZoomChanged;
         Canvas.ForceUpdateCanvases();FitMap();_navigation.Initialize(_mapViewport,_mapContent);
-        _navigation.ZoomChanged+=_locationsView.SetZoom;
         var bottom=transform.Find("BottomBar");if(bottom!=null)bottom.SetAsLastSibling();
         if(_infoText!=null)_infoText.transform.SetAsLastSibling();
+    }
+    private void AddSeaLabel(string name, string text, Vector2 point)
+    {
+        var rect = GameplayUi.Rect(_iconLayer, name, point, Vector2.one * .5f, Vector2.zero, new Vector2(110f, 27f));
+        var label = GameplayUi.Text(rect, "Text", text, 19);
+        label.color = new Color(.26f, .34f, .32f, .83f);
+        label.fontStyle = FontStyles.Italic;
+        label.characterSpacing = 9f;
+    }
+    private void BuildZoomControls()
+    {
+        var controls = GameplayUi.Rect(transform, "MapControls", Vector2.zero, Vector2.zero,
+            new Vector2(28f, 18f), new Vector2(260f, 44f));
+        _zoomOut = GameplayUi.Button(controls, "ZoomOut", "−", Vector2.zero, new Vector2(44f, 44f),
+            () => _navigation.StepZoom(1f / 1.25f));
+        _zoomIn = GameplayUi.Button(controls, "ZoomIn", "+", new Vector2(112f, 0f), new Vector2(44f, 44f),
+            () => _navigation.StepZoom(1.25f));
+        var reset = GameplayUi.Button(controls, "ResetZoom", "复位", new Vector2(164f, 0f),
+            new Vector2(80f, 44f), _navigation.ResetView);
+        var readout = GameplayUi.Rect(controls, "Zoom", Vector2.up, Vector2.up, new Vector2(44f, 0f), new Vector2(68f, 44f));
+        _zoomReadout = GameplayUi.Text(readout, "Text", "", 17);
+        _zoomReadout.color = Paper;
+        _zoomReadout.enableWordWrapping = false;
+        _zoomReadout.rectTransform.offsetMin = Vector2.zero;
+        _zoomReadout.rectTransform.offsetMax = Vector2.zero;
+        foreach (var button in new[] { _zoomOut, _zoomIn, reset })
+            StyleButton(button, new Color(.19f, .22f, .22f), Paper);
+        ChromeText("MapControlsHint", "滚轮缩放  /  拖动平移  /  Esc 返回", 17, Muted, Vector2.zero,
+            new Vector2(288f, 62f), new Vector2(400f, 44f));
+    }
+
+    private void OnZoomChanged(float zoom)
+    {
+        _locationsView.SetZoom(zoom);
+        _factionLabels?.SetZoom(zoom);
+        _zoomReadout.text = $"{Mathf.RoundToInt(zoom * 100f)}%";
+        _zoomOut.interactable = zoom > WorldMapNavigation.MinZoom;
+        _zoomIn.interactable = zoom < WorldMapNavigation.MaxZoom;
     }
     void StretchMapLayer(RectTransform layer)
     {
@@ -319,13 +399,22 @@ public class WorldMapPanel : BasePanel, IWorldMapView
     void FitMap()
     {
         if(_mapViewport==null||_mapContent==null)return;
-        var size=_mapViewport.rect.size;if(size.x<=0||size.y<=0)return;
-        float ratio=ResolveBaseMapAspect();float width=Mathf.Min(size.x,size.y/ratio);
-        _mapContent.sizeDelta=new Vector2(width,width*ratio);_lastMapSize=size;
+        var size = ((RectTransform)transform).rect.size;
+        float availableWidth = size.x - WorldLocationsView.SidebarWidth - 84f;
+        float availableHeight = size.y - MapTop - MapBottom;
+        if (availableWidth <= 4f || availableHeight <= 4f) return;
+        float ratio = ResolveBaseMapAspect();
+        float width = Mathf.Min(availableWidth - 4f, (availableHeight - 4f) / ratio);
+        _mapContent.sizeDelta = new Vector2(width, width * ratio);
+        _mapViewport.sizeDelta = _mapContent.sizeDelta + Vector2.one * 4f;
+        _mapViewport.anchoredPosition = new Vector2(28f + availableWidth * .5f, -MapTop - availableHeight * .5f);
+        _lastMapSize = size;
+        _locationsView.RefreshLayout();
+        _factionLabels?.SetMapSize(_mapContent.sizeDelta);
     }
     void LateUpdate()
     {
-        if(_mapViewport!=null&&_lastMapSize!=_mapViewport.rect.size){FitMap();_navigation?.ResetView();}
+        if(_mapViewport!=null&&_lastMapSize!=((RectTransform)transform).rect.size){FitMap();_navigation?.ResetView();}
     }
     void OnLocationIntent(WorldLocationUiIntent intent){LocationIntent?.Invoke(intent);}
 
@@ -538,7 +627,8 @@ public class WorldMapPanel : BasePanel, IWorldMapView
     private void OnDestroy()
     {
         if(_locationsView!=null)_locationsView.Intent-=OnLocationIntent;
-        if(_navigation!=null&&_locationsView!=null)_navigation.ZoomChanged-=_locationsView.SetZoom;
+        if(_navigation!=null)_navigation.ZoomChanged-=OnZoomChanged;
+        if (_paperMaterial != null) Destroy(_paperMaterial);
         OnExit();
         ClearIcons();
 

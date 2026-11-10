@@ -37,30 +37,32 @@ public sealed class WorldLocationsView : MonoBehaviour
     public const string BuildVersion="WL-20261103-C";
     // ── 配色：深墨 + 暖金，贴合羊皮地图 ──
     private static readonly Color Ink = new Color(.145f, .12f, .09f, 1f);
-    private static readonly Color CardColor = new Color(.10f, .085f, .065f, .965f);
-    private static readonly Color CardBorder = new Color(.62f, .50f, .30f, .85f);
+    private static readonly Color CardColor = new Color(.105f, .126f, .127f);
+    private static readonly Color CardBorder = new Color(.36f, .32f, .24f);
     private static readonly Color Gold = new Color(.96f, .82f, .48f, 1f);
     private static readonly Color WarmText = new Color(.94f, .90f, .80f, 1f);
     private static readonly Color MutedText = new Color(.72f, .66f, .55f, 1f);
     private static readonly Color LockText = new Color(.96f, .64f, .42f, 1f);
-    private static readonly Color ButtonNormal = new Color(.22f, .18f, .125f, 1f);
-    private static readonly Color ButtonActive = new Color(.70f, .55f, .28f, 1f);
-    private static readonly Color MarkerInk = new Color(.16f, .13f, .10f, .86f);
-    private static readonly Color MarkerCapital = new Color(.24f, .18f, .11f, .92f);
-    private static readonly Color MarkerGold = new Color(.86f, .68f, .30f, .96f);
-    private static readonly Color MarkerPaper = new Color(.91f, .84f, .68f, .85f);
-    private static readonly Color CapitalPaper = new Color(.94f, .81f, .55f, .96f);
+    private static readonly Color ButtonNormal = new Color(.18f, .21f, .21f);
+    private static readonly Color ButtonActive = new Color(.77f, .62f, .38f);
+    private static readonly Color MarkerGold = new Color(.99f, .76f, .40f);
+    private static readonly Color HomeSeal = new Color(.81f, .44f, .32f);
+    private static readonly Color[] CategoryColors = {
+        new Color(.95f, .79f, .51f), new Color(.93f, .88f, .74f), new Color(.72f, .81f, .64f),
+        new Color(.76f, .75f, .83f), new Color(.94f, .64f, .45f)
+    };
+    private static readonly string[] CategoryNames = { "主城", "贸易", "资源", "见闻", "任务" };
 
-    private const float CapitalSize = 38f;
-    private const float NormalSize = 30f;
-    private const float CardWidth = 380f;
-    private const float CardTop = 96f;
-    private const float CardBottom = 88f;
-    private const float FilterBarWidth = 516f;
-    private const float FilterBarHeight = 52f;
+    private const float CapitalSize = 32f;
+    private const float NormalSize = 25f;
+    public const float SidebarWidth = 380f;
+    private const float CardTop = 112f;
+    private const float CardBottom = 99f;
+    private const float FilterBarWidth = 512f;
+    private const float FilterBarHeight = 40f;
     private const float TradeRowStride = 58f;
     /// <summary>标签在 zoom≥1.5 时显示；选中的标记与主城名始终显示。</summary>
-    private const float LabelZoomThreshold = 1.5f;
+    private const float LabelZoomThreshold = 1.65f;
 
     /// <summary>单个地图标记的复用壳（按地点 ID 建一次）。</summary>
     private sealed class Marker
@@ -93,7 +95,10 @@ public sealed class WorldLocationsView : MonoBehaviour
     private RectTransform _overlay;
     private RectTransform _markerLayer;
     private RectTransform _filterBar;
-    private RectTransform _card;
+    private RectTransform _card, _overview;
+    private TextMeshProUGUI _overviewCount;
+    private Sprite _badgeSprite;
+    private Material _mapLabelMaterial;
 
     private TextMeshProUGUI _title, _meta, _relation, _description, _lock, _hint, _identityName;
     private TextMeshProUGUI _officialTabLabel, _familyTabLabel, _officialHint, _familyHint;
@@ -113,6 +118,8 @@ public sealed class WorldLocationsView : MonoBehaviour
     private readonly Dictionary<WorldLocationFilter, TextMeshProUGUI> _filterLabels = new Dictionary<WorldLocationFilter, TextMeshProUGUI>();
     private readonly Dictionary<uint, Marker> _markers = new Dictionary<uint, Marker>();
     private readonly List<uint> _staleIds = new List<uint>();
+    private readonly List<Marker> _labelCandidates = new List<Marker>();
+    private readonly List<Rect> _labelBounds = new List<Rect>();
     private readonly List<TradeRowView> _tradeRows = new List<TradeRowView>();
     private readonly Dictionary<string, Sprite> _spriteCache = new Dictionary<string, Sprite>();
 
@@ -140,6 +147,12 @@ public sealed class WorldLocationsView : MonoBehaviour
 
     private void OnDestroy()
     {
+        if (_badgeSprite != null)
+        {
+            Destroy(_badgeSprite.texture);
+            Destroy(_badgeSprite);
+        }
+        if (_mapLabelMaterial != null) Destroy(_mapLabelMaterial);
         Intent = null;
     }
 
@@ -173,6 +186,7 @@ public sealed class WorldLocationsView : MonoBehaviour
         _markerLayer.SetAsLastSibling();
 
         BuildFilterBar();
+        BuildOverview();
         BuildDetailCard();
         _initialized = true;
         ApplyIdentityTabs();
@@ -197,6 +211,8 @@ public sealed class WorldLocationsView : MonoBehaviour
         ApplyFilters();
         ApplySelection();
         RenderDetail(state);
+        _overview.gameObject.SetActive(state.Selected == null);
+        _overviewCount.text = $"{state.Locations?.Count ?? 0:00}  处可查阅";
         if (_hint != null) _hint.text = state.Selected?.Kind == WorldLocationKind.PlayerVillage
             ? "滚轮缩放，拖动地图平移。" : state.Hint ?? string.Empty;
     }
@@ -221,6 +237,8 @@ public sealed class WorldLocationsView : MonoBehaviour
         ApplyMarkerSizes();
         ApplySelection();
     }
+
+    internal void RefreshLayout() => ApplySelection();
 
     // ══════════════════ 意图 ══════════════════
 
@@ -296,7 +314,7 @@ public sealed class WorldLocationsView : MonoBehaviour
         marker.Root = GameplayUi.Rect(_markerLayer, "Location_" + id, new Vector2(.5f, .5f), new Vector2(.5f, .5f),
             Vector2.zero, new Vector2(NormalSize, NormalSize));
         marker.Background = marker.Root.gameObject.AddComponent<Image>();
-        marker.Background.color = MarkerInk;
+        marker.Background.sprite = BadgeSprite();
         marker.Background.raycastTarget = true;
         // 点位上挂 Button：拖拽超过阈值时导航会清掉 eligibleForClick，避免误点。
         var button = marker.Root.gameObject.AddComponent<Button>();
@@ -309,8 +327,8 @@ public sealed class WorldLocationsView : MonoBehaviour
         marker.Icon = marker.Root.gameObject.AddComponent<WorldMapPointIcon>();
 
         RectTransform glyphRect = Stretch(GameplayUi.Rect(marker.Root, "Glyph", Vector2.zero, new Vector2(.5f, .5f), Vector2.zero, Vector2.zero));
-        glyphRect.offsetMin = new Vector2(4f, 4f);
-        glyphRect.offsetMax = new Vector2(-4f, -4f);
+        glyphRect.offsetMin = new Vector2(5f, 5f);
+        glyphRect.offsetMax = new Vector2(-5f, -5f);
         marker.Glyph = glyphRect.gameObject.AddComponent<Image>();
         marker.Glyph.raycastTarget = false;
         marker.Glyph.preserveAspect = true;
@@ -318,18 +336,28 @@ public sealed class WorldLocationsView : MonoBehaviour
         RectTransform initialRect = Stretch(GameplayUi.Rect(marker.Root, "Initial", Vector2.zero, new Vector2(.5f, .5f), Vector2.zero, Vector2.zero));
         marker.Initial = initialRect.gameObject.AddComponent<TextMeshProUGUI>();
         marker.Initial.font = RunTeamHud.ResolveFont();
-        marker.Initial.fontSize = 17;
+        marker.Initial.fontSize = 16;
+        marker.Initial.fontStyle = FontStyles.Bold;
         marker.Initial.alignment = TextAlignmentOptions.Center;
         marker.Initial.color = WarmText;
         marker.Initial.raycastTarget = false;
 
         RectTransform labelRect = GameplayUi.Rect(marker.Root, "Label", new Vector2(.5f, 0f), new Vector2(.5f, 1f),
-            new Vector2(0f, -2f), new Vector2(160f, 22f));
+            new Vector2(0f, -2f), new Vector2(150f, 20f));
         marker.Label = labelRect.gameObject.AddComponent<TextMeshProUGUI>();
         marker.Label.font = RunTeamHud.ResolveFont();
-        marker.Label.fontSize = 15;
+        marker.Label.fontSize = 16;
+        marker.Label.fontStyle = FontStyles.Bold;
         marker.Label.alignment = TextAlignmentOptions.Center;
-        marker.Label.color = Gold;
+        marker.Label.color = Ink;
+        if (_mapLabelMaterial == null && marker.Label.font != null)
+        {
+            _mapLabelMaterial = new Material(marker.Label.font.material) { name = "WorldLocationLabel_PaperHalo" };
+            _mapLabelMaterial.SetFloat("_OutlineWidth", .20f);
+            _mapLabelMaterial.SetColor("_OutlineColor", new Color(.98f, .92f, .77f, .94f));
+            _mapLabelMaterial.EnableKeyword("OUTLINE_ON");
+        }
+        if (_mapLabelMaterial != null) marker.Label.fontSharedMaterial = _mapLabelMaterial;
         marker.Label.raycastTarget = false;
         return marker;
     }
@@ -375,24 +403,80 @@ public sealed class WorldLocationsView : MonoBehaviour
 
     private void ApplySelection()
     {
+        _labelCandidates.Clear();
+        _labelBounds.Clear();
         foreach (var pair in _markers)
         {
             Marker marker = pair.Value;
             if (marker == null || marker.Background == null) continue;
             bool selected = _selectedId != 0u && pair.Key == _selectedId;
-            bool capital = marker.Data != null && marker.Data.Kind == WorldLocationKind.Capital;
-            bool home = marker.Data?.Kind == WorldLocationKind.PlayerVillage;
-            var background = marker.Glyph.sprite != null
-                ? (capital ? CapitalPaper : MarkerPaper)
-                : (capital ? MarkerCapital : MarkerInk);
-            marker.Background.color = selected || home ? MarkerGold : background;
-            marker.Initial.color = selected || home ? Ink : WarmText;
+            var kind = marker.Data.Kind;
+            bool home = kind == WorldLocationKind.PlayerVillage;
+            marker.Background.color = selected ? MarkerGold : MarkerTone(kind);
+            marker.Initial.color = home && !selected ? WarmText : Ink;
             marker.Icon.SetSelected(selected);
-            marker.Label.color = selected || home ? Gold : WarmText;
-            marker.Label.gameObject.SetActive(selected || capital || home || _zoom >= LabelZoomThreshold);
+            marker.Label.gameObject.SetActive(false);
+            if (marker.Root.gameObject.activeSelf && (selected || home || kind == WorldLocationKind.Capital || _zoom >= LabelZoomThreshold))
+                _labelCandidates.Add(marker);
+        }
+        _labelCandidates.Sort(CompareLabelPriority);
+        Vector2 mapSize = _mapContent.sizeDelta * _zoom;
+        foreach (var marker in _labelCandidates)
+        {
+            bool pinned = marker.Id == _selectedId || marker.Data.Kind == WorldLocationKind.PlayerVillage;
+            Vector2 point = Vector2.Scale(marker.Data.Position, mapSize);
+            float width = Mathf.Max(28f, marker.Label.text.Length * 16f);
+            var bounds = new Rect(point.x - width * .5f, point.y - 38f, width, 20f);
+            if (!pinned && _labelBounds.Exists(other => other.Overlaps(bounds))) continue;
+            _labelBounds.Add(bounds);
+            marker.Label.gameObject.SetActive(true);
+        }
+        // 先让主城与里标浮到同区普通兴趣点上方，当前选中点最后绘制。
+        for (int i = _labelCandidates.Count - 1; i >= 0; i--)
+        {
+            var marker = _labelCandidates[i];
+            if (LabelPriority(marker) <= 2) marker.Root.SetAsLastSibling();
         }
     }
 
+    private int CompareLabelPriority(Marker first, Marker second)
+    {
+        int firstPriority = LabelPriority(first);
+        int secondPriority = LabelPriority(second);
+        return firstPriority != secondPriority ? firstPriority.CompareTo(secondPriority) : first.Id.CompareTo(second.Id);
+    }
+
+    private int LabelPriority(Marker marker)
+    {
+        if (marker.Id == _selectedId) return 0;
+        if (marker.Data.Kind == WorldLocationKind.PlayerVillage) return 1;
+        return marker.Data.Kind == WorldLocationKind.Capital ? 2 : 3;
+    }
+
+    private static Color MarkerTone(WorldLocationKind kind) => kind == WorldLocationKind.PlayerVillage
+        ? HomeSeal : CategoryColors[(int)WorldLocationKindFilter.Of(kind)];
+
+    private Sprite BadgeSprite()
+    {
+        if (_badgeSprite != null) return _badgeSprite;
+        const int size = 48;
+        var texture = new Texture2D(size, size, TextureFormat.RGBA32, false) {
+            name = "WorldLocationBadge", wrapMode = TextureWrapMode.Clamp, filterMode = FilterMode.Bilinear
+        };
+        var pixels = new Color32[size * size];
+        for (int y = 0; y < size; y++)
+        for (int x = 0; x < size; x++)
+        {
+            var offset = new Vector2(x + .5f - size * .5f, y + .5f - size * .5f);
+            float edge = size * .5f - offset.magnitude;
+            byte shade = (byte)Mathf.RoundToInt(Mathf.Lerp(61f, 255f, Mathf.Clamp01(edge - 1.8f)));
+            pixels[y * size + x] = new Color32(shade, shade, shade, (byte)Mathf.RoundToInt(Mathf.Clamp01(edge) * 255f));
+        }
+        texture.SetPixels32(pixels);
+        texture.Apply(false, true);
+        _badgeSprite = Sprite.Create(texture, new Rect(0f, 0f, size, size), Vector2.one * .5f, 100f, 0, SpriteMeshType.FullRect);
+        return _badgeSprite;
+    }
     // ══════════════════ 筛选 ══════════════════
 
     private void ApplyFilters()
@@ -425,27 +509,23 @@ public sealed class WorldLocationsView : MonoBehaviour
     {
         if (_filterBar != null) return;
         _filterBar = GameplayUi.Rect(_overlay, "LocationFilters", new Vector2(0f, 1f), new Vector2(0f, 1f),
-            new Vector2(24f, -88f), new Vector2(FilterBarWidth, FilterBarHeight));
-        var background = _filterBar.gameObject.AddComponent<Image>();
-        background.color = new Color(.10f, .085f, .065f, .94f);
-        background.raycastTarget = true;
+            new Vector2(28f, -108f), new Vector2(FilterBarWidth, FilterBarHeight));
 
         WorldLocationFilter[] order =
         {
             WorldLocationFilter.Capital, WorldLocationFilter.Trade, WorldLocationFilter.Resource,
             WorldLocationFilter.Rumor, WorldLocationFilter.Task
         };
-        string[] names = { "主城", "贸易", "资源", "见闻", "任务" };
         for (int i = 0; i < order.Length; i++)
         {
             WorldLocationFilter filter = order[i];
             _filters[filter] = true; // 默认全开；可并列开关
-            Button button = GameplayUi.Button(_filterBar, "Filter_" + filter, names[i],
-                new Vector2(10f + i * 100f, -8f), new Vector2(92f, 36f), () => ToggleFilter(filter));
+            Button button = GameplayUi.Button(_filterBar, "Filter_" + filter, CategoryNames[i],
+                new Vector2(i * 99f, 0f), new Vector2(91f, 36f), () => ToggleFilter(filter));
             button.transition = Selectable.Transition.None;
             _filterImages[filter] = button.targetGraphic as Image;
             TextMeshProUGUI label = button.GetComponentInChildren<TextMeshProUGUI>();
-            if (label != null) label.fontSize = 20;
+            if (label != null) label.fontSize = 18;
             _filterLabels[filter] = label;
         }
         RefreshFilterButtons();
@@ -456,10 +536,10 @@ public sealed class WorldLocationsView : MonoBehaviour
         foreach (var pair in _filterImages)
         {
             bool on = IsFilterEnabled(pair.Key);
-            if (pair.Value != null) pair.Value.color = on ? ButtonActive : ButtonNormal;
+            if (pair.Value != null) pair.Value.color = on ? new Color(.22f, .25f, .24f) : CardColor;
             TextMeshProUGUI label;
             if (_filterLabels.TryGetValue(pair.Key, out label) && label != null)
-                label.color = on ? Ink : MutedText;
+                label.color = on ? CategoryColors[(int)pair.Key] : MutedText;
         }
     }
 
@@ -525,37 +605,103 @@ public sealed class WorldLocationsView : MonoBehaviour
 
     private RectTransform _identityContent;
 
-    private void BuildDetailCard()
+    private RectTransform BuildSidebar(string name, out RectTransform panel)
     {
-        if (_card != null) return;
-        // 右侧 380 宽；顶部距 96、底部距 88，高度随画布伸缩。
-        _card = GameplayUi.Rect(_overlay, "LocationDetail", new Vector2(1f, 0f), new Vector2(1f, 1f), Vector2.zero, Vector2.zero);
-        _card.anchorMax=Vector2.one;
-        _card.offsetMin = new Vector2(-(CardWidth + 20f), CardBottom);
-        _card.offsetMax = new Vector2(-20f, -CardTop);
-        var frame = _card.gameObject.AddComponent<Image>();
+        panel = GameplayUi.Rect(_overlay, name, new Vector2(1f, 0f), new Vector2(1f, 1f), Vector2.zero, Vector2.zero);
+        panel.anchorMax = Vector2.one;
+        panel.offsetMin = new Vector2(-(SidebarWidth + 28f), CardBottom);
+        panel.offsetMax = new Vector2(-28f, -CardTop);
+        var frame = panel.gameObject.AddComponent<Image>();
         frame.color = CardBorder;
         frame.raycastTarget = true;
 
-        RectTransform body = Stretch(GameplayUi.Rect(_card, "Body", Vector2.zero, new Vector2(.5f, .5f), Vector2.zero, Vector2.zero));
-        body.offsetMin = new Vector2(2f, 2f);
-        body.offsetMax = new Vector2(-2f, -2f);
+        RectTransform body = Stretch(GameplayUi.Rect(panel, "Body", Vector2.zero, new Vector2(.5f, .5f), Vector2.zero, Vector2.zero));
+        body.offsetMin = new Vector2(1f, 1f);
+        body.offsetMax = new Vector2(-1f, -1f);
         var bodyImage = body.gameObject.AddComponent<Image>();
         bodyImage.color = CardColor;
         bodyImage.raycastTarget = true; // 挡住地图拖动穿透
+        return body;
+    }
 
-        Button close = GameplayUi.Button(body, "Close", "×", new Vector2(CardWidth - 62f, -8f), new Vector2(42f, 38f), CloseFromButton);
+    private void BuildOverview()
+    {
+        RectTransform body = BuildSidebar("LocationOverview", out _overview);
+        SidebarText(body, "Section", "地点总览", 17, Gold, 22f, 25f);
+        SidebarText(body, "OverviewTitle", "诸地一览", 33, WarmText, 55f, 44f).fontStyle = FontStyles.Bold;
+        _overviewCount = SidebarText(body, "LocationCount", "", 21, Gold, 106f, 32f);
+        SidebarText(body, "Instructions", "点击地图上的地点，查看当地势力、关系和可办理的事务。", 19,
+            MutedText, 152f, 68f).enableWordWrapping = true;
+        SidebarRule(body, 232f);
+        SidebarText(body, "LegendTitle", "地图图例", 18, Gold, 252f, 28f);
+
+        string[] iconKeys = { "capital", "market_town", "forest", "rumor", "task" };
+        string[] legend = { "主城     势力锚点", "贸易     城邑与部落", "资源     可经营地点", "见闻     临时发现", "任务     已接取的事务" };
+        for (int i = 0; i < legend.Length; i++)
+        {
+            float top = 294f + i * 46f;
+            var badge = GameplayUi.Rect(body, "LegendMark_" + i, Vector2.up, Vector2.up,
+                new Vector2(22f, -top), new Vector2(27f, 27f));
+            var badgeImage = badge.gameObject.AddComponent<Image>();
+            badgeImage.sprite = BadgeSprite();
+            badgeImage.color = CategoryColors[i];
+            badgeImage.raycastTarget = false;
+            var glyph = GameplayUi.Rect(badge, "Glyph", Vector2.one * .5f, Vector2.one * .5f, Vector2.zero, new Vector2(17f, 17f))
+                .gameObject.AddComponent<Image>();
+            glyph.sprite = Resources.Load<Sprite>("UI/WorldLocations/" + iconKeys[i]);
+            glyph.enabled = glyph.sprite != null;
+            glyph.preserveAspect = true;
+            glyph.raycastTarget = false;
+            var label = SidebarText(body, "LegendText_" + i, legend[i], 18, WarmText, top - 2f, 30f);
+            PlaceTop(label.rectTransform, 63f, top - 2f, 30f, 18f);
+        }
+        SidebarRule(body, 530f);
+        SidebarText(body, "HomeNote", "朱色「里」标出你治理的榆川里。", 17, MutedText, 549f, 50f).enableWordWrapping = true;
+        var identity = MakeText(body, "IdentityNote", 17, MutedText, TextAlignmentOptions.BottomLeft);
+        identity.text = "官员处理任务与事件\n族长负责贸易与经营";
+        identity.rectTransform.anchorMin = Vector2.zero;
+        identity.rectTransform.anchorMax = Vector2.right;
+        identity.rectTransform.offsetMin = new Vector2(22f, 24f);
+        identity.rectTransform.offsetMax = new Vector2(-22f, 74f);
+    }
+
+    private static TextMeshProUGUI SidebarText(RectTransform body, string name, string value, float size, Color color, float top, float height)
+    {
+        var label = MakeText(body, name, size, color, TextAlignmentOptions.TopLeft);
+        label.text = value;
+        PlaceTop(label.rectTransform, 22f, top, height, 20f);
+        return label;
+    }
+
+    private static void SidebarRule(RectTransform body, float top)
+    {
+        var rect = GameplayUi.Rect(body, "Rule", Vector2.up, Vector2.up, Vector2.zero, Vector2.zero);
+        PlaceTop(rect, 22f, top, 1f, 22f);
+        var line = rect.gameObject.AddComponent<Image>();
+        line.color = CardBorder;
+        line.raycastTarget = false;
+    }
+
+    private void BuildDetailCard()
+    {
+        if (_card != null) return;
+        var body = BuildSidebar("LocationDetail", out _card);
+
+        Button close = GameplayUi.Button(body, "Close", "×", new Vector2(SidebarWidth - 62f, -8f), new Vector2(42f, 38f), CloseFromButton);
+        close.targetGraphic.color = ButtonNormal;
         TextMeshProUGUI closeLabel = close.GetComponentInChildren<TextMeshProUGUI>();
         if (closeLabel != null) closeLabel.fontSize = 26;
 
-        _title = MakeText(body, "Title", 27, Gold, TextAlignmentOptions.Left);
-        PlaceTop(_title.rectTransform, 10f, 8f, 40f, 62f);
+        _title = MakeText(body, "Title", 30, Gold, TextAlignmentOptions.Left);
+        _title.fontStyle = FontStyles.Bold;
+        PlaceTop(_title.rectTransform, 16f, 8f, 40f, 62f);
 
         _meta = MakeText(body, "Meta", 18, MutedText, TextAlignmentOptions.Left);
         PlaceTop(_meta.rectTransform, 10f, 52f, 24f, 16f);
 
         _relation = MakeText(body, "Relation", 18, WarmText, TextAlignmentOptions.Left);
         PlaceTop(_relation.rectTransform, 10f, 80f, 22f, 16f);
+        SidebarRule(body, 104f);
 
         var descriptionViewport=GameplayUi.Rect(body,"DescriptionViewport",Vector2.up,Vector2.up,Vector2.zero,Vector2.zero);
         PlaceTop(descriptionViewport,10f,110f,112f,16f);
@@ -602,6 +748,11 @@ public sealed class WorldLocationsView : MonoBehaviour
         _harvestLabel = _harvestButton.GetComponentInChildren<TextMeshProUGUI>();
         _resolveButton=GameplayUi.Button(_familyPage,"Resolve","阅读并领取",new Vector2(0f,-6f),new Vector2(210f,42f),
             ()=>Emit(WorldLocationUiAction.Resolve,CurrentLocationId));
+        foreach (var button in new[] { _officeButton, _buildButton, _harvestButton, _resolveButton })
+        {
+            button.targetGraphic.color = ButtonActive;
+            button.GetComponentInChildren<TextMeshProUGUI>().color = Ink;
+        }
         _familyHint = MakeText(_familyPage, "FamilyHint", 16, MutedText, TextAlignmentOptions.TopLeft);
         _familyHint.enableWordWrapping = true;
         PlaceTop(_familyHint.rectTransform, 0f, 56f, 48f, 0f);
@@ -788,7 +939,7 @@ public sealed class WorldLocationsView : MonoBehaviour
         _officeLabel.text = data.OfficialActionLabel ?? "任务与事件";
         _officialHint.text = canOpen
             ? data.OfficialActionLabel == null ? "此处设有官署，可查阅辖区任务与事件。" : "供给已备齐，可在此交付。"
-            : LockTextOf(data, "此处不设官署，官员事务不可用。");
+            : string.IsNullOrEmpty(data.LockReason) ? "此处不设官署，官员事务不可用。" : "";
     }
 
     private void RenderFamily(WorldLocationSnapshot data, List<WorldLocationTradeRow> offers)
@@ -812,18 +963,12 @@ public sealed class WorldLocationsView : MonoBehaviour
 
         var parts = new List<string>(4);
         if (data.CanResolve) parts.Add("阅读上方记述后，可确认领取本次收获。");
-        if (data.CanBuild && !data.Built && !string.IsNullOrEmpty(data.LockReason)) parts.Add(data.LockReason);
         if (data.ProductionSeconds > 0d)
             parts.Add("当前周期已工作 " + Mathf.FloorToInt((float)data.ProductionSeconds) + " 秒，暂存满后停产。");
         if (data.CanTrade) parts.Add("本地买价为原价 " + data.BuyPercent + "%，卖价按原价。");
-        if (parts.Count == 0 && !data.CanTrade && !data.CanBuild && !data.CanHarvest)
-            parts.Add(LockTextOf(data, "此地暂无家族可经营的业务。"));
+        if (parts.Count == 0 && !data.CanTrade && !data.CanBuild && !data.CanHarvest && string.IsNullOrEmpty(data.LockReason))
+            parts.Add("此地暂无家族可经营的业务。");
         _familyHint.text = string.Join("　", parts.ToArray());
-    }
-
-    private static string LockTextOf(WorldLocationSnapshot data, string fallback)
-    {
-        return string.IsNullOrEmpty(data.LockReason) ? fallback : data.LockReason;
     }
 
     /// <summary>交易行按需复用：行数收敛不重建，买/卖各一按钮，每行只买卖 1。</summary>

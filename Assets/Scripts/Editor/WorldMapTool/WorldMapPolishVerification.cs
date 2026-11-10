@@ -32,11 +32,12 @@ public static class WorldMapPolishVerification
             var areas = new List<WorldFactionArea> { left, right };
             mask.SetAreas(areas, 1);
             var texture = (Texture2D)mask.texture;
-            var fill = texture.GetPixel(128, 256);
+            int quarter = texture.width / 4, middle = texture.height / 2;
+            var fill = texture.GetPixel(quarter, middle);
             check(fill.r > .9f && Mathf.Abs(fill.a - WorldFactionMask.FactionAlpha) < .02f, "interior fill and opacity preserved");
-            var border = texture.GetPixel(256, 256);
+            var border = texture.GetPixel(texture.width / 2, middle);
             check(border.a > .55f && border.r < .3f && border.b < .3f, "common border remains dark after all fills");
-            check(texture.GetPixel(128, 51).a > .55f, "closing bottom edge stroked");
+            check(texture.GetPixel(quarter, Mathf.FloorToInt(texture.height * .1f)).a > .55f, "closing bottom edge stroked");
             check(texture.GetPixel(8, 8).a == 0, "outside remains transparent");
             int generation = mask.RasterGeneration; mask.SetAreas(areas, 1);
             check(mask.RasterGeneration == generation && ReferenceEquals(mask.texture, texture), "same geometry reuses raster");

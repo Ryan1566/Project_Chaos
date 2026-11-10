@@ -70,6 +70,12 @@ public sealed class WorldMapNavigation : MonoBehaviour,
         Notify();
     }
 
+    public void StepZoom(float multiplier)
+    {
+        if (_viewport == null) return;
+        SetZoom(_zoom * multiplier, RectTransformUtility.WorldToScreenPoint(ResolveCamera(), _viewport.position));
+    }
+
     public void OnScroll(PointerEventData eventData)
     {
         if (!InsideViewport(eventData)) return;

@@ -27,7 +27,7 @@ public sealed class WorldMapToolPolygonOverlay : IDisposable
         {
             if (region.stage != stage || region.vertices.Count < 3) continue;
             if (!ColorUtility.TryParseHtmlString(region.color, out var color)) color = Color.magenta;
-            color.a = .32f;
+            color.a = WorldFactionMask.FactionAlpha;
             Rasterize(region.vertices, color, width, height);
         }
         _texture.SetPixels32(_pixels); _texture.Apply(false, false); _hash = hash;
