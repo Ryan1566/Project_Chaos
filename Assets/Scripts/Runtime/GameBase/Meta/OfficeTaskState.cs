@@ -15,5 +15,8 @@ public sealed class OfficeTaskSnapshot
     public bool Timed, Repeatable;
     public double RemainingSeconds;
     public uint Progress, Required;
+    public uint SupplyBuildingId, VillageSupplyProgress;
+    public string SupplyBuildingName, SupplyResourceName;
+    public bool VillageSupplyReady => VillageSupplyProgress >= Required && Progress >= Required;
     public OfficeTaskTable_OfficeTaskOptionConfig[] Options;
 }

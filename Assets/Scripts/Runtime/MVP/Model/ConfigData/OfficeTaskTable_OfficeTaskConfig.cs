@@ -103,4 +103,8 @@ public class OfficeTaskTable_OfficeTaskConfig
     /// 世界地点ID
     /// </summary>
     public uint MapLocationId;
+    /// <summary>
+    /// 供给建筑ID（0=不限）
+    /// </summary>
+    public uint SupplyBuildingId;
 }

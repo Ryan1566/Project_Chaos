@@ -785,8 +785,9 @@ public sealed class WorldLocationsView : MonoBehaviour
         bool canOpen = data.CanOpenOffice;
         // 官员页只保留一个真实入口；不可用时按钮隐藏并解释限制。
         _officeButton.gameObject.SetActive(canOpen);
+        _officeLabel.text = data.OfficialActionLabel ?? "任务与事件";
         _officialHint.text = canOpen
-            ? "此处设有官署，可查阅辖区任务与事件。"
+            ? data.OfficialActionLabel == null ? "此处设有官署，可查阅辖区任务与事件。" : "供给已备齐，可在此交付。"
             : LockTextOf(data, "此处不设官署，官员事务不可用。");
     }
 

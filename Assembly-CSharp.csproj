@@ -192,6 +192,7 @@
     <Compile Include="Assets\Scripts\Runtime\GameBase\UIManager\UIPanelStaggerItem.cs" />
     <Compile Include="Assets\Scripts\Runtime\MVP\View\RunContentPanel.cs" />
     <Compile Include="Assets\Scripts\Runtime\GameBase\RunMap\ExplorationMapPresentation.cs" />
+    <Compile Include="Assets\QA\URPTest\UrpSceneComparison.cs" />
     <Compile Include="Assets\Scripts\Runtime\GameBase\Meta\PrototypeMapSpawner.cs" />
     <Compile Include="Assets\Scripts\Runtime\MVP\Model\Gameplay\RadialMenuViewState.cs" />
     <Compile Include="Assets\Scripts\Runtime\GameBase\RunMap\RunMapNavigator.cs" />

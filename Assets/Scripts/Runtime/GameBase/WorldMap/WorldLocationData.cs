@@ -43,6 +43,7 @@ public sealed class WorldLocationSnapshot
     public bool CanHarvest;
     public bool CanResolve;
     public bool CanOpenOffice;
+    public string OfficialActionLabel;
     public bool Built;
     public string LockReason;
     public uint PendingOutput;

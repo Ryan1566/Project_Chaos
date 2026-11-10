@@ -306,6 +306,7 @@ public class VillageService : SingletonBase<VillageService>
         if (amount == 0) { reason = "资源已达到上限"; return false; }
         uint now = InventoryService.Instance.AddResource(kind, amount);
         save.pendingOutput -= amount;
+        OfficeTaskService.Instance.RecordVillageSupply(buildingId, kind, amount);
 
         ChaosLog.Info(LogChannel.Config,
             "[村庄] 收取 " + buildingId + "（Lv" + save.level + "）→ "

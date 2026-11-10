@@ -328,6 +328,15 @@ public sealed class OfficeTaskCatalogSet
             return id + "失败惩罚资源码非法：" + config.FailureResourceType;
         if (config.DurationSeconds > OfficeTaskCatalog.MaxDurationSeconds)
             return id + "时限参数超出上限 " + OfficeTaskCatalog.MaxDurationSeconds;
+        if (config.SupplyBuildingId != 0u)
+        {
+            if (config.GoalType != (uint)OfficeTaskGoal.ResourceDelivery || !config.RequiresAcceptance || config.MapLocationId == 0u)
+                return id + "村庄供给必须配置为接取后在地图地点交付";
+            var producer = VillageService.Instance.GetDef(config.SupplyBuildingId, 1u);
+            if (producer == null || !producer.Enable || producer.HarvestSeconds == 0u || producer.OutputAmount == 0u
+                || producer.OutputResourceType != config.ResourceType)
+                return id + "供给建筑无法产出所需资源：" + config.SupplyBuildingId;
+        }
 
         // 无时限任务（DurationSeconds=0）不写 deadlineClock；有时限任务才按 DurationSeconds 计时
         switch ((OfficeTaskGoal)config.GoalType)
@@ -389,6 +398,8 @@ public sealed class OfficeTaskCatalogSet
                 || goal == (uint)OfficeTaskGoal.VillageRaid;
             if (needsOption && task.Options.Count == 0)
                 return "任务 " + task.Config.Index + " 至少需要一个可用选项";
+            if (task.Config.SupplyBuildingId != 0u && (task.Options.Count != 1 || task.Options[0].CostAmount != 0u))
+                return "任务 " + task.Config.Index + " 的村庄供给只允许一个交付选项，不附加额外消耗";
         }
         return null;
     }

@@ -28,13 +28,27 @@ namespace Chaos.MVP.Model.WorldMap
                 uint id = 0x80000000u | unchecked(task.TaskId * 16777619u ^ task.Cycle);
                 while (locations.Exists(p => p.Id == id)) id++;
                 markers[id] = task;
+                bool villageSupply = task.SupplyBuildingId != 0u;
+                bool official = Identity == WorldLocationIdentity.Official;
+                bool canUseOffice = anchor.CanOpenOffice || anchor.Kind == WorldLocationKind.PlayerVillage;
+                string detail = task.Status == OfficeTaskStatus.AwaitingBattle ? OfficeTaskText.Get("awaitBattle")
+                    : task.Timed ? OfficeTaskText.Time(task.RemainingSeconds) : "进行中的事务";
+                if (villageSupply)
+                    detail = $"{task.SupplyBuildingName}收取 {task.VillageSupplyProgress}/{task.Required} · "
+                        + $"仓库{task.SupplyResourceName} {task.Progress}/{task.Required}"
+                        + (task.Timed ? "\n" + OfficeTaskText.Time(task.RemainingSeconds) : "");
+                string locked = !official ? "切换至官员事务处理此任务。" : anchor.LockReason;
+                if (villageSupply && official && canUseOffice)
+                    locked = task.VillageSupplyReady ? null : "收取进度和仓库持有量达标后可交付。";
                 locations.Add(new WorldLocationSnapshot {
                     Id=id, Era=Era, FactionId=anchor.FactionId, FactionName=anchor.FactionName,
-                    Name=task.Title, Description=task.Body+"\n\n"+(task.Status==OfficeTaskStatus.AwaitingBattle
-                        ?OfficeTaskText.Get("awaitBattle"):task.Timed?OfficeTaskText.Time(task.RemainingSeconds):"进行中的事务"),
-                    Position=anchor.Position+new UnityEngine.Vector2(.008f,.012f), Kind=WorldLocationKind.Task,
-                    IconKey="task", RelationName=anchor.RelationName, CanOpenOffice=anchor.CanOpenOffice,
-                    LockReason=Identity==WorldLocationIdentity.Family?"切换至官员事务处理此任务。":anchor.LockReason
+                    Name=task.Title, Description=task.Body+"\n\n"+detail,
+                    Position=anchor.Position+(villageSupply ? new UnityEngine.Vector2(-.048f,-.038f)
+                        : new UnityEngine.Vector2(.008f,.012f)), Kind=WorldLocationKind.Task,
+                    IconKey="task", RelationName=anchor.RelationName,
+                    CanOpenOffice=villageSupply ? official && canUseOffice && task.VillageSupplyReady : anchor.CanOpenOffice,
+                    OfficialActionLabel=villageSupply ? "交付物资" : null,
+                    LockReason=locked
                 });
             }
             var selected=locations.Find(p=>p.Id==SelectedId);
@@ -68,6 +82,19 @@ namespace Chaos.MVP.Model.WorldMap
             uint target=markers.TryGetValue(SelectedId,out var task)?task.MapLocationId:SelectedId;
             var place=WorldLocationService.Instance.GetLocation(Era,target,Identity);
             if(place==null){Hint="地点在当前时代不可用。";return;}
+            if (task != null && task.SupplyBuildingId != 0u)
+            {
+                if (intent.Action != WorldLocationUiAction.OpenOffice || task.Options.Length != 1)
+                { Hint = "请使用官员事务中的交付入口。"; return; }
+                if (OfficeTaskService.Instance.TryDeliverVillageSupply(task.TaskId, task.Cycle, task.Options[0].Index,
+                    context, target, Identity, out string deliveryReason))
+                {
+                    SelectedId = 0;
+                    Hint = "物资已交付，可在办事单位查阅办结回执。";
+                }
+                else Hint = deliveryReason;
+                return;
+            }
             string reason=null;bool ok=false;
             switch(intent.Action)
             {

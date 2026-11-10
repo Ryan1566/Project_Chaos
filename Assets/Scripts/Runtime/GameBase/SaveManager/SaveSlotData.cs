@@ -171,6 +171,7 @@ public class OfficeTaskSave
     public uint startedClears;
     public uint selectedOptionId;
     public uint completedCycles;
+    public uint suppliedFromVillage;
 }
 
 /// <summary>一个存档文件的根对象（= 落盘的整个 Json）。</summary>

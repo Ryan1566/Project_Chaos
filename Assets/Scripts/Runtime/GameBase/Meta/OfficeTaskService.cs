@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using ChaosDebug;
+using LocalizationSystem;
 
 /// <summary>
 /// 办事单位任务领域服务：负责激活、计时、选择、结算与时代门槛判定。
@@ -91,6 +92,8 @@ public sealed class OfficeTaskService : SingletonBase<OfficeTaskService>
         {
             TaskId = config.Index,
             MapLocationId = config.MapLocationId,
+            SupplyBuildingId = config.SupplyBuildingId,
+            VillageSupplyProgress = record.suppliedFromVillage,
             Cycle = record.cycle == 0u ? 1u : record.cycle,
             Category = (OfficeTaskCategory)config.Category,
             Status = record.status,
@@ -102,6 +105,13 @@ public sealed class OfficeTaskService : SingletonBase<OfficeTaskService>
             Repeatable = config.Repeatable,
             Options = CopyOptions(entry.OptionList())
         };
+        if (config.SupplyBuildingId != 0u)
+        {
+            var producer = VillageService.Instance.GetDef(config.SupplyBuildingId, 1u);
+            snapshot.SupplyBuildingName = producer == null ? "指定建筑"
+                : GameplayText.Text(producer.NameKey, $"建筑 {config.SupplyBuildingId}");
+            snapshot.SupplyResourceName = InventoryService.ResourceDisplayName(VillageService.ResourceKindOf(config.ResourceType));
+        }
         if (config.DurationSeconds > 0u && record.status == OfficeTaskStatus.Active)
         {
             double remain = record.deadlineClock - payload.officeClockSeconds;
@@ -451,6 +461,7 @@ public sealed class OfficeTaskService : SingletonBase<OfficeTaskService>
         }
         record.status = config.RequiresAcceptance ? OfficeTaskStatus.Available : OfficeTaskStatus.Active;
         record.selectedOptionId = 0u;
+        record.suppliedFromVillage = 0u;
         record.startedClears = payload.clears;
         record.deadlineClock = !config.RequiresAcceptance && config.DurationSeconds > 0u
             ? payload.officeClockSeconds + config.DurationSeconds : 0.0;
@@ -501,8 +512,38 @@ public sealed class OfficeTaskService : SingletonBase<OfficeTaskService>
         }, out reason);
     }
 
+    /// <summary>随建筑收取的原事务更新供给进度，和库存一起保存或回滚。</summary>
+    internal void RecordVillageSupply(uint buildingId, InventoryService.ResourceKind kind, uint amount)
+    {
+        if (!MetaCommandRunner.IsMutating || amount == 0u || !TryGetPayload(out var payload)
+            || payload.officeTasks == null || payload.officeTasks.Count == 0) return;
+        var catalog = OfficeTaskCatalog.EnsureLoaded();
+        if (catalog == null) return;
+        foreach (var record in payload.officeTasks)
+        {
+            if (record == null || record.status != OfficeTaskStatus.Active) continue;
+            var config = catalog.GetEntry(record.taskId)?.Config;
+            if (config == null || config.SupplyBuildingId != buildingId
+                || VillageService.ResourceKindOf(config.ResourceType) != kind) continue;
+            record.suppliedFromVillage = (uint)Math.Min(config.RequiredAmount, (ulong)record.suppliedFromVillage + amount);
+        }
+    }
+
     /// <summary>只接受本存档活动轮次的选项；交付、奖励和完成记录由一次命令提交。</summary>
     public bool TryChoose(uint taskId, uint cycle, uint optionId, int contextId, out string reason)
+        => TryChooseAt(taskId, cycle, optionId, contextId, 0u, out reason);
+
+    public bool TryDeliverVillageSupply(uint taskId, uint cycle, uint optionId, int contextId,
+        uint locationId, WorldLocationIdentity identity, out string reason)
+    {
+        if (identity != WorldLocationIdentity.Official || locationId == 0u)
+        { reason = "请在地图事务点以官员身份交付。"; return false; }
+        if (!VillageSceneFlow.IsVillageScene || !VillageSceneBootstrap.IsReady)
+        { reason = "请回到村庄后处理此事务。"; return false; }
+        return TryChooseAt(taskId, cycle, optionId, contextId, locationId, out reason);
+    }
+
+    private bool TryChooseAt(uint taskId, uint cycle, uint optionId, int contextId, uint deliveryLocationId, out string reason)
     {
         SavePayload payload;
         if (!TryGetPayload(out payload)) { reason = "没有活动会话，请先读档"; return false; }
@@ -511,12 +552,12 @@ public sealed class OfficeTaskService : SingletonBase<OfficeTaskService>
         OfficeTaskCatalogSet set = OfficeTaskCatalog.EnsureLoaded();
         if (set == null) { reason = OfficeTaskCatalog.LastError ?? "任务配置缺失"; return false; }
         return RunAtomic("办事任务选择", (out string inner) =>
-            ChooseInternal(payload, set, taskId, cycle, optionId, out inner), out reason);
+            ChooseInternal(payload, set, taskId, cycle, optionId, deliveryLocationId, out inner), out reason);
     }
 
     /// <summary>选择的具体规则；任何一步失败都返回 false，由外层命令整体回滚。</summary>
     private static bool ChooseInternal(SavePayload payload, OfficeTaskCatalogSet set,
-        uint taskId, uint cycle, uint optionId, out string reason)
+        uint taskId, uint cycle, uint optionId, uint deliveryLocationId, out string reason)
     {
         reason = null;
         OfficeTaskCatalogSet.TaskEntry entry = set.GetEntry(taskId);
@@ -533,6 +574,18 @@ public sealed class OfficeTaskService : SingletonBase<OfficeTaskService>
         }
         if(config.DurationSeconds>0u&&payload.officeClockSeconds>=record.deadlineClock)
         {reason="任务时限已结束，不能再提交选项";return false;}
+        if (config.SupplyBuildingId != 0u)
+        {
+            if (deliveryLocationId != config.MapLocationId)
+            { reason = "请在世界地图的对应事务点交付。"; return false; }
+            var anchor = WorldLocationService.Instance.GetLocation(payload.era, deliveryLocationId, WorldLocationIdentity.Official);
+            if (anchor == null || (anchor.Kind != WorldLocationKind.PlayerVillage && !anchor.CanOpenOffice))
+            { reason = "当前无法在该地点办理官员事务。"; return false; }
+            if (record.suppliedFromVillage < config.RequiredAmount)
+            { reason = "请先从指定建筑收取足够的供给。"; return false; }
+        }
+        else if (deliveryLocationId != 0u)
+        { reason = "该事务不属于村庄供给交付。"; return false; }
         if(config.GoalType==(uint)OfficeTaskGoal.VillageRaid&&record.selectedOptionId!=0u)
         {reason="本轮应对方案已经记录，不能重复支付或更换";return false;}
         OfficeTaskTable_OfficeTaskOptionConfig option = entry.FindOption(optionId);

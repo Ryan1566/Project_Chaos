@@ -29,7 +29,8 @@ namespace Chaos.MVP.Model.Gameplay
         {
             if(!IsCurrent){Message=OfficeTaskText.Get("stale");return;}
             var selected=OfficeTaskService.Instance.GetTask(id);
-            if(mapLocationId!=0&&selected!=null&&selected.MapLocationId!=0&&selected.MapLocationId!=mapLocationId)
+            if(mapLocationId!=0&&selected!=null
+                &&(selected.SupplyBuildingId!=0||selected.MapLocationId!=0&&selected.MapLocationId!=mapLocationId))
             {Message="该事务不属于当前地点。";return;}
             string reason;
             bool ok=option==0 ? OfficeTaskService.Instance.TryAccept(id,cycle,contextId,out reason)
@@ -41,7 +42,7 @@ namespace Chaos.MVP.Model.Gameplay
         public OfficeTasksDisplayState Read()
         {
             var tasks=OfficeTaskService.Instance.GetTasks(Category)
-                .Where(t=>mapLocationId==0||t.MapLocationId==0||t.MapLocationId==mapLocationId).ToArray();
+                .Where(t=>mapLocationId==0||t.SupplyBuildingId==0&&(t.MapLocationId==0||t.MapLocationId==mapLocationId)).ToArray();
             if(!tasks.Any(t=>t.TaskId==SelectedId))SelectedId=tasks.Length==0?0:tasks[0].TaskId;
             var selected=tasks.FirstOrDefault(t=>t.TaskId==SelectedId);
             var payload=GameSession.Instance.LoadedPayload;
@@ -57,6 +58,7 @@ namespace Chaos.MVP.Model.Gameplay
                 DetailProgress=selected==null?"":Progress(selected),
                 Options=selected==null?Array.Empty<OfficeTaskDisplayOption>():selected.Status==OfficeTaskStatus.Available
                     ?new[]{new OfficeTaskDisplayOption {TaskId=selected.TaskId,Cycle=selected.Cycle,OptionId=0,Text="接取事务",Enabled=true}}
+                    :selected.SupplyBuildingId!=0u?Array.Empty<OfficeTaskDisplayOption>()
                     :selected.Options.Select(o=>new OfficeTaskDisplayOption {
                     TaskId=selected.TaskId,Cycle=selected.Cycle,OptionId=o.Index,Text=Describe(o),
                     Enabled=selected.Status==OfficeTaskStatus.Active&&selected.SelectedOptionId==0
@@ -67,6 +69,15 @@ namespace Chaos.MVP.Model.Gameplay
         {
             if(task.Status==OfficeTaskStatus.Available)return task.Timed?"可接取 · 接取成功后开始倒计时":"可接取";
             if(task.Status==OfficeTaskStatus.AwaitingBattle)return OfficeTaskText.Get("awaitBattle");
+            if (task.SupplyBuildingId != 0u && task.Status == OfficeTaskStatus.Completed)
+                return $"已办结 · 已交付{task.SupplyResourceName} {task.Required} 份。县署收讫，回执已归档。";
+            if (task.SupplyBuildingId != 0u && task.Status == OfficeTaskStatus.Active)
+            {
+                string supply = $"{task.SupplyBuildingName}收取 {task.VillageSupplyProgress}/{task.Required} · "
+                    + $"仓库{task.SupplyResourceName} {task.Progress}/{task.Required}";
+                if (task.Timed) supply += "　" + OfficeTaskText.Time(task.RemainingSeconds);
+                return supply + (task.VillageSupplyReady ? "\n按 M 打开地图，在事务点以官员身份交付。" : "");
+            }
             string result=OfficeTaskText.Status(task.Status);
             if(task.Required>0)result+="　"+OfficeTaskText.Get("progress",task.Progress,task.Required);
             if(task.Timed&&task.Status==OfficeTaskStatus.Active)result+="　"+OfficeTaskText.Time(task.RemainingSeconds);

@@ -25,7 +25,8 @@
             "FailureDevelopment": 0,
             "Enable": true,
             "RequiresAcceptance": false,
-            "MapLocationId": 0
+            "MapLocationId": 0,
+            "SupplyBuildingId": 0
         },
         {
             "Index": 9002,
@@ -52,7 +53,8 @@
             "FailureDevelopment": 0,
             "Enable": true,
             "RequiresAcceptance": false,
-            "MapLocationId": 0
+            "MapLocationId": 0,
+            "SupplyBuildingId": 0
         },
         {
             "Index": 9003,
@@ -79,7 +81,8 @@
             "FailureDevelopment": 0,
             "Enable": true,
             "RequiresAcceptance": false,
-            "MapLocationId": 0
+            "MapLocationId": 0,
+            "SupplyBuildingId": 0
         },
         {
             "Index": 9004,
@@ -106,7 +109,8 @@
             "FailureDevelopment": 0,
             "Enable": true,
             "RequiresAcceptance": false,
-            "MapLocationId": 0
+            "MapLocationId": 0,
+            "SupplyBuildingId": 0
         },
         {
             "Index": 9005,
@@ -133,7 +137,8 @@
             "FailureDevelopment": 0,
             "Enable": true,
             "RequiresAcceptance": false,
-            "MapLocationId": 0
+            "MapLocationId": 0,
+            "SupplyBuildingId": 0
         },
         {
             "Index": 9101,
@@ -160,7 +165,8 @@
             "FailureDevelopment": 0,
             "Enable": true,
             "RequiresAcceptance": false,
-            "MapLocationId": 0
+            "MapLocationId": 0,
+            "SupplyBuildingId": 0
         },
         {
             "Index": 9102,
@@ -187,7 +193,8 @@
             "FailureDevelopment": 0,
             "Enable": true,
             "RequiresAcceptance": false,
-            "MapLocationId": 0
+            "MapLocationId": 0,
+            "SupplyBuildingId": 0
         },
         {
             "Index": 9103,
@@ -214,7 +221,8 @@
             "FailureDevelopment": 0,
             "Enable": true,
             "RequiresAcceptance": false,
-            "MapLocationId": 0
+            "MapLocationId": 0,
+            "SupplyBuildingId": 0
         },
         {
             "Index": 9201,
@@ -241,7 +249,8 @@
             "FailureDevelopment": 0,
             "Enable": true,
             "RequiresAcceptance": false,
-            "MapLocationId": 0
+            "MapLocationId": 0,
+            "SupplyBuildingId": 0
         },
         {
             "Index": 9202,
@@ -268,7 +277,8 @@
             "FailureDevelopment": 0,
             "Enable": true,
             "RequiresAcceptance": false,
-            "MapLocationId": 0
+            "MapLocationId": 0,
+            "SupplyBuildingId": 0
         },
         {
             "Index": 9301,
@@ -295,7 +305,8 @@
             "FailureDevelopment": 0,
             "Enable": true,
             "RequiresAcceptance": false,
-            "MapLocationId": 0
+            "MapLocationId": 0,
+            "SupplyBuildingId": 0
         },
         {
             "Index": 9302,
@@ -322,7 +333,8 @@
             "FailureDevelopment": 0,
             "Enable": false,
             "RequiresAcceptance": false,
-            "MapLocationId": 0
+            "MapLocationId": 0,
+            "SupplyBuildingId": 0
         },
         {
             "Index": 15001,
@@ -349,7 +361,8 @@
             "FailureDevelopment": 0,
             "Enable": true,
             "RequiresAcceptance": true,
-            "MapLocationId": 1001
+            "MapLocationId": 1001,
+            "SupplyBuildingId": 0
         },
         {
             "Index": 15002,
@@ -376,7 +389,36 @@
             "FailureDevelopment": 0,
             "Enable": true,
             "RequiresAcceptance": true,
-            "MapLocationId": 1001
+            "MapLocationId": 1001,
+            "SupplyBuildingId": 0
+        },
+        {
+            "Index": 9006,
+            "Category": 1,
+            "TitleText": "整修榆川里道",
+            "BodyText": "一场急雨冲坏了榆川里通往河谷的里道。县署令你备粮给修路的乡人。接取后，从榆川里农田收取两份物资。随后按 M 打开地图，在榆川里旁的事务标记内，以官员身份交付。",
+            "Topic": "里道修治",
+            "MinEra": 1,
+            "MaxEra": 1,
+            "MinRuns": 0,
+            "MinClearedDepth": 0,
+            "PrerequisiteTaskId": 9001,
+            "Repeatable": false,
+            "CooldownSeconds": 0,
+            "DurationSeconds": 0,
+            "GoalType": 2,
+            "ResourceType": 1,
+            "RequiredAmount": 2,
+            "RequiredClears": 0,
+            "FailureResourceType": 0,
+            "FailureResourceAmount": 0,
+            "FailureReputation": 0,
+            "FailureInfluence": 0,
+            "FailureDevelopment": 0,
+            "Enable": true,
+            "RequiresAcceptance": true,
+            "MapLocationId": 6001,
+            "SupplyBuildingId": 2001
         }
     ]
 }

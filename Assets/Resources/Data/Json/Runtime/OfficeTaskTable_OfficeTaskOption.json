@@ -220,6 +220,19 @@
             "InfluenceDelta": 0,
             "DevelopmentDelta": 0,
             "Enable": true
+        },
+        {
+            "Index": 90061,
+            "TaskId": 9006,
+            "OptionText": "交付物资并呈报",
+            "CostResourceType": 0,
+            "CostAmount": 0,
+            "RewardResourceType": 0,
+            "RewardAmount": 0,
+            "ReputationDelta": 0,
+            "InfluenceDelta": 0,
+            "DevelopmentDelta": 0,
+            "Enable": true
         }
     ]
 }
