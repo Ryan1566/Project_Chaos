@@ -5,6 +5,12 @@ using System.Collections.Generic;
 public static class RunBagProgression
 {
     public static int GetCapacity(RunBagSection section)
+        => CapacityWithBonus(section, EffectAggregator.Instance.Snapshot.GetRunBagSlotBonus(section));
+
+    internal static int CapacityWithBonus(RunBagSection section, int bonus)
+        => (int)Math.Min((long)GetBaseCapacity(section) + Math.Max(0, bonus), RunInventory.GetMaximum(section));
+
+    private static int GetBaseCapacity(RunBagSection section)
     {
         var p = MetaProgressService.Instance.Payload;
         switch (section)
@@ -60,7 +66,8 @@ public static class RunBagProgression
         if (p.runSlotGrants != null && p.runSlotGrants.Contains(receipt)) return true;
         int current = GetCapacity(section), max = RunInventory.GetMaximum(section);
         if (current >= max) { reason = "该区域已达到格位上限"; return false; }
-        int target = (int)Math.Min((long)current + amount, max);
+        // 树上格位由节点派生；事件扩格只保存自己的增量，读档时两者各算一次。
+        int target = GetBaseCapacity(section) + Math.Min(amount, max - current);
         if (MetaCommandRunner.IsExecuting)
         {
             ApplyGrant(section, target, receipt);

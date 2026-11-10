@@ -965,7 +965,7 @@ public sealed class WorldLocationsView : MonoBehaviour
         if (data.CanResolve) parts.Add("阅读上方记述后，可确认领取本次收获。");
         if (data.ProductionSeconds > 0d)
             parts.Add("当前周期已工作 " + Mathf.FloorToInt((float)data.ProductionSeconds) + " 秒，暂存满后停产。");
-        if (data.CanTrade) parts.Add("本地买价为原价 " + data.BuyPercent + "%，卖价按原价。");
+        if (data.CanTrade) parts.Add("买价倍率 " + data.BuyPercent + "%，实际价格见下方。");
         if (parts.Count == 0 && !data.CanTrade && !data.CanBuild && !data.CanHarvest && string.IsNullOrEmpty(data.LockReason))
             parts.Add("此地暂无家族可经营的业务。");
         _familyHint.text = string.Join("　", parts.ToArray());

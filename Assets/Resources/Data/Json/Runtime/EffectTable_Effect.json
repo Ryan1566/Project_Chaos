@@ -279,6 +279,86 @@
             "Value": 1,
             "Note": "防护整备：整理远行防护经验，减少派遣角色受到的普通伤害。",
             "Enable": true
+        },
+        {
+            "Index": 36,
+            "EffectType": 9,
+            "Target": 0,
+            "Value": 2,
+            "Note": "熟识市例：熟悉城邑的开价和交易规矩，降低已开放地图市集的买价。",
+            "Enable": true
+        },
+        {
+            "Index": 37,
+            "EffectType": 9,
+            "Target": 0,
+            "Value": 3,
+            "Note": "行商互信：与来往商人建立信用，进一步降低地图市集买价。",
+            "Enable": true
+        },
+        {
+            "Index": 38,
+            "EffectType": 9,
+            "Target": 0,
+            "Value": 5,
+            "Note": "通商有道：联络各处可通商的城邑，为家族争取更好的采买条件。",
+            "Enable": true
+        },
+        {
+            "Index": 39,
+            "EffectType": 10,
+            "Target": 0,
+            "Value": 5,
+            "Note": "山泽巡护：熟悉林地、矿场和盐源的作业次序，缩短地图资源点的产出周期。",
+            "Enable": true
+        },
+        {
+            "Index": 40,
+            "EffectType": 10,
+            "Target": 0,
+            "Value": 5,
+            "Note": "工序归整：整理采作流程，进一步缩短地图资源点的产出周期。",
+            "Enable": true
+        },
+        {
+            "Index": 41,
+            "EffectType": 6,
+            "Target": 2103,
+            "Value": -5,
+            "Note": "仓廪整修：预先整理仓廪用料，缩短后续仓库升级施工时间。",
+            "Enable": true
+        },
+        {
+            "Index": 42,
+            "EffectType": 11,
+            "Target": 0,
+            "Value": 3,
+            "Note": "伤后调养：改善返村后的护理，缩短此后出征结算产生的重伤恢复时间。",
+            "Enable": true
+        },
+        {
+            "Index": 43,
+            "EffectType": 11,
+            "Target": 0,
+            "Value": 4,
+            "Note": "同袍照应：安排门客互相照料，让此后出征受重伤的门客更快恢复。",
+            "Enable": true
+        },
+        {
+            "Index": 44,
+            "EffectType": 12,
+            "Target": 1,
+            "Value": 1,
+            "Note": "军器整备：整理箭矢与工事用具，增加一个局内工程专用格。",
+            "Enable": true
+        },
+        {
+            "Index": 45,
+            "EffectType": 12,
+            "Target": 3,
+            "Value": 2,
+            "Note": "行囊收整：调整携行物资的分装方式，增加两个局内杂物格。",
+            "Enable": true
         }
     ]
 }

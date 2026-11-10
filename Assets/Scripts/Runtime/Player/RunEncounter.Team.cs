@@ -126,7 +126,7 @@ public static partial class RunEncounter
 
     /// <summary>
     /// **W3.3 结算重伤**（幂等：每局只结算一次）。
-    /// `allRetainers=true` → 全部门客 `Wound(id,30)`（失败）；`false` → 只算**本局倒地**的门客（通关/撤离）。
+    /// 失败时记录全体门客，通关或撤离时只记录本局倒地的门客；恢复时长取本次结算的家族效果。
     /// 返回本次重伤人数。已判负的局不会因后续补员回滚。
     /// </summary>
     public static int ApplyRunWounds(bool allRetainers)
@@ -135,12 +135,13 @@ public static partial class RunEncounter
         _woundsApplied = true;
 
         RetainerService service = RetainerService.Instance;
+        uint recoverySeconds = service.RunWoundSeconds;
         int wounded = 0;
         if (allRetainers)
         {
             List<RetainerSave> all = service.GetAll();
             for (int i = 0; i < all.Count; i++)
-                if (all[i] != null && service.Wound(all[i].id, RetainerService.DefaultWoundSeconds)) wounded++;
+                if (all[i] != null && service.Wound(all[i].id, recoverySeconds)) wounded++;
         }
         else
         {
@@ -148,13 +149,13 @@ public static partial class RunEncounter
             {
                 AllyController ally = AllyController.All[i];
                 if (ally == null || !OwnsRuntimeObject(ally.gameObject) || !ally.IsDowned) continue;
-                if (service.Wound(ally.memberId, RetainerService.DefaultWoundSeconds)) wounded++;
+                if (service.Wound(ally.memberId, recoverySeconds)) wounded++;
             }
         }
 
         LastWoundCount = wounded;
         if (wounded > 0)
-            ChaosLog.Warn(LogChannel.UI, "[局内] 结算重伤：" + wounded + " 名门客 wounded=true（30s，"
+            ChaosLog.Warn(LogChannel.UI, "[局内] 结算重伤：" + wounded + " 名门客 wounded=true（" + recoverySeconds + "s，"
                 + (allRetainers ? "失败→全部门客" : "通关/撤离→仅倒地门客") + "）");
         else
             ChaosLog.Info(LogChannel.UI, "[局内] 结算重伤：0 名（"

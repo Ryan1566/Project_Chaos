@@ -54,22 +54,32 @@ namespace Chaos.MVP.Model.Gameplay
                 result.Resources=string.Join("    ",Enumerable.Range(1,4).Select(i => InventoryService.ResourceDisplayName(VillageService.ResourceKindOf((uint)i))+" "+InventoryService.Instance.GetResource(VillageService.ResourceKindOf((uint)i))));
                 var snap=EffectAggregator.Instance.Snapshot;
                 var contribution=EffectAggregator.Instance.PreviewNodes(catalog.Nodes.Where(x=>x.Enable && x.Board==result.Board && service.IsUnlocked(x.Index)).Select(x=>x.Index));
-                result.Summary="本板块已获："+Contribution(contribution, result.Board == 5)+"\n失败带出 "+MetaProgressService.Instance.FailureCarryCap+" 种  ·  生命 +"+snap.HpBonus+"  攻击 +"+snap.AttackBonus+"  防御 +"+snap.DefenseBonus+"  移速 +"+snap.SpeedBonus;
+                result.Summary="本板块已获："+Contribution(contribution)+"\n失败带出 "+MetaProgressService.Instance.FailureCarryCap+" 种  ·  生命 +"+snap.HpBonus+"  攻击 +"+snap.AttackBonus+"  防御 +"+snap.DefenseBonus+"  移速 +"+snap.SpeedBonus;
             }
             catch(Exception error) { result.Error="家族树暂不可用："+error.Message; }
             return result;
         }
         public bool Unlock(uint id,out string reason) { return FamilyTreeService.Instance.Unlock(id,out reason); }
-        private static string Contribution(MetaEffectSnapshot snapshot, bool runBoard)
+        private static string Contribution(MetaEffectSnapshot snapshot)
         {
             var parts=new List<string>();
-            if(snapshot.TotalSlotsBonus!=0)parts.Add("旧仓库格位效果（预留）");
-            if(snapshot.DeployCapBonus!=0)parts.Add(runBoard ? "失败带出 +"+snapshot.DeployCapBonus+" 种" : "旧带出效果（预留）");
+            if(snapshot.FailureCarryCapBonus!=0)parts.Add("失败带出 +"+snapshot.FailureCarryCapBonus+" 种");
             if(snapshot.HpBonus!=0)parts.Add("生命 +"+snapshot.HpBonus);
             if(snapshot.AttackBonus!=0)parts.Add("攻击 +"+snapshot.AttackBonus);
             if(snapshot.DefenseBonus!=0)parts.Add("防御 +"+snapshot.DefenseBonus);
             if(snapshot.SpeedBonus!=0)parts.Add("移速 +"+snapshot.SpeedBonus);
             if(snapshot.CampRefillUnlocked)parts.Add("扎营补员");
+            if(snapshot.WorldMarketDiscount>0)parts.Add("地图买价 −"+snapshot.WorldMarketDiscount+" 个百分点");
+            if(snapshot.WorldResourceCycleReduction>0)parts.Add("资源点周期 −"+snapshot.WorldResourceCycleReduction+" 秒");
+            if(snapshot.RunWoundSecondsReduction>0)parts.Add("重伤恢复 −"+snapshot.RunWoundSecondsReduction+" 秒");
+            int warehouse = snapshot.GetBuildSecondsDelta(VillageService.WarehouseId);
+            if(warehouse!=0)parts.Add("仓库施工 "+warehouse+" 秒");
+            for (int i=0;i<4;i++)
+            {
+                var section=(RunBagSection)i;
+                int extra=snapshot.GetRunBagSlotBonus(section);
+                if(extra>0)parts.Add(BagSectionName(section)+" +"+extra+" 格");
+            }
             for(uint id=2001;id<=2004;id++)
             {
                 if(snapshot.GetBuildSecondsDelta(id)!=0)parts.Add("营建 "+snapshot.GetBuildSecondsDelta(id)+" 秒");
@@ -92,9 +102,7 @@ namespace Chaos.MVP.Model.Gameplay
                 string title="", current="", next="";
                 switch(effect.EffectType)
                 {
-                    case 2: lines.Add("旧仓库格位效果 · 当前不参与仓库容量"); continue;
                     case 3:
-                        if(catalog.Node(id).Board != 5) { lines.Add("旧带出效果 · 当前不参与失败带出额度"); continue; }
                         title="失败可带出的物品种类";
                         current=(1+before.FailureCarryCapBonus).ToString();next=(1+after.FailureCarryCapBonus).ToString();break;
                     case 4:
@@ -103,9 +111,41 @@ namespace Chaos.MVP.Model.Gameplay
                     case 5: title="扎营补充减员";current=before.CampRefillUnlocked?"已解锁":"未解锁";next=after.CampRefillUnlocked?"已解锁":"未解锁";break;
                     case 6:
                     case 7:
-                        var building=catalog.Buildings[effect.Target]; string label=effect.Target==2001?"农田":effect.Target==2002?"材料生产建筑":effect.Target==2003?"图纸生产建筑":"钱财生产建筑";
-                        if(effect.EffectType==6) { title=label+"一级施工秒数";current=Math.Max(1L,(long)building.BuildSeconds+before.GetBuildSecondsDelta(effect.Target)).ToString();next=Math.Max(1L,(long)building.BuildSeconds+after.GetBuildSecondsDelta(effect.Target)).ToString(); }
+                        var building=catalog.Buildings[effect.Target];
+                        bool warehouse=effect.Target==VillageService.WarehouseId;
+                        string label=warehouse?"仓库":effect.Target==2001?"农田":effect.Target==2002?"材料生产建筑":effect.Target==2003?"图纸生产建筑":"钱财生产建筑";
+                        if (warehouse && effect.EffectType==6)
+                        {
+                            title="仓库升级施工时间变化（秒）";
+                            current=before.GetBuildSecondsDelta(effect.Target).ToString();
+                            next=after.GetBuildSecondsDelta(effect.Target).ToString();
+                        }
+                        else if(effect.EffectType==6) { title=label+"一级施工秒数";current=Math.Max(1L,(long)building.BuildSeconds+before.GetBuildSecondsDelta(effect.Target)).ToString();next=Math.Max(1L,(long)building.BuildSeconds+after.GetBuildSecondsDelta(effect.Target)).ToString(); }
                         else { title=label+"一级每工作周期产量";current=Math.Max(0L,(long)building.OutputAmount+before.GetOutputDelta(effect.Target)).ToString();next=Math.Max(0L,(long)building.OutputAmount+after.GetOutputDelta(effect.Target)).ToString(); } break;
+                    case 9:
+                        title="地图市集买价折减（百分点）";
+                        current=before.WorldMarketDiscount.ToString(); next=after.WorldMarketDiscount.ToString();
+                        notes.Add("只用于已有贸易权限的地图市集。单件买价最低为卖价。");
+                        break;
+                    case 10:
+                        title="地图资源点周期缩短（秒）";
+                        current=before.WorldResourceCycleReduction.ToString(); next=after.WorldResourceCycleReduction.ToString();
+                        notes.Add("已累积的生产进度继续保留。");
+                        break;
+                    case 11:
+                        title="出征结算重伤时长（秒）";
+                        current=(RetainerService.DefaultWoundSeconds-before.RunWoundSecondsReduction).ToString();
+                        next=(RetainerService.DefaultWoundSeconds-after.RunWoundSecondsReduction).ToString();
+                        value=-value;
+                        notes.Add("用于此后结算产生的重伤。");
+                        break;
+                    case 12:
+                        var section=(RunBagSection)effect.Target;
+                        title="已开放"+BagSectionName(section)+"格";
+                        current=RunBagProgression.CapacityWithBonus(section,before.GetRunBagSlotBonus(section)).ToString();
+                        next=RunBagProgression.CapacityWithBonus(section,after.GetRunBagSlotBonus(section)).ToString();
+                        notes.Add("战备与局内背包共用，最多开放 "+RunInventory.GetMaximum(section)+" 格。");
+                        break;
                 }
                 string signed=value>0?"+"+value:value.ToString();
                 lines.Add(title+"  "+(unlocked ? "已生效（"+signed+"）" : current+" → "+next));
@@ -114,5 +154,15 @@ namespace Chaos.MVP.Model.Gameplay
         }
         private static int Attribute(MetaEffectSnapshot s,uint target)
         { return target==1?s.HpBonus:target==2?s.AttackBonus:target==3?s.DefenseBonus:s.SpeedBonus; }
+        private static string BagSectionName(RunBagSection section)
+        {
+            switch (section)
+            {
+                case RunBagSection.Important: return "重要";
+                case RunBagSection.Engineering: return "工程";
+                case RunBagSection.Recovery: return "疗伤";
+                default: return "杂物";
+            }
+        }
     }
 }

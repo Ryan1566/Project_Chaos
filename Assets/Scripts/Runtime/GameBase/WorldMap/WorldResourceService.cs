@@ -8,6 +8,10 @@ using UnityEngine;
 /// </summary>
 public class WorldResourceService : SingletonBase<WorldResourceService>
 {
+    public static uint CycleSeconds(WorldResourceTable_ResourceFacilityConfig facility)
+        => (uint)Math.Max(1L, (long)(facility.CycleSeconds == 0u ? 60u : facility.CycleSeconds)
+            - EffectAggregator.Instance.Snapshot.WorldResourceCycleReduction);
+
     public bool Build(uint locationId, out string reason)
     {
         return MetaCommandRunner.Execute("WorldResource.Build",
@@ -119,7 +123,7 @@ public class WorldResourceService : SingletonBase<WorldResourceService>
                 if (state.productionSeconds != 0.0) { state.productionSeconds = 0.0; changed = true; }
                 continue;
             }
-            uint cycle = facility.CycleSeconds == 0u ? 60u : facility.CycleSeconds;
+            uint cycle = CycleSeconds(facility);
             uint perCycle = facility.OutputPerCycle == 0u ? 1u : facility.OutputPerCycle;
             double previous=double.IsNaN(state.productionSeconds)||double.IsInfinity(state.productionSeconds)?0:Math.Max(0,state.productionSeconds);
             double total = previous + seconds;

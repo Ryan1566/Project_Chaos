@@ -180,7 +180,7 @@ public class WorldLocationService : SingletonBase<WorldLocationService>
         {
             var output=WorldLocationCatalog.Output(facility.OutputItemId);
             snap.Description+="\n\n设施："+facility.FacilityName+"\n建造：钱财 "+facility.BuildMoney+"、材料 "+facility.BuildMaterial
-                +"\n产出："+output.Name+" ×"+facility.OutputPerCycle+"／"+facility.CycleSeconds+"秒　暂存上限 "+facility.StockLimit;
+                +"\n产出："+output.Name+" ×"+facility.OutputPerCycle+"／"+WorldResourceService.CycleSeconds(facility)+"秒　暂存上限 "+facility.StockLimit;
             if(state!=null&&state.built&&familyResource&&state.pendingOutput==0)snap.LockReason="设施运行中，尚无可领取产物。";
         }
         return snap;
@@ -372,6 +372,8 @@ public class WorldLocationService : SingletonBase<WorldLocationService>
         double exact=Math.Ceiling(def.BuyPrice*(double)percent/100.0);
         if(exact>uint.MaxValue)return 0;
         uint price = (uint)exact;
+        if (EffectAggregator.Instance.Snapshot.WorldMarketDiscount > 0)
+            price = Math.Max(price, def.SellPrice);
         return price == 0u ? 1u : price;
     }
 
@@ -382,7 +384,7 @@ public class WorldLocationService : SingletonBase<WorldLocationService>
         FamilyExtension ext;
         if (percent <= 0 && _extensions.TryGetValue(locationId, out ext) && ext != null && ext.trade)
             percent = 100;
-        return percent;
+        return percent > 0 ? Math.Max(1, percent - EffectAggregator.Instance.Snapshot.WorldMarketDiscount) : percent;
     }
 
     private bool ResolveTrade(uint locationId, SavePayload payload, out WorldLocationTable_LocationConfig loc,

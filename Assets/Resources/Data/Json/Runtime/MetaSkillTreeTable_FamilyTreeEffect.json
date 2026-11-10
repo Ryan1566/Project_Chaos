@@ -3,21 +3,21 @@
         {
             "Index": 1,
             "NodeId": 101,
-            "EffectId": 2,
+            "EffectId": 36,
             "Weight": 1,
             "Enable": true
         },
         {
             "Index": 2,
             "NodeId": 102,
-            "EffectId": 9,
+            "EffectId": 37,
             "Weight": 1,
             "Enable": true
         },
         {
             "Index": 3,
             "NodeId": 103,
-            "EffectId": 8,
+            "EffectId": 38,
             "Weight": 1,
             "Enable": true
         },
@@ -31,7 +31,7 @@
         {
             "Index": 5,
             "NodeId": 202,
-            "EffectId": 1,
+            "EffectId": 41,
             "Weight": 1,
             "Enable": true
         },
@@ -52,7 +52,7 @@
         {
             "Index": 8,
             "NodeId": 302,
-            "EffectId": 6,
+            "EffectId": 42,
             "Weight": 1,
             "Enable": true
         },
@@ -80,7 +80,7 @@
         {
             "Index": 12,
             "NodeId": 403,
-            "EffectId": 10,
+            "EffectId": 44,
             "Weight": 1,
             "Enable": true
         },
@@ -94,7 +94,7 @@
         {
             "Index": 14,
             "NodeId": 502,
-            "EffectId": 6,
+            "EffectId": 45,
             "Weight": 1,
             "Enable": true
         },
@@ -108,14 +108,14 @@
         {
             "Index": 16,
             "NodeId": 104,
-            "EffectId": 16,
+            "EffectId": 39,
             "Weight": 1,
             "Enable": true
         },
         {
             "Index": 17,
             "NodeId": 105,
-            "EffectId": 17,
+            "EffectId": 40,
             "Weight": 1,
             "Enable": true
         },
@@ -185,7 +185,7 @@
         {
             "Index": 27,
             "NodeId": 307,
-            "EffectId": 27,
+            "EffectId": 43,
             "Weight": 1,
             "Enable": true
         },

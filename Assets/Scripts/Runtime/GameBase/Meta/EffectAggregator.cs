@@ -16,6 +16,18 @@ public class MetaEffectSnapshot
     public int DefenseBonus;
     public int SpeedBonus;
     public int ConfidenceCapBonus;
+    public int WorldMarketDiscount;
+    public int WorldResourceCycleReduction;
+    public int RunWoundSecondsReduction;
+    private readonly int[] _runBagSlots = new int[4];
+
+    public int GetRunBagSlotBonus(RunBagSection section)
+        => (uint)section < _runBagSlots.Length ? _runBagSlots[(int)section] : 0;
+
+    internal void AddRunBagSlots(uint section, int value)
+    {
+        if (section < _runBagSlots.Length) _runBagSlots[section] = AddClamped(_runBagSlots[section], value);
+    }
     /// <summary>是否解锁"扎营补充减员"（EffectType=5 取最高）。</summary>
     public bool CampRefillUnlocked;
     /// <summary>农田建造时长增量（秒，EffectType=6 Target=2001 相加；负=缩短）。</summary>
@@ -169,6 +181,10 @@ public class EffectAggregator : SingletonBase<EffectAggregator>
                     snap.AddOutputChange(effect.Target, Mathf.RoundToInt(value));
                     break;
                 case 8u: snap.ProbabilityBonus += Mathf.RoundToInt(value); break;
+                case 9u: snap.WorldMarketDiscount += Mathf.RoundToInt(value); break;
+                case 10u: snap.WorldResourceCycleReduction += Mathf.RoundToInt(value); break;
+                case 11u: snap.RunWoundSecondsReduction += Mathf.RoundToInt(value); break;
+                case 12u: snap.AddRunBagSlots(effect.Target, Mathf.RoundToInt(value)); break;
                 default:
                     ChaosLog.Warn(LogChannel.Config, "[效果聚合] 未登记的 EffectType=" + effect.EffectType + "（效果 " + effect.Index + "，跳过）");
                     break;
@@ -181,6 +197,9 @@ public class EffectAggregator : SingletonBase<EffectAggregator>
         snap.FailureCarryCapBonus = Mathf.Clamp(snap.FailureCarryCapBonus, 0, 9);
         snap.ConfidenceCapBonus = Mathf.Clamp(snap.ConfidenceCapBonus, 0, 100);
         snap.ProbabilityBonus = Mathf.Clamp(snap.ProbabilityBonus, 0, 100);
+        snap.WorldMarketDiscount = Mathf.Clamp(snap.WorldMarketDiscount, 0, 20);
+        snap.WorldResourceCycleReduction = Mathf.Max(0, snap.WorldResourceCycleReduction);
+        snap.RunWoundSecondsReduction = Mathf.Clamp(snap.RunWoundSecondsReduction, 0, (int)RetainerService.DefaultWoundSeconds - 1);
 
         snap.FarmBuildSecondsDelta = snap.GetBuildSecondsDelta(2001u);
         snap.FarmOutputDelta = snap.GetOutputDelta(2001u);

@@ -22,6 +22,7 @@ public class RetainerService : SingletonBase<RetainerService>
 
     /// <summary>重伤时长（原型期常量 30 秒）。</summary>
     public const uint DefaultWoundSeconds = 30u;
+    public uint RunWoundSeconds => DefaultWoundSeconds - (uint)EffectAggregator.Instance.Snapshot.RunWoundSecondsReduction;
 
     /// <summary>门客数量上限（原型）。</summary>
     public const int MaxRetainers = 8;

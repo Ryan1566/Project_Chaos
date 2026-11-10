@@ -66,9 +66,15 @@ public sealed class FamilyTreeCatalog
         }
         foreach (var link in Links.Where(x => x.Enable))
         {
-            if (!nodes.ContainsKey(link.NodeId) || !Effects.TryGetValue(link.EffectId, out var effect) || !effect.Enable || !Finite(link.Weight) || link.Weight <= 0) throw new InvalidOperationException("家族树效果映射无效：" + link.Index);
-            bool supported = effect.EffectType == 2 || effect.EffectType == 3 || effect.EffectType == 4 && effect.Target >= 1 && effect.Target <= 4
-                || effect.EffectType == 5 && effect.Value >= 1 || (effect.EffectType == 6 || effect.EffectType == 7) && Buildings.ContainsKey(effect.Target);
+            if (!nodes.TryGetValue(link.NodeId, out var node) || !Effects.TryGetValue(link.EffectId, out var effect) || !effect.Enable || !Finite(link.Weight) || link.Weight <= 0) throw new InvalidOperationException("家族树效果映射无效：" + link.Index);
+            float weightedValue = effect.Value * link.Weight;
+            bool positive = Finite(weightedValue) && Mathf.RoundToInt(weightedValue) > 0;
+            bool supported = effect.EffectType == 3 && node.Board == 5
+                || effect.EffectType == 4 && effect.Target >= 1 && effect.Target <= 4
+                || effect.EffectType == 5 && effect.Value >= 1
+                || (effect.EffectType == 6 || effect.EffectType == 7) && Buildings.ContainsKey(effect.Target)
+                || effect.EffectType >= 9 && effect.EffectType <= 11 && effect.Target == 0 && positive
+                || effect.EffectType == 12 && effect.Target <= (uint)RunBagSection.Misc && positive;
             if (!supported || !Finite(effect.Value)) throw new InvalidOperationException("效果尚无实际消费入口：" + effect.Index);
         }
     }

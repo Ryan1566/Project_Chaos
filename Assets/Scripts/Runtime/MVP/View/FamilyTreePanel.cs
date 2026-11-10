@@ -66,7 +66,7 @@ public class FamilyTreePanel : BasePanel, IFamilyTreeView
         _zoomText=Label("Zoom",_viewport,.03f,.015f,.5f,.075f,"",15,Paper);
         MakeButton("ResetTreeView",_viewport,.76f,.02f,.97f,.08f,"恢复视图",()=>Send(FamilyTreeAction.ResetView));
         var detail=Area("NodeDetail",body,.72f,0,1,1);var detailBg=detail.gameObject.AddComponent<Image>();detailBg.sprite=_visuals==null?null:_visuals.DetailBackground;detailBg.type=Image.Type.Sliced;detailBg.color=detailBg.sprite==null?new Color(.19f,.16f,.12f):Color.white;
-        _detailTitle=Label("NodeTitle",detail,.055f,.87f,.94f,.98f,"选择节点",27,Gold);
+        _detailTitle=Label("NodeTitle",detail,.055f,.938f,.94f,.99f,"选择节点",25,Gold);
         var scrollArea=Area("DetailScroll",detail,.045f,.19f,.955f,.85f);scrollArea.gameObject.AddComponent<RectMask2D>();var sr=scrollArea.gameObject.AddComponent<ScrollRect>();sr.horizontal=false;sr.movementType=ScrollRect.MovementType.Clamped;sr.viewport=scrollArea;
         var content=Area("DetailContent",scrollArea,0,1,1,1);content.pivot=new Vector2(.5f,1);content.sizeDelta=new Vector2(0,600);sr.content=content;
         _detailBody=Label("NodeDescription",content,.03f,0,.97f,1,"",19,Paper);_detailBody.alignment=TextAlignmentOptions.TopLeft;_detailBody.enableWordWrapping=true;
@@ -123,7 +123,9 @@ public class FamilyTreePanel : BasePanel, IFamilyTreeView
         if(selectedNode!=null)
         {
             _detailTitle.text=selectedNode.Name;
-            _detailBody.text=selectedNode.Description+"\n\n<color=#DFC179>实际收益</color>\n"+selectedNode.Effects+"\n\n<color=#DFC179>解锁条件</color>\n前置："+selectedNode.PrerequisiteName+"\n费用："+selectedNode.Cost+"\n\n"+selectedNode.Reason;
+            _detailBody.text=selectedNode.Description+"\n\n<color=#DFC179>实际收益</color>\n"+selectedNode.Effects;
+            if (selectedNode.Status!=FamilyNodeStatus.Unlocked)
+                _detailBody.text+="\n\n<color=#DFC179>解锁条件</color>\n前置："+selectedNode.PrerequisiteName+"\n费用："+selectedNode.Cost+"\n\n"+selectedNode.Reason;
             _detailBody.ForceMeshUpdate();((RectTransform)_detailBody.transform.parent).SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical,Mathf.Max(480,_detailBody.preferredHeight+24));
             _unlock.interactable=selectedNode.Status==FamilyNodeStatus.Available;
             _unlock.GetComponentInChildren<TextMeshProUGUI>().text=selectedNode.Status==FamilyNodeStatus.Unlocked?"已解锁":selectedNode.Status==FamilyNodeStatus.Available?"解锁节点":"条件未满足";

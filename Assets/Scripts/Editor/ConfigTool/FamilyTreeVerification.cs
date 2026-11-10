@@ -66,7 +66,7 @@ public static class FamilyTreeVerification
         Check(catalog.Nodes.Count==35&&catalog.Boards.Count==5&&catalog.Links.Count==35,"35 nodes, five boards and one actual effect per node");
         var before=JsonUtility.ToJson(P);var snap=EffectAggregator.Instance.Snapshot;int version=snap.Version;
         var preview=EffectAggregator.Instance.PreviewAdditionalNode(101);
-        Check(preview.DeployCapBonus==1&&EffectAggregator.Instance.Snapshot.Version==version&&before==JsonUtility.ToJson(P),"preview is pure and shares actual aggregation");
+        Check(preview.WorldMarketDiscount==2&&EffectAggregator.Instance.Snapshot.Version==version&&before==JsonUtility.ToJson(P),"preview is pure and shares actual aggregation");
         var root=catalog.Node(101);uint parent=root.PrereqNodeId;root.PrereqNodeId=101;
         try { Check(!service.CanUnlock(101,out _)&&before==JsonUtility.ToJson(P),"cyclic prerequisite refuses before any resource mutation"); } finally {root.PrereqNodeId=parent;}
         float x=catalog.Node(102).LayoutX;catalog.Node(102).LayoutX=root.LayoutX;
@@ -76,17 +76,22 @@ public static class FamilyTreeVerification
         Check(!service.Unlock(103,out _),"locked downstream node cannot skip prerequisite");
         var legacy=catalog.Nodes.Where(n=>n.Index%100<=3).Select(n=>n.Index).ToList();P.familyTreeNodes=legacy;
         EffectAggregator.Instance.MarkDirty();snap=EffectAggregator.Instance.Snapshot;
-        Check(snap.DeployCapBonus==9&&snap.TotalSlotsBonus==4&&snap.HpBonus==10&&snap.AttackBonus==5&&snap.DefenseBonus==5&&snap.SpeedBonus==2&&snap.CampRefillUnlocked,"original 15-node effects retained, including actual 302 warehouse bonus");
+        Check(snap.FailureCarryCapBonus==3&&snap.TotalSlotsBonus==0&&snap.HpBonus==10&&snap.AttackBonus==5&&snap.DefenseBonus==5&&snap.SpeedBonus==2&&snap.CampRefillUnlocked,"old IDs receive refreshed effects and retain active combat bonuses");
+        Check(snap.WorldMarketDiscount==10&&snap.GetBuildSecondsDelta(VillageService.WarehouseId)==-5
+            &&snap.RunWoundSecondsReduction==3&&RunBagProgression.GetCapacity(RunBagSection.Engineering)==2
+            &&RunBagProgression.GetCapacity(RunBagSection.Misc)==7,"legacy nodes activate current trade, warehouse, wound and bag effects");
         Check(SaveSlotService.Instance.Save(3,P),"owned legacy-format slot saved");Check(SaveSlotService.Instance.TryLoad(3,out var saved),"owned legacy-format slot loaded");GameSession.Instance.Begin(3,saved.payload,"MainScene");
         Check(P.familyTreeNodes.SequenceEqual(legacy)&&service.UnlockedCount==15,"legacy IDs preserved without refunds or extra deductions");
         P.familyTreeNodes.Clear();EffectAggregator.Instance.MarkDirty();Check(GameSession.Instance.SaveCurrent(out _),"empty owned baseline saved for rollback test");before=JsonUtility.ToJson(P);
         using(var locked=new FileStream(SaveSlotService.Instance.GetSlotPath(3),FileMode.Open,FileAccess.ReadWrite,FileShare.None))
-            Check(!service.Unlock(101,out _)&&JsonUtility.ToJson(P)==before&&EffectAggregator.Instance.Snapshot.DeployCapBonus==0,"real save lock rolls back resources, unlock and derived effect");
+            Check(!service.Unlock(101,out _)&&JsonUtility.ToJson(P)==before&&EffectAggregator.Instance.Snapshot.WorldMarketDiscount==0,"real save lock rolls back resources, unlock and derived effect");
         uint goods=P.resGoods;Check(service.Unlock(101,out _)&&P.resGoods==goods-50,"retry after lock release deducts once");before=JsonUtility.ToJson(P);
         Check(!service.Unlock(101,out _)&&JsonUtility.ToJson(P)==before,"duplicate unlock is idempotent");
         foreach(var node in catalog.Nodes.OrderBy(n=>n.Index))if(!service.IsUnlocked(node.Index))Check(service.Unlock(node.Index,out _),"unlock configured node "+node.Index);
         snap=EffectAggregator.Instance.Snapshot;
-        Check(service.UnlockedCount==35&&InventoryService.Instance.TotalSlots==15&&snap.HpBonus==35&&snap.AttackBonus==7&&snap.DefenseBonus==8&&snap.SpeedBonus==3,"full-tree actual totals and warehouse cap are correct");
+        Check(service.UnlockedCount==35&&snap.TotalSlotsBonus==0&&snap.HpBonus==35&&snap.AttackBonus==7&&snap.DefenseBonus==8&&snap.SpeedBonus==3,"full-tree totals use active effects");
+        Check(snap.WorldResourceCycleReduction==10&&RetainerService.Instance.RunWoundSeconds==23
+            &&MetaProgressService.Instance.FailureCarryCap==4,"full-tree resource cycle, wounds and failure carry");
         Check(snap.GetOutputDelta(2002)==1&&snap.GetOutputDelta(2003)==1&&snap.GetOutputDelta(2004)==1&&snap.GetBuildSecondsDelta(2002)==-2,"non-farm building effects are keyed by building ID");
         Check(MetaCharacterStats.AttackDamage(10)==17&&MetaCharacterStats.MoveSpeed(6)==9&&MetaCharacterStats.ReceivedDamage(5)==1&&MetaCharacterStats.ReceivedDamage(0)==0,"shared attack, movement and defense calculations consume family snapshot");
         var actor=new GameObject("QA_HealthLayers",typeof(Rigidbody2D));var health=actor.AddComponent<PlayerHealth>();health.InitializeSpawnedHealth(35);health.SetRunHealthBonus(15);health.SetItemHealthBonus(20);int hp=health.Hp;
