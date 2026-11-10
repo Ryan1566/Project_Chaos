@@ -11,7 +11,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "spine-unity-editor", "spine
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-Editor", "Assembly-CSharp-Editor.csproj", "{9C665ED3-7F12-9CE4-97D8-3EBF32AA794E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IngameDebugConsole.Runtime", "IngameDebugConsole.Runtime.csproj", "{EBF1B083-7525-29EA-32C7-1B24738E92DD}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-firstpass", "Assembly-CSharp-firstpass.csproj", "{756C35B8-3C40-567D-80FA-618B10DCB774}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IngameDebugConsole.Editor", "IngameDebugConsole.Editor.csproj", "{8DD19576-BE4F-6A8D-B1AD-7BB763ACF80A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "spine-unity-examples-editor", "spine-unity-examples-editor.csproj", "{4E71F602-B05F-7C99-394D-4831B9B4146B}"
 EndProject
@@ -41,10 +45,18 @@ Global
 		{9C665ED3-7F12-9CE4-97D8-3EBF32AA794E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C665ED3-7F12-9CE4-97D8-3EBF32AA794E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C665ED3-7F12-9CE4-97D8-3EBF32AA794E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBF1B083-7525-29EA-32C7-1B24738E92DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBF1B083-7525-29EA-32C7-1B24738E92DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBF1B083-7525-29EA-32C7-1B24738E92DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBF1B083-7525-29EA-32C7-1B24738E92DD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{756C35B8-3C40-567D-80FA-618B10DCB774}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{756C35B8-3C40-567D-80FA-618B10DCB774}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{756C35B8-3C40-567D-80FA-618B10DCB774}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{756C35B8-3C40-567D-80FA-618B10DCB774}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DD19576-BE4F-6A8D-B1AD-7BB763ACF80A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DD19576-BE4F-6A8D-B1AD-7BB763ACF80A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DD19576-BE4F-6A8D-B1AD-7BB763ACF80A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DD19576-BE4F-6A8D-B1AD-7BB763ACF80A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4E71F602-B05F-7C99-394D-4831B9B4146B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4E71F602-B05F-7C99-394D-4831B9B4146B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E71F602-B05F-7C99-394D-4831B9B4146B}.Release|Any CPU.ActiveCfg = Release|Any CPU
