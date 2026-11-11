@@ -45,22 +45,31 @@ public static class ChaosPlayerBuild
     }
 }
 
-internal sealed class ChaosReleaseSceneProcessor : IProcessSceneWithReport
+internal sealed class ChaosPlayerSceneProcessor : IProcessSceneWithReport
 {
     public int callbackOrder => 0;
 
     public void OnProcessScene(Scene scene, BuildReport report)
     {
-        // 编辑器 Play 和资源包构建也可能触发此钩子，只处理正式 Player 的场景副本。
-        if (report == null || !BuildPipeline.isBuildingPlayer || (report.summary.options & BuildOptions.Development) != 0) return;
-        if (scene.name == "TestScene" || scene.name == "URP_TestScene")
+        // 只改 Player 构建中的场景副本，编辑器 Play 保持控制台停用。
+        if (report == null || !BuildPipeline.isBuildingPlayer) return;
+        bool development = (report.summary.options & BuildOptions.Development) != 0;
+        if (!development && (scene.name == "TestScene" || scene.name == "URP_TestScene"))
             throw new BuildFailedException($"正式构建包含测试场景 {scene.path}。请在构建设置中取消勾选。");
 
         var excluded = new HashSet<GameObject>();
         foreach (var root in scene.GetRootGameObjects())
         foreach (var component in root.GetComponentsInChildren<MonoBehaviour>(true))
         {
-            if (!(component is EnterGM) && !(component is GMPanel) && !(component is GM_UITestEnter)) continue;
+            // 控制台默认停用。开发包启动时启用，正式包移除整个画布及其日志订阅组件。
+            if (component is IngameDebugConsole.DebugLogManager)
+            {
+                if (development) component.gameObject.SetActive(true);
+                else excluded.Add(component.gameObject);
+                continue;
+            }
+
+            if (development || (!(component is EnterGM) && !(component is GMPanel) && !(component is GM_UITestEnter))) continue;
             Transform parent = component.transform.parent;
             // 现有 GM 按钮与面板共用专用画布；移动到其他画布时只剔除各自的入口。
             GameObject target = parent != null && parent.name == "GM_Canvas" && parent.TryGetComponent<Canvas>(out _)
