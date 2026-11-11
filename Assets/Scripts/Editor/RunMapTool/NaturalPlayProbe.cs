@@ -23,6 +23,7 @@ public static class NaturalPlayProbe
     private static float nextSample, nextPath, lastProgress, flightStarted, pulse, startedAt;
     private static float jumpHoldUntil, nextJumpAt;
     private static Vector2 progressPosition;
+    private static string logPath;
     private static List<MapPathStep> path;
     private static int cursor, stage;
     private static readonly Dictionary<int, Vector2> allyPositions = new Dictionary<int, Vector2>();
@@ -30,11 +31,13 @@ public static class NaturalPlayProbe
     public static int Jumps { get; private set; }
     public static int AllyRecoveries { get; private set; }
     public static bool HoldAtExit = true;
-    private static string LogPath => Application.dataPath + "/QA/NaturalPlay/input-play.txt";
+    private static string DefaultLogPath => Application.dataPath + "/QA/NaturalPlay/input-play.txt";
+    private static string LogPath => logPath ?? DefaultLogPath;
 
-    public static void Begin()
+    public static void Begin(string outputPath = null)
     {
         Stop();
+        logPath = outputPath;
         originalBindings = InputManager.Instance.SaveOverridesJson();
         InputManager.Instance.LoadOverridesJson("");
         keyboard = InputSystem.AddDevice<Keyboard>("NaturalPlayKeyboard");
@@ -45,7 +48,7 @@ public static class NaturalPlayProbe
         jumpHoldUntil = nextJumpAt = 0;
         stage = 0;
         allyPositions.Clear();
-        if (File.Exists(LogPath))
+        if (outputPath == null && File.Exists(LogPath))
             File.Copy(LogPath, Application.dataPath + "/QA/NaturalPlay/input-play-" + DateTime.Now.ToString("yyyyMMdd-HHmmss") + ".txt");
         File.WriteAllText(LogPath, "实际按键游玩。禁止发资源、直接伤害/清敌、改属性、瞬移和替换碰撞。\n");
         EditorApplication.update += Tick;
@@ -176,10 +179,13 @@ public static class NaturalPlayProbe
             jumping = false;
             allyPositions.Clear();
             lastProgress = Time.time;
+            progressPosition = player.transform.position;
+            Note("ENTER_STAGE " + stage + " seed=" + NaturalMapRuntime.Current?.RunSeed);
         }
         var shape = player.GetComponent<Collider2D>();
         var body2D = player.GetComponent<Rigidbody2D>();
         var locomotion = player.GetComponent<PlayerLocomotion>();
+        var climber = player.GetComponent<LadderClimber>();
         Vector2 feet = RunMapPhysics.Feet(shape);
         var enemy = UnityEngine.Object.FindObjectsOfType<EnemyPlaceholder>()
             .Where(e => !e.IsDead).OrderBy(e => Vector2.Distance(e.transform.position, player.transform.position)).FirstOrDefault();
@@ -195,7 +201,8 @@ public static class NaturalPlayProbe
         }
         float horizontal = 0;
         bool jump = false;
-        if (fighting && !jumping)
+        float climb = 0;
+        if (fighting && !jumping && (climber == null || !climber.IsClimbing))
         {
             float dx = enemy.transform.position.x - player.transform.position.x;
             horizontal = Mathf.Abs(dx) > .45f || Mathf.Sign(dx) != locomotion.Facing ? Mathf.Sign(dx) : 0;
@@ -211,7 +218,7 @@ public static class NaturalPlayProbe
                 {
                     Speed = MetaCharacterStats.MoveSpeed(locomotion.moveSpeed), JumpForce = locomotion.jumpForce,
                     Gravity = Mathf.Abs(Physics2D.gravity.y * body2D.gravityScale),
-                    Width = shape.bounds.size.x, Height = shape.bounds.size.y
+                    Width = shape.bounds.size.x, Height = shape.bounds.size.y, CanClimb = true, ClimbSpeed = 3.5f
                 });
                 graph.TryPath(feet, destination, 6, 12000, null, out path);
                 cursor = 0;
@@ -220,7 +227,16 @@ public static class NaturalPlayProbe
             if (path != null && cursor < path.Count)
             {
                 var step = path[cursor];
-                if (grounded && body2D.velocity.y <= .1f && Time.time - flightStarted > .15f
+                if (step.Kind == MapMotionKind.Climb)
+                {
+                    // 在梯口先靠近，再用玩家的上下键进入和离开梯子。
+                    bool attached = climber != null && climber.IsClimbing;
+                    if (!attached && Mathf.Abs(feet.y - step.Destination.y) < .28f) cursor++;
+                    else if (attached || Mathf.Abs(step.From.x + .5f - feet.x) < .48f)
+                        climb = step.To.y > step.From.y ? 1f : -1f;
+                    else horizontal = Mathf.Sign(step.From.x + .5f - feet.x);
+                }
+                else if (grounded && body2D.velocity.y <= .1f && Time.time - flightStarted > .15f
                     && Vector2.Distance(feet, step.Destination) < .65f)
                 { cursor++; jumping = false; }
                 else if (jumping)
@@ -264,7 +280,7 @@ public static class NaturalPlayProbe
                 return;
             }
         }
-        if (Mathf.Abs(progressPosition.x - feet.x) > 1)
+        if ((progressPosition - feet).sqrMagnitude > 1)
         { progressPosition = feet; lastProgress = Time.time; }
         if (Time.time - lastProgress > 10 && !fighting)
         {
@@ -278,6 +294,8 @@ public static class NaturalPlayProbe
         var keys = new List<Key>();
         if (horizontal < 0) keys.Add(Key.A);
         if (horizontal > 0) keys.Add(Key.D);
+        if (climb > 0) keys.Add(Key.W);
+        if (climb < 0) keys.Add(Key.S);
         if (jump) keys.Add(Key.Space);
         InputSystem.QueueStateEvent(keyboard, new KeyboardState(keys.ToArray()));
         InputSystem.QueueStateEvent(mouse, new MouseState

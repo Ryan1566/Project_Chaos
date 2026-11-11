@@ -1759,6 +1759,14 @@
       <Project>{82EB918C-5720-2EF7-C216-42674FD35766}</Project>
       <Name>spine-unity</Name>
     </ProjectReference>
+    <ProjectReference Include="IngameDebugConsole.Editor.csproj">
+      <Project>{8DD19576-BE4F-6A8D-B1AD-7BB763ACF80A}</Project>
+      <Name>IngameDebugConsole.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="IngameDebugConsole.Runtime.csproj">
+      <Project>{EBF1B083-7525-29EA-32C7-1B24738E92DD}</Project>
+      <Name>IngameDebugConsole.Runtime</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

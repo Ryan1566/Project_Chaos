@@ -32,11 +32,14 @@ namespace Chaos.MVP.Model.Gameplay
                     Bodies[body] = new BodySnapshot { Simulated = body.simulated, Velocity = body.velocity, Angular = body.angularVelocity };
                     body.simulated = false;
                 }
+                GameObject downedPlayer = RunEncounter.IsSpectator ? PlayerSpawner.CurrentPlayer : null;
                 foreach (var behaviour in Object.FindObjectsOfType<Behaviour>())
                 {
-                    if (!(behaviour is PlayerLocomotion) && !(behaviour is PlayerAttack)
-                        && !(behaviour is AllyController) && !(behaviour is EnemyPlaceholder)) continue;
-                    Behaviours[behaviour] = behaviour.enabled; behaviour.enabled = false;
+                    bool playerControl = behaviour is PlayerLocomotion || behaviour is PlayerAttack;
+                    if (!playerControl && !(behaviour is AllyController) && !(behaviour is EnemyPlaceholder)) continue;
+                    // 观战的禁用状态在恢复时单独判断，扎营可能在暂停期间救起主控。
+                    Behaviours[behaviour] = behaviour.enabled || (playerControl && behaviour.gameObject == downedPlayer);
+                    behaviour.enabled = false;
                 }
                 return;
             }
