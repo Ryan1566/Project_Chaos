@@ -83,7 +83,9 @@ public static class RunContentFlowVerification
         var health=PlayerSpawner.CurrentPlayer.GetComponent<PlayerHealth>();health.invulnSeconds=100000;health.ApplyContactDamage(1);
         Check(RunInteractable.Active.OfType<RunContentInteractable>().Count()==4,"NPC, chest and two gathering points generated");
         var npc=Content("traveller");var chest=Content("chest");var herbs=Content("herbs");var ore=Content("ore");
-        Check(npc.GetComponentInChildren<SkeletonAnimation>()?.AnimationState.GetCurrent(0).Animation.Name=="Idle_Normal","NPC uses real idle Spine placeholder");
+        var npcSpine = npc.GetComponentInChildren<SkeletonAnimation>();
+        var npcIdle = CharacterSpineClips.Find(npcSpine?.Skeleton?.Data, CharacterSpineClips.Idle);
+        Check(npcIdle != null && npcSpine.AnimationState.GetCurrent(0)?.Animation == npcIdle, "NPC uses the current Spine idle clip");
         Check(npc.GetComponent<AllyController>()==null&&npc.GetComponent<Rigidbody2D>()==null&&npc.GetComponents<Collider2D>().All(x=>x.isTrigger),"NPC has no fighter AI or blocking body");
         var actor=PlayerSpawner.CurrentPlayer;var hud=actor.GetComponent<RunInteractionHud>();MoveNear(npc);yield return new WaitForSeconds(.2f);
         hud.enabled=false;var service=new RunInteractionService(2.5f);

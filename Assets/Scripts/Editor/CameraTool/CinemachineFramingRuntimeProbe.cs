@@ -79,16 +79,27 @@ public static class CinemachineFramingRuntimeProbe
             bool rejected = false;
             try { rig.BindRun(actor.transform, new Rect(float.NaN, 0, 10, 10)); } catch (ArgumentException) { rejected = true; }
             Check(rejected && rig.Target == actor.transform, "invalid bounds rejected before changing binding");
-            hitTarget = new GameObject("CameraProbeEnemy"); hitTarget.transform.position = new Vector3(-.65f, .85f);
+            hitTarget = new GameObject("CameraProbeEnemy"); hitTarget.transform.position = new Vector3(-.35f, .85f);
             var damaged = hitTarget.AddComponent<CinemachineProbeDamageTarget>(); hitTarget.AddComponent<BoxCollider2D>().size = new Vector2(.2f, .4f);
             var second = new GameObject("SecondCollider"); second.transform.SetParent(hitTarget.transform, false); second.AddComponent<BoxCollider2D>().size = new Vector2(.2f, .4f);
-            var attack = actor.AddComponent<PlayerAttack>(); Physics2D.SyncTransforms();
-            typeof(PlayerAttack).GetMethod("DoAttack", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).Invoke(attack, null);
+            var spineObject = new GameObject("CameraProbeSpine"); spineObject.transform.SetParent(actor.transform, false);
+            var spine = spineObject.AddComponent<Spine.Unity.SkeletonAnimation>();
+            spine.skeletonDataAsset = UnityEditor.AssetDatabase.LoadAssetAtPath<Spine.Unity.SkeletonDataAsset>(
+                "Assets/Art/Spine/Citizen_001/citizen_001_SkeletonData.asset");
+            spine.Initialize(true);
+            var attack = CharacterAttack.For(actor.transform); Physics2D.SyncTransforms();
+            body.bodyType = RigidbodyType2D.Kinematic;
+            body.simulated = true;
+            body.bodyType = RigidbodyType2D.Kinematic;
+            body.simulated = true;
+            Check(attack.TryLight(1, 10, true), "configured attack starts");
+            yield return new WaitForSecondsRealtime(.43f);
             Check(damaged.Hits == 1 && attack.LastHitCount == 1, "real attack deduplicates multiple colliders on one target");
             var active = (ICollection)typeof(CombatCameraShake).GetField("_active", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).GetValue(output.GetComponent<CombatCameraShake>());
             Check(active.Count == 1, "one real attack emits one camera impulse");
-            yield return new WaitForSecondsRealtime(.3f); hitTarget.transform.position = Vector3.right * 100; Physics2D.SyncTransforms();
-            typeof(PlayerAttack).GetMethod("DoAttack", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).Invoke(attack, null);
+            yield return new WaitForSecondsRealtime(.5f); hitTarget.transform.position = Vector3.right * 100; Physics2D.SyncTransforms();
+            Check(attack.TryLight(1, 10, true), "next swing starts after recovery");
+            yield return new WaitForSecondsRealtime(.43f);
             Check(attack.LastHitCount == 0 && active.Count == 0, "empty swing does not emit camera impulse");
             Check(!rig.Release(output.transform) && rig.Target == actor.transform, "stale owner cannot release current target");
             Check(rig.Release(actor.transform) && !output.GetComponent<CinemachineBrain>().enabled && !rig.VirtualCamera.gameObject.activeSelf, "release disables owned output control and virtual camera");

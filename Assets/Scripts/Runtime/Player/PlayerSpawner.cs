@@ -91,6 +91,8 @@ public static class PlayerSpawner
         CurrentPlayer = player;
         _spawnScope.Register(player);
         Spawned.Add(player);
+        if (runTeam != null && runTeam.Count > 0)
+            player.GetComponent<CharacterAttack>()?.AssignRetainer(runTeam[0]);
 
         //血量（W3.1b）：出生时只叠加家族树生命层；局内成长/道具层由各自服务继续组合。
         PlayerHealth health = player.GetComponent<PlayerHealth>();
@@ -384,6 +386,7 @@ public static class PlayerSpawner
             {
                 controller.followIndex = i + 1;
                 controller.memberId = runTeam[i + 1];
+                CharacterAttack.For(controller).AssignRetainer(controller.memberId);
                 controller.fallThresholdY = RunBounds.GetFallThreshold(RunMapBootstrap.CurrentLayout);
                 //统一命名：Ally_{位序}(id={门客id}) —— 日志/来源全用它
                 ally.name = "Ally_" + (i + 1) + "(id=" + runTeam[i + 1] + ")";

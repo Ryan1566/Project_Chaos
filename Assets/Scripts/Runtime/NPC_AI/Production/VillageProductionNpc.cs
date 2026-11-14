@@ -21,7 +21,6 @@ public sealed class VillageProductionNpc : MonoBehaviour
     private float wantedX, shiftElapsed, restRemaining, wanderWait;
     private bool mustWander, wanderChosen;
     private TMPro.TextMeshPro label;
-    private string animationName;
 
     public void Initialize(uint buildingId, int index, VillageSceneSettings settings, GameObject appearance)
     {
@@ -97,8 +96,7 @@ public sealed class VillageProductionNpc : MonoBehaviour
         if (label != null) { label.text = VillageText.Get("Worker" + BuildingId) + " · " + VillageText.Get(State); label.gameObject.SetActive(!IsInside); }
         if (!IsInside && skeleton != null)
         {
-            string next = Mathf.Abs(body.velocity.x) > .1f ? "Run_Normal" : "Idle_Normal";
-            if (next != animationName) { skeleton.AnimationState.SetAnimation(0, next, true); animationName = next; }
+            CharacterSpineClips.PlayLocomotion(skeleton.AnimationState, skeleton.Skeleton?.Data, Mathf.Abs(body.velocity.x) > .1f);
         }
     }
     private void FixedUpdate()

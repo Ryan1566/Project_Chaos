@@ -248,6 +248,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 10
-  attackCooldown: 0.35
-  hitBoxSize: {x: 0.8, y: 0.6}
-  hitBoxOffsetX: 0.5

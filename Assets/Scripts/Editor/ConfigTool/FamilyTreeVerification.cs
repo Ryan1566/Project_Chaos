@@ -133,8 +133,10 @@ public static class FamilyTreeVerification
             if(stage==1)
             {
                 int hp=health.Hp;health.ApplyContactDamage(20);Check(hp-health.Hp==12,"actual expedition player ordinary damage applies defense");health.InitializeSpawnedHealth(35);Check(health.maxHp==135&&health.Hp==hp-12,"actual repeated initialization never heals or stacks");
-                var attack=player.GetComponent<PlayerAttack>();var enemy=enemies.First();enemy.transform.position=CombatQuery.Center(player.transform)+new Vector2(attack.hitBoxOffsetX,0);player.GetComponent<PlayerLocomotion>().SetFacing(1);Physics2D.SyncTransforms();int enemyHp=enemy.Hp;
-                typeof(PlayerAttack).GetMethod("DoAttack",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(attack,null);Check(enemyHp-enemy.Hp==17,"actual player hitbox attack deals base plus permanent bonus");
+                var attack=player.GetComponent<PlayerAttack>();var enemy=enemies.First();enemy.transform.position=CombatQuery.Center(player.transform)+new Vector2(.75f,0);player.GetComponent<PlayerLocomotion>().SetFacing(1);Physics2D.SyncTransforms();int enemyHp=enemy.Hp;
+                Check(player.GetComponent<CharacterAttack>().TryLight(1,attack.damage,true),"configured player attack starts");
+                yield return new WaitForSecondsRealtime(.5f);
+                Check(enemyHp-enemy.Hp==17,"actual player hitbox attack deals base plus permanent bonus");
             }
             foreach(var enemy in enemies)if(enemy!=null&&!enemy.IsDead)enemy.TakeDamage(99999);RunEncounter.RefreshNow();
         }

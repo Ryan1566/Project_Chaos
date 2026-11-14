@@ -1,0 +1,45 @@
+{
+  "profiles": [
+    {
+      "id": "Sword/Test",
+      "light": "Attack_Sword_Test_Light_001",
+      "heavyMode": "none",
+      "heavy": "",
+      "holdSeconds": 0.22,
+      "bufferSeconds": 0.18,
+      "chargeFullSeconds": 0.8,
+      "chargeDamageMultiplier": 1.5
+    }
+  ],
+  "retainers": [],
+  "moves": [
+    {
+      "animation": "Attack_Sword_Test_Light_001",
+      "rootBone": "root",
+      "hitEvent": "",
+      "hitTime": 0.4,
+      "hitWidth": 1.15,
+      "hitHeight": 0.8,
+      "hitOffset": 0.73,
+      "damageMultiplier": 1.0,
+      "speed": 1.0,
+      "next": "Attack_Sword_Test_Light_002",
+      "comboOpen": 0.70,
+      "comboClose": 0.85
+    },
+    {
+      "animation": "Attack_Sword_Test_Light_002",
+      "rootBone": "bone_body_01",
+      "hitEvent": "",
+      "hitTime": 0.4667,
+      "hitWidth": 1.25,
+      "hitHeight": 0.8,
+      "hitOffset": 0.78,
+      "damageMultiplier": 1.0,
+      "speed": 1.0,
+      "next": "",
+      "comboOpen": 0,
+      "comboClose": 0
+    }
+  ]
+}

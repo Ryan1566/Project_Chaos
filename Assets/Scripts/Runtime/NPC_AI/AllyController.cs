@@ -36,7 +36,6 @@ public class AllyController : MonoBehaviour
     private float _nextAttack;
     private float _nextJump;
     private float _stopJumpUntil;
-    private string _currentAnimation;
     private int _facing = 1;
     private EnemyPlaceholder _target;
     private float _nextRecoveryAttempt;
@@ -61,8 +60,7 @@ public class AllyController : MonoBehaviour
         _surface = GetComponent<PlayerSurfacePhysics>();
         if (_surface == null) _surface = gameObject.AddComponent<PlayerSurfacePhysics>();
         _skeleton = GetComponentInChildren<SkeletonAnimation>(true);
-        if (_skeleton != null) _skeleton.AnimationState.SetAnimation(0, "Idle_Normal", true);
-        _currentAnimation = "Idle_Normal";
+        UpdateAnimation(0f);
     }
 
     private void OnEnable() { if (!All.Contains(this)) All.Add(this); }
@@ -77,10 +75,7 @@ public class AllyController : MonoBehaviour
 
     private RunMap.RunBehaviorSettings _settings;
     private RunMap.RunMapNavigator _navigator;
-    private RunCombatFeedback _feedback;
-    private EnemyPlaceholder _attackTarget;
-    private float _attackAt;
-    private float _recoverUntil;
+    private CharacterAttack _attack;
     private float _lastTargetSeen;
     private Vector2 _targetFeet;
     private Vector2 _progressFeet;
@@ -89,7 +84,7 @@ public class AllyController : MonoBehaviour
     private bool _belowFallThreshold;
 
     public EnemyPlaceholder CurrentTarget { get { return _target; } }
-    public bool IsWindingUp { get { return _attackTarget != null; } }
+    public bool IsWindingUp => _attack?.IsWindingUp == true;
 
     private void Start()
     {
@@ -113,7 +108,7 @@ public class AllyController : MonoBehaviour
         jumpForce = _settings.jumpForce;
         attackRange = _settings.attackRange;
         attackCooldown = _settings.attackCooldown;
-        _feedback = RunCombatFeedback.For(this);
+        _attack = CharacterAttack.For(this);
         if (RunMap.NaturalMapRuntime.Current != null)
         {
             _navigator = GetComponent<RunMap.RunMapNavigator>();
@@ -148,28 +143,7 @@ public class AllyController : MonoBehaviour
         // 进入梯子后先完成当前运动边，避免中段重新寻路或触发攻击。
         if (GetComponent<LadderClimber>() is LadderClimber climber && climber.IsClimbing) return;
 
-        if (_attackTarget != null)
-        {
-            StopMoving();
-            if (_attackTarget.IsDead) { CancelAttack(); return; }
-            SetFacing(_attackTarget.transform.position.x >= transform.position.x ? 1 : -1);
-            _feedback.Windup(CombatQuery.Center(transform), CombatQuery.Center(_attackTarget.transform));
-            if (Time.time < _attackAt) return;
-            EnemyPlaceholder victim = _attackTarget;
-            _attackTarget = null;
-            _feedback.Clear();
-            _recoverUntil = Time.time + _settings.attackRecovery;
-            if (CanHit(victim))
-            {
-                //普通攻击按基础伤害 + 家族树攻击加成结算；damage 字段保持基础值，避免重复初始化时叠加。
-                int appliedDamage = MetaCharacterStats.AttackDamage(damage);
-                _feedback.Strike(CombatQuery.Center(transform), CombatQuery.Center(victim.transform));
-                victim.TakeRunDamage(appliedDamage);
-                ChaosLog.Info(LogChannel.UI, "[门客] 「" + AllyName + "」攻击「" + victim.name + "」，伤害 " + appliedDamage);
-            }
-            return;
-        }
-        if (Time.time < _recoverUntil) { StopMoving(); return; }
+        if (_attack?.IsAttacking == true) return;
 
         if (!IsEligibleEnemy(_target)
             || Vector2.Distance(CombatQuery.Center(transform), CombatQuery.Center(_target.transform)) > _settings.loseRange)
@@ -194,13 +168,8 @@ public class AllyController : MonoBehaviour
         {
             StopMoving();
             SetFacing(_target.transform.position.x >= transform.position.x ? 1 : -1);
-            if (Time.time >= _nextAttack)
-            {
-                _nextAttack = Time.time + attackCooldown;
-                _attackTarget = _target;
-                _attackAt = Time.time + _settings.attackWindup;
-                _feedback.Windup(CombatQuery.Center(transform), CombatQuery.Center(_target.transform));
-            }
+            if (Time.time >= _nextAttack && _attack.TryLight(_facing, damage, false))
+                _nextAttack = Time.time + Mathf.Max(attackCooldown, _settings.attackRecovery);
             return;
         }
 
@@ -270,18 +239,15 @@ public class AllyController : MonoBehaviour
     private bool CanHit(EnemyPlaceholder enemy)
     {
         return IsEligibleEnemy(enemy)
-            && CombatQuery.CanMelee(transform, enemy.transform, attackRange, _settings.attackHeight);
+            && CombatQuery.CanMelee(transform, enemy.transform,
+                Mathf.Min(attackRange, _attack != null ? _attack.LightReach : attackRange), _settings.attackHeight);
     }
 
     private void CancelAttack()
     {
-        if (_attackTarget != null && _settings != null)
-        {
-            _nextAttack = Mathf.Max(_nextAttack, Time.time + attackCooldown);
-            _recoverUntil = Time.time + _settings.attackRecovery;
-        }
-        _attackTarget = null;
-        if (_feedback != null) _feedback.Clear();
+        if (_attack?.IsAttacking != true) return;
+        _nextAttack = Mathf.Max(_nextAttack, Time.time + attackCooldown);
+        _attack.Cancel();
     }
 
     private void StopMoving()
@@ -484,11 +450,8 @@ public class AllyController : MonoBehaviour
 
     private void UpdateAnimation(float speed)
     {
-        if (_skeleton == null) return;
-        string wanted = speed < 0.1f ? "Idle_Normal" : "Run_Normal";
-        if (wanted == _currentAnimation) return;
-        _currentAnimation = wanted;
-        _skeleton.AnimationState.SetAnimation(0, wanted, true);
+        if (_skeleton == null || _attack?.IsAttacking == true) return;
+        CharacterSpineClips.PlayLocomotion(_skeleton.AnimationState, _skeleton.Skeleton?.Data, speed >= 0.1f);
     }
 
     public static void ClearAll()

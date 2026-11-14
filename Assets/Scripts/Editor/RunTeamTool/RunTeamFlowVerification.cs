@@ -92,7 +92,9 @@ public static class RunTeamFlowVerification
         for (int i = 0; i < 4; i++) { Click("AvatarButton" + i); Check(State(view).SelectedId == ids[i], "portrait selection " + i); }
         Click("AvatarButton0");
         var graphics = view.GetComponentsInChildren<SkeletonGraphic>();
-        Check(graphics.Length == 5 && graphics.All(g => g.unscaledTime && g.AnimationState.GetCurrent(0).Animation.Name == "Idle_Normal"), "five actual idle Spine previews");
+        Check(graphics.Length == 5 && graphics.All(g => g.unscaledTime
+            && g.AnimationState.GetCurrent(0)?.Animation == CharacterSpineClips.Find(g.Skeleton?.Data, CharacterSpineClips.Idle)),
+            "five actual idle Spine previews");
         Check(view.GetComponentsInChildren<RunTeamSpinePreview>().All(p => p.GetComponent<RectMask2D>() != null), "all preview viewports clipped");
         float trackTime = graphics[0].AnimationState.GetCurrent(0).TrackTime;
         yield return new WaitForSecondsRealtime(.3f);

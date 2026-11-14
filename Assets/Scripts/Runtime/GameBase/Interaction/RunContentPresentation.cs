@@ -39,9 +39,10 @@ namespace Chaos.Gameplay.Interaction
             var animation = go.AddComponent<SkeletonAnimation>();
             animation.skeletonDataAsset = visuals.npcSkeleton; animation.initialSkinName = visuals.npcSkin;
             animation.Initialize(true);
-            if (animation.Skeleton == null || animation.Skeleton.Data.FindAnimation(visuals.npcIdle) == null)
+            var idle = CharacterSpineClips.Find(animation.Skeleton?.Data, visuals.npcIdle);
+            if (idle == null)
                 throw new System.InvalidOperationException("NPC Spine缺少配置的待机动画：" + visuals.npcIdle);
-            animation.AnimationState.SetAnimation(0, visuals.npcIdle, true); animation.Update(0);
+            animation.AnimationState.SetAnimation(0, idle, true); animation.Update(0);
             float[] vertices = null;
             animation.Skeleton.GetBounds(out float x, out float y, out float width, out float height, ref vertices);
             if (height <= 0) throw new System.InvalidOperationException("NPC Spine无有效待机边界");

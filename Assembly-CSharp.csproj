@@ -72,6 +72,7 @@
     <Compile Include="Assets\Scripts\Runtime\MVP\View\RunBagSlotView.cs" />
     <Compile Include="Assets\Scripts\Runtime\GameBase\Village\VillageSceneSettings.cs" />
     <Compile Include="Assets\Scripts\Runtime\GameBase\LogManager\LogChannel.cs" />
+    <Compile Include="Assets\Scripts\Runtime\3C\Character\CharacterSpineClips.cs" />
     <Compile Include="Assets\Scripts\Runtime\GameBase\RunMap\RunMapMarkerPortrait.cs" />
     <Compile Include="Assets\Scripts\Runtime\MVP\Presenter\SaveSlots\SaveSlotsPresenter.cs" />
     <Compile Include="Assets\Scripts\Runtime\GameBase\Meta\OfficeTaskService.cs" />
@@ -116,6 +117,7 @@
     <Compile Include="Assets\Scripts\Runtime\MVP\Model\Gameplay\DispatchModel.cs" />
     <Compile Include="Assets\Scripts\Runtime\GameBase\Meta\FamilyTreeService.cs" />
     <Compile Include="Assets\Scripts\Runtime\GameBase\ScenesLoader\SceneTransitionCoordinator.cs" />
+    <Compile Include="Assets\Scripts\Runtime\MVP\View\GameplayBar.cs" />
     <Compile Include="Assets\Scripts\Runtime\MVP\Model\ConfigData\ItemTable_ItemConfig.cs" />
     <Compile Include="Assets\Scripts\Runtime\GameBase\AudioManager\AudioManager.cs" />
     <Compile Include="Assets\Scripts\Runtime\GameBase\LogManager\LogBuilder.cs" />
@@ -183,6 +185,7 @@
     <Compile Include="Assets\Scripts\Runtime\MVP\View\DispatchVisuals.cs" />
     <Compile Include="Assets\Scripts\Runtime\Player\CampService.cs" />
     <Compile Include="Assets\Scripts\Runtime\GameBase\RunMap\NaturalMapGenerator.cs" />
+    <Compile Include="Assets\Scripts\Runtime\Combat\AttackAnimationTable.cs" />
     <Compile Include="Assets\Scripts\Runtime\MVP\Model\ConfigData\OfficeTaskTable_OfficeEraGateConfig.cs" />
     <Compile Include="Assets\Scripts\Runtime\MVP\Presenter\Gameplay\OfficeTasksPresenter.cs" />
     <Compile Include="Assets\Scripts\Runtime\MVP\View\SettingsPage\GameplaySettingsPage.cs" />
@@ -315,6 +318,7 @@
     <Compile Include="Assets\Scripts\Runtime\MVP\View\FamilyTreeVisuals.cs" />
     <Compile Include="Assets\Scripts\Runtime\MVP\Model\ConfigData\RunMapTable_ExplorationSceneConfig.cs" />
     <Compile Include="Assets\Scripts\Runtime\3C\Control\InputManager\InputManager.cs" />
+    <Compile Include="Assets\Scripts\Runtime\Combat\CharacterAttack.cs" />
     <Compile Include="Assets\Scripts\Runtime\3C\Control\GameplayShortcutDriver.cs" />
     <Compile Include="Assets\Scripts\Runtime\GameBase\Singleton\SingletonAutoMono.cs" />
     <Compile Include="Assets\Scripts\Runtime\MVP\Model\SaveSlots\SaveSlotsModel.cs" />
@@ -627,7 +631,7 @@
     <None Include="Assets\QA\MapGeneration\contracts.txt" />
     <None Include="Assets\QA\W5Closeout\market-english.txt" />
     <None Include="Assets\QA\Refactor\persistence.txt" />
-    <None Include="Assets\Art\FBX\Citizen_001\citizen_001.atlas.txt" />
+    <None Include="Assets\Art\Spine\Citizen_001\citizen_001.atlas.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />
     <None Include="Assets\QA\FamilyTree\data-check.txt" />
     <None Include="Assets\QA\DispatchUI\data-check.txt" />

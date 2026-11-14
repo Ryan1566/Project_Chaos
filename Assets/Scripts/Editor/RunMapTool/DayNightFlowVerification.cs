@@ -21,7 +21,6 @@ public static class DayNightFlowVerification
     private static Keyboard keyboard;
     private static Mouse mouse;
     private static string bindings, storage;
-    private static int attackMode;
     public static string Status { get; private set; }
     public static bool HoldForReview;
     public static bool HoldNightForReview;
@@ -40,7 +39,6 @@ public static class DayNightFlowVerification
         InputManager.Instance.LoadOverridesJson("");
         keyboard = InputSystem.AddDevice<Keyboard>("DayNightKeyboard");
         mouse = InputSystem.AddDevice<Mouse>("DayNightMouse");
-        attackMode = SettingsManager.Instance.Applied.attackTriggerMode;
         UnityEngine.Object.FindObjectOfType<MonoController>().StartCoroutine(Guard(Run()));
     }
 
@@ -74,7 +72,6 @@ public static class DayNightFlowVerification
         if (keyboard.added) InputSystem.RemoveDevice(keyboard);
         if (mouse.added) InputSystem.RemoveDevice(mouse);
         InputManager.Instance.LoadOverridesJson(bindings);
-        SettingsManager.Instance.Applied.attackTriggerMode = attackMode;
         log.AppendLine("DONE " + storage);
         Flush();
     }
@@ -295,7 +292,6 @@ public static class DayNightFlowVerification
         var player = PlayerSpawner.CurrentPlayer;
         var attack = player.GetComponent<PlayerAttack>();
         attack.damage = 1;
-        attack.attackCooldown = .12f;
         player.GetComponent<PlayerLocomotion>().SetFacing(1);
         player.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
         var enemies = new List<EnemyPlaceholder>();
@@ -311,16 +307,17 @@ public static class DayNightFlowVerification
         var center = new Vector2(Screen.width * .55f, Screen.height * .55f);
         var action = Actions.FindAction("Player/Attack");
         Check(action.bindings[0].effectivePath == "<Mouse>/leftButton", "default attack resolves to mouse left");
-        SettingsManager.Instance.Applied.attackTriggerMode = (int)MouseTriggerMode.Press;
         int hp = enemy.Hp;
-        yield return LeftClick(center, .35f);
-        Check(enemy.Hp == hp - 1 && attack.LastHitCount == 1, "actual left click deals one hit in press mode");
+        yield return LeftClick(center, .46f);
+        Check(enemy.Hp == hp - 1 && attack.LastHitCount == 1, "left click hits once at the animation impact");
         Check(UnityEngine.Object.FindObjectsOfType<TextMeshProUGUI>().Any(t => t.name == "DamageNumber" && t.text == "1"),
             "visible damage number uses actual HP loss");
-        SettingsManager.Instance.Applied.attackTriggerMode = (int)MouseTriggerMode.Hold;
+        yield return new WaitForSecondsRealtime(.5f);
+        enemy.transform.position += (Vector3)(CombatQuery.Center(player.transform) + Vector2.right * .55f - CombatQuery.Center(enemy.transform));
+        Physics2D.SyncTransforms();
         hp = enemy.Hp;
-        yield return LeftClick(center, .42f);
-        Check(enemy.Hp <= hp - 2, "holding left repeats after cooldown");
+        yield return LeftClick(center, 1f);
+        Check(enemy.Hp == hp - 1, "holding on a light-only profile does not repeat");
         hp = enemy.Hp;
         RunCampPanel.Open();
         yield return null;
@@ -334,7 +331,10 @@ public static class DayNightFlowVerification
         action.ApplyBindingOverride(0, "<Keyboard>/j");
         yield return LeftClick(center, .2f);
         Check(enemy.Hp == hp, "custom attack override disables default mouse");
+        enemy.transform.position += (Vector3)(CombatQuery.Center(player.transform) + Vector2.right * .55f - CombatQuery.Center(enemy.transform));
+        Physics2D.SyncTransforms();
         yield return KeyPress(Key.J);
+        yield return new WaitForSecondsRealtime(.45f);
         Check(enemy.Hp == hp - 1, "custom keyboard attack damages the same target");
         InputManager.Instance.LoadOverridesJson("");
         hp = enemy.Hp;

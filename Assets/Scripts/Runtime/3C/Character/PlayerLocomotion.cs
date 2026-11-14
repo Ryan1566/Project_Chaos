@@ -9,9 +9,7 @@ using UnityEngine;
 /// 输入统一读取InputManager的Move/Jump动作，和设置面板重绑定共用运行时动作表。
 /// 扎营/菜单快捷键由局级GameplayShortcutDriver处理，角色倒地后仍可打开菜单。
 ///
-/// ══════════════ 动画只有 3 个 ══════════════
-/// `Idle_Normal` / `Run_Normal` / `Walk_Normal` —— **没有跳跃/攻击动画**，
-/// 所以跳跃/攻击期间**保持当前动画**（占位表现，见 PlayerAttack）。
+/// 待机与移动片段由骨骼数据按动作语义解析。
 /// </summary>
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerLocomotion : MonoBehaviour
@@ -31,12 +29,12 @@ public class PlayerLocomotion : MonoBehaviour
     private PlayerSurfacePhysics _surface;
     private LadderClimber _ladder;
     private SkeletonAnimation _skeleton;
+    private CharacterAttack _attack;
     private int _facing = 1;
     private bool _isGrounded;
     private bool _jumpRequested;
     /// <summary>本次腾空是否已用掉空中跳；不随面板开关或组件启停重置。</summary>
     private bool _airJumpUsed;
-    private string _currentAnimation;
 
     /// <summary>朝向：1 = 右，-1 = 左。</summary>
     public int Facing { get { return _facing; } }
@@ -47,7 +45,7 @@ public class PlayerLocomotion : MonoBehaviour
     /// <summary>外部（SpawnPoint 等）指定初始朝向。</summary>
     public void SetFacing(int facing)
     {
-        if (facing == 0) return;
+        if (facing == 0 || _attack?.IsAttacking == true) return;
         _facing = facing > 0 ? 1 : -1;
         ApplyFacing();
     }
@@ -74,10 +72,7 @@ public class PlayerLocomotion : MonoBehaviour
         if (_ladder == null) _ladder = gameObject.AddComponent<LadderClimber>();
         _skeleton = GetComponentInChildren<SkeletonAnimation>(true);
         if (_skeleton != null)
-        {
-            _skeleton.AnimationState.SetAnimation(0, "Idle_Normal", true);
-            _currentAnimation = "Idle_Normal";
-        }
+            CharacterSpineClips.PlayLocomotion(_skeleton.AnimationState, _skeleton.Skeleton?.Data, false);
         else
         {
             ChaosLog.Warn(LogChannel.UI, "[玩家] 子节点里找不到 SkeletonAnimation（动画不可用）");
@@ -86,6 +81,13 @@ public class PlayerLocomotion : MonoBehaviour
 
     private void Update()
     {
+        if (_attack == null) _attack = GetComponent<CharacterAttack>();
+        if (_attack?.IsAttacking == true)
+        {
+            _horizontalInput = 0f;
+            _jumpRequested = false;
+            return;
+        }
         if (_ladder != null && _ladder.IsClimbing) { UpdateLadderClimbing(); return; }
         if (!InputManager.Instance.CanReadGameplayInput) { ClearInput(); UpdateAnimation(); return; }
         float horizontal = InputManager.Instance.ReadMove();
@@ -193,6 +195,7 @@ public class PlayerLocomotion : MonoBehaviour
     private void FixedUpdate()
     {
         if (_body == null) return;
+        if (_attack?.IsAttacking == true) return;
         // 攀梯期间由 LadderClimber 接管位置与速度；菜单阻止输入也不强制退出。
         if (_ladder != null && _ladder.IsClimbing)
         {
@@ -251,13 +254,9 @@ public class PlayerLocomotion : MonoBehaviour
     /// <summary>Idle/Run 切换（无跳跃/攻击动画 → 这两种状态保持当前动画）。</summary>
     private void UpdateAnimation()
     {
-        if (_skeleton == null) return;
+        if (_skeleton == null || _attack?.IsAttacking == true) return;
 
         float vx = Mathf.Abs(_body == null ? 0f : _body.velocity.x);
-        string wanted = vx < IdleThreshold ? "Idle_Normal" : "Run_Normal";
-        if (wanted == _currentAnimation) return;
-
-        _currentAnimation = wanted;
-        _skeleton.AnimationState.SetAnimation(0, wanted, true);
+        CharacterSpineClips.PlayLocomotion(_skeleton.AnimationState, _skeleton.Skeleton?.Data, vx >= IdleThreshold);
     }
 }

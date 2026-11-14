@@ -155,12 +155,20 @@ public partial class InputManager
         return !(action.activeControl?.device is Pointer pointer) || !IsPointerOverUi(pointer);
     }
 
-    public bool IsPointerAttackHeld()
+    public bool IsGameplayAttackHeld()
     {
         if (!CanReadGameplayInput || _suppressHeldAttack) return false;
         var action = FindScopedAction(ActionAttack);
         return action != null && action.enabled && action.IsPressed()
-            && action.activeControl?.device is Pointer pointer && !IsPointerOverUi(pointer);
+            && (!(action.activeControl?.device is Pointer pointer) || !IsPointerOverUi(pointer));
+    }
+
+    public bool WasGameplayAttackReleased()
+    {
+        if (!CanReadGameplayInput || _suppressHeldAttack) return false;
+        var action = FindScopedAction(ActionAttack);
+        return action != null && action.enabled && action.WasReleasedThisFrame()
+            && (!(action.activeControl?.device is Pointer pointer) || !IsPointerOverUi(pointer));
     }
 
     /// <summary>Menu close remains readable in an overlay; its caller checks which UI owns the input.</summary>

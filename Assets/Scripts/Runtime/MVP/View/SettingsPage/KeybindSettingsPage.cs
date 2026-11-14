@@ -54,11 +54,11 @@ public class KeybindSettingsPage : SettingsPageBase
             (data, value) => data.mouseSensitivity = value,
             MinSensitivity, MaxSensitivity);
 
-        SettingRow_Selector trigger = BindSelector(SettingIds.AttackTrigger, SettingsLabels.TriggerMode,
-            data => data.attackTriggerMode,
-            (data, index) => data.attackTriggerMode = index);
+        // 轻击与长按按武器动作表判定，兼容旧存档字段但关闭旧的自动连发选项。
+        var legacyTrigger = FindRow<SettingRow_Selector>(SettingIds.AttackTrigger);
+        if (legacyTrigger != null) legacyTrigger.gameObject.SetActive(false);
 
-        //上面四项都是鼠标专用。手柄方案下整行置灰 ——
+        // 上面三个鼠标选项在手柄方案下置灰。
         //注意刷新动作要放在最后注册：它会读 Bind* 拿到的行引用，行长什么样得先确定下来
         AddRefresher(data =>
         {
@@ -67,7 +67,6 @@ public class KeybindSettingsPage : SettingsPageBase
             if (invertX != null) invertX.SetInteractable(usable);
             if (invertY != null) invertY.SetInteractable(usable);
             if (sensitivity != null) sensitivity.SetInteractable(usable);
-            if (trigger != null) trigger.SetInteractable(usable);
         });
     }
 

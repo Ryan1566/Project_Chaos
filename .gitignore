@@ -2,6 +2,9 @@
 Library
 Logs
 Packages
+!/Packages/
+/Packages/*
+!/Packages/ChaosSpineImportSettings.json
 /Temp
 Assets/Excel
 Assets/Story.meta

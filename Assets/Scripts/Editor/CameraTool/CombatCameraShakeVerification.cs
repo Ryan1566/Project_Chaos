@@ -177,8 +177,8 @@ public static class CombatCameraShakeVerification
 
     private static void VerifyTriggerSites()
     {
-        PassIf(CountCalls(typeof(PlayerAttack), "DoAttack", "NotifyHit") == 1,
-            "PlayerAttack.DoAttack 仅实际命中后调用 NotifyHit 一次");
+        PassIf(CountCalls(typeof(CharacterAttack), "ResolveHit", "NotifyHit") == 1,
+            "CharacterAttack.ResolveHit 仅实际命中后调用 NotifyHit 一次");
         PassIf(CountCalls(typeof(PlayerHealth), "ApplyContactDamage", "NotifyHurt") == 1,
             "PlayerHealth.ApplyContactDamage 真实扣血时调用 NotifyHurt 一次");
         PassIf(CountCalls(typeof(PlayerHealth), "ForceDown", "NotifyHurt") == 0,

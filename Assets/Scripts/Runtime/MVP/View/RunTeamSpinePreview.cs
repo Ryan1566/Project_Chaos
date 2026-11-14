@@ -15,7 +15,6 @@ using UnityEngine.UI;
 /// </summary>
 public sealed class RunTeamSpinePreview : MonoBehaviour
 {
-    const string IdleAnimationName = "Idle_Normal";
     const float FillRatio = 0.96f;
     const float PortraitHorizontalFill = 0.55f; // crop horizontally for a head shot
     const float MinViewportSize = 1f;
@@ -265,7 +264,8 @@ public sealed class RunTeamSpinePreview : MonoBehaviour
 
     static string ResolveAnimation(SkeletonData data)
     {
-        if (data.FindAnimation(IdleAnimationName) != null) return IdleAnimationName;
+        var idle = CharacterSpineClips.Find(data, CharacterSpineClips.Idle);
+        if (idle != null) return idle.Name;
 
         var animations = data.Animations;
         for (int i = 0; i < animations.Count; i++)

@@ -1,119 +1,82 @@
-using ChaosDebug;
-using System.Collections.Generic;
-using Spine.Unity;
 using UnityEngine;
 
-/// <summary>
-/// 受控角色攻击（W3.0 spike）：冷却 0.35s，面前 0.8×0.6 区域取 <see cref="IDamageable"/> 造成 10 伤害。
-/// **没有攻击动画** → 占位表现：Spine 整体轻微前移 + 短暂变色（0.1s 后恢复）。
-/// </summary>
+/// <summary>将玩家的攻击绑定转换成轻击、重击或蓄力释放。</summary>
+[DefaultExecutionOrder(-60)]
 public class PlayerAttack : MonoBehaviour
 {
     public int damage = 10;
-    public float attackCooldown = 0.35f;
-    public Vector2 hitBoxSize = new Vector2(0.8f, 0.6f);
-    public float hitBoxOffsetX = 0.5f;
+    public int LastHitCount => _attack == null ? 0 : _attack.LastHitCount;
+    CharacterAttack _attack;
+    PlayerLocomotion _locomotion;
+    bool _pending, _charging;
+    float _pressedAt;
 
-    private PlayerLocomotion _locomotion;
-    private LadderClimber _ladder;
-    private SkeletonAnimation _skeleton;
-    private MeshRenderer _meshRenderer;
-    private Color _baseColor;
-    private float _nextAttackTime;
-    private float _restoreUntil;
-    private Vector3 _spineBasePosition;
-    private readonly HashSet<IDamageable> _hitTargets = new HashSet<IDamageable>();
-    public int LastHitCount { get; private set; }
-
-    /// <summary>组件添加顺序不保证，攀梯组件由 PlayerLocomotion 补挂时也能拿到。</summary>
-    private LadderClimber Ladder
+    void Awake()
     {
-        get
-        {
-            if (_ladder == null) _ladder = GetComponent<LadderClimber>();
-            return _ladder;
-        }
-    }
-
-    private void Awake()
-    {
+        _attack = CharacterAttack.For(this);
         _locomotion = GetComponent<PlayerLocomotion>();
-        _ladder = GetComponent<LadderClimber>();
-        if (_locomotion != null) _skeleton = _locomotion.Skeleton;
-        if (_skeleton == null) _skeleton = GetComponentInChildren<SkeletonAnimation>(true);
-        if (_skeleton != null)
+    }
+
+    void Update()
+    {
+        var input = InputManager.Instance;
+        if (!input.CanReadGameplayInput || GetComponent<LadderClimber>()?.IsClimbing == true)
         {
-            _meshRenderer = _skeleton.GetComponent<MeshRenderer>();
-            //⚠ Spine/Skeleton 着色器没有 _Color 属性，不能读 material.color（会报 error）；
-            //   → 攻击表现只做前移占位，颜色变化留待能拿到 Skeleton.SetColor 时再补
-            _spineBasePosition = _skeleton.transform.localPosition;
+            _pending = _charging = false;
+            return;
         }
+        ReadAttack(input.WasGameplayPressed(InputManager.ActionAttack),
+            input.IsGameplayAttackHeld(), input.WasGameplayAttackReleased(), Time.time);
     }
 
-    private void Update()
+    // 以输入边沿判定，持续按住只会消费一次。
+    void ReadAttack(bool pressed, bool heldDown, bool released, float now)
     {
-        RestoreVisual();
-        // 攀爬中禁止普攻（含鼠标按住触发），也不消耗攻击冷却/输入。
-        LadderClimber ladder = Ladder;
-        if (ladder != null && ladder.IsClimbing) return;
-        bool pressed = InputManager.Instance.WasGameplayPressed(InputManager.ActionAttack);
-        if (SettingsManager.Instance.Applied?.attackTriggerMode == (int)MouseTriggerMode.Hold)
-            pressed |= InputManager.Instance.IsPointerAttackHeld();
-        if (!pressed) { RestoreVisual(); return; }
-
-        if (Time.time < _nextAttackTime) return;   //冷却中
-        _nextAttackTime = Time.time + attackCooldown;
-        DoAttack();
-    }
-
-    private void OnDisable()
-    {
-        _restoreUntil = 0;
-        if (_skeleton != null) _skeleton.transform.localPosition = _spineBasePosition;
-    }
-
-    private void RestoreVisual()
-    {
-        if (_restoreUntil <= 0f || Time.time < _restoreUntil) return;
-        _restoreUntil = 0f;
-        if (_skeleton != null) _skeleton.transform.localPosition = _spineBasePosition;
-    }
-
-    private void DoAttack()
-    {
+        var profile = _attack.Profile;
+        if (profile == null) return;
         int facing = _locomotion == null ? 1 : _locomotion.Facing;
-        Vector2 center = CombatQuery.Center(transform) + new Vector2(hitBoxOffsetX * facing, 0f);
-        // 普通攻击统一走家族树属性入口；damage 仍保留既有基础值，避免重复初始化时重复累加。
-        int appliedDamage = MetaCharacterStats.AttackDamage(damage);
-
-        Collider2D[] hits = Physics2D.OverlapBoxAll(center, hitBoxSize, 0f);
-        int damaged = 0;
-        _hitTargets.Clear();
-        for (int i = 0; i < hits.Length; i++)
+        if (pressed)
         {
-            Collider2D hit = hits[i];
-            if (hit == null || hit.transform == transform || hit.transform.IsChildOf(transform)) continue;
-
-            IDamageable target = hit.GetComponentInParent<IDamageable>();
-            if (target == null || !_hitTargets.Add(target)) continue;
-            Component actor = target as Component;
-            if (actor == null || !CombatQuery.HasLineOfSight(transform, actor.transform)) continue;
-            EnemyPlaceholder enemy = target as EnemyPlaceholder;
-            if (enemy != null && enemy.IsDead) continue;
-
-            if (enemy != null) enemy.TakeRunDamage(appliedDamage);
-            else target.TakeDamage(appliedDamage);
-            damaged++;
+            if (profile.heavyMode == "none" || _attack.IsAttacking)
+            {
+                _attack.TryLight(facing, damage, true);
+                return;
+            }
+            _pending = true;
+            _charging = false;
+            _pressedAt = now;
         }
-        LastHitCount = damaged;
-        Vector2 hitPoint = center + Vector2.right * (hitBoxSize.x * 0.5f * facing);
-        if (damaged > 0) CombatCameraShake.NotifyHit(transform, hitPoint);
-        RunCombatFeedback.For(this).Strike(CombatQuery.Center(transform), hitPoint);
+        if (!_pending) return;
+        float held = now - _pressedAt;
+        if (!heldDown)
+        {
+            if (released)
+            {
+                if (profile.heavyMode == "animation" && held >= profile.holdSeconds)
+                    _attack.TryHeavy(facing, damage);
+                else
+                {
+                    float strength = profile.heavyMode == "chargeLight" && (_charging || held >= profile.holdSeconds)
+                        ? Mathf.Lerp(1f, profile.chargeDamageMultiplier, Mathf.Clamp01(held / profile.chargeFullSeconds))
+                        : 1f;
+                    _attack.TryLight(facing, damage, true, strength);
+                }
+            }
+            _pending = _charging = false;
+            return;
+        }
+        if (held < profile.holdSeconds) return;
+        if (profile.heavyMode == "chargeLight") _charging = true;
+        else
+        {
+            _pending = false;
+            _attack.TryHeavy(facing, damage);
+        }
+    }
 
-        //占位表现：前移 + 变色（无攻击动画）
-        if (_skeleton != null) _skeleton.transform.localPosition = _spineBasePosition + new Vector3(0.12f * facing, 0f, 0f);
-        _restoreUntil = Time.time + 0.1f;
-
-        ChaosLog.Info(LogChannel.UI, "[玩家] 攻击（占位表现），伤害 " + appliedDamage + "，命中 " + damaged + " 个目标");
+    void OnDisable()
+    {
+        _pending = _charging = false;
+        if (_attack != null) _attack.Cancel();
     }
 }
