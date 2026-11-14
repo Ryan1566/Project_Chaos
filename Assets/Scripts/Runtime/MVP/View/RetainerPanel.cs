@@ -204,13 +204,16 @@ public class RetainerPanel : BasePanel, IGameplayView<RetainerState>
         TextMeshProUGUI label = textGo.AddComponent<TextMeshProUGUI>();
         label.font = _font;
         label.fontSize = 22f;
-        label.color = NormalColor;
+        label.color = GameplayUiSkin.Ink;
         label.alignment = TextAlignmentOptions.Center;
         label.raycastTarget = false;
         _closeLabel = label;
         ApplyLocalized(label, "ui_common_close", "关闭");
 
-        go.GetComponent<Button>().onClick.AddListener(() => Send(PanelAction.Close));
+        var close = go.GetComponent<Button>();
+        close.targetGraphic = bg;
+        GameplayUiSkin.Button(close, "UI_Btn_Sm");
+        close.onClick.AddListener(() => Send(PanelAction.Close));
     }
 
     private void CreateRecruitButton()
@@ -226,6 +229,7 @@ public class RetainerPanel : BasePanel, IGameplayView<RetainerState>
         background.color = new Color(0.20f, 0.42f, 0.72f, 1f);
         _recruitButton = go.GetComponent<Button>();
         _recruitButton.targetGraphic = background;
+        GameplayUiSkin.Button(_recruitButton);
         _recruitButton.onClick.AddListener(RecruitOne);
 
         GameObject textGo = new GameObject("Text", typeof(RectTransform));
@@ -238,7 +242,7 @@ public class RetainerPanel : BasePanel, IGameplayView<RetainerState>
         TextMeshProUGUI label = textGo.AddComponent<TextMeshProUGUI>();
         label.font = _font;
         label.fontSize = 22f;
-        label.color = NormalColor;
+        label.color = GameplayUiSkin.Ink;
         label.alignment = TextAlignmentOptions.Center;
         label.raycastTarget = false;
         ApplyLocalized(label, "ui_retainer_recruit", "招募门客");

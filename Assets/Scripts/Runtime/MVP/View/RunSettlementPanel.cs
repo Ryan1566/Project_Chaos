@@ -111,7 +111,7 @@ public class RunSettlementPanel : BasePanel, IGameplayView<SettlementState>
         boxRect.anchoredPosition = Vector2.zero;
         boxRect.sizeDelta = new Vector2(PanelWidth, PanelHeight);
         _resultBackground = box.GetComponent<Image>();
-        _resultBackground.color = new Color(0.10f, 0.11f, 0.14f, 0.98f);
+        GameplayUiSkin.Apply(_resultBackground, "UI_Panel_Dialog", GameplayUiSkin.DarkPaper);
         _resultBackground.raycastTarget = true;
 
         //标题（顶部居中，纯中文，不挂 LocalizedText）
@@ -155,7 +155,7 @@ public class RunSettlementPanel : BasePanel, IGameplayView<SettlementState>
         _listArea.offsetMin = new Vector2(24f, 118f);
         _listArea.offsetMax = new Vector2(-24f, -212f);
         Image listBg = listGo.GetComponent<Image>();
-        listBg.color = new Color(0.06f, 0.07f, 0.09f, 0.72f);
+        GameplayUiSkin.Apply(listBg, "UI_Panel_ListBody", GameplayUiSkin.DarkPaper);
         listBg.raycastTarget = true;
 
         _scroll = listGo.GetComponent<ScrollRect>();
@@ -252,6 +252,8 @@ public class RunSettlementPanel : BasePanel, IGameplayView<SettlementState>
         tmp.enableAutoSizing = true;
         tmp.fontSizeMin = 14f;
         tmp.fontSizeMax = 19f;
+        GameplayUiSkin.Button(button, "UI_Btn_Sm");
+        if (row.Selected) GameplayUiSkin.Apply(image, "UI_Btn_Sm_Pressed", Color.white);
     }
 
     private void ToggleSelect(uint itemId)
@@ -308,6 +310,7 @@ public class RunSettlementPanel : BasePanel, IGameplayView<SettlementState>
         tr.anchorMin = Vector2.zero; tr.anchorMax = Vector2.one;
         tr.offsetMin = Vector2.zero; tr.offsetMax = Vector2.zero;
         tmp.alignment = TextAlignmentOptions.Center;
+        GameplayUiSkin.Button(button);
         return button;
     }
 
@@ -344,7 +347,7 @@ public class RunSettlementPanel : BasePanel, IGameplayView<SettlementState>
             _title.color = state.Win ? new Color(.72f, .95f, .76f) : new Color(1f, .65f, .59f);
         }
         if (_resultBackground != null)
-            _resultBackground.color = state.Win ? new Color(.075f, .14f, .12f, .98f) : new Color(.17f, .10f, .11f, .98f);
+            _resultBackground.color = state.Win ? new Color(.43f, .40f, .28f) : new Color(.51f, .33f, .28f);
         if (_hint != null) _hint.text = string.IsNullOrEmpty(state.Notice) ? state.Hint : state.Notice;
         if (_woundLine != null)
         {

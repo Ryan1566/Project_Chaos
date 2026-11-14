@@ -133,7 +133,7 @@ public class RunCampPanel : BasePanel, IGameplayView<CampState>
         boxRect.anchoredPosition = Vector2.zero;
         boxRect.sizeDelta = new Vector2(PanelWidth, PanelHeight);
         Image bg = box.GetComponent<Image>();
-        bg.color = new Color(0.10f, 0.11f, 0.14f, 0.98f);
+        GameplayUiSkin.Apply(bg, "UI_Panel_Dialog", GameplayUiSkin.DarkPaper);
         bg.raycastTarget = true;
 
         _title = MakeText(boxRect, "Title", "扎营", 34f, new Color(0.96f, 0.97f, 1f, 1f));
@@ -180,7 +180,7 @@ public class RunCampPanel : BasePanel, IGameplayView<CampState>
         _timeOverlay.offsetMin = Vector2.zero;
         _timeOverlay.offsetMax = Vector2.zero;
         Image overlayBg = overlayGo.GetComponent<Image>();
-        overlayBg.color = new Color(0.05f, 0.06f, 0.09f, 1f);
+        GameplayUiSkin.Apply(overlayBg, "UI_Panel_Sub", GameplayUiSkin.DarkPaper);
         overlayBg.raycastTarget = true;
 
         TextMeshProUGUI header = MakeText(_timeOverlay, "TimeTitle", "调整时辰", 30f, new Color(0.96f, 0.97f, 1f, 1f));
@@ -219,6 +219,7 @@ public class RunCampPanel : BasePanel, IGameplayView<CampState>
             cellRect.offsetMax = Vector2.zero;
             RadialWedgeGraphic wedge = cell.AddComponent<RadialWedgeGraphic>();
             wedge.Configure(WheelInnerRadius, WheelOuterRadius, angle, WheelCellSweep, new Color(0.10f, 0.18f, 0.28f, 0.96f), true);
+            wedge.SetTexture(GameplayUiSkin.Get("UI_HourWedge"), 440f);
             _hourWedges[hour] = wedge;
             var button = cell.AddComponent<Button>();
             button.targetGraphic = wedge;
@@ -276,9 +277,6 @@ public class RunCampPanel : BasePanel, IGameplayView<CampState>
     {
         if (button == null) return;
         button.interactable = interactable;
-        Image image = button.targetGraphic as Image ?? button.GetComponent<Image>();
-        if (image != null)
-            image.color = interactable ? new Color(0.2f, 0.42f, 0.72f, 1f) : new Color(0.22f, 0.24f, 0.28f, 1f);
     }
 
     private TextMeshProUGUI MakeText(Transform parent, string name, string text, float size, Color color)
@@ -330,6 +328,7 @@ public class RunCampPanel : BasePanel, IGameplayView<CampState>
 
         Button button = go.GetComponent<Button>();
         button.targetGraphic = image;
+        GameplayUiSkin.Button(button);
         return button;
     }
 

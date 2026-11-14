@@ -102,7 +102,7 @@ public class VillagePanel : BasePanel, IGameplayView<VillageState>
         GetComponent<Image>().color = new Color(.025f, .023f, .02f, .76f);
         layout = GameplayUi.Rect(transform, "VillageBuildingLayout", Vector2.one * .5f, Vector2.one * .5f, Vector2.zero, LayoutSize);
         var plate = layout.gameObject.AddComponent<Image>();
-        plate.color = Ink;
+        GameplayUiSkin.Apply(plate, "UI_Panel_Sub", GameplayUiSkin.DarkPaper);
         var outline = layout.gameObject.AddComponent<Outline>();
         outline.effectColor = Line;
         outline.effectDistance = new Vector2(1, -1);

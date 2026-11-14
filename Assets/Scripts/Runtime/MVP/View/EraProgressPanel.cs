@@ -89,7 +89,7 @@ public class EraProgressPanel : BasePanel, IGameplayView<EraProgressState>
         boxRect.anchoredPosition = Vector2.zero;
         boxRect.sizeDelta = new Vector2(PanelWidth, PanelHeight);
         Image bg = box.GetComponent<Image>();
-        bg.color = new Color(0.10f, 0.11f, 0.14f, 0.98f);
+        GameplayUiSkin.Apply(bg, "UI_Panel_Sub", GameplayUiSkin.DarkPaper);
         bg.raycastTarget = true;
 
         _title = MakeText(boxRect, "Title", "时代进度", 34f, new Color(0.96f, 0.97f, 1f, 1f));
@@ -139,9 +139,6 @@ public class EraProgressPanel : BasePanel, IGameplayView<EraProgressState>
     {
         if (button == null) return;
         button.interactable = interactable;
-        button.GetComponent<Image>().color = interactable
-            ? new Color(0.2f, 0.42f, 0.72f, 1f)
-            : new Color(0.22f, 0.24f, 0.28f, 1f);
     }
 
     private TextMeshProUGUI MakeText(Transform parent, string name, string text, float size, Color color)
@@ -169,14 +166,16 @@ public class EraProgressPanel : BasePanel, IGameplayView<EraProgressState>
         rect.pivot = new Vector2(0.5f, 0f);
         rect.anchoredPosition = offset;
         rect.sizeDelta = new Vector2(300f, 54f);
-        go.GetComponent<Image>().color = new Color(0.2f, 0.42f, 0.72f, 1f);
+        var button = go.GetComponent<Button>();
+        button.targetGraphic = go.GetComponent<Image>();
 
         TextMeshProUGUI tmp = MakeText(rect, "Text", label, 22f, Color.white);
         RectTransform tr = (RectTransform)tmp.transform;
         tr.anchorMin = Vector2.zero; tr.anchorMax = Vector2.one;
         tr.offsetMin = Vector2.zero; tr.offsetMax = Vector2.zero;
         tmp.alignment = TextAlignmentOptions.Center;
-        return go.GetComponent<Button>();
+        GameplayUiSkin.Button(button);
+        return button;
     }
 
     public override void ClosePanel() { if (UIManager.Instance != null) UIManager.Instance.PopPanel(); else Hide(); }

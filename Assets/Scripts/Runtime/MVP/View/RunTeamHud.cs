@@ -190,7 +190,7 @@ public static class RunTeamHud
             rowRect.sizeDelta = new Vector2(RowWidth, RowHeight);
 
             Image background = rowGo.GetComponent<Image>();
-            background.color = new Color(0.06f, 0.07f, 0.09f, 0.55f);
+            GameplayUiSkin.Apply(background, "UI_Bar_Track", Color.white);
             background.raycastTarget = false;
 
             //血条填充（从左侧按比例伸）
@@ -204,7 +204,7 @@ public static class RunTeamHud
             fillRect.offsetMax = new Vector2(0f, 0f);
             fillRect.sizeDelta = new Vector2(RowWidth, 0f);
             Image fill = fillGo.GetComponent<Image>();
-            fill.color = new Color(0.3f, 0.85f, 0.4f, 0.55f);
+            GameplayUiSkin.Apply(fill, "UI_Bar_Fill", Color.white);
             fill.raycastTarget = false;
 
             TextMeshProUGUI label = MakeLabel(rowRect, "Label", "", 17f, new Color(0.96f, 0.97f, 1f, 1f));

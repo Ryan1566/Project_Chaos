@@ -25,7 +25,7 @@ public sealed class VillageOfficePanel : BasePanel,IVillageOfficeView
     {
         var backdrop=GetComponent<Image>();if(backdrop!=null)backdrop.color=new Color(0,0,0,.68f);
         var card=GameplayUi.Rect(transform,"OfficeCard",Vector2.one*.5f,Vector2.one*.5f,Vector2.zero,new Vector2(880,560));
-        card.gameObject.AddComponent<Image>().color=new Color(.055f,.075f,.10f,1);
+        GameplayUiSkin.Apply(card.gameObject.AddComponent<Image>(), "UI_Panel_Sub", GameplayUiSkin.DarkPaper);
         title=Label(card,"Title",new Vector2(24,-22),new Vector2(832,58),30);
         body=Label(card,"Body",new Vector2(24,-100),new Vector2(832,240),23);
         body.enableWordWrapping=true;

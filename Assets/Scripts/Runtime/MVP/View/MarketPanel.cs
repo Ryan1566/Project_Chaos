@@ -133,7 +133,7 @@ public class MarketPanel : BasePanel, IGameplayView<MarketState>
         boxRect.anchoredPosition = Vector2.zero;
         boxRect.sizeDelta = new Vector2(PanelWidth, PanelHeight);
         Image bg = box.GetComponent<Image>();
-        bg.color = new Color(0.10f, 0.11f, 0.14f, 0.98f);
+        GameplayUiSkin.Apply(bg, "UI_Panel_Sub", GameplayUiSkin.DarkPaper);
         bg.raycastTarget = true;
 
         //标题在 Refresh 中按当前语言填充
@@ -344,6 +344,7 @@ public class MarketPanel : BasePanel, IGameplayView<MarketState>
         tr.offsetMin = Vector2.zero;
         tr.offsetMax = Vector2.zero;
         tmp.alignment = TextAlignmentOptions.Center;
+        GameplayUiSkin.Button(button);
         return button;
     }
 

@@ -390,12 +390,12 @@ namespace InputIcon.Editor
                     Sprite sprite = AssetDatabase.LoadAssetAtPath<Sprite>(best.assetPath);
                     if (sprite == null) continue;
 
-                    if (entry.icon != sprite || entry.sourceAsset != best.assetPath)
+                    if (entry.icon != sprite || entry.sourceAsset != best.assetPath || !entry.rawColor)
                     {
                         entry.icon = sprite;
                         entry.sourceAsset = best.assetPath;
-                        // 彩色变体必须不染色：染成近黑会把 PS 面键的蓝/粉/绿全乘没
-                        entry.rawColor = best.style == KeyIconMap.IconStyle.Color;
+                        // 青铜版的键帽、轮廓和键名均按原色显示。
+                        entry.rawColor = true;
                         changed++;
                     }
                 }

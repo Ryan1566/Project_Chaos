@@ -210,6 +210,7 @@ public class InventoryPanel : BasePanel, IGameplayView<InventoryState>
             blockRect.anchoredPosition = new Vector2(24f, y);
             blockRect.sizeDelta = new Vector2(36f, 36f);
             Image image = block.GetComponent<Image>();
+            GameplayUiSkin.Apply(image, "UI_Slot_Quality", Color.white);
             image.raycastTarget = false;
 
             GameObject go = new GameObject("Row" + created, typeof(RectTransform));
@@ -318,7 +319,10 @@ public class InventoryPanel : BasePanel, IGameplayView<InventoryState>
         _closeLabel = label;
         label.text = GameplayText.Text("ui_common_close", "关闭");
 
-        go.GetComponent<Button>().onClick.AddListener(() => Send(PanelAction.Close));
+        var close = go.GetComponent<Button>();
+        close.targetGraphic = bg;
+        GameplayUiSkin.Button(close, "UI_Btn_Sm");
+        close.onClick.AddListener(() => Send(PanelAction.Close));
     }
 
     public override void ClosePanel() { if (UIManager.Instance != null) UIManager.Instance.PopPanel(); else Hide(); }

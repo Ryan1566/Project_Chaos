@@ -51,12 +51,12 @@ public sealed class RunContentView : MonoBehaviour
         _card = GameplayUi.Rect(transform, "ContentCard", Vector2.one * .5f, Vector2.one * .5f,
             Vector2.zero, new Vector2(CardWidth, CardHeight));
         _cardImage = _card.gameObject.AddComponent<Image>();
-        _cardImage.color = new Color(.055f, .075f, .10f, 1);
+        GameplayUiSkin.Apply(_cardImage, "UI_DialogueBox", GameplayUiSkin.DarkPaper);
 
         _portraitArea = GameplayUi.Rect(_card, "PortraitArea", Vector2.up, Vector2.up,
             new Vector2(Margin, -Margin), new Vector2(PortraitSize, PortraitSize));
         var portraitBack = _portraitArea.gameObject.AddComponent<Image>();
-        portraitBack.color = new Color(.12f, .16f, .20f, 1);
+        GameplayUiSkin.Apply(portraitBack, "UI_Portrait_Bust", GameplayUiSkin.DarkPaper);
         portraitBack.raycastTarget = false;
         var portrait = GameplayUi.Rect(_portraitArea, "Portrait", Vector2.one * .5f, Vector2.one * .5f,
             Vector2.zero, new Vector2(PortraitSize - 12f, PortraitSize - 12f));
@@ -74,7 +74,7 @@ public sealed class RunContentView : MonoBehaviour
         _scrollArea = GameplayUi.Rect(_card, "ChoiceScroll", Vector2.up, Vector2.up,
             new Vector2(Margin, -Margin), new Vector2(CardWidth - Margin * 2f, ChoiceHeight));
         _scrollBackground = _scrollArea.gameObject.AddComponent<Image>();
-        _scrollBackground.color = new Color(.035f, .05f, .065f, 1);
+        GameplayUiSkin.Apply(_scrollBackground, "UI_Panel_ListBody", GameplayUiSkin.DarkPaper);
         _scrollBackground.raycastTarget = true;
         _scrollArea.gameObject.AddComponent<RectMask2D>();
         _scroll = _scrollArea.gameObject.AddComponent<ScrollRect>();
@@ -101,6 +101,7 @@ public sealed class RunContentView : MonoBehaviour
         _closeBackground.color = new Color(.18f, .32f, .48f, 1);
         _close = _closeArea.gameObject.AddComponent<Button>();
         _close.targetGraphic = _closeBackground;
+        GameplayUiSkin.Apply(_closeBackground, "UI_Btn_Md_Normal", GameplayUiSkin.DarkPaper);
         _close.onClick.AddListener(OnCloseClicked);
         _closeText = GameplayUi.Text(_closeArea, "Text", string.Empty, 22);
     }
@@ -262,13 +263,14 @@ public sealed class RunContentView : MonoBehaviour
             row.Root = GameplayUi.Rect(_scrollContent, "Claim" + _rows.Count, Vector2.up, Vector2.up,
                 Vector2.zero, new Vector2(800f, ChoiceHeight));
             row.Frame = row.Root.gameObject.AddComponent<Image>();
+            GameplayUiSkin.Apply(row.Frame, "UI_Row", GameplayUiSkin.DarkPaper);
             row.Button = row.Root.gameObject.AddComponent<Button>();
             row.Button.targetGraphic = row.Frame;
 
             row.IconFrame = GameplayUi.Rect(row.Root, "IconFrame", Vector2.up, Vector2.up,
                 new Vector2(12f, -20f), new Vector2(56f, 56f));
             var iconBack = row.IconFrame.gameObject.AddComponent<Image>();
-            iconBack.color = new Color(.16f, .22f, .27f);
+            GameplayUiSkin.Apply(iconBack, "UI_Slot", GameplayUiSkin.DarkPaper);
             iconBack.raycastTarget = false;
             var iconRect = GameplayUi.Rect(row.IconFrame, "Icon", Vector2.one * .5f, Vector2.one * .5f,
                 Vector2.zero, new Vector2(44f, 44f));
@@ -287,7 +289,7 @@ public sealed class RunContentView : MonoBehaviour
             row.ActionArea = GameplayUi.Rect(row.Root, "ActionArea", Vector2.up, Vector2.up,
                 Vector2.zero, new Vector2(ActionWidth, ChoiceHeight - 28f));
             row.ActionBackground = row.ActionArea.gameObject.AddComponent<Image>();
-            row.ActionBackground.color = new Color(.18f, .32f, .48f, 1);
+            GameplayUiSkin.Apply(row.ActionBackground, "UI_Btn_Sm_Normal", GameplayUiSkin.DarkPaper);
             row.ActionBackground.raycastTarget = false;
             row.ButtonText = GameplayUi.Text(row.ActionArea, "Action", string.Empty, 17);
             row.ButtonText.enableWordWrapping = true;

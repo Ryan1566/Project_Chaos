@@ -13,81 +13,81 @@ MonoBehaviour:
   m_Name: DefaultSkin
   m_EditorClassIdentifier: 
   primary:
-  - normal: {fileID: 6592040560272379924, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+  - normal: {fileID: 21300000, guid: d140a116fab6b52499cdb9bbda272f2b, type: 3}
     selected: {fileID: 0}
     disabled: {fileID: 0}
-  - normal: {fileID: -2302897865742960100, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+  - normal: {fileID: 21300000, guid: 7993f6af20ba645419df851de2371886, type: 3}
     selected: {fileID: 0}
     disabled: {fileID: 0}
-  - normal: {fileID: -3147215332263895916, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+  - normal: {fileID: 21300000, guid: 842e511a7e91c574eacf7891f48816a5, type: 3}
     selected: {fileID: 0}
     disabled: {fileID: 0}
-  - normal: {fileID: 4057456374274115973, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+  - normal: {fileID: 21300000, guid: abfa9a7ca24ad774bb898c9f775b3f61, type: 3}
     selected: {fileID: 0}
     disabled: {fileID: 0}
-  - normal: {fileID: -2973205795236411499, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+  - normal: {fileID: 21300000, guid: eb7f89176445b024cb7f9ce641d61aaf, type: 3}
     selected: {fileID: 0}
     disabled: {fileID: 0}
-  - normal: {fileID: -5038034205905444792, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+  - normal: {fileID: 21300000, guid: a767c7dac48f50846a5bd764e897ab8a, type: 3}
     selected: {fileID: 0}
     disabled: {fileID: 0}
-  - normal: {fileID: 3363454416706156307, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+  - normal: {fileID: 21300000, guid: d327a4d4c66031e438f47b405b414e3b, type: 3}
     selected: {fileID: 0}
     disabled: {fileID: 0}
-  - normal: {fileID: 3890977315614012937, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+  - normal: {fileID: 21300000, guid: 53a2aee50ab3f2149920bd81b0a30f2d, type: 3}
     selected: {fileID: 0}
     disabled: {fileID: 0}
-  - normal: {fileID: 6179460758739319108, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+  - normal: {fileID: 21300000, guid: e104be30e9a31c244b053f3d4338aa48, type: 3}
     selected: {fileID: 0}
     disabled: {fileID: 0}
-  - normal: {fileID: -537665318175169857, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+  - normal: {fileID: 21300000, guid: d1ab9bd093b9639418041f3856734b38, type: 3}
     selected: {fileID: 0}
     disabled: {fileID: 0}
-  - normal: {fileID: -5609878182939147526, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+  - normal: {fileID: 21300000, guid: 7948148372f2a4842bfcbe2f1eb5b8bd, type: 3}
     selected: {fileID: 0}
     disabled: {fileID: 0}
-  - normal: {fileID: 1179888077876240375, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+  - normal: {fileID: 21300000, guid: f220e154f1c43c34cb9c6fad7c901b2b, type: 3}
     selected: {fileID: 0}
     disabled: {fileID: 0}
   secondary:
-  - normal: {fileID: 1453004349583316222, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+  - normal: {fileID: 21300000, guid: 7658c17ac7928a84a827572a308a3545, type: 3}
     selected: {fileID: 0}
     disabled: {fileID: 0}
-  - normal: {fileID: 6564516513039947614, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+  - normal: {fileID: 21300000, guid: 968d390e8161a1f41a08c72607df69e2, type: 3}
     selected: {fileID: 0}
     disabled: {fileID: 0}
-  - normal: {fileID: 2585345472277037960, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+  - normal: {fileID: 21300000, guid: a0c7e938ac77b1742a9816074bd36274, type: 3}
     selected: {fileID: 0}
     disabled: {fileID: 0}
-  - normal: {fileID: -24893353134894500, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+  - normal: {fileID: 21300000, guid: b4cd6393813cb7942980ebe0a5e128ca, type: 3}
     selected: {fileID: 0}
     disabled: {fileID: 0}
-  - normal: {fileID: 8193994211331099135, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+  - normal: {fileID: 21300000, guid: 5f2e822ce61e34c4c96ed56b4bddff95, type: 3}
     selected: {fileID: 0}
     disabled: {fileID: 0}
-  - normal: {fileID: -3509709748225807619, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+  - normal: {fileID: 21300000, guid: bac6d664c450c2e468c2c87aab202edd, type: 3}
     selected: {fileID: 0}
     disabled: {fileID: 0}
-  - normal: {fileID: 2628864830040222256, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+  - normal: {fileID: 21300000, guid: d763d5908baa7c1488d34f27896fc18c, type: 3}
     selected: {fileID: 0}
     disabled: {fileID: 0}
-  - normal: {fileID: -5758900957937559660, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+  - normal: {fileID: 21300000, guid: 0b2e22cd9e7995c4587d0685f77c7954, type: 3}
     selected: {fileID: 0}
     disabled: {fileID: 0}
-  - normal: {fileID: 2058698371082429119, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+  - normal: {fileID: 21300000, guid: cc2e538f293610b438e6d8865dccd454, type: 3}
     selected: {fileID: 0}
     disabled: {fileID: 0}
-  - normal: {fileID: 2650930891873513670, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+  - normal: {fileID: 21300000, guid: c560714eae7a73d4892b5dbdd5804ecd, type: 3}
     selected: {fileID: 0}
     disabled: {fileID: 0}
-  - normal: {fileID: 1000974041340806021, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+  - normal: {fileID: 21300000, guid: 13462c0021c12844d92090bc3461a697, type: 3}
     selected: {fileID: 0}
     disabled: {fileID: 0}
-  - normal: {fileID: 529053128189529073, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+  - normal: {fileID: 21300000, guid: 23730e0f7a2339b4c9b917a118065a71, type: 3}
     selected: {fileID: 0}
     disabled: {fileID: 0}
-  normalTint: {r: 0.07, g: 0.14, b: 0.23, a: 0.96}
-  selectedTint: {r: 0.7, g: 0.48, b: 0.12, a: 0.96}
-  disabledTint: {r: 0.13, g: 0.14, b: 0.16, a: 0.95}
-  pointer: {fileID: -3530364720934859057, guid: 5f270b4db4deea245acafa74aaddc5cd, type: 3}
+  normalTint: {r: 0.83, g: 0.68, b: 0.54, a: 1}
+  selectedTint: {r: 1, g: 0.81, b: 0.53, a: 1}
+  disabledTint: {r: 0.53, g: 0.49, b: 0.46, a: 0.85}
+  pointer: {fileID: 21300000, guid: 4181327f19ea908498c5afe0edce2e65, type: 3}
   pointerTint: {r: 1, g: 0.86, b: 0.4, a: 1}

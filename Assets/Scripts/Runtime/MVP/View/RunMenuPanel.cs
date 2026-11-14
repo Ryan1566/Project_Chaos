@@ -52,7 +52,7 @@ public sealed class RunMenuPanel : BasePanel, IGameplayView<RunMenuState>, IRunB
         var backdrop = GetComponent<Image>();
         if (backdrop != null) backdrop.color = new Color(0, 0, 0, .78f);
         _box = GameplayUi.Rect(transform, "ContentBox", Vector2.one * .5f, Vector2.one * .5f, Vector2.zero, new Vector2(BoxWidth, BoxHeight));
-        _box.gameObject.AddComponent<Image>().color = new Color(.055f, .075f, .10f, 1);
+        GameplayUiSkin.Apply(_box.gameObject.AddComponent<Image>(), "UI_Panel_Main_Titled", GameplayUiSkin.DarkPaper);
         Label(_box, "Title", "功能集合", 28, new Vector2(22, -8), new Vector2(230, 40));
         _summary = Label(_box, "Summary", "", 22, new Vector2(500, -8), new Vector2(570, 40));
         string[] tabs = { "队伍", "局内背包", "局内地图" };
@@ -180,8 +180,12 @@ public sealed class RunMenuPanel : BasePanel, IGameplayView<RunMenuState>, IRunB
         if (state.Tab == RunFunctionTab.Map) _mapPresenter.Refresh();
         else _mapView.CloseSecondary();
         _placeholder.text = state.Placeholder;
-        for (int i = 0; i < _tabs.Count; i++) _tabs[i].image.color =
-            i == (int)state.Tab ? new Color(.28f, .49f, .62f) : new Color(.12f, .20f, .28f);
+        for (int i = 0; i < _tabs.Count; i++)
+        {
+            GameplayUiSkin.Button(_tabs[i], "UI_Tab");
+            if (i == (int)state.Tab)
+                GameplayUiSkin.Apply(_tabs[i].image, "UI_Tab_Selected", Color.white);
+        }
         for (int i = 0; i < _slots.Count; i++) _slots[i].Render(state.Slots[i]);
         _catalogItems = new List<uint>(state.Uncarried).ToArray();
         RenderCatalog();

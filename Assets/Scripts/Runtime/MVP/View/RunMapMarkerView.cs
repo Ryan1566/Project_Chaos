@@ -8,6 +8,7 @@ public sealed class RunMapMarkerView : MonoBehaviour
 {
     private RectTransform _root, _portrait;
     private RunMapGlyph _dot, _border, _image;
+    private Image _treasure;
     public string MarkerId { get; private set; }
     public void Initialize()
     {
@@ -16,6 +17,11 @@ public sealed class RunMapMarkerView : MonoBehaviour
         _portrait = GameplayUi.Rect(transform, "Portrait", Vector2.one * .5f, Vector2.one * .5f, Vector2.zero, Vector2.one * 36);
         _border = Glyph(_portrait, "DiamondFrame", Vector2.zero, 36, RunMapGlyph.Shape.Diamond);
         _image = Glyph(_portrait, "PortraitImage", Vector2.zero, 30, RunMapGlyph.Shape.Portrait);
+        var treasure = GameplayUi.Rect(_portrait, "Treasure", Vector2.one * .5f, Vector2.one * .5f, Vector2.zero, Vector2.one * 26);
+        _treasure = treasure.gameObject.AddComponent<Image>();
+        _treasure.sprite = GameplayUiSkin.Location("UI_MapNodeIcon_Treasure");
+        _treasure.preserveAspect = true;
+        _treasure.raycastTarget = false;
     }
     public void Render(RunMapMarkerState marker, Vector2 point)
     {
@@ -24,13 +30,18 @@ public sealed class RunMapMarkerView : MonoBehaviour
         bool avatar = marker.Kind == RunMapMarkerKind.Player || marker.Kind == RunMapMarkerKind.Npc || marker.Kind == RunMapMarkerKind.Interactive;
         _dot.gameObject.SetActive(marker.Kind == RunMapMarkerKind.Player || !avatar);
         _portrait.gameObject.SetActive(avatar);
-        _dot.color = tint; _border.color = tint;
+        _dot.color = tint;
         _dot.Style=marker.Kind==RunMapMarkerKind.Ladder?RunMapGlyph.Shape.Ladder:marker.Kind==RunMapMarkerKind.Objective?RunMapGlyph.Shape.Objective:RunMapGlyph.Shape.Circle;
         _dot.rectTransform.sizeDelta=Vector2.one*(marker.Kind==RunMapMarkerKind.Ladder||marker.Kind==RunMapMarkerKind.Objective?18:10);
         _dot.SetAllDirty();
         _portrait.anchoredPosition = marker.Kind == RunMapMarkerKind.Player ? new Vector2(0, 27) : Vector2.zero;
         _image.Portrait = marker.Portrait; _image.Chest = marker.Kind == RunMapMarkerKind.Interactive;
+        bool useTreasure = _image.Chest && marker.Portrait == null && _treasure.sprite != null;
+        _border.color = useTreasure ? GameplayUiSkin.Ink : tint;
+        _treasure.enabled = useTreasure;
+        _image.enabled = !useTreasure;
         _image.color = marker.Dimmed ? new Color(.55f, .55f, .55f, 1) : Color.white;
+        _treasure.color = _image.color;
         _image.SetAllDirty();
     }
     public static Color ColorFor(RunMapMarkerKind kind)

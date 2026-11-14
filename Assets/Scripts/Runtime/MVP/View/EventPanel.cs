@@ -111,7 +111,7 @@ public class EventPanel : BasePanel, IGameplayView<EventState>
         boxRect.anchoredPosition = Vector2.zero;
         boxRect.sizeDelta = new Vector2(PanelWidth, PanelHeight);
         Image bg = box.GetComponent<Image>();
-        bg.color = new Color(0.10f, 0.11f, 0.14f, 0.98f);
+        GameplayUiSkin.Apply(bg, "UI_Panel_Dialog", GameplayUiSkin.DarkPaper);
         bg.raycastTarget = true;
 
         //标题（顶部居中）
@@ -281,6 +281,7 @@ public class EventPanel : BasePanel, IGameplayView<EventState>
         tr.offsetMax = Vector2.zero;
         tmp.alignment = TextAlignmentOptions.Center;
 
+        GameplayUiSkin.Button(button);
         _optionButtons.Add(go);
     }
 
@@ -295,8 +296,9 @@ public class EventPanel : BasePanel, IGameplayView<EventState>
         rect.offsetMin = new Vector2(-60f, -60f);
         rect.offsetMax = new Vector2(-8f, -8f);
 
-        go.GetComponent<Image>().color = new Color(0.35f, 0.18f, 0.20f, 1f);
-        go.GetComponent<Button>().onClick.AddListener(() => onClick());
+        var close = go.GetComponent<Button>();
+        close.targetGraphic = go.GetComponent<Image>();
+        close.onClick.AddListener(() => onClick());
 
         TextMeshProUGUI tmp = MakeText(rect, "Text", label, 26f, Color.white);
         RectTransform tr = (RectTransform)tmp.transform;
@@ -305,6 +307,7 @@ public class EventPanel : BasePanel, IGameplayView<EventState>
         tr.offsetMin = Vector2.zero;
         tr.offsetMax = Vector2.zero;
         tmp.alignment = TextAlignmentOptions.Center;
+        GameplayUiSkin.Button(close, "UI_Btn_Round");
     }
 
     private TextMeshProUGUI MakeText(Transform parent, string name, string text, float size, Color color)

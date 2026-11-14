@@ -33,7 +33,7 @@ public class WorldMapMetaProvider : IWorldLocationMetaProvider
         var place=GetLocationMeta(era,refId,WorldLocationIdentity.Family);
         if(place==null)return false;
         name=place.Name;
-        if(!string.IsNullOrEmpty(place.IconKey))icon=Resources.Load<Sprite>("UI/WorldLocations/"+place.IconKey);
+        if(!string.IsNullOrEmpty(place.IconKey))icon=GameplayUiSkin.Location(place.IconKey);
         return !string.IsNullOrEmpty(name);
     }
 }

@@ -218,7 +218,12 @@ public static class RunTerrainToast
         rect.anchoredPosition = new Vector2(0f, -96f);   //顶部居中：避开右上深度 HUD 与左上门客血条
         rect.sizeDelta = new Vector2(900f, 48f);
 
-        _text = textGo.AddComponent<TextMeshProUGUI>();
+        var background = GameplayUi.Rect(rect, "ToastBackground", Vector2.one * .5f, Vector2.one * .5f, Vector2.zero, new Vector2(930, 58));
+        background.SetAsFirstSibling();
+        var plate = background.gameObject.AddComponent<Image>();
+        GameplayUiSkin.Apply(plate, "UI_Toast_Info", GameplayUiSkin.DarkPaper);
+        plate.raycastTarget = false;
+        _text = GameplayUi.Text(rect, "ToastText", string.Empty, 34);
         //★根因：默认字体是 LiberationSans SDF（无中文字形）→ 必须复用队伍血条那套中文字体解析
         _text.font = RunTeamHud.ResolveFont();
         _text.fontSize = 34f;

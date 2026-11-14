@@ -231,7 +231,7 @@ public class KeybindBindingsPage : SettingsPageBase
                 var header = GameplayUi.Text(parent, "Scope_" + scope + (keyboard ? "_Keyboard" : "_Gamepad"),
                     scope == 0 ? "全局" : scope == 1 ? "局内" : "局外", 26);
                 header.alignment = TMPro.TextAlignmentOptions.MidlineLeft;
-                header.color = new Color(.95f, .78f, .35f);
+                header.color = GameplayUiSkin.Ink;
                 var layout = header.gameObject.AddComponent<LayoutElement>();
                 layout.preferredHeight = 44; layout.minHeight = 44;
                 header.transform.SetSiblingIndex(index++);

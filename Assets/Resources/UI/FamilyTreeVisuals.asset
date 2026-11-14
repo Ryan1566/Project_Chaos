@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b6bb06400c5e024c8e1bf22435799fe, type: 3}
   m_Name: FamilyTreeVisuals
   m_EditorClassIdentifier: 
-  SectionNormal: {fileID: 21300000, guid: af39053f7385d324a949c4d8bea5f902, type: 3}
-  SectionSelected: {fileID: 21300000, guid: e919a1c6d9ab33d469431fec9da04275, type: 3}
-  NodeLocked: {fileID: 21300000, guid: 10ad7ff6a1e1fb54fa70c1f2d2fc19d3, type: 3}
-  NodeReady: {fileID: 21300000, guid: 8b6702f35f075784189c5bff117a13e3, type: 3}
-  NodeUnlocked: {fileID: 21300000, guid: 97b995589b7d25a47b55a61dbb6e980a, type: 3}
-  NodeMilestone: {fileID: 21300000, guid: 97b995589b7d25a47b55a61dbb6e980a, type: 3}
-  DetailBackground: {fileID: 21300000, guid: 5a0559b5efed8cb4998aea0b9a6349cf, type: 3}
+  SectionNormal: {fileID: 21300000, guid: 6499b42c510ba614cbc6e93f59504a63, type: 3}
+  SectionSelected: {fileID: 21300000, guid: ea9cc7bcfad384a48b594e56fd6f5159, type: 3}
+  NodeLocked: {fileID: 21300000, guid: 26dcf70bc92d4114e8e3c729c9b52501, type: 3}
+  NodeReady: {fileID: 21300000, guid: a7dbdb0dc4645934b9015cc1cf28f626, type: 3}
+  NodeUnlocked: {fileID: 21300000, guid: db9a0e8f6fe5f4f479c8661a18f736d0, type: 3}
+  NodeMilestone: {fileID: 21300000, guid: db9a0e8f6fe5f4f479c8661a18f736d0, type: 3}
+  DetailBackground: {fileID: 21300000, guid: abd44165b39c18441aa2a21d2b2ceef3, type: 3}

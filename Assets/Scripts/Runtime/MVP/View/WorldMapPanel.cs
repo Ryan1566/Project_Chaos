@@ -173,7 +173,7 @@ public class WorldMapPanel : BasePanel, IWorldMapView
 
     private void BuildChrome()
     {
-        if (TryGetComponent<Image>(out var surface)) surface.color = PanelInk;
+        if (TryGetComponent<Image>(out var surface)) GameplayUiSkin.Apply(surface, "UI_Panel_Main", GameplayUiSkin.DarkPaper);
         if (_infoText != null)
         {
             Place(_infoText.rectTransform, Vector2.up, new Vector2(141f, -33f), new Vector2(228f, 57f));
@@ -200,8 +200,8 @@ public class WorldMapPanel : BasePanel, IWorldMapView
             rect.anchoredPosition = new Vector2(0f, 9f);
             rect.sizeDelta = new Vector2(-40f, 72f);
         }
-        StyleButton(_returnBtn, new Color(.19f, .22f, .22f), Paper);
-        StyleButton(_enterRunBtn, Gold, PanelInk);
+        StyleButton(_returnBtn);
+        StyleButton(_enterRunBtn);
         if (_enterRunBtn != null)
         {
             _enterRunBtn.transform.SetAsLastSibling();
@@ -221,7 +221,7 @@ public class WorldMapPanel : BasePanel, IWorldMapView
         overlay.offsetMin = overlay.offsetMax = Vector2.zero;
         overlay.GetComponent<Image>().color = new Color(0, 0, 0, .8f);
         var box = GameplayUi.Rect(overlay, "Box", new Vector2(.5f, .5f), new Vector2(.5f, .5f), Vector2.zero, new Vector2(620, 230));
-        box.gameObject.AddComponent<Image>().color = new Color(.09f, .13f, .18f, 1);
+        GameplayUiSkin.Apply(box.gameObject.AddComponent<Image>(), "UI_Panel_Dialog", GameplayUiSkin.DarkPaper);
         var prompt = GameplayUi.Rect(box, "Prompt", new Vector2(0, 1), new Vector2(0, 1), new Vector2(20, -12), new Vector2(580, 100));
         _returnPrompt = GameplayUi.Text(prompt, "Text", "保存当前进度并返回主菜单？", 26);
         GameplayUi.Button(box, "Confirm", "保存并返回", new Vector2(36, -140), new Vector2(250, 56),
@@ -240,7 +240,7 @@ public class WorldMapPanel : BasePanel, IWorldMapView
         rect.offsetMin = new Vector2(28f, edge - 1f);
         rect.offsetMax = new Vector2(-28f, edge);
         var line = rect.gameObject.AddComponent<Image>();
-        line.color = Frame;
+        GameplayUiSkin.Apply(line, "UI_Row_Separator", Color.white);
         line.raycastTarget = false;
     }
 
@@ -263,12 +263,25 @@ public class WorldMapPanel : BasePanel, IWorldMapView
         rect.sizeDelta = size;
     }
 
-    private static void StyleButton(Button button, Color surface, Color ink)
+    private static void StyleButton(Button button)
     {
         if (button == null) return;
-        button.targetGraphic.color = surface;
-        var label = button.GetComponentInChildren<TextMeshProUGUI>();
-        if (label != null) label.color = ink;
+        var image = button.targetGraphic as Image;
+        if (image == null) return;
+        if (button.name == "EnterRunBtn")
+        {
+            GameplayUiSkin.Button(button, "UI_Btn_Lg");
+            GameplayUiSkin.Apply(image, "UI_Btn_Lg_Primary", Color.white);
+            button.transition = Selectable.Transition.ColorTint;
+            var colors = button.colors;
+            colors.highlightedColor = new Color(1f, .92f, .82f);
+            colors.selectedColor = colors.highlightedColor;
+            colors.pressedColor = new Color(.76f, .66f, .58f);
+            button.colors = colors;
+            var label = button.GetComponentInChildren<TextMeshProUGUI>();
+            if (label != null) label.color = GameplayUiSkin.LightInk;
+        }
+        else GameplayUiSkin.Button(button);
     }
 
     private void OpenMetaPanel(PanelType type)
@@ -378,7 +391,7 @@ public class WorldMapPanel : BasePanel, IWorldMapView
         _zoomReadout.rectTransform.offsetMin = Vector2.zero;
         _zoomReadout.rectTransform.offsetMax = Vector2.zero;
         foreach (var button in new[] { _zoomOut, _zoomIn, reset })
-            StyleButton(button, new Color(.19f, .22f, .22f), Paper);
+            StyleButton(button);
         ChromeText("MapControlsHint", "滚轮缩放  /  拖动平移  /  Esc 返回", 17, Muted, Vector2.zero,
             new Vector2(288f, 62f), new Vector2(400f, 44f));
     }

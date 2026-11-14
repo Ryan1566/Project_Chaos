@@ -96,7 +96,7 @@ public sealed class BattlePreparationPanel : BasePanel, IBattlePreparationView
         if (card != null) return;
         GetComponent<Image>().color = new Color(0, 0, 0, .74f);
         card = GameplayUi.Rect(transform, "BattleCard", Vector2.one * .5f, Vector2.one * .5f, Vector2.zero, new Vector2(1360, 810));
-        card.gameObject.AddComponent<Image>().color = CardColor;
+        GameplayUiSkin.Apply(card.gameObject.AddComponent<Image>(), "UI_Panel_Sub", GameplayUiSkin.DarkPaper);
         Title(card, "战备", 28, -16, 280, 45, 34);
         Title(card, "选择本次携带物品。入局成功才扣仓库，失败按结算额度带回，主动撤离丢失未结算物品。", 30, -63, 1300, 34, 19);
         Title(card, "局外仓库", 30, -110, 480, 34, 24);
@@ -247,7 +247,7 @@ public sealed class BattlePreparationPanel : BasePanel, IBattlePreparationView
         overlay.offsetMin = Vector2.zero; overlay.offsetMax = Vector2.zero;
         overlay.gameObject.AddComponent<Image>().color = new Color(0, 0, 0, .7f);
         var box = GameplayUi.Rect(overlay, name + "Card", Vector2.one * .5f, Vector2.one * .5f, Vector2.zero, size);
-        box.gameObject.AddComponent<Image>().color = CardColor;
+        GameplayUiSkin.Apply(box.gameObject.AddComponent<Image>(), "UI_Panel_Dialog", GameplayUiSkin.DarkPaper);
         return box;
     }
 
@@ -284,7 +284,7 @@ public sealed class BattlePreparationPanel : BasePanel, IBattlePreparationView
     private static RectTransform Box(Transform parent, string name, float x, float y, float w, float h)
     {
         var rect = GameplayUi.Rect(parent, name, Vector2.up, Vector2.up, new Vector2(x, y), new Vector2(w, h));
-        rect.gameObject.AddComponent<Image>().color = NormalSlot;
+        GameplayUiSkin.Apply(rect.gameObject.AddComponent<Image>(), "UI_Slot", GameplayUiSkin.DarkPaper);
         return rect;
     }
 

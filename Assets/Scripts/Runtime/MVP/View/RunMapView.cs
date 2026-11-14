@@ -116,7 +116,7 @@ public sealed class RunMapView : MonoBehaviour
         var overlay = GameplayUi.Rect(transform.parent, "MapLegendModal", Vector2.one * .5f, Vector2.one * .5f, Vector2.zero, new Vector2(1100, 700));
         _legend = overlay.gameObject; overlay.gameObject.AddComponent<Image>().color = new Color(0, 0, 0, .88f);
         var box = GameplayUi.Rect(overlay, "LegendBox", Vector2.one * .5f, Vector2.one * .5f, Vector2.zero, new Vector2(630, 640));
-        box.gameObject.AddComponent<Image>().color = new Color(.08f, .12f, .17f);
+        GameplayUiSkin.Apply(box.gameObject.AddComponent<Image>(), "UI_Panel_Dialog", GameplayUiSkin.DarkPaper);
         Label(box, "Title", "地图图例", new Vector2(40, -18), new Vector2(500, 44), 28);
         string[] names = { "受控角色 · 黄色光点与菱形头像", "派遣队友 · 蓝色光点（倒地变暗）", "敌人 · 红色光点（仅当前视野）", "可交互人物 · 菱形头像", "宝箱等交互物 · 菱形头像", "梯子 · 浅黄色标记", "核心目标区 · 橙色标记" };
         for (int i = 0; i < names.Length; i++)

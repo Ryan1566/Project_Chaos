@@ -191,7 +191,7 @@ public sealed class RunTeamView : MonoBehaviour, IRunTeamView
             _slotRects[i] = slotRect;
 
             var bg = slotRect.gameObject.AddComponent<Image>();
-            bg.color = SlotColor;
+            GameplayUiSkin.Apply(bg, "UI_Slot", GameplayUiSkin.DarkPaper);
             bg.raycastTarget = true;
             _slotBackgrounds[i] = bg;
 
@@ -246,7 +246,7 @@ public sealed class RunTeamView : MonoBehaviour, IRunTeamView
         var card = GameplayUi.Rect(transform, "RightPanel", new Vector2(0, 1), new Vector2(0, 1),
             new Vector2(rightX, -Margin), new Vector2(rightWidth, LeftInnerHeight));
         var cardImage = card.gameObject.AddComponent<Image>();
-        cardImage.color = CardColor;
+        GameplayUiSkin.Apply(cardImage, "UI_Card_Normal", GameplayUiSkin.DarkPaper);
         cardImage.raycastTarget = false;
 
         float inner = rightWidth - 28f;
@@ -258,6 +258,7 @@ public sealed class RunTeamView : MonoBehaviour, IRunTeamView
         y -= 34f;
 
         var xpTrack = MakeImage(card, "XpTrack", new Color(0f, 0f, 0f, .55f));
+        GameplayUiSkin.Apply(xpTrack, "UI_Bar_Track", Color.white);
         PlaceTopLeft(xpTrack.rectTransform, x, y, inner, 12f);
         // Sprite-less Image: a real left-anchored bar whose width is driven by the ratio,
         // so the geometry (not fillAmount) carries the value.
@@ -288,6 +289,7 @@ public sealed class RunTeamView : MonoBehaviour, IRunTeamView
             _statLabels[i] = label;
 
             var track = MakeImage(row, "Track", new Color(0f, 0f, 0f, .55f));
+            GameplayUiSkin.Apply(track, "UI_Bar_Track", Color.white);
             PlaceTopLeft(track.rectTransform, 0f, -20f, inner - 56f, 14f);
 
             RectTransform fillRect;
@@ -484,9 +486,7 @@ public sealed class RunTeamView : MonoBehaviour, IRunTeamView
     }
 
     /// <summary>
-    /// Sprite-less filled bar: left-anchored, stretched vertically, and only offsetMax.x is
-    /// driven by the value, so the rendered quad width always equals track width * ratio
-    /// without relying on a sprite or on Image.fillAmount.
+    /// 填充图从左侧开始，宽度由进度驱动，沿用原有布局和锚点。
     /// </summary>
     static Image MakeBar(RectTransform track, string name, Color color, out RectTransform rect)
     {
@@ -499,7 +499,7 @@ public sealed class RunTeamView : MonoBehaviour, IRunTeamView
         rect.offsetMax = Vector2.zero;
 
         var image = rect.gameObject.AddComponent<Image>();
-        image.color = color;
+        GameplayUiSkin.Apply(image, "UI_Bar_Fill", color);
         image.raycastTarget = false;
         return image;
     }
@@ -602,7 +602,9 @@ public sealed class RunTeamView : MonoBehaviour, IRunTeamView
     {
         var rect = GameplayUi.Rect(parent, name, new Vector2(0, 1), new Vector2(0, 1), Vector2.zero, Vector2.zero);
         var image = rect.gameObject.AddComponent<Image>();
-        image.color = color;
+        if (name == "SelectedMarker") image.color = color;
+        else if (name == "Track" || name == "XpTrack") GameplayUiSkin.Apply(image, "UI_Bar_Track", Color.white);
+        else GameplayUiSkin.Apply(image, "UI_Panel_ListBody", GameplayUiSkin.DarkPaper);
         image.raycastTarget = false;
         return image;
     }

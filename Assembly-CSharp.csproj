@@ -87,6 +87,7 @@
     <Compile Include="Assets\Scripts\Runtime\MVP\Model\Gameplay\VillageOfficeModel.cs" />
     <Compile Include="Assets\Scripts\Runtime\NPC_AI\AllyController.cs" />
     <Compile Include="Assets\Scripts\Runtime\GameBase\SettingsManager\ResolutionHelper.cs" />
+    <Compile Include="Assets\Scripts\Runtime\MVP\View\GameplayUiSkin.cs" />
     <Compile Include="Assets\Scripts\Runtime\MVP\Model\Startup\MainMenuModel.cs" />
     <Compile Include="Assets\Scripts\Runtime\3C\Character\RunCharacterPresentation.cs" />
     <Compile Include="Assets\Scripts\Runtime\MVP\Model\ConfigData\WorldMapTable_WorldFactionConfig.cs" />

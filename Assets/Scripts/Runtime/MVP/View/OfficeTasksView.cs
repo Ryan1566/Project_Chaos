@@ -152,7 +152,7 @@ public sealed class OfficeTasksView : MonoBehaviour
             new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero,
             new Vector2(CardWidth, CardHeight));
         var cardBg = card.gameObject.AddComponent<Image>();
-        cardBg.color = CardColor;
+        GameplayUiSkin.Apply(cardBg, "UI_Panel_Sub", GameplayUiSkin.DarkPaper);
         cardBg.raycastTarget = true;
 
         var fitter = card.gameObject.AddComponent<CardFitter>();
@@ -230,7 +230,7 @@ public sealed class OfficeTasksView : MonoBehaviour
         var panel = GameplayUi.Rect(card, "ListPanel", new Vector2(0f, 1f), new Vector2(0f, 1f),
             new Vector2(24f, -top), new Vector2(ListWidth, height));
         var panelBg = panel.gameObject.AddComponent<Image>();
-        panelBg.color = PanelColor;
+        GameplayUiSkin.Apply(panelBg, "UI_Panel_ListBody", GameplayUiSkin.DarkPaper);
         panelBg.raycastTarget = true;
 
         // 视口只挂 RectMask2D，背景保持可被射线触达以支持拖拽滚动。
@@ -273,7 +273,7 @@ public sealed class OfficeTasksView : MonoBehaviour
         var panel = GameplayUi.Rect(card, "DetailPanel", new Vector2(0f, 1f), new Vector2(0f, 1f),
             new Vector2(x, -top), new Vector2(width, height));
         var panelBg = panel.gameObject.AddComponent<Image>();
-        panelBg.color = PanelColor;
+        GameplayUiSkin.Apply(panelBg, "UI_Panel_ListBody", GameplayUiSkin.DarkPaper);
         panelBg.raycastTarget = true;
 
         var titleArea = GameplayUi.Rect(panel, "DetailTitleArea", new Vector2(0f, 1f), new Vector2(0f, 1f),
@@ -401,6 +401,7 @@ public sealed class OfficeTasksView : MonoBehaviour
         var label = labelArea.gameObject.AddComponent<TextMeshProUGUI>();
         ConfigureText(label, fontSize, TextColor, TextAlignmentOptions.Center);
         label.text = string.Empty;
+        GameplayUiSkin.Button(button);
         return button;
     }
 
@@ -507,7 +508,7 @@ public sealed class OfficeTasksView : MonoBehaviour
             var widget = new RowWidget();
             widget.Root = rect.gameObject;
             widget.Background = rect.gameObject.AddComponent<Image>();
-            widget.Background.color = RowColor;
+            GameplayUiSkin.Apply(widget.Background, "UI_Row", GameplayUiSkin.DarkPaper);
             widget.Button = rect.gameObject.AddComponent<Button>();
             widget.Button.targetGraphic = widget.Background;
 

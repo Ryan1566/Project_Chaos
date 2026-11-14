@@ -19,7 +19,7 @@ public static class GameplayPolishFlowVerification
 {
     public static string Status { get; private set; } = "idle";
     public static bool Resume;
-    static Keyboard _keyboard; static Mouse _mouse;
+    static Keyboard _keyboard;
     static string _overrides, _storage; static int _mode;
     static readonly StringBuilder Report = new StringBuilder();
     static BasePanel Top => UIManager.Instance.panelStack.Count == 0 ? null : UIManager.Instance.panelStack.Peek();
@@ -51,7 +51,7 @@ public static class GameplayPolishFlowVerification
         Directory.CreateDirectory(_storage); SaveSlotService.UseEditorTestDirectory(_storage);
         _overrides = InputManager.Instance.SaveOverridesJson(); InputManager.Instance.LoadOverridesJson("");
         _mode = SettingsManager.Instance.Applied.itemWheelMode;
-        _keyboard = InputSystem.AddDevice<Keyboard>("ChaosPolishKeyboard"); _mouse = InputSystem.AddDevice<Mouse>("ChaosPolishMouse");
+        _keyboard = InputSystem.AddDevice<Keyboard>("ChaosPolishKeyboard");
         UnityEngine.Object.FindObjectOfType<MonoController>().StartCoroutine(Guard(Run()));
     }
     static IEnumerator Guard(IEnumerator run)
@@ -73,7 +73,6 @@ public static class GameplayPolishFlowVerification
     {
         Wheel?.Close(); InputManager.Instance.LoadOverridesJson(_overrides); SettingsManager.Instance.Applied.itemWheelMode = _mode;
         if (_keyboard != null && _keyboard.added) InputSystem.RemoveDevice(_keyboard);
-        if (_mouse != null && _mouse.added) InputSystem.RemoveDevice(_mouse);
     }
     static IEnumerator Run()
     {
@@ -140,8 +139,9 @@ public static class GameplayPolishFlowVerification
         Check(options[2].Children.Count == 2 && options[2].Children[1].ShortcutNumber == 5 && !options[2].Children[0].Enabled, "occupied-only recovery slots preserve 1 and 5 including full-health disabled item");
         SettingsManager.Instance.Applied.itemWheelMode = 0;
         yield return Press(UnityEngine.InputSystem.Key.LeftAlt); Check(Wheel.IsOpen, "toggle radial opens");
-        InputSystem.QueueDeltaStateEvent(_mouse.delta, new Vector2(-150, -90)); yield return new WaitForSecondsRealtime(.4f);
         var presenter = (Chaos.MVP.Presenter.Gameplay.RadialMenuPresenter)typeof(RunItemWheelDriver).GetField("_presenter", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(Wheel);
+        // 从 Presenter 注入位移，避免编辑器内的真实鼠标覆盖合成设备的单帧输入。
+        presenter.Move(-150, -90, .4f);
         Check(presenter.Model.Level == 2 && presenter.Model.CurrentOptions.Count == 2, "actual radial expands only two occupied sectors");
         yield return Press(UnityEngine.InputSystem.Key.Digit5); Check(presenter.Model.SelectedIndex == 1, "digit 5 selects original physical slot 4");
         yield return Press(UnityEngine.InputSystem.Key.Escape); Check(Wheel.IsOpen && presenter.Model.Level == 1 && presenter.Model.SelectedIndex == -1, "Esc returns secondary wheel to neutral primary");
@@ -152,13 +152,20 @@ public static class GameplayPolishFlowVerification
             RunEncounter.CopyMapEnemies(enemies); foreach (var enemy in enemies) if (enemy != null && !enemy.IsDead) enemy.TakeDamage(99999);
             RunEncounter.RefreshNow(); deadline = Time.realtimeSinceStartup + 40;
             if (stage < 3)
-            { while ((RunEncounter.CurrentSceneIndex != stage + 1 || !RunEncounter.IsSceneReady || RunSceneFlow.IsTransitioning) && Time.realtimeSinceStartup < deadline) yield return null; Check(RunEncounter.CurrentSceneIndex == stage + 1 && RunEncounter.IsSceneReady, "map ready " + (stage + 1)); }
+            {
+                Check(RunEncounter.TryUseExit(stage), "next stage requested by exit");
+                while ((RunEncounter.CurrentSceneIndex != stage + 1 || !RunEncounter.IsSceneReady || RunSceneFlow.IsTransitioning) && Time.realtimeSinceStartup < deadline) yield return null;
+                Check(RunEncounter.CurrentSceneIndex == stage + 1 && RunEncounter.IsSceneReady, "map ready " + (stage + 1));
+            }
             else
             { while (!(Top is RunSettlementPanel) && Time.realtimeSinceStartup < deadline) yield return null; Check(Top is RunSettlementPanel, "three-map settlement reached"); }
         }
-        yield return Press(UnityEngine.InputSystem.Key.Escape); deadline = Time.realtimeSinceStartup + 40;
+        Click("Btn_Next");
+        Click("Btn_Next");
+        Click("Btn_Confirm");
+        deadline = Time.realtimeSinceStartup + 40;
         while ((!VillageSceneBootstrap.IsReady || !VillageSceneFlow.IsVillageScene) && Time.realtimeSinceStartup < deadline) yield return null;
-        Check(VillageSceneBootstrap.IsReady && VillageSceneFlow.IsVillageScene && SaveSlotService.SavesDirectory == _storage, "settlement Esc confirms through normal flow and returns village");
+        Check(VillageSceneBootstrap.IsReady && VillageSceneFlow.IsVillageScene && SaveSlotService.SavesDirectory == _storage, "confirming the final settlement page returns to the village");
     }
 }
 #endif

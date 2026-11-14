@@ -545,14 +545,14 @@ public sealed class WorldLocationsView : MonoBehaviour
 
     // ══════════════════ 图标 ══════════════════
 
-    /// <summary>优先 Resources.Load&lt;Sprite&gt;("UI/WorldLocations/"+IconKey)；缺失回退类别汉字占位。</summary>
+    /// <summary>按地点键取图标，缺失时由标记显示类别文字。</summary>
     private Sprite ResolveSprite(WorldLocationSnapshot data)
     {
-        string path = string.IsNullOrEmpty(data.IconKey) ? string.Empty : "UI/WorldLocations/" + data.IconKey;
+        string path = data.IconKey ?? string.Empty;
         if (path.Length == 0) return null;
         Sprite cached;
         if (_spriteCache.TryGetValue(path, out cached)) return cached;
-        Sprite sprite = Resources.Load<Sprite>(path);
+        Sprite sprite = GameplayUiSkin.Location(path);
         _spriteCache[path] = sprite;
         return sprite;
     }
@@ -619,7 +619,7 @@ public sealed class WorldLocationsView : MonoBehaviour
         body.offsetMin = new Vector2(1f, 1f);
         body.offsetMax = new Vector2(-1f, -1f);
         var bodyImage = body.gameObject.AddComponent<Image>();
-        bodyImage.color = CardColor;
+        GameplayUiSkin.Apply(bodyImage, "UI_Panel_Dialog", GameplayUiSkin.DarkPaper);
         bodyImage.raycastTarget = true; // 挡住地图拖动穿透
         return body;
     }
@@ -648,7 +648,7 @@ public sealed class WorldLocationsView : MonoBehaviour
             badgeImage.raycastTarget = false;
             var glyph = GameplayUi.Rect(badge, "Glyph", Vector2.one * .5f, Vector2.one * .5f, Vector2.zero, new Vector2(17f, 17f))
                 .gameObject.AddComponent<Image>();
-            glyph.sprite = Resources.Load<Sprite>("UI/WorldLocations/" + iconKeys[i]);
+            glyph.sprite = GameplayUiSkin.Location(iconKeys[i]);
             glyph.enabled = glyph.sprite != null;
             glyph.preserveAspect = true;
             glyph.raycastTarget = false;
@@ -688,7 +688,6 @@ public sealed class WorldLocationsView : MonoBehaviour
         var body = BuildSidebar("LocationDetail", out _card);
 
         Button close = GameplayUi.Button(body, "Close", "×", new Vector2(SidebarWidth - 62f, -8f), new Vector2(42f, 38f), CloseFromButton);
-        close.targetGraphic.color = ButtonNormal;
         TextMeshProUGUI closeLabel = close.GetComponentInChildren<TextMeshProUGUI>();
         if (closeLabel != null) closeLabel.fontSize = 26;
 

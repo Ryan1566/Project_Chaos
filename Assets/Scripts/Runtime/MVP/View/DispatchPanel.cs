@@ -314,9 +314,7 @@ public class DispatchPanel : BasePanel, IDispatchView
 
         Image background = GetComponent<Image>();
         if (background == null) background = gameObject.AddComponent<Image>();
-        background.sprite = null;
-        background.type = Image.Type.Simple;
-        background.color = Dark;
+        GameplayUiSkin.Apply(background, "UI_Panel_Main", GameplayUiSkin.DarkPaper);
         background.raycastTarget = true;
 
         _visuals = Resources.Load<DispatchVisuals>("UI/DispatchVisuals");
@@ -371,7 +369,7 @@ public class DispatchPanel : BasePanel, IDispatchView
 
         RectTransform rule = Area("HeaderRule", _layout, 0f, 0.855f, 1f, 0.858f);
         Image ruleImage = rule.gameObject.AddComponent<Image>();
-        ruleImage.color = GoldDim;
+        GameplayUiSkin.Apply(ruleImage, "UI_Row_Separator", Color.white);
         ruleImage.raycastTarget = false;
     }
 
@@ -392,7 +390,7 @@ public class DispatchPanel : BasePanel, IDispatchView
     {
         RectTransform box = Area("SearchBox", _left, 0.04f, 0.835f, 0.96f, 0.915f);
         Image boxImage = box.gameObject.AddComponent<Image>();
-        boxImage.color = Card;
+        GameplayUiSkin.Apply(boxImage, "UI_Dropdown_Closed", GameplayUiSkin.DarkPaper);
         var boxOutline = box.gameObject.AddComponent<Outline>();
         boxOutline.effectColor = new Color(GoldDim.r, GoldDim.g, GoldDim.b, 0.55f);
         boxOutline.effectDistance = new Vector2(1f, -1f);
@@ -473,14 +471,14 @@ public class DispatchPanel : BasePanel, IDispatchView
 
         RectTransform bar = Area("RosterScrollbar", _left, 0.95f, 0.012f, 0.975f, 0.725f);
         Image barImage = bar.gameObject.AddComponent<Image>();
-        barImage.color = new Color(0.06f, 0.05f, 0.035f, 0.8f);
+        GameplayUiSkin.Apply(barImage, "UI_Scrollbar_Track", Color.white);
 
         RectTransform sliding = Area("SlidingArea", bar, 0f, 0f, 1f, 1f);
         RectTransform handle = Area("Handle", sliding, 0f, 0f, 1f, 1f);
         handle.offsetMin = new Vector2(1f, 1f);
         handle.offsetMax = new Vector2(-1f, -1f);
         Image handleImage = handle.gameObject.AddComponent<Image>();
-        handleImage.color = GoldDim;
+        GameplayUiSkin.Apply(handleImage, "UI_Scrollbar_Thumb_Normal", Color.white);
 
         Scrollbar scrollbar = bar.gameObject.AddComponent<Scrollbar>();
         scrollbar.direction = Scrollbar.Direction.BottomToTop;
@@ -579,7 +577,7 @@ public class DispatchPanel : BasePanel, IDispatchView
         {
             panelImage.sprite = _visuals.DetailBackground;
             panelImage.type = Image.Type.Sliced;
-            panelImage.color = Color.white;
+            panelImage.color = GameplayUiSkin.DarkPaper;
         }
 
         _previewFrame = Area("PreviewFrame", _right, 0.035f, 0.56f, 0.965f, 0.98f);
@@ -1067,9 +1065,9 @@ public class DispatchPanel : BasePanel, IDispatchView
         if (_join != null) _join.interactable = canAdd;
         if (_remove != null) _remove.interactable = canRemove;
         if (_control != null) _control.interactable = canControl;
-        SetButtonColors(_join, _joinImage, canAdd, Gold, Dark);
-        SetButtonColors(_remove, _removeImage, canRemove, new Color(0.34f, 0.27f, 0.16f), Paper);
-        SetButtonColors(_control, _controlImage, canControl, new Color(0.24f, 0.33f, 0.44f), Paper);
+        SetButtonColors(_join, _joinImage, canAdd);
+        SetButtonColors(_remove, _removeImage, canRemove);
+        SetButtonColors(_control, _controlImage, canControl);
     }
 
     private void UpdateFooter(DispatchSnapshot snapshot)
@@ -1097,9 +1095,9 @@ public class DispatchPanel : BasePanel, IDispatchView
         if (_return != null) _return.interactable = canReturn;
         if (_close != null) _close.interactable = true;
 
-        SetButtonColors(_depart, _departImage, canDepart, Gold, Dark);
-        SetButtonColors(_return, _returnImage, canReturn, new Color(0.26f, 0.35f, 0.45f), Paper);
-        SetButtonColors(_close, _closeImage, true, new Color(0.33f, 0.27f, 0.17f), Gold);
+        SetButtonColors(_depart, _departImage, canDepart);
+        SetButtonColors(_return, _returnImage, canReturn);
+        SetButtonColors(_close, _closeImage, true);
 
         if (_reason != null)
         {
@@ -1121,11 +1119,13 @@ public class DispatchPanel : BasePanel, IDispatchView
         if (_searchPlaceholder != null) _searchPlaceholder.text = L("ui_dispatch_search", "搜索姓名");
     }
 
-    private void SetButtonColors(Button button, Image image, bool enabled, Color enabledColor, Color labelColor)
+    private void SetButtonColors(Button button, Image image, bool enabled)
     {
-        if (image != null) image.color = enabled ? enabledColor : Disabled;
+        if (image != null)
+            GameplayUiSkin.Apply(image, enabled ? "UI_Btn_Sm_Normal" : "UI_Btn_Sm_Disabled",
+                enabled ? GameplayUiSkin.DarkPaper : Color.white);
         TextMeshProUGUI label = ButtonLabel(button);
-        if (label != null) label.color = enabled ? labelColor : Muted;
+        if (label != null) label.color = enabled ? Paper : GameplayUiSkin.Ink;
     }
 
     private uint ViewId()
@@ -1164,7 +1164,7 @@ public class DispatchPanel : BasePanel, IDispatchView
         {
             image.sprite = sprite;
             image.type = Image.Type.Sliced;
-            image.color = Color.white;
+            image.color = GameplayUiSkin.DarkPaper;
         }
         else
         {
@@ -1178,7 +1178,7 @@ public class DispatchPanel : BasePanel, IDispatchView
     {
         RectTransform rect = Area(name, parent, x0, y0, x1, y1);
         Image image = rect.gameObject.AddComponent<Image>();
-        image.color = Panel;
+        GameplayUiSkin.Apply(image, "UI_Panel_ListBody", GameplayUiSkin.DarkPaper);
         image.raycastTarget = true;
         var outline = rect.gameObject.AddComponent<Outline>();
         outline.effectColor = new Color(GoldDim.r, GoldDim.g, GoldDim.b, 0.45f);

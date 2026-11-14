@@ -347,6 +347,8 @@ namespace InputIcon.Editor
             new Row("left", "leftButton", 0, null),
             new Row("right", "rightButton", 0, null),
             new Row("scroll", "scroll|middleButton", 0, "滚轮与中键是同一个物理部件，共用一张图"),
+            new Row("side_back", "backButton", 0, "鼠标后侧键"),
+            new Row("side_forward", "forwardButton", 0, "鼠标前侧键"),
             new Row("move", "position|delta", 0, "鼠标位置 / 移动（本作不参与重绑定，配上图是为了显示完整）"),
             new Row("scroll_up", "", 0, null), new Row("scroll_down", "", 0, null),
             new Row("scroll_vertical", "", 0, null),
@@ -579,6 +581,7 @@ namespace InputIcon.Editor
             switch (token)
             {
                 case "left": case "right": case "scroll": case "move":
+                case "side_back": case "side_forward":
                 case "scroll_up": case "scroll_down": case "scroll_vertical":
                 case "horizontal": case "vertical": case "small": case "":
                     return true;

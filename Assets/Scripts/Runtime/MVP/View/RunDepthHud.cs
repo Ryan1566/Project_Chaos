@@ -179,7 +179,10 @@ public static class RunDepthHud
         rect.anchoredPosition = new Vector2(-24f, -24f);   //右上角，留 24px
         rect.sizeDelta = new Vector2(520f, 40f);
 
-        _text = textGo.AddComponent<TextMeshProUGUI>();
+        var plate = textGo.AddComponent<Image>();
+        GameplayUiSkin.Apply(plate, "UI_SceneProgress", GameplayUiSkin.DarkPaper);
+        plate.raycastTarget = false;
+        _text = GameplayUi.Text(rect, "DepthText", string.Empty, 26);
         //★根因修复：默认字体是 LiberationSans SDF（无中文字形）→ 必须复用队伍血条那套中文字体解析
         _text.font = RunTeamHud.ResolveFont();
         _text.fontSize = 26f;

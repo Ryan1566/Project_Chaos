@@ -10,6 +10,7 @@ public sealed class RunInteractionHud : MonoBehaviour, IRunInteractionView
 {
     private RunInteractionPresenter presenter;
     private GameObject canvasRoot;
+    private RectTransform prompt;
     private TextMeshProUGUI label;
     private void Start()
     {
@@ -18,8 +19,12 @@ public sealed class RunInteractionHud : MonoBehaviour, IRunInteractionView
         var canvas = canvasRoot.GetComponent<Canvas>(); canvas.renderMode = RenderMode.ScreenSpaceOverlay; canvas.sortingOrder = 80;
         var scaler = canvasRoot.GetComponent<CanvasScaler>(); scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
         scaler.referenceResolution = new Vector2(1920, 1080);
-        var box = GameplayUi.Rect(canvasRoot.transform, "Prompt", new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(0, 72), new Vector2(1000, 70));
-        label = GameplayUi.Text(box, "Text", "", 26);
+        prompt = GameplayUi.Rect(canvasRoot.transform, "Prompt", new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(0, 72), new Vector2(1000, 70));
+        var background = prompt.gameObject.AddComponent<Image>();
+        GameplayUiSkin.Apply(background, "UI_Capsule", GameplayUiSkin.DarkPaper);
+        background.raycastTarget = false;
+        label = GameplayUi.Text(prompt, "Text", "", 26);
+        prompt.gameObject.SetActive(false);
         presenter = new RunInteractionPresenter(new RunInteractionModel(gameObject)); presenter.Attach(this);
     }
     private void OpenContent(RunContentSession session)
@@ -29,7 +34,7 @@ public sealed class RunInteractionHud : MonoBehaviour, IRunInteractionView
     public void Render(RunInteractionState state)
     {
         if (label == null) return;
-        label.gameObject.SetActive(state.Visible); label.text = state.Text ?? string.Empty;
+        prompt.gameObject.SetActive(state.Visible); label.text = state.Text ?? string.Empty;
         label.color = state.Available ? Color.white : new Color(.8f, .8f, .8f);
     }
     private void OnDisable()

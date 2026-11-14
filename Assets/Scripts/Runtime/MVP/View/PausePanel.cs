@@ -13,7 +13,7 @@ public sealed class PausePanel : BasePanel
     {
         GetComponent<Image>().color=new Color(0,0,0,.7f);
         var card=GameplayUi.Rect(transform,"PauseCard",Vector2.one*.5f,Vector2.one*.5f,Vector2.zero,new Vector2(480,360));
-        card.gameObject.AddComponent<Image>().color=new Color(.055f,.075f,.10f,1);
+        GameplayUiSkin.Apply(card.gameObject.AddComponent<Image>(), "UI_Panel_Sub", GameplayUiSkin.DarkPaper);
         resume=GameplayUi.Button(card,"Resume","",new Vector2(50,-45),new Vector2(380,64),ClosePanel);
         settings=GameplayUi.Button(card,"Settings","",new Vector2(50,-127),new Vector2(380,64),()=>UIManager.Instance.PushPanel(PanelType.SettingPanel));
         saveExit=GameplayUi.Button(card,"SaveRunAndReturn","保存并返回主菜单",new Vector2(50,-209),new Vector2(380,64),SaveAndExit);

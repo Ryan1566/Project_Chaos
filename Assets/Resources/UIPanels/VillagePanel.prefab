@@ -237,9 +237,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7731412ddc33e9244a01af1501405bcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildableCard: {fileID: 21300000, guid: 53001edd6e22eac43b3b79803d56f4fd, type: 3}
-  constructionCard: {fileID: 21300000, guid: a67818e18be287f42a6e16ee1f9fb713, type: 3}
-  builtCard: {fileID: 21300000, guid: 369c6a9b629501840b9d6aedfdd7d2fb, type: 3}
+  buildableCard: {fileID: 21300000, guid: 355cd5a39641d8f4aa897d927dfe38d7, type: 3}
+  constructionCard: {fileID: 21300000, guid: 66e156ef9f118b14b9c72afc69bcd013, type: 3}
+  builtCard: {fileID: 21300000, guid: 7b5515440dbe39243bceb7a2e2824843, type: 3}
 --- !u!114 &632722615212779182
 MonoBehaviour:
   m_ObjectHideFlags: 0

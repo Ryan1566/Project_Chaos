@@ -82,9 +82,15 @@ namespace ArtPipeline.Editor
 
             // ══ 尺寸：图标是 UI，不缩远 ══
             importer.mipmapEnabled = false;
-            // 64px 的源图给 128 的上限：留一点 2x 资产的余地，同时挡住"误放一张 2048 大图"这种事故
-            importer.maxTextureSize = 128;
-            // 不去垫成 2 的幂：图标都是 64x64，但将来出现 48x48 也不该被垫到 64x64 白吃显存
+            // 主档为 192×192 或 384×192，保留原始密度。
+            importer.maxTextureSize = 512;
+            foreach (string platform in new[] { "Standalone", "Android", "iPhone", "WebGL" })
+            {
+                var settingsForPlatform = importer.GetPlatformTextureSettings(platform);
+                if (!settingsForPlatform.overridden || settingsForPlatform.maxTextureSize >= 512) continue;
+                settingsForPlatform.maxTextureSize = 512;
+                importer.SetPlatformTextureSettings(settingsForPlatform);
+            }
             importer.npotScale = TextureImporterNPOTScale.None;
 
             // ══ 采样 ══

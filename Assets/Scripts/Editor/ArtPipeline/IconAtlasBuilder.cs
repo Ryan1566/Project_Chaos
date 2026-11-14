@@ -18,9 +18,9 @@ namespace ArtPipeline.Editor
         /// <summary>图集资产路径。放在图标目录下，方便和素材放一起看。</summary>
         public const string AtlasPath = IconImportPostprocessor.IconRoot + "/IconAtlas_Input.spriteatlasv2";
         public const string WorldLocationAtlasPath = "Assets/Art/PNG/GameWorld_Map/WorldLocationIcons.spriteatlasv2";
-        private const string WorldLocationIconRoot = "Assets/Resources/UI/WorldLocations";
+        private const string WorldLocationIconRoot = "Assets/Art/LocationIcons/Landmarks";
 
-        /// <summary>打包时的单页上限。图标是 64px，2048 一页能装下几百张，够用且不会一次开太大。</summary>
+        /// <summary>单页图集上限，按实际使用的图标打包。</summary>
         private const int MaxTextureSize = 2048;
 
         [MenuItem("Tools/图标/重建图标图集", false, 901)]

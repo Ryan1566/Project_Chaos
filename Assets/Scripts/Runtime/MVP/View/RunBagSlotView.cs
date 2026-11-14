@@ -19,6 +19,7 @@ public sealed class RunBagSlotView : MonoBehaviour, IBeginDragHandler, IDragHand
     {
         _owner = owner; Section = section; Index = index;
         _image = gameObject.AddComponent<Image>();
+        GameplayUiSkin.Apply(_image, "UI_Slot", GameplayUiSkin.DarkPaper);
         var rect = GameplayUi.Rect(transform, "Icon", new Vector2(.5f, 1), new Vector2(.5f, 1), new Vector2(0, -3), new Vector2(24, 24));
         _icon = rect.gameObject.AddComponent<Image>(); _icon.preserveAspect = true; _icon.raycastTarget = false;
         _label = GameplayUi.Text(transform, "Item", "", 13);

@@ -45,6 +45,7 @@ public static class GameplayUi
         button.targetGraphic = image;
         if(click!=null)button.onClick.AddListener(click);
         Text(rect, "Text", text);
+        GameplayUiSkin.Button(button, size.x >= 380 ? "UI_Btn_Lg" : size.x <= 200 ? "UI_Btn_Sm" : "UI_Btn_Md");
         return button;
     }
 }

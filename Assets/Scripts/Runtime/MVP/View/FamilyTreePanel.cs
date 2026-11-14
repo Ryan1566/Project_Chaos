@@ -47,7 +47,7 @@ public class FamilyTreePanel : BasePanel, IFamilyTreeView
         var title=transform.Find("Title"); if(title!=null) { var tmp=title.GetComponent<TextMeshProUGUI>();if(tmp!=null)_font=tmp.font;title.gameObject.SetActive(false); }
         if(_font==null) _font=TMP_Settings.defaultFontAsset;
         _visuals=Resources.Load<FamilyTreeVisuals>("UI/FamilyTreeVisuals");
-        var background=GetComponent<Image>(); if(background!=null) { background.sprite=null;background.color=new Color(.08f,.07f,.06f,1f); }
+        var background=GetComponent<Image>(); GameplayUiSkin.Apply(background, "UI_Panel_Main", GameplayUiSkin.DarkPaper);
         var frame=Area("FamilyTreeLayout",transform,0,0,1,1);frame.offsetMin=new Vector2(28,20);frame.offsetMax=new Vector2(-28,-20);
         Label("Header",frame,.09f,.935f,.75f,.995f,"家族树  ·  长久之计",32,Gold);
         _resources=Label("Resources",frame,.02f,.88f,.83f,.935f,"",21,Paper);
@@ -58,14 +58,14 @@ public class FamilyTreePanel : BasePanel, IFamilyTreeView
         var left=Area("Boards",body,0,0,.18f,1);
         for(uint id=1;id<=5;id++) { uint selected=id;float top=1-(id-1)*.18f;_boards[id]=MakeButton("Board_"+id,left,0,top-.15f,1,top,"",()=>Send(FamilyTreeAction.SelectBoard,selected)); }
         _viewport=Area("TreeViewport",body,.195f,0,.70f,1);
-        var bg=_viewport.gameObject.AddComponent<Image>();bg.color=Ink;_viewport.gameObject.AddComponent<RectMask2D>();
+        var bg=_viewport.gameObject.AddComponent<Image>();GameplayUiSkin.Apply(bg, "UI_Panel_ListBody", GameplayUiSkin.DarkPaper);_viewport.gameObject.AddComponent<RectMask2D>();
         var input=_viewport.gameObject.AddComponent<FamilyTreeViewportInput>();input.Owner=this;
         _graph=Area("TreeGraph",_viewport,.5f,.5f,.5f,.5f);_graph.sizeDelta=new Vector2(1300,800);
         _boardDescription=Label("BoardDescription",_viewport,.03f,.91f,.97f,.99f,"",16,Gold);
         _boardDescription.raycastTarget=false;
         _zoomText=Label("Zoom",_viewport,.03f,.015f,.5f,.075f,"",15,Paper);
         MakeButton("ResetTreeView",_viewport,.76f,.02f,.97f,.08f,"恢复视图",()=>Send(FamilyTreeAction.ResetView));
-        var detail=Area("NodeDetail",body,.72f,0,1,1);var detailBg=detail.gameObject.AddComponent<Image>();detailBg.sprite=_visuals==null?null:_visuals.DetailBackground;detailBg.type=Image.Type.Sliced;detailBg.color=detailBg.sprite==null?new Color(.19f,.16f,.12f):Color.white;
+        var detail=Area("NodeDetail",body,.72f,0,1,1);var detailBg=detail.gameObject.AddComponent<Image>();detailBg.sprite=_visuals==null?null:_visuals.DetailBackground;detailBg.type=Image.Type.Sliced;detailBg.color=detailBg.sprite==null?new Color(.19f,.16f,.12f):GameplayUiSkin.DarkPaper;
         _detailTitle=Label("NodeTitle",detail,.055f,.938f,.94f,.99f,"选择节点",25,Gold);
         var scrollArea=Area("DetailScroll",detail,.045f,.19f,.955f,.85f);scrollArea.gameObject.AddComponent<RectMask2D>();var sr=scrollArea.gameObject.AddComponent<ScrollRect>();sr.horizontal=false;sr.movementType=ScrollRect.MovementType.Clamped;sr.viewport=scrollArea;
         var content=Area("DetailContent",scrollArea,0,1,1,1);content.pivot=new Vector2(.5f,1);content.sizeDelta=new Vector2(0,600);sr.content=content;

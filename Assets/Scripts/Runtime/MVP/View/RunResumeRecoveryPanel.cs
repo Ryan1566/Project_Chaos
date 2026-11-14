@@ -23,7 +23,7 @@ public sealed class RunResumeRecoveryPanel : BasePanel
             GetComponent<Image>().color = new Color(0, 0, 0, .8f);
             var card = GameplayUi.Rect(transform, "ResumeRecoveryCard", Vector2.one * .5f, Vector2.one * .5f,
                 Vector2.zero, new Vector2(690, 340));
-            card.gameObject.AddComponent<Image>().color = new Color(.07f, .10f, .14f);
+            GameplayUiSkin.Apply(card.gameObject.AddComponent<Image>(), "UI_Panel_Dialog", GameplayUiSkin.DarkPaper);
             var textArea = GameplayUi.Rect(card, "MessageArea", Vector2.up, Vector2.up, new Vector2(22, -22), new Vector2(646, 220));
             label = GameplayUi.Text(textArea, "Message", "", 22);
             label.enableAutoSizing = true;
