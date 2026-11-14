@@ -1,0 +1,7 @@
+[mcp_servers.unity]
+command = "node"
+args = ["E:/unity-mcp-server/src/index.js"]
+
+[mcp_servers.unity.env]
+UNITY_HUB_PATH = 'E:\Unity Hub\Unity Hub.exe'
+UNITY_BRIDGE_PORT = "7890"
