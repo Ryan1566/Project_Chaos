@@ -36,10 +36,6 @@ public sealed class RunTeamView : MonoBehaviour, IRunTeamView
     static readonly Color ControlledColor = new Color(.45f, .70f, 1f, 1f);
     static readonly Color DownedColor = new Color(.52f, .20f, .20f, 1f);
     static readonly Color DisabledColor = new Color(.70f, .70f, .70f, .55f);
-    static readonly Color HealthColor = new Color(.86f, .24f, .24f, 1f);
-    static readonly Color StaminaColor = new Color(.30f, .78f, .34f, 1f);
-    static readonly Color ManaColor = new Color(.28f, .50f, .92f, 1f);
-    static readonly Color XpColor = new Color(.92f, .78f, .30f, 1f);
     static readonly Color SlotColor = new Color(.20f, .22f, .28f, 1f);
     static readonly Color SlotSelectedColor = new Color(.34f, .42f, .24f, 1f);
 
@@ -72,10 +68,10 @@ public sealed class RunTeamView : MonoBehaviour, IRunTeamView
     // right column
     TextMeshProUGUI _levelLabel;
     Image _xpFill;
-    RectTransform _xpFillRect;
     TextMeshProUGUI _xpLabel;
     TextMeshProUGUI _pointsLabel;
-    readonly RectTransform[] _statFillRects = new RectTransform[StatCount];
+    readonly Image[] _statFills = new Image[StatCount];
+    TextMeshProUGUI _healthReadout;
     readonly TextMeshProUGUI[] _statLabels = new TextMeshProUGUI[StatCount];
     readonly Button[] _allocateButtons = new Button[StatCount];
     readonly TextMeshProUGUI[] _allocateLabels = new TextMeshProUGUI[StatCount];
@@ -257,12 +253,9 @@ public sealed class RunTeamView : MonoBehaviour, IRunTeamView
         PlaceTopLeft(_levelLabel.rectTransform, x, y, inner, 30f);
         y -= 34f;
 
-        var xpTrack = MakeImage(card, "XpTrack", new Color(0f, 0f, 0f, .55f));
-        GameplayUiSkin.Apply(xpTrack, "UI_Bar_Track", Color.white);
-        PlaceTopLeft(xpTrack.rectTransform, x, y, inner, 12f);
-        // Sprite-less Image: a real left-anchored bar whose width is driven by the ratio,
-        // so the geometry (not fillAmount) carries the value.
-        _xpFill = MakeBar(xpTrack.rectTransform, "XpFill", XpColor, out _xpFillRect);
+        var xpTrack = GameplayUi.Rect(card, "XpTrack", Vector2.zero, Vector2.zero, Vector2.zero, Vector2.zero);
+        PlaceTopLeft(xpTrack, x, y, inner, 12f);
+        _xpFill = GameplayBar.Build(xpTrack, "UI_XpBar", 4f, 2f);
         y -= 20f;
 
         _xpLabel = MakeText(card, "Xp", "", 15, TextAlignmentOptions.Left);
@@ -276,7 +269,7 @@ public sealed class RunTeamView : MonoBehaviour, IRunTeamView
         y -= 30f;
 
         string[] titles = { "生命", "耐力", "法力" };
-        Color[] colors = { HealthColor, StaminaColor, ManaColor };
+        string[] families = { "UI_HealthBar", "UI_StaminaBar", "UI_ManaBar" };
         const float rowHeight = 38f;
         for (int i = 0; i < StatCount; i++)
         {
@@ -288,13 +281,15 @@ public sealed class RunTeamView : MonoBehaviour, IRunTeamView
             PlaceTopLeft(label.rectTransform, 0f, 0f, inner - 56f, 18f);
             _statLabels[i] = label;
 
-            var track = MakeImage(row, "Track", new Color(0f, 0f, 0f, .55f));
-            GameplayUiSkin.Apply(track, "UI_Bar_Track", Color.white);
-            PlaceTopLeft(track.rectTransform, 0f, -20f, inner - 56f, 14f);
-
-            RectTransform fillRect;
-            MakeBar(track.rectTransform, "Fill", colors[i], out fillRect);
-            _statFillRects[i] = fillRect;
+            var track = GameplayUi.Rect(row, "Track", Vector2.zero, Vector2.zero, Vector2.zero, Vector2.zero);
+            float barWidth = inner - (i == 0 ? 134f : 56f);
+            PlaceTopLeft(track, 0f, -20f, barWidth, 14f);
+            _statFills[i] = GameplayBar.Build(track, families[i], 4f, 2f);
+            if (i == 0)
+            {
+                _healthReadout = MakeText(row, "HealthReadout", "", 15, TextAlignmentOptions.Left);
+                PlaceTopLeft(_healthReadout.rectTransform, barWidth + 6f, -18f, 72f, 18f);
+            }
 
             int index = i;
             var plus = GameplayUi.Button(row, "Allocate" + i, "+", new Vector2(inner - 48f, 2f),
@@ -357,12 +352,13 @@ public sealed class RunTeamView : MonoBehaviour, IRunTeamView
 
         for (int i = 0; i < StatCount; i++)
         {
-            SetBarRatio(_statFillRects[i], 0f);
+            _statFills[i].fillAmount = 0f;
             _statLabels[i].text = StatTitle(i) + " 上限 -";
             SetAllocate(i, false);
         }
 
-        SetBarRatio(_xpFillRect, 0f);
+        _xpFill.fillAmount = 0f;
+        _healthReadout.text = string.Empty;
     }
 
     void RefreshSlots(RunTeamMemberState[] members, uint selectedId)
@@ -442,7 +438,7 @@ public sealed class RunTeamView : MonoBehaviour, IRunTeamView
         float xpRatio = 0f;
         if (has && selected.ExperienceToNextLevel > 0)
             xpRatio = Mathf.Clamp01((float)selected.Experience / selected.ExperienceToNextLevel);
-        SetBarRatio(_xpFillRect, xpRatio);
+        _xpFill.fillAmount = xpRatio;
         _xpLabel.text = !has ? ""
             : selected.ExperienceToNextLevel > 0
                 ? "经验 " + Mathf.Max(0, selected.Experience) + " / " + selected.ExperienceToNextLevel
@@ -461,13 +457,16 @@ public sealed class RunTeamView : MonoBehaviour, IRunTeamView
             float ratio = !has ? 0f
                 : i == 0 ? (max > 0 ? Mathf.Clamp01((float)Mathf.Clamp(selected.Health, 0, max) / max) : 0f)
                 : 1f;
-            SetBarRatio(_statFillRects[i], ratio);
+            _statFills[i].fillAmount = ratio;
+            if (i == 0)
+            {
+                int mode = SettingsManager.Instance.Applied.healthReadout;
+                _healthReadout.text = has ? GameplayBar.HealthText(mode, ratio, Mathf.Clamp(selected.Health, 0, max), max) : string.Empty;
+            }
 
             _statLabels[i].text = !has
                 ? StatTitle(i) + " 上限 -"
-                : i == 0 && max > 0
-                    ? StatTitle(i) + " " + Mathf.Clamp(selected.Health, 0, max) + " / " + max
-                    : StatTitle(i) + " 上限 " + max;
+                : i == 0 ? StatTitle(i) : StatTitle(i) + " 上限 " + max;
 
             SetAllocate(i, allow);
         }
@@ -485,37 +484,6 @@ public sealed class RunTeamView : MonoBehaviour, IRunTeamView
             _allocateLabels[i].color = allow ? Color.white : DisabledColor;
     }
 
-    /// <summary>
-    /// 填充图从左侧开始，宽度由进度驱动，沿用原有布局和锚点。
-    /// </summary>
-    static Image MakeBar(RectTransform track, string name, Color color, out RectTransform rect)
-    {
-        rect = GameplayUi.Rect(track, name, new Vector2(0f, 0f), new Vector2(0f, 0f),
-            Vector2.zero, Vector2.zero);
-        rect.anchorMin = new Vector2(0f, 0f);
-        rect.anchorMax = Vector2.one;
-        rect.pivot = new Vector2(0f, .5f);
-        rect.offsetMin = Vector2.zero;
-        rect.offsetMax = Vector2.zero;
-
-        var image = rect.gameObject.AddComponent<Image>();
-        GameplayUiSkin.Apply(image, "UI_Bar_Fill", color);
-        image.raycastTarget = false;
-        return image;
-    }
-
-    static void SetBarRatio(RectTransform bar, float ratio)
-    {
-        if (bar == null) return;
-
-        float clamped = float.IsNaN(ratio) ? 0f : Mathf.Clamp01(ratio);
-        bar.offsetMin = Vector2.zero;
-
-        // offsetMax is relative to the track's right edge (anchorMax x == 1).
-        var track = bar.parent as RectTransform;
-        float width = track != null ? track.rect.width : 0f;
-        bar.offsetMax = new Vector2(-width * (1f - clamped), 0f);
-    }
 
     static int MaxOf(RunTeamMemberState m, int index)
     {
@@ -603,7 +571,6 @@ public sealed class RunTeamView : MonoBehaviour, IRunTeamView
         var rect = GameplayUi.Rect(parent, name, new Vector2(0, 1), new Vector2(0, 1), Vector2.zero, Vector2.zero);
         var image = rect.gameObject.AddComponent<Image>();
         if (name == "SelectedMarker") image.color = color;
-        else if (name == "Track" || name == "XpTrack") GameplayUiSkin.Apply(image, "UI_Bar_Track", Color.white);
         else GameplayUiSkin.Apply(image, "UI_Panel_ListBody", GameplayUiSkin.DarkPaper);
         image.raycastTarget = false;
         return image;

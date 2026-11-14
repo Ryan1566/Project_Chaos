@@ -21,6 +21,8 @@ public class GameplaySettingsPage : SettingsPageBase
     {
         BindSelector(SettingIds.ItemWheelMode, new[] { "点按弹出", "长按显示" },
             data => data.itemWheelMode, (data, index) => data.itemWheelMode = index);
+        BindSelector(SettingIds.HealthReadout, null,
+            data => data.healthReadout, (data, index) => data.healthReadout = index);
         //梯子进入方式：0 自动上下、1 手动 E；切换只影响之后的进入，不打断当前攀爬。
         BindSelector(SettingIds.LadderEntryMode, new[] { "自动爬梯（上下）", "手动爬梯（交互键）" },
             data => data.ladderEntryMode, (data, index) => data.ladderEntryMode = index);

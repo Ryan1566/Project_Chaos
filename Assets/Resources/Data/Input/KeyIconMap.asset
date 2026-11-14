@@ -673,6 +673,30 @@ MonoBehaviour:
     rawColor: 1
     sourceAsset: Assets/Art/Input_icon/ps/playstation_stick_l.png
     note: 
+  - controlKey: leftStick/down
+    family: 1
+    icon: {fileID: 21300000, guid: 25e46abb799113a4dbb3a6fe03f4f874, type: 3}
+    rawColor: 1
+    sourceAsset: Assets/Art/Input_icon/ps/playstation_stick_l_down.png
+    note: 
+  - controlKey: leftStick/left
+    family: 1
+    icon: {fileID: 21300000, guid: ac64d681ba842f1499e0fe47063fbd10, type: 3}
+    rawColor: 1
+    sourceAsset: Assets/Art/Input_icon/ps/playstation_stick_l_left.png
+    note: 
+  - controlKey: leftStick/right
+    family: 1
+    icon: {fileID: 21300000, guid: d15d22f152e462c4486692bc7b9c13ee, type: 3}
+    rawColor: 1
+    sourceAsset: Assets/Art/Input_icon/ps/playstation_stick_l_right.png
+    note: 
+  - controlKey: leftStick/up
+    family: 1
+    icon: {fileID: 21300000, guid: 9d04db542e75ede41bed82d9c471eec9, type: 3}
+    rawColor: 1
+    sourceAsset: Assets/Art/Input_icon/ps/playstation_stick_l_up.png
+    note: 
   - controlKey: leftStick/x
     family: 1
     icon: {fileID: 21300000, guid: 1cc0acdf531fe2144a49446d78d18309, type: 3}
@@ -697,6 +721,12 @@ MonoBehaviour:
     rawColor: 1
     sourceAsset: Assets/Art/Input_icon/ps/playstation_trigger_l2.png
     note: 
+  - controlKey: micButton
+    family: 1
+    icon: {fileID: 21300000, guid: cc9c429bdaa78854baabaa2cf71eb6ae, type: 3}
+    rawColor: 1
+    sourceAsset: Assets/Art/Input_icon/ps/playstation5_button_mute.png
+    note: 
   - controlKey: rightShoulder
     family: 1
     icon: {fileID: 21300000, guid: f2ef1d9a26faf984e856010832184d34, type: 3}
@@ -708,6 +738,30 @@ MonoBehaviour:
     icon: {fileID: 21300000, guid: 7d266b70e2d77e140b61530d3818591e, type: 3}
     rawColor: 1
     sourceAsset: Assets/Art/Input_icon/ps/playstation_stick_r.png
+    note: 
+  - controlKey: rightStick/down
+    family: 1
+    icon: {fileID: 21300000, guid: 64a562c7010697842ac06d40e2434142, type: 3}
+    rawColor: 1
+    sourceAsset: Assets/Art/Input_icon/ps/playstation_stick_r_down.png
+    note: 
+  - controlKey: rightStick/left
+    family: 1
+    icon: {fileID: 21300000, guid: d1852ef560fc73347b71d3e47b7b16d5, type: 3}
+    rawColor: 1
+    sourceAsset: Assets/Art/Input_icon/ps/playstation_stick_r_left.png
+    note: 
+  - controlKey: rightStick/right
+    family: 1
+    icon: {fileID: 21300000, guid: 2867a27aa68144347a2384dddad28042, type: 3}
+    rawColor: 1
+    sourceAsset: Assets/Art/Input_icon/ps/playstation_stick_r_right.png
+    note: 
+  - controlKey: rightStick/up
+    family: 1
+    icon: {fileID: 21300000, guid: 43ff7674af1aacc4dac4be2bccb4d19d, type: 3}
+    rawColor: 1
+    sourceAsset: Assets/Art/Input_icon/ps/playstation_stick_r_up.png
     note: 
   - controlKey: rightStick/x
     family: 1
@@ -744,6 +798,18 @@ MonoBehaviour:
     icon: {fileID: 21300000, guid: a61dc174cee8d9b4bb78bc181f47037b, type: 3}
     rawColor: 1
     sourceAsset: Assets/Art/Input_icon/ps/playstation3_button_start.png
+    note: 
+  - controlKey: systemButton
+    family: 1
+    icon: {fileID: 21300000, guid: 51083bc71166b344894532c3416d2de5, type: 3}
+    rawColor: 1
+    sourceAsset: Assets/Art/Input_icon/ps/playstation_button_ps.png
+    note: 
+  - controlKey: touchpadButton
+    family: 1
+    icon: {fileID: 21300000, guid: 5d447795e9f2cf947a0fd5bf7e14d248, type: 3}
+    rawColor: 1
+    sourceAsset: Assets/Art/Input_icon/ps/playstation5_touchpad.png
     note: 
   - controlKey: buttonEast
     family: 2
@@ -811,6 +877,30 @@ MonoBehaviour:
     rawColor: 1
     sourceAsset: Assets/Art/Input_icon/xbox/xbox_stick_l.png
     note: 
+  - controlKey: leftStick/down
+    family: 2
+    icon: {fileID: 21300000, guid: b3467f35e313cea4cbae81d40a097558, type: 3}
+    rawColor: 1
+    sourceAsset: Assets/Art/Input_icon/xbox/xbox_stick_l_down.png
+    note: 
+  - controlKey: leftStick/left
+    family: 2
+    icon: {fileID: 21300000, guid: 2e8dbe50dffd6ab43b616d7a2f8703b6, type: 3}
+    rawColor: 1
+    sourceAsset: Assets/Art/Input_icon/xbox/xbox_stick_l_left.png
+    note: 
+  - controlKey: leftStick/right
+    family: 2
+    icon: {fileID: 21300000, guid: 45cdbfd683f6b6a4793d9a3185631ff5, type: 3}
+    rawColor: 1
+    sourceAsset: Assets/Art/Input_icon/xbox/xbox_stick_l_right.png
+    note: 
+  - controlKey: leftStick/up
+    family: 2
+    icon: {fileID: 21300000, guid: 2dcada2c1d2de5a488b11a35fe46cee1, type: 3}
+    rawColor: 1
+    sourceAsset: Assets/Art/Input_icon/xbox/xbox_stick_l_up.png
+    note: 
   - controlKey: leftStick/x
     family: 2
     icon: {fileID: 21300000, guid: a8a278595a8bfd342a43424ee556bf56, type: 3}
@@ -847,6 +937,30 @@ MonoBehaviour:
     rawColor: 1
     sourceAsset: Assets/Art/Input_icon/xbox/xbox_stick_r.png
     note: 
+  - controlKey: rightStick/down
+    family: 2
+    icon: {fileID: 21300000, guid: 82399b0ff6552ca41bb0887506eeda92, type: 3}
+    rawColor: 1
+    sourceAsset: Assets/Art/Input_icon/xbox/xbox_stick_r_down.png
+    note: 
+  - controlKey: rightStick/left
+    family: 2
+    icon: {fileID: 21300000, guid: 3df2cee578427c048bb8f3b29a60807d, type: 3}
+    rawColor: 1
+    sourceAsset: Assets/Art/Input_icon/xbox/xbox_stick_r_left.png
+    note: 
+  - controlKey: rightStick/right
+    family: 2
+    icon: {fileID: 21300000, guid: 6428bda5e131e264595aae0064c1d189, type: 3}
+    rawColor: 1
+    sourceAsset: Assets/Art/Input_icon/xbox/xbox_stick_r_right.png
+    note: 
+  - controlKey: rightStick/up
+    family: 2
+    icon: {fileID: 21300000, guid: 748f20c95e6c3a34da031e3a018ff575, type: 3}
+    rawColor: 1
+    sourceAsset: Assets/Art/Input_icon/xbox/xbox_stick_r_up.png
+    note: 
   - controlKey: rightStick/x
     family: 2
     icon: {fileID: 21300000, guid: 812cda93566971448a26f624e271c76f, type: 3}
@@ -882,6 +996,12 @@ MonoBehaviour:
     icon: {fileID: 21300000, guid: 0a062f499c4240a469166e8b71ebe2de, type: 3}
     rawColor: 1
     sourceAsset: Assets/Art/Input_icon/xbox/xbox_button_start.png
+    note: 
+  - controlKey: systemButton
+    family: 2
+    icon: {fileID: 21300000, guid: 9efbaffb0a6cee54c9bec6fb664a6930, type: 3}
+    rawColor: 1
+    sourceAsset: Assets/Art/Input_icon/xbox/xbox_guide.png
     note: 
   style: 0
   preferGlyphVariant: 0

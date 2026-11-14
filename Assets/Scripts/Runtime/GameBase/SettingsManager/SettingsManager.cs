@@ -174,8 +174,9 @@ public class SettingsManager : SingletonBase<SettingsManager>
     {
         EnsureInited();
         if (Pending == null) return;
-        //面板正常只会写 0/1；这里再收一次，保证落盘值合法。
+        // 保存前收敛档位，避免其他编辑入口写入无效值。
         Pending.ladderEntryMode = Pending.ladderEntryMode == 1 ? 1 : 0;
+        if (Pending.healthReadout < 0 || Pending.healthReadout > 2) Pending.healthReadout = 0;
 
         Applied = Pending.Clone();
         Save();
@@ -245,6 +246,7 @@ public class SettingsManager : SingletonBase<SettingsManager>
     {
         if (data == null) return;
         data.itemWheelMode = data.itemWheelMode == (int)ItemWheelTriggerMode.Toggle ? 0 : 1;
+        data.healthReadout = data.healthReadout >= 0 && data.healthReadout <= 2 ? data.healthReadout : 0;
         data.ladderEntryMode = data.ladderEntryMode == 1 ? 1 : 0;
         ApplyGraphics(data);
         ApplyAudio(data);

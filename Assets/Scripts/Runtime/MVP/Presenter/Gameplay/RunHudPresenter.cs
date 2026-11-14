@@ -8,6 +8,7 @@ namespace Chaos.MVP.Presenter.Gameplay
     {
         public string Text;
         public float Ratio;
+        public int Current, Maximum;
         public bool Downed;
     }
     public interface ITeamHudView { void RenderTeam(IReadOnlyList<HealthRow> rows); }
@@ -23,7 +24,7 @@ namespace Chaos.MVP.Presenter.Gameplay
             if (IsDisposed || View == null) return;
             var rows = new List<HealthRow>();
             foreach (var actor in _model.ReadTeam())
-                rows.Add(new HealthRow { Text = actor.Name + "　" + actor.Hp + "/" + actor.MaxHp + "　" + (actor.Downed ? "倒地" : "可用"),
+                rows.Add(new HealthRow { Text = actor.Name + (actor.Downed ? "　倒地" : ""), Current = actor.Hp, Maximum = actor.MaxHp,
                     Ratio = actor.MaxHp <= 0 ? 0 : Math.Max(0, Math.Min(1, (float)actor.Hp / actor.MaxHp)), Downed = actor.Downed });
             View.RenderTeam(rows.ToArray());
         }

@@ -55,6 +55,7 @@ public static class RunTeamHud
         public RectTransform Root;
         public Image Fill;
         public TextMeshProUGUI Label;
+        public TextMeshProUGUI Readout;
     }
 
     // ────────────────────────── 对外 API ──────────────────────────
@@ -180,7 +181,7 @@ public static class RunTeamHud
         RowCache.Clear();
         for (int i = 0; i < MaxRows; i++)
         {
-            GameObject rowGo = new GameObject("Row_" + i, typeof(RectTransform), typeof(Image));
+            GameObject rowGo = new GameObject("Row_" + i, typeof(RectTransform));
             RectTransform rowRect = (RectTransform)rowGo.transform;
             rowRect.SetParent(canvasGo.transform, false);
             rowRect.anchorMin = new Vector2(0f, 1f);
@@ -189,33 +190,27 @@ public static class RunTeamHud
             rowRect.anchoredPosition = new Vector2(20f, -104f - i * 36f);
             rowRect.sizeDelta = new Vector2(RowWidth, RowHeight);
 
-            Image background = rowGo.GetComponent<Image>();
-            GameplayUiSkin.Apply(background, "UI_Bar_Track", Color.white);
-            background.raycastTarget = false;
-
-            //血条填充（从左侧按比例伸）
-            GameObject fillGo = new GameObject("Fill", typeof(RectTransform), typeof(Image));
-            RectTransform fillRect = (RectTransform)fillGo.transform;
-            fillRect.SetParent(rowRect, false);
-            fillRect.anchorMin = new Vector2(0f, 0f);
-            fillRect.anchorMax = new Vector2(0f, 1f);
-            fillRect.pivot = new Vector2(0f, 0.5f);
-            fillRect.offsetMin = new Vector2(0f, 0f);
-            fillRect.offsetMax = new Vector2(0f, 0f);
-            fillRect.sizeDelta = new Vector2(RowWidth, 0f);
-            Image fill = fillGo.GetComponent<Image>();
-            GameplayUiSkin.Apply(fill, "UI_Bar_Fill", Color.white);
-            fill.raycastTarget = false;
+            var bar = GameplayUi.Rect(rowRect, "HealthBar", new Vector2(0f, .5f), new Vector2(0f, .5f),
+                new Vector2(128f, 0f), new Vector2(174f, 20f));
+            var fill = GameplayBar.Build(bar, "UI_HealthBar");
 
             TextMeshProUGUI label = MakeLabel(rowRect, "Label", "", 17f, new Color(0.96f, 0.97f, 1f, 1f));
             RectTransform labelRect = (RectTransform)label.transform;
             labelRect.anchorMin = Vector2.zero;
             labelRect.anchorMax = Vector2.one;
-            labelRect.offsetMin = new Vector2(8f, 0f);
-            labelRect.offsetMax = new Vector2(-8f, 0f);
+            labelRect.offsetMin = Vector2.zero;
+            labelRect.offsetMax = new Vector2(120f - RowWidth, 0f);
             label.enableWordWrapping = false;
+            label.overflowMode = TextOverflowModes.Ellipsis;
 
-            Rows.Add(new RowWidgets { Root = rowRect, Fill = fill, Label = label });
+            var readout = GameplayUi.Text(rowRect, "HealthReadout", "", 17);
+            readout.alignment = TextAlignmentOptions.MidlineLeft;
+            readout.outlineColor = GameplayUiSkin.Ink;
+            readout.outlineWidth = .24f;
+            readout.rectTransform.offsetMin = new Vector2(310f, 0f);
+            readout.rectTransform.offsetMax = new Vector2(12f, 0f);
+            readout.gameObject.SetActive(false);
+            Rows.Add(new RowWidgets { Root = rowRect, Fill = fill, Label = label, Readout = readout });
             rowGo.SetActive(false);
         }
 
@@ -244,15 +239,10 @@ public static class RunTeamHud
 
         float ratio = snapshot.Ratio;
         bool downed = snapshot.Downed;
-        if (row.Fill != null)
-        {
-            row.Fill.rectTransform.sizeDelta = new Vector2(RowWidth * ratio, 0f);
-            row.Fill.color = downed
-                ? new Color(0.55f, 0.2f, 0.2f, 0.5f)
-                : (ratio > 0.5f
-                    ? new Color(0.3f, 0.85f, 0.4f, 0.55f)
-                    : (ratio > 0.25f ? new Color(0.95f, 0.8f, 0.25f, 0.55f) : new Color(0.9f, 0.35f, 0.25f, 0.55f)));
-        }
+        row.Fill.fillAmount = ratio;
+        int mode = SettingsManager.Instance.Applied.healthReadout;
+        row.Readout.text = GameplayBar.HealthText(mode, ratio, snapshot.Current, snapshot.Maximum);
+        row.Readout.gameObject.SetActive(mode != 0);
 
         string text = snapshot.Text;
         if (row.Label != null)
@@ -281,6 +271,8 @@ public static class RunTeamHud
         label.text = text;
         label.raycastTarget = false;
         label.alignment = TextAlignmentOptions.Left;
+        label.outlineColor = GameplayUiSkin.Ink;
+        label.outlineWidth = .24f;
         return label;
     }
 

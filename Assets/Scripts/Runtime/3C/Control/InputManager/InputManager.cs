@@ -458,9 +458,12 @@ public partial class InputManager : SingletonBase<InputManager>
     public static string ControlKey(string path)
     {
         if (string.IsNullOrEmpty(path)) return "";
-        if (path.StartsWith("<Gamepad>", StringComparison.OrdinalIgnoreCase))
+        if (IsGamepadPath(path))
         {
-            return RelativePath(path).ToLowerInvariant();
+            string control = RelativePath(path).ToLowerInvariant();
+            if (control == "lefttriggerbutton") return "lefttrigger";
+            if (control == "righttriggerbutton") return "righttrigger";
+            return control;
         }
         return LastSegment(path).ToLowerInvariant();
     }
@@ -472,7 +475,7 @@ public partial class InputManager : SingletonBase<InputManager>
     public static InputDeviceType IconFamily(string path, InputDeviceType device)
     {
         if (string.IsNullOrEmpty(path)) return device;
-        if (path.StartsWith("<Gamepad>", StringComparison.OrdinalIgnoreCase)) return device;
+        if (IsGamepadPath(path)) return device;
         return InputDeviceType.Keyboard;
     }
 
@@ -483,7 +486,7 @@ public partial class InputManager : SingletonBase<InputManager>
         //界面上就显示成"未绑定" —— 玩家点一下那一格就能绑上
         if (string.IsNullOrEmpty(path)) return "-";
 
-        if (path.StartsWith("<Gamepad>", StringComparison.OrdinalIgnoreCase)) return GamepadName(path, device);
+        if (IsGamepadPath(path)) return GamepadName(path, device);
         if (path.StartsWith("<Mouse>", StringComparison.OrdinalIgnoreCase)) return MouseName(path);
         if (path.StartsWith("<Pointer>", StringComparison.OrdinalIgnoreCase)) return MouseName(path);
 
@@ -499,13 +502,17 @@ public partial class InputManager : SingletonBase<InputManager>
     {
         string rel = RelativePath(path);
 
-        if (rel.StartsWith("leftStick", StringComparison.OrdinalIgnoreCase)
-            || rel.StartsWith("rightStick", StringComparison.OrdinalIgnoreCase))
+        if (rel.StartsWith("leftStick/", StringComparison.OrdinalIgnoreCase)
+            || rel.StartsWith("rightStick/", StringComparison.OrdinalIgnoreCase))
         {
             string stick = rel.StartsWith("leftStick", StringComparison.OrdinalIgnoreCase) ? "左摇杆" : "右摇杆";
             //二维摇杆的两个轴要分开说清：移动只用左右轴，说成"左摇杆"玩家会以为上下也能走
             if (rel.EndsWith("/x", StringComparison.OrdinalIgnoreCase)) return stick + " 左右";
             if (rel.EndsWith("/y", StringComparison.OrdinalIgnoreCase)) return stick + " 上下";
+            if (rel.EndsWith("/up", StringComparison.OrdinalIgnoreCase)) return stick + " 上";
+            if (rel.EndsWith("/down", StringComparison.OrdinalIgnoreCase)) return stick + " 下";
+            if (rel.EndsWith("/left", StringComparison.OrdinalIgnoreCase)) return stick + " 左";
+            if (rel.EndsWith("/right", StringComparison.OrdinalIgnoreCase)) return stick + " 右";
             return stick;
         }
 
@@ -519,7 +526,10 @@ public partial class InputManager : SingletonBase<InputManager>
         }
 
         //剩下的都是单个按键（buttonSouth / leftShoulder / leftTrigger …），查映射表换显示列
-        return SettingsLabels.GamepadButtonName(LastSegment(rel), device);
+        string control = LastSegment(rel);
+        if (control == "leftTriggerButton") control = "leftTrigger";
+        if (control == "rightTriggerButton") control = "rightTrigger";
+        return SettingsLabels.GamepadButtonName(control, device);
     }
 
     private static string MouseName(string path)
@@ -529,11 +539,20 @@ public partial class InputManager : SingletonBase<InputManager>
             case "leftButton": return "鼠标左键";
             case "rightButton": return "鼠标右键";
             case "middleButton": return "鼠标中键";
+            case "forwardButton": return "鼠标前侧键";
+            case "backButton": return "鼠标后侧键";
             case "position": return "鼠标位置";
             case "delta": return "鼠标移动";
             case "scroll": return "滚轮";
             default: return "鼠标" + LastSegment(path);
         }
+    }
+
+    private static bool IsGamepadPath(string path)
+    {
+        if (path.StartsWith("<Gamepad>", StringComparison.OrdinalIgnoreCase)) return true;
+        string layout = InputControlPath.TryGetDeviceLayout(path);
+        return !string.IsNullOrEmpty(layout) && InputSystem.IsFirstLayoutBasedOnSecond(layout, "Gamepad");
     }
 
     /// <summary>去掉 &lt;设备&gt; 前缀，留下设备内那一段路径（如 "leftStick/x"）。</summary>

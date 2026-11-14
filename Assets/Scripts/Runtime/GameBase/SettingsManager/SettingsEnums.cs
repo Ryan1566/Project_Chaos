@@ -175,6 +175,12 @@ public static class SettingsLabels
             case "start": return ps ? "Options" : "Menu";
             case "select": return ps ? "Create" : "View";
             case "leftStick": return ps ? "左摇杆" : "左摇杆";
+            case "rightStick": return "右摇杆";
+            case "leftStickPress": return ps ? "L3" : "LS";
+            case "rightStickPress": return ps ? "R3" : "RS";
+            case "touchpadButton": return "触摸板按压";
+            case "micButton": return "麦克风静音键";
+            case "systemButton": return ps ? "PS" : "Xbox";
             case "dpad": return "方向键";
             default: return controlName;
         }

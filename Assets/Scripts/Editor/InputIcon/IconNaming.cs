@@ -35,7 +35,7 @@ namespace InputIcon.Editor
     ///   · <c>keyboard_asterisk</c> / <c>colon</c> / <c>exclamation</c> / <c>question</c> / <c>plus</c> / <c>caret</c>
     ///     —— 同上，都是别的键的 Shift 态；
     ///   · <c>keyboard_function</c>（Fn）—— 布局里没有 Fn；
-    ///   · <c>xbox_guide</c> —— 本工程的 Gamepad 布局里没有 guide 控制。
+    ///   · 主机系统键由具体手柄布局提供，通用 Gamepad 布局不声明。
     /// 这些一律标成"未识别"并列进报告，而不是硬塞给一个"看起来差不多"的控制 ——
     /// 塞错的后果是某个键显示了一张毫不相干的图，比显示文字更难查。
     ///
@@ -367,6 +367,7 @@ namespace InputIcon.Editor
             new Row("button_triangle", "buttonNorth", 0, null),
             new Row("button_l3", "leftStickPress", 0, null),
             new Row("button_r3", "rightStickPress", 0, null),
+            new Row("button_ps", "systemButton", 0, null),
             new Row("button_analog", "", 0, "模拟键，Gamepad 布局里没有对应控制"),
 
             // 肩键 / 扳机
@@ -384,14 +385,14 @@ namespace InputIcon.Editor
             new Row("stick_l_horizontal", "leftStick/x", 0, "两段式路径：左右轴"),
             new Row("stick_l_vertical", "leftStick/y", 0, "两段式路径：上下轴"),
             new Row("stick_l_press", "leftStickPress", 0, null),
-            new Row("stick_l_up", "", 0, null), new Row("stick_l_down", "", 0, null),
-            new Row("stick_l_left", "", 0, null), new Row("stick_l_right", "", 0, null),
+            new Row("stick_l_up", "leftStick/up", 0, null), new Row("stick_l_down", "leftStick/down", 0, null),
+            new Row("stick_l_left", "leftStick/left", 0, null), new Row("stick_l_right", "leftStick/right", 0, null),
             new Row("stick_r", "rightStick", 0, null),
             new Row("stick_r_horizontal", "rightStick/x", 0, null),
             new Row("stick_r_vertical", "rightStick/y", 0, null),
             new Row("stick_r_press", "rightStickPress", 0, null),
-            new Row("stick_r_up", "", 0, null), new Row("stick_r_down", "", 0, null),
-            new Row("stick_r_left", "", 0, null), new Row("stick_r_right", "", 0, null),
+            new Row("stick_r_up", "rightStick/up", 0, null), new Row("stick_r_down", "rightStick/down", 0, null),
+            new Row("stick_r_left", "rightStick/left", 0, null), new Row("stick_r_right", "rightStick/right", 0, null),
             new Row("stick_side_l", "", 0, null), new Row("stick_side_r", "", 0, null),
             new Row("stick_top_l", "", 0, null), new Row("stick_top_r", "", 0, null),
 
@@ -411,9 +412,9 @@ namespace InputIcon.Editor
             new Row("4_button_share", "select", 0, null),
             new Row("5_button_create", "select", 0, null),
             new Row("5_button_options", "start", 0, null),
-            new Row("5_button_mute", "", 0, "静音键，布局里没有对应控制"),
-            new Row("4_touchpad", "", 0, null), new Row("4_touchpad_touch", "", 0, null),
-            new Row("5_touchpad", "", 0, null), new Row("5_touchpad_touch", "", 0, null),
+            new Row("5_button_mute", "micButton", 0, null),
+            new Row("4_touchpad", "touchpadButton", 1, null), new Row("4_touchpad_touch", "", 0, null),
+            new Row("5_touchpad", "touchpadButton", 0, null), new Row("5_touchpad_touch", "", 0, null),
 
             // 整机图例：给"手柄"页签用
             new Row("controller_playstation1", "", 0, null),
@@ -442,14 +443,14 @@ namespace InputIcon.Editor
             new Row("stick_l_horizontal", "leftStick/x", 0, null),
             new Row("stick_l_vertical", "leftStick/y", 0, null),
             new Row("stick_l_press", "leftStickPress", 1, "与 xbox_ls 同一控制，ls 是常见叫法"),
-            new Row("stick_l_up", "", 0, null), new Row("stick_l_down", "", 0, null),
-            new Row("stick_l_left", "", 0, null), new Row("stick_l_right", "", 0, null),
+            new Row("stick_l_up", "leftStick/up", 0, null), new Row("stick_l_down", "leftStick/down", 0, null),
+            new Row("stick_l_left", "leftStick/left", 0, null), new Row("stick_l_right", "leftStick/right", 0, null),
             new Row("stick_r", "rightStick", 0, null),
             new Row("stick_r_horizontal", "rightStick/x", 0, null),
             new Row("stick_r_vertical", "rightStick/y", 0, null),
             new Row("stick_r_press", "rightStickPress", 1, "与 xbox_rs 同一控制"),
-            new Row("stick_r_up", "", 0, null), new Row("stick_r_down", "", 0, null),
-            new Row("stick_r_left", "", 0, null), new Row("stick_r_right", "", 0, null),
+            new Row("stick_r_up", "rightStick/up", 0, null), new Row("stick_r_down", "rightStick/down", 0, null),
+            new Row("stick_r_left", "rightStick/left", 0, null), new Row("stick_r_right", "rightStick/right", 0, null),
             new Row("stick_side_l", "", 0, null), new Row("stick_side_r", "", 0, null),
             new Row("stick_top_l", "", 0, null), new Row("stick_top_r", "", 0, null),
 
@@ -474,7 +475,7 @@ namespace InputIcon.Editor
             new Row("button_back", "select", 1, "旧称，与 button_view 同一控制"),
             new Row("button_menu", "start", 1, "旧称，与 button_start 同一控制"),
             new Row("button_share", "select", 1, null),
-            new Row("guide", "", 0, "本工程 Gamepad 布局里没有 guide 控制"),
+            new Row("guide", "systemButton", 0, null),
 
             new Row("controller_xbox360", "", 0, null),
             new Row("controller_xboxone", "", 0, "整机图例（手柄页签默认用这一张）"),

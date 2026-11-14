@@ -67,6 +67,10 @@ public static class SettingKeys
     /// 有了它，SettingKeys 就【只有一份】，不会在 SettingsPageBase 或各地页面里被复述。
     /// </summary>
     public static readonly string[] ItemWheelOptions = { "ui_setting_wheel_toggle", "ui_setting_wheel_hold" };
+    public static readonly string[] HealthReadoutOptions =
+    {
+        "ui_setting_health_readout_hidden", "ui_setting_health_readout_percent", "ui_setting_health_readout_amount"
+    };
 
     public static string[] ForSetting(string settingId)
     {
@@ -74,6 +78,7 @@ public static class SettingKeys
         if (settingId == SettingIds.Quality) return QualityOptions;
         if (settingId == SettingIds.AttackTrigger) return TriggerModeOptions;
         if (settingId == SettingIds.ItemWheelMode) return ItemWheelOptions;
+        if (settingId == SettingIds.HealthReadout) return HealthReadoutOptions;
         if (settingId == SettingIds.Language) return LanguageOptions;
         return null;
     }

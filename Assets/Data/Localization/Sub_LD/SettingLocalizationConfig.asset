@@ -469,3 +469,31 @@ MonoBehaviour:
     english: Hold to show
     japanese: 
     korean: 
+  - key: ui_setting_health_readout
+    description: 
+    chineseSimplified: "\u8840\u91CF\u6570\u5B57"
+    chineseTraditional: "\u8840\u91CF\u6578\u5B57"
+    english: Health values
+    japanese: "\u4F53\u529B\u306E\u6570\u5024"
+    korean: "\uCCB4\uB825 \uC218\uCE58"
+  - key: ui_setting_health_readout_hidden
+    description: 
+    chineseSimplified: "\u9690\u85CF"
+    chineseTraditional: "\u96B1\u85CF"
+    english: Hidden
+    japanese: "\u975E\u8868\u793A"
+    korean: "\uC228\uAE40"
+  - key: ui_setting_health_readout_percent
+    description: 
+    chineseSimplified: "\u767E\u5206\u6BD4"
+    chineseTraditional: "\u767E\u5206\u6BD4"
+    english: Percentage
+    japanese: "\u30D1\u30FC\u30BB\u30F3\u30C8"
+    korean: "\uBC31\uBD84\uC728"
+  - key: ui_setting_health_readout_amount
+    description: 
+    chineseSimplified: "\u5F53\u524D\u503C / \u4E0A\u9650"
+    chineseTraditional: "\u76EE\u524D\u503C / \u4E0A\u9650"
+    english: Current / Max
+    japanese: "\u73FE\u5728\u5024 / \u6700\u5927\u5024"
+    korean: "\uD604\uC7AC / \uCD5C\uB300"
